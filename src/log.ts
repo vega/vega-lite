@@ -214,10 +214,6 @@ export namespace message {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
   }
 
-  export function channelShouldNotEncodeType(channel: Channel, type: Type) {
-    return `Channel ${channel} should not be used to encode ${type} data.`;
-  }
-
   export function discreteChannelCannotEncode(channel: Channel, type: Type) {
     return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
   }

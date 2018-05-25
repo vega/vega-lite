@@ -584,7 +584,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       if (type !== QUANTITATIVE) {
         return {
           compatible: false,
-          warning: log.message.channelShouldNotEncodeType(channel, type)
+          warning: `Channel ${channel} should be used with a quantitative field only, not ${fieldDef.type} field.`
         };
       }
       return COMPATIBLE;
@@ -593,10 +593,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (type === 'nominal' || type === 'geojson') {
+      if ((type === 'nominal' && !fieldDef['sort']) || type === 'geojson') {
         return {
           compatible: false,
-          warning: log.message.channelShouldNotEncodeType(channel, type)
+          warning: `Channel ${channel} should not be used with an unsorted discrete field.`
         };
       }
       return COMPATIBLE;
