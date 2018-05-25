@@ -405,7 +405,7 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform | VgFoldTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgFlattenTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform | VgFoldTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -1327,4 +1327,10 @@ export interface VgWindowTransform {
   ignorePeers?: Boolean;
   groupby?: string[];
   sort?: VgComparator;
+}
+
+export interface VgFlattenTransform {
+  type: 'flatten';
+  fields: string[];
+  as?: string[];
 }
