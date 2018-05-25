@@ -212,6 +212,13 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
+
+export interface FlattenTransform {
+  flatten: string[];
+
+  as?: string[];
+}
+
 export interface LookupData {
   /**
    * Secondary data source to lookup in.
@@ -275,6 +282,9 @@ export function isWindow(t: Transform): t is WindowTransform {
   return t['window'] !== undefined;
 }
 
+export function isFlatten(t:Transform): t is FlattenTransform {
+  return t['flatten'] !== undefined;
+}
 export function isCalculate(t: Transform): t is CalculateTransform {
   return t['calculate'] !== undefined;
 }
@@ -299,7 +309,7 @@ export function isFold(t: Transform): t is FoldTransform {
   return t['fold'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FoldTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
