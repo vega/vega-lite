@@ -254,7 +254,18 @@ export interface LookupTransform {
   default?: string;
 }
 
+export interface FoldTransform {
+  /**
+   * An array of data fields indicating the properties to fold.
+   */
+  fold: string[];
 
+  /**
+   * The output field names for the key and value properties produced by the fold transform.
+   * The default is ["key", "value"].
+   */
+  as?: [string, string];
+}
 
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
@@ -284,7 +295,11 @@ export function isStack(t: Transform): t is StackTransform {
   return t['stack'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
+export function isFold(t: Transform): t is FoldTransform {
+  return t['fold'] !== undefined;
+}
+
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FoldTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
