@@ -3070,34 +3070,16 @@
       ],
       "type": "object"
     },
-    "FoldTransform": {
+    "FlattenTransform": {
       "additionalProperties": false,
       "properties": {
         "as": {
-          "additionalItems": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "string"
-              }
-            ]
+          "items": {
+            "type": "string"
           },
-          "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "minItems": 2,
           "type": "array"
         },
-        "fold": {
-          "description": "An array of data fields indicating the properties to fold.",
+        "flatten": {
           "items": {
             "type": "string"
           },
@@ -3105,7 +3087,7 @@
         }
       },
       "required": [
-        "fold"
+        "flatten"
       ],
       "type": "object"
     },
@@ -7503,7 +7485,7 @@
           "$ref": "#/definitions/WindowTransform"
         },
         {
-          "$ref": "#/definitions/FoldTransform"
+          "$ref": "#/definitions/FlattenTransform"
         }
       ]
     },
