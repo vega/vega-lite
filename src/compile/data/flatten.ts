@@ -13,29 +13,24 @@ export class FlattenTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: FlattenTransform) {
     super(parent);
+    this.transform.as = this.getNames();
+
   }
 
   public producedFields() {
-    const out = {};
-    this.transform.flatten.forEach(field => {
-      out[this.getDefaultName(field)] = true;
-    });
-    return out;
+    return this.transform.flatten.reduce((out, field, i) => {
+      out[this.transform.as[i]] = true;
+      return out;
+    }, {});
   }
 
-  private getDefaultName(field: string): string {
-    const index = this.transform.flatten.indexOf(field);
-    // Returns the "as" entry corresponding to field if it exists else returns field
-    return (this.transform.as === undefined || this.transform.as[index] === undefined) ? field : this.transform.as[index];
+  private getNames() {
+    const {flatten, as=[]} = this.transform;
+    return flatten.map((f,i) => as[i] || f);
   }
 
   public assemble(): VgFlattenTransform {
-    const fields: string[] = [];
-    const as = [];
-    for (const field of this.transform.flatten) {
-      fields.push(field === undefined ? null : field);
-      as.push(this.getDefaultName(field));
-    }
+    const {flatten: fields, as} = this.transform;
 
     const result: VgFlattenTransform = {
       type: 'flatten',
