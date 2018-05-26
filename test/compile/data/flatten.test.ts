@@ -5,7 +5,7 @@ import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {Transform} from '../../../src/transform';
 
 describe('compile/data/flatten', () => {
-  describe('Testing FlattenTransformNode', () => {
+  describe('FlattenTransformNode', () => {
     it ('should return a proper vg transform', () => {
       const transform: Transform = {
         flatten: ['a', 'b'],
@@ -43,6 +43,7 @@ describe('compile/data/flatten', () => {
         as: ['A','b']
       });
     });
+
     it ('should return proper produced fields', () => {
       const transform: Transform = {
         flatten: ['a', 'b']
