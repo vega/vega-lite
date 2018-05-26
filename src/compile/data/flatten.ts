@@ -13,8 +13,8 @@ export class FlattenTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: FlattenTransform) {
     super(parent);
-    this.transform.as = this.getNames();
-
+    const {flatten, as=[]} = this.transform;
+    this.transform.as = flatten.map((f,i) => as[i] || f);
   }
 
   public producedFields() {
@@ -22,11 +22,6 @@ export class FlattenTransformNode extends DataFlowNode {
       out[this.transform.as[i]] = true;
       return out;
     }, {});
-  }
-
-  private getNames() {
-    const {flatten, as=[]} = this.transform;
-    return flatten.map((f,i) => as[i] || f);
   }
 
   public assemble(): VgFlattenTransform {
