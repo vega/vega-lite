@@ -1236,6 +1236,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBar"
+        },
+        {
+          "$ref": "#/definitions/ErrorBand"
         }
       ]
     },
@@ -1246,6 +1249,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBarDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBandDef"
         }
       ]
     },
@@ -1828,6 +1834,10 @@
         "datasets": {
           "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "errorband": {
+          "$ref": "#/definitions/ErrorBandConfig",
+          "description": "ErrorBand Config"
         },
         "errorbar": {
           "$ref": "#/definitions/ErrorBarConfig",
@@ -2548,6 +2558,99 @@
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         }
       },
+      "type": "object"
+    },
+    "ErrorBand": {
+      "enum": [
+        "errorband"
+      ],
+      "type": "string"
+    },
+    "ErrorBandConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "center": {
+          "$ref": "#/definitions/ErrorBarCenter",
+          "description": "The center of the errorband. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "line": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBandDef": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "center": {
+          "$ref": "#/definitions/ErrorBarCenter",
+          "description": "The center of the errorband. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
+        },
+        "color": {
+          "description": "Color of the marks.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
+          "type": "string"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "line": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error band.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBand",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., \"boxplot\")."
+        }
+      },
+      "required": [
+        "type"
+      ],
       "type": "object"
     },
     "ErrorBar": {

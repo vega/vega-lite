@@ -268,6 +268,16 @@ export const defaultConfig: Config = {
     ticks: false
   },
 
+  errorband: {
+    center: 'mean',
+    band: {
+      opacity: 0.5
+    },
+    line: {
+      opacity: 1
+    }
+  },
+
   scale: defaultScaleConfig,
   projection: {},
   axis: {},

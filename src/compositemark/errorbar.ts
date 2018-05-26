@@ -1,6 +1,7 @@
 import {Config} from '../config';
-import {isMarkDef} from '../mark';
-import {AggregatedFieldDef, CalculateTransform} from '../transform';
+import {PositionFieldDef} from '../fielddef';
+import {isMarkDef, MarkConfig} from '../mark';
+import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import * as log from './../log';
@@ -14,6 +15,7 @@ import {
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
 } from './common';
+import {ErrorBand, ErrorBandDef} from './errorband';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
@@ -83,10 +85,6 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const center: ErrorBarCenter = markDef.center || config.errorbar.center;
   const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
 
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for error bar.`);
-  }
-
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
 
   // drop size
@@ -111,12 +109,26 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   };
 }
 
-function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, center: ErrorBarCenter, extent: ErrorBarExtent) {
+export function errorBarParams(
+  spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef | ErrorBand | ErrorBandDef>,
+  center: ErrorBarCenter,
+  extent: ErrorBarExtent
+): {
+  transform: Transform[];
+  groupby: string[];
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxis: 'x' | 'y';
+  encodingWithoutContinuousAxis: Encoding<string>
+} {
   const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, ERRORBAR);
   const continuousFieldName: string = continuousAxisChannelDef.field;
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
+
+  if ((center === 'median') !== (extent === 'iqr')) {
+    log.warn(`${center} is not usually used with ${extent} for error bar.`);
+  }
 
   if (extent === 'stderr' || extent === 'stdev') {
     errorbarSpecificAggregate = [{

@@ -3,11 +3,13 @@ import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {ERRORBAND, ErrorBand, ERRORBAND_PARTS, ErrorBandConfigMixins, ErrorBandDef, normalizeErrorBand} from './errorband';
 import {ERRORBAR, ErrorBar, ERRORBAR_PARTS, ErrorBarConfigMixins, ErrorBarDef, normalizeErrorBar} from './errorbar';
 
 
 export {BoxPlotConfig} from './boxplot';
 export {ErrorBarConfigMixins} from './errorbar';
+export {ErrorBandConfigMixins} from './errorband';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
 
 /**
@@ -28,7 +30,7 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeMark = BoxPlot | ErrorBar;
+export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
@@ -41,15 +43,16 @@ export function getCompositeMarkParts(mark: string) {
   throw new Error(`Unregistered composite mark ${mark}`);
 }
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
 
-export type CompositeAggregate = BoxPlot | ErrorBar;
+export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins {}
+export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
 
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
+add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
 
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
