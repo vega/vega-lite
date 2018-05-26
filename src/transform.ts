@@ -262,7 +262,7 @@ export interface FoldTransform {
 
   /**
    * The output field names for the key and value properties produced by the fold transform.
-   * The default is ["key", "value"].
+   * __Default value:__ `["key", "value"]`
    */
   as?: [string, string];
 }

@@ -3084,7 +3084,7 @@
               }
             ]
           },
-          "description": "The output field names for the key and value properties produced by the fold transform.\nThe default is [\"key\", \"value\"].",
+          "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
           "items": [
             {
               "type": "string"
