@@ -30,7 +30,7 @@ describe('compile/data/fold', () => {
       assert.deepEqual(fold.assemble(), {
         type: 'fold',
         fields: ['a','b'],
-        as: undefined
+        as: ['key', 'value']
       });
     });
 

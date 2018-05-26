@@ -14,20 +14,15 @@ export class FoldTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: FoldTransform) {
     super(parent);
-    this.transform.as = this.getNames();
+    const specifiedAs = this.transform.as || [undefined, undefined];
+    this.transform.as = [specifiedAs[0] || 'key', specifiedAs[1] || 'value'];
   }
 
   public producedFields() {
-    const names = this.getNames();
-
-    if (names === undefined) {
-      return {'key': true, 'value': true};
-    } else {
-      return names.reduce((result,item) => {
-        result[item] = true;
-        return result;
-      }, {});
-    }
+    return this.transform.as.reduce((result,item) => {
+      result[item] = true;
+      return result;
+    }, {});
   }
 
   private getNames(): [string, string] | undefined {
