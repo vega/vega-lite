@@ -5,7 +5,8 @@ import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {Transform} from '../../../src/transform';
 
 describe('compile/data/fold', () => {
-  describe('Testing FoldTransformNode', () => {
+  describe('FoldTransformNode', () => {
+
     it ('should return a proper vg transform', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
@@ -42,9 +43,10 @@ describe('compile/data/fold', () => {
       assert.deepEqual(fold.assemble(), {
         type: 'fold',
         fields: ['a','b'],
-        as: undefined
+        as: ['A', 'value']
       });
     });
+
     it ('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
         fold: ['a', 'b']
@@ -52,6 +54,7 @@ describe('compile/data/fold', () => {
       const fold = new FoldTransformNode(null, transform);
       assert.deepEqual(fold.producedFields(), {'key': true, 'value': true});
     });
+
     it ('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
