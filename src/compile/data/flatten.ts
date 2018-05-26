@@ -1,7 +1,6 @@
+import {FlattenTransform as VgFlattenTransform} from 'vega-typings';
 import {FlattenTransform} from '../../transform';
 import {duplicate} from '../../util';
-// TODO Use vega-typings
-import {VgFlattenTransform} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
 /**
