@@ -7,6 +7,7 @@ import {BinNode} from '../../../src/compile/data/bin';
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {FilterNode} from '../../../src/compile/data/filter';
+import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
@@ -237,6 +238,27 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof FoldTransformNode);
       assert.isTrue(result instanceof FoldTransformNode);
+    });
+
+    it('should return a FlattenTransformNode', () => {
+      const transform: Transform = {
+        flatten : ['a','b']
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof FlattenTransformNode);
+      assert.isTrue(result instanceof FlattenTransformNode);
     });
   });
 });
