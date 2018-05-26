@@ -9,6 +9,7 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
+import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
@@ -96,6 +97,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof WindowTransformNode ||
+      node instanceof FoldTransformNode ||
       node instanceof IdentifierNode) {
       dataSource.transform.push(node.assemble());
     }

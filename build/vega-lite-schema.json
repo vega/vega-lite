@@ -3070,6 +3070,45 @@
       ],
       "type": "object"
     },
+    "FoldTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "additionalItems": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "minItems": 2,
+          "type": "array"
+        },
+        "fold": {
+          "description": "An array of data fields indicating the properties to fold.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "fold"
+      ],
+      "type": "object"
+    },
     "FontStyle": {
       "enum": [
         "normal",
@@ -7462,6 +7501,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/FoldTransform"
         }
       ]
     },
