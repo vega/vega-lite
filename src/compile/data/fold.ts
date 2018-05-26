@@ -25,17 +25,6 @@ export class FoldTransformNode extends DataFlowNode {
     }, {});
   }
 
-  private getNames(): [string, string] | undefined {
-    const as = this.transform.as;
-    if (as && as.length > 1) {
-      return [as[0], as[1]];
-    } else if (as && as[0]) {
-      return [as[0], 'value'];
-    } else {
-      return undefined;
-    }
-  }
-
   public assemble(): VgFoldTransform {
     const {fold, as} = this.transform;
     const result: VgFoldTransform = {
