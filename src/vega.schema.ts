@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {FoldTransform as VgFoldTransform} from 'vega-typings';
+import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
@@ -1327,10 +1327,4 @@ export interface VgWindowTransform {
   ignorePeers?: Boolean;
   groupby?: string[];
   sort?: VgComparator;
-}
-
-export interface VgFlattenTransform {
-  type: 'flatten';
-  fields: string[];
-  as?: string[];
 }
