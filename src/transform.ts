@@ -214,8 +214,18 @@ export interface WindowTransform {
 
 
 export interface FlattenTransform {
+  /**
+   * An array of one or more data fields containing arrays to flatten.
+   * If multiple fields are specified, their array values should have a parallel structure, ideally with the same length.
+   * If the lengths of parallel arrays do not match,
+   * the longest array will be used with `null` values added for missing entries.
+   */
   flatten: string[];
 
+  /**
+   * The output field names for extracted array values.
+   * __Default value:__ `field name of the corresponding array field`
+   */
   as?: string[];
 }
 
