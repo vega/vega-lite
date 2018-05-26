@@ -55,7 +55,7 @@ describe('compile/data/fold', () => {
       assert.deepEqual(fold.producedFields(), {'key': true, 'value': true});
     });
 
-    it ('should return proper produced fields for no "as"', () => {
+    it ('should return proper produced fields for complete "as"', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
         as: ['A', 'B']
