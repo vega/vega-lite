@@ -90,26 +90,38 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
+  let continuousAxisChannelDef2: PositionFieldDef<string>;
   let continuousAxis: 'x' | 'y';
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
+    continuousAxisChannelDef2 = encoding.y2 ? encoding.y2 as FieldDef<string> : undefined;
   } else {
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
+    continuousAxisChannelDef2 = encoding.x2 ? encoding.x2 as FieldDef<string> : undefined;
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
-      log.warn(`Continuous axis should not have customized aggregation function ${aggregate}`);
+      log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
     }
     continuousAxisChannelDef = continuousAxisWithoutAggregate;
   }
 
+  if (continuousAxisChannelDef2 && continuousAxisChannelDef2.aggregate) {
+    const {aggregate, ...continuousAxisWithoutAggregate2} = continuousAxisChannelDef2;
+    if (aggregate !== compositeMark) {
+      log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
+    }
+    continuousAxisChannelDef2 = continuousAxisWithoutAggregate2;
+  }
+
   return {
     continuousAxisChannelDef,
+    continuousAxisChannelDef2,
     continuousAxis
   };
 }
@@ -152,12 +164,11 @@ export function compositeMarkOrient<M extends CompositeMark>(
   }
 }
 
-const compositeMarkSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
 export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
   spec: GenericUnitSpec<Encoding<string>, M | MD>,
+  supportedChannels: Channel[],
   compositeMark: M
 ): GenericUnitSpec<Encoding<string>, M | MD> {
-  const supportedChannels: Channel[] = compositeMarkSupportedChannels.concat((compositeMark === 'boxplot') ? ['size'] : []);
   return {
     ...spec,
     encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {

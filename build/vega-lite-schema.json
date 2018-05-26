@@ -2671,11 +2671,11 @@
       "properties": {
         "center": {
           "$ref": "#/definitions/ErrorBarCenter",
-          "description": "The center of the errorbar. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
+          "description": "The center of the errorbar. Available options include:\n- `\"mean\"`: the mean of the data points.\n- `\"median\"`: the median of the data points.\n\n__Default value:__ `\"mean\"`."
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
-          "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "rule": {
           "anyOf": [
@@ -2705,7 +2705,7 @@
       "properties": {
         "center": {
           "$ref": "#/definitions/ErrorBarCenter",
-          "description": "The center of the errorbar. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
+          "description": "The center of the errorbar. Available options include:\n- `\"mean\"`: the mean of the data points.\n- `\"median\"`: the median of the data points.\n\n__Default value:__ `\"mean\"`."
         },
         "color": {
           "description": "Color of the marks.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
@@ -2713,7 +2713,7 @@
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
-          "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "opacity": {
           "description": "Opacity of the marks.",

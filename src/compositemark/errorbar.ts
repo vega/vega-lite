@@ -1,6 +1,7 @@
+import {Channel} from '../channel';
 import {Config} from '../config';
-import {PositionFieldDef} from '../fielddef';
-import {isMarkDef} from '../mark';
+import {Field, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {isMarkDef, MarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
@@ -37,8 +38,8 @@ export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
   /**
    * The center of the errorbar. Available options include:
-   * - `"mean": the mean of the data points.
-   * - `"median": the median of the data points.
+   * - `"mean"`: the mean of the data points.
+   * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
    */
@@ -46,10 +47,10 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
 
   /**
    * The extent of the rule. Available options include:
-   * - `"ci": Extend the rule to the confidence interval of the mean.
-   * - `"stderr": The size of rule are set to the value of standard error, extending from the center.
-   * - `"stdev": The size of rule are set to the value of standard deviation, extending from the center.
-   * - `"iqr": Extend the rule to the q1 and q3.
+   * - `"ci"`: Extend the rule to the confidence interval of the mean.
+   * - `"stderr"`: The size of rule are set to the value of standard error, extending from the center.
+   * - `"stdev"`: The size of rule are set to the value of standard deviation, extending from the center.
+   * - `"iqr"`: Extend the rule to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.
    */
@@ -70,14 +71,16 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
+export const errorBarSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
+
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, ERRORBAR);
+  spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, ERRORBAR);
 
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: ErrorBarDef = isMarkDef(mark) ? mark : {type: mark};
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, markDef, ERRORBAR, config);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, ticksOrient} = errorBarParams(spec, markDef, ERRORBAR, config);
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
       markDef,
@@ -87,14 +90,45 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       config.errorbar
   );
 
+  const tick: MarkDef = {type: 'tick', orient: ticksOrient};
+
   return {
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBarPart('ticks', 'tick', 'lower'),
-      ...makeErrorBarPart('ticks', 'tick', 'upper'),
+      ...makeErrorBarPart('ticks', tick, 'lower'),
+      ...makeErrorBarPart('ticks', tick, 'upper'),
       ...makeErrorBarPart('rule', 'rule', 'lower', 'upper')
     ]
+  };
+}
+
+function errorBarOrientAndRange(
+  spec: GenericUnitSpec<Encoding<Field>,
+  ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
+  compositeMark: ErrorBar | ErrorBand
+): {
+  orient: Orient,
+  isRangedErrorBar: boolean
+} {
+  const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
+  if (isFieldDef(encoding.x2) && isFieldDef(encoding.x) && isContinuous(encoding.x)) {
+    // having x and x2
+    if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+      // having both x, x2 and y, y2
+      throw new Error('Cannot have both x2 and y2 with both are quantiative');
+    } else {
+      // having x, x2 but not y, y2
+      return {orient: 'horizontal', isRangedErrorBar: true};
+    }
+  } else if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+    // having y, y2 but not x, x2
+    return {orient: 'vertical', isRangedErrorBar: true};
+  }
+
+  return {
+    orient: compositeMarkOrient(spec, compositeMark),
+    isRangedErrorBar: false
   };
 }
 
@@ -108,79 +142,117 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   groupby: string[];
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
-  encodingWithoutContinuousAxis: Encoding<string>
+  encodingWithoutContinuousAxis: Encoding<string>,
+  ticksOrient: Orient
 } {
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
   if (spec.selection) {
     log.warn(log.message.selectionNotSupported(compositeMark));
   }
 
-  const center: ErrorBarCenter = markDef.center || config.errorbar.center;
-  const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
-
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for ${compositeMark}.`);
-  }
-
-  const orient: Orient = compositeMarkOrient(spec, compositeMark);
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
-  const continuousFieldName: string = continuousAxisChannelDef.field;
+  const {orient, isRangedErrorBar} = errorBarOrientAndRange(spec, compositeMark);
+  const {continuousAxisChannelDef, continuousAxisChannelDef2, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
+  const continuousFieldName: string = continuousAxisChannelDef.field;
 
-  if (extent === 'stderr' || extent === 'stdev') {
-    errorbarSpecificAggregate = [{
-      op: extent,
-      field: continuousFieldName,
-      as: 'extent_' + continuousFieldName
-    }];
+  if (isRangedErrorBar) {
+    if (markDef.center || markDef.extent) {
+      log.warn(log.message.errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
+    }
 
-    postAggregateCalculates = [{
-        calculate: `datum.${center}_${continuousFieldName} + datum.extent_${continuousFieldName}`,
-        as: 'upper_' + continuousFieldName
+    postAggregateCalculates = [
+      {
+        calculate: `datum.${continuousFieldName}`,
+        as: `lower_` + continuousFieldName
       },
       {
-        calculate: `datum.${center}_${continuousFieldName} - datum.extent_${continuousFieldName}`,
-        as: 'lower_' + continuousFieldName
-    }];
-  } else {
-    errorbarSpecificAggregate = [
-      {
-        op: (extent === 'ci') ? 'ci0' : 'q1',
-        field: continuousFieldName,
-        as: 'lower_' + continuousFieldName
-      },
-      {
-        op: (extent === 'ci') ? 'ci1' : 'q3',
-        field: continuousFieldName,
-        as: 'upper_' + continuousFieldName
+        calculate: `datum.${continuousAxisChannelDef2.field}`,
+        as: `upper_` + continuousFieldName
       }
     ];
+  } else {
+    const center: ErrorBarCenter = markDef.center ? markDef.center :
+      (markDef.extent ? (markDef.extent === 'iqr' ? 'median' : 'mean') : config.errorbar.center);
+    const extent: ErrorBarExtent = markDef.extent ? markDef.extent :
+      ((center === 'mean') ? 'stderr' : 'iqr');
+
+    if ((center === 'median') !== (extent === 'iqr')) {
+      log.warn(log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
+    }
+
+    if (extent === 'stderr' || extent === 'stdev') {
+      errorbarSpecificAggregate = [
+        {
+          op: extent,
+          field: continuousFieldName,
+          as: 'extent_' + continuousFieldName
+        },
+        {
+          op: center,
+          field: continuousFieldName,
+          as: 'center_' + continuousFieldName
+        }
+      ];
+
+      postAggregateCalculates = [
+        {
+          calculate: `datum.center_${continuousFieldName} + datum.extent_${continuousFieldName}`,
+          as: 'upper_' + continuousFieldName
+        },
+        {
+          calculate: `datum.center_${continuousFieldName} - datum.extent_${continuousFieldName}`,
+          as: 'lower_' + continuousFieldName
+        }
+      ];
+    } else {
+      if (markDef.center) {
+        log.warn(log.message.errorBarCenterIsNotNeeded(extent, compositeMark));
+      }
+
+      errorbarSpecificAggregate = [
+        {
+          op: (extent === 'ci') ? 'ci0' : 'q1',
+          field: continuousFieldName,
+          as: 'lower_' + continuousFieldName
+        },
+        {
+          op: (extent === 'ci') ? 'ci1' : 'q3',
+          field: continuousFieldName,
+          as: 'upper_' + continuousFieldName
+        }
+      ];
+    }
   }
 
-  errorbarSpecificAggregate.push({
-    op: center,
-    field: continuousFieldName,
-    as: center + '_' + continuousFieldName
-  });
-
-  const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
 
-  return {
-    transform: [
+  const transform: Transform[] = [
+    ...(
+      (aggregate.length === 0 && errorbarSpecificAggregate.length === 0) ?
+        [] :
+        [{
+          aggregate: [...aggregate, ...errorbarSpecificAggregate],
+          groupby: isRangedErrorBar ? [] : groupby
+        }]
+    ),
+    ...[
       ...bins,
       ...timeUnits,
-      {
-        aggregate: [...aggregate, ...errorbarSpecificAggregate],
-        groupby
-      },
       ...postAggregateCalculates
-    ],
-    groupby,
+    ]
+  ];
+
+  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+
+  return {
+    transform,
+    groupby: isRangedErrorBar ? [] : groupby,
     continuousAxisChannelDef,
     continuousAxis,
-    encodingWithoutContinuousAxis
+    encodingWithoutContinuousAxis,
+    ticksOrient
   };
 }

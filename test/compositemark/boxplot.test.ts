@@ -178,18 +178,21 @@ describe("normalizeBoxMinMax", () => {
   });
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {
+    const aggregate = 'min';
+    const type = 'boxplot';
+
     normalize({
         "description": "A box plot showing median, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
         mark: {
-          type: "boxplot",
+          type,
           extent: "min-max",
           size: 14
         },
         encoding: {
           "x": {"field": "age","type": "ordinal"},
           "y": {
-            "aggregate": "min",
+            aggregate,
             "field": "people",
             "type": "quantitative",
             "axis": {"title": "population"}
@@ -198,7 +201,7 @@ describe("normalizeBoxMinMax", () => {
         }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
+    assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, type));
   }));
 
   it("should produce an error if build 1D boxplot with a discrete axis", () => {

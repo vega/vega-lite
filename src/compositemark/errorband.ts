@@ -9,7 +9,7 @@ import {
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
 } from './common';
-import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
+import {ErrorBarCenter, ErrorBarExtent, errorBarParams, errorBarSupportedChannels} from './errorbar';
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
@@ -66,7 +66,7 @@ export interface ErrorBandConfigMixins {
 }
 
 export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, ERRORBAND);
+  spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, ERRORBAND);
 
   // TODO: use selection
   const {mark, encoding, selection: _selection, projection: _p, ...outerSpec} = spec;
