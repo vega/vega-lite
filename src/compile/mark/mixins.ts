@@ -183,7 +183,7 @@ export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-function wrapCondition(
+export function wrapCondition(
     model: UnitModel, channelDef: ChannelDef<string>, vgChannel: string,
     refFn: (cDef: ChannelDef<string>) => VgValueRef
   ): VgEncodeEntry {

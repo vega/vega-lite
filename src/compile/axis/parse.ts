@@ -3,7 +3,7 @@ import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
+import {getSpecifiedOrDefaultValue, guideEncodeEntry, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
@@ -212,9 +212,11 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       return e;
     }
 
+    const axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
+
     const value = part === 'labels' ?
-      encode.labels(model, channel, axisEncoding.labels || {}, axisComponent.get('orient')) :
-      axisEncoding[part] || {};
+      encode.labels(model, channel, axisEncodingPart, axisComponent.get('orient')) :
+      axisEncodingPart;
 
     if (value !== undefined && keys(value).length > 0) {
       e[part] = {update: value};

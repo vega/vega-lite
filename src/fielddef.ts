@@ -54,6 +54,16 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
+export interface ConditionValueDefMixins {
+  /**
+   * One or more value definition(s) with a selection predicate.
+   *
+   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+   * since Vega-Lite only allows at most one encoded field per encoding channel.
+   */
+  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
+}
+
 /**
  * A FieldDef with Condition<ValueDef>
  * {
@@ -62,15 +72,8 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
  *   ...
  * }
  */
-export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
-  /**
-   * One or more value definition(s) with a selection predicate.
-   *
-   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
-   * since Vega-Lite only allows at most one encoded field per encoding channel.
-   */
-  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
-};
+
+export type FieldDefWithCondition<F extends FieldDef<any>> = F & ConditionValueDefMixins;
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>

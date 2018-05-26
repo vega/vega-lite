@@ -1,4 +1,4 @@
-import {ValueDef} from './fielddef';
+import {ConditionValueDefMixins, ValueDef} from './fielddef';
 import {VgEncodeChannel} from './vega.schema';
 
 export interface TitleMixins {
@@ -38,7 +38,7 @@ export interface VlOnlyGuideConfig {
 
 
 export type GuideEncodingEntry = {
-  [k in VgEncodeChannel]?: ValueDef;
+  [k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins;
 };
 
 export const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[] = ['shortTimeLabels'];
