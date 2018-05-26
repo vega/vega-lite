@@ -90,7 +90,7 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     log.warn(`${center} is not usually used with ${extent} for error bar.`);
   }
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent, config);
 
   // drop size
   const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
@@ -117,7 +117,7 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   };
 }
 
-function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, center: ErrorBarCenter, extent: ErrorBarExtent) {
+function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, center: ErrorBarCenter, extent: ErrorBarExtent, config: Config) {
   const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, ERRORBAR);
   const continuousFieldName: string = continuousAxisChannelDef.field;
@@ -162,7 +162,7 @@ function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | Error
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
 
-  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
+  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
 
   return {
     transform: [
