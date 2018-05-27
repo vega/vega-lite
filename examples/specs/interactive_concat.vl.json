@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Show a line chart corresponding to selected points.",
+  "data": {
+    "values": [
+      {"id": "1", "ra": "243.35", "dec": "+54.6", "time": "2", "mag": 19},
+      {"id": "1", "ra": "243.35", "dec": "+54.6", "time": "1", "mag": 18.5},
+      {"id": "2", "ra": "210.35", "dec": "+14.6", "time": "2", "mag": 20},
+      {"id": "2", "ra": "210.35", "dec": "+14.6", "time": "1", "mag": 19.5},
+      {"id": "3", "ra": "143.35", "dec": "+33.6", "time": "2", "mag": 18},
+      {"id": "3", "ra": "143.35", "dec": "+33.6", "time": "1", "mag": 19}
+    ]
+  },
+  "vconcat": [
+    {
+      "width": 300,
+      "height": 200,
+      "title": "Sky position",
+      "transform": [{"aggregate": [], "groupby": ["ra", "dec", "id"]}],
+      "selection": {
+        "pts": {"type": "single", "fields": ["id"], "empty": "all"}
+      },
+      "encoding": {
+        "x": {"field": "ra", "type": "quantitative", "scale": {"zero": false}},
+        "y": {"field": "dec", "type": "quantitative"},
+        "color": {
+          "condition": {"selection": "pts", "value": "steelblue"},
+          "value": "grey"
+        },
+        "size": {"value": 100}
+      },
+      "mark": "circle"
+    },
+    {
+      "width": 300,
+      "height": 200,
+      "title": "Light curve",
+      "transform": [{"filter": {"selection": "pts"}}],
+      "encoding": {
+        "x": {
+          "field": "time",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {"field": "mag", "type": "quantitative"},
+        "color": {"value": "steelblue"},
+        "detail": {"field": "id", "type": "nominal"}
+      },
+      "mark": "line"
+    }
+  ]
+}
