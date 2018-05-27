@@ -110,8 +110,6 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
       ) || undefined; // make falsy value undefined so output Vega spec is shorter
     case 'values':
       return properties.values(specifiedLegend);
-    case 'type':
-      return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }
 
   // Otherwise, return specified property.
@@ -172,6 +170,17 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     // Cannot merge due to inconsistent orient
     return undefined;
   }
+
+  const mergedDirection = mergedLegend.getWithExplicit('direction');
+  const childDirection = childLegend.getWithExplicit('direction');
+
+
+  if (mergedDirection.explicit && childDirection.explicit && mergedDirection.value !== childDirection.value) {
+    // TODO: throw warning if resolve is explicit (We don't have info about explicit/implicit resolve yet.)
+    // Cannot merge due to inconsistent direction
+    return undefined;
+  }
+
   let typeMerged = false;
   // Otherwise, let's merge
   for (const prop of VG_LEGEND_PROPERTIES) {

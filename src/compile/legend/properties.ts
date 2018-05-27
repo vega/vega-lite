@@ -15,15 +15,3 @@ export function values(legend: Legend) {
   }
   return vals;
 }
-
-export function type(t: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
-  if (
-      isColorChannel(channel) && (
-        (t === 'quantitative' && !isBinScale(scaleType)) ||
-        (t === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
-      )
-    ) {
-    return 'gradient';
-  }
-  return undefined;
-}
