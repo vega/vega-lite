@@ -113,6 +113,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (month)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -142,6 +143,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Mean of temp",
             "labelOverlap": true,
             "tickCount": {

@@ -99,6 +99,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "time",
             "labelOverlap": true,
             "encode": {

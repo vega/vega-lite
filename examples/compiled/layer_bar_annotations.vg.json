@@ -361,6 +361,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Day",
             "encode": {
                 "labels": {
@@ -380,6 +381,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "PM2.5 Value",
             "labelOverlap": true,
             "tickCount": {

@@ -166,6 +166,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "IMDB_Rating (binned)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -180,6 +181,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Rotten_Tomatoes_Rating (binned)",
             "labelOverlap": true,
             "tickCount": {

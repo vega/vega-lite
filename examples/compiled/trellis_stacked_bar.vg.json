@@ -130,6 +130,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "variety",
                     "zindex": 1
                 }
@@ -184,6 +185,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Sum of yield",
                     "labelFlush": true,
                     "labelOverlap": true,

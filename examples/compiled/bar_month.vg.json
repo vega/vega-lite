@@ -122,6 +122,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (month)",
             "labelOverlap": true,
             "encode": {
@@ -147,6 +148,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Mean of precipitation",
             "labelOverlap": true,
             "tickCount": {

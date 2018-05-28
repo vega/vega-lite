@@ -438,6 +438,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Cylinders",
             "labelOverlap": true,
             "encode": {
@@ -460,6 +461,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Origin",
             "labelOverlap": true,
             "zindex": 1

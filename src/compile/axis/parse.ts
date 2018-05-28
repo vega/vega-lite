@@ -200,6 +200,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       if (explicit || configValue === undefined) {
         // Do not apply implicit rule if there is a config value
         axisComponent.set(property, value, explicit);
+      } else if (property === 'grid' && configValue) {
+        // Grid is an exception because we need to set grid = true to generate another grid axis
+        axisComponent.set(property, configValue, false);
       }
     }
   });

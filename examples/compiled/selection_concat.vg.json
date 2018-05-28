@@ -499,6 +499,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -525,6 +526,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelOverlap": true,
                     "tickCount": {
@@ -744,6 +746,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Displacement",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -770,6 +773,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Acceleration",
                     "labelOverlap": true,
                     "tickCount": {

@@ -113,6 +113,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Origin",
             "encode": {
                 "labels": {
@@ -134,6 +135,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

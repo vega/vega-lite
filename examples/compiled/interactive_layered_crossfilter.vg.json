@@ -721,6 +721,7 @@
                 {
                     "scale": "child_distance_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "distance (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -735,6 +736,7 @@
                 {
                     "scale": "child_distance_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1135,6 +1137,7 @@
                 {
                     "scale": "child_delay_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "delay (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1149,6 +1152,7 @@
                 {
                     "scale": "child_delay_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1549,6 +1553,7 @@
                 {
                     "scale": "child_time_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "time (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1563,6 +1568,7 @@
                 {
                     "scale": "child_time_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {

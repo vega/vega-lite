@@ -230,6 +230,7 @@
                 {
                     "scale": "x",
                     "orient": "top",
+                    "grid": false,
                     "title": "Origin",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -335,6 +336,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Cylinders",
                     "labelOverlap": true,
                     "tickCount": {

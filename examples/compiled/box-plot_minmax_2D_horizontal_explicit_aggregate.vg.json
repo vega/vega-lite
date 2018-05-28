@@ -349,6 +349,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "population",
             "labelFlush": true,
             "labelOverlap": true,
@@ -375,6 +376,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "age",
             "labelOverlap": true,
             "zindex": 1

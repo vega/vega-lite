@@ -193,6 +193,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (year-month)",
             "domain": false,
             "tickSize": 0,

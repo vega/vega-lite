@@ -82,6 +82,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Horsepower",
             "labelFlush": true,
             "labelOverlap": true,

@@ -116,6 +116,7 @@
                 {
                     "scale": "child_Origin_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -142,6 +143,7 @@
                 {
                     "scale": "child_Origin_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {
@@ -236,6 +238,7 @@
                 {
                     "scale": "child_Cylinders_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -262,6 +265,7 @@
                 {
                     "scale": "child_Cylinders_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {

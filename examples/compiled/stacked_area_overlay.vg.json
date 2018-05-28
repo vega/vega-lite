@@ -369,6 +369,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "age",
             "labelOverlap": true,
             "encode": {
@@ -391,6 +392,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Sum of people",
             "labelOverlap": true,
             "tickCount": {

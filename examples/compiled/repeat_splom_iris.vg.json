@@ -376,6 +376,7 @@
                 {
                     "scale": "child_petalWidth_sepalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -402,6 +403,7 @@
                 {
                     "scale": "child_petalWidth_sepalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -478,6 +480,7 @@
                 {
                     "scale": "child_petalWidth_sepalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -504,6 +507,7 @@
                 {
                     "scale": "child_petalWidth_sepalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -580,6 +584,7 @@
                 {
                     "scale": "child_petalWidth_petalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -606,6 +611,7 @@
                 {
                     "scale": "child_petalWidth_petalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -682,6 +688,7 @@
                 {
                     "scale": "child_petalWidth_petalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -708,6 +715,7 @@
                 {
                     "scale": "child_petalWidth_petalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -784,6 +792,7 @@
                 {
                     "scale": "child_petalLength_sepalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -810,6 +819,7 @@
                 {
                     "scale": "child_petalLength_sepalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -886,6 +896,7 @@
                 {
                     "scale": "child_petalLength_sepalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -912,6 +923,7 @@
                 {
                     "scale": "child_petalLength_sepalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -988,6 +1000,7 @@
                 {
                     "scale": "child_petalLength_petalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1014,6 +1027,7 @@
                 {
                     "scale": "child_petalLength_petalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1090,6 +1104,7 @@
                 {
                     "scale": "child_petalLength_petalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1116,6 +1131,7 @@
                 {
                     "scale": "child_petalLength_petalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "petalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1192,6 +1208,7 @@
                 {
                     "scale": "child_sepalWidth_sepalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1218,6 +1235,7 @@
                 {
                     "scale": "child_sepalWidth_sepalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1294,6 +1312,7 @@
                 {
                     "scale": "child_sepalWidth_sepalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1320,6 +1339,7 @@
                 {
                     "scale": "child_sepalWidth_sepalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1396,6 +1416,7 @@
                 {
                     "scale": "child_sepalWidth_petalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1422,6 +1443,7 @@
                 {
                     "scale": "child_sepalWidth_petalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1498,6 +1520,7 @@
                 {
                     "scale": "child_sepalWidth_petalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1524,6 +1547,7 @@
                 {
                     "scale": "child_sepalWidth_petalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1600,6 +1624,7 @@
                 {
                     "scale": "child_sepalLength_sepalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1626,6 +1651,7 @@
                 {
                     "scale": "child_sepalLength_sepalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1702,6 +1728,7 @@
                 {
                     "scale": "child_sepalLength_sepalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "sepalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1728,6 +1755,7 @@
                 {
                     "scale": "child_sepalLength_sepalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1804,6 +1832,7 @@
                 {
                     "scale": "child_sepalLength_petalLength_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalLength",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1830,6 +1859,7 @@
                 {
                     "scale": "child_sepalLength_petalLength_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1906,6 +1936,7 @@
                 {
                     "scale": "child_sepalLength_petalWidth_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "petalWidth",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1932,6 +1963,7 @@
                 {
                     "scale": "child_sepalLength_petalWidth_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "sepalLength",
                     "labelOverlap": true,
                     "tickCount": {

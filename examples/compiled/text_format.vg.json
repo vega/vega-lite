@@ -97,6 +97,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Origin",
             "labelOverlap": true,
             "zindex": 1

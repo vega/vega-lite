@@ -142,6 +142,7 @@
         {
             "scale": "plotname_x",
             "orient": "bottom",
+            "grid": false,
             "title": "a",
             "encode": {
                 "labels": {
@@ -163,6 +164,7 @@
         {
             "scale": "plotname_y",
             "orient": "left",
+            "grid": false,
             "title": "b",
             "labelOverlap": true,
             "tickCount": {

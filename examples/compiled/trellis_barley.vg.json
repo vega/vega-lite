@@ -130,6 +130,7 @@
                 {
                     "scale": "trellis_barley_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "variety",
                     "labelOverlap": true,
                     "zindex": 1
@@ -151,6 +152,7 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Median of yield",
                     "labelFlush": true,
                     "labelOverlap": true,

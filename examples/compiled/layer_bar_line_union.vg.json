@@ -214,6 +214,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "a, b",
             "labelOverlap": true,
             "encode": {
@@ -236,6 +237,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "c",
             "labelOverlap": true,
             "tickCount": {

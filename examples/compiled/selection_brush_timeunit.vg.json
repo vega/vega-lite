@@ -467,6 +467,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (seconds)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -502,6 +503,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "price",
                     "labelOverlap": true,
                     "tickCount": {
@@ -577,6 +579,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (minutes)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -612,6 +615,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "price",
                     "labelOverlap": true,
                     "tickCount": {

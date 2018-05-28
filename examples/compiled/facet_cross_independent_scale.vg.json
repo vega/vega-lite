@@ -338,6 +338,7 @@
                 {
                     "scale": "child_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "a",
                     "encode": {
                         "labels": {
@@ -359,6 +360,7 @@
                 {
                     "scale": "child_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "b",
                     "zindex": 1
                 }

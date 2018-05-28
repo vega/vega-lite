@@ -292,6 +292,7 @@
                 {
                     "scale": "child_Horsepower_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -306,6 +307,7 @@
                 {
                     "scale": "child_Horsepower_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -385,6 +387,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Miles_per_Gallon (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -399,6 +402,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -478,6 +482,7 @@
                 {
                     "scale": "child_Acceleration_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Acceleration (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -492,6 +497,7 @@
                 {
                     "scale": "child_Acceleration_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
