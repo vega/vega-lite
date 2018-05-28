@@ -421,6 +421,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date",
             "labelFlush": true,
             "labelOverlap": true,
@@ -447,6 +448,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "price",
             "labelOverlap": true,
             "tickCount": {

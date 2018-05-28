@@ -81,6 +81,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "precipitation",
             "labelFlush": true,
             "labelOverlap": true,

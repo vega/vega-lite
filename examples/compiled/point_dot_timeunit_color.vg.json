@@ -108,6 +108,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Mean of temp",
             "labelFlush": true,
             "labelOverlap": true,

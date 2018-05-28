@@ -341,6 +341,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Year into Decade",
             "tickCount": 11,
             "labelFlush": true,
@@ -363,6 +364,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "CO2 concentration in ppm",
             "labelOverlap": true,
             "tickCount": {

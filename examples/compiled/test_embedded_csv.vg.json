@@ -84,6 +84,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "a",
             "labelOverlap": true,
             "tickCount": {

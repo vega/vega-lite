@@ -406,6 +406,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "price",
             "labelOverlap": true,
             "tickCount": {

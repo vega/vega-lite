@@ -234,6 +234,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "matchday",
             "labelOverlap": true,
             "encode": {
@@ -256,6 +257,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "rank",
             "labelOverlap": true,
             "zindex": 1

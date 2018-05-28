@@ -193,6 +193,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "x",
             "labelFlush": true,
             "labelOverlap": true,
@@ -219,6 +220,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "y",
             "labelOverlap": true,
             "tickCount": {

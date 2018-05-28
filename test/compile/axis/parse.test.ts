@@ -44,6 +44,22 @@ describe('Axis', function() {
       assert.equal(axisComponent['x'][0].explicit.grid, true);
     });
 
+    it('should produce Vega grid when axis config is specified.', function() {
+      const model = parseUnitModelWithScale({
+        mark: "point",
+        encoding: {
+          x: {
+            field: "a",
+            type: "quantitative"
+          }
+        },
+        "config": {"axisX": {"grid": true}}
+      });
+      const axisComponent = parseUnitAxis(model);
+      assert.equal(axisComponent['x'].length, 1);
+      assert.equal(axisComponent['x'][0].implicit.grid, true);
+    });
+
     it('should produce axis component with grid=false', function() {
       const model = parseUnitModelWithScale({
         mark: "point",

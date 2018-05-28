@@ -92,6 +92,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "population",
             "labelFlush": true,
             "labelOverlap": true,

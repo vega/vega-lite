@@ -197,6 +197,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Barley Yield",
             "labelFlush": true,
             "labelOverlap": true,
@@ -223,6 +224,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "variety",
             "labelOverlap": true,
             "zindex": 1

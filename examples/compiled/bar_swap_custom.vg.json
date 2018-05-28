@@ -156,6 +156,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Average of b",
             "labelFlush": true,
             "labelOverlap": true,
@@ -182,6 +183,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "a",
             "zindex": 1
         }

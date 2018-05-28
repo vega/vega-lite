@@ -205,6 +205,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,
@@ -219,6 +220,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

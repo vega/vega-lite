@@ -428,6 +428,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "year (year)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -463,6 +464,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "population",
             "labelOverlap": true,
             "tickCount": {

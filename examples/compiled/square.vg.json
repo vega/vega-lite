@@ -95,6 +95,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Horsepower",
             "labelFlush": true,
             "labelOverlap": true,
@@ -121,6 +122,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Miles_per_Gallon",
             "labelOverlap": true,
             "tickCount": {

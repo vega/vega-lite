@@ -205,6 +205,7 @@
                         {
                             "scale": "y",
                             "orient": "left",
+                            "grid": false,
                             "title": "Acceleration",
                             "labelOverlap": true,
                             "tickCount": {
@@ -229,6 +230,7 @@
                         {
                             "scale": "x",
                             "orient": "bottom",
+                            "grid": false,
                             "title": "Horsepower",
                             "labelFlush": true,
                             "labelOverlap": true,

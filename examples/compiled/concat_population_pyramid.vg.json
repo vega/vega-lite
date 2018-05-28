@@ -241,6 +241,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "population",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -371,6 +372,7 @@
                 {
                     "scale": "concat_2_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "population",
                     "labelFlush": true,
                     "labelOverlap": true,

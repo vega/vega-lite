@@ -102,6 +102,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Mean of price",
             "labelOverlap": true,
             "tickCount": {

@@ -405,6 +405,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Date in 2009",
             "labelFlush": true,
             "labelOverlap": true,
@@ -440,6 +441,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "low, high, open, close",
             "labelOverlap": true,
             "tickCount": {

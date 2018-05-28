@@ -141,6 +141,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Price",
                     "labelOverlap": true,
                     "tickCount": {
@@ -165,6 +166,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Time",
                     "labelFlush": true,
                     "labelOverlap": true,

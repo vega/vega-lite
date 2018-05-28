@@ -156,6 +156,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (month)",
             "labelOverlap": true,
             "encode": {
@@ -181,6 +182,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

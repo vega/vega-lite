@@ -78,6 +78,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "IMDB_Rating",
             "labelFlush": true,
             "labelOverlap": true,

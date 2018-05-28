@@ -120,6 +120,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Origin",
             "encode": {
                 "labels": {
@@ -141,6 +142,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Min of Horsepower, Max of Horsepower",
             "labelOverlap": true,
             "tickCount": {

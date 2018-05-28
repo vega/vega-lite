@@ -124,6 +124,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "wavelength",
             "labelFlush": true,
             "labelOverlap": true,
@@ -150,6 +151,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "power",
             "labelOverlap": true,
             "tickCount": {

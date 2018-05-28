@@ -153,6 +153,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "% of total Time",
             "labelFlush": true,
             "labelOverlap": true,
@@ -179,6 +180,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Activity",
             "zindex": 1
         }

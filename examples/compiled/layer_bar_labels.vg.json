@@ -191,6 +191,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "b",
             "labelFlush": true,
             "labelOverlap": true,
@@ -217,6 +218,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "a",
             "labelOverlap": true,
             "zindex": 1
