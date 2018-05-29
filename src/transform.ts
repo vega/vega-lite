@@ -224,7 +224,8 @@ export interface FlattenTransform {
 
   /**
    * The output field names for extracted array values.
-   * __Default value:__ `field name of the corresponding array field`
+   *
+   * __Default value:__ The field name of the corresponding array field
    */
   as?: string[];
 }
