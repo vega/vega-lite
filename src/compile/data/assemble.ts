@@ -16,6 +16,7 @@ import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -100,7 +101,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof WindowTransformNode ||
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
-      node instanceof IdentifierNode) {
+      node instanceof IdentifierNode ||
+      node instanceof SampleTransformNode ) {
       dataSource.transform.push(node.assemble());
     }
 
