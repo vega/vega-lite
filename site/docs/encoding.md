@@ -96,7 +96,7 @@ an encoded constant value.
 }
 ```
 
-To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
+To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`sort`](sort.html), [`stack`](stack.html), and [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
 
 All field definitions support the following properties:
 
