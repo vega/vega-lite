@@ -5713,6 +5713,19 @@
       ],
       "type": "string"
     },
+    "SampleTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "sample": {
+          "description": "The maximum number of data objects to include in the sample.\n__Default value:__ `1000`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "sample"
+      ],
+      "type": "object"
+    },
     "Scale": {
       "additionalProperties": false,
       "properties": {
@@ -7530,6 +7543,9 @@
         },
         {
           "$ref": "#/definitions/FoldTransform"
+        },
+        {
+          "$ref": "#/definitions/SampleTransform"
         }
       ]
     },
