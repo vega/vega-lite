@@ -1,6 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isLookup, isSample, isStack, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -19,6 +19,7 @@ import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './indentifier';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -106,6 +107,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       for (const field of keys(flatten.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
+    } else if (isSample(t)) {
+      head = new SampleTransformNode(head, t);
+
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
