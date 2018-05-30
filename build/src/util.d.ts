@@ -14,7 +14,7 @@ export declare function pick(obj: object, props: string[]): {};
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export declare function omit(obj: object, props: string[]): object;
+export declare function omit(obj: object, props: string[]): {};
 /**
  * Converts any object into a string representation that can be consumed by humans.
  */

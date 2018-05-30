@@ -228,7 +228,7 @@ export declare type SelectionDomain = {
      */
     selection: string;
     /**
-     * The field name to extract selected values for, when a selection is [projected](project.html)
+     * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
      * over multiple fields or encodings.
      */
     field?: string;
@@ -238,7 +238,7 @@ export declare type SelectionDomain = {
      */
     selection: string;
     /**
-     * The encoding channel to extract selected values for, when a selection is [projected](project.html)
+     * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
      * over multiple fields or encodings.
      */
     encoding?: string;
@@ -252,26 +252,26 @@ export interface Scale {
     /**
      * The type of scale.  Vega-Lite supports the following categories of scale types:
      *
-     * 1) [**Continuous Scales**](scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc), [`"sequential"`](scale.html#sequential)).
+     * 1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`"linear"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`"pow"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`"sqrt"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`"log"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`"time"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`"utc"`](https://vega.github.io/vega-lite/docs/scale.html#utc), [`"sequential"`](https://vega.github.io/vega-lite/docs/scale.html#sequential)).
      *
-     * 2) [**Discrete Scales**](scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](scale.html#ordinal)) or continuous ([`"band"`](scale.html#band) and [`"point"`](scale.html#point)) output ranges.
+     * 2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`"band"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`"point"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.
      *
-     * 3) [**Discretizing Scales**](scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](scale.html#bin-linear) and [`"bin-ordinal"`](scale.html#bin-ordinal)).
+     * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear) and [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal)).
      *
-     * __Default value:__ please see the [scale type table](scale.html#type).
+     * __Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type).
      */
     type?: ScaleType;
     /**
      * Customized domain values.
      *
-     * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](scale.html#piecewise) can be created by providing a `domain` with more than two entries.
+     * For _quantitative_ fields, `domain` can take the form of a two-element array with minimum and maximum values.  [Piecewise scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise) can be created by providing a `domain` with more than two entries.
      * If the input field is aggregated, `domain` can also be a string value `"unaggregated"`, indicating that the domain should include the raw data values prior to the aggregation.
      *
-     * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](types.html#datetime).
+     * For _temporal_ fields, `domain` can be a two-element array minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).
      *
      * For _ordinal_ and _nominal_ fields, `domain` can be an array that lists valid input values.
      *
-     * The `selection` property can be used to [interactively determine](selection.html#scale-domains) the scale domain.
+     * The `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
      */
     domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
     /**
@@ -284,25 +284,25 @@ export interface Scale {
     /**
      * The range of the scale. One of:
      *
-     * - A string indicating a [pre-defined named scale range](scale.html#range-config) (e.g., example, `"symbol"`, or `"diverging"`).
+     * - A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `"symbol"`, or `"diverging"`).
      *
-     * - For [continuous scales](scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](scale.html#piecewise).
+     * - For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).
      *
-     * - For [discrete](scale.html#discrete) and [discretizing](scale.html#discretizing) scales, an array of desired output values.
+     * - For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.
      *
      * __Notes:__
      *
-     * 1) For [sequential](scale.html#sequential), [ordinal](scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](scale.html#scheme) instead of `range`.
+     * 1) For [sequential](https://vega.github.io/vega-lite/docs/scale.html#sequential), [ordinal](https://vega.github.io/vega-lite/docs/scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
      *
-     * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.
+     * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales.
      */
     range?: number[] | string[] | string;
     /**
-     * The distance between the starts of adjacent bands or points in [band](scale.html#band) and [point](scale.html#point) scales.
+     * The distance between the starts of adjacent bands or points in [band](https://vega.github.io/vega-lite/docs/scale.html#band) and [point](https://vega.github.io/vega-lite/docs/scale.html#point) scales.
      *
-     * If `rangeStep` is `null` or if the view contains the scale's corresponding [size](size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.
+     * If `rangeStep` is `null` or if the view contains the scale's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.
      *
-     * __Default value:__  derived the [scale config](config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.
+     * __Default value:__  derived the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.
      *
      * __Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.
      *
@@ -310,9 +310,9 @@ export interface Scale {
      */
     rangeStep?: number | null;
     /**
-     * A string indicating a color [scheme](scale.html#scheme) name (e.g., `"category10"` or `"viridis"`) or a [scheme parameter object](scale.html#scheme-params).
+     * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"viridis"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
      *
-     * Discrete color schemes may be used with [discrete](scale.html#discrete) or [discretizing](scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](scales.html#sequential) scales.
+     * Discrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](https://vega.github.io/vega-lite/docs/scales.html#sequential) scales.
      *
      * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
      */
@@ -324,13 +324,13 @@ export interface Scale {
      */
     round?: boolean;
     /**
-     * For _[continuous](scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.
+     * For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the zero, nice, domainMin, and domainMax properties.
      *
-     * For _[band](scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.
+     * For _[band](https://vega.github.io/vega-lite/docs/scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.
      *
-     * For _[point](scale.html#point)_ scales, alias for `paddingOuter`.
+     * For _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.
      *
-     * __Default value:__ For _continuous_ scales, derived from the [scale config](scale.html#config)'s `continuousPadding`.
+     * __Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.
      * For _band and point_ scales, see `paddingInner` and `paddingOuter`.
      *
      * @minimum 0
@@ -341,7 +341,7 @@ export interface Scale {
      *
      * For point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).
      *
-     * __Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingInner`.
+     * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingInner`.
      *
      * @minimum 0
      * @maximum 1
@@ -351,7 +351,7 @@ export interface Scale {
      * The outer padding (spacing) at the ends of the range of band and point scales,
      * as a fraction of the step size. This value must lie in the range [0,1].
      *
-     * __Default value:__ derived from the [scale config](scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.
+     * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.
      *
      * @minimum 0
      * @maximum 1
@@ -360,7 +360,7 @@ export interface Scale {
     /**
      * If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value
      *
-     * __Default value:__ derived from the [scale config](config.html#scale-config)'s `clamp` (`true` by default).
+     * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `clamp` (`true` by default).
      */
     clamp?: boolean;
     /**

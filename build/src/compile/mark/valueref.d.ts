@@ -1,7 +1,7 @@
 import { Channel } from '../../channel';
 import { Config } from '../../config';
 import { ChannelDef, ChannelDefWithCondition, FieldDef, FieldRefOption, TextFieldDef } from '../../fielddef';
-import { Mark } from '../../mark';
+import { Mark, MarkDef } from '../../mark';
 import { StackProperties } from '../../stack';
 import { VgSignalRef, VgValueRef } from '../../vega.schema';
 import { ScaleComponent } from '../scale/component';
@@ -13,6 +13,7 @@ export declare function stackable(channel: 'x' | 'y', channelDef: ChannelDef<str
  * @return Vega ValueRef for stackable x2 or y2
  */
 export declare function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef;
+export declare function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef): any;
 /**
  * Value Ref for binned fields
  */

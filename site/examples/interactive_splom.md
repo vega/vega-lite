@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Scatterplot Matrix
+title: Interactive Scatterplot Matrix
 menu: examples
 permalink: /examples/interactive_splom.html
 image: /examples/compiled/interactive_splom.png

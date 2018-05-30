@@ -1,13 +1,13 @@
 import { ScaleChannel } from '../../channel';
 import { FieldDef } from '../../fielddef';
 import { ScaleType } from '../../scale';
-import { SortField } from '../../sort';
+import { EncodingSortField } from '../../sort';
 import { VgDomain, VgNonUnionDomain } from '../../vega.schema';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
 export declare function parseScaleDomain(model: Model): void;
 export declare function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): VgNonUnionDomain[];
-export declare function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField<string>;
+export declare function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | EncodingSortField<string>;
 /**
  * Determine if a scale can use unaggregated domain.
  * @return {Boolean} Returns true if all of the following conditons applies:

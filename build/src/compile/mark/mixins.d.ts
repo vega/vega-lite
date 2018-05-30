@@ -1,5 +1,5 @@
 import { NONPOSITION_SCALE_CHANNELS } from '../../channel';
-import { FieldDef } from '../../fielddef';
+import { ChannelDef, FieldDef } from '../../fielddef';
 import { VgEncodeEntry, VgValueRef } from '../../vega.schema';
 import { UnitModel } from '../unit';
 export declare function color(model: UnitModel, opt?: {
@@ -162,6 +162,11 @@ export declare function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0
     vgChannel?: string;
     defaultRef?: VgValueRef;
 }): VgEncodeEntry;
+/**
+ * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
+ * or a simple mixin if channel def has no condition.
+ */
+export declare function wrapCondition(model: UnitModel, channelDef: ChannelDef<string>, vgChannel: string, refFn: (cDef: ChannelDef<string>) => VgValueRef): VgEncodeEntry;
 export declare function tooltip(model: UnitModel): VgEncodeEntry;
 export declare function text(model: UnitModel, channel?: 'text' | 'href'): VgEncodeEntry;
 export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', model: UnitModel): {
@@ -471,12 +476,60 @@ export declare function binnedPosition(fieldDef: FieldDef<string>, channel: 'x' 
  * Return mixins for point (non-band) position channels.
  */
 export declare function pointPosition(channel: 'x' | 'y', model: UnitModel, defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', vgChannel?: 'x' | 'y' | 'xc' | 'yc'): {
-    [x: string]: VgValueRef;
+    [x: string]: {
+        offset: any;
+        value?: string | number | boolean;
+        field?: string | {
+            datum?: string;
+            group?: string;
+            parent?: string;
+        };
+        signal?: string;
+        scale?: string;
+        mult?: number;
+        band?: number | boolean | VgValueRef;
+    } | {
+        value?: string | number | boolean;
+        field?: string | {
+            datum?: string;
+            group?: string;
+            parent?: string;
+        };
+        signal?: string;
+        scale?: string;
+        mult?: number;
+        offset?: number | VgValueRef;
+        band?: number | boolean | VgValueRef;
+    };
 };
 /**
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-export declare function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2'): {
-    [x: string]: VgValueRef;
+export declare function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2'): {
+    [x: string]: {
+        offset: any;
+        value?: string | number | boolean;
+        field?: string | {
+            datum?: string;
+            group?: string;
+            parent?: string;
+        };
+        signal?: string;
+        scale?: string;
+        mult?: number;
+        band?: number | boolean | VgValueRef;
+    } | {
+        value?: string | number | boolean;
+        field?: string | {
+            datum?: string;
+            group?: string;
+            parent?: string;
+        };
+        signal?: string;
+        scale?: string;
+        mult?: number;
+        offset?: number | VgValueRef;
+        band?: number | boolean | VgValueRef;
+    };
 };

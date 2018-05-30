@@ -91,7 +91,6 @@ export declare namespace message {
     function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>): string;
     function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
     function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
-    function cannotUseSizeFieldWithBandSize(positionChannel: 'x' | 'y'): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     function rangeStepDropped(channel: Channel): string;
     function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType): string;

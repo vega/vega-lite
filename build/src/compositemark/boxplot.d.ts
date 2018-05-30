@@ -9,7 +9,7 @@ export declare type BoxPlotStyle = 'boxWhisker' | 'box' | 'boxMid';
 export interface BoxPlotDef {
     /**
      * Type of the mark.  For box plots, this should always be `"box-plot"`.
-     * [boxplot](compositemark.html#boxplot)
+     * [boxplot](https://vega.github.io/vega-lite/docs/compositemark.html#boxplot)
      */
     type: BOXPLOT;
     /**

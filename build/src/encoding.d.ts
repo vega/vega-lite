@@ -40,23 +40,23 @@ export interface Encoding<F> {
      * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
      * `"text"`, `"trail"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
      *
-     * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+     * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
      *
      * _Note:_
      * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
-     * 2) See the scale documentation for more information about customizing [color scheme](scale.html#scheme).
+     * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
      */
     color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
      * Fill color of the marks.
-     * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+     * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
      *
      * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
      */
     fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
      * Stroke color of the marks.
-     * __Default value:__ If undefined, the default color depends on [mark config](config.html#mark)'s `color` property.
+     * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
      *
      * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
      */
@@ -64,7 +64,7 @@ export interface Encoding<F> {
     /**
      * Opacity of the marks – either can be a value or a range.
      *
-     * __Default value:__ If undefined, the default opacity depends on [mark config](config.html#mark)'s `opacity` property.
+     * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
      */
     opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**
@@ -81,7 +81,7 @@ export interface Encoding<F> {
      * or `"triangle-down"`, or else a custom SVG path string.
      * For `geoshape` marks it should be a field definition of the geojson data
      *
-     * __Default value:__ If undefined, the default shape depends on [mark config](config.html#point-config)'s `shape` property.
+     * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property.
      */
     shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
     /**

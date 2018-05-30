@@ -9,7 +9,6 @@ import { Mark, MarkDef } from '../mark';
 import { Projection } from '../projection';
 import { Domain } from '../scale';
 import { SelectionDef } from '../selection';
-import { SortField, SortOrder } from '../sort';
 import { LayoutSizeMixins, NormalizedUnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
@@ -35,12 +34,12 @@ export declare class UnitModel extends ModelWithField {
     readonly selection: Dict<SelectionDef>;
     children: Model[];
     constructor(spec: NormalizedUnitSpec, parent: Model, parentGivenName: string, parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean);
+    readonly hasProjection: boolean;
     /**
      * Return specified Vega-lite scale domain for a particular channel
      * @param channel
      */
     scaleDomain(channel: ScaleChannel): Domain;
-    sort(channel: Channel): string[] | SortField<string> | SortOrder;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
     private initScales(mark, encoding);

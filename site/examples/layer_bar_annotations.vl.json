@@ -54,11 +54,14 @@
       }, {
         "mark": {
           "type": "text",
-          "align": "left",
-          "dx": 215,
-          "dy": -5
+          "align": "right",
+          "dx": -2,
+          "dy": -4
         },
         "encoding": {
+          "x": {
+            "value": "width"
+          },
           "y": {
             "field": "ThresholdValue",
             "type": "quantitative",

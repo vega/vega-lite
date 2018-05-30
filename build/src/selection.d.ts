@@ -39,7 +39,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
      * Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
      * or can be a mapping between projected field/encodings and binding definitions.
      *
-     * See the [bind transform](bind.html) documentation for more information.
+     * See the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information.
      */
     bind?: VgBinding | {
         [key: string]: VgBinding;
@@ -48,7 +48,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
      * When true, an invisible voronoi diagram is computed to accelerate discrete
      * selection. The data value _nearest_ the mouse cursor is added to the selection.
      *
-     * See the [nearest transform](nearest.html) documentation for more information.
+     * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
      */
     nearest?: boolean;
 }
@@ -61,14 +61,14 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
      * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
      * data values are toggled when a user interacts with the shift-key pressed).
      *
-     * See the [toggle transform](toggle.html) documentation for more information.
+     * See the [toggle transform](https://vega.github.io/vega-lite/docs/toggle.html) documentation for more information.
      */
     toggle?: string | boolean;
     /**
      * When true, an invisible voronoi diagram is computed to accelerate discrete
      * selection. The data value _nearest_ the mouse cursor is added to the selection.
      *
-     * See the [nearest transform](nearest.html) documentation for more information.
+     * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
      */
     nearest?: boolean;
 }
@@ -157,14 +157,14 @@ export interface IntervalSelection extends IntervalSelectionConfig {
 export declare type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 export interface SelectionConfig {
     /**
-     * The default definition for a [`single`](selection.html#type) selection. All properties and transformations
+     * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
      *  for a single selection definition (except `type`) may be specified here.
      *
      * For instance, setting `single` to `{"on": "dblclick"}` populates single selections on double-click by default.
      */
     single?: SingleSelectionConfig;
     /**
-     * The default definition for a [`multi`](selection.html#type) selection. All properties and transformations
+     * The default definition for a [`multi`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
      * for a multi selection definition (except `type`) may be specified here.
      *
      * For instance, setting `multi` to `{"toggle": "event.altKey"}` adds additional values to
@@ -172,7 +172,7 @@ export interface SelectionConfig {
      */
     multi?: MultiSelectionConfig;
     /**
-     * The default definition for an [`interval`](selection.html#type) selection. All properties and transformations
+     * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
      * for an interval selection definition (except `type`) may be specified here.
      *
      * For instance, setting `interval` to `{"translate": false}` disables the ability to move

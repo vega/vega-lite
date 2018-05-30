@@ -3,17 +3,26 @@ import { BinParams } from './bin';
 import { Data } from './data';
 import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
+import { SortField } from './sort';
 import { TimeUnit } from './timeunit';
-import { VgComparatorOrder } from './vega.schema';
 export interface FilterTransform {
     /**
      * The `filter` property must be one of the predicate definitions:
-     * (1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,
-     * where `datum` can be used to refer to the current data object;
-     * (2) one of the field predicates: [equal predicate](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate);
-     * [range predicate](filter.html#range-predicate), [one-of predicate](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate);
-     * (3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate);
-     * or (4) a logical operand that combines (1), (2), or (3).
+     *
+     * 1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,
+     * where `datum` can be used to refer to the current data object
+     *
+     * 2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),
+     * [`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),
+     * [`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),
+     * [`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),
+     * [`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),
+     * [`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),
+     * or [`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate).
+     *
+     * 3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)
+     *
+     * 4) a logical operand that combines (1), (2), or (3).
      */
     filter: LogicalOperand<Predicate>;
 }
@@ -82,6 +91,35 @@ export interface AggregatedFieldDef {
      */
     as: string;
 }
+/**
+ * @hide
+ */
+export interface StackTransform {
+    /**
+     * The field which is stacked.
+     */
+    stack: string;
+    /**
+     * The data fields to group by.
+     */
+    groupby: string[];
+    /**
+     * Mode for stacking marks.
+     * __Default value:__ `"zero"`
+     */
+    offset?: 'zero' | 'center' | 'normalize';
+    /**
+     * Field that determines the order of leaves in the stacked charts.
+     */
+    sort?: SortField[];
+    /**
+     * Output field names. This can be either a string or an array of strings with
+     * two elements denoting the name for the fields for stack start and stack end
+     * respectively.
+     * If a single string(eg."val") is provided, the end field will be "val_end".
+     */
+    as: string | string[];
+}
 export declare type WindowOnlyOp = 'row_number' | 'rank' | 'dense_rank' | 'percent_rank' | 'cume_dist' | 'ntile' | 'lag' | 'lead' | 'first_value' | 'last_value' | 'nth_value';
 export interface WindowFieldDef {
     /**
@@ -125,9 +163,9 @@ export interface WindowTransform {
      */
     groupby?: string[];
     /**
-     * A comparator definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
+     * A sort field definition for sorting data objects within a window. If two data objects are considered equal by the comparator, they are considered “peer” values of equal rank. If sort is not specified, the order is undefined: data objects are processed in the order they are observed and none are considered peers (the ignorePeers parameter is ignored and treated as if set to `true`).
      */
-    sort?: WindowSortField[];
+    sort?: SortField[];
 }
 export interface LookupData {
     /**
@@ -166,26 +204,14 @@ export interface LookupTransform {
      */
     default?: string;
 }
-/**
- * A compartor for fields within the window transform
- */
-export interface WindowSortField {
-    /**
-     * The name of the field to sort.
-     */
-    field: string;
-    /**
-     * Whether to sort the field in ascending or descending order.
-     */
-    order?: VgComparatorOrder;
-}
 export declare function isLookup(t: Transform): t is LookupTransform;
 export declare function isWindow(t: Transform): t is WindowTransform;
 export declare function isCalculate(t: Transform): t is CalculateTransform;
 export declare function isBin(t: Transform): t is BinTransform;
 export declare function isTimeUnit(t: Transform): t is TimeUnitTransform;
 export declare function isAggregate(t: Transform): t is AggregateTransform;
-export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform;
-export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | {
+export declare function isStack(t: Transform): t is StackTransform;
+export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
+export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | {
     filter: LogicalOperand<Predicate>;
 })[];

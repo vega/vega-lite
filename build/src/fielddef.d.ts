@@ -9,9 +9,10 @@ import { Legend } from './legend';
 import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
 import { Scale } from './scale';
-import { SortField, SortOrder } from './sort';
+import { EncodingSortField, SortOrder } from './sort';
 import { StackOffset } from './stack';
 import { TimeUnit } from './timeunit';
+import { AggregatedFieldDef, WindowFieldDef } from './transform';
 import { Type } from './type';
 /**
  * Definition object for a constant value of an encoding channel.
@@ -38,6 +39,15 @@ export declare type ConditionalSelection<T> = {
     selection: LogicalOperand<string>;
 } & T;
 export declare function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T>;
+export interface ConditionValueDefMixins {
+    /**
+     * One or more value definition(s) with a selection predicate.
+     *
+     * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+     * since Vega-Lite only allows at most one encoded field per encoding channel.
+     */
+    condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
+}
 /**
  * A FieldDef with Condition<ValueDef>
  * {
@@ -46,15 +56,7 @@ export declare function isConditionalSelection<T>(c: Conditional<T>): c is Condi
  *   ...
  * }
  */
-export declare type FieldDefWithCondition<F extends FieldDef<any>> = F & {
-    /**
-     * One or more value definition(s) with a selection predicate.
-     *
-     * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
-     * since Vega-Lite only allows at most one encoded field per encoding channel.
-     */
-    condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
-};
+export declare type FieldDefWithCondition<F extends FieldDef<any>> = F & ConditionValueDefMixins;
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
  * {
@@ -124,7 +126,7 @@ export declare function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase
 export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
     /**
      * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
-     * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
+     * It can also be a `"geojson"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).
      */
     type: Type;
 }
@@ -145,7 +147,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
      *
      * __Default value:__ `"ascending"`
      */
-    sort?: string[] | SortOrder | SortField<F> | null;
+    sort?: string[] | SortOrder | EncodingSortField<F> | null;
 }
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
@@ -211,7 +213,7 @@ export declare function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): ch
 export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
 export declare function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string>;
 export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef;
-export declare function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any>;
+export declare function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F>;
 export interface FieldRefOption {
     /** exclude bin, aggregate, timeUnit */
     nofn?: boolean;
@@ -223,10 +225,8 @@ export interface FieldRefOption {
     binSuffix?: 'end' | 'range' | 'mid';
     /** append suffix to the field ref (general) */
     suffix?: string;
-    /** Override which aggregate to use. Needed for unaggregated domain. */
-    aggregate?: AggregateOp;
 }
-export declare function vgField(fieldDef: FieldDefBase<string>, opt?: FieldRefOption): string;
+export declare function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef, opt?: FieldRefOption): string;
 export declare function isDiscrete(fieldDef: FieldDef<Field>): boolean;
 export declare function isContinuous(fieldDef: FieldDef<Field>): boolean;
 export declare function isCount(fieldDef: FieldDefBase<Field>): boolean;

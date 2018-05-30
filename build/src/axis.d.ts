@@ -13,7 +13,7 @@ export interface Axis extends VgAxisBase, Guide {
     /**
      * The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.
      *
-     * __Default value:__ derived from the [axis config](config.html#facet-scale-config)'s `offset` (`0` by default)
+     * __Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)
      */
     offset?: number;
     /**
@@ -100,7 +100,7 @@ export declare const VG_AXIS_PROPERTIES: ("title" | "orient" | "scale" | "zindex
 export declare const AXIS_PROPERTIES: ("title" | "orient" | "zindex" | "ticks" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "domain" | "grid" | "tickSize" | "tickCount" | "format" | "values" | "offset" | "position" | "titlePadding" | "minExtent" | "maxExtent" | "labelAngle" | "encoding" | "titleMaxLength")[];
 export interface AxisConfigMixins {
     /**
-     * Axis configuration, which determines default properties for all `x` and `y` [axes](axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](axis.html#config).
+     * Axis configuration, which determines default properties for all `x` and `y` [axes](https://vega.github.io/vega-lite/docs/axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](https://vega.github.io/vega-lite/docs/axis.html#config).
      */
     axis?: AxisConfig;
     /**

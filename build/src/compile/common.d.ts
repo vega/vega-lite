@@ -1,6 +1,7 @@
 import { Channel } from '../channel';
 import { Config, ViewConfig } from '../config';
 import { FieldDef, FieldDefBase, FieldRefOption, OrderFieldDef } from '../fielddef';
+import { GuideEncodingEntry } from '../guide';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
 import { TimeUnit } from '../timeunit';
 import { VgEncodeEntry, VgSort } from '../vega.schema';
@@ -41,7 +42,8 @@ export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, 
 export declare function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort;
 export declare type AxisTitleComponent = AxisComponentProps['title'];
 export declare function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]): FieldDefBase<string>[];
-export declare function titleMerger(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>): {
+export declare function mergeTitle(title1: string, title2: string): string;
+export declare function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>): {
     explicit: boolean;
     value: FieldDefBase<string>[];
 } | {
@@ -52,3 +54,4 @@ export declare function titleMerger(v1: Explicit<AxisTitleComponent>, v2: Explic
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
 export declare function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean;
+export declare function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel): {};
