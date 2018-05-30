@@ -7857,13 +7857,17 @@ vega-transforms@^2.0.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*, vega-typings@^0.3.3:
+vega-typings@*:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.3.tgz#122f4224aa6f98aa6516e60278d40f43aa2d0787"
 
 vega-typings@^0.2.15, vega-typings@^0.2.16:
   version "0.2.17"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.2.17.tgz#9f26775173b3d234d68dfe4c482037743786b8d2"
+
+vega-typings@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.4.tgz#ea17c3c9c0114eadf658bcf04788fd603e0e83eb"
 
 vega-util@1, vega-util@^1.7.0:
   version "1.7.0"

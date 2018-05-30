@@ -230,6 +230,15 @@ export interface FlattenTransform {
   as?: string[];
 }
 
+export interface SampleTransform {
+  /**
+   * The maximum number of data objects to include in the sample.
+   *
+   * __Default value:__ `1000`
+   */
+  sample: number;
+}
+
 export interface LookupData {
   /**
    * Secondary data source to lookup in.
@@ -289,6 +298,10 @@ export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
 }
 
+export function isSample(t: Transform): t is SampleTransform {
+  return t['sample'] !== undefined;
+}
+
 export function isWindow(t: Transform): t is WindowTransform {
   return t['window'] !== undefined;
 }
@@ -320,7 +333,7 @@ export function isFold(t: Transform): t is FoldTransform {
   return t['fold'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

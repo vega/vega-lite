@@ -111,7 +111,7 @@
     "json-stable-stringify": "^1.0.1",
     "tslib": "^1.9.1",
     "vega-event-selector": "^2.0.0",
-    "vega-typings": "^0.3.3",
+    "vega-typings": "^0.3.4",
     "vega-util": "^1.7.0",
     "yargs": "^11.0.0"
   },
