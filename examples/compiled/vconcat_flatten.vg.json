@@ -13,45 +13,45 @@
             "values": [
                 {
                     "id": "001",
-                    "ra": "243.35",
+                    "ra": 243.35,
                     "dec": "+54.6",
                     "lc": [
                         {
-                            "time": "1",
+                            "time": 1,
                             "mag": 18.5
                         },
                         {
-                            "time": "2",
+                            "time": 2,
                             "mag": 19
                         }
                     ]
                 },
                 {
                     "id": "002",
-                    "ra": "210.35",
+                    "ra": 210.35,
                     "dec": "+14.6",
                     "lc": [
                         {
-                            "time": "1",
+                            "time": 1,
                             "mag": 19.5
                         },
                         {
-                            "time": "2",
+                            "time": 2,
                             "mag": 20
                         }
                     ]
                 },
                 {
                     "id": "003",
-                    "ra": "143.35",
+                    "ra": 143.35,
                     "dec": "+33.6",
                     "lc": [
                         {
-                            "time": "1",
+                            "time": 1,
                             "mag": 19
                         },
                         {
-                            "time": "2",
+                            "time": 2,
                             "mag": 18
                         }
                     ]
@@ -120,7 +120,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))"
+                    "expr": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))"
                 }
             ]
         }
@@ -143,10 +143,6 @@
                     "update": "isTuple(group()) ? group() : unit"
                 }
             ]
-        },
-        {
-            "name": "pts",
-            "update": "data(\"pts_store\").length && {id: data(\"pts_store\")[0].values[0]}"
         }
     ],
     "layout": {
@@ -195,13 +191,28 @@
                     ]
                 },
                 {
+                    "name": "pts_toggle",
+                    "value": false,
+                    "on": [
+                        {
+                            "events": [
+                                {
+                                    "source": "scope",
+                                    "type": "click"
+                                }
+                            ],
+                            "update": "event.shiftKey"
+                        }
+                    ]
+                },
+                {
                     "name": "pts_modify",
                     "on": [
                         {
                             "events": {
                                 "signal": "pts_tuple"
                             },
-                            "update": "modify(\"pts_store\", pts_tuple, true)"
+                            "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
                         }
                     ]
                 }
@@ -223,7 +234,7 @@
                             },
                             "fill": [
                                 {
-                                    "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+                                    "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                                     "value": "steelblue"
                                 },
                                 {
@@ -252,6 +263,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "ra",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -278,6 +290,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "dec",
                     "labelOverlap": true,
                     "tickCount": {
@@ -386,6 +399,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "lc.time",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -412,6 +426,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "lc.mag",
                     "labelOverlap": true,
                     "tickCount": {

@@ -4,19 +4,19 @@
   "data": {
     "values": [
       { "id": "001",
-        "ra": "243.35",
+        "ra": 243.35,
         "dec": "+54.6",
-        "lc": [{"time": "1", "mag": 18.5}, {"time": "2", "mag": 19}]
+        "lc": [{"time": 1, "mag": 18.5}, {"time": 2, "mag": 19}]
       },
       { "id": "002",
-        "ra": "210.35",
+        "ra": 210.35,
         "dec": "+14.6",
-        "lc": [{"time": "1", "mag": 19.5}, {"time": "2", "mag": 20}]
+        "lc": [{"time": 1, "mag": 19.5}, {"time": 2, "mag": 20}]
       },
       { "id": "003",
-        "ra": "143.35",
+        "ra": 143.35,
         "dec": "+33.6",
-        "lc": [{"time": "1", "mag": 19}, {"time": "2", "mag": 18}]
+        "lc": [{"time": 1, "mag": 19}, {"time": 2, "mag": 18}]
       }
     ]
   },
@@ -29,8 +29,9 @@
       "height": 200,
       "title": "Sky position",
       "transform": [{"aggregate": [], "groupby": ["ra", "dec", "id"]}],
+      "mark": "circle",
       "selection": {
-        "pts": {"type": "single", "fields": ["id"], "empty": "all"}
+        "pts": {"type": "multi", "fields": ["id"], "empty": "all"}
       },
       "encoding": {
         "x": {"field": "ra", "type": "quantitative", "scale": {"zero": false}},
@@ -40,14 +41,14 @@
           "value": "grey"
         },
         "size": {"value": 100}
-      },
-      "mark": "circle"
+      }
     },
     {
       "width": 300,
       "height": 200,
       "title": "Light curve",
       "transform": [{"filter": {"selection": "pts"}}],
+      "mark": "line",
       "encoding": {
         "x": {
           "field": "lc.time",
@@ -57,8 +58,7 @@
         "y": {"field": "lc.mag", "type": "quantitative"},
         "color": {"value": "steelblue"},
         "detail": {"field": "id", "type": "nominal"}
-      },
-      "mark": "line"
+      }
     }
   ]
 }
