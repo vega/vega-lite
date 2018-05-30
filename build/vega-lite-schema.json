@@ -5717,7 +5717,7 @@
       "additionalProperties": false,
       "properties": {
         "sample": {
-          "description": "The maximum number of data objects to include in the sample.\n__Default value:__ `1000`",
+          "description": "The maximum number of data objects to include in the sample.\n\n__Default value:__ `1000`",
           "type": "number"
         }
       },
