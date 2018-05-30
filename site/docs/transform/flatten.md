@@ -15,10 +15,10 @@ The **flatten** transform maps array-valued _fields_ to a set of individual data
 ## Usage
 
 ```json
-{"flatten": : ["foo", "bar"]}
+{"flatten": ["foo", "bar"]}
 ```
 
-This example flattens the foo and bar array-valued fields. Given the input data
+This example flattens the `"foo"` and `"bar"` array-valued fields. Given the input data
 
 ```json
 [
