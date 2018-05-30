@@ -1,6 +1,6 @@
 import {Config} from '../config';
 import {PositionFieldDef} from '../fielddef';
-import {isMarkDef, MarkConfig} from '../mark';
+import {isMarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
