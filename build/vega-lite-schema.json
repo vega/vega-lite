@@ -3070,6 +3070,29 @@
       ],
       "type": "object"
     },
+    "FlattenTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output field names for extracted array values.\n\n__Default value:__ The field name of the corresponding array field",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "flatten": {
+          "description": "An array of one or more data fields containing arrays to flatten.\nIf multiple fields are specified, their array values should have a parallel structure, ideally with the same length.\nIf the lengths of parallel arrays do not match,\nthe longest array will be used with `null` values added for missing entries.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "flatten"
+      ],
+      "type": "object"
+    },
     "FoldTransform": {
       "additionalProperties": false,
       "properties": {
@@ -7501,6 +7524,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/FlattenTransform"
         },
         {
           "$ref": "#/definitions/FoldTransform"

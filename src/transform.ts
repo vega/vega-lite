@@ -212,6 +212,24 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
+
+export interface FlattenTransform {
+  /**
+   * An array of one or more data fields containing arrays to flatten.
+   * If multiple fields are specified, their array values should have a parallel structure, ideally with the same length.
+   * If the lengths of parallel arrays do not match,
+   * the longest array will be used with `null` values added for missing entries.
+   */
+  flatten: string[];
+
+  /**
+   * The output field names for extracted array values.
+   *
+   * __Default value:__ The field name of the corresponding array field
+   */
+  as?: string[];
+}
+
 export interface LookupData {
   /**
    * Secondary data source to lookup in.
@@ -275,6 +293,9 @@ export function isWindow(t: Transform): t is WindowTransform {
   return t['window'] !== undefined;
 }
 
+export function isFlatten(t:Transform): t is FlattenTransform {
+  return t['flatten'] !== undefined;
+}
 export function isCalculate(t: Transform): t is CalculateTransform {
   return t['calculate'] !== undefined;
 }
@@ -299,7 +320,7 @@ export function isFold(t: Transform): t is FoldTransform {
   return t['fold'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FoldTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

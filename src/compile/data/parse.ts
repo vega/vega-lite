@@ -1,6 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isFold, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -11,6 +11,7 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
+import {FlattenTransformNode} from './flatten';
 import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
@@ -97,6 +98,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       const fold = head = new FoldTransformNode(head, t);
 
       for (const field of keys(fold.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
+    } else if (isFlatten(t)) {
+      const flatten = head = new FlattenTransformNode(head, t);
+
+      for (const field of keys(flatten.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else {
