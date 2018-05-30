@@ -9,17 +9,8 @@
   "transform": [{"flatten": ["foo", "bar"]}],
   "mark": "circle",
   "encoding": {
-    "x": {
-
-      "field": "foo",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "bar",
-      "type": "nominal"
-    },
-    "color":{
-      "field": "key", "type": "nominal"
-    }
+    "x": {"field": "foo", "type": "quantitative"},
+    "y": {"field": "bar", "type": "nominal"},
+    "color":{"field": "key", "type": "nominal"}
   }
 }
