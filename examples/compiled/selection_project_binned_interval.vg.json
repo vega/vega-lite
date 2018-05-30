@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -548,6 +548,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Acceleration (binned)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -562,6 +563,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

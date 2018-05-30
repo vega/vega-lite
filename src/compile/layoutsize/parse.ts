@@ -105,6 +105,8 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
     } else {
       return config.view[sizeType];
     }
+  } else if (model.hasProjection) {
+    return config.view[sizeType];
   } else {
     // No scale - set default size
     if (sizeType === 'width' && model.mark === 'text') {

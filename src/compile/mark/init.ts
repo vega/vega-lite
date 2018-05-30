@@ -4,7 +4,7 @@ import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
-import {TEMPORAL} from '../../type';
+import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains} from '../../util';
 import {getMarkConfig} from '../common';
 import {Orient} from './../../vega.schema';
@@ -64,15 +64,33 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
   const xIsRange = encoding.x2;
 
   switch (mark) {
-    case RULE:
-      // return undefined for line segment rule
+    case BAR:
+      if (yIsRange || xIsRange) {
+        // Ranged bar does not always have clear orientation, so we allow overriding
+        if (specifiedOrient) {
+          return specifiedOrient;
+        }
+
+        // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
+        const xDef = encoding.x;
+        if (!xIsRange && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !xDef.bin) {
+          return 'horizontal';
+        }
+
+        // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
+        const yDef = encoding.y;
+        if (!yIsRange && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !yDef.bin) {
+          return 'vertical';
+        }
+      }
+      /* tslint:disable */
+    case RULE: // intentionally fall through
+      // return undefined for line segment rule and bar with both axis ranged
       if (xIsRange && yIsRange) {
         return undefined;
       }
-      /* tslint:disable */
-      // intentional fall through
-    case BAR:
-    case AREA:
+
+    case AREA: // intentionally fall through
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (yIsRange) {
         return 'vertical';

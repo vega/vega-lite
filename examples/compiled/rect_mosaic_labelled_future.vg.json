@@ -1,0 +1,460 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/cars.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin",
+                        "Cylinders"
+                    ],
+                    "ops": [
+                        "count"
+                    ],
+                    "fields": [
+                        "*"
+                    ],
+                    "as": [
+                        "count_*"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "Origin"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "as": [
+                        "stack_count_Origin1",
+                        "stack_count_Origin2"
+                    ],
+                    "offset": "normalize"
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null,
+                        null
+                    ],
+                    "as": [
+                        "x",
+                        "x2"
+                    ],
+                    "ops": [
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "stack_count_Origin1",
+                        "stack_count_Origin2"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "field": "count_*",
+                    "sort": {
+                        "field": [
+                            "Cylinders"
+                        ],
+                        "order": [
+                            "ascending"
+                        ]
+                    },
+                    "as": [
+                        "y",
+                        "y2"
+                    ],
+                    "offset": "normalize"
+                },
+                {
+                    "type": "formula",
+                    "expr": "(datum.x+datum.x2)/2",
+                    "as": "xc"
+                },
+                {
+                    "type": "formula",
+                    "expr": "(datum.y+datum.y2)/2",
+                    "as": "yc"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "Origin"
+                    ],
+                    "ops": [
+                        "min"
+                    ],
+                    "fields": [
+                        "xc"
+                    ],
+                    "as": [
+                        "min_xc"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"Cylinders\"])",
+                    "as": "Cylinders"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"xc\"] !== null && !isNaN(datum[\"xc\"]) && datum[\"yc\"] !== null && !isNaN(datum[\"yc\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "concat_0_height",
+            "value": 21
+        },
+        {
+            "name": "concat_1_height",
+            "value": 200
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "columns": 1,
+        "bounds": "full",
+        "align": "each"
+    },
+    "marks": [
+        {
+            "type": "group",
+            "name": "concat_0_group",
+            "style": "cell",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "concat_0_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_0_marks",
+                    "type": "text",
+                    "style": [
+                        "text"
+                    ],
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "align": {
+                                "value": "center"
+                            },
+                            "baseline": {
+                                "value": "middle"
+                            },
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "min_xc"
+                            },
+                            "y": {
+                                "signal": "concat_0_height",
+                                "mult": 0.5
+                            },
+                            "text": {
+                                "signal": "''+datum[\"Origin\"]"
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "top",
+                    "grid": false,
+                    "title": "Origin",
+                    "labelFlush": true,
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(width/40)"
+                    },
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "concat_1_group",
+            "style": "cell",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "width"
+                    },
+                    "height": {
+                        "signal": "concat_1_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_1_layer_0_marks",
+                    "type": "rect",
+                    "style": [
+                        "rect"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "Origin"
+                            },
+                            "opacity": {
+                                "scale": "opacity",
+                                "field": "Cylinders"
+                            },
+                            "tooltip": {
+                                "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "x"
+                            },
+                            "x2": {
+                                "scale": "x",
+                                "field": "x2"
+                            },
+                            "y": {
+                                "scale": "concat_1_y",
+                                "field": "y"
+                            },
+                            "y2": {
+                                "scale": "concat_1_y",
+                                "field": "y2"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "concat_1_layer_1_marks",
+                    "type": "text",
+                    "style": [
+                        "text"
+                    ],
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "baseline": {
+                                "value": "middle"
+                            },
+                            "fill": {
+                                "value": "black"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "xc"
+                            },
+                            "y": {
+                                "scale": "concat_1_y",
+                                "field": "yc"
+                            },
+                            "text": {
+                                "signal": "''+datum[\"Cylinders\"]"
+                            },
+                            "align": {
+                                "value": "center"
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "concat_1_y",
+                    "orient": "left",
+                    "grid": false,
+                    "title": "Cylinders",
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(concat_1_height/40)"
+                    },
+                    "zindex": 1
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "min_xc"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "x"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "x2"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "xc"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "Origin"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "Origin"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
+            "name": "opacity",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "field": "Cylinders"
+            },
+            "range": [
+                0.3,
+                0.8
+            ],
+            "nice": false,
+            "zero": false
+        },
+        {
+            "name": "concat_1_y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "y"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "y2"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "yc"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "concat_1_height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "config": {
+        "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "grid": false
+        },
+        "axisY": {
+            "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "stroke": null
+            }
+        }
+    }
+}

@@ -74,7 +74,7 @@ export interface MarkConfig extends VgMarkConfig {
    *
    * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
    *
-   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
+   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    *
    */
   filled?: boolean;
@@ -84,7 +84,7 @@ export interface MarkConfig extends VgMarkConfig {
    *
    * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
    *
-   * __Note:__ This property cannot be used in a [style config](mark.html#style-config).
+   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    */
   color?: string;
 }
@@ -258,7 +258,7 @@ export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMi
   type: Mark;
 
   /**
-   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+   * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
    * __Default value:__ The mark's name.  For example, a bar mark will have style `"bar"` by default.
    * __Note:__ Any specified style will augment the default style. For example, a bar mark with `"style": "foo"` will receive from `config.style.bar` and `config.style.foo` (the specified style `"foo"` has higher precedence).
@@ -269,6 +269,28 @@ export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMi
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
   clip?: boolean;
+
+  // Offset properties should not be a part of config
+
+  /**
+   * Offset for x-position.
+   */
+  xOffset?: number;
+
+  /**
+   * Offset for y-position.
+   */
+  yOffset?: number;
+
+  /**
+   * Offset for x2-position.
+   */
+  x2Offset?: number;
+
+  /**
+   * Offset for y2-position.
+   */
+  y2Offset?: number;
 }
 
 export const defaultBarConfig: BarConfig = {

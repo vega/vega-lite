@@ -29,7 +29,7 @@ export function pick(obj: object, props: string[]) {
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
 export function omit(obj: object, props: string[]) {
-  const copy = duplicate(obj);
+  const copy = {...obj};
   for (const prop of props) {
     delete copy[prop];
   }
@@ -328,5 +328,8 @@ export function removePathFromField(path: string) {
  * Count the depth of the path. Returns 1 for fields that are not nested.
  */
 export function accessPathDepth(path: string) {
+  if (!path) {
+    return 0;
+  }
   return splitAccessPath(path).length;
 }

@@ -1,15 +1,14 @@
 import {Axis} from '../axis';
-import {Channel, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
+import {Channel, GEOPOSITION_CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../channel';
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
-import {isMarkDef, Mark, MarkDef} from '../mark';
+import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
-import {SortField, SortOrder} from '../sort';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
@@ -25,13 +24,7 @@ import {parseMarkGroup} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
-import {
-  assembleTopLevelSignals,
-  assembleUnitSelectionData,
-  assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals,
-  parseUnitSelection,
-} from './selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelectionMarks, assembleUnitSelectionSignals, parseUnitSelection} from './selection/selection';
 
 
 /**
@@ -82,6 +75,15 @@ export class UnitModel extends ModelWithField {
     this.selection = spec.selection;
   }
 
+  public get hasProjection(): boolean {
+    const {encoding} = this;
+    const isGeoShapeMark = this.mark === GEOSHAPE;
+    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(
+      channel => isFieldDef(encoding[channel])
+    );
+    return isGeoShapeMark || hasGeoPosition;
+  }
+
   /**
    * Return specified Vega-lite scale domain for a particular channel
    * @param channel
@@ -89,10 +91,6 @@ export class UnitModel extends ModelWithField {
   public scaleDomain(channel: ScaleChannel): Domain {
     const scale = this.specifiedScales[channel];
     return scale ? scale.domain : undefined;
-  }
-
-  public sort(channel: Channel): string[] | SortField<string> | SortOrder {
-    return (this.getMapping()[channel] || {}).sort;
   }
 
   public axis(channel: Channel): Axis {

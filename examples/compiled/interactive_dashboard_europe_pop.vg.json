@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -767,6 +767,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Population_ages_15_64_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -793,6 +794,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Country",
                     "labelOverlap": true,
                     "zindex": 1
@@ -1146,6 +1148,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Population_ages_65_and_above_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1172,6 +1175,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Country",
                     "labelOverlap": true,
                     "zindex": 1
@@ -1588,6 +1592,7 @@
                 {
                     "scale": "concat_2_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Population_ages_65_and_above_of_total",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1614,6 +1619,7 @@
                 {
                     "scale": "concat_2_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Population_ages_15_64_of_total",
                     "labelOverlap": true,
                     "tickCount": {

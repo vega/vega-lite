@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
     "autosize": "pad",
     "padding": 5,
@@ -141,6 +141,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "population",
                     "labelOverlap": true,
                     "tickCount": {
@@ -274,6 +275,7 @@
                 {
                     "scale": "child_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "age",
                     "labelOverlap": true,
                     "encode": {

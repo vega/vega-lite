@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -145,6 +145,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "population",
                     "labelFlush": true,
                     "labelOverlap": true,

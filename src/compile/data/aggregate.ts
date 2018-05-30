@@ -73,18 +73,19 @@ export class AggregateNode extends DataFlowNode {
     }
 
     model.forEachFieldDef((fieldDef, channel) => {
-      if (fieldDef.aggregate) {
-        if (fieldDef.aggregate === 'count') {
+      const {aggregate, field} = fieldDef;
+      if (aggregate) {
+        if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgField(fieldDef, {aggregate: 'count'});
+          meas['*']['count'] = vgField(fieldDef);
         } else {
-          meas[fieldDef.field] = meas[fieldDef.field] || {};
-          meas[fieldDef.field][fieldDef.aggregate] = vgField(fieldDef);
+          meas[field] = meas[field] || {};
+          meas[field][aggregate] = vgField(fieldDef);
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[fieldDef.field]['min'] = vgField(fieldDef, {aggregate: 'min'});
-            meas[fieldDef.field]['max'] = vgField(fieldDef, {aggregate: 'max'});
+            meas[field]['min'] = vgField({field, aggregate: 'min'});
+            meas[field]['max'] = vgField({field, aggregate: 'max'});
           }
         }
       } else {
@@ -104,13 +105,14 @@ export class AggregateNode extends DataFlowNode {
     const meas = {};
 
     for (const s of t.aggregate) {
-      if (s.op) {
-        if (s.op === 'count') {
+      const {op, field, as} = s;
+      if (op) {
+        if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = s.as || vgField(s);
+          meas['*']['count'] = as || vgField(s);
         } else {
-          meas[s.field] = meas[s.field] || {};
-          meas[s.field][s.op] = s.as || vgField(s);
+          meas[field] = meas[field] || {};
+          meas[field][op] = as || vgField(s);
         }
       }
     }

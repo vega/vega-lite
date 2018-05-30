@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
     "autosize": "pad",
     "padding": 5,
@@ -405,6 +405,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Date in 2009",
             "labelFlush": true,
             "labelOverlap": true,
@@ -440,6 +441,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "low, high, open, close",
             "labelOverlap": true,
             "tickCount": {

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "height": 200,
@@ -87,13 +87,14 @@
                     "opacity": {
                         "value": 0.5
                     },
-                    "x": {
+                    "xc": {
                         "scale": "x",
-                        "field": "month_date"
+                        "field": "month_date",
+                        "band": 0.5
                     },
                     "width": {
-                        "scale": "x",
-                        "band": true
+                        "scale": "size",
+                        "field": "weather"
                     },
                     "y": {
                         "scale": "y",
@@ -161,6 +162,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (month)",
             "labelOverlap": true,
             "encode": {
@@ -186,6 +188,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

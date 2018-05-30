@@ -5,11 +5,12 @@
         "name": "bar",
         "title": "Simple Bar Chart",
         "description": "A bar chart encodes quantitative values as the extent of rectangular bars",
-        "style": "background-size: auto 110%; background-position: center center !important;"
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "histogram",
-        "title": "Histogram"
+        "title": "Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "bar_aggregate",
@@ -57,11 +58,13 @@
     "Scatter & Strip Plots": [
       {
         "name": "point_2d",
-        "title": "Scatterplot"
+        "title": "Scatterplot",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "tick_dot",
-        "title": "Dot Plot"
+        "title": "Dot Plot",
+        "style": "background-size: auto 50%; background-position-y: center !important;"
       },
       {
         "name": "tick_strip",
@@ -87,7 +90,8 @@
       },
       {
         "name": "circle",
-        "title": "Scatterplot with Filled Circles"
+        "title": "Scatterplot with Filled Circles",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "circle_bubble_health_income",
@@ -106,11 +110,14 @@
     "Line Charts": [
       {
         "name": "line",
-        "title": "Line Chart"
+        "title": "Line Chart",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_overlay",
-        "title": "Line Chart with Overlaying Point Markers"
+        "title": "Line Chart with Overlaying Point Markers",
+        "style": "background-size: auto 105%; background-position: center center !important;",
+        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `\"red\"` and set the line color to `\"green\"`. \n\n Notes: (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
       },
       {
         "name": "line_color",
@@ -118,20 +125,24 @@
       },
       {
         "name": "line_slope",
-        "title": "Slope Graph"
+        "title": "Slope Graph",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_step",
-        "title": "Step Chart"
+        "title": "Step Chart",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "line_monotone",
-        "title": "Line Chart with Monotone Interpolation"
+        "title": "Line Chart with Monotone Interpolation",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "connected_scatterplot",
         "title": "Connected Scatterplot (Lines with Custom Paths)",
-        "description": "A connected scatterplot can be created by customizing line `order`.  Here we also use [the shared `encoding` property of a layered plot](layer.html)"
+        "description": "A connected scatterplot can be created by customizing line `order` and adding `point` overlay in the line mark definition.",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "trail_color",
@@ -139,11 +150,8 @@
       },
       {
         "name": "line_skip_invalid_mid_overlay",
-        "title": "Line Chart with Markers and Invalid Values"
-      },
-      {
-        "name": "line_skip_invalid_mid_cap_square",
-        "title": "Line Chart with Square Stroke Cap and Invalid Values"
+        "title": "Line Chart with Markers and Invalid Values",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "layer_line_co2_concentration",
@@ -217,7 +225,8 @@
       },
       {
         "name": "window_residual_graph",
-        "title": "Calculate Residuals"
+        "title": "Calculate Residuals",
+        "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
         "name": "window_rank",
@@ -225,11 +234,101 @@
       },
       {
         "name": "lookup",
-        "title": "Using the lookup transform to combine data"
+        "title": "Using the lookup transform to combine data",
+        "style": "background-size: 75%; background-position-x: center;"
       }
     ]
   },
-  "Layered & Multi-View Displays": {
+  "Layered Plots": {
+    "Error Bars & Error Bands": [
+      {
+        "name": "layer_error_bars",
+        "title": "Error Bars showing Confidence Interval"
+      },
+      {
+        "name": "layer_error_bars_dev",
+        "title": "Error Bars showing Standard Deviation"
+      },
+      {
+        "name": "layer_area_ci",
+        "title": "Line Chart with Confidence Interval Band",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "layer_global_mean_dev",
+        "title": "Scatterplot with Mean and Standard Deviation Overlay",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      }
+    ],
+    "Box Plots": [
+      {
+        "name": "box-plot_minmax_2D_vertical_normalized",
+        "title": "Box Plot with Min/Max Whiskers"
+      },
+      {
+        "name": "box-plot_tukey_2D_vertical_normalized",
+        "title": "Tukey Box Plot (1.5 IQR)"
+      }
+    ],
+    "Labeling & Annotation": [
+      {
+        "name": "layer_bar_labels",
+        "title": "Simple Bar Chart with Labels",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "layer_text_heatmap",
+        "title": "Layering text over heatmap",
+        "style": "background-size: auto 55%; background-position-y: center !important;"
+      },
+      {
+        "name": "layer_line_co2_concentration",
+        "title": "Carbon Dioxide in the Atmosphere",
+        "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)"
+      },
+      {
+        "name": "layer_bar_annotations",
+        "title": "Bar chart that highlights values beyond a threshold",
+        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value"
+      },
+      {
+        "name": "layer_precipitation_mean",
+        "title": "Mean overlay over precipitation chart"
+      },
+      {
+        "name": "layer_histogram_global_mean",
+        "title": "Histogram with a Global Mean Overlay",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "layer_falkensee",
+        "title": "Line Chart with Highlighted Rectangles",
+        "style": "background-size: auto 90%; background-position-y: center !important;"
+      }
+    ],
+    "Other Layered Plots": [
+      {
+        "name": "layer_candlestick",
+        "title": "Candlestick Chart"
+      },
+      {
+        "name": "layer_ranged_dot",
+        "title": "Ranged Dot Plot",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "layer_bar_dual_axis",
+        "title": "Layered Plot with Dual-Axis",
+        "style": "background-size: 100% auto; background-position-y: center;"
+      },
+      {
+        "name": "area_horizon",
+        "title": "Horizon Graph",
+        "style": "background-size: auto 70%; background-position-y: center;"
+      }
+    ]
+  },
+  "Multi-View Displays": {
     "Faceting (Trellis Plot / Small Multiples)": [
       {
         "name": "trellis_bar",
@@ -260,90 +359,6 @@
         "title": "Trellis Area"
       }
     ],
-    "Error Bars & Error Bands": [
-      {
-        "name": "layer_error_bars",
-        "title": "Error Bars showing Confidence Interval"
-      },
-      {
-        "name": "layer_error_bars_dev",
-        "title": "Error Bars showing Standard Deviation"
-      },
-      {
-        "name": "layer_area_ci",
-        "title": "Line Chart with Confidence Interval Band"
-      },
-      {
-        "name": "layer_global_mean_dev",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay"
-      }
-    ],
-    "Box Plots": [
-      {
-        "name": "box-plot_minmax_2D_vertical_normalized",
-        "title": "Box Plot with Min/Max Whiskers"
-      },
-      {
-        "name": "box-plot_tukey_2D_vertical_normalized",
-        "title": "Tukey Box Plot (1.5 IQR)"
-      }
-    ],
-    "Using Layer to Add Labels": [
-      {
-        "name": "layer_bar_labels",
-        "title": "Simple Bar Chart with Labels",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "layer_text_heatmap",
-        "title": "Layering text over heatmap",
-        "style": "background-size: auto 55%; background-position-y: center !important;"
-      },
-      {
-        "name": "layer_line_co2_concentration",
-        "title": "Carbon Dioxide in the Atmosphere",
-        "description": "Note&#58; When accessing aggregated argmax or argmin fields, the aggregated fields must be flattened using calculate (see https://github.com/vega/vega-lite/issues/3361)"
-      }
-    ],
-    "Other Layered Displays": [
-      {
-        "name": "layer_bar_annotations",
-        "title": "Bar chart that highlights values beyond a threshold",
-        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value"
-      },
-      {
-        "name": "layer_precipitation_mean",
-        "title": "Mean overlay over precipitation chart"
-      },
-      {
-        "name": "layer_candlestick",
-        "title": "Candlestick Chart"
-      },
-      {
-        "name": "layer_histogram_global_mean",
-        "title": "Histogram with a Global Mean Overlay"
-      },
-      {
-        "name": "layer_falkensee",
-        "title": "Line Chart with Highlighted Rectangles",
-        "style": "background-size: auto 90%; background-position-y: center !important;"
-      },
-      {
-        "name": "layer_ranged_dot",
-        "title": "Ranged Dot Plot",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "layer_bar_dual_axis",
-        "title": "Layered Plot with Dual-Axis",
-        "style": "background-size: 100% auto; background-position-y: center;"
-      },
-      {
-        "name": "area_horizon",
-        "title": "Horizon Graph",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      }
-    ],
     "Repeat & Concatenation": [
       {
         "name": "repeat_layer",
@@ -358,6 +373,11 @@
         "name": "repeat_histogram",
         "title": "Horizontally repeated charts",
         "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries"
+      },
+      {
+        "name": "interactive_splom",
+        "png": true,
+        "title": "Interactive Scatterplot Matrix"
       }
     ]
   },
@@ -413,6 +433,10 @@
   "Interactive": {
     "Interactive Charts": [
       {
+        "name": "point_href",
+        "title": "Scatterplot with External Links and Tooltips"
+      },
+      {
         "name": "interactive_brush",
         "title": "Rectangular Brush"
       },
@@ -451,7 +475,7 @@
       {
         "name": "interactive_splom",
         "png": true,
-        "title": "Scatterplot Matrix"
+        "title": "Interactive Scatterplot Matrix"
       },
       {
         "name": "interactive_concat_layer",

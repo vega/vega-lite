@@ -16,7 +16,7 @@ import {
   vgField,
 } from '../../fielddef';
 import * as log from '../../log';
-import {Mark} from '../../mark';
+import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
@@ -53,6 +53,20 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
   return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+}
+
+
+
+export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
+  const offsetChannel = channel + 'Offset';
+  // TODO: in the future read from encoding channel too
+
+  const markDefOffsetValue = markDef[offsetChannel];
+  if (markDefOffsetValue) {
+    return markDefOffsetValue;
+  }
+
+  return undefined;
 }
 
 /**
@@ -138,7 +152,15 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
       }
       return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
     } else if (isValueDef(channelDef)) {
-      return {value: channelDef.value};
+      const value = channelDef.value;
+
+      if (contains(['x', 'x2'], channel) && value === 'width') {
+        return {field: {group: 'width'}};
+      } else if (contains(['y', 'y2'], channel) && value === 'height') {
+        return {field: {group: 'height'}};
+      }
+
+      return {value};
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.

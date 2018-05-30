@@ -1,0 +1,86 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "transform": [
+    {
+      "filter": "datum.symbol !== 'GOOG'"
+    }
+  ],
+  "width": 300,
+  "height": 100,
+  "data": {
+    "url": "data/stocks.csv"
+  },
+  "mark": "rect",
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonthdate",
+      "field": "date",
+      "type": "ordinal",
+      "title": "Time",
+      "scale": {
+        "paddingInner": 0
+      },
+      "axis": {
+        "format": "%Y",
+        "labelAngle": 0,
+        "labelOverlap": false,
+        "encoding": {
+          "ticks": {
+            "stroke": {
+              "condition": {
+                "test": {
+                  "timeUnit": "monthdate",
+                  "field": "value",
+                  "equal": {
+                    "month": 1,
+                    "date": 1
+                  }
+                },
+                "value": "black"
+              },
+              "value": "none"
+            }
+          },
+          "labels": {
+            "fill": {
+              "condition": {
+                "test": {
+                  "timeUnit": "monthdate",
+                  "field": "value",
+                  "equal": {
+                    "month": 1,
+                    "date": 1
+                  }
+                },
+                "value": "black"
+              },
+              "value": "none"
+            }
+          }
+        }
+      }
+    },
+    "color": {
+      "aggregate": "sum",
+      "field": "price",
+      "type": "quantitative",
+      "title": "Price"
+    },
+    "y": {
+      "field": "symbol",
+      "type": "nominal",
+      "title": ""
+    }
+  },
+  "config": {
+    "range": {
+      "heatmap": {
+        "scheme": "viridis",
+        "extent": [
+          1,
+          0
+        ]
+      }
+    }
+  }
+}

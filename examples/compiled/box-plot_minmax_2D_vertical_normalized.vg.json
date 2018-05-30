@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
     "autosize": "pad",
     "padding": 5,
@@ -344,6 +344,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "age",
             "labelOverlap": true,
             "encode": {
@@ -366,6 +367,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "population",
             "labelOverlap": true,
             "tickCount": {

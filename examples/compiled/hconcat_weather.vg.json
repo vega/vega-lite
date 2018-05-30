@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
     "autosize": "pad",
     "padding": 5,
@@ -206,6 +206,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelOverlap": true,
                     "encode": {
@@ -231,6 +232,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of precipitation",
                     "labelOverlap": true,
                     "tickCount": {
@@ -305,6 +307,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "temp_min (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -319,6 +322,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "temp_max (binned)",
                     "labelOverlap": true,
                     "tickCount": {

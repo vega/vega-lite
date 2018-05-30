@@ -4,22 +4,12 @@ import {binToString, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef} from '../../fielddef';
+import {FieldDef, ScaleFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {isSortArray, isSortField, SortField} from '../../sort';
-import {hash} from '../../util';
+import {EncodingSortField, isSortArray, isSortField} from '../../sort';
 import * as util from '../../util';
-import {isDataRefUnionedDomain, isFieldRefUnionDomain} from '../../vega.schema';
-import {
-  isDataRefDomain,
-  VgDataRef,
-  VgDomain,
-  VgFieldRefUnionDomain,
-  VgNonUnionDomain,
-  VgSortField,
-  VgUnionSortField,
-} from '../../vega.schema';
+import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, VgDataRef, VgDomain, VgFieldRefUnionDomain, VgNonUnionDomain, VgSortField, VgUnionSortField} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
@@ -57,7 +47,7 @@ function parseUnitScaleDomain(model: UnitModel) {
 
       // FIXME: replace this with a special property in the scaleComponent
       localScaleCmpt.set('domainRaw', {
-        signal: SELECTION_DOMAIN + hash(specifiedDomain)
+        signal: SELECTION_DOMAIN + util.hash(specifiedDomain)
       }, true);
     }
 
@@ -202,12 +192,13 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
+    const {field} = fieldDef;
     return [{
       data,
-      field: model.vgField(channel, {aggregate: 'min'})
+      field: vgField({field, aggregate: 'min'})
     }, {
       data,
-      field: model.vgField(channel, {aggregate: 'max'})
+      field: vgField({field, aggregate: 'max'})
     }];
   } else if (fieldDef.bin) { // bin
     if (isBinScale(scaleType)) {
@@ -269,12 +260,13 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
 }
 
 
-export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | SortField<string> {
+export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | EncodingSortField<string> {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
 
-  const sort = model.sort(channel);
+  const fieldDef: ScaleFieldDef<string> = model.fieldDef(channel);
+  const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
   if (isSortArray(sort)) {
@@ -287,7 +279,11 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    return sort;
+    // flatten nested fields
+    return {
+      ...sort,
+      ...(sort.field ? {field: util.replacePathInField(sort.field)} : {})
+    };
   }
 
   if (sort === 'descending') {

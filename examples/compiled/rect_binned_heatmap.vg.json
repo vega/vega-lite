@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 300,
@@ -167,6 +167,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "IMDB_Rating (binned)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -181,6 +182,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Rotten_Tomatoes_Rating (binned)",
             "labelOverlap": true,
             "tickCount": {

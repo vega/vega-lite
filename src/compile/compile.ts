@@ -148,7 +148,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   });
 
   const output = {
-    $schema: 'https://vega.github.io/schema/vega/v3.0.json',
+    $schema: 'https://vega.github.io/schema/vega/v3.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
     ...(title? {title} : {}),

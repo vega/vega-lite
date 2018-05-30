@@ -257,10 +257,6 @@ export namespace message {
     return `Unaggregated domain is currently unsupported for log scale (${stringify(fieldDef)}).`;
   }
 
-  export function cannotUseSizeFieldWithBandSize(positionChannel: 'x'|'y') {
-    return `Using size field when ${positionChannel}-channel has a band scale is not supported.`;
-  }
-
   export function cannotApplySizeToNonOrientedMark(mark: Mark) {
     return `Cannot apply size to non-oriented mark "${mark}".`;
   }

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -143,6 +143,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -167,6 +168,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,

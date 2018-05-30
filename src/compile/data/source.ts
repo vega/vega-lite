@@ -36,11 +36,15 @@ export class SourceNode extends DataFlowNode {
         data.format.type = defaultExtension as DataFormatType;
       }
     } else if (isNamedData(data)) {
-      this._name = data.name;
       this._data = {};
     }
 
-    if (!isNamedData(data) && data.format) {
+    // any dataset can be named
+    if (data.name) {
+      this._name = data.name;
+    }
+
+    if (data.format) {
       const {parse = null, ...format} = data.format;
       this._data.format = format;
     }

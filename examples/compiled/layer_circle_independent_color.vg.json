@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
     "autosize": "pad",
     "padding": 5,
@@ -319,6 +319,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Acceleration (binned)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -333,6 +334,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Horsepower (binned)",
             "labelOverlap": true,
             "tickCount": {

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -217,6 +217,7 @@
                 {
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -246,6 +247,7 @@
                 {
                     "scale": "child_temp_max_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of temp_max",
                     "labelOverlap": true,
                     "tickCount": {
@@ -352,6 +354,7 @@
                 {
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -381,6 +384,7 @@
                 {
                     "scale": "child_precipitation_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of precipitation",
                     "labelOverlap": true,
                     "tickCount": {
@@ -487,6 +491,7 @@
                 {
                     "scale": "child_wind_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -516,6 +521,7 @@
                 {
                     "scale": "child_wind_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of wind",
                     "labelOverlap": true,
                     "tickCount": {

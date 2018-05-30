@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
     "autosize": "pad",
     "padding": 5,
@@ -129,6 +129,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Release_Date",
             "labelFlush": true,
             "labelOverlap": true,
@@ -155,6 +156,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Rating Delta",
             "labelOverlap": true,
             "tickCount": {

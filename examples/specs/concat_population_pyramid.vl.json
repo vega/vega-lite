@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A population pyramid for the US in 2000.",
+  "data": { "url": "data/population.json"},
+  "transform": [
+    {"filter": "datum.year == 2000"},
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
+  ],
+  "hconcat": [{
+    "transform": [{
+      "filter": {"field": "gender", "equal": "Female"}
+    }],
+    "title": "Female",
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "age", "type": "ordinal",
+        "axis": null
+      },
+      "x": {
+        "aggregate": "sum", "field": "people", "type": "quantitative",
+        "axis": {"title": "population"},
+        "sort": "descending"
+      },
+      "color": {
+        "field": "gender", "type": "nominal",
+        "scale": {"range": ["#e377c2","#1f77b4"]},
+        "legend": null
+      }
+    }
+  }, {
+    "width": 20,
+    "mark": {
+      "type": "text",
+      "align": "center"
+    },
+    "encoding": {
+      "y": {"field": "age", "type": "ordinal", "axis": null},
+      "text": {"field": "age", "type": "quantitative"}
+    }
+  }, {
+    "transform": [{
+      "filter": {"field": "gender", "equal": "Male"}
+    }],
+    "title": "Male",
+    "mark": "bar",
+    "encoding": {
+      "y": {
+        "field": "age", "type": "ordinal", "title": null,
+        "axis": null
+      },
+      "x": {
+        "aggregate": "sum", "field": "people", "type": "quantitative",
+        "axis": {"title": "population"}
+      },
+      "color": {
+        "field": "gender", "type": "nominal",
+        "legend": null
+      }
+    }
+  }]
+}

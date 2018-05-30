@@ -1,15 +1,16 @@
 import {isArray} from 'vega-util';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
-import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
+import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, ValueDef, vgField} from '../fielddef';
+import {GuideEncodingEntry} from '../guide';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
-import {TimeUnit} from '../timeunit';
-import {formatExpression} from '../timeunit';
+import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, stringify} from '../util';
-import {VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
+import {contains, keys, stringify} from '../util';
+import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
+import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
@@ -181,7 +182,13 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
   return merged;
 }
 
-export function titleMerger(
+export function mergeTitle(title1: string, title2: string) {
+  return title1 === title2 ?
+    title1 : // if title is the same just use one of them
+    title1 + ', ' + title2; // join title with comma if different
+}
+
+export function mergeTitleComponent(
   v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>
 ) {
   if (isArray(v1.value) && isArray(v2.value)) {
@@ -192,9 +199,7 @@ export function titleMerger(
   } else if (!isArray(v1.value) && !isArray(v2.value)) {
     return {
       explicit: v1.explicit, // keep the old explicit
-      value: v1.value === v2.value ?
-        v1.value : // if title is the same just use one of them
-        v1.value + ', ' + v2.value // join title with comma if different
+      value: mergeTitle(v1.value, v2.value)
     };
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
@@ -213,4 +218,14 @@ export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
   // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
   // We could check whether the axis or legend exists (not disabled) but that seems overkill.
   return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
+}
+
+export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
+  return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
+    const valueDef = encoding[channel];
+    return {
+      ...encode,
+      ...wrapCondition(model, valueDef, channel, (x: ValueDef) => ({value: x.value}))
+    };
+  }, {});
 }

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Stock price average broken down by quarter.",
     "autosize": "pad",
     "padding": 5,
@@ -158,6 +158,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (year)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -193,6 +194,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Mean of price",
             "labelOverlap": true,
             "tickCount": {

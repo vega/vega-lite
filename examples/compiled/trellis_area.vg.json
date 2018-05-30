@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Stock prices of four large companies as a small multiples of area charts.",
     "autosize": "pad",
     "padding": 5,
@@ -141,6 +141,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Price",
                     "labelOverlap": true,
                     "tickCount": {
@@ -165,6 +166,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Time",
                     "labelFlush": true,
                     "labelOverlap": true,

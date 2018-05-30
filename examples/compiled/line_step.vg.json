@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Google's stock price over time.",
     "autosize": "pad",
     "padding": 5,
@@ -98,6 +98,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date",
             "labelFlush": true,
             "labelOverlap": true,
@@ -124,6 +125,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "price",
             "labelOverlap": true,
             "tickCount": {
