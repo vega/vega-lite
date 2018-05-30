@@ -233,6 +233,7 @@ export interface FlattenTransform {
 export interface SampleTransform {
   /**
    * The maximum number of data objects to include in the sample.
+   *
    * __Default value:__ `1000`
    */
   sample: number;
