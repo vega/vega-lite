@@ -50,7 +50,7 @@ In this example, `flatten` is used on two fields simultaneously. `null` values a
 <div class="vl-example" data-name="circle_flatten"></div>
 
 
-### Advanced Example: Coordinated View with Nested Time Series
+### Advanced Example: Coordinated Views with Nested Time Series
 
 Here, a single field is flattened and then used to plot the line chart corresponding to the circle chart above.
 
