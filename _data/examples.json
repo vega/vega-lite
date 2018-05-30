@@ -210,6 +210,24 @@
         "style": "background-size: auto 55%; background-position-y: center !important;"
       }
     ],
+    "Distribution Plots": [{
+      "name": "histogram",
+      "title": "Histogram",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
+      "name": "area_cumulative_freq",
+      "title": "Cumulative Frequency Distribution",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
+      "name": "box-plot_minmax_2D_vertical_normalized",
+      "title": "Box Plot with Min/Max Whiskers"
+    },
+    {
+      "name": "box-plot_tukey_2D_vertical_normalized",
+      "title": "Tukey Box Plot (1.5 IQR)"
+    }],
     "Advanced Calculations": [
       {
         "name": "window_percent_of_total",
@@ -258,16 +276,6 @@
         "name": "layer_global_mean_dev",
         "title": "Scatterplot with Mean and Standard Deviation Overlay",
         "style": "background-size: auto 105%; background-position: center center !important;"
-      }
-    ],
-    "Box Plots": [
-      {
-        "name": "box-plot_minmax_2D_vertical_normalized",
-        "title": "Box Plot with Min/Max Whiskers"
-      },
-      {
-        "name": "box-plot_tukey_2D_vertical_normalized",
-        "title": "Tukey Box Plot (1.5 IQR)"
       }
     ],
     "Labeling & Annotation": [
