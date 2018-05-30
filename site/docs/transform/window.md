@@ -84,9 +84,15 @@ The valid operations include all [aggregate operations](../aggregate/#ops) plus 
 
 Below are some common use cases for the window transform.
 
+### Cumulative Frequency Distribution
+
+Here we use the window transform with `frame: [null, 0]` to accumulate count in a cumulative frequency distribution plot.
+
+<div class="vl-example" data-name="area_cumulative_freq"></div>
+
 ### Percent of Total
 
-Here we use window transform to derive the global sum so that we can calculate percentage.
+Here we use the window transform to derive the global sum so that we can calculate percentage.
 
 <div class="vl-example" data-name="window_percent_of_total"></div>
 
