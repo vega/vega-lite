@@ -90,6 +90,8 @@ Here we use the window transform with `frame: [null, 0]` to accumulate count in 
 
 <div class="vl-example" data-name="area_cumulative_freq"></div>
 
+__See also:__ [layered histogram and cumulative histogram](../examples/layer_cumulative_histogram.html)
+
 ### Percent of Total
 
 Here we use the window transform to derive the global sum so that we can calculate percentage.
