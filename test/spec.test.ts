@@ -405,7 +405,7 @@ describe('normalize()', function () {
     });
   });
 
-  describe('normalizeOverlay', () => {
+  describe('normalizePathOverlay', () => {
     it('correctly normalizes line with overlayed point.', () => {
       const spec: TopLevelSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
@@ -580,10 +580,10 @@ describe('normalize()', function () {
       });
     });
 
-    it('correctly normalizes area with overlay line', () => {
+    it('correctly normalizes interpolated area with overlay line', () => {
       const spec: TopLevelSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-        "mark": "area",
+        "mark": {"type": "area", "interpolate": "monotone"},
         "encoding": {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
@@ -595,14 +595,14 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": {"type": "area", "opacity": 0.7},
+            "mark": {"type": "area", "opacity": 0.7, "interpolate": "monotone"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           },
           {
-            "mark": {"type": "line"},
+            "mark": {"type": "line", "interpolate": "monotone"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
