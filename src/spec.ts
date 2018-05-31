@@ -591,11 +591,13 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
   }
 
   if (lineOverlay) {
+    const {interpolate} = markDef;
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
-        ...lineOverlay
+        ...lineOverlay,
+        ...(interpolate ? {interpolate} : {})
       },
       encoding: overlayEncoding
     });
