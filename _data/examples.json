@@ -221,6 +221,11 @@
       "style": "background-size: auto 105%; background-position: center center !important;"
     },
     {
+      "name": "layer_cumulative_histogram",
+      "title": "Layered Histogram and Cumulative Histogram",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
       "name": "box-plot_minmax_2D_vertical_normalized",
       "title": "Box Plot with Min/Max Whiskers"
     },
