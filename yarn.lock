@@ -7374,17 +7374,17 @@ ts-jest@^22.4.6:
     source-map-support "^0.5.5"
     yargs "^11.0.0"
 
-ts-json-schema-generator@^0.25.1:
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.25.1.tgz#e86644a9b0769bea6fc6ba6d0df49bf54e05d837"
+ts-json-schema-generator@^0.26.0:
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.26.0.tgz#44a578b1ab18c9a4765be0c844977319aa6a495c"
   dependencies:
     commander "~2.15.1"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
-    ts-node "^6.0.3"
-    typescript "~2.8.3"
+    ts-node "^6.0.5"
+    typescript "~2.9.1"
 
-ts-node@^6.0.3, ts-node@^6.0.5:
+ts-node@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.0.5.tgz#977c1c931da7a2b09ae2930101f0104a5c2271e9"
   dependencies:
@@ -7477,9 +7477,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.8.4, typescript@~2.8.3:
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.4.tgz#0b1db68e6bdfb0b767fa2ab642136a35b059b199"
+typescript@^2.9.1, typescript@~2.9.1:
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.9.1.tgz#fdb19d2c67a15d11995fd15640e373e09ab09961"
 
 uglify-es@^3.3.4:
   version "3.3.9"
