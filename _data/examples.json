@@ -441,6 +441,11 @@
         "title": "Rectangular Brush"
       },
       {
+        "name": "interactive_area_brush",
+        "title": "Area Chart with Rectangular Brush",
+        "descripton": "In this example, we apply an `interval` selection to select subset of data in an area chart. The selected data is highlighted in gold by the second layer of an area mark that `filter`s its data by the `brush` selection."
+      },
+      {
         "name": "interactive_paintbrush",
         "title": "Paintbrush Highlight"
       },
