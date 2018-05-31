@@ -49,7 +49,7 @@ export class WindowTransformNode extends DataFlowNode {
     if (this.transform.sort !== undefined) {
       for (const sortField of this.transform.sort) {
         sortFields.push(sortField.field);
-        sortOrder.push(sortField.order === undefined ? null : sortField.order as VgComparatorOrder);
+        sortOrder.push(sortField.order || 'ascending');
       }
     }
     const sort: VgComparator = {
