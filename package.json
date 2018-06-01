@@ -25,7 +25,7 @@
   "scripts": {
     "prebuild": "mkdir -p build/src",
     "build": "npm run build:only",
-    "build:only": "tsc && cp package.json build/src/ && rollup -c",
+    "build:only": "tsc && rollup -c",
     "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
     "build:examples": "npm run data && TZ=America/Los_Angeles scripts/build-examples.sh",
     "build:examples-full": "TZ=America/Los_Angeles scripts/build-examples.sh 1",

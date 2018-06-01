@@ -260,9 +260,7 @@ export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
   }
 }
 
-// Omit from http://ideasintosoftware.com/typescript-advanced-tricks/
-export type Diff<T extends string | number | symbol, U extends string | number | symbol> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
-export type Omit<T, K extends keyof T> = {[P in Diff<keyof T, K>]: T[P]};
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 /**
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
