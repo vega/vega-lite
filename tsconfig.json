@@ -4,6 +4,7 @@
     "target": "es5",
     "module": "ES2015",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,

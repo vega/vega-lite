@@ -24,8 +24,7 @@ import * as type from './type';
 import * as util from './util';
 import * as validate from './validate';
 
-export {
-  version
-} from './package.json';
+import pkg from '../package.json';
+const version = pkg.version;
 
-export {aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, facet, fieldDef, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate};
+export {aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, facet, fieldDef, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate, version};
