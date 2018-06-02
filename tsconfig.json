@@ -5,6 +5,7 @@
     "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": false,
     "inlineSourceMap": true,

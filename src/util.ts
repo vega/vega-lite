@@ -1,8 +1,6 @@
-import * as stableStringify_ from 'json-stable-stringify';
+import stableStringify from 'json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
-
-const stableStringify = stableStringify_['default'] || stableStringify_;
 
 /**
  * Creates an object composed of the picked object properties.
