@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": false,
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "inlineSources": true,
     "isolatedModules": false,
     "noEmitOnError": true,
