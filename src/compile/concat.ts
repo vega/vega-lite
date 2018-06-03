@@ -42,7 +42,6 @@ export class ConcatModel extends BaseConcatModel {
     // TODO: allow customization
     return {
       padding: {row: 10, column: 10},
-      offset: 10,
       ...(this.isVConcat ? {columns: 1} : {}),
       bounds: 'full',
       // Use align each so it can work with multiple plots with different size
