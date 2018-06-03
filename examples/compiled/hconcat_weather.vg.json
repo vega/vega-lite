@@ -148,7 +148,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "bounds": "full",
         "align": "each"
     },

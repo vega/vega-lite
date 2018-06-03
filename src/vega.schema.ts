@@ -203,7 +203,7 @@ export interface VgLayout {
   padding: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
-  offset: number | {
+  offset?: number | {
     rowHeader: number,
     rowFooter: number,
     rowTitle: number,
