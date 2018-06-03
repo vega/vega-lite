@@ -196,13 +196,12 @@ export class FacetModel extends ModelWithField {
     return bandMixins;
   }
 
-  public assembleLayout(): VgLayout {
+  protected assembleDefaultLayout(): VgLayout {
     const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
 
     // TODO: determine default align based on shared / independent scales
 
     return {
-      padding: {row: 10, column: 10},
       ...this.getLayoutBandMixins('header'),
       ...this.getLayoutBandMixins('footer'),
 

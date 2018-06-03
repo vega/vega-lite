@@ -1,4 +1,4 @@
-import {isString} from 'vega-util';
+import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
@@ -7,8 +7,9 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec} from '../spec';
+import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
+import {CompositionLayout, extractCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
 import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
@@ -132,7 +133,6 @@ export function isLayerModel(model: Model): model is LayerModel {
 }
 
 export abstract class Model {
-
   public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
   public readonly parent: Model;
   public readonly name: string;
@@ -142,6 +142,7 @@ export abstract class Model {
 
   public readonly data: Data;
   public readonly transforms: Transform[];
+  public readonly layout: CompositionLayout;
 
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;
@@ -178,6 +179,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
+    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
 
     this.component = {
       data: {
@@ -295,7 +297,25 @@ export abstract class Model {
     return undefined;
   }
 
-  public abstract assembleLayout(): VgLayout;
+  public assembleLayout(): VgLayout {
+    if (!this.layout) {
+      return undefined;
+    }
+
+    const {spacing = {}} = this.layout;
+
+    return {
+      padding: isNumber(spacing) ? spacing : {
+        row: spacing.row || 10,
+        column: spacing.column || 10
+      },
+      ...this.assembleDefaultLayout()
+    };
+  }
+
+  protected assembleDefaultLayout(): VgLayout {
+    return {};
+  }
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
