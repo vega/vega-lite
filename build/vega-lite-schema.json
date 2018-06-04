@@ -3565,6 +3565,51 @@
       ],
       "type": "string"
     },
+    "ImputeTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "groupby": {
+          "description": "An optional array of fields by which to group the values.\nImputation will then be performed on a per-group basis.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "impute": {
+          "description": "The data field for which the missing values should be imputed.",
+          "type": "string"
+        },
+        "key": {
+          "description": "A key field that uniquely identifies data objects within a group.\nMissing key values (those occurring in the data but not in the current group) will be imputed.",
+          "type": "string"
+        },
+        "keyvals": {
+          "description": "An optional array of key values that should be considered for imputation.\nIf provided, this array will be used in addition to the key values observed within the input data.",
+          "items": {
+          },
+          "type": "array"
+        },
+        "method": {
+          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__:  `\"value\"`",
+          "enum": [
+            "value",
+            "mean",
+            "median",
+            "max",
+            "min"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "description": "The field value to use when the imputation method is `\"value\"`."
+        }
+      },
+      "required": [
+        "impute",
+        "key"
+      ],
+      "type": "object"
+    },
     "InlineData": {
       "additionalProperties": false,
       "properties": {
@@ -7531,6 +7576,9 @@
         },
         {
           "$ref": "#/definitions/TimeUnitTransform"
+        },
+        {
+          "$ref": "#/definitions/ImputeTransform"
         },
         {
           "$ref": "#/definitions/AggregateTransform"
