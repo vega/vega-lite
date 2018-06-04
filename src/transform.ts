@@ -240,7 +240,7 @@ export interface ImputeTransform {
    */
   groupby?: string[];
   /**
-   * The field value to use when the imputation method is `"value"`.
+   * The field value to use when the imputation `method` is `"value"`.
    */
   value?: any;
 }
