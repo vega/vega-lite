@@ -391,6 +391,11 @@
         "name": "interactive_splom",
         "png": true,
         "title": "Interactive Scatterplot Matrix"
+      },
+      {
+        "name": "concat_marginal_histograms",
+        "title": "Marginal Histograms",
+        "description": "Marginal histograms show the counts along the x and y dimension."
       }
     ]
   },

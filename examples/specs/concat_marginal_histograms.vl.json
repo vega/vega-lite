@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/movies.json"},
+  "spacing": 15,
+  "bounds": "flush",
+  "vconcat": [{
+    "mark": "bar",
+    "height": 60,
+    "encoding": {
+      "x": {
+        "bin": true,
+        "field": "IMDB_Rating",
+        "type": "quantitative",
+        "axis": null
+      },
+      "y": {
+        "aggregate": "count",
+        "type": "quantitative",
+        "scale": {
+          "domain": [0,1000]
+        },
+        "title": ""
+      }
+    }
+  }, {
+    "spacing": 15,
+    "bounds": "flush",
+    "hconcat": [{
+      "mark": "rect",
+      "encoding": {
+        "x": {
+          "bin": true,
+          "field": "IMDB_Rating",
+          "type": "quantitative"
+        },
+        "y": {
+          "bin": true,
+          "field": "Rotten_Tomatoes_Rating",
+          "type": "quantitative"
+        },
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative"
+        }
+      }
+    }, {
+      "mark": "bar",
+      "width": 60,
+      "encoding": {
+        "y": {
+          "bin": true,
+          "field": "Rotten_Tomatoes_Rating",
+          "type": "quantitative",
+          "axis": null
+        },
+        "x": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0,1000]
+          },
+          "title": ""
+        }
+      }
+    }]
+  }],
+  "config": {
+    "range": {
+      "heatmap": {
+        "scheme": "greenblue"
+      }
+    },
+    "view": {
+      "stroke": "transparent"
+    }
+  }
+}
