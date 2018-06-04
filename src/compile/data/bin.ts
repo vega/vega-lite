@@ -38,7 +38,6 @@ function getSignalsFromModel(model: Model, key: string) {
   };
 }
 
-// Bad Name?
 function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
   return 'as' in t;
 }
@@ -46,10 +45,8 @@ function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
 function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
   let as: [string, string];
 
-  if (isBinTransform(t) && isString(t.as)) {
-    as = [t.as, `${t.as}_end`];
-  } else if (isBinTransform(t)) {
-    as = [t.as[0], t.as[1]];
+  if (isBinTransform(t)) {
+    as = isString(t.as)? [t.as, `${t.as}_end`] : [t.as[0],t.as[1]];
   } else {
     as = [vgField(t, {}), vgField(t, {binSuffix: 'end'})];
   }
