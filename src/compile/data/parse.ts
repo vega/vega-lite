@@ -57,9 +57,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      head = BinNode.makeFromTransform(head, t, model);
+      const bin = head = BinNode.makeFromTransform(head, t, model);
 
-      ancestorParse.set(t.as, 'number', false);
+      for (const field of keys(bin.producedFields())) {
+        ancestorParse.set(field, 'number', false);
+      }
+
     } else if (isTimeUnit(t)) {
       head = TimeUnitNode.makeFromTransform(head, t);
 

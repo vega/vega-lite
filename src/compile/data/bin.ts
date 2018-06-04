@@ -1,3 +1,4 @@
+import {isString} from 'vega-util';
 import {BinParams, binToString} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
@@ -8,7 +9,6 @@ import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression, binRequiresRange} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
-
 
 function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
     if (binRequiresRange(fieldDef, channel)) {
@@ -38,6 +38,7 @@ function getSignalsFromModel(model: Model, key: string) {
   };
 }
 
+// Bad Name?
 function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
   return 'as' in t;
 }
@@ -45,8 +46,10 @@ function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
 function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
   let as: [string, string];
 
-  if (isBinTransform(t)) {
+  if (isBinTransform(t) && isString(t.as)) {
     as = [t.as, `${t.as}_end`];
+  } else if (isBinTransform(t)) {
+    as = [t.as[0], t.as[1]];
   } else {
     as = [vgField(t, {}), vgField(t, {binSuffix: 'end'})];
   }

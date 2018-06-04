@@ -60,7 +60,7 @@ export interface BinTransform {
   /**
    * The output fields at which to write the start and end bin values.
    */
-  as: string;
+  as: string | string[];
 }
 
 export interface TimeUnitTransform {
