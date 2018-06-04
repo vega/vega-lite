@@ -916,6 +916,10 @@
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
       "properties": {
+        "anchor": {
+          "description": "A value in the binned domain at which to anchor the bins, shifting the bin boundaries if necessary to ensure that a boundary aligns with the anchor value.\n\n__Default Value:__ the minimum bin extent value",
+          "type": "number"
+        },
         "base": {
           "description": "The number base to use for automatic bin determination (default is base 10).\n\n__Default value:__ `10`",
           "type": "number"
