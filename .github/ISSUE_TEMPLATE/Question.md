@@ -1,13 +1,13 @@
 ---
 name: Question
-about: The issue tracker is not for questions. Please use the mailing list or slack.
+about: The issue tracker is NOT for usage questions. Please use the mailing list or slack.
 
 ---
 
-THE ISSUE TRACKER IS NOT FOR QUESTIONS.
+THE issue tracker is for bug reports and feature requests, NOT usage questions.
 
-DO NOT CREATE A NEW ISSUE TO ASK A QUESTION.
+PLEASE DO NOT CREATE A NEW ISSUE TO ASK A QUESTION.
 
-For questions, use [the mailing list](https://bit.ly/vega-discuss) or [Slack](https://bit.ly/vega-slack)
+Instead, please ask your usage questions on [the mailing list](https://bit.ly/vega-discuss) or on [Slack](https://bit.ly/vega-slack)
 
 The only exception is if you have a question about *the Vega-Lite compiler code itself*.
