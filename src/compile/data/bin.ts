@@ -46,7 +46,7 @@ function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
   let as: [string, string];
 
   if (isBinTransform(t)) {
-    as = isString(t.as)? [t.as, `${t.as}_end`] : [t.as[0],t.as[1]];
+    as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0],t.as[1]];
   } else {
     as = [vgField(t, {}), vgField(t, {binSuffix: 'end'})];
   }
