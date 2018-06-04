@@ -9,7 +9,7 @@ import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
-import {CompositionLayout, extractCompositionLayout} from '../toplevelprops';
+import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
 import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
@@ -142,7 +142,7 @@ export abstract class Model {
 
   public readonly data: Data;
   public readonly transforms: Transform[];
-  public readonly layout: CompositionLayout;
+  public readonly layout: GenericCompositionLayout;
 
   /** Name map for scales, which can be renamed by a model's parent. */
   protected scaleNameMap: NameMapInterface;

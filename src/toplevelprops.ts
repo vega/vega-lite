@@ -44,8 +44,25 @@ export interface TopLevelProperties {
   datasets?: Datasets;
 }
 
+/**
+ * Base layout mixins for V/HConcatSpec.
+ * Concat layout should not have RowCol<T> generic fo its property.
+ */
+export interface ConcatLayout {
+  /**
+   * The spacing in pixels between sub-views of the concat operator.
+   *
+   * __Default value__: `10`
+   */
+  spacing?: number;
+}
 
-export interface CompositionLayout {
+/**
+ * Base layout for FacetSpec and RepeatSpec.
+ * This is named "GenericComposition" layout as ConcatLayout is a GenericCompositionLayout too
+ * (but _not_ vice versa).
+ */
+export interface GenericCompositionLayout {
   /**
    * The spacing in pixels between sub-views of the composition operator.
    * An object of the form `{"row": number, "column": number}` can be used to set
@@ -56,7 +73,7 @@ export interface CompositionLayout {
   spacing?: number | RowCol<number>;
 }
 
-export function extractCompositionLayout<T extends CompositionLayout>(layout: T): CompositionLayout {
+export function extractCompositionLayout(layout: ConcatLayout): ConcatLayout {
   const {spacing = undefined} = layout || {};
   return {spacing};
 }
