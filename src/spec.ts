@@ -15,7 +15,7 @@ import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TitleParams} from './title';
-import {TopLevelProperties} from './toplevelprops';
+import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {Dict, duplicate, hash, keys, omit, vals} from './util';
 
@@ -174,7 +174,7 @@ export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 export interface GenericFacetSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-  > extends BaseSpec {
+  > extends BaseSpec, GenericCompositionLayout {
   /**
    * An object that describes mappings between `row` and `column` channels and their field definitions.
    */
@@ -197,7 +197,7 @@ export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, Normalize
 export interface GenericRepeatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, GenericCompositionLayout {
   /**
    * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
    */
@@ -216,7 +216,7 @@ export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, Normali
 export interface GenericVConcatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a column.
    */
@@ -231,7 +231,7 @@ export interface GenericVConcatSpec<
 export interface GenericHConcatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a row.
    */
