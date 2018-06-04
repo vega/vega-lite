@@ -973,8 +973,18 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output fields at which to write the start and end bin values.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields at which to write the start and end bin values."
         },
         "bin": {
           "anyOf": [
