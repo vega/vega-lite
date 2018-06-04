@@ -302,14 +302,17 @@ export abstract class Model {
       return undefined;
     }
 
-    const {spacing = {}} = this.layout;
+    const {align, bounds, center, spacing = {}} = this.layout;
 
     return {
       padding: isNumber(spacing) ? spacing : {
         row: spacing.row || 10,
         column: spacing.column || 10
       },
-      ...this.assembleDefaultLayout()
+      ...this.assembleDefaultLayout(),
+      ...(align ? {align} : {}),
+      ...(bounds ? {bounds} : {}),
+      ...(center ? {center} : {})
     };
   }
 
