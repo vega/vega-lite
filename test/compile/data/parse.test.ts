@@ -10,6 +10,7 @@ import {FilterNode} from '../../../src/compile/data/filter';
 import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
+import {ImputeTransformNode} from '../../../src/compile/data/impute';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
@@ -109,6 +110,22 @@ describe('compile/data/parse', () => {
       assert.isTrue(result instanceof AggregateNode);
     });
 
+    it('should return a ImputeTransform Node', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [{impute: 'x', key: 'y', method: 'mean'}],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof ImputeTransformNode);
+      assert.isTrue(result instanceof ImputeTransformNode);
+
+    });
     it ('should return a WindowTransform Node', () => {
       const transform: Transform = {
         window: [
