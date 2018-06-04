@@ -36,7 +36,7 @@ To create a faceted view, define how the data should be faceted in `facet` and h
 In addition to [common properties of a view specification](spec.html#common),
 a facet specification has the following properties:
 
-{% include table.html props="facet,spec,spacing,resolve" source="FacetSpec" %}
+{% include table.html props="facet,spec,align,bounds,center,spacing,resolve" source="FacetSpec" %}
 
 {:#mapping}
 ### Facet Mapping

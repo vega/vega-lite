@@ -3102,6 +3102,36 @@
     "FacetSpec": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3172,6 +3202,18 @@
     "HConcatSpec": {
       "additionalProperties": false,
       "properties": {
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3226,6 +3268,36 @@
     "RepeatSpec": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3442,6 +3514,18 @@
     "VConcatSpec": {
       "additionalProperties": false,
       "properties": {
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -5681,6 +5765,30 @@
       ],
       "type": "string"
     },
+    "RowCol<VgLayoutAlign>": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/VgLayoutAlign"
+        },
+        "row": {
+          "$ref": "#/definitions/VgLayoutAlign"
+        }
+      },
+      "type": "object"
+    },
+    "RowCol<boolean>": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
     "RowCol<number>": {
       "additionalProperties": false,
       "properties": {
@@ -7007,6 +7115,18 @@
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -7078,6 +7198,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -7092,6 +7223,25 @@
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -7187,6 +7337,18 @@
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -7258,6 +7420,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -7272,6 +7445,25 @@
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -7975,6 +8167,14 @@
         "input"
       ],
       "type": "object"
+    },
+    "VgLayoutAlign": {
+      "enum": [
+        "none",
+        "each",
+        "all"
+      ],
+      "type": "string"
     },
     "VgMarkConfig": {
       "additionalProperties": false,

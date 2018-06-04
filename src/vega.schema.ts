@@ -200,6 +200,7 @@ export type RowCol<T> = {
 };
 
 export interface VgLayout {
+  center?: boolean | RowCol<boolean>;
   padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
@@ -213,10 +214,7 @@ export interface VgLayout {
   };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | {
-    row: VgLayoutAlign,
-    column: VgLayoutAlign
-  };
+  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
