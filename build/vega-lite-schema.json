@@ -3601,7 +3601,7 @@
           "type": "string"
         },
         "value": {
-          "description": "The field value to use when the imputation method is `\"value\"`."
+          "description": "The field value to use when the imputation `method` is `\"value\"`."
         }
       },
       "required": [
