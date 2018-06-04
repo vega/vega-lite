@@ -228,7 +228,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 1,
         "bounds": "full",
         "align": "each"
