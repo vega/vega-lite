@@ -212,6 +212,38 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
+export interface ImputeTransform {
+  /**
+   * The data field for which the missing values should be imputed.
+   */
+  impute: string;
+  /**
+   * A key field that uniquely identifies data objects within a group.
+   * Missing key values (those occurring in the data but not in the current group) will be imputed.
+   */
+  key: string;
+  /**
+   * An optional array of key values that should be considered for imputation.
+   * If provided, this array will be used in addition to the key values observed within the input data.
+   */
+  keyvals?: any[];
+  /**
+   * The imputation method to use for the field value of imputed data objects.
+   * One of `value`, `mean`, `median`, `max` or `min`.
+   *
+   * __Default value:__:  `"value"`
+   */
+  method?: 'value' | 'mean' | 'median' | 'max' | 'min';
+  /**
+   * An optional array of fields by which to group the values.
+   * Imputation will then be performed on a per-group basis.
+   */
+  groupby?: string[];
+  /**
+   * The field value to use when the imputation method is `"value"`.
+   */
+  value?: any;
+}
 
 export interface FlattenTransform {
   /**
@@ -317,6 +349,10 @@ export function isBin(t: Transform): t is BinTransform {
   return !!t['bin'];
 }
 
+export function isImpute(t: Transform): t is ImputeTransform {
+  return t['impute'] !== undefined;
+}
+
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
   return t['timeUnit'] !== undefined;
 }
@@ -333,7 +369,7 @@ export function isFold(t: Transform): t is FoldTransform {
   return t['fold'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
+export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {
