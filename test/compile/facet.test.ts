@@ -345,7 +345,8 @@ describe('FacetModel', function() {
 
       assert.deepEqual(marks[0].from.facet.aggregate, {
         fields: ['b', 'c'],
-        ops: ['distinct', 'distinct']
+        ops: ['distinct', 'distinct'],
+        as: ['distinct_b', 'distinct_c']
       });
     });
 
@@ -373,7 +374,8 @@ describe('FacetModel', function() {
 
       assert.deepEqual(marks[0].from.facet.aggregate, {
         fields: ['c'],
-        ops: ['distinct']
+        ops: ['distinct'],
+        as: ['distinct_c']
       });
     });
   });

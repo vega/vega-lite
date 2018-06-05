@@ -258,10 +258,14 @@ export class FacetModel extends ModelWithField {
   private getCardinalityAggregateForChild() {
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
+    const as: string[] = [];
+
     if (this.child instanceof FacetModel) {
       if (this.child.channelHasField('column')) {
-        fields.push(vgField(this.child.facet.column));
+        const field = vgField(this.child.facet.column);
+        fields.push(field);
         ops.push('distinct');
+        as.push(`distinct_${field}`);
       }
     } else {
       for (const channel of ['x', 'y'] as ScaleChannel[]) {
@@ -276,6 +280,7 @@ export class FacetModel extends ModelWithField {
             if (field) {
               fields.push(field);
               ops.push('distinct');
+              as.push(`distinct_${field}`);
             } else {
               log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
             }
@@ -283,7 +288,19 @@ export class FacetModel extends ModelWithField {
         }
       }
     }
-    return fields.length ? {fields, ops} : undefined;
+    return {fields, ops, as};
+  }
+
+
+  private assembleFacetAggregate() {
+    const {row, column} = this.facet;
+    const {fields, ops, as} = this.getCardinalityAggregateForChild();
+    return {
+      cross: !!row && !!column,
+      fields,
+      ops,
+      as
+    };
   }
 
   public assembleMarks(): VgMarkGroup[] {
@@ -296,18 +313,7 @@ export class FacetModel extends ModelWithField {
     const hasRow = this.channelHasField(ROW);
     const hasColumn = this.channelHasField(COLUMN);
     const layoutSizeEncodeEntry = child.assembleLayoutSize();
-
-    const aggregateMixins: any = {};
-    if (hasRow && hasColumn) {
-      aggregateMixins.aggregate = {cross: true};
-    }
-    const cardinalityAggregateForChild = this.getCardinalityAggregateForChild();
-    if (cardinalityAggregateForChild) {
-      aggregateMixins.aggregate = {
-        ...aggregateMixins.aggregate,
-        ...cardinalityAggregateForChild
-      };
-    }
+    const {cross, fields, ops} = this.assembleFacetAggregate();
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -325,9 +331,17 @@ export class FacetModel extends ModelWithField {
             hasRow ? [this.vgField(ROW)] : [],
             hasColumn ? [this.vgField(COLUMN)] : []
           ),
-          ...aggregateMixins
+          ...(cross || fields.length ? {
+            aggregate: {
+              ...(cross ? {cross} : {}),
+              ...(fields.length ? {
+                fields, ops
+              } : {})
+            }
+          } : {})
         }
       },
+      // TODO: move this to after data
       sort: {
         field: [].concat(
           hasRow ? [this.vgField(ROW, {expr: 'datum',})] : [],
