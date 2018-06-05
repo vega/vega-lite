@@ -3,6 +3,7 @@ import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
+import {EncodingSortField, isSortField} from '../../sort';
 import {isVgRangeStep, VgAggregateTransform, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
@@ -19,9 +20,11 @@ type ChildIndependentFieldsWithStep = {
  */
 export class FacetNode extends DataFlowNode {
   private readonly columnFields: string[];
+  private readonly columnFieldSort: EncodingSortField<string>;
   private readonly columnName: string;
 
   private readonly rowFields: string[];
+  private readonly rowFieldSort: EncodingSortField<string>;
   private readonly rowName: string;
 
   private readonly childModel: Model;
@@ -41,6 +44,10 @@ export class FacetNode extends DataFlowNode {
       if (column.bin) {
         this.columnFields.push(vgField(column, {binSuffix: 'end'}));
       }
+      const {sort} = column;
+      if (sort && isSortField(sort)) {
+        this.columnFieldSort = sort;
+      }
     }
 
     if (row) {
@@ -48,6 +55,10 @@ export class FacetNode extends DataFlowNode {
       this.rowName = model.getName('row_domain');
       if (row.bin) {
         this.rowFields.push(vgField(row, {binSuffix: 'end'}));
+      }
+      const {sort} = row;
+      if (sort && isSortField(sort)) {
+        this.rowFieldSort = sort;
       }
     }
 
@@ -116,6 +127,14 @@ export class FacetNode extends DataFlowNode {
       }
       // Although it is technically a max, just name it distinct so it's easier to refer to it
       as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+    }
+
+    const sort = channel === 'row' ? this.rowFieldSort : this.columnFieldSort;
+    if (sort) {
+      const {op, field} = sort;
+      fields.push(field);
+      ops.push(op);
+      as.push(vgField(sort));
     }
 
     return {

@@ -8,7 +8,11 @@
   "facet": {
     "row": {
       "field": "site",
-      "type": "ordinal"
+      "type": "ordinal",
+      "sort": {
+        "op": "median",
+        "field": "yield"
+      }
     }
   },
   "spec": {

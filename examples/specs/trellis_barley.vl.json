@@ -6,7 +6,8 @@
   "mark": "point",
   "encoding": {
     "row": {
-      "field": "site", "type": "ordinal"
+      "field": "site", "type": "ordinal",
+      "sort": {"op": "median", "field": "yield"}
     },
     "x": {
       "aggregate": "median", "field": "yield", "type": "quantitative",
