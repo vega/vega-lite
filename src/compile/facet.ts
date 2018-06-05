@@ -9,7 +9,7 @@ import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -180,12 +180,11 @@ export class FacetModel extends ModelWithField {
   private getHeaderLayoutMixins(): VgLayout {
     const layoutMixins: VgLayout = {};
 
-    for (const headerType of ['header', 'footer']) {
-      for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
+    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
         const layoutHeaderComponent = this.component.layoutHeaders[channel];
         const headerComponent = layoutHeaderComponent[headerType];
         if (headerComponent && headerComponent[0]) {
-
           // set header/footerBand
           const sizeType = channel === 'row' ? 'height' : 'width';
           const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
@@ -194,9 +193,14 @@ export class FacetModel extends ModelWithField {
             layoutMixins[bandType] = layoutMixins[bandType] || {};
             layoutMixins[bandType][channel] = 0.5;
           }
+
+          if (layoutHeaderComponent.title) {
+            layoutMixins.offset = layoutMixins.offset || {};
+            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
+          }
         }
-      }
-    }
+      });
+    });
     return layoutMixins;
   }
 
@@ -208,8 +212,6 @@ export class FacetModel extends ModelWithField {
     return {
       ...this.getHeaderLayoutMixins(),
 
-      // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
-      offset: 10,
       columns,
       bounds: 'full',
       align: 'all'
