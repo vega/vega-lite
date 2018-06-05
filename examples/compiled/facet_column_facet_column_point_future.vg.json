@@ -121,6 +121,9 @@
                         ],
                         "ops": [
                             "distinct"
+                        ],
+                        "as": [
+                            "distinct_Cylinders"
                         ]
                     }
                 }

@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
+import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
 import {isVgRangeStep, VgAggregateTransform, VgData} from '../../vega.schema';

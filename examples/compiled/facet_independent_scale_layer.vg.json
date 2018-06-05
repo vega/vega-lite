@@ -36,6 +36,9 @@
                     ],
                     "ops": [
                         "distinct"
+                    ],
+                    "as": [
+                        "distinct_age"
                     ]
                 }
             ]
@@ -209,6 +212,9 @@
                         ],
                         "ops": [
                             "distinct"
+                        ],
+                        "as": [
+                            "distinct_age"
                         ]
                     }
                 }

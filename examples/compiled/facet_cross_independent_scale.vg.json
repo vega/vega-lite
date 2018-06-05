@@ -241,6 +241,10 @@
                         "ops": [
                             "distinct",
                             "distinct"
+                        ],
+                        "as": [
+                            "distinct_a",
+                            "distinct_b"
                         ]
                     }
                 }

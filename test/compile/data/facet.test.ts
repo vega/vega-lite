@@ -43,7 +43,8 @@ describe('compile/data/facet', function() {
           type: 'aggregate',
           groupby: ['gender'],
           fields: ['age'],
-          ops: ['distinct']
+          ops: ['distinct'],
+          as:['distinct_age']
         }]
       });
     });
