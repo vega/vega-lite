@@ -1,6 +1,6 @@
 import {FieldDef} from './fielddef';
 import {Guide} from './guide';
-import {SortOrder} from './sort';
+import {EncodingSortField, SortOrder} from './sort';
 
 
 /**
@@ -30,7 +30,7 @@ export interface FacetFieldDef<F> extends FieldDef<F> {
    * Sort order for a facet field.
    * This can be `"ascending"`, `"descending"`.
    */
-  sort?: SortOrder;
+  sort?: SortOrder | EncodingSortField<F>;
 }
 
 export interface FacetMapping<F> {

@@ -2494,7 +2494,14 @@
           "description": "An object defining properties of a facet's header."
         },
         "sort": {
-          "$ref": "#/definitions/SortOrder",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "$ref": "#/definitions/EncodingSortField"
+            }
+          ],
           "description": "Sort order for a facet field.\nThis can be `\"ascending\"`, `\"descending\"`."
         },
         "timeUnit": {

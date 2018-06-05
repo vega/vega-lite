@@ -3,9 +3,10 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetMapping} from '../facet';
-import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {Aggregate, FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
+import {isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
@@ -295,12 +296,51 @@ export class FacetModel extends ModelWithField {
   private assembleFacetAggregate() {
     const {row, column} = this.facet;
     const {fields, ops, as} = this.getCardinalityAggregateForChild();
+
+    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+      const {sort = undefined} = this.facet[channel] || {};
+      if (isSortField(sort)) {
+        const {field, op} = sort;
+        if (row && column) {
+          // TODO: this requires adding window tranform to calculate the sort value
+          throw new Error('Cannot use facet sort for facet with both row and column yet');
+        } else {
+          fields.push(field);
+          ops.push(op);
+          as.push(vgField(sort));
+        }
+      }
+    });
+
     return {
       cross: !!row && !!column,
       fields,
       ops,
       as
     };
+  }
+
+
+  private headerSortFields(channel: 'row' | 'column'): string[] {
+    const {facet} = this;
+    const fieldDef = facet[channel];
+
+    if (fieldDef) {
+      const fieldDefToSort = isSortField(fieldDef.sort) ? fieldDef.sort : fieldDef;
+      return [vgField(fieldDefToSort, {expr: 'datum'})];
+    }
+    return [];
+  }
+
+  private headerSortOrder(channel: 'row' | 'column'): SortOrder[] {
+    const {facet} = this;
+    const fieldDef = facet[channel];
+    if (fieldDef) {
+      const {sort} = fieldDef;
+      const fieldDefToSort = isSortField(sort) ? sort.order : sort || 'ascending';
+      return [];
+    }
+    return [];
   }
 
   public assembleMarks(): VgMarkGroup[] {
@@ -343,14 +383,14 @@ export class FacetModel extends ModelWithField {
       },
       // TODO: move this to after data
       sort: {
-        field: [].concat(
-          hasRow ? [this.vgField(ROW, {expr: 'datum',})] : [],
-          hasColumn ? [this.vgField(COLUMN, {expr: 'datum'})] : []
-        ),
-        order: [].concat(
-          hasRow ? [ (facet.row.sort) || 'ascending'] : [],
-          hasColumn ? [ (facet.column.sort) || 'ascending'] : []
-        )
+        field: [
+          ...this.headerSortFields('row'),
+          ...this.headerSortFields('column')
+        ],
+        order: [
+          ...this.headerSortOrder('row'),
+          ...this.headerSortOrder('column')
+        ]
       },
       ...(data.length > 0 ? {data: data} : {}),
       ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
@@ -359,6 +399,7 @@ export class FacetModel extends ModelWithField {
 
     return [markGroup];
   }
+
 
   protected getMapping() {
     return this.facet;
