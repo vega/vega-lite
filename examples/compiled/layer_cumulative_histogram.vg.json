@@ -86,12 +86,12 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"bin_IMDB_Rating_end\"])",
-                    "as": "bin_IMDB_Rating_end"
+                    "expr": "toNumber(datum[\"count\"])",
+                    "as": "count"
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
+                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
                 }
             ]
         },
@@ -100,18 +100,8 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"bin_IMDB_Rating_end\"])",
-                    "as": "bin_IMDB_Rating_end"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"count\"])",
-                    "as": "count"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+                    "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
                 }
             ]
         }
@@ -124,7 +114,7 @@
                 "bar"
             ],
             "from": {
-                "data": "data_0"
+                "data": "data_1"
             },
             "encode": {
                 "update": {
@@ -157,7 +147,7 @@
                 "bar"
             ],
             "from": {
-                "data": "data_1"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -194,19 +184,19 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "bin_IMDB_Rating"
                     },
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "bin_IMDB_Rating_end"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_0",
                         "field": "bin_IMDB_Rating"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_0",
                         "field": "bin_IMDB_Rating_end"
                     }
                 ]
@@ -227,11 +217,11 @@
             "domain": {
                 "fields": [
                     {
-                        "data": "data_0",
+                        "data": "data_1",
                         "field": "cumulative_count"
                     },
                     {
-                        "data": "data_1",
+                        "data": "data_0",
                         "field": "count"
                     }
                 ]
