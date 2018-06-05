@@ -1,6 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isLookup, isSample, isStack, isTimeUnit, isWindow} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -16,6 +16,7 @@ import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
+import {ImputeTransformNode} from './impute';
 import {IdentifierNode} from './indentifier';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
@@ -110,6 +111,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isSample(t)) {
       head = new SampleTransformNode(head, t);
 
+    } else if (isImpute(t)) {
+      const impute = head = new ImputeTransformNode(head, t);
+
+      for (const field of keys(impute.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
