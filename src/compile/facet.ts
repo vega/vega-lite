@@ -172,28 +172,27 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionData(data);
   }
 
-  private getLayoutBandMixins(headerType: 'header' | 'footer'): {
-    headerBand?: RowCol<number>,
-    footerBand?: RowCol<number>
-  } {
-    const bandMixins = {};
+  private getHeaderLayoutMixins(): VgLayout {
+    const layoutMixins: VgLayout = {};
 
-    const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+    for (const headerType of ['header', 'footer']) {
+      for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
+        const layoutHeaderComponent = this.component.layoutHeaders[channel];
+        const headerComponent = layoutHeaderComponent[headerType];
+        if (headerComponent && headerComponent[0]) {
 
-    for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
-      const layoutHeaderComponent = this.component.layoutHeaders[channel];
-      const headerComponent = layoutHeaderComponent[headerType];
-      if (headerComponent && headerComponent[0]) {
-        const sizeType = channel === 'row' ? 'height' : 'width';
-
-        if (!this.child.component.layoutSize.get(sizeType)) {
-          // If facet child does not have size signal, then apply headerBand
-          bandMixins[bandType] = bandMixins[bandType] || {};
-          bandMixins[bandType][channel] = 0.5;
+          // set header/footerBand
+          const sizeType = channel === 'row' ? 'height' : 'width';
+          const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+          if (!this.child.component.layoutSize.get(sizeType)) {
+            // If facet child does not have size signal, then apply headerBand
+            layoutMixins[bandType] = layoutMixins[bandType] || {};
+            layoutMixins[bandType][channel] = 0.5;
+          }
         }
       }
     }
-    return bandMixins;
+    return layoutMixins;
   }
 
   protected assembleDefaultLayout(): VgLayout {
@@ -202,8 +201,7 @@ export class FacetModel extends ModelWithField {
     // TODO: determine default align based on shared / independent scales
 
     return {
-      ...this.getLayoutBandMixins('header'),
-      ...this.getLayoutBandMixins('footer'),
+      ...this.getHeaderLayoutMixins(),
 
       // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
       offset: 10,
