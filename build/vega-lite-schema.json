@@ -3519,12 +3519,20 @@
           "minimum": -360,
           "type": "number"
         },
+        "labelPadding": {
+          "description": "Padding in pixels between header labels and axes.\n\n__Default value:__ `10`",
+          "type": "number"
+        },
         "title": {
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
           "type": [
             "string",
             "null"
           ]
+        },
+        "titlePadding": {
+          "description": "Padding in pixels between header title and labels.\n\n__Default value:__ `10`",
+          "type": "number"
         }
       },
       "type": "object"

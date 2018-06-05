@@ -1,3 +1,5 @@
+// TODO: refactor this into proper parse/assemble phase like axis/legend
+
 /**
  * Utility for generating row / column headers
  */
@@ -18,6 +20,10 @@ export const HEADER_TYPES: HeaderType[] = ['header', 'footer'];
  * A component that represents all header, footers and title of a Vega group with layout directive.
  */
 export interface LayoutHeaderComponent {
+  // TODO: if we allow nested facet, some of these properties can be merged
+  // and thus we have to refactor this to use Split.
+  // However, we don't support that yet so it's fine to keep this simple for now.
+
   title?: string;
 
   // TODO: repeat and concat can have multiple header / footer.
@@ -44,8 +50,11 @@ export interface LayoutHeaderComponent {
  * A component that represents one group of row/column-header/footer.
  */
 export interface HeaderComponent {
-
   labels: boolean;
+
+  labelPadding?: number;
+
+  titlePadding?: number;
 
   sizeSignal: {signal: string};
 
@@ -127,7 +136,7 @@ function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: Header
     const {facetFieldDef} = layoutHeader;
     if (facetFieldDef && headerCmpt.labels) {
       const {header = {}} = facetFieldDef;
-      const {format, labelAngle} = header;
+      const {format, labelAngle, labelPadding = 10} = header;
 
       const update = {
         ...(
@@ -140,7 +149,7 @@ function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: Header
 
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
-        offset: 10,
+        offset: labelPadding,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
         ...(keys(update).length > 0 ? {encode: {update}} : {})

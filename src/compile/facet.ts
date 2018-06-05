@@ -190,8 +190,10 @@ export class FacetModel extends ModelWithField {
           }
 
           if (layoutHeaderComponent.title) {
+            // only add title offset if there is a title.
+            const {titlePadding} = headerComponent[0];
             layoutMixins.offset = layoutMixins.offset || {};
-            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
+            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = titlePadding || 10;
           }
         }
       });
