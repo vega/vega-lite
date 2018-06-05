@@ -234,7 +234,6 @@ describe('FacetModel', function() {
       const layout = model.assembleLayout();
       assert.deepEqual<VgLayout>(layout, {
         padding: {row: 10, column: 10},
-        offset: 10,
         columns: {
           signal: "length(data('column_domain'))"
         },

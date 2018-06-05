@@ -110,7 +110,9 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "columnTitle": 10
+        },
         "columns": {
             "signal": "length(data('column_domain'))"
         },

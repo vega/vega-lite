@@ -204,12 +204,12 @@ export interface VgLayout {
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
   offset?: number | {
-    rowHeader: number,
-    rowFooter: number,
-    rowTitle: number,
-    columnHeader: number,
-    columnFooter: number,
-    columnTitle: number
+    rowHeader?: number,
+    rowFooter?: number,
+    rowTitle?: number,
+    columnHeader?: number,
+    columnFooter?: number,
+    columnTitle?: number
   };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
