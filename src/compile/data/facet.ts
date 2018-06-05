@@ -33,19 +33,20 @@ export class FacetNode extends DataFlowNode {
   public constructor(parent: DataFlowNode, public readonly model: FacetModel, public readonly name: string, public data: string) {
     super(parent);
 
-    if (model.facet.column) {
-      this.columnFields = [model.vgField(COLUMN)];
+    const {column, row} = model.facet;
+    if (column) {
+      this.columnFields = [vgField(column)];
       this.columnName = model.getName('column_domain');
-      if (model.fieldDef(COLUMN).bin) {
-        this.columnFields.push(model.vgField(COLUMN, {binSuffix: 'end'}));
+      if (column.bin) {
+        this.columnFields.push(vgField(column, {binSuffix: 'end'}));
       }
     }
 
-    if (model.facet.row) {
-      this.rowFields = [model.vgField(ROW)];
+    if (row) {
+      this.rowFields = [vgField(row)];
       this.rowName = model.getName('row_domain');
-      if (model.fieldDef(ROW).bin) {
-        this.rowFields.push(model.vgField(ROW, {binSuffix: 'end'}));
+      if (row.bin) {
+        this.rowFields.push(vgField(row, {binSuffix: 'end'}));
       }
     }
 
@@ -95,25 +96,25 @@ export class FacetNode extends DataFlowNode {
   }
 
   private assembleRowColumnData(channel: 'row' | 'column', crossedDataName: string, childIndependentFieldsWithStep: ChildIndependentFieldsWithStep): VgData {
-    let aggregateChildField: Partial<VgAggregateTransform> = {};
     const childChannel = channel === 'row' ? 'y' : 'x';
+
+    const fields: string[] = [];
+    const ops: AggregateOp[] = [];
+    const as: string[] = [];
 
     if (childIndependentFieldsWithStep[childChannel]) {
       if (crossedDataName) {
-        aggregateChildField = {
-          // If there is a crossed data, calculate max
-          fields: [`distinct_${childIndependentFieldsWithStep[childChannel]}`],
-          ops: ['max'],
-          // Although it is technically a max, just name it distinct so it's easier to refer to it
-          as: [`distinct_${childIndependentFieldsWithStep[childChannel]}`]
-        };
+        // If there is a crossed data, calculate max
+        fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+
+        ops.push('max');
       } else {
-        aggregateChildField = {
-          // If there is no crossed data, just calculate distinct
-          fields: [childIndependentFieldsWithStep[childChannel]],
-          ops: ['distinct']
-        };
+        // If there is no crossed data, just calculate distinct
+        fields.push(childIndependentFieldsWithStep[childChannel]);
+        ops.push('distinct');
       }
+      // Although it is technically a max, just name it distinct so it's easier to refer to it
+      as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
     }
 
     return {
@@ -123,7 +124,9 @@ export class FacetNode extends DataFlowNode {
       transform: [{
         type: 'aggregate',
         groupby: channel === 'row' ? this.rowFields : this.columnFields,
-        ...aggregateChildField
+        ...(fields.length ? {
+          fields, ops, as
+        } : {})
       }]
     };
   }
@@ -149,7 +152,7 @@ export class FacetNode extends DataFlowNode {
         transform: [{
           type: 'aggregate',
           groupby: this.columnFields.concat(this.rowFields),
-          fields: fields,
+          fields,
           ops
         }]
       });
