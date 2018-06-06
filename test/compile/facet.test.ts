@@ -320,6 +320,43 @@ describe('FacetModel', function() {
       });
     });
 
+
+    it('should add cross and sort if we facet by multiple dimensions with sort fields', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'median'}},
+          column: {field: 'b', type: 'ordinal', sort: {field: 'e', op: 'median'}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      expect(marks[0].from.facet.aggregate).toEqual({
+        cross: true,
+        fields: ['median_d_by_a', 'median_e_by_b'],
+        ops: ['max', 'max'],
+        as: ['median_d_by_a', 'median_e_by_b']
+      });
+
+      expect(marks[0].sort).toEqual({
+        field: [
+          'datum["median_d_by_a"]',
+          'datum["median_e_by_b"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
+      });
+    });
+
     it('should add calculate cardinality for independent scales', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {

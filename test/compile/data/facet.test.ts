@@ -52,12 +52,14 @@ describe('compile/data/facet', function() {
     it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', () => {
       const model = parseFacetModelWithScale({
         '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
-        'data': {'values': [
-          {'r': 'r1', 'c': 'c1', 'a': 'a1', 'b': 'b1'},
-          {'r': 'r1', 'c': 'c1', 'a': 'a2', 'b': 'b2'},
-          {'r': 'r2', 'c': 'c2', 'a': 'a1', 'b': 'b1'},
-          {'r': 'r3', 'c': 'c2', 'a': 'a3', 'b': 'b2'}
-        ]},
+        'data': {
+          'values': [
+            {'r': 'r1', 'c': 'c1', 'a': 'a1', 'b': 'b1'},
+            {'r': 'r1', 'c': 'c1', 'a': 'a2', 'b': 'b2'},
+            {'r': 'r2', 'c': 'c2', 'a': 'a1', 'b': 'b1'},
+            {'r': 'r3', 'c': 'c2', 'a': 'a3', 'b': 'b2'}
+          ]
+        },
         'facet': {
           'row': {'field': 'r', 'type': 'nominal'},
           'column': {'field': 'c', 'type': 'nominal'}
@@ -84,7 +86,7 @@ describe('compile/data/facet', function() {
       assert.deepEqual(data[0], {
         name: 'cross_column_domain_row_domain',
         source: 'dataName',
-        transform:[{
+        transform: [{
           type: 'aggregate',
           groupby: ['c', 'r'],
           fields: ['a', 'b'],
@@ -95,7 +97,7 @@ describe('compile/data/facet', function() {
       assert.deepEqual(data[1], {
         name: 'column_domain',
         source: 'cross_column_domain_row_domain',
-        transform:[{
+        transform: [{
           type: 'aggregate',
           groupby: ['c'],
           fields: ['distinct_a'],
@@ -107,7 +109,7 @@ describe('compile/data/facet', function() {
       assert.deepEqual(data[2], {
         name: 'row_domain',
         source: 'cross_column_domain_row_domain',
-        transform:[{
+        transform: [{
           type: 'aggregate',
           groupby: ['r'],
           fields: ['distinct_b'],
@@ -116,5 +118,54 @@ describe('compile/data/facet', function() {
         }]
       });
     });
+
+
+    it('should calculate column and row sort field', () => {
+      const model = parseFacetModelWithScale({
+        '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
+        'data': {
+          'name': 'a'
+        },
+        'facet': {
+          'row': {'field': 'r', 'type': 'nominal', sort: {op: 'median', field: 'b'}},
+          'column': {'field': 'c', 'type': 'nominal', sort: {op: 'median', field: 'a'}}
+        },
+        'spec': {
+          'mark': 'rect',
+          'encoding': {
+            'y': {'field': 'b', 'type': 'quantitative'},
+            'x': {'field': 'a', 'type': 'quantitative'}
+          }
+        }
+      });
+
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
+      const data = node.assemble();
+
+      assert.deepEqual(data[0], {
+        name: 'column_domain',
+        source: 'dataName',
+        transform: [{
+          type: 'aggregate',
+          groupby: ['c'],
+          fields: ['a'],
+          ops: ['median'],
+          as: ['median_a']
+        }]
+      });
+
+      assert.deepEqual(data[1], {
+        name: 'row_domain',
+        source: 'dataName',
+        transform: [{
+          type: 'aggregate',
+          groupby: ['r'],
+          fields: ['b'],
+          ops: ['median'],
+          as: ['median_b']
+        }]
+      });
+    });
+
   });
 });

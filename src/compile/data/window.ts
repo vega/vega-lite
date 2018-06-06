@@ -12,14 +12,15 @@ import {DataFlowNode} from './dataflow';
  * A class for the window transform nodes
  */
 export class WindowTransformNode extends DataFlowNode {
-  public static makeFromFacet(parent: DataFlowNode, facet: FacetMapping<string>): DataFlowNode {
+  public static makeFromFacet(parent: DataFlowNode, facet: FacetMapping<string>): WindowTransformNode {
     const {row, column} = facet;
     if (row && column) {
+      let newParent = null;
       // only need to make one for crossed facet
       for (const fieldDef of [row, column]) {
         if (isSortField(fieldDef.sort)) {
           const {field, op} = fieldDef.sort;
-          parent = new WindowTransformNode(parent, {
+          parent = newParent = new WindowTransformNode(parent, {
             window: [{
               op,
               field,
@@ -30,7 +31,7 @@ export class WindowTransformNode extends DataFlowNode {
           });
         }
       }
-      return parent;
+      return newParent;
     }
     return null;
   }

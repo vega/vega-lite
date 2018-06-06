@@ -16,28 +16,49 @@ describe('compile/layout/header', () => {
   });
 
   describe('getHeaderGroups', () => {
-    const model = parseFacetModel({
-      facet: {
-        row: {field: 'a', type: 'ordinal', sort: 'ascending'},
-        column: {field: 'a', type: 'ordinal', sort: 'descending'}
-      },
-      spec: {
-        mark: 'point',
-        encoding: {
-          x: {field: 'b', type: 'quantitative'},
-          y: {field: 'c', type: 'quantitative'}
+    it('should correctly process sort descending', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: 'ascending'},
+          column: {field: 'a', type: 'ordinal', sort: 'descending'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
         }
-      }
-    });
-    model.parseScale();
-    model.parseLayoutSize();
-    model.parseAxisAndHeader();
+      });
+      model.parseScale();
+      model.parseLayoutSize();
+      model.parseAxisAndHeader();
 
-    const rowHeaderGroups = getHeaderGroups(model, 'row');
-    const columnHeaderGroups = getHeaderGroups(model, 'column');
-    it('should correctly process sort', () => {
+      const rowHeaderGroups = getHeaderGroups(model, 'row');
+      const columnHeaderGroups = getHeaderGroups(model, 'column');
       assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
       assert.equal(columnHeaderGroups[0].sort.order, 'descending');
+    });
+
+    it('should correctly process sort field', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'min'}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parseScale();
+      model.parseLayoutSize();
+      model.parseAxisAndHeader();
+
+      const rowHeaderGroups = getHeaderGroups(model, 'row');
+      assert.equal(rowHeaderGroups[0].sort.field, 'datum["min_d"]');
     });
   });
 
