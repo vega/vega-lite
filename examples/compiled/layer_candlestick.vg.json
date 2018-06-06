@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
+    "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
     "autosize": "pad",
     "padding": 5,
     "width": 320,
