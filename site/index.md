@@ -75,6 +75,7 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 ## Additional Links
 
 - Award winning [research paper](http://idl.cs.washington.edu/papers/vega-lite) and [video of our OpenVis Conf talk](https://www.youtube.com/watch?v=9uaHRWj04D4) on the design of Vega-Lite
+- Listen to a Data Stories episode about [Declarative Visualization with Vega-Lite and Altair](http://datastori.es/121-declarative-visualization-with-vega-lite-and-altair-with-dominik-moritz-jacob-vanderplas-kanit-ham-wongsuphasawat/)
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v2.json))
 - Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](http://bit.ly/vega-discuss) or [Slack](http://bit.ly/vega-slack)
 - Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
