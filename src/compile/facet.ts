@@ -2,14 +2,14 @@ import {AggregateOp} from 'vega';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FacetMapping} from '../facet';
-import {Aggregate, FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {FacetFieldDef, FacetMapping} from '../facet';
+import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
-import {isSortField, SortOrder} from '../sort';
+import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, RowCol, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -20,6 +20,11 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
+
+export function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt: {expr?: 'datum'} = {}) {
+  const {field, op} = sort;
+  return vgField(sort, {expr: opt.expr, suffix: `by_${vgField(fieldDef)}`});
+}
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
@@ -293,30 +298,48 @@ export class FacetModel extends ModelWithField {
   }
 
 
-  private assembleFacetAggregate() {
+  private assembleFacet() {
+    const {name, data} = this.component.data.facetRoot;
     const {row, column} = this.facet;
     const {fields, ops, as} = this.getCardinalityAggregateForChild();
+    const groupby: string[] = [];
 
     ['row', 'column'].forEach((channel: 'row' | 'column') => {
-      const {sort = undefined} = this.facet[channel] || {};
-      if (isSortField(sort)) {
-        const {field, op} = sort;
-        if (row && column) {
-          // TODO: this requires adding window tranform to calculate the sort value
-          throw new Error('Cannot use facet sort for facet with both row and column yet');
-        } else {
-          fields.push(field);
-          ops.push(op);
-          as.push(vgField(sort));
+      const fieldDef = this.facet[channel];
+      if (fieldDef) {
+        groupby.push(vgField(fieldDef));
+        const {sort} = fieldDef;
+        if (isSortField(sort)) {
+          const {field, op} = sort;
+          const outputName = facetSortFieldName(fieldDef, sort);
+          if (row && column) {
+            // For crossed facet, use pre-calculate field as it requires a different groupby
+            // For each calculated field, apply max and assign them to the same name as
+            // all values of the same group should be the same anyway.
+            fields.push(outputName);
+            ops.push('max');
+            as.push(outputName);
+          } else {
+            fields.push(field);
+            ops.push(op);
+            as.push(outputName);
+          }
         }
       }
     });
 
+    const cross = !!row && !!column;
+
     return {
-      cross: !!row && !!column,
-      fields,
-      ops,
-      as
+      name,
+      data,
+      groupby,
+      ...(cross || fields.length ? {
+        aggregate: {
+          ...(cross ? {cross} : {}),
+          ...(fields.length ? {fields, ops, as} : {})
+        }
+      } : {})
     };
   }
 
@@ -326,8 +349,10 @@ export class FacetModel extends ModelWithField {
     const fieldDef = facet[channel];
 
     if (fieldDef) {
-      const fieldDefToSort = isSortField(fieldDef.sort) ? fieldDef.sort : fieldDef;
-      return [vgField(fieldDefToSort, {expr: 'datum'})];
+      if (isSortField(fieldDef.sort)) {
+        return [facetSortFieldName(fieldDef, fieldDef.sort, {expr: 'datum'})];
+      }
+      return [vgField(fieldDef, {expr: 'datum'})];
     }
     return [];
   }
@@ -344,16 +369,13 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleMarks(): VgMarkGroup[] {
-    const {child, facet} = this;
+    const {child} = this;
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const hasRow = this.channelHasField(ROW);
-    const hasColumn = this.channelHasField(COLUMN);
     const layoutSizeEncodeEntry = child.assembleLayoutSize();
-    const {cross, fields, ops} = this.assembleFacetAggregate();
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -364,22 +386,7 @@ export class FacetModel extends ModelWithField {
       ...(title? {title} : {}),
       ...(style? {style} : {}),
       from: {
-        facet: {
-          name: facetRoot.name,
-          data: facetRoot.data,
-          groupby: [].concat(
-            hasRow ? [this.vgField(ROW)] : [],
-            hasColumn ? [this.vgField(COLUMN)] : []
-          ),
-          ...(cross || fields.length ? {
-            aggregate: {
-              ...(cross ? {cross} : {}),
-              ...(fields.length ? {
-                fields, ops
-              } : {})
-            }
-          } : {})
-        }
+        facet: this.assembleFacet()
       },
       // TODO: move this to after data
       sort: {
@@ -405,3 +412,4 @@ export class FacetModel extends ModelWithField {
     return this.facet;
   }
 }
+

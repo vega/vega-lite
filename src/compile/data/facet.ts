@@ -1,10 +1,10 @@
 import {AggregateOp} from 'vega';
-import {COLUMN, ROW, ScaleChannel} from '../../channel';
+import {ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
 import {EncodingSortField, isSortField} from '../../sort';
-import {isVgRangeStep, VgAggregateTransform, VgData} from '../../vega.schema';
+import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
 import {assembleDomain, getFieldFromDomain} from '../scale/domain';

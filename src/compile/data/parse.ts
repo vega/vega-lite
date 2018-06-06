@@ -245,6 +245,11 @@ export function parseData(model: Model): DataComponent {
   let facetRoot = null;
   if (isFacetModel(model)) {
     const facetName = model.getName('facet');
+
+    // TODO: use JoinAggregate once we have it
+    // augment data source with new fields for crossed facet
+    head = WindowTransformNode.makeFromFacet(head, model.facet) || head;
+
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
     head = facetRoot;

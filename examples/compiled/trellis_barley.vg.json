@@ -189,15 +189,20 @@
                         ],
                         "ops": [
                             "median"
+                        ],
+                        "as": [
+                            "median_yield_by_site"
                         ]
                     }
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"median_yield\"]"
+                    "datum[\"median_yield_by_site\"]"
                 ],
-                "order": []
+                "order": [
+                    "ascending"
+                ]
             },
             "data": [
                 {
