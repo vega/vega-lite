@@ -337,8 +337,8 @@ export class FacetModel extends ModelWithField {
     const fieldDef = facet[channel];
     if (fieldDef) {
       const {sort} = fieldDef;
-      const fieldDefToSort = isSortField(sort) ? sort.order : sort || 'ascending';
-      return [];
+      const order = (isSortField(sort) ? sort.order : sort) || 'ascending';
+      return [order];
     }
     return [];
   }
