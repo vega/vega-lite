@@ -22,7 +22,6 @@ import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
 export function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt: {expr?: 'datum'} = {}) {
-  const {field, op} = sort;
   return vgField(sort, {expr: opt.expr, suffix: `by_${vgField(fieldDef)}`});
 }
 
