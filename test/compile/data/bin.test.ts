@@ -207,4 +207,38 @@ describe('compile/data/bin', function() {
       signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
     });
   });
+
+  it('should add bin transform from transform array with array as', function() {
+    const t: BinTransform = {
+      bin: {extent: [0, 100], anchor: 6},
+      field: 'Acceleration',
+      as: ['binned_acceleration_start', 'binned_acceleration_stop']
+    };
+
+    const model = parseUnitModelWithScale({
+      data: {url: "data/movies.json"},
+      mark: "circle",
+      transform: [t],
+      encoding: {
+        x: {
+          field: "Rotten_Tomatoes_Rating",
+          type: "quantitative"
+        },
+        color: {
+          field: "Rotten_Tomatoes_Rating",
+          type: "quantitative"
+        }
+      }
+    });
+
+    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
+      type: 'bin',
+      field: 'Acceleration',
+      anchor: 6,
+      maxbins: 10,
+      as: ['binned_acceleration_start', 'binned_acceleration_stop'],
+      extent: [0, 100],
+      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
+    });
+  });
 });
