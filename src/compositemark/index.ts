@@ -1,9 +1,15 @@
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {BOXPLOT, BOXPLOT_STYLES, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
+import {BOXPLOT, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
 import {ERRORBAR, normalizeErrorBar} from './errorbar';
 
+// This package import below makes the generated .d.ts file compatible with
+// Typescript 2.7 so that libraries requiring us can use Typedoc (which
+// currently is limited to Typescript 2.7). This comment and import can be
+// removed when Typedoc is updated to Typescript 2.9 or later. See
+// https://github.com/vega/vega-lite/issues/3862 for more details.
+import * as boxplot from './boxplot';
 
 export {BoxPlotConfig} from './boxplot';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
@@ -27,7 +33,7 @@ export type CompositeMarkDef = BoxPlotDef;
 
 export type CompositeAggregate = BOXPLOT;
 
-export const COMPOSITE_MARK_STYLES = BOXPLOT_STYLES;
+export const COMPOSITE_MARK_STYLES = boxplot.BOXPLOT_STYLES;
 export type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
 
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
