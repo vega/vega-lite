@@ -12790,7 +12790,7 @@
     getEncodingMappingError: getEncodingMappingError
   });
 
-  var version = "2.5.1";
+  var version = "2.5.2";
 
   exports.aggregate = aggregate;
   exports.axis = axis;

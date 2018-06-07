@@ -3,6 +3,7 @@ import { AnyMark } from './../mark';
 import { GenericUnitSpec, NormalizedLayerSpec } from './../spec';
 import { BOXPLOT, BoxPlotConfigMixins, BoxPlotDef } from './boxplot';
 import { ERRORBAR } from './errorbar';
+import * as boxplot from './boxplot';
 export { BoxPlotConfig } from './boxplot';
 export declare type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config) => NormalizedLayerSpec;
 export declare function add(mark: string, normalizer: UnitNormalizer): void;
@@ -10,7 +11,7 @@ export declare function remove(mark: string): void;
 export declare type CompositeMark = BOXPLOT | ERRORBAR;
 export declare type CompositeMarkDef = BoxPlotDef;
 export declare type CompositeAggregate = BOXPLOT;
-export declare const COMPOSITE_MARK_STYLES: import("./boxplot").BoxPlotStyle[];
+export declare const COMPOSITE_MARK_STYLES: boxplot.BoxPlotStyle[];
 export declare type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
 export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {
 }
