@@ -58,4 +58,24 @@ describe('compile/data/impute', () => {
       groupby: ['a','b']
     });
   });
+
+  it('should handle sequence keyvals', () => {
+    const transform: Transform= {
+      impute: 'y',
+      key: 'x',
+      keyvals: {start: 3, stop: 5},
+      method: 'max',
+      groupby: ['a', 'b']
+
+    };
+    const impute = new ImputeTransformNode(null, transform);
+    assert.deepEqual(impute.assemble(), {
+      type: 'impute',
+      field: 'y',
+      key: 'x',
+      keyvals: {signal: 'sequence(3, 5, 1)'},
+      method: 'max',
+      groupby: ['a','b']
+    });
+  });
 });

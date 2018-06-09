@@ -212,6 +212,26 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
+export interface ImputeSequence {
+  /**
+   * The starting value of the sequence.
+   */
+  start: number;
+  /**
+   * The ending value(exclusive) of the sequence.
+   */
+  stop: number;
+  /**
+   * The step value between sequence entries.
+   * __Default value:__ `1` or `-1` if `stop < start`
+   */
+  step?: number;
+}
+
+export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
+  return t && t['start'] !== undefined && t['stop'] !== undefined;
+}
+
 export interface ImputeTransform {
   /**
    * The data field for which the missing values should be imputed.
@@ -226,12 +246,12 @@ export interface ImputeTransform {
    * An optional array of key values that should be considered for imputation.
    * If provided, this array will be used in addition to the key values observed within the input data.
    */
-  keyvals?: any[];
+  keyvals?: any[] | ImputeSequence;
   /**
    * The imputation method to use for the field value of imputed data objects.
    * One of `value`, `mean`, `median`, `max` or `min`.
    *
-   * __Default value:__:  `"value"`
+   * __Default value:__  `"value"`
    */
   method?: 'value' | 'mean' | 'median' | 'max' | 'min';
   /**
