@@ -461,7 +461,7 @@ export interface VgImputeTransform {
   groupby?: string[];
   field: string;
   key: string;
-  keyvals?: any[];
+  keyvals?: any[] | VgSignalRef;
   method?: 'value' | 'median' | 'max' | 'min' | 'mean';
   value?: any;
 }
