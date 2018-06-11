@@ -117,46 +117,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -267,13 +229,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -729,46 +686,8 @@
           "type": "number"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "discreteBandSize": {
           "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
@@ -856,13 +775,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -1781,6 +1695,47 @@
         }
       },
       "type": "object"
+    },
+    "Cursor": {
+      "enum": [
+        "auto",
+        "default",
+        "none",
+        "context-menu",
+        "help",
+        "pointer",
+        "progress",
+        "wait",
+        "cell",
+        "crosshair",
+        "text",
+        "vertical-text",
+        "alias",
+        "copy",
+        "move",
+        "no-drop",
+        "not-allowed",
+        "e-resize",
+        "n-resize",
+        "ne-resize",
+        "nw-resize",
+        "s-resize",
+        "se-resize",
+        "sw-resize",
+        "w-resize",
+        "ew-resize",
+        "ns-resize",
+        "nesw-resize",
+        "nwse-resize",
+        "col-resize",
+        "row-resize",
+        "all-scroll",
+        "zoom-in",
+        "zoom-out",
+        "grab",
+        "grabbing"
+      ],
+      "type": "string"
     },
     "Data": {
       "anyOf": [
@@ -4077,46 +4032,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4216,13 +4133,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -4512,46 +4424,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4634,13 +4508,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -4712,46 +4581,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4862,13 +4693,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -6356,6 +6182,14 @@
       ],
       "type": "string"
     },
+    "StrokeCap": {
+      "enum": [
+        "butt",
+        "round",
+        "square"
+      ],
+      "type": "string"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "$ref": "#/definitions/VgMarkConfig"
@@ -6384,46 +6218,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6510,13 +6306,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -6638,46 +6429,8 @@
           "type": "string"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6760,13 +6513,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -8008,46 +7756,8 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -8126,13 +7836,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",

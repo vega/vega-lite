@@ -959,6 +959,19 @@ export type Interpolate = 'linear' | 'linear-closed' |
   'bundle' | 'monotone';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
+export type Cursor = 'auto' | 'default' | 'none' |
+  'context-menu' | 'help' | 'pointer' |
+  'progress' | 'wait' | 'cell' |
+  'crosshair' | 'text' | 'vertical-text' |
+  'alias' | 'copy' | 'move' |
+  'no-drop' | 'not-allowed' | 'e-resize' |
+  'n-resize' | 'ne-resize' | 'nw-resize' |
+  's-resize' | 'se-resize' | 'sw-resize' |
+  'w-resize' | 'ew-resize' | 'ns-resize' |
+  'nesw-resize' | 'nwse-resize' | 'col-resize' |
+  'row-resize' | 'all-scroll' | 'zoom-in' |
+  'zoom-out' | 'grab' | 'grabbing';
+export type StrokeCap = 'butt' | 'round' | 'square';
 
 export interface VgMarkConfig {
 
@@ -1023,7 +1036,7 @@ export interface VgMarkConfig {
    *
    * __Default value:__ `"square"`
    */
-  strokeCap?: 'butt' | 'round' | 'square';
+  strokeCap?: StrokeCap;
 
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
@@ -1176,7 +1189,7 @@ export interface VgMarkConfig {
   /**
    * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
-  cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
+  cursor?: Cursor;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
