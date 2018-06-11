@@ -99,13 +99,17 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
       config.errorband
   );
 
+  const is2D = encoding.x !== undefined && encoding.y !== undefined;
+  const bandMark = is2D ? 'area' : 'rect';
+  const rimsMark = is2D ? 'line' : 'rule';
+
   return {
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBandPart('band', 'area', 'lower', 'upper'),
-      ...makeErrorBandPart('rims', 'line', 'lower'),
-      ...makeErrorBandPart('rims', 'line', 'upper'),
+      ...makeErrorBandPart('band', bandMark, 'lower', 'upper'),
+      ...makeErrorBandPart('rims', rimsMark, 'lower'),
+      ...makeErrorBandPart('rims', rimsMark, 'upper'),
     ]
   };
 }
