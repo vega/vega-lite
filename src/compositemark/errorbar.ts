@@ -128,10 +128,6 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
 
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for error bar.`);
-  }
-
   if (extent === 'stderr' || extent === 'stdev') {
     errorbarSpecificAggregate = [{
       op: extent,
