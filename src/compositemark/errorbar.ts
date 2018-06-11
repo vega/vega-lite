@@ -85,7 +85,11 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const center: ErrorBarCenter = markDef.center || config.errorbar.center;
   const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
+  if ((center === 'median') !== (extent === 'iqr')) {
+    log.warn(`${center} is not usually used with ${extent} for error bar.`);
+  }
+
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent, ERRORBAR);
 
   // drop size
   const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
@@ -112,7 +116,8 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
 export function errorBarParams(
   spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef | ErrorBand | ErrorBandDef>,
   center: ErrorBarCenter,
-  extent: ErrorBarExtent
+  extent: ErrorBarExtent,
+  COMPOSITE_MARK: 'errorbar' | 'errorband'
 ): {
   transform: Transform[];
   groupby: string[];
@@ -120,15 +125,11 @@ export function errorBarParams(
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>
 } {
-  const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, ERRORBAR);
+  const orient: Orient = compositeMarkOrient(spec, COMPOSITE_MARK);
+  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, COMPOSITE_MARK);
   const continuousFieldName: string = continuousAxisChannelDef.field;
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
-
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for error bar.`);
-  }
 
   if (extent === 'stderr' || extent === 'stdev') {
     errorbarSpecificAggregate = [{

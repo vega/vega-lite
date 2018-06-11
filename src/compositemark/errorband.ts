@@ -16,11 +16,11 @@ import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
 
-export type ErrorBandPart = 'band' | 'line';
+export type ErrorBandPart = 'band' | 'rims';
 
 const ERRORBAND_PART_INDEX: Flag<ErrorBandPart> = {
   band: 1,
-  line: 1
+  rims: 1
 };
 
 export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
@@ -33,7 +33,7 @@ export type ErrorBandPartsMixins = {
 
 export interface ErrorBandConfig extends ErrorBandPartsMixins {
   /**
-   * The center of the errorband. Available options include:
+   * The center of the error band. Available options include:
    * - `"mean": the mean of the data points.
    * - `"median": the median of the data points.
    *
@@ -42,11 +42,11 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   center?: ErrorBarCenter;
 
   /**
-   * The extent of the rule. Available options include:
-   * - `"ci": Extend the rule to the confidence interval of the mean.
-   * - `"stderr": The size of rule are set to the value of standard error, extending from the center.
-   * - `"stdev": The size of rule are set to the value of standard deviation, extending from the center.
-   * - `"iqr": Extend the rule to the q1 and q3.
+   * The extent of the band. Available options include:
+   * - `"ci": Extend the band to the confidence interval of the mean.
+   * - `"stderr": The size of band are set to the value of standard error, extending from the center.
+   * - `"stdev": The size of band are set to the value of standard deviation, extending from the center.
+   * - `"iqr": Extend the band to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.
    */
@@ -55,7 +55,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
 
 export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> & ErrorBandConfig & {
   /**
-   * Orientation of the error band.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+   * Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
    */
   orient?: Orient;
 };
@@ -82,7 +82,11 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
   const center: ErrorBarCenter = markDef.center || config.errorband.center;
   const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
+  if ((center === 'median') !== (extent === 'iqr')) {
+    log.warn(`${center} is not usually used with ${extent} for error band.`);
+  }
+
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent, ERRORBAND);
 
   // drop size
   const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
@@ -99,8 +103,9 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBandPart('line', 'line', center),
       ...makeErrorBandPart('band', 'area', 'lower', 'upper'),
+      ...makeErrorBandPart('rims', 'line', 'lower'),
+      ...makeErrorBandPart('rims', 'line', 'upper'),
     ]
   };
 }
