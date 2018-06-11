@@ -272,7 +272,11 @@ export const defaultConfig: Config = {
     band: {
       opacity: 0.5
     },
+<<<<<<< HEAD
     borders: false
+=======
+    rims: false
+>>>>>>> add errorband tests
   },
 
   scale: defaultScaleConfig,
