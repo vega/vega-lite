@@ -41,7 +41,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
 }
 
 function cursor(markDef: MarkDef, encoding: Encoding<String>) {
-  if (encoding['href']) {
+  if (encoding['href'] || markDef['href']) {
     return 'pointer';
   }
   return markDef.cursor;

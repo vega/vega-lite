@@ -302,7 +302,7 @@ describe('compile/mark/init', function() {
   });
 
   describe('cursor', function() {
-    it('should return correct cursor for no href channel defined', function() {
+    it('cursor should be undefined when no href channel defined', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "encoding": {
@@ -313,7 +313,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, undefined);
     });
 
-    it('should return correct cursor for when href channel present', function() {
+    it('should return pointer cursor for when href channel present', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "selection": {"test": {"type": "single"}},
@@ -330,7 +330,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return correct cursor for when href channel present but cursor specified', function() {
+    it('should return specified cursor for when href channel present but cursor specified', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "cursor": "auto"},
         "selection": {"test": {"type": "single"}},
@@ -338,11 +338,33 @@ describe('compile/mark/init', function() {
           "x": {"field": "a", "type": "ordinal"},
           "y": {"field": "b", "type": "quantitative"},
           "href": {
-            "condition": {"selection": "test", "value": "https://vega.github.io/schema/vega-lite/v2.json"},
+            "condition": {"selection": "test", "value": "http://www.google.com"},
             "field": "a",
             "type": "ordinal"
           },
         },
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should return pointer cursor for when href channel specified in mark definition', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "href": "http://www.google.com"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'pointer');
+    });
+
+    it('should return specified cursor for when href channel specified in mark definition but cursor also specified', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "href": "http://www.google.com", "cursor": "auto"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
       });
       assert.equal(model.markDef.cursor, 'auto');
     });
