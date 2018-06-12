@@ -121,11 +121,7 @@ describe('normalizeErrorBand', () => {
       }
     }, defaultConfig);
 
-<<<<<<< HEAD
     assert.equal(localLogger.warns[0], 'median is not usually used with stderr for errorband.');
-=======
-    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for error band.');
->>>>>>> c14dac593... add errorband tests
   }));
 
   it("should produce a warning if center is mean and extent is iqr", log.wrap((localLogger) => {
@@ -146,11 +142,7 @@ describe('normalizeErrorBand', () => {
       }
     }, defaultConfig);
 
-<<<<<<< HEAD
     assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for errorband.');
-=======
-    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for error band.');
->>>>>>> c14dac593... add errorband tests
   }));
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {
