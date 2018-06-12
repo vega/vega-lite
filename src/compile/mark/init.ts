@@ -34,14 +34,17 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   // set cursor, which should be pointer if href channel is present unless otherwise specified
   const specifiedCursor = markDef.cursor;
   if (specifiedCursor === undefined) {
-    markDef.cursor = cursor(encoding);
+    markDef.cursor = cursor(markDef, encoding);
   }
 
   return markDef;
 }
 
-function cursor(encoding: Encoding<String>) {
-  return encoding['href'] ? 'pointer' : 'auto';
+function cursor(markDef: MarkDef, encoding: Encoding<String>) {
+  if (encoding['href']) {
+    return 'pointer';
+  }
+  return markDef.cursor;
 }
 
 function defaultOpacity(mark: Mark, encoding: Encoding<string>) {
