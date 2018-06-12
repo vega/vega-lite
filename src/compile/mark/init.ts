@@ -30,7 +30,18 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   if (specifiedFilled === undefined) {
     markDef.filled = filled(markDef, config);
   }
+
+  // set cursor, which should be pointer if href channel is present unless otherwise specified
+  const specifiedCursor = markDef.cursor;
+  if (specifiedCursor === undefined) {
+    markDef.cursor = cursor(encoding);
+  }
+
   return markDef;
+}
+
+function cursor(encoding: Encoding<String>) {
+  return encoding['href'] ? 'pointer' : 'auto';
 }
 
 function defaultOpacity(mark: Mark, encoding: Encoding<string>) {
