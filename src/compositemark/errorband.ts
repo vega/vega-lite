@@ -1,9 +1,7 @@
 import {Config} from '../config';
 import {isMarkDef, MarkConfig} from '../mark';
-import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
-import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {
@@ -71,31 +69,16 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
   spec = filterUnsupportedChannels(spec, ERRORBAND);
 
   // TODO: use selection
-  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const {mark, encoding, selection: _selection, projection: _p, ...outerSpec} = spec;
   const markDef: ErrorBandDef = isMarkDef(mark) ? mark : {type: mark};
 
-  // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
-  if (selection) {
-    log.warn(log.message.selectionNotSupported('errorband'));
-  }
-
-  const center: ErrorBarCenter = markDef.center || config.errorband.center;
-  const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
-
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for error band.`);
-  }
-
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent, ERRORBAND);
-
-  // drop size
-  const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, markDef, ERRORBAND, config);
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
       markDef,
       continuousAxis,
       continuousAxisChannelDef,
-      sharedEncoding,
+      encodingWithoutContinuousAxis,
       config.errorband
   );
 

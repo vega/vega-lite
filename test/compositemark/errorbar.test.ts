@@ -100,7 +100,7 @@ describe('normalizeErrorBar', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for error bar.');
+    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for errorbar.');
   }));
 
   it("should produce a warning if center is mean and extent is iqr", log.wrap((localLogger) => {
@@ -121,7 +121,7 @@ describe('normalizeErrorBar', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for error bar.');
+    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for errorbar.');
   }));
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {

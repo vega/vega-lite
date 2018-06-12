@@ -269,7 +269,6 @@ export const defaultConfig: Config = {
   },
 
   errorband: {
-    center: 'mean',
     band: {
       opacity: 0.5
     },
