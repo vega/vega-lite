@@ -2566,16 +2566,6 @@
     "ErrorBarConfig": {
       "additionalProperties": false,
       "properties": {
-        "bar": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
         "center": {
           "$ref": "#/definitions/ErrorBarCenter",
           "description": "The center of the errorbar. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
@@ -2583,26 +2573,6 @@
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
           "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
-        },
-        "line": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "point": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
         },
         "rule": {
           "anyOf": [
@@ -2630,16 +2600,6 @@
     "ErrorBarDef": {
       "additionalProperties": false,
       "properties": {
-        "bar": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
         "center": {
           "$ref": "#/definitions/ErrorBarCenter",
           "description": "The center of the errorbar. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
@@ -2652,16 +2612,6 @@
           "$ref": "#/definitions/ErrorBarExtent",
           "description": "The extent of the rule. Available options include:\n- `\"ci\": Extend the rule to the confidence interval of the mean.\n- `\"stderr\": The size of rule are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of rule are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
-        "line": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
         "opacity": {
           "description": "Opacity of the marks.",
           "type": "number"
@@ -2669,16 +2619,6 @@
         "orient": {
           "$ref": "#/definitions/Orient",
           "description": "Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
-        },
-        "point": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
         },
         "rule": {
           "anyOf": [
@@ -5438,36 +5378,6 @@
       "additionalProperties": false,
       "description": "Make all properties in T optional",
       "properties": {
-        "bar": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "line": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "point": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
         "rule": {
           "anyOf": [
             {

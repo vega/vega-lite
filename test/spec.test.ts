@@ -93,71 +93,130 @@ describe('normalize()', function () {
           }
         },
         spec: {
-          mark: {
-            "type": "errorbar",
-            "extent": "stderr"
-          },
-          encoding: {
-            "x": {
-              "field": "age",
-              "type": "ordinal"
-            },
-            "y": {
-              "field": "people",
-              "type": "quantitative"
-            }
-          }
-        }
-      }, defaultConfig), {
-        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
-        "data": {"url": "data/population.json"},
-        "transform": [{"calculate": "(datum.sex==1) ? 'Men':'Women'", "as": "sex"}],
-        "facet": {"row": {"field": "sex", "type": "ordinal"}},
-        "spec": {
-          "transform": [
+          layer: [
             {
-              "aggregate": [
-                {"op": "stderr", "field": "people", "as": "extent_people"},
-                {"op": "mean", "field": "people", "as": "mean_people"}
-              ],
-              "groupby": ["age"]
-            },
-            {
-              "calculate": "datum.mean_people + datum.extent_people",
-              "as": "upper_people"
-            },
-            {
-              "calculate": "datum.mean_people - datum.extent_people",
-              "as": "lower_people"
-            }
-          ],
-          "layer": [
-            {
-              "mark": {"type": "rule", "style": "errorbar-rule"},
-              "encoding": {
-                "y": {
-                  "field": "lower_people",
-                  "type": "quantitative",
-                  "title": "people"
+              mark: {
+                "type": "errorbar",
+                "extent": "stderr"
+              },
+              encoding: {
+                "x": {
+                  "field": "age",
+                  "type": "ordinal"
                 },
-                "y2": {"field": "upper_people", "type": "quantitative"},
-                "x": {"field": "age", "type": "ordinal"}
+                "y": {
+                  "field": "people",
+                  "type": "quantitative"
+                }
               }
             },
             {
-              "mark": {
-                "opacity": 1,
-                "filled": true,
+              mark: {
                 "type": "point",
-                "style": "errorbar-point"
+                "opacity": 1,
+                "filled": true
+              },
+              encoding: {
+                "x": {
+                  "field": "age",
+                  "type": "ordinal"
+                },
+                "y": {
+                  "field": "people",
+                  "type": "quantitative",
+                  "aggregate": "mean"
+                }
+              }
+            }
+          ]
+        }
+      }, defaultConfig), {
+        "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
+        "data": {
+          "url": "data/population.json"
+        },
+        "transform": [
+          {
+            "calculate": "(datum.sex==1) ? 'Men':'Women'",
+            "as": "sex"
+          }
+        ],
+        "facet": {
+          "row": {
+            "field": "sex",
+            "type": "ordinal"
+          }
+        },
+        "spec": {
+          "layer": [
+            {
+              "transform": [
+                {
+                  "aggregate": [
+                    {
+                      "op": "stderr",
+                      "field": "people",
+                      "as": "extent_people"
+                    },
+                    {
+                      "op": "mean",
+                      "field": "people",
+                      "as": "mean_people"
+                    }
+                  ],
+                  "groupby": [
+                    "age"
+                  ]
+                },
+                {
+                  "calculate": "datum.mean_people + datum.extent_people",
+                  "as": "upper_people"
+                },
+                {
+                  "calculate": "datum.mean_people - datum.extent_people",
+                  "as": "lower_people"
+                }
+              ],
+              "layer": [
+                {
+                  "mark": {
+                    "type": "rule",
+                    "style": "errorbar-rule"
+                  },
+                  "encoding": {
+                    "y": {
+                      "field": "lower_people",
+                      "type": "quantitative",
+                      "title": "people"
+                    },
+                    "y2": {
+                      "field": "upper_people",
+                      "type": "quantitative"
+                    },
+                    "x": {
+                      "field": "age",
+                      "type": "ordinal"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "mark": {
+                "type": "point",
+                "opacity": 1,
+                "filled": true
               },
               "encoding": {
-                "y": {
-                  "field": "mean_people",
-                  "type": "quantitative",
-                  "title": "people"
+                "x": {
+                  "field": "age",
+                  "type": "ordinal"
                 },
-                "x": {"field": "age", "type": "ordinal"}
+                "y": {
+                  "field": "people",
+                  "type": "quantitative",
+                  "aggregate": "mean"
+                }
               }
             }
           ]

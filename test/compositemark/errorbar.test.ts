@@ -57,22 +57,6 @@ describe('normalizeErrorBar', () => {
             "y2": {"field": "upper_people", "type": "quantitative"},
             "x": {"field": "age", "type": "ordinal"}
           }
-        },
-        {
-          "mark": {
-            "opacity": 1,
-            "filled": true,
-            "type": "point",
-            "style": "errorbar-point"
-          },
-          "encoding": {
-            "y": {
-              "field": "mean_people",
-              "type": "quantitative",
-              "title": "people"
-            },
-            "x": {"field": "age", "type": "ordinal"}
-          }
         }
       ]
     });
@@ -515,29 +499,7 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for veritcal errorbar without center point", () => {
-    const outputSpec = normalize({
-      "data": {"url": "data/population.json"},
-      mark: {
-        type: "errorbar",
-        point: false
-      },
-      encoding: {
-        "x": {
-          "field": "age",
-          "type": "ordinal"
-        },
-        "y": {
-          "field": "people",
-          "type": "quantitative"
-        }
-      }
-    }, defaultConfig);
-
-    assert.deepEqual(isLayerSpec(outputSpec) && outputSpec.layer.length, 1);
-  });
-
-  it("should produce correct layered specs for veritcal errorbar without center point", () => {
+  it("should produce correct layered specs for veritcal errorbar with ticks", () => {
     const color = "red";
     const opacity = 0.5;
     const size = 10;
@@ -546,15 +508,6 @@ describe('normalizeErrorBar', () => {
       "data": {"url": "data/population.json"},
       mark: {
         type: "errorbar",
-        line: {
-          color,
-          opacity
-        },
-        bar: {
-          size,
-          color,
-          opacity
-        },
         ticks: {
           size,
           color,
@@ -575,21 +528,6 @@ describe('normalizeErrorBar', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(some(layer, (unitSpec) => {
-        return isUnitSpec(unitSpec) &&
-              isMarkDef(unitSpec.mark) &&
-              unitSpec.mark.type === "line" &&
-              unitSpec.mark.color === color &&
-              unitSpec.mark.opacity === opacity;
-      }));
-      assert.isTrue(some(layer, (unitSpec) => {
-        return isUnitSpec(unitSpec) &&
-              isMarkDef(unitSpec.mark) &&
-              unitSpec.mark.type === "bar" &&
-              unitSpec.mark.size === size &&
-              unitSpec.mark.color === color &&
-              unitSpec.mark.opacity === opacity;
-      }));
       assert.isTrue(some(layer, (unitSpec) => {
         return isUnitSpec(unitSpec) &&
               isMarkDef(unitSpec.mark) &&

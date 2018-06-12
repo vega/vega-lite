@@ -21,12 +21,9 @@ export type ErrorBar = typeof ERRORBAR;
 export type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';
 export type ErrorBarCenter = 'mean' | 'median';
 
-export type ErrorBarPart = 'bar' | 'line' | 'point' | 'ticks' | 'rule';
+export type ErrorBarPart = 'ticks' | 'rule';
 
 const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
-  bar: 1,
-  line: 1,
-  point: 1,
   ticks: 1,
   rule: 1
 };
@@ -107,12 +104,9 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBarPart('bar', 'bar', center),
-      ...makeErrorBarPart('line', 'line', center),
       ...makeErrorBarPart('ticks', 'tick', 'lower'),
       ...makeErrorBarPart('ticks', 'tick', 'upper'),
-      ...makeErrorBarPart('rule', 'rule', 'lower', 'upper'),
-      ...makeErrorBarPart('point', 'point', center)
+      ...makeErrorBarPart('rule', 'rule', 'lower', 'upper')
     ]
   };
 }

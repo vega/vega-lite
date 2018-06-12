@@ -265,12 +265,6 @@ export const defaultConfig: Config = {
   errorbar: {
     center: 'mean',
     rule: true,
-    point: {
-      opacity: 1,
-      filled: true
-    },
-    line: false,
-    bar: false,
     ticks: false
   },
 
