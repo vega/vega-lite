@@ -23,7 +23,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = markDef.opacity !== undefined ? markDef.opacity : getMarkConfig('opacity', markDef, config);
   if (specifiedOpacity === undefined) {
-    markDef.opacity = defaultOpacity(markDef.type, encoding);
+    markDef.opacity = opacity(markDef.type, encoding);
   }
 
   const specifiedFilled = markDef.filled;
@@ -33,7 +33,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   return markDef;
 }
 
-function defaultOpacity(mark: Mark, encoding: Encoding<string>) {
+function opacity(mark: Mark, encoding: Encoding<string>) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {
