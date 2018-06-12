@@ -14,11 +14,11 @@ import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
 
-export type ErrorBandPart = 'band' | 'rims';
+export type ErrorBandPart = 'band' | 'borders';
 
 const ERRORBAND_PART_INDEX: Flag<ErrorBandPart> = {
   band: 1,
-  rims: 1
+  borders: 1
 };
 
 export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
@@ -84,15 +84,15 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
 
   const is2D = encoding.x !== undefined && encoding.y !== undefined;
   const bandMark = is2D ? 'area' : 'rect';
-  const rimsMark = is2D ? 'line' : 'rule';
+  const bordersMark = is2D ? 'line' : 'rule';
 
   return {
     ...outerSpec,
     transform,
     layer: [
       ...makeErrorBandPart('band', bandMark, 'lower', 'upper'),
-      ...makeErrorBandPart('rims', rimsMark, 'lower'),
-      ...makeErrorBandPart('rims', rimsMark, 'upper'),
+      ...makeErrorBandPart('borders', bordersMark, 'lower'),
+      ...makeErrorBandPart('borders', bordersMark, 'upper'),
     ]
   };
 }

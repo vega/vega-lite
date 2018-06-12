@@ -272,7 +272,7 @@ export const defaultConfig: Config = {
     band: {
       opacity: 0.5
     },
-    rims: false
+    borders: false
   },
 
   scale: defaultScaleConfig,

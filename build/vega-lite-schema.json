@@ -2579,15 +2579,7 @@
             }
           ]
         },
-        "center": {
-          "$ref": "#/definitions/ErrorBarCenter",
-          "description": "The center of the error band. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
-        },
-        "extent": {
-          "$ref": "#/definitions/ErrorBarExtent",
-          "description": "The extent of the band. Available options include:\n- `\"ci\": Extend the band to the confidence interval of the mean.\n- `\"stderr\": The size of band are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of band are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
-        },
-        "rims": {
+        "borders": {
           "anyOf": [
             {
               "type": "boolean"
@@ -2596,6 +2588,14 @@
               "$ref": "#/definitions/MarkConfig"
             }
           ]
+        },
+        "center": {
+          "$ref": "#/definitions/ErrorBarCenter",
+          "description": "The center of the error band. Available options include:\n- `\"mean\": the mean of the data points.\n- `\"median\": the median of the data points.\n\n__Default value:__ `\"mean\"`."
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the band. Available options include:\n- `\"ci\": Extend the band to the confidence interval of the mean.\n- `\"stderr\": The size of band are set to the value of standard error, extending from the center.\n- `\"stdev\": The size of band are set to the value of standard deviation, extending from the center.\n- `\"iqr\": Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         }
       },
       "type": "object"
@@ -2604,6 +2604,16 @@
       "additionalProperties": false,
       "properties": {
         "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
           "anyOf": [
             {
               "type": "boolean"
@@ -2632,16 +2642,6 @@
         "orient": {
           "$ref": "#/definitions/Orient",
           "description": "Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
-        },
-        "rims": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
         },
         "type": {
           "$ref": "#/definitions/ErrorBand",
