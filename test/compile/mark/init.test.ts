@@ -358,7 +358,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor when href channel specified in mark definition but cursor also specified', function() {
+    it('should return specified cursor when href channel specified in mark definition but cursor also specified in mark', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "href": "http://www.google.com", "cursor": "auto"},
         "encoding": {
@@ -385,7 +385,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor when href channel specified in mark config but cursor also specified', function() {
+    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "config": {
           "mark": {
@@ -393,6 +393,23 @@ describe('compile/mark/init', function() {
           }
         },
         "mark": {"type": "bar", "cursor": "auto"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark config', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com",
+            "cursor": "auto"
+          }
+        },
+        "mark": "bar",
         "encoding": {
           "y": {"type": "quantitative", "field": "foo"},
           "x": {"type": "temporal", "field": "bar"}
