@@ -96,17 +96,17 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   if (orient === 'vertical') {
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
-    continuousAxisChannelDef2 = (encoding.y2) ? encoding.y2 as FieldDef<string> : undefined;
+    continuousAxisChannelDef2 = encoding.y2 ? encoding.y2 as FieldDef<string> : undefined;
   } else {
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-    continuousAxisChannelDef2 = (encoding.x2) ? encoding.x2 as FieldDef<string> : undefined;
+    continuousAxisChannelDef2 = encoding.x2 ? encoding.x2 as FieldDef<string> : undefined;
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
-      log.warn(`Continuous axis should not have customized aggregation function ${aggregate}`);
+      log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
     }
     continuousAxisChannelDef = continuousAxisWithoutAggregate;
   }
@@ -114,7 +114,7 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   if (continuousAxisChannelDef2 && continuousAxisChannelDef2.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate2} = continuousAxisChannelDef2;
     if (aggregate !== compositeMark) {
-      log.warn(`Continuous axis should not have customized aggregation function ${aggregate}`);
+      log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
     }
     continuousAxisChannelDef2 = continuousAxisWithoutAggregate2;
   }

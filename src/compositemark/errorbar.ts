@@ -122,8 +122,8 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   const continuousFieldName: string = continuousAxisChannelDef.field;
 
   if (isDataAggregated) {
-    if (markDef.extent || markDef.center) {
-      log.warn(`center and extent are not needed when data are aggregated.`);
+    if (markDef.center || markDef.extent) {
+      log.warn(log.message.errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
     }
 
     postAggregateCalculates = [
@@ -141,7 +141,7 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
 
     if ((center === 'median') !== (extent === 'iqr')) {
-      log.warn(`${center} is not usually used with ${extent} for ${compositeMark}.`);
+      log.warn(log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
     }
 
     if (extent === 'stderr' || extent === 'stdev') {

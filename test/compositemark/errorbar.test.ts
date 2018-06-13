@@ -83,12 +83,16 @@ describe('normalizeErrorBar with raw data input', () => {
   });
 
   it("should produce a warning if center is median and extent is not iqr", log.wrap((localLogger) => {
+    const center = 'median';
+    const extent = 'stderr';
+    const type = 'errorbar';
+
     normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
-        center: "median",
-        extent: "stderr"
+        type,
+        center,
+        extent
       },
       encoding: {
         "x": {"field": "people","type": "quantitative"},
@@ -100,16 +104,20 @@ describe('normalizeErrorBar with raw data input', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for errorbar.');
+    assert.equal(localLogger.warns[0], log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type));
   }));
 
   it("should produce a warning if center is mean and extent is iqr", log.wrap((localLogger) => {
+    const center = 'mean';
+    const extent = 'iqr';
+    const type = 'errorbar';
+
     normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
-        center: "mean",
-        extent: "iqr"
+        type,
+        center,
+        extent
       },
       encoding: {
         "x": {"field": "people","type": "quantitative"},
@@ -121,19 +129,20 @@ describe('normalizeErrorBar with raw data input', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for errorbar.');
+    assert.equal(localLogger.warns[0], log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type));
   }));
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {
+    const aggregate = 'min';
+    const mark = 'errorbar';
+
     normalize({
         "data": {"url": "data/population.json"},
-        mark: {
-          type: "errorbar"
-        },
+        mark,
         encoding: {
           "x": {"field": "age","type": "ordinal"},
           "y": {
-            "aggregate": "min",
+            aggregate,
             "field": "people",
             "type": "quantitative"
           },
@@ -141,7 +150,7 @@ describe('normalizeErrorBar with raw data input', () => {
         }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
+    assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
   }));
 
   it("should produce an error if build 1D errorbar with a discrete axis", () => {
@@ -674,6 +683,9 @@ describe('normalizeErrorBar with aggregated data input', () => {
   });
 
   it('should produce a warning if data are aggregated but center and/or extent is specified', log.wrap((localLogger) => {
+    const extent = 'stdev';
+    const center = 'mean';
+
     normalize({
       "data": {
         "values": [
@@ -688,8 +700,8 @@ describe('normalizeErrorBar with aggregated data input', () => {
       },
       "mark": {
         "type": "errorbar",
-        "extent": "stdev",
-        "center": "mean"
+        extent,
+        center
       },
       "encoding": {
         "x": {"field": "age", "type": "ordinal"},
@@ -698,7 +710,7 @@ describe('normalizeErrorBar with aggregated data input', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'center and extent are not needed when data are aggregated.');
+    assert.equal(localLogger.warns[0], log.message.errorBarCenterAndExtentAreNotNeeded(center, extent));
   }));
 
   it("should produce an error if data are aggregated and have both x2 and y2 quantiative", () => {
@@ -731,6 +743,9 @@ describe('normalizeErrorBar with aggregated data input', () => {
   });
 
   it("should produce a warning if the second continuous axis has aggregate property", log.wrap((localLogger) => {
+    const aggregate = 'min';
+    const mark = 'errorbar';
+
     normalize({
       "data": {
         "values": [
@@ -743,18 +758,21 @@ describe('normalizeErrorBar with aggregated data input', () => {
           {"age": 7, "people": 2, "people2": 5}
         ]
       },
-      "mark": "errorbar",
+      mark,
       "encoding": {
         "x": {"field": "age", "type": "ordinal"},
         "y": {"field": "people", "type": "quantitative"},
-        "y2": {"field": "people2", "type": "quantitative", "aggregate": "min"}
+        "y2": {"field": "people2", "type": "quantitative", aggregate}
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
+    assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
   }));
 
   it("should produce a warning if there is an unsupported channel in encoding", log.wrap((localLogger) => {
+    const size = "size";
+    const mark = 'errorbar';
+
     normalize({
       "data": {
         "values": [
@@ -767,15 +785,15 @@ describe('normalizeErrorBar with aggregated data input', () => {
           {"age": 7, "people": 2, "people2": 5}
         ]
       },
-      "mark": "errorbar",
+      mark,
       "encoding": {
         "x": {"field": "age", "type": "ordinal"},
         "y": {"field": "people", "type": "quantitative"},
         "y2": {"field": "people2", "type": "quantitative", "aggregate": "min"},
-        "size": {"value": 10}
+        size: {"value": 10}
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'size dropped as it is incompatible with "errorbar".');
+    assert.equal(localLogger.warns[0], log.message.incompatibleChannel(size, mark));
   }));
 });
