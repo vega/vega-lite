@@ -5,7 +5,7 @@ import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
-import {isAggregate} from '../../src/transform';
+import {isAggregate, isCalculate, Transform} from '../../src/transform';
 import {some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
@@ -626,6 +626,53 @@ describe('normalizeErrorBar with aggregated data input', () => {
     });
   });
 
+  it('should produce correct layered specs for horizontal errorbar with aggregated data input', () => {
+    const outputSpec = normalize({
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "mark": "errorbar",
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {"field": "people", "type": "quantitative"},
+        "x2": {"field": "people2", "type": "quantitative"}
+      }
+    }, defaultConfig);
+
+    for (let i = 0; i < 2; i++) {
+      const calculate: Transform = outputSpec.transform[i];
+
+      if (isCalculate(calculate)) {
+        assert.isTrue((calculate.calculate === "datum.people" && calculate.as === "lower_people") ||
+        (calculate.calculate === "datum.people2" && calculate.as === "upper_people"));
+      } else {
+        assert.fail(isCalculate(calculate), true, 'transform[' + i + '] should be an aggregate transform');
+      }
+    }
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    if (layer) {
+      assert.isTrue(some(layer, (unitSpec) => {
+        return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) &&
+              unitSpec.encoding.x.field === "lower_people";
+      }));
+      assert.isTrue(some(layer, (unitSpec) => {
+        return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) &&
+              unitSpec.encoding.x2.field === "upper_people";
+      }));
+    } else {
+      assert.fail(!layer, false, 'layer should be a part of the spec');
+    }
+  });
+
   it('should produce a warning if data are aggregated but center and/or extent is specified', log.wrap((localLogger) => {
     normalize({
       "data": {
@@ -682,4 +729,53 @@ describe('normalizeErrorBar with aggregated data input', () => {
       }, defaultConfig);
     }, Error, 'Cannot have both x2 and y2 with both are quantiative');
   });
+
+  it("should produce a warning if the second continuous axis has aggregate property", log.wrap((localLogger) => {
+    normalize({
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "mark": "errorbar",
+      "encoding": {
+        "x": {"field": "age", "type": "ordinal"},
+        "y": {"field": "people", "type": "quantitative"},
+        "y2": {"field": "people2", "type": "quantitative", "aggregate": "min"}
+      }
+    }, defaultConfig);
+
+    assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
+  }));
+
+  it("should produce a warning if there is an unsupported channel in encoding", log.wrap((localLogger) => {
+    normalize({
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "mark": "errorbar",
+      "encoding": {
+        "x": {"field": "age", "type": "ordinal"},
+        "y": {"field": "people", "type": "quantitative"},
+        "y2": {"field": "people2", "type": "quantitative", "aggregate": "min"},
+        "size": {"value": 10}
+      }
+    }, defaultConfig);
+
+    assert.equal(localLogger.warns[0], 'size dropped as it is incompatible with "errorbar".');
+  }));
 });
