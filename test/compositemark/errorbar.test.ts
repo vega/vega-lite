@@ -626,4 +626,60 @@ describe('normalizeErrorBar with aggregated data input', () => {
     });
   });
 
+  it('should produce a warning if data are aggregated but center and/or extent is specified', log.wrap((localLogger) => {
+    normalize({
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "mark": {
+        "type": "errorbar",
+        "extent": "stdev",
+        "center": "mean"
+      },
+      "encoding": {
+        "x": {"field": "age", "type": "ordinal"},
+        "y": {"field": "people", "type": "quantitative"},
+        "y2": {"field": "people2", "type": "quantitative"}
+      }
+    }, defaultConfig);
+
+    assert.equal(localLogger.warns[0], 'center and extent are not needed when data are aggregated.');
+  }));
+
+  it("should produce an error if data are aggregated and have both x2 and y2 quantiative", () => {
+    assert.throws(() => {
+      normalize({
+        "data": {
+          "values": [
+            {"age": 1, "age2": 1, "people": 1, "people2": 2},
+            {"age": 2, "age2": 1, "people": 4, "people2": 8},
+            {"age": 3, "age2": 1, "people": 13, "people2": 18},
+            {"age": 4, "age2": 1, "people": 2, "people2": 28},
+            {"age": 5, "age2": 1, "people": 19, "people2": 23},
+            {"age": 6, "age2": 1, "people": 10, "people2": 20},
+            {"age": 7, "age2": 1, "people": 2, "people2": 5}
+          ]
+        },
+        "mark": {
+          "type": "errorbar",
+          "extent": "stdev",
+          "center": "mean"
+        },
+        "encoding": {
+          "x": {"field": "age", "type": "quantitative"},
+          "x2": {"field": "age2", "type": "quantitative"},
+          "y": {"field": "people", "type": "quantitative"},
+          "y2": {"field": "people2", "type": "quantitative"}
+        }
+      }, defaultConfig);
+    }, Error, 'Cannot have both x2 and y2 with both are quantiative');
+  });
 });

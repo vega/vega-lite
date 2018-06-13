@@ -142,7 +142,7 @@ export function compositeMarkOrient<M extends CompositeMark>(
     // having x and x2
     if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
       // having both x, x2 and y, y2
-      throw new Error('Cannot have both x2 and y2');
+      throw new Error('Cannot have both x2 and y2 with both are quantiative');
     } else {
       // having x, x2 but not y, y2
       return {orient: 'horizontal', isDataAggregated};
