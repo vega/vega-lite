@@ -91,7 +91,7 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 {:#hyperlink}
 ### Hyperlink Properties
 
-Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to "pointer" by default to serve as affordance for hyperlinks.
+Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
 {% include table.html props="href,cursor" source="MarkDef" %}
 
