@@ -90,14 +90,17 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
+  let continuousAxisChannelDef2: PositionFieldDef<string>;
   let continuousAxis: 'x' | 'y';
 
   if (orient === 'vertical') {
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
+    continuousAxisChannelDef2 = (encoding.y2) ? encoding.y2 as FieldDef<string> : undefined;
   } else {
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
+    continuousAxisChannelDef2 = (encoding.x2) ? encoding.x2 as FieldDef<string> : undefined;
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
@@ -108,8 +111,17 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
     continuousAxisChannelDef = continuousAxisWithoutAggregate;
   }
 
+  if (continuousAxisChannelDef2 && continuousAxisChannelDef2.aggregate) {
+    const {aggregate, ...continuousAxisWithoutAggregate2} = continuousAxisChannelDef2;
+    if (aggregate !== compositeMark) {
+      log.warn(`Continuous axis should not have customized aggregation function ${aggregate}`);
+    }
+    continuousAxisChannelDef2 = continuousAxisWithoutAggregate2;
+  }
+
   return {
     continuousAxisChannelDef,
+    continuousAxisChannelDef2,
     continuousAxis
   };
 }
@@ -118,41 +130,62 @@ export function compositeMarkOrient<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<Field>,
   CompositeMark | CompositeMarkDef>,
   compositeMark: M
-): Orient {
+): {
+  orient: Orient,
+  isDataAggregated: boolean
+} {
   const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
+
+  let isDataAggregated = true;
+
+  if (isFieldDef(encoding.x2) && isFieldDef(encoding.x) && isContinuous(encoding.x)) {
+    // having x and x2
+    if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+      // having both x, x2 and y, y2
+      throw new Error('Cannot have both x2 and y2');
+    } else {
+      // having x, x2 but not y, y2
+      return {orient: 'horizontal', isDataAggregated};
+    }
+  } else if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+    // having y, y2 but not x, x2
+    return {orient: 'vertical', isDataAggregated};
+  }
+
+  isDataAggregated = false;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
     // x is continuous
     if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
       // both x and y are continuous
       if (encoding.x.aggregate === undefined && encoding.y.aggregate === compositeMark) {
-        return 'vertical';
+        return {orient: 'vertical', isDataAggregated};
       } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === compositeMark) {
-        return 'horizontal';
+        return {orient: 'horizontal', isDataAggregated};
       } else if (encoding.x.aggregate === compositeMark && encoding.y.aggregate === compositeMark) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
         if (isMarkDef(mark) && mark.orient) {
-          return mark.orient;
+          return {orient: mark.orient, isDataAggregated};
         }
 
         // default orientation = vertical
-        return 'vertical';
+        return {orient: 'vertical', isDataAggregated};
       }
     }
 
     // x is continuous but y is not
-    return 'horizontal';
+    return {orient: 'horizontal', isDataAggregated};
   } else if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
     // y is continuous but x is not
-    return 'vertical';
+    return {orient: 'vertical', isDataAggregated};
   } else {
     // Neither x nor y is continuous.
     throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
   }
 }
 
-const compositeMarkSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+const compositeMarkSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
 export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
   spec: GenericUnitSpec<Encoding<string>, M | MD>,
   compositeMark: M

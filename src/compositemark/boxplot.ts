@@ -262,7 +262,7 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
 }
 
 function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, extent: 'min-max' | number) {
-  const orient: Orient = compositeMarkOrient(spec, BOXPLOT);
+  const {orient} = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
 
   const isMinMax = !isNumber(extent);

@@ -9,7 +9,7 @@ import {isAggregate} from '../../src/transform';
 import {some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
-describe('normalizeErrorBar', () => {
+describe('normalizeErrorBar with raw data input', () => {
   it('should produce correct layered specs for mean point and vertical error bar', () => {
     assert.deepEqual(normalize({
       "data": {
@@ -32,16 +32,16 @@ describe('normalizeErrorBar', () => {
         {
           "aggregate": [
             {"op": "stderr", "field": "people", "as": "extent_people"},
-            {"op": "mean", "field": "people", "as": "mean_people"}
+            {"op": "mean", "field": "people", "as": "center_people"}
           ],
           "groupby": ["age"]
         },
         {
-          "calculate": "datum.mean_people + datum.extent_people",
+          "calculate": "datum.center_people + datum.extent_people",
           "as": "upper_people"
         },
         {
-          "calculate": "datum.mean_people - datum.extent_people",
+          "calculate": "datum.center_people - datum.extent_people",
           "as": "lower_people"
         }
       ],
@@ -571,4 +571,59 @@ describe('normalizeErrorBar', () => {
       assert.fail(!layer, false, 'layer should be a part of the spec');
     }
   });
+});
+
+describe('normalizeErrorBar with aggregated data input', () => {
+  it('should produce correct layered specs for vertical errorbar with aggregated data input', () => {
+    assert.deepEqual(normalize({
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "mark": "errorbar",
+      "encoding": {
+        "x": {"field": "age", "type": "ordinal"},
+        "y": {"field": "people", "type": "quantitative"},
+        "y2": {"field": "people2", "type": "quantitative"}
+      }
+    }, defaultConfig), {
+      "data": {
+        "values": [
+          {"age": 1, "people": 1, "people2": 2},
+          {"age": 2, "people": 4, "people2": 8},
+          {"age": 3, "people": 13, "people2": 18},
+          {"age": 4, "people": 2, "people2": 28},
+          {"age": 5, "people": 19, "people2": 23},
+          {"age": 6, "people": 10, "people2": 20},
+          {"age": 7, "people": 2, "people2": 5}
+        ]
+      },
+      "transform": [
+        {"calculate": "datum.people", "as": "lower_people"},
+        {"calculate": "datum.people2", "as": "upper_people"}
+      ],
+      "layer": [
+        {
+          "mark": {"type": "rule", "style": "errorbar-rule"},
+          "encoding": {
+            "y": {
+              "field": "lower_people",
+              "type": "quantitative",
+              "title": "people"
+            },
+            "y2": {"field": "upper_people", "type": "quantitative"},
+            "x": {"field": "age", "type": "ordinal"}
+          }
+        }
+      ]
+    });
+  });
+
 });

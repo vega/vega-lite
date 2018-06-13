@@ -122,16 +122,16 @@ describe('normalize()', function () {
                 {
                   "aggregate": [
                     {"op": "stderr", "field": "people", "as": "extent_people"},
-                    {"op": "mean", "field": "people", "as": "mean_people"}
+                    {"op": "mean", "field": "people", "as": "center_people"}
                   ],
                   "groupby": ["age"]
                 },
                 {
-                  "calculate": "datum.mean_people + datum.extent_people",
+                  "calculate": "datum.center_people + datum.extent_people",
                   "as": "upper_people"
                 },
                 {
-                  "calculate": "datum.mean_people - datum.extent_people",
+                  "calculate": "datum.center_people - datum.extent_people",
                   "as": "lower_people"
                 }
               ],

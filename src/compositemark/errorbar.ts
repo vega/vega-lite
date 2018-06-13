@@ -115,70 +115,98 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     log.warn(log.message.selectionNotSupported(compositeMark));
   }
 
-  const center: ErrorBarCenter = markDef.center || config.errorbar.center;
-  const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
-
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for ${compositeMark}.`);
-  }
-
-  const orient: Orient = compositeMarkOrient(spec, compositeMark);
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
-  const continuousFieldName: string = continuousAxisChannelDef.field;
+  const {orient, isDataAggregated} = compositeMarkOrient(spec, compositeMark);
+  const {continuousAxisChannelDef, continuousAxisChannelDef2, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
+  const continuousFieldName: string = continuousAxisChannelDef.field;
 
-  if (extent === 'stderr' || extent === 'stdev') {
-    errorbarSpecificAggregate = [{
-      op: extent,
-      field: continuousFieldName,
-      as: 'extent_' + continuousFieldName
-    }];
+  if (isDataAggregated) {
+    if (markDef.extent || markDef.center) {
+      log.warn(`center and extent are not needed when data are aggregated.`);
+    }
 
-    postAggregateCalculates = [{
-        calculate: `datum.${center}_${continuousFieldName} + datum.extent_${continuousFieldName}`,
-        as: 'upper_' + continuousFieldName
+    postAggregateCalculates = [
+      {
+        calculate: `datum.${continuousFieldName}`,
+        as: `lower_` + continuousFieldName
       },
       {
-        calculate: `datum.${center}_${continuousFieldName} - datum.extent_${continuousFieldName}`,
-        as: 'lower_' + continuousFieldName
-    }];
-  } else {
-    errorbarSpecificAggregate = [
-      {
-        op: (extent === 'ci') ? 'ci0' : 'q1',
-        field: continuousFieldName,
-        as: 'lower_' + continuousFieldName
-      },
-      {
-        op: (extent === 'ci') ? 'ci1' : 'q3',
-        field: continuousFieldName,
-        as: 'upper_' + continuousFieldName
+        calculate: `datum.${continuousAxisChannelDef2.field}`,
+        as: `upper_` + continuousFieldName
       }
     ];
+  } else {
+    const center: ErrorBarCenter = markDef.center || config.errorbar.center;
+    const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
+
+    if ((center === 'median') !== (extent === 'iqr')) {
+      log.warn(`${center} is not usually used with ${extent} for ${compositeMark}.`);
+    }
+
+    if (extent === 'stderr' || extent === 'stdev') {
+      errorbarSpecificAggregate = [
+        {
+          op: extent,
+          field: continuousFieldName,
+          as: 'extent_' + continuousFieldName
+        },
+        {
+          op: center,
+          field: continuousFieldName,
+          as: 'center_' + continuousFieldName
+        }
+      ];
+
+      postAggregateCalculates = [
+        {
+          calculate: `datum.center_${continuousFieldName} + datum.extent_${continuousFieldName}`,
+          as: 'upper_' + continuousFieldName
+        },
+        {
+          calculate: `datum.center_${continuousFieldName} - datum.extent_${continuousFieldName}`,
+          as: 'lower_' + continuousFieldName
+        }
+      ];
+    } else {
+      errorbarSpecificAggregate = [
+        {
+          op: (extent === 'ci') ? 'ci0' : 'q1',
+          field: continuousFieldName,
+          as: 'lower_' + continuousFieldName
+        },
+        {
+          op: (extent === 'ci') ? 'ci1' : 'q3',
+          field: continuousFieldName,
+          as: 'upper_' + continuousFieldName
+        }
+      ];
+    }
   }
 
-  errorbarSpecificAggregate.push({
-    op: center,
-    field: continuousFieldName,
-    as: center + '_' + continuousFieldName
-  });
-
-  const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
 
-  return {
-    transform: [
+  const transform: Transform[] = [
+    ...(
+      (aggregate.length === 0 && errorbarSpecificAggregate.length === 0) ?
+        [] :
+        [{
+          aggregate: [...aggregate, ...errorbarSpecificAggregate],
+          groupby: isDataAggregated ? [] : groupby
+        }]
+    ),
+    ...[
       ...bins,
       ...timeUnits,
-      {
-        aggregate: [...aggregate, ...errorbarSpecificAggregate],
-        groupby
-      },
       ...postAggregateCalculates
-    ],
-    groupby,
+    ]
+  ];
+
+  return {
+    transform,
+    groupby: isDataAggregated ? [] : groupby,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis
