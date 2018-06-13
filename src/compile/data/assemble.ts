@@ -14,7 +14,7 @@ import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
-import {ImputeTransformNode} from './impute';
+import {ImputeNode} from './impute';
 import {IdentifierNode} from './indentifier';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
@@ -99,7 +99,6 @@ function makeWalkTree(data: VgData[]) {
       node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
-      node instanceof ImputeTransformNode ||
       node instanceof WindowTransformNode ||
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
@@ -111,6 +110,7 @@ function makeWalkTree(data: VgData[]) {
     if (node instanceof FilterInvalidNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
+      node instanceof ImputeNode ||
       node instanceof StackNode) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
     }

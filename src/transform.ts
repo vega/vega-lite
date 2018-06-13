@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
-
 import {BinParams} from './bin';
 import {Data} from './data';
+import {ImputeParams} from './impute';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
@@ -215,8 +215,9 @@ export interface WindowTransform {
 export interface ImputeSequence {
   /**
    * The starting value of the sequence.
+   * __Default value:__ `0`
    */
-  start: number;
+  start?: number;
   /**
    * The ending value(exclusive) of the sequence.
    */
@@ -232,7 +233,7 @@ export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is Im
   return t && t['start'] !== undefined && t['stop'] !== undefined;
 }
 
-export interface ImputeTransform {
+export interface ImputeTransform extends ImputeParams {
   /**
    * The data field for which the missing values should be imputed.
    */
@@ -247,22 +248,12 @@ export interface ImputeTransform {
    * If provided, this array will be used in addition to the key values observed within the input data.
    */
   keyvals?: any[] | ImputeSequence;
-  /**
-   * The imputation method to use for the field value of imputed data objects.
-   * One of `value`, `mean`, `median`, `max` or `min`.
-   *
-   * __Default value:__  `"value"`
-   */
-  method?: 'value' | 'mean' | 'median' | 'max' | 'min';
+
   /**
    * An optional array of fields by which to group the values.
    * Imputation will then be performed on a per-group basis.
    */
   groupby?: string[];
-  /**
-   * The field value to use when the imputation `method` is `"value"`.
-   */
-  value?: any;
 }
 
 export interface FlattenTransform {
