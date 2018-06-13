@@ -456,13 +456,15 @@ export type VgSort = {
   order?: (VgComparatorOrder)[];
 };
 
+export type ImputeMethods = 'value' | 'median' | 'max' | 'min' | 'mean';
+
 export interface VgImputeTransform {
   type: 'impute';
   groupby?: string[];
   field: string;
   key: string;
   keyvals?: any[] | VgSignalRef;
-  method?: 'value' | 'median' | 'max' | 'min' | 'mean';
+  method?: ImputeMethods;
   value?: any;
 }
 

@@ -10,7 +10,7 @@ import {FilterNode} from '../../../src/compile/data/filter';
 import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {ImputeTransformNode} from '../../../src/compile/data/impute';
+import {ImputeNode} from '../../../src/compile/data/impute';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
@@ -122,8 +122,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof ImputeTransformNode);
-      assert.isTrue(result instanceof ImputeTransformNode);
+      assert.isTrue(root.children[0] instanceof ImputeNode);
+      assert.isTrue(result instanceof ImputeNode);
 
     });
     it ('should return a WindowTransform Node', () => {
@@ -298,6 +298,33 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof SampleTransformNode);
       assert.isTrue(result instanceof SampleTransformNode);
+    });
+
+    it('should return a 3 Transforms from an Impute', () => {
+      const transform: Transform= {
+        impute: 'y',
+        key: 'x',
+        method: 'max',
+        groupby: ['a', 'b'],
+        frame: [-2, 2]
+      };
+
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+          color: {field: 'c', type: 'nominal'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof ImputeNode);
+      assert.isTrue(result instanceof ImputeNode);
     });
   });
 });
