@@ -401,7 +401,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'auto');
     });
 
-    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark config', function() {
+    it('should not specify cursor in the markdef if defined in the config', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "config": {
           "mark": {
@@ -415,7 +415,7 @@ describe('compile/mark/init', function() {
           "x": {"type": "temporal", "field": "bar"}
         }
       });
-      assert.equal(model.markDef.cursor, 'auto');
+      assert.equal(model.markDef.cursor, undefined);
     });
 
   });
