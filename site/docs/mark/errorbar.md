@@ -18,7 +18,7 @@ permalink: /docs/errorbar.html
 
 An error bar summarizes an error range of quantitative values using a set of summary statistics, representing by whiskers. Depending on the [type of error bar](#errorbar-types), the ends of whiskers can represent different types of error.
 
-To create a error bar, set `mark` to `"errorbar"`.
+To create an error bar, set `mark` to `"errorbar"`.
 
 ## Documentation Overview
 {:.no_toc}
@@ -29,9 +29,9 @@ To create a error bar, set `mark` to `"errorbar"`.
 {:#properties}
 ## Error Bar Mark Properties
 
-A errorbar's mark definition contain the following properties:
+An errorbar's mark definition contain the following properties:
 
-{% include table.html props="type,center,extent,orient,size,color,opacity" source="ErrorBarDef" %}
+{% include table.html props="type,center,extent,orient,color,opacity" source="ErrorBarDef" %}
 
 Besides the properties listed above, `"rule"` and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the error bar](#parts) as well.
 
@@ -56,7 +56,7 @@ Only set the `center` to `median`, resaulting the default of `extent` becomes `i
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_stdev"></div>
 
-Explicitly setting `extent` to `stderr` with `center` set to `median`.
+Explicitly setting `extent` to `stdev` with `center` set to `median`.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_median_stdev"></div>
 
@@ -69,7 +69,7 @@ Explicitly setting `extent` to `stderr` with `center` set to `median`.
 <div class="vl-example" data-name="errorbar_2d_horizontal_iqr"></div>
 
 ## Dimension & Orientation
-There are two `error bar` dimensions:
+There are two `errorbar` dimensions:
 
 {:#1D_horizontal}
 1) A 1D `errorbar` shows the error range of a continuous field.
@@ -78,7 +78,7 @@ There are two `error bar` dimensions:
 2) A 2D `errorbar` shows the error range of a continuous field, broken down by categories.
 <div class="vl-example" data-name="errorbar_2d_horizontal"></div>
 
-A errorbar's orientation is automatically determined by the continuous field axis.
+An errorbar's orientation is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D error bar by encoding a continuous field on the y axis.
 
 <div class="vl-example" data-name="errorbar_1d_vertical"></div>
@@ -103,18 +103,17 @@ Under the hood, the `"errorbar"` mark is a [composite mark](mark.html#composite-
 
 We can customize different parts of the error bar [mark definition](#properties) or [config](#config).
 
-For example, we can customize the error bar's `"tick"` by setting `"color"` to `"red"` and set `"ticks"` to true to make the error bar includes end ticks:
+For example, we can add the error bar's end ticks and customize it by adding a mark property to `ticks`, such as setting `color` to `red`:
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_custom_mark"></div>
+<div class="vl-example" data-name="errorbar_2d_horizontal_custom_ticks"></div>
 
 ## Color, and Opacity Encoding Channels
 
 You can customize the color, size, and opacity of the bar in the `errorbar` by using the `color`, and `opacity` [encoding channels](encoding.html#channels), which applied to the whole `errorbar`.
 
 An example of a `errorbar` where the `color` encoding channel is specified.
-<div class="vl-example" data-name="errorbar_2d_vertical"></div>
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_color"></div>
+<div class="vl-example" data-name="errorbar_2d_horizontal_custom_mark"></div>
 
 
 {:#config}

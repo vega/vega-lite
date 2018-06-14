@@ -148,7 +148,6 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     const extent: ErrorBarExtent = markDef.extent ? markDef.extent :
       ((center === 'mean') ? 'stderr' : 'iqr');
 
-    console.log(center + '    ' + extent);
     if ((center === 'median') !== (extent === 'iqr')) {
       log.warn(log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
     }

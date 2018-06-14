@@ -3,7 +3,9 @@
   "data": {"url": "data/barley.json"},
   "mark": {
     "type": "errorbar",
-    "color": "blue"
+    "ticks": {
+      "color": "red"
+    }
   },
   "encoding": {
     "x": {
