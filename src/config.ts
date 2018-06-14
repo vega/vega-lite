@@ -110,11 +110,6 @@ export interface ViewConfig {
    *
    */
   strokeMiterLimit?: number;
-
-  /**
-   * The radius in pixels of rounded rectangle corners (default 0).
-   */
-  cornerRadius?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {

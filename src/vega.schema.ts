@@ -973,6 +973,7 @@ export type Cursor = 'auto' | 'default' | 'none' |
   'zoom-out' | 'grab' | 'grabbing';
 export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
+export type Dir = 'ltr' | 'rtl';
 
 export interface VgMarkConfig {
 
@@ -1139,6 +1140,11 @@ export interface VgMarkConfig {
   baseline?: VerticalAlign;
 
   /**
+   * The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+   */
+  dir?: Dir;
+
+  /**
    * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dx?: number;
@@ -1158,6 +1164,11 @@ export interface VgMarkConfig {
    * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
    */
   limit?: number;
+
+  /**
+   * The ellipsis string for text truncated in response to the limit parameter (default “…”).
+   */
+  ellipsis?: string;
 
   /**
    * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
@@ -1247,11 +1258,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   href: 1,
   tooltip: 1,
   cornerRadius: 1,
+  dir: 1,
+  ellipsis: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
-  // dir: 1,
-  // ellipsis: 1,
   // endAngle: 1,
   // innerRadius: 1,
   // outerRadius: 1,

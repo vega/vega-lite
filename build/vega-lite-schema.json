@@ -124,6 +124,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -131,6 +135,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -708,6 +716,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "discreteBandSize": {
           "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
           "minimum": 0,
@@ -720,6 +732,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -1882,6 +1898,13 @@
         "$ref": "#/definitions/InlineDataset"
       },
       "type": "object"
+    },
+    "Dir": {
+      "enum": [
+        "ltr",
+        "rtl"
+      ],
+      "type": "string"
     },
     "DsvDataFormat": {
       "additionalProperties": false,
@@ -4069,6 +4092,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -4076,6 +4103,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -4476,6 +4507,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -4483,6 +4518,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -4648,6 +4687,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -4655,6 +4698,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -6308,6 +6355,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -6315,6 +6366,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -6534,6 +6589,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -6541,6 +6600,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -7876,6 +7939,10 @@
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+        },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
@@ -7883,6 +7950,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -8176,10 +8247,6 @@
         "clip": {
           "description": "Whether the view should be clipped.",
           "type": "boolean"
-        },
-        "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
-          "type": "number"
         },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ (none)",
