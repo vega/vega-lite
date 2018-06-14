@@ -116,6 +116,10 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -243,6 +247,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -267,6 +279,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -685,6 +700,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -789,6 +808,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -813,6 +840,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -4031,6 +4061,10 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -4147,6 +4181,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -4171,6 +4213,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -4423,6 +4468,10 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -4522,6 +4571,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -4546,6 +4603,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -4579,6 +4639,10 @@
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
         },
         "cursor": {
           "$ref": "#/definitions/Cursor",
@@ -4707,6 +4771,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -4750,6 +4822,9 @@
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         },
         "type": {
           "$ref": "#/definitions/Mark",
@@ -6190,6 +6265,14 @@
       ],
       "type": "string"
     },
+    "StrokeJoin": {
+      "enum": [
+        "miter",
+        "round",
+        "bevel"
+      ],
+      "type": "string"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "$ref": "#/definitions/VgMarkConfig"
@@ -6216,6 +6299,10 @@
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
         },
         "cursor": {
           "$ref": "#/definitions/Cursor",
@@ -6320,6 +6407,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -6344,6 +6439,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -6427,6 +6525,10 @@
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
         },
         "cursor": {
           "$ref": "#/definitions/Cursor",
@@ -6527,6 +6629,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -6556,6 +6666,9 @@
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -7755,6 +7868,10 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
@@ -7850,6 +7967,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel."
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
           "maximum": 1,
@@ -7874,6 +7999,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -8049,6 +8177,10 @@
           "description": "Whether the view should be clipped.",
           "type": "boolean"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "type": "number"
+        },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ (none)",
           "type": "string"
@@ -8074,6 +8206,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'"
+        },
+        "strokeMiterLimit": {
+          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'",
           "type": "number"
         },
         "strokeOpacity": {

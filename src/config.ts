@@ -13,7 +13,7 @@ import {StackOffset} from './stack';
 import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
 
 
 export interface ViewConfig {
@@ -94,6 +94,27 @@ export interface ViewConfig {
    *
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeMiterLimit?: number;
+
+  /**
+   * The radius in pixels of rounded rectangle corners (default 0).
+   */
+  cornerRadius?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {

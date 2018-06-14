@@ -121,7 +121,7 @@ export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | 
 }
 
 export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'];
 

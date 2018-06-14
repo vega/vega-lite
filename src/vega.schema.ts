@@ -267,7 +267,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'strokeMiterLimit'|'strokeJoin'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined'|'cornerRadius';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -972,6 +972,7 @@ export type Cursor = 'auto' | 'default' | 'none' |
   'row-resize' | 'all-scroll' | 'zoom-in' |
   'zoom-out' | 'grab' | 'grabbing';
 export type StrokeCap = 'butt' | 'round' | 'square';
+export type StrokeJoin = 'miter' | 'round' | 'bevel';
 
 export interface VgMarkConfig {
 
@@ -1047,6 +1048,16 @@ export interface VgMarkConfig {
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The miter limit at which to bevel a line join.
+   */
+  strokeMiterLimit?: number;
 
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**
@@ -1190,6 +1201,16 @@ export interface VgMarkConfig {
    * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
   cursor?: Cursor;
+
+  /**
+   * The tooltip text to show upon mouse hover.
+   */
+  tooltip?: any;
+
+  /**
+   * The radius in pixels of rounded rectangle corners (default 0).
+   */
+  cornerRadius?: number;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -1202,6 +1223,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   strokeOpacity: 1,
   strokeDash: 1,
   strokeDashOffset: 1,
+  strokeJoin: 1,
+  strokeMiterLimit: 1,
   size: 1,
   shape: 1,
   interpolate: 1,
@@ -1222,6 +1245,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fontStyle: 1,
   cursor: 1,
   href: 1,
+  tooltip: 1,
+  cornerRadius: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
