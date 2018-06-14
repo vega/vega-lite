@@ -341,12 +341,16 @@ export namespace message {
     return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '}not needed when data are aggregated.`;
   }
 
-  export function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, compositeMark: 'errorbar' | 'errorband') {
-    return `${center} is not usually used with ${extent} for ${compositeMark}.`;
+  export function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `${center} is not usually used with ${extent} for ${mark}.`;
   }
 
   export function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark) {
     return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
+  }
+
+  export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
 }
 

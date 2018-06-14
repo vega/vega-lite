@@ -129,7 +129,34 @@ describe('normalizeErrorBar with raw data input', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type));
+    assert.isTrue(some(localLogger.warns, (message) => {
+      return message === log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type);
+    }));
+  }));
+
+  it("should produce a warning if center is specified and extent is iqr", log.wrap((localLogger) => {
+    const center = 'median';
+    const extent = 'iqr';
+    const type = 'errorbar';
+
+    normalize({
+      "data": {"url": "data/population.json"},
+      mark: {
+        type,
+        center,
+        extent
+      },
+      encoding: {
+        "x": {"field": "people","type": "quantitative"},
+        "y": {
+          "field": "people",
+          "type": "quantitative"
+        },
+        "color": {"value" : "skyblue"}
+      }
+    }, defaultConfig);
+
+    assert.equal(localLogger.warns[0], log.message.errorBarCenterIsNotNeeded(extent, type));
   }));
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {

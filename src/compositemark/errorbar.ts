@@ -137,8 +137,10 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
       }
     ];
   } else {
-    const center: ErrorBarCenter = markDef.center || config.errorbar.center;
-    const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
+    const center: ErrorBarCenter = markDef.center ? markDef.center :
+      (markDef.extent ? (markDef.extent === 'iqr' ? 'median' : 'mean') : config.errorbar.center);
+    const extent: ErrorBarExtent = markDef.extent ? markDef.extent :
+      ((center === 'mean') ? 'stderr' : 'iqr');
 
     if ((center === 'median') !== (extent === 'iqr')) {
       log.warn(log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
@@ -169,6 +171,10 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
         }
       ];
     } else {
+      if (markDef.center) {
+        log.warn(log.message.errorBarCenterIsNotNeeded(extent, compositeMark));
+      }
+
       errorbarSpecificAggregate = [
         {
           op: (extent === 'ci') ? 'ci0' : 'q1',
