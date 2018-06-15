@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/layout/header';
+import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
 import {VgMarkGroup} from '../../../src/vega.schema';
 import {parseFacetModel} from '../../util';
 
