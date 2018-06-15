@@ -1051,7 +1051,9 @@ export interface VgMarkConfig {
   strokeDashOffset?: number;
 
   /**
-   * The stroke line join method. One of miter (default), round or bevel.
+   * The stroke line join method. One of `"miter"`, `"round"` or `"bevel"`.
+   *
+   * __Default value:__ `"miter"`
    */
   strokeJoin?: StrokeJoin;
 
@@ -1140,7 +1142,9 @@ export interface VgMarkConfig {
   baseline?: VerticalAlign;
 
   /**
-   * The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+   * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"ltr"`
    */
   dir?: Dir;
 
@@ -1161,12 +1165,16 @@ export interface VgMarkConfig {
   radius?: number;
 
   /**
-   * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
+   * The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
+   *
+   * __Default value:__ `0`, indicating no limit
    */
   limit?: number;
 
   /**
-   * The ellipsis string for text truncated in response to the limit parameter (default “…”).
+   * The ellipsis string for text truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"…"`
    */
   ellipsis?: string;
 
@@ -1218,8 +1226,12 @@ export interface VgMarkConfig {
    */
   tooltip?: any;
 
+  // ---------- Corner Radius: Bar, Tick, Rect ----------
+
   /**
-   * The radius in pixels of rounded rectangle corners (default 0).
+   * The radius in pixels of rounded rectangle corners.
+   *
+   * __Default value:__ `0`
    */
   cornerRadius?: number;
 }
@@ -1244,9 +1256,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   align: 1,
   baseline: 1,
   text: 1,
-  limit: 1,
+  dir: 1,
   dx: 1,
   dy: 1,
+  ellipsis: 1,
+  limit: 1,
   radius: 1,
   theta: 1,
   angle: 1,
@@ -1258,8 +1272,6 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   href: 1,
   tooltip: 1,
   cornerRadius: 1,
-  dir: 1,
-  ellipsis: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
