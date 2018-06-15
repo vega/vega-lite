@@ -1,6 +1,6 @@
 import {Config} from '../config';
 import {PositionFieldDef} from '../fielddef';
-import {isMarkDef} from '../mark';
+import {isMarkDef, MarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
@@ -37,8 +37,8 @@ export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
   /**
    * The center of the errorbar. Available options include:
-   * - `"mean": the mean of the data points.
-   * - `"median": the median of the data points.
+   * - `"mean"`: the mean of the data points.
+   * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
    */
@@ -46,10 +46,10 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
 
   /**
    * The extent of the rule. Available options include:
-   * - `"ci": Extend the rule to the confidence interval of the mean.
-   * - `"stderr": The size of rule are set to the value of standard error, extending from the center.
-   * - `"stdev": The size of rule are set to the value of standard deviation, extending from the center.
-   * - `"iqr": Extend the rule to the q1 and q3.
+   * - `"ci"`: Extend the rule to the confidence interval of the mean.
+   * - `"stderr"`: The size of rule are set to the value of standard error, extending from the center.
+   * - `"stdev"`: The size of rule are set to the value of standard deviation, extending from the center.
+   * - `"iqr"`: Extend the rule to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.
    */
@@ -77,7 +77,7 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: ErrorBarDef = isMarkDef(mark) ? mark : {type: mark};
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, markDef, ERRORBAR, config);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, ticksOrient} = errorBarParams(spec, markDef, ERRORBAR, config);
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
       markDef,
@@ -87,12 +87,14 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
       config.errorbar
   );
 
+  const tick: MarkDef = {type: 'tick', orient: ticksOrient};
+
   return {
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBarPart('ticks', 'tick', 'lower'),
-      ...makeErrorBarPart('ticks', 'tick', 'upper'),
+      ...makeErrorBarPart('ticks', tick, 'lower'),
+      ...makeErrorBarPart('ticks', tick, 'upper'),
       ...makeErrorBarPart('rule', 'rule', 'lower', 'upper')
     ]
   };
@@ -108,7 +110,8 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   groupby: string[];
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
-  encodingWithoutContinuousAxis: Encoding<string>
+  encodingWithoutContinuousAxis: Encoding<string>,
+  ticksOrient: Orient
 } {
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
   if (spec.selection) {
@@ -210,11 +213,14 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     ]
   ];
 
+  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+
   return {
     transform,
     groupby: isDataAggregated ? [] : groupby,
     continuousAxisChannelDef,
     continuousAxis,
-    encodingWithoutContinuousAxis
+    encodingWithoutContinuousAxis,
+    ticksOrient
   };
 }
