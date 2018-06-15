@@ -30,6 +30,11 @@
       "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
       "as": "amount"
     },
+    {
+      "calculate": "(datum.label !== 'End' && datum.label !== 'Start' && datum.amount > 0 ? '+' : '') + datum.amount",
+      "as": "text_amount"
+    },
+    {"calculate": "(datum.sum + datum.previous_amount) / 2", "as": "center"},
     {"calculate": "datum.amount < 0 ? datum.sum : ''", "as": "sum_dec"},
     {"calculate": "datum.amount > 0 ? datum.sum : ''", "as": "sum_inc"}
   ],
@@ -59,15 +64,43 @@
       }
     },
     {
+      "mark": {"type": "tick", "color": "black", "size": 50},
+      "encoding": {"y": {"field": "previous_amount", "type": "quantitative"}}
+    },
+    {
+      "mark": {"type": "tick", "color": "black", "size": 50},
+      "encoding": {"y": {"field": "sum", "type": "quantitative"}}
+    },
+    {
       "mark": {
         "type": "text",
-        "dy": 8,
+        "dy": -8,
         "fontWeight": "bold",
-        "baseline": "top"
+        "color": "#404040"
       },
       "encoding": {
         "y": {"field": "sum_inc", "type": "quantitative"},
-        "text": {"field": "sum_inc", "type": "nominal"},
+        "text": {"field": "sum_inc", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": 8,
+        "baseline": "top",
+        "fontWeight": "bold",
+        "color": "#404040"
+      },
+      "encoding": {
+        "y": {"field": "sum_dec", "type": "quantitative"},
+        "text": {"field": "sum_dec", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "text", "fontWeight": "bold", "baseline": "middle"},
+      "encoding": {
+        "y": {"field": "center", "type": "quantitative"},
+        "text": {"field": "text_amount", "type": "nominal"},
         "color": {
           "condition": [
             {
@@ -75,21 +108,8 @@
               "value": "#725a30"
             }
           ],
-          "value": "#234f39"
+          "value": "white"
         }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "dy": -8,
-        "baseline": "bottom",
-        "fontWeight": "bold",
-        "color": "#8b422c"
-      },
-      "encoding": {
-        "y": {"field": "sum_dec", "type": "quantitative"},
-        "text": {"field": "sum_dec", "type": "nominal"}
       }
     }
   ]

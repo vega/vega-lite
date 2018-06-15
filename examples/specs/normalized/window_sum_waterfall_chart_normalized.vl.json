@@ -81,6 +81,14 @@
       "as": "amount"
     },
     {
+      "calculate": "(datum.label !== 'End' && datum.label !== 'Start' && datum.amount > 0 ? '+' : '') + datum.amount",
+      "as": "text_amount"
+    },
+    {
+      "calculate": "(datum.sum + datum.previous_amount) / 2",
+      "as": "center"
+    },
+    {
       "calculate": "datum.amount < 0 ? datum.sum : ''",
       "as": "sum_dec"
     },
@@ -125,10 +133,48 @@
     },
     {
       "mark": {
+        "type": "tick",
+        "color": "black",
+        "size": 50
+      },
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "title": "Months"
+        },
+        "y": {
+          "field": "previous_amount",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "color": "black",
+        "size": 50
+      },
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "title": "Months"
+        },
+        "y": {
+          "field": "sum",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
         "type": "text",
-        "dy": 8,
+        "dy": -8,
         "fontWeight": "bold",
-        "baseline": "top"
+        "color": "#404040"
       },
       "encoding": {
         "x": {
@@ -143,6 +189,54 @@
         },
         "text": {
           "field": "sum_inc",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": 8,
+        "baseline": "top",
+        "fontWeight": "bold",
+        "color": "#404040"
+      },
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "title": "Months"
+        },
+        "y": {
+          "field": "sum_dec",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "sum_dec",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontWeight": "bold",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "x": {
+          "field": "label",
+          "type": "ordinal",
+          "sort": null,
+          "title": "Months"
+        },
+        "y": {
+          "field": "center",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "text_amount",
           "type": "nominal"
         },
         "color": {
@@ -152,32 +246,7 @@
               "value": "#725a30"
             }
           ],
-          "value": "#234f39"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "text",
-        "dy": -8,
-        "baseline": "bottom",
-        "fontWeight": "bold",
-        "color": "#8b422c"
-      },
-      "encoding": {
-        "x": {
-          "field": "label",
-          "type": "ordinal",
-          "sort": null,
-          "title": "Months"
-        },
-        "y": {
-          "field": "sum_dec",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "sum_dec",
-          "type": "nominal"
+          "value": "white"
         }
       }
     }

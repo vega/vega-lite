@@ -102,6 +102,16 @@
                 },
                 {
                     "type": "formula",
+                    "expr": "(datum.label !== 'End' && datum.label !== 'Start' && datum.amount > 0 ? '+' : '') + datum.amount",
+                    "as": "text_amount"
+                },
+                {
+                    "type": "formula",
+                    "expr": "(datum.sum + datum.previous_amount) / 2",
+                    "as": "center"
+                },
+                {
+                    "type": "formula",
                     "expr": "datum.amount < 0 ? datum.sum : ''",
                     "as": "sum_dec"
                 },
@@ -128,7 +138,7 @@
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
+                    "expr": "datum[\"previous_amount\"] !== null && !isNaN(datum[\"previous_amount\"])"
                 }
             ]
         },
@@ -138,7 +148,37 @@
             "transform": [
                 {
                     "type": "filter",
+                    "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_5",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
                     "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_6",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
                 }
             ]
         }
@@ -189,33 +229,94 @@
         },
         {
             "name": "layer_1_marks",
-            "type": "text",
+            "type": "rect",
             "style": [
-                "text"
+                "tick"
             ],
             "from": {
                 "data": "data_2"
             },
             "encode": {
                 "update": {
-                    "baseline": {
-                        "value": "top"
+                    "opacity": {
+                        "value": 0.7
                     },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "xc": {
+                        "scale": "x",
+                        "field": "label",
+                        "band": 0.5
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "previous_amount"
+                    },
+                    "width": {
+                        "value": 50
+                    },
+                    "height": {
+                        "value": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "rect",
+            "style": [
+                "tick"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "black"
+                    },
+                    "xc": {
+                        "scale": "x",
+                        "field": "label",
+                        "band": 0.5
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "sum"
+                    },
+                    "width": {
+                        "value": 50
+                    },
+                    "height": {
+                        "value": 1
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
                     "dy": {
-                        "value": 8
+                        "value": -8
                     },
                     "fontWeight": {
                         "value": "bold"
                     },
-                    "fill": [
-                        {
-                            "test": "datum.label === 'Start' || datum.label === 'End'",
-                            "value": "#725a30"
-                        },
-                        {
-                            "value": "#234f39"
-                        }
-                    ],
+                    "fill": {
+                        "value": "#404040"
+                    },
                     "x": {
                         "scale": "x",
                         "field": "label",
@@ -235,27 +336,27 @@
             }
         },
         {
-            "name": "layer_2_marks",
+            "name": "layer_4_marks",
             "type": "text",
             "style": [
                 "text"
             ],
             "from": {
-                "data": "data_3"
+                "data": "data_5"
             },
             "encode": {
                 "update": {
                     "baseline": {
-                        "value": "bottom"
+                        "value": "top"
                     },
                     "dy": {
-                        "value": -8
+                        "value": 8
                     },
                     "fontWeight": {
                         "value": "bold"
                     },
                     "fill": {
-                        "value": "#8b422c"
+                        "value": "#404040"
                     },
                     "x": {
                         "scale": "x",
@@ -268,6 +369,50 @@
                     },
                     "text": {
                         "signal": "''+datum[\"sum_dec\"]"
+                    },
+                    "align": {
+                        "value": "center"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_5_marks",
+            "type": "text",
+            "style": [
+                "text"
+            ],
+            "from": {
+                "data": "data_6"
+            },
+            "encode": {
+                "update": {
+                    "baseline": {
+                        "value": "middle"
+                    },
+                    "fontWeight": {
+                        "value": "bold"
+                    },
+                    "fill": [
+                        {
+                            "test": "datum.label === 'Start' || datum.label === 'End'",
+                            "value": "#725a30"
+                        },
+                        {
+                            "value": "white"
+                        }
+                    ],
+                    "x": {
+                        "scale": "x",
+                        "field": "label",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "center"
+                    },
+                    "text": {
+                        "signal": "''+datum[\"text_amount\"]"
                     },
                     "align": {
                         "value": "center"
@@ -292,6 +437,18 @@
                     },
                     {
                         "data": "data_3",
+                        "field": "label"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "label"
+                    },
+                    {
+                        "data": "data_5",
+                        "field": "label"
+                    },
+                    {
+                        "data": "data_6",
                         "field": "label"
                     }
                 ]
@@ -320,11 +477,23 @@
                     },
                     {
                         "data": "data_2",
-                        "field": "sum_inc"
+                        "field": "previous_amount"
                     },
                     {
                         "data": "data_3",
+                        "field": "sum"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "sum_inc"
+                    },
+                    {
+                        "data": "data_5",
                         "field": "sum_dec"
+                    },
+                    {
+                        "data": "data_6",
+                        "field": "center"
                     }
                 ]
             },
