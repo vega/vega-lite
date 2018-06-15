@@ -32,16 +32,16 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   }
 
   // set cursor, which should be pointer if href channel is present unless otherwise specified
-  const specifiedCursor = markDef.cursor;
+  const specifiedCursor = markDef.cursor || getMarkConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
-    markDef.cursor = cursor(markDef, encoding);
+    markDef.cursor = cursor(markDef, encoding, config);
   }
 
   return markDef;
 }
 
-function cursor(markDef: MarkDef, encoding: Encoding<String>) {
-  if (encoding.href || markDef.href) {
+function cursor(markDef: MarkDef, encoding: Encoding<String>, config: Config) {
+  if (encoding.href || markDef.href || getMarkConfig('href', markDef, config)) {
     return 'pointer';
   }
   return markDef.cursor;

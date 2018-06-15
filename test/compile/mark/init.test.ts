@@ -3,7 +3,7 @@
 import * as log from '../../../src/log';
 
 import {assert} from 'chai';
-import {BAR, CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
+import {BAR, CIRCLE, Mark, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -313,7 +313,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, undefined);
     });
 
-    it('should return pointer cursor for when href channel present', function() {
+    it('should return pointer cursor when href channel present', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": "bar",
         "selection": {"test": {"type": "single"}},
@@ -330,7 +330,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor for when href channel present but cursor specified', function() {
+    it('should return specified cursor when href channel present but cursor specified', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "cursor": "auto"},
         "selection": {"test": {"type": "single"}},
@@ -347,7 +347,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'auto');
     });
 
-    it('should return pointer cursor for when href channel specified in mark definition', function() {
+    it('should return pointer cursor when href channel specified in mark definition', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "href": "http://www.google.com"},
         "encoding": {
@@ -358,7 +358,7 @@ describe('compile/mark/init', function() {
       assert.equal(model.markDef.cursor, 'pointer');
     });
 
-    it('should return specified cursor for when href channel specified in mark definition but cursor also specified', function() {
+    it('should return specified cursor when href channel specified in mark definition but cursor also specified in mark', function() {
       const model = parseUnitModelWithScaleAndLayoutSize({
         "mark": {"type": "bar", "href": "http://www.google.com", "cursor": "auto"},
         "encoding": {
@@ -368,6 +368,56 @@ describe('compile/mark/init', function() {
       });
       assert.equal(model.markDef.cursor, 'auto');
     });
+
+    it('should return pointer cursor when href channel specified in mark config', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com"
+          }
+        },
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'pointer');
+    });
+
+    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com"
+          }
+        },
+        "mark": {"type": "bar", "cursor": "auto"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should not specify cursor in the markdef if defined in the config', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com",
+            "cursor": "auto"
+          }
+        },
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, undefined);
+    });
+
   });
 });
 

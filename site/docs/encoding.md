@@ -236,7 +236,7 @@ Similar to [`detail`](#detail), you can use an array of field definitions. Vega-
 {:#href}
 ## Hyperlink Channel
 
-By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. When the `href` channel is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `pointer` to serve as affordance for hyperlinks.
+By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. When the `href` channel is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
 {% include table.html props="href" source="Encoding" %}
 
