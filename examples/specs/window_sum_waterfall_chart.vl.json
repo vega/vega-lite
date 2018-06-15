@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
     "values": [
-      {"label": "Start", "amount": 4000},
+      {"label": "Begin", "amount": 4000},
       {"label": "Jan", "amount": 1707},
       {"label": "Feb", "amount": -1425},
       {"label": "Mar", "amount": -1030},
@@ -18,35 +18,41 @@
       {"label": "End", "amount": 0}
     ]
   },
-  "width": 700,
+  "width": 800,
   "height": 450,
   "transform": [
     {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
     {
       "calculate": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
-      "as": "previous_amount"
+      "as": "previous_sum"
     },
     {
       "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
       "as": "amount"
     },
     {
-      "calculate": "(datum.label !== 'End' && datum.label !== 'Start' && datum.amount > 0 ? '+' : '') + datum.amount",
+      "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
       "as": "text_amount"
     },
-    {"calculate": "(datum.sum + datum.previous_amount) / 2", "as": "center"},
-    {"calculate": "datum.amount < 0 ? datum.sum : ''", "as": "sum_dec"},
-    {"calculate": "datum.amount > 0 ? datum.sum : ''", "as": "sum_inc"}
+    {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
+    {
+      "calculate": "datum.sum < datum.previous_sum ? datum.sum : ''",
+      "as": "sum_dec"
+    },
+    {
+      "calculate": "datum.sum > datum.previous_sum ? datum.sum : ''",
+      "as": "sum_inc"
+    }
   ],
   "encoding": {
     "x": {"field": "label", "type": "ordinal", "sort": null, "title": "Months"}
   },
   "layer": [
     {
-      "mark": "bar",
+      "mark": {"type": "bar", "size": 45},
       "encoding": {
         "y": {
-          "field": "previous_amount",
+          "field": "previous_sum",
           "type": "quantitative",
           "title": "Amount"
         },
@@ -54,22 +60,30 @@
         "color": {
           "condition": [
             {
-              "test": "datum.label === 'Start' || datum.label === 'End'",
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
               "value": "#f7e0b6"
             },
-            {"test": "datum.amount < 0", "value": "#f78a64"}
+            {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"}
           ],
           "value": "#93c4aa"
         }
       }
     },
     {
-      "mark": {"type": "tick", "color": "black", "size": 50},
-      "encoding": {"y": {"field": "previous_amount", "type": "quantitative"}}
-    },
-    {
-      "mark": {"type": "tick", "color": "black", "size": 50},
-      "encoding": {"y": {"field": "sum", "type": "quantitative"}}
+      "mark": {
+        "type": "tick",
+        "color": "#404040",
+        "thickness": 1.5,
+        "opacity": 1,
+        "xOffset": 28.5
+      },
+      "encoding": {
+        "y": {"field": "sum", "type": "quantitative"},
+        "size": {
+          "condition": [{"test": "datum.label === 'End'", "value": 0}],
+          "value": 104
+        }
+      }
     },
     {
       "mark": {
@@ -104,7 +118,7 @@
         "color": {
           "condition": [
             {
-              "test": "datum.label === 'Start' || datum.label === 'End'",
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
               "value": "#725a30"
             }
           ],

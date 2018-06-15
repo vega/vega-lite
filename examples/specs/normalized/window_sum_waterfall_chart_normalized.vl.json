@@ -3,7 +3,7 @@
   "data": {
     "values": [
       {
-        "label": "Start",
+        "label": "Begin",
         "amount": 4000
       },
       {
@@ -60,7 +60,7 @@
       }
     ]
   },
-  "width": 700,
+  "width": 800,
   "height": 450,
   "transform": [
     {
@@ -74,32 +74,35 @@
     },
     {
       "calculate": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
-      "as": "previous_amount"
+      "as": "previous_sum"
     },
     {
       "calculate": "datum.label === 'End' ? datum.sum : datum.amount",
       "as": "amount"
     },
     {
-      "calculate": "(datum.label !== 'End' && datum.label !== 'Start' && datum.amount > 0 ? '+' : '') + datum.amount",
+      "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
       "as": "text_amount"
     },
     {
-      "calculate": "(datum.sum + datum.previous_amount) / 2",
+      "calculate": "(datum.sum + datum.previous_sum) / 2",
       "as": "center"
     },
     {
-      "calculate": "datum.amount < 0 ? datum.sum : ''",
+      "calculate": "datum.sum < datum.previous_sum ? datum.sum : ''",
       "as": "sum_dec"
     },
     {
-      "calculate": "datum.amount > 0 ? datum.sum : ''",
+      "calculate": "datum.sum > datum.previous_sum ? datum.sum : ''",
       "as": "sum_inc"
     }
   ],
   "layer": [
     {
-      "mark": "bar",
+      "mark": {
+        "type": "bar",
+        "size": 45
+      },
       "encoding": {
         "x": {
           "field": "label",
@@ -108,7 +111,7 @@
           "title": "Months"
         },
         "y": {
-          "field": "previous_amount",
+          "field": "previous_sum",
           "type": "quantitative",
           "title": "Amount"
         },
@@ -119,11 +122,11 @@
         "color": {
           "condition": [
             {
-              "test": "datum.label === 'Start' || datum.label === 'End'",
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
               "value": "#f7e0b6"
             },
             {
-              "test": "datum.amount < 0",
+              "test": "datum.sum < datum.previous_sum",
               "value": "#f78a64"
             }
           ],
@@ -134,27 +137,10 @@
     {
       "mark": {
         "type": "tick",
-        "color": "black",
-        "size": 50
-      },
-      "encoding": {
-        "x": {
-          "field": "label",
-          "type": "ordinal",
-          "sort": null,
-          "title": "Months"
-        },
-        "y": {
-          "field": "previous_amount",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "tick",
-        "color": "black",
-        "size": 50
+        "color": "#404040",
+        "thickness": 1.5,
+        "opacity": 1,
+        "xOffset": 28.5
       },
       "encoding": {
         "x": {
@@ -166,6 +152,15 @@
         "y": {
           "field": "sum",
           "type": "quantitative"
+        },
+        "size": {
+          "condition": [
+            {
+              "test": "datum.label === 'End'",
+              "value": 0
+            }
+          ],
+          "value": 104
         }
       }
     },
@@ -242,7 +237,7 @@
         "color": {
           "condition": [
             {
-              "test": "datum.label === 'Start' || datum.label === 'End'",
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
               "value": "#725a30"
             }
           ],
