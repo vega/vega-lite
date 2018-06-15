@@ -14,7 +14,7 @@ import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
-import {IdentifierNode} from './indentifier';
+import {IdentifierNode} from './identifier';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
 import {SourceNode} from './source';
