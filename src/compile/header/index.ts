@@ -1,13 +1,16 @@
 /**
  * Utility for generating row / column headers
  */
+import {Config} from '../../config';
 import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
+import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP} from '../../header';
 import {isSortField} from '../../sort';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
+
 
 export type HeaderChannel = 'row' | 'column';
 export const HEADER_CHANNELS: HeaderChannel[] = ['row', 'column'];
@@ -63,8 +66,9 @@ export function getHeaderType(orient: AxisOrient) {
 export function getTitleGroup(model: Model, channel: HeaderChannel) {
   const title = model.component.layoutHeaders[channel].title;
   const textOrient = channel === 'row' ? 'vertical' : undefined;
+  const config = model.config? model.config : undefined;
 
-  const update = {
+  const defaults = {
     align: {value: 'center'},
     text: {value: title},
     ...(textOrient === 'vertical' ? {angle: {value: 270}}: {}),
@@ -72,6 +76,10 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
     // also make sure that guide-title config override these Vega-lite default
   };
 
+  const update = {
+    ...defaults,
+    ...getHeaderTitleProperties(config)
+  };
   return {
     name:  model.getName(`${channel}_title`),
     role: `${channel}-title`,
@@ -137,6 +145,18 @@ function getSort(facetFieldDef: FacetFieldDef<string>): VgComparator {
   }
 }
 
+function getHeaderTitleProperties(config: Config) {
+  const props = {};
+  if (config.header) {
+    for (const prop of HEADER_TITLE_PROPERTIES) {
+      if (config.header[prop]) {
+        props[HEADER_TITLE_PROPERTIES_MAP[prop]] = {value: config.header[prop]};
+      }
+    }
+  }
+  return props;
+}
+
 function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: HeaderType, layoutHeader: LayoutHeaderComponent, headerCmpt: HeaderComponent) {
   if (headerCmpt) {
     let title = null;
@@ -144,14 +164,19 @@ function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: Header
     if (facetFieldDef && headerCmpt.labels) {
       const {header = {}} = facetFieldDef;
       const {format, labelAngle} = header;
-
-      const update = {
+      const config = model.config? model.config : undefined;
+      const defaults = {
         ...(
           labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
         ),
         ...labelAlign(labelAngle),
         ...labelBaseline(labelAngle)
 
+      };
+
+      const update = {
+        ...defaults,
+        ...getHeaderLabelProperties(config)
       };
 
       title = {
@@ -192,4 +217,16 @@ function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: Header
     }
   }
   return null;
+}
+
+function getHeaderLabelProperties(config: Config) {
+  const props = {};
+  if (config.header) {
+    for (const prop of HEADER_LABEL_PROPERTIES) {
+      if (config.header[prop]) {
+        props[HEADER_LABEL_PROPERTIES_MAP[prop]] = {value: config.header[prop]};
+      }
+    }
+  }
+  return props;
 }

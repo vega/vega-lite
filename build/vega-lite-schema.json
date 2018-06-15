@@ -1613,6 +1613,9 @@
           "$ref": "#/definitions/MarkConfig",
           "description": "Geoshape-Specific Config "
         },
+        "header": {
+          "$ref": "#/definitions/HeaderConfig"
+        },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
           "enum": [
@@ -3634,6 +3637,96 @@
             "string",
             "null"
           ]
+        }
+      },
+      "type": "object"
+    },
+    "HeaderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "labelAngle": {
+          "description": "The rotation angle of the header labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "labelColor": {
+          "description": "The color of the header label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFont": {
+          "description": "The font of the header label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of the header label, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelLimit": {
+          "description": "Maximum allowed pixel width of header labels.",
+          "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of header labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label.\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
+        },
+        "titleAlign": {
+          "description": "Horizontal text alignment of the header title.",
+          "type": "string"
+        },
+        "titleAngle": {
+          "description": "Angle in degrees of the header title.",
+          "type": "number"
+        },
+        "titleBaseline": {
+          "description": "Vertical text baseline for the header title.",
+          "type": "string"
+        },
+        "titleColor": {
+          "description": "Color of the header title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "Font size of the header title.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "Maximum allowed pixel width of the header title.",
+          "type": "number"
+        },
+        "titleX": {
+          "description": "X-coordinate of the header title relative to the axis group.",
+          "type": "number"
+        },
+        "titleY": {
+          "description": "Y-coordinate of the header title relative to the axis group.",
+          "type": "number"
         }
       },
       "type": "object"

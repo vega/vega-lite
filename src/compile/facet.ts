@@ -14,7 +14,7 @@ import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {parseData} from './data/parse';
-import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
+import {getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
