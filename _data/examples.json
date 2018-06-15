@@ -256,13 +256,13 @@
         "title": "Line Charts Showing Ranks Over Time"
       },
       {
+        "name": "window_sum_waterfall_chart",
+        "title": "Waterfall Chart of Monthly Profit and Loss"
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
-      },
-      {
-        "name": "window_sum_waterfall_chart",
-        "title": "Waterfall Chart of monthly profit and lose"
       }
     ]
   },
