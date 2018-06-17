@@ -31,7 +31,7 @@ The `tick` mark represents each data point as a short line. This is a useful mar
 
 A tick mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="orient,cornerRadius" source="MarkConfig" %}
+{% include table.html props="cornerRadius,orient" source="MarkConfig" %}
 
 ## Examples
 
