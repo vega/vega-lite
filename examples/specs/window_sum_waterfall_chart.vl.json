@@ -63,7 +63,10 @@
               "test": "datum.label === 'Begin' || datum.label === 'End'",
               "value": "#f7e0b6"
             },
-            {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"}
+            {
+              "test": "datum.sum < datum.previous_sum", 
+              "value": "#f78a64"
+            }
           ],
           "value": "#93c4aa"
         }
