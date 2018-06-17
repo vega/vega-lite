@@ -41,7 +41,8 @@ The `rect` mark represents an arbitrary rectangle.
 }
 ```
 
-A rect mark definition can contain any [standard mark properties](mark.html#mark-def).
+A rect mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
+{% include table.html props="cornerRadius" source="MarkConfig" %}
 
 ## Examples
 

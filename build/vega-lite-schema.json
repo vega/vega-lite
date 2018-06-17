@@ -117,7 +117,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -126,7 +126,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -137,7 +137,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -181,7 +181,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "line": {
@@ -257,7 +257,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -709,7 +709,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -718,7 +718,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "discreteBandSize": {
           "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
@@ -734,7 +734,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -778,7 +778,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -826,7 +826,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -4085,7 +4085,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -4094,7 +4094,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4105,7 +4105,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -4149,7 +4149,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -4214,7 +4214,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -4500,7 +4500,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -4509,7 +4509,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4520,7 +4520,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -4564,7 +4564,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -4612,7 +4612,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -4680,7 +4680,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -4689,7 +4689,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4700,7 +4700,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -4744,7 +4744,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "line": {
@@ -4820,7 +4820,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -6348,7 +6348,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -6357,7 +6357,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6368,7 +6368,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -6412,7 +6412,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -6464,7 +6464,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -6582,7 +6582,7 @@
           "type": "string"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -6591,7 +6591,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6602,7 +6602,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -6646,7 +6646,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -6694,7 +6694,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -7932,7 +7932,7 @@
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners (default 0).",
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -7941,7 +7941,7 @@
         },
         "dir": {
           "$ref": "#/definitions/Dir",
-          "description": "The direction of the text. One of ltr (left-to-right, default) or rtl (right-to-left). This property determines on which side is truncated in response to the limit parameter."
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -7952,7 +7952,7 @@
           "type": "number"
         },
         "ellipsis": {
-          "description": "The ellipsis string for text truncated in response to the limit parameter (default “…”).",
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
         "fill": {
@@ -7992,7 +7992,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -8040,7 +8040,7 @@
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel."
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
