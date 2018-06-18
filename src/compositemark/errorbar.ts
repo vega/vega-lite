@@ -1,12 +1,12 @@
 import {Config} from '../config';
+import {PositionFieldDef} from '../fielddef';
 import {isMarkDef} from '../mark';
-import {AggregatedFieldDef, CalculateTransform} from '../transform';
+import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {PartsMixins} from './common';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -14,6 +14,8 @@ import {
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
 } from './common';
+import {PartsMixins} from './common';
+import {ErrorBand, ErrorBandDef} from './errorband';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
@@ -75,28 +77,13 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: ErrorBarDef = isMarkDef(mark) ? mark : {type: mark};
 
-  // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
-  if (selection) {
-    log.warn(log.message.selectionNotSupported('errorbar'));
-  }
-
-  const center: ErrorBarCenter = markDef.center || config.errorbar.center;
-  const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
-
-  if ((center === 'median') !== (extent === 'iqr')) {
-    log.warn(`${center} is not usually used with ${extent} for error bar.`);
-  }
-
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, center, extent);
-
-  // drop size
-  const {size: _s, ...sharedEncoding} = encodingWithoutContinuousAxis;
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, markDef, ERRORBAR, config);
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
       markDef,
       continuousAxis,
       continuousAxisChannelDef,
-      sharedEncoding,
+      encodingWithoutContinuousAxis,
       config.errorbar
   );
 
@@ -111,9 +98,32 @@ export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorB
   };
 }
 
-function errorBarParams(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, center: ErrorBarCenter, extent: ErrorBarExtent) {
-  const orient: Orient = compositeMarkOrient(spec, ERRORBAR);
-  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, ERRORBAR);
+export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)>(
+  spec: GenericUnitSpec<Encoding<string>, M | MD>,
+  markDef: MD,
+  compositeMark: M,
+  config: Config
+): {
+  transform: Transform[];
+  groupby: string[];
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxis: 'x' | 'y';
+  encodingWithoutContinuousAxis: Encoding<string>
+} {
+  // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
+  if (spec.selection) {
+    log.warn(log.message.selectionNotSupported(compositeMark));
+  }
+
+  const center: ErrorBarCenter = markDef.center || config.errorbar.center;
+  const extent: ErrorBarExtent = markDef.extent || ((center === 'mean') ? 'stderr' : 'iqr');
+
+  if ((center === 'median') !== (extent === 'iqr')) {
+    log.warn(`${center} is not usually used with ${extent} for ${compositeMark}.`);
+  }
+
+  const orient: Orient = compositeMarkOrient(spec, compositeMark);
+  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
   const continuousFieldName: string = continuousAxisChannelDef.field;
   let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];

@@ -77,55 +77,23 @@ describe('normalize()', function () {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
       assert.deepEqual(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
-        "data": {
-          "url": "data/population.json"
-        },
-        transform: [
-          {
-            "calculate": "(datum.sex==1) ? 'Men':'Women'",
-            "as": "sex"
-          }
-        ],
-        facet: {
-          "row": {
-            "field": "sex",
-            "type": "ordinal"
-          }
-        },
-        spec: {
-          layer: [
+        "data": {"url": "data/population.json"},
+        "transform": [{"calculate": "(datum.sex==1) ? 'Men':'Women'", "as": "sex"}],
+        "facet": {"row": {"field": "sex", "type": "ordinal"}},
+        "spec": {
+          "layer": [
             {
-              mark: {
-                "type": "errorbar",
-                "extent": "stderr"
-              },
-              encoding: {
-                "x": {
-                  "field": "age",
-                  "type": "ordinal"
-                },
-                "y": {
-                  "field": "people",
-                  "type": "quantitative"
-                }
+              "mark": "errorbar",
+              "encoding": {
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative"}
               }
             },
             {
-              mark: {
-                "type": "point",
-                "opacity": 1,
-                "filled": true
-              },
-              encoding: {
-                "x": {
-                  "field": "age",
-                  "type": "ordinal"
-                },
-                "y": {
-                  "field": "people",
-                  "type": "quantitative",
-                  "aggregate": "mean"
-                }
+              "mark": {"type": "point", "opacity": 1, "filled": true},
+              "encoding": {
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative", "aggregate": "mean"}
               }
             }
           ]
@@ -153,20 +121,10 @@ describe('normalize()', function () {
               "transform": [
                 {
                   "aggregate": [
-                    {
-                      "op": "stderr",
-                      "field": "people",
-                      "as": "extent_people"
-                    },
-                    {
-                      "op": "mean",
-                      "field": "people",
-                      "as": "mean_people"
-                    }
+                    {"op": "stderr", "field": "people", "as": "extent_people"},
+                    {"op": "mean", "field": "people", "as": "mean_people"}
                   ],
-                  "groupby": [
-                    "age"
-                  ]
+                  "groupby": ["age"]
                 },
                 {
                   "calculate": "datum.mean_people + datum.extent_people",
@@ -179,44 +137,24 @@ describe('normalize()', function () {
               ],
               "layer": [
                 {
-                  "mark": {
-                    "type": "rule",
-                    "style": "errorbar-rule"
-                  },
+                  "mark": {"type": "rule", "style": "errorbar-rule"},
                   "encoding": {
                     "y": {
                       "field": "lower_people",
                       "type": "quantitative",
                       "title": "people"
                     },
-                    "y2": {
-                      "field": "upper_people",
-                      "type": "quantitative"
-                    },
-                    "x": {
-                      "field": "age",
-                      "type": "ordinal"
-                    }
+                    "y2": {"field": "upper_people", "type": "quantitative"},
+                    "x": {"field": "age", "type": "ordinal"}
                   }
                 }
               ]
             },
             {
-              "mark": {
-                "type": "point",
-                "opacity": 1,
-                "filled": true
-              },
+              "mark": {"type": "point", "opacity": 1, "filled": true},
               "encoding": {
-                "x": {
-                  "field": "age",
-                  "type": "ordinal"
-                },
-                "y": {
-                  "field": "people",
-                  "type": "quantitative",
-                  "aggregate": "mean"
-                }
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative", "aggregate": "mean"}
               }
             }
           ]

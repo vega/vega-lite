@@ -3,19 +3,18 @@ import {assert} from 'chai';
 
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
-import {isMarkDef} from '../../src/mark';
 import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
 import {isAggregate} from '../../src/transform';
 import {some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
-describe('normalizeErrorBar', () => {
-  it('should produce correct layered specs for mean point and vertical error bar', () => {
+describe('normalizeErrorBand', () => {
+  it('should produce correct layered specs for mean point and vertical error band', () => {
     assert.deepEqual(normalize({
       "data": {
         "url": "data/population.json"
       },
-      mark: "errorbar",
+      mark: "errorband",
       encoding: {
         "x": {
           "field": "age",
@@ -27,14 +26,26 @@ describe('normalizeErrorBar', () => {
         }
       }
     }, defaultConfig), {
-      "data": {"url": "data/population.json"},
+      "data": {
+        "url": "data/population.json"
+      },
       "transform": [
         {
           "aggregate": [
-            {"op": "stderr", "field": "people", "as": "extent_people"},
-            {"op": "mean", "field": "people", "as": "mean_people"}
+            {
+              "op": "stderr",
+              "field": "people",
+              "as": "extent_people"
+            },
+            {
+              "op": "mean",
+              "field": "people",
+              "as": "mean_people"
+            }
           ],
-          "groupby": ["age"]
+          "groupby": [
+            "age"
+          ]
         },
         {
           "calculate": "datum.mean_people + datum.extent_people",
@@ -47,32 +58,42 @@ describe('normalizeErrorBar', () => {
       ],
       "layer": [
         {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
+          "mark": {
+            "opacity": 0.5,
+            "type": "area",
+            "style": "errorband-band"
+          },
           "encoding": {
             "y": {
               "field": "lower_people",
               "type": "quantitative",
               "title": "people"
             },
-            "y2": {"field": "upper_people", "type": "quantitative"},
-            "x": {"field": "age", "type": "ordinal"}
+            "y2": {
+              "field": "upper_people",
+              "type": "quantitative"
+            },
+            "x": {
+              "field": "age",
+              "type": "ordinal"
+            }
           }
         }
       ]
     });
   });
 
-  it("should produce an error if both axes have aggregate errorbar", () => {
+  it("should produce an error if both axes have aggregate errorband", () => {
     assert.throws(() => {
       normalize({
         "data": {"url": "data/population.json"},
         mark: {
-          type: "errorbar"
+          type: "errorband"
         },
         encoding: {
-          "x": {"aggregate": "errorbar", "field": "people","type": "quantitative"},
+          "x": {"aggregate": "errorband", "field": "people","type": "quantitative"},
           "y": {
-            "aggregate": "errorbar",
+            "aggregate": "errorband",
             "field": "people",
             "type": "quantitative"
           },
@@ -86,7 +107,7 @@ describe('normalizeErrorBar', () => {
     normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         center: "median",
         extent: "stderr"
       },
@@ -100,14 +121,14 @@ describe('normalizeErrorBar', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for errorbar.');
+    assert.equal(localLogger.warns[0], 'median is not usually used with stderr for errorband.');
   }));
 
   it("should produce a warning if center is mean and extent is iqr", log.wrap((localLogger) => {
     normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         center: "mean",
         extent: "iqr"
       },
@@ -121,14 +142,14 @@ describe('normalizeErrorBar', () => {
       }
     }, defaultConfig);
 
-    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for errorbar.');
+    assert.equal(localLogger.warns[0], 'mean is not usually used with iqr for errorband.');
   }));
 
   it("should produce a warning if continuous axis has aggregate property", log.wrap((localLogger) => {
     normalize({
         "data": {"url": "data/population.json"},
         mark: {
-          type: "errorbar"
+          type: "errorband"
         },
         encoding: {
           "x": {"field": "age","type": "ordinal"},
@@ -144,16 +165,16 @@ describe('normalizeErrorBar', () => {
     assert.equal(localLogger.warns[0], 'Continuous axis should not have customized aggregation function min');
   }));
 
-  it("should produce an error if build 1D errorbar with a discrete axis", () => {
+  it("should produce an error if build 1D errorband with a discrete axis", () => {
     assert.throws(() => {
       normalize({
         "data": {"url": "data/population.json"},
-        mark: "errorbar",
+        mark: "errorband",
         encoding: {
           "x": {"field": "age", "type": "ordinal"}
         }
       }, defaultConfig);
-    }, Error, 'Need a valid continuous axis for errorbars');
+    }, Error, 'Need a valid continuous axis for errorbands');
   });
 
   it("should produce an error if both axes are discrete", () => {
@@ -161,7 +182,7 @@ describe('normalizeErrorBar', () => {
       normalize({
         "data": {"url": "data/population.json"},
         mark: {
-          type: "errorbar"
+          type: "errorband"
         },
         encoding: {
           "x": {"field": "age","type": "ordinal"},
@@ -172,15 +193,15 @@ describe('normalizeErrorBar', () => {
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need a valid continuous axis for errorbars');
+    }, Error, 'Need a valid continuous axis for errorbands');
   });
 
-  it("should produce an error if in 2D errobar both axes are not valid field definitions", () => {
+  it("should produce an error if in 2D erroband both axes are not valid field definitions", () => {
     assert.throws(() => {
       normalize({
         "data": {"url": "data/population.json"},
         mark: {
-          type: "errorbar"
+          type: "errorband"
         },
         encoding: {
           "x": {"field": "age","type": "ordinal"},
@@ -190,27 +211,27 @@ describe('normalizeErrorBar', () => {
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need a valid continuous axis for errorbars');
+    }, Error, 'Need a valid continuous axis for errorbands');
   });
 
-  it("should produce an error if 1D errorbar only axis is discrete", () => {
+  it("should produce an error if 1D errorband only axis is discrete", () => {
     assert.throws(() => {
       normalize({
         "data": {"url": "data/population.json"},
-        mark: "errorbar",
+        mark: "errorband",
         encoding: {
           "x": {"field": "age","type": "ordinal"},
           "color": {"value" : "skyblue"}
         }
       }, defaultConfig);
-    }, Error, 'Need a valid continuous axis for errorbars');
+    }, Error, 'Need a valid continuous axis for errorbands');
   });
 
-  it("should aggregate y field for vertical errorbar with two quantitative axes and explicit orient", () => {
+  it("should aggregate y field for vertical errorband with two quantitative axes and explicit orient", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        "type": "errorbar",
+        "type": "errorband",
         "orient": "vertical"
       },
       encoding: {
@@ -235,11 +256,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should aggregate x field for horizontal errorbar with two quantitative axes and explicit orient", () => {
+  it("should aggregate x field for horizontal errorband with two quantitative axes and explicit orient", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        "type": "errorbar",
+        "type": "errorband",
         "orient": "horizontal"
       },
       encoding: {
@@ -265,17 +286,17 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should aggregate y field for vertical errorbar with two quantitative axes and specify orientation with aggregate", () => {
+  it("should aggregate y field for vertical errorband with two quantitative axes and specify orientation with aggregate", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
-      mark: "errorbar",
+      mark: "errorband",
       encoding: {
         "x": {
           "field": "age",
           "type": "quantitative"
         },
         "y": {
-          "aggregate": "errorbar",
+          "aggregate": "errorband",
           "field": "people",
           "type": "quantitative"
         }
@@ -293,13 +314,13 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should aggregate x field for horizontal errorbar with two quantitative axes and specify orientation with aggregate", () => {
+  it("should aggregate x field for horizontal errorband with two quantitative axes and specify orientation with aggregate", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
-      mark: "errorbar",
+      mark: "errorband",
       encoding: {
         "x": {
-          "aggregate": "errorbar",
+          "aggregate": "errorband",
           "field": "age",
           "type": "quantitative"
         },
@@ -321,10 +342,10 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should aggregate x field for horizontal errorbar with x as quantitative axis", () => {
+  it("should aggregate x field for horizontal errorband with x as quantitative axis", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
-      mark: "errorbar",
+      mark: "errorband",
       encoding: {
         "x": {
           "field": "age",
@@ -348,11 +369,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for vertical errorbar with stderr by default", () => {
+  it("should produce correct layered specs for vertical errorband with stderr by default", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar"
+        type: "errorband"
       },
       encoding: {
         "x": {
@@ -376,11 +397,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for vertical errorbar with stderr", () => {
+  it("should produce correct layered specs for vertical errorband with stderr", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         extent: "stderr"
       },
       encoding: {
@@ -405,11 +426,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for vertical errorbar with stdev", () => {
+  it("should produce correct layered specs for vertical errorband with stdev", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         extent: "stdev"
       },
       encoding: {
@@ -434,11 +455,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for vertical errorbar with ci", () => {
+  it("should produce correct layered specs for vertical errorband with ci", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         extent: "ci"
       },
       encoding: {
@@ -466,11 +487,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for vertical errorbar with iqr", () => {
+  it("should produce correct layered specs for vertical errorband with iqr", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         center: "median",
         extent: "iqr"
       },
@@ -499,53 +520,11 @@ describe('normalizeErrorBar', () => {
     }
   });
 
-  it("should produce correct layered specs for veritcal errorbar with ticks", () => {
-    const color = "red";
-    const opacity = 0.5;
-    const size = 10;
-
-    const outputSpec = normalize({
-      "data": {"url": "data/population.json"},
-      mark: {
-        type: "errorbar",
-        ticks: {
-          size,
-          color,
-          opacity
-        }
-      },
-      encoding: {
-        "x": {
-          "field": "age",
-          "type": "ordinal"
-        },
-        "y": {
-          "field": "people",
-          "type": "quantitative"
-        }
-      }
-    }, defaultConfig);
-
-    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
-    if (layer) {
-      assert.isTrue(some(layer, (unitSpec) => {
-        return isUnitSpec(unitSpec) &&
-              isMarkDef(unitSpec.mark) &&
-              unitSpec.mark.type === "tick" &&
-              unitSpec.mark.size === size &&
-              unitSpec.mark.color === color &&
-              unitSpec.mark.opacity === opacity;
-      }));
-    } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
-    }
-  });
-
   it("should produce correct layered specs with customized title", () => {
     const outputSpec = normalize({
       "data": {"url": "data/population.json"},
       mark: {
-        type: "errorbar",
+        type: "errorband",
         point: false
       },
       encoding: {

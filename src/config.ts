@@ -268,6 +268,13 @@ export const defaultConfig: Config = {
     ticks: false
   },
 
+  errorband: {
+    band: {
+      opacity: 0.5
+    },
+    borders: false
+  },
+
   scale: defaultScaleConfig,
   projection: {},
   axis: {},
