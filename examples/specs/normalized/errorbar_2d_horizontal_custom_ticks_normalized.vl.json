@@ -34,6 +34,7 @@
     {
       "mark": {
         "type": "tick",
+        "orient": "vertical",
         "style": "errorbar-ticks",
         "color": "red"
       },
@@ -57,6 +58,7 @@
     {
       "mark": {
         "type": "tick",
+        "orient": "vertical",
         "style": "errorbar-ticks",
         "color": "red"
       },

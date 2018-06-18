@@ -35,6 +35,7 @@
       "mark": {
         "color": "blue",
         "type": "tick",
+        "orient": "vertical",
         "style": "errorbar-ticks"
       },
       "encoding": {
@@ -58,6 +59,7 @@
       "mark": {
         "color": "blue",
         "type": "tick",
+        "orient": "vertical",
         "style": "errorbar-ticks"
       },
       "encoding": {

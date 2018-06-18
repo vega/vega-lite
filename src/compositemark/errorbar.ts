@@ -177,7 +177,7 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
         }
       ];
     } else {
-      if (markDef.center) {
+      if (markDef.center && markDef.extent) {
         log.warn(log.message.errorBarCenterIsNotNeeded(extent, compositeMark));
       }
 
