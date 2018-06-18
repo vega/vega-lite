@@ -307,4 +307,15 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(p.producedFields(), {n: true, b: true, 'nested.field': true});
     });
   });
+
+  describe('dependentFields', function() {
+    it('should give the correct dependent fields', function() {
+      const p = new ParseNode(null, {
+        d: 'number',
+        'a.b.c': 'boolean'
+      });
+
+      assert.deepEqual(p.dependentFields(), {d: true, a: true, 'a.b': true, 'a.b.c': true});
+    });
+  });
 });

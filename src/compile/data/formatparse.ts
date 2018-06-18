@@ -222,7 +222,11 @@ export class ParseNode extends DataFlowNode {
   }
 
   public dependentFields(): StringSet {
-    return toSet(keys(this._parse));
+    const fields = keys(this._parse);
+    const splitFields = fields.map(key => key.split('.'));
+    const computedParents = splitFields.map(x => x.map((y,i) => x.slice(0,i+1).join('.')));
+    const flattenedParents = computedParents.reduce((a,b) => a.concat(b), []);
+    return toSet([...fields, ...flattenedParents]);
   }
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
