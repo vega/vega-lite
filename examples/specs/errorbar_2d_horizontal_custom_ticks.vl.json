@@ -4,7 +4,7 @@
   "mark": {
     "type": "errorbar",
     "ticks": {
-      "color": "red"
+      "color": "grey"
     }
   },
   "encoding": {

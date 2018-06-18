@@ -33,7 +33,7 @@
   "layer": [
     {
       "mark": {
-        "color": "blue",
+        "color": "grey",
         "type": "tick",
         "orient": "vertical",
         "style": "errorbar-ticks"
@@ -57,7 +57,7 @@
     },
     {
       "mark": {
-        "color": "blue",
+        "color": "grey",
         "type": "tick",
         "orient": "vertical",
         "style": "errorbar-ticks"
@@ -81,7 +81,7 @@
     },
     {
       "mark": {
-        "color": "blue",
+        "color": "grey",
         "type": "rule",
         "style": "errorbar-rule"
       },

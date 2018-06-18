@@ -100,7 +100,7 @@
                         "value": 0.7
                     },
                     "fill": {
-                        "value": "blue"
+                        "value": "grey"
                     },
                     "xc": {
                         "scale": "x",
@@ -136,7 +136,7 @@
                         "value": 0.7
                     },
                     "fill": {
-                        "value": "blue"
+                        "value": "grey"
                     },
                     "xc": {
                         "scale": "x",
@@ -169,7 +169,7 @@
             "encode": {
                 "update": {
                     "stroke": {
-                        "value": "blue"
+                        "value": "grey"
                     },
                     "x": {
                         "scale": "x",

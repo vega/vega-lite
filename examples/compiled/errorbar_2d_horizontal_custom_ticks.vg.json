@@ -100,7 +100,7 @@
                         "value": 0.7
                     },
                     "fill": {
-                        "value": "red"
+                        "value": "grey"
                     },
                     "xc": {
                         "scale": "x",
@@ -136,7 +136,7 @@
                         "value": 0.7
                     },
                     "fill": {
-                        "value": "red"
+                        "value": "grey"
                     },
                     "xc": {
                         "scale": "x",

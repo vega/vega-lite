@@ -16,7 +16,8 @@ permalink: /docs/errorbar.html
 }
 ```
 
-An error bar summarizes an error range of quantitative values using a set of summary statistics, representing by rules. Depending on the [type of error bar](#errorbar-types), the ends of rules can represent different ranges of error.
+An error bar summarizes an error range of quantitative values using a set of summary statistics, representing by rules.
+Error bars in Vega-Lite can either be used to aggregate raw data or directly visualize aggregated data.
 
 To create an error bar, set `mark` to `"errorbar"`.
 
@@ -29,18 +30,19 @@ To create an error bar, set `mark` to `"errorbar"`.
 {:#properties}
 ## Error Bar Mark Properties
 
-An errorbar's mark definition contain the following properties:
+An error bar's mark definition contain the following properties:
 
 {% include table.html props="type,center,extent,orient,color,opacity" source="ErrorBarDef" %}
 
 Besides the properties listed above, `"rule"` and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the error bar](#parts) as well.
 
-## Types of Error Bar
-{:#errorbar-types}
 
-In Vega-Lite, the types of error bar are defined by the `extent` property in the mark definition object.
+## Using Error Bars to Aggregate Raw Data
 
-1) __Standard Error Error Bar__ is the default error bar in Vega-Lite, or cen be specified by setting `extent` to `stderr`. The size of lower and upper rules are standard error. As a default, the rules expand from the mean; however, `center` can be set to `median`, so that the rules expand from the median instead. **Note:** if the `center`is `median`, and the `extent` is not specified, the default `extent` is `iqr` instead of `stderr`
+If the data is not aggregated yet, Vega-Lite will aggregate the data based on the `extent` and `center` properties in the mark definition.
+
+
+1) __Standard Error Error Bar__ is the default error bar in Vega-Lite, or cen be specified by setting `extent` to `stderr`. The size of lower and upper rules are standard error. As a default, the rules expand from the mean; however, `center` can be set to `median`, so that the rules expand from the median instead.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal"></div>
 
@@ -48,9 +50,10 @@ Explicitly setting `extent` to `stderr` with `center` set to `median`.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_median_stderr"></div>
 
-Only set the `center` to `median`, resaulting the default of `extent` becomes `iqr`.
+**Note:** if the `center`is `median`, and the `extent` is not specified, the default `extent` is `iqr` instead of `stderr`
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_median"></div>
+
 
 2) __Standard Deviation Error Bar__ can be spacified by setting `extent` to `stdev`. For this type of error bar, the size of lower and upper rules are standard deviation. Like Standard Error Error Bar, the rules expand from the mean, by default. And, the rules can be set to expand from the median with the same method.
 
@@ -60,13 +63,27 @@ Explicitly setting `extent` to `stdev` with `center` set to `median`.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_median_stdev"></div>
 
+
 3) __Confidence Interval Error Bar__ can be specified by setting `extent` to `ci`. For this type of error bar, rules expands from the `ci0` value to `ci1` value, as defined in [Aggregate](aggregate.html#ops). **Note:** When `extent` is `ci`, the `center` property is meaningless.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_ci"></div>
 
-4) __Interquartile Error Bar__ can be specified by setting `extent` to `iqr`. For this type of error bar, rules expands from the first quartile to the third quartile. **Note:** When `extent` is `iqr`, the `center` property is meaningless.
+
+4) __Interquartile Error Bar__ can be specified by setting `extent` to `iqr`. For this type of error bar, rules expands from the first quartile to the third quartile.
+
+**Note:** When `extent` is `iqr`, the `center` property is ignored.
 
 <div class="vl-example" data-name="errorbar_2d_horizontal_iqr"></div>
+
+
+
+## Using Error Bars to Visualize Aggregated Data
+
+If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`).
+
+<div class="vl-example" data-name="errorbar_2d_horizontal_pre_aggregated"></div>
+
+**Note** in this case, `center` and `extent` do not have to be specified.
 
 ## Dimension & Orientation
 There are two `errorbar` dimensions:

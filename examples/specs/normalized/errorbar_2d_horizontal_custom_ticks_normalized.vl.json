@@ -36,7 +36,7 @@
         "type": "tick",
         "orient": "vertical",
         "style": "errorbar-ticks",
-        "color": "red"
+        "color": "grey"
       },
       "encoding": {
         "x": {
@@ -60,7 +60,7 @@
         "type": "tick",
         "orient": "vertical",
         "style": "errorbar-ticks",
-        "color": "red"
+        "color": "grey"
       },
       "encoding": {
         "x": {

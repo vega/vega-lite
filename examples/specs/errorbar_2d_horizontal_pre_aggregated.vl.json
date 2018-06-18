@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "values": [
+      {"lower_yield": 23.1311, "upper_yield": 43.5522, "variety": "Glabron"},
+      {"lower_yield": 23.9503, "upper_yield": 38.9775, "variety": "Manchuria"},
+      {"lower_yield": 24.7778, "upper_yield": 46.9167, "variety": "No. 457"},
+      {"lower_yield": 21.7823, "upper_yield": 48.9732, "variety": "No. 462"},
+      {"lower_yield": 21.3144, "upper_yield": 42.2078, "variety": "No. 475"},
+      {"lower_yield": 27.0919, "upper_yield": 41.2692, "variety": "Peatland"},
+      {"lower_yield": 21.3221, "upper_yield": 39.4334, "variety": "Svansota"},
+      {"lower_yield": 27.7425, "upper_yield": 51.0575, "variety": "Trebi"},
+      {"lower_yield": 24.482, "upper_yield": 41.6402, "variety": "Velvet"},
+      {"lower_yield": 27.5287, "upper_yield": 51.2602, "variety": "Wisconsin No. 38"}
+    ]
+  },
+  "layer": [
+    {
+      "mark": "errorbar",
+      "encoding": {
+        "x": {
+          "field": "upper_yield",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "axis": {"title": "Barley Yield"}
+        },
+        "x2": {"field": "lower_yield", "type": "quantitative"},
+        "y": {"field": "variety", "type": "ordinal"}
+      }
+    }
+  ]
+}
