@@ -91,6 +91,30 @@
                     }
                 },
                 {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "lead"
+                    ],
+                    "ops": [
+                        "lead"
+                    ],
+                    "fields": [
+                        "label"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    }
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.lead === null ? datum.label : datum.lead",
+                    "as": "lead"
+                },
+                {
                     "type": "formula",
                     "expr": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
                     "as": "previous_sum"
@@ -219,9 +243,9 @@
         },
         {
             "name": "layer_1_marks",
-            "type": "rect",
+            "type": "rule",
             "style": [
-                "tick"
+                "rule"
             ],
             "from": {
                 "data": "data_2"
@@ -231,30 +255,27 @@
                     "opacity": {
                         "value": 1
                     },
-                    "fill": {
+                    "strokeWidth": {
+                        "value": 2
+                    },
+                    "stroke": {
                         "value": "#404040"
                     },
-                    "xc": {
+                    "x": {
                         "scale": "x",
                         "field": "label",
                         "band": 0.5,
-                        "offset": 28.5
+                        "offset": -22.5
                     },
-                    "yc": {
+                    "y": {
                         "scale": "y",
                         "field": "sum"
                     },
-                    "width": [
-                        {
-                            "test": "datum.label === 'End'",
-                            "value": 0
-                        },
-                        {
-                            "value": 104
-                        }
-                    ],
-                    "height": {
-                        "value": 1.5
+                    "x2": {
+                        "scale": "x",
+                        "field": "lead",
+                        "band": 0.5,
+                        "offset": 22.5
                     }
                 }
             }
@@ -396,6 +417,10 @@
                     {
                         "data": "data_2",
                         "field": "label"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "lead"
                     },
                     {
                         "data": "data_3",

@@ -73,6 +73,19 @@
       ]
     },
     {
+      "window": [
+        {
+          "op": "lead",
+          "field": "label",
+          "as": "lead"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.lead === null ? datum.label : datum.lead",
+      "as": "lead"
+    },
+    {
       "calculate": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
       "as": "previous_sum"
     },
@@ -136,11 +149,12 @@
     },
     {
       "mark": {
-        "type": "tick",
+        "type": "rule",
         "color": "#404040",
-        "thickness": 1.5,
         "opacity": 1,
-        "xOffset": 28.5
+        "strokeWidth": 2,
+        "xOffset": -22.5,
+        "x2Offset": 22.5
       },
       "encoding": {
         "x": {
@@ -149,18 +163,13 @@
           "sort": null,
           "title": "Months"
         },
+        "x2": {
+          "field": "lead",
+          "type": "ordinal"
+        },
         "y": {
           "field": "sum",
           "type": "quantitative"
-        },
-        "size": {
-          "condition": [
-            {
-              "test": "datum.label === 'End'",
-              "value": 0
-            }
-          ],
-          "value": 104
         }
       }
     },
