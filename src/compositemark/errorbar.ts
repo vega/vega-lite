@@ -1,3 +1,4 @@
+import {Channel} from '../channel';
 import {Config} from '../config';
 import {PositionFieldDef} from '../fielddef';
 import {isMarkDef, MarkDef} from '../mark';
@@ -70,8 +71,10 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
+export const errorBarSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
+
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, ERRORBAR);
+  spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, ERRORBAR);
 
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;

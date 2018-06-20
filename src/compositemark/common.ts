@@ -185,12 +185,11 @@ export function compositeMarkOrient<M extends CompositeMark>(
   }
 }
 
-const compositeMarkSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
 export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
   spec: GenericUnitSpec<Encoding<string>, M | MD>,
+  supportedChannels: Channel[],
   compositeMark: M
 ): GenericUnitSpec<Encoding<string>, M | MD> {
-  const supportedChannels: Channel[] = compositeMarkSupportedChannels.concat((compositeMark === 'boxplot') ? ['size'] : []);
   return {
     ...spec,
     encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {

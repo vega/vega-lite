@@ -1,4 +1,5 @@
 import {isNumber, isObject} from 'vega-util';
+import {Channel} from '../channel';
 import {Config} from '../config';
 import {isMarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
@@ -57,8 +58,10 @@ export interface BoxPlotConfigMixins {
   boxplot?: BoxPlotConfig;
 }
 
+const boxPlotSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+
 export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, BOXPLOT);
+  spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
 
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
