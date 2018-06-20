@@ -111,7 +111,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_whisker_people",
@@ -129,7 +130,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_box_people",
@@ -150,7 +152,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -349,7 +352,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_whisker_people",
@@ -367,7 +371,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_box_people",
@@ -388,7 +393,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
             }
           }
@@ -477,7 +483,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_whisker_people",
@@ -495,7 +502,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_box_people",
@@ -516,7 +524,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -605,7 +614,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_whisker_people",
@@ -623,7 +633,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_box_people",
@@ -644,7 +655,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "quantitative"},
               "y": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -733,7 +745,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_whisker_people",
@@ -751,7 +764,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_box_people",
@@ -772,7 +786,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "quantitative"},
               "x": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -860,7 +875,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "ordinal"},
               "y": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_whisker_people",
@@ -878,7 +894,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "ordinal"},
               "y": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_box_people",
@@ -899,7 +916,8 @@ describe("normalizeBoxMinMax", () => {
               "x": {"field": "age","type": "ordinal"},
               "y": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -987,7 +1005,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_whisker_people",
@@ -1005,7 +1024,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_box_people",
@@ -1026,7 +1046,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -1113,7 +1134,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_whisker_people",
@@ -1131,7 +1153,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_box_people",
@@ -1151,7 +1174,8 @@ describe("normalizeBoxMinMax", () => {
               "y": {"field": "age","type": "ordinal"},
               "x": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -1235,7 +1259,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "x": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_whisker_people",
@@ -1252,7 +1277,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "x": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "x2": {
                 "field": "upper_box_people",
@@ -1271,7 +1297,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "x": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -1355,7 +1382,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "y": {
                 "field": "upper_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_whisker_people",
@@ -1372,7 +1400,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "y": {
                 "field": "lower_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               },
               "y2": {
                 "field": "upper_box_people",
@@ -1391,7 +1420,8 @@ describe("normalizeBoxMinMax", () => {
             "encoding": {
               "y": {
                 "field": "mid_box_people",
-                "type": "quantitative"
+                "type": "quantitative",
+                "axis": {"title": "population"}
               }
             }
           }
@@ -1494,7 +1524,8 @@ describe("normalizeBoxIQR", () => {
                 "x": {"field": "age","type": "quantitative"},
                 "y": {
                   "field": "upper_box_people",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
                 },
                 "y2": {
                   "field": "upper_whisker_people",
@@ -1512,7 +1543,8 @@ describe("normalizeBoxIQR", () => {
                 "x": {"field": "age","type": "quantitative"},
                 "y": {
                   "field": "lower_box_people",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
                 },
                 "y2": {
                   "field": "upper_box_people",
@@ -1533,7 +1565,8 @@ describe("normalizeBoxIQR", () => {
                 "x": {"field": "age","type": "quantitative"},
                 "y": {
                   "field": "mid_box_people",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "axis": {"title": "population"}
                 }
               }
             }
@@ -1671,7 +1704,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "upper_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   },
                   "y2": {
                     "field": "upper_whisker_people",
@@ -1689,7 +1723,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "lower_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   },
                   "y2": {
                     "field": "upper_box_people",
@@ -1710,7 +1745,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "mid_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   }
                 }
               }
@@ -1857,7 +1893,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "upper_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   },
                   "y2": {
                     "field": "upper_whisker_people",
@@ -1875,7 +1912,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "lower_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   },
                   "y2": {
                     "field": "upper_box_people",
@@ -1899,7 +1937,8 @@ describe("normalizeBoxIQR", () => {
                   "x": {"field": "age","type": "quantitative"},
                   "y": {
                     "field": "mid_box_people",
-                    "type": "quantitative"
+                    "type": "quantitative",
+                    "axis": {"title": "population"}
                   }
                 }
               }
