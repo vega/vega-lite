@@ -1,0 +1,189 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 300,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/sf-temps.csv",
+            "format": {
+                "type": "csv",
+                "parse": {
+                    "date": "date",
+                    "temp": "number"
+                }
+            },
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "date_date",
+                    "expr": "datetime(0, 0, date(datum[\"date\"]), 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "as": "month_date",
+                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "date_date",
+                        "month_date"
+                    ],
+                    "ops": [
+                        "max"
+                    ],
+                    "fields": [
+                        "temp"
+                    ],
+                    "as": [
+                        "max_temp"
+                    ]
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "marks",
+            "type": "rect",
+            "style": [
+                "rect"
+            ],
+            "from": {
+                "data": "source_0"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "scale": "color",
+                        "field": "max_temp"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date_date"
+                    },
+                    "width": {
+                        "scale": "x",
+                        "band": true
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "month_date"
+                    },
+                    "height": {
+                        "scale": "y",
+                        "band": true
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "date_date",
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "source_0",
+                "field": "month_date",
+                "sort": true
+            },
+            "range": [
+                0,
+                {
+                    "signal": "height"
+                }
+            ],
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "color",
+            "type": "sequential",
+            "domain": {
+                "data": "source_0",
+                "field": "max_temp"
+            },
+            "range": "heatmap",
+            "nice": false,
+            "zero": false
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "day",
+            "labelOverlap": true,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%d')"
+                        },
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": false,
+            "title": "month",
+            "labelOverlap": true,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%b')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "Max of temp",
+            "type": "gradient"
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
