@@ -237,6 +237,9 @@
                         },
                         "align": {
                             "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
                         }
                     }
                 }

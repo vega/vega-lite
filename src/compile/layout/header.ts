@@ -119,7 +119,7 @@ export function labelBaseline(angle: number) {
   if (45 <= angle && angle <= 135) {
     return {baseline: {value: 'top'}};
   }
-  return {};
+  return {baseline: {value: 'middle'}};
 }
 
 function getSort(facetFieldDef: FacetFieldDef<string>): VgComparator {

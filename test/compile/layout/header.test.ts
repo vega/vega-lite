@@ -11,7 +11,7 @@ describe('compile/layout/header', () => {
   });
 
   describe('label baseline adjusted according to angle', () => {
-    assert.deepEqual(labelBaseline(10), {});
+    assert.deepEqual(labelBaseline(10), {baseline: {value: 'middle'}});
     assert.deepEqual(labelBaseline(90), {baseline: {value: 'top'}});
   });
 

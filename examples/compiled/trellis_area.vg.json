@@ -130,7 +130,14 @@
                 },
                 "offset": 10,
                 "orient": "left",
-                "style": "guide-label"
+                "style": "guide-label",
+                "encode": {
+                    "update": {
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
             },
             "encode": {
                 "update": {
