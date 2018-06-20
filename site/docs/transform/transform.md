@@ -33,5 +33,6 @@ Vega-Lite's `transform` supports the following types of transformations:
 - [Filter](filter.html)
 - [Flatten](flatten.html)
 - [Fold](fold.html)
+- [Sample](sample.html)
 - [TimeUnit](timeunit.html#transform)
 - [Window](window.html)

@@ -1,0 +1,433 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/barley.json",
+            "format": {
+                "type": "json"
+            }
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety",
+                        "site"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "mean_yield"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "field": "mean_yield",
+                    "sort": {
+                        "field": [
+                            "site"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "mean_yield_start",
+                        "mean_yield_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
+                },
+                {
+                    "type": "sample",
+                    "size": 100
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety",
+                        "site"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "mean_yield"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "field": "mean_yield",
+                    "sort": {
+                        "field": [
+                            "site"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "mean_yield_start",
+                        "mean_yield_end"
+                    ],
+                    "offset": "zero"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "concat_0_width",
+            "value": 200
+        },
+        {
+            "name": "concat_0_y_step",
+            "value": 21
+        },
+        {
+            "name": "concat_0_height",
+            "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
+        },
+        {
+            "name": "concat_1_width",
+            "value": 200
+        },
+        {
+            "name": "concat_1_y_step",
+            "value": 21
+        },
+        {
+            "name": "concat_1_height",
+            "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": 10,
+        "bounds": "full",
+        "align": "each"
+    },
+    "marks": [
+        {
+            "type": "group",
+            "name": "concat_0_group",
+            "style": "cell",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "concat_0_width"
+                    },
+                    "height": {
+                        "signal": "concat_0_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_0_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "site"
+                            },
+                            "x": {
+                                "scale": "concat_0_x",
+                                "field": "mean_yield_end"
+                            },
+                            "x2": {
+                                "scale": "concat_0_x",
+                                "field": "mean_yield_start"
+                            },
+                            "y": {
+                                "scale": "concat_0_y",
+                                "field": "variety"
+                            },
+                            "height": {
+                                "scale": "concat_0_y",
+                                "band": true
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "concat_0_x",
+                    "orient": "bottom",
+                    "grid": false,
+                    "title": "Mean of yield",
+                    "labelFlush": true,
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(concat_0_width/40)"
+                    },
+                    "zindex": 1
+                },
+                {
+                    "scale": "concat_0_x",
+                    "orient": "bottom",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(concat_0_width/40)"
+                    },
+                    "gridScale": "concat_0_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "ticks": false,
+                    "zindex": 0
+                },
+                {
+                    "scale": "concat_0_y",
+                    "orient": "left",
+                    "grid": false,
+                    "title": "variety",
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "type": "group",
+            "name": "concat_1_group",
+            "style": "cell",
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "concat_1_width"
+                    },
+                    "height": {
+                        "signal": "concat_1_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "concat_1_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "site"
+                            },
+                            "x": {
+                                "scale": "concat_1_x",
+                                "field": "mean_yield_end"
+                            },
+                            "x2": {
+                                "scale": "concat_1_x",
+                                "field": "mean_yield_start"
+                            },
+                            "y": {
+                                "scale": "concat_1_y",
+                                "field": "variety"
+                            },
+                            "height": {
+                                "scale": "concat_1_y",
+                                "band": true
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "concat_1_x",
+                    "orient": "bottom",
+                    "grid": false,
+                    "title": "Mean of yield",
+                    "labelFlush": true,
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(concat_1_width/40)"
+                    },
+                    "zindex": 1
+                },
+                {
+                    "scale": "concat_1_x",
+                    "orient": "bottom",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(concat_1_width/40)"
+                    },
+                    "gridScale": "concat_1_y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "ticks": false,
+                    "zindex": 0
+                },
+                {
+                    "scale": "concat_1_y",
+                    "orient": "left",
+                    "grid": false,
+                    "title": "variety",
+                    "zindex": 1
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "site"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "site"
+                    }
+                ],
+                "sort": true
+            },
+            "range": "category"
+        },
+        {
+            "name": "concat_0_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "fields": [
+                    "mean_yield_start",
+                    "mean_yield_end"
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "concat_0_width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_0_y",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "variety",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "concat_0_y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "concat_1_x",
+            "type": "linear",
+            "domain": {
+                "data": "data_1",
+                "fields": [
+                    "mean_yield_start",
+                    "mean_yield_end"
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "concat_1_width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "concat_1_y",
+            "type": "band",
+            "domain": {
+                "data": "data_1",
+                "field": "variety",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "concat_1_y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "site",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
