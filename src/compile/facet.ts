@@ -8,7 +8,7 @@ import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -172,28 +172,33 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionData(data);
   }
 
-  private getLayoutBandMixins(headerType: 'header' | 'footer'): {
-    headerBand?: RowCol<number>,
-    footerBand?: RowCol<number>
-  } {
-    const bandMixins = {};
+  private getHeaderLayoutMixins(): VgLayout {
+    const layoutMixins: VgLayout = {};
 
-    const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
+        const layoutHeaderComponent = this.component.layoutHeaders[channel];
+        const headerComponent = layoutHeaderComponent[headerType];
+        if (headerComponent && headerComponent[0]) {
+          // set header/footerBand
+          const sizeType = channel === 'row' ? 'height' : 'width';
+          const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+          if (!this.child.component.layoutSize.get(sizeType)) {
+            // If facet child does not have size signal, then apply headerBand
+            layoutMixins[bandType] = layoutMixins[bandType] || {};
+            layoutMixins[bandType][channel] = 0.5;
+          }
 
-    for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
-      const layoutHeaderComponent = this.component.layoutHeaders[channel];
-      const headerComponent = layoutHeaderComponent[headerType];
-      if (headerComponent && headerComponent[0]) {
-        const sizeType = channel === 'row' ? 'height' : 'width';
-
-        if (!this.child.component.layoutSize.get(sizeType)) {
-          // If facet child does not have size signal, then apply headerBand
-          bandMixins[bandType] = bandMixins[bandType] || {};
-          bandMixins[bandType][channel] = 0.5;
+          if (layoutHeaderComponent.title) {
+            // only add title offset if there is a title.
+            const {titlePadding} = headerComponent[0];
+            layoutMixins.offset = layoutMixins.offset || {};
+            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = titlePadding || 10;
+          }
         }
-      }
-    }
-    return bandMixins;
+      });
+    });
+    return layoutMixins;
   }
 
   protected assembleDefaultLayout(): VgLayout {
@@ -202,11 +207,8 @@ export class FacetModel extends ModelWithField {
     // TODO: determine default align based on shared / independent scales
 
     return {
-      ...this.getLayoutBandMixins('header'),
-      ...this.getLayoutBandMixins('footer'),
+      ...this.getHeaderLayoutMixins(),
 
-      // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
-      offset: 10,
       columns,
       bounds: 'full',
       align: 'all'

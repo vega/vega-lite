@@ -69,7 +69,9 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10
+        },
         "columns": 1,
         "bounds": "full",
         "align": "all"

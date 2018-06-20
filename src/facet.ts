@@ -17,7 +17,21 @@ export interface Header extends Guide {
    */
   labelAngle?: number;
 
-  // TODO: labelPadding
+  /**
+   * Padding in pixels between header labels and axes.
+   *
+   * __Default value:__ `10`
+   */
+
+  labelPadding?: number;
+
+  /**
+   * Padding in pixels between header title and labels.
+   *
+   * __Default value:__ `10`
+   */
+
+  titlePadding?: number;
 }
 
 export interface FacetFieldDef<F> extends FieldDef<F> {
