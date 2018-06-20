@@ -78,7 +78,10 @@
           "encoding": {
             "y": {
               "field": "upper_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             },
             "y2": {
               "field": "upper_whisker_people",
@@ -95,7 +98,10 @@
           "encoding": {
             "y": {
               "field": "lower_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             },
             "y2": {
               "field": "upper_box_people",
@@ -114,7 +120,10 @@
           "encoding": {
             "y": {
               "field": "mid_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             }
           }
         }
