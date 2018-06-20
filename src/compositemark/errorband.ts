@@ -1,5 +1,5 @@
 import {Config} from '../config';
-import {isMarkDef, MarkConfig} from '../mark';
+import {isMarkDef} from '../mark';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
@@ -8,6 +8,7 @@ import {
   filterUnsupportedChannels,
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
+  PartsMixins,
 } from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, errorBarSupportedChannels} from './errorbar';
 
@@ -23,17 +24,13 @@ const ERRORBAND_PART_INDEX: Flag<ErrorBandPart> = {
 
 export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
 
-// TODO: Currently can't use `PartsMixins<ErrorBandPart>`
-// as the schema generator will fail
-export type ErrorBandPartsMixins = {
-  [part in ErrorBandPart]?: boolean | MarkConfig
-};
+export type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 
 export interface ErrorBandConfig extends ErrorBandPartsMixins {
   /**
    * The center of the error band. Available options include:
-   * - `"mean": the mean of the data points.
-   * - `"median": the median of the data points.
+   * - `"mean"`: the mean of the data points.
+   * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
    */
@@ -41,10 +38,10 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
 
   /**
    * The extent of the band. Available options include:
-   * - `"ci": Extend the band to the confidence interval of the mean.
-   * - `"stderr": The size of band are set to the value of standard error, extending from the center.
-   * - `"stdev": The size of band are set to the value of standard deviation, extending from the center.
-   * - `"iqr": Extend the band to the q1 and q3.
+   * - `"ci"`: Extend the band to the confidence interval of the mean.
+   * - `"stderr"`: The size of band are set to the value of standard error, extending from the center.
+   * - `"stdev"`: The size of band are set to the value of standard deviation, extending from the center.
+   * - `"iqr"`: Extend the band to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.
    */
