@@ -40,7 +40,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
           [continuousAxis]: {
             field: positionPrefix + '_' + continuousAxisChannelDef.field,
             type: continuousAxisChannelDef.type,
-            title,
+            ...(title ? {title} : {}),
             ...(scale ? {scale} : {}),
             ...(axis ? {axis} : {})
           },

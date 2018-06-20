@@ -78,7 +78,10 @@
           "encoding": {
             "x": {
               "field": "upper_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             },
             "x2": {
               "field": "upper_whisker_people",
@@ -115,7 +118,10 @@
           "encoding": {
             "x": {
               "field": "upper_whisker_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             }
           }
         },
@@ -128,7 +134,10 @@
           "encoding": {
             "x": {
               "field": "lower_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             },
             "x2": {
               "field": "upper_box_people",
@@ -147,7 +156,10 @@
           "encoding": {
             "x": {
               "field": "mid_box_people",
-              "type": "quantitative"
+              "type": "quantitative",
+              "axis": {
+                "title": "population"
+              }
             }
           }
         }
