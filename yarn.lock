@@ -7652,7 +7652,7 @@ vega-lite@^2.4.1:
     vega-util "^1.7.0"
     yargs "^11.0.0"
 
-vega-loader@2:
+vega-loader@2, vega-loader@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-loader/-/vega-loader-2.1.0.tgz#036bc573944559cc3895867f0c37fd1d9956ceef"
   dependencies:
