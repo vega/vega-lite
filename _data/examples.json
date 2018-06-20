@@ -338,6 +338,10 @@
         "style": "background-size: auto 70%; background-position-y: center;"
       },
       {
+        "name": "facet_bullet",
+        "title": "Bullet Chart"
+      },
+      {
         "name": "layer_bar_dual_axis",
         "title": "Layered Plot with Dual-Axis",
         "style": "background-size: 100% auto; background-position-y: center;"
