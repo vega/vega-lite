@@ -1,5 +1,5 @@
 import {Config} from '../config';
-import {isMarkDef, MarkConfig} from '../mark';
+import {isMarkDef} from '../mark';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
@@ -8,6 +8,7 @@ import {
   filterUnsupportedChannels,
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
+  PartsMixins,
 } from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, errorBarSupportedChannels} from './errorbar';
 
@@ -23,11 +24,7 @@ const ERRORBAND_PART_INDEX: Flag<ErrorBandPart> = {
 
 export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
 
-// TODO: Currently can't use `PartsMixins<ErrorBandPart>`
-// as the schema generator will fail
-export type ErrorBandPartsMixins = {
-  [part in ErrorBandPart]?: boolean | MarkConfig
-};
+export type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 
 export interface ErrorBandConfig extends ErrorBandPartsMixins {
   /**

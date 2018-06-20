@@ -5477,6 +5477,33 @@
       },
       "type": "object"
     },
+    "PartsMixins<ErrorBandPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
     "PartsMixins<ErrorBarPart>": {
       "additionalProperties": false,
       "description": "Make all properties in T optional",
