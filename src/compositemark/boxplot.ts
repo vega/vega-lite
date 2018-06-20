@@ -1,6 +1,5 @@
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
-import {PositionFieldDef} from '../fielddef';
 import {isMarkDef, MarkDef} from '../mark';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
 import {Flag, keys} from '../util';
@@ -90,7 +89,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
 
   const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
-  const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, size});
+  const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, ...(size ? {size} : {})});
 
   const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: tickOrient};
 
