@@ -88,7 +88,9 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     );
   };
 
-  const makeBoxPlotExent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
+  const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
+  const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
+  const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, size});
 
   const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: tickOrient};
 
@@ -102,16 +104,16 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   };
 
   const boxLayer: NormalizedUnitSpec[] = [
-    ...makeBoxPlotExent('rule', 'rule', 'lower_whisker', 'lower_box'),
-    ...makeBoxPlotExent('rule', 'rule', 'upper_box', 'upper_whisker'),
-    ...makeBoxPlotExent('ticks', endTick, 'lower_whisker'),
-    ...makeBoxPlotExent('ticks', endTick, 'upper_whisker'),
-    ...makeBoxPlotPart(encodingWithoutContinuousAxis)('box', bar, 'lower_box', 'upper_box'),
-    ...makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, size})('median', midTick, 'mid_box'),
+    ...makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box'),
+    ...makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker'),
+    ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker'),
+    ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker'),
+    ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box'),
+    ...makeBoxPlotMidTick('median', midTick, 'mid_box'),
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
-  
+
   if (!isMinMax) {
     const lowerBoxExpr: string = 'datum.lower_box_' + continuousAxisChannelDef.field;
     const upperBoxExpr: string = 'datum.upper_box_' + continuousAxisChannelDef.field;
