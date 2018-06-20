@@ -863,6 +863,14 @@
       },
       "type": "object"
     },
+    "Baseline": {
+      "enum": [
+        "top",
+        "middle",
+        "bottom"
+      ],
+      "type": "string"
+    },
     "BasicType": {
       "enum": [
         "quantitative",
@@ -3631,25 +3639,6 @@
           "minimum": -360,
           "type": "number"
         },
-        "title": {
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "HeaderConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "labelAngle": {
-          "description": "The rotation angle of the header labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
-          "maximum": 360,
-          "minimum": -360,
-          "type": "number"
-        },
         "labelColor": {
           "description": "The color of the header label, can be in hex color code or regular color name.",
           "type": "string"
@@ -3664,40 +3653,29 @@
           "type": "number"
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of header labels.",
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
-        "labelOverlap": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "enum": [
-                "parity"
-              ],
-              "type": "string"
-            },
-            {
-              "enum": [
-                "greedy"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "The strategy to use for resolving overlap of header labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label.\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
+        "title": {
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "titleAlign": {
           "description": "Horizontal text alignment of the header title.",
           "type": "string"
         },
         "titleAngle": {
-          "description": "Angle in degrees of the header title.",
+          "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
           "type": "number"
         },
         "titleBaseline": {
-          "description": "Vertical text baseline for the header title.",
-          "type": "string"
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
           "description": "Color of the header title, can be in hex color code or regular color name.",
@@ -3717,7 +3695,79 @@
           "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of the header title.",
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "titleX": {
+          "description": "X-coordinate of the header title relative to the axis group.",
+          "type": "number"
+        },
+        "titleY": {
+          "description": "Y-coordinate of the header title relative to the axis group.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "HeaderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "labelAngle": {
+          "description": "The rotation angle of the header labels.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "labelColor": {
+          "description": "The color of the header label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFont": {
+          "description": "The font of the header label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of the header label, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelLimit": {
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "titleAlign": {
+          "description": "Horizontal text alignment of the header title.",
+          "type": "string"
+        },
+        "titleAngle": {
+          "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "titleBaseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "titleColor": {
+          "description": "Color of the header title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "Font size of the header title.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "titleX": {
@@ -6738,6 +6788,19 @@
         "$ref": "#/definitions/VgMarkConfig"
       },
       "type": "object"
+    },
+    "TextBaseline": {
+      "anyOf": [
+        {
+          "enum": [
+            "alphabetic"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/Baseline"
+        }
+      ]
     },
     "TextConfig": {
       "additionalProperties": false,
