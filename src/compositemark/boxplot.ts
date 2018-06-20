@@ -111,6 +111,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
+  
   if (!isMinMax) {
     const lowerBoxExpr: string = 'datum.lower_box_' + continuousAxisChannelDef.field;
     const upperBoxExpr: string = 'datum.upper_box_' + continuousAxisChannelDef.field;
