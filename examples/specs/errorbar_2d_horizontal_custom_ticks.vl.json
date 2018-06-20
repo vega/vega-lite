@@ -1,0 +1,21 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/barley.json"},
+  "mark": {
+    "type": "errorbar",
+    "ticks": {
+      "color": "grey"
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "yield",
+      "type": "quantitative",
+      "scale": {"zero": false},
+      "axis": {"title": "Barley Yield"}
+    },
+    "y": {
+      "field": "variety", "type": "ordinal"
+    }
+  }
+}

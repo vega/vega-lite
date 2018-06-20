@@ -1,0 +1,204 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "lower_yield": 23.1311,
+                    "upper_yield": 43.5522,
+                    "variety": "Glabron"
+                },
+                {
+                    "lower_yield": 23.9503,
+                    "upper_yield": 38.9775,
+                    "variety": "Manchuria"
+                },
+                {
+                    "lower_yield": 24.7778,
+                    "upper_yield": 46.9167,
+                    "variety": "No. 457"
+                },
+                {
+                    "lower_yield": 21.7823,
+                    "upper_yield": 48.9732,
+                    "variety": "No. 462"
+                },
+                {
+                    "lower_yield": 21.3144,
+                    "upper_yield": 42.2078,
+                    "variety": "No. 475"
+                },
+                {
+                    "lower_yield": 27.0919,
+                    "upper_yield": 41.2692,
+                    "variety": "Peatland"
+                },
+                {
+                    "lower_yield": 21.3221,
+                    "upper_yield": 39.4334,
+                    "variety": "Svansota"
+                },
+                {
+                    "lower_yield": 27.7425,
+                    "upper_yield": 51.0575,
+                    "variety": "Trebi"
+                },
+                {
+                    "lower_yield": 24.482,
+                    "upper_yield": 41.6402,
+                    "variety": "Velvet"
+                },
+                {
+                    "lower_yield": 27.5287,
+                    "upper_yield": 51.2602,
+                    "variety": "Wisconsin No. 38"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "datum.upper_yield",
+                    "as": "lower_upper_yield"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.lower_yield",
+                    "as": "upper_upper_yield"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lower_upper_yield\"] !== null && !isNaN(datum[\"lower_upper_yield\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "y_step",
+            "value": 21
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_layer_0_marks",
+            "type": "rule",
+            "style": [
+                "rule",
+                "errorbar-rule"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "lower_upper_yield"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "variety",
+                        "band": 0.5
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "upper_upper_yield"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "data": "data_0",
+                "fields": [
+                    "lower_upper_yield",
+                    "upper_upper_yield"
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ],
+            "zero": false,
+            "nice": true
+        },
+        {
+            "name": "y",
+            "type": "band",
+            "domain": {
+                "data": "data_0",
+                "field": "variety",
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "y_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "Barley Yield",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "variety",
+            "labelOverlap": true,
+            "zindex": 1
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}
