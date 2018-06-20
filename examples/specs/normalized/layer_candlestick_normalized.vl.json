@@ -1,8 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "width": 320,
-  "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
+  "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
   "data": {
+    "format": {
+      "parse": {
+        "date": "date:'%Y-%m-%d'"
+      }
+    },
     "values": [
       {
         "date": "2009-06-01",
@@ -211,25 +216,7 @@
         "x": {
           "field": "date",
           "type": "temporal",
-          "timeUnit": "yearmonthdate",
-          "scale": {
-            "domain": [
-              {
-                "month": 5,
-                "date": 31,
-                "year": 2009
-              },
-              {
-                "month": 7,
-                "date": 1,
-                "year": 2009
-              }
-            ]
-          },
-          "axis": {
-            "format": "%m/%d",
-            "title": "Date in 2009"
-          }
+          "title": "Date in 2009"
         },
         "color": {
           "condition": {
@@ -257,25 +244,7 @@
         "x": {
           "field": "date",
           "type": "temporal",
-          "timeUnit": "yearmonthdate",
-          "scale": {
-            "domain": [
-              {
-                "month": 5,
-                "date": 31,
-                "year": 2009
-              },
-              {
-                "month": 7,
-                "date": 1,
-                "year": 2009
-              }
-            ]
-          },
-          "axis": {
-            "format": "%m/%d",
-            "title": "Date in 2009"
-          }
+          "title": "Date in 2009"
         },
         "color": {
           "condition": {
