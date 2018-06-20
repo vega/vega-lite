@@ -104,7 +104,14 @@
                 },
                 "offset": 10,
                 "orient": "top",
-                "style": "guide-label"
+                "style": "guide-label",
+                "encode": {
+                    "update": {
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
             }
         },
         {
@@ -210,7 +217,14 @@
                         },
                         "offset": 10,
                         "orient": "top",
-                        "style": "guide-label"
+                        "style": "guide-label",
+                        "encode": {
+                            "update": {
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
                     },
                     "encode": {
                         "update": {
