@@ -413,7 +413,7 @@ describe('normalizeErrorBar with raw data input', () => {
       const type = 'errorbar';
       const spec: GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> = {
         "data": {"url": "data/population.json"},
-        mark: {type, center, extent},
+        mark: {type, ...(center ? {center} : {}), ...(extent ? {extent} : {})},
         encoding: {
           "x": {"field": "people", "type": "quantitative"},
           "y": {"field": "people", "type": "quantitative"}
@@ -423,10 +423,19 @@ describe('normalizeErrorBar with raw data input', () => {
       for (let k = 0; k < warningOutput[i][j].length; k++) {
         if (warningOutput[i][j][k]) {
           it("should produce a warning if center is " + (centers[i] ? centers[i] : "not specified") +
-          " and extent is " + (extents[j] ? extents[j] : "not specified") + ".", log.wrap((localLogger) => {
+          " and extent is " + (extents[j] ? extents[j] : "not specified") + " that " + warningMessage[k](center, extent, type), log.wrap((localLogger) => {
             normalize(spec, defaultConfig);
 
             assert.isTrue(some(localLogger.warns, (message) => {
+              return message === warningMessage[k](center, extent, type);
+            }));
+          }));
+        } else {
+          it("should not produce a warning if center is " + (centers[i] ? centers[i] : "not specified") +
+          " and extent is " + (extents[j] ? extents[j] : "not specified") + " that " + warningMessage[k](center, extent, type), log.wrap((localLogger) => {
+            normalize(spec, defaultConfig);
+
+            assert.isFalse(some(localLogger.warns, (message) => {
               return message === warningMessage[k](center, extent, type);
             }));
           }));

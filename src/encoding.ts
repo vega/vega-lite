@@ -234,7 +234,6 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
         field: vgField(channelDef),
         type: channelDef.type,
         title: title(channelDef, config)
-        // TODO(@alanbanh): make title and format correct here
       };
     } else {
       // For value def, just copy

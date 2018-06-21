@@ -163,7 +163,46 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
 
   const {orient, isRangedErrorBar} = errorBarOrientAndRange(spec, compositeMark);
   const {continuousAxisChannelDef, continuousAxisChannelDef2, continuousAxis} = compositeMarkContinuousAxis(spec, orient, compositeMark);
-  let errorbarSpecificAggregate: AggregatedFieldDef[] = [];
+  const {errorBarSpecificAggregate, postAggregateCalculates} = errorBarAggregationAndCalculation(markDef, continuousAxisChannelDef, continuousAxisChannelDef2, isRangedErrorBar, compositeMark, config);
+
+  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = encoding;
+
+  const {bins, timeUnits, aggregate: oldAggregate, groupby: oldGroupBy, encoding: encodingWithoutContinuousAxis}
+    = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
+
+  const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorBarSpecificAggregate];
+  const groupby: string[] = isRangedErrorBar ? [] : oldGroupBy;
+
+  return {
+    transform: [
+      ...bins,
+      ...timeUnits,
+      ...(!aggregate.length ? [] : [{aggregate, groupby}]),
+      ...postAggregateCalculates
+    ],
+    groupby,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis,
+    ticksOrient: orient === 'vertical' ? 'horizontal' : 'vertical',
+    markDef,
+    outerSpec
+  };
+}
+
+function errorBarAggregationAndCalculation<M extends ErrorBar | ErrorBand, MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)>(
+  markDef: MD,
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  continuousAxisChannelDef2: PositionFieldDef<string>,
+  isRangedErrorBar: boolean,
+  compositeMark: M,
+  config: Config
+):
+{
+  postAggregateCalculates: CalculateTransform[],
+  errorBarSpecificAggregate: AggregatedFieldDef[]
+} {
+  let errorBarSpecificAggregate: AggregatedFieldDef[] = [];
   let postAggregateCalculates: CalculateTransform[] = [];
   const continuousFieldName: string = continuousAxisChannelDef.field;
 
@@ -172,7 +211,7 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
       log.warn(log.message.errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
     }
 
-    postAggregateCalculates = [
+    postAggregateCalculates= [
       {
         calculate: `datum.${continuousFieldName}`,
         as: `lower_` + continuousFieldName
@@ -193,7 +232,7 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     }
 
     if (extent === 'stderr' || extent === 'stdev') {
-      errorbarSpecificAggregate = [
+      errorBarSpecificAggregate = [
         {
           op: extent,
           field: continuousFieldName,
@@ -217,11 +256,11 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
         }
       ];
     } else {
-      if (markDef.center) {
+      if (markDef.center && markDef.extent) {
         log.warn(log.message.errorBarCenterIsNotNeeded(extent, compositeMark));
       }
 
-      errorbarSpecificAggregate = [
+      errorBarSpecificAggregate = [
         {
           op: (extent === 'ci') ? 'ci0' : 'q1',
           field: continuousFieldName,
@@ -235,28 +274,5 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
       ];
     }
   }
-
-  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = encoding;
-
-  const {bins, timeUnits, aggregate: oldAggregate, groupby: oldGroupBy, encoding: encodingWithoutContinuousAxis}
-    = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
-
-  const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorbarSpecificAggregate];
-  const groupby: string[] = isRangedErrorBar ? [] : oldGroupBy;
-
-  return {
-    transform: [
-      ...bins,
-      ...timeUnits,
-      ...(!aggregate.length ? [] : [{aggregate, groupby}]),
-      ...postAggregateCalculates
-    ],
-    groupby,
-    continuousAxisChannelDef,
-    continuousAxis,
-    encodingWithoutContinuousAxis,
-    ticksOrient: orient === 'vertical' ? 'horizontal' : 'vertical',
-    markDef,
-    outerSpec
-  };
+  return {postAggregateCalculates, errorBarSpecificAggregate};
 }
