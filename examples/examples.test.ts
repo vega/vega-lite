@@ -45,7 +45,10 @@ function validateVega(vegaSpec: TopLevelSpec) {
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
 
-const suffixLength = '_future.vl.json'.length;
+const futureSuffixLength = '_future.vl.json'.length;
+const brokenSuffixLength = '_broken.vl.json'.length;
+
+
 describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
@@ -65,7 +68,7 @@ describe('Examples', function() {
           // Also ignore box-plot examples until we support selections
           example.indexOf('box-plot') >= 0 ||
           // Also ignore all examples with "_future" suffix
-          example.lastIndexOf('_future.vl.json', example.length - suffixLength) >= 0
+          example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0
           ) {
           return;
         }
@@ -73,10 +76,20 @@ describe('Examples', function() {
       });
 
       it('should not include any warning', () => {
+        if (example.lastIndexOf('_broken.vl.json', example.length - brokenSuffixLength) >= 0) {
+          // Ignore all examples with "_broken" suffix
+          return;
+        }
+
         expect(localLogger.warns).toEqual([]);
       });
 
       it('should produce valid vega', function() {
+        if (example.lastIndexOf('_broken.vl.json', example.length - brokenSuffixLength) >= 0) {
+          // Ignore all examples with "_broken" suffix
+          return;
+        }
+
         validateVega(vegaSpec);
       });
     }));
