@@ -23,4 +23,4 @@ Filters a data stream to a random sample of at most 500 data objects.
 
 Comparison between plots of the complete data and sampled data.
 
-<div class="vl-example" data-name="hconcat_bar_stacked_manchuria_sample"></div>
+<div class="vl-example" data-name="sample_scatterplot"></div>
