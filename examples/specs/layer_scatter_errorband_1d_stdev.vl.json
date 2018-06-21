@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "encoding": {
+    "y": {
+      "field": "Miles_per_Gallon",
+      "type": "quantitative",
+      "title": "Miles per Gallon"
+    }
+  },
+  "layer": [
+    {
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "Horsepower","type": "quantitative"}
+      }
+    },
+    {
+      "mark": {
+        "type": "errorband",
+        "extent": "stdev"
+      }
+    }
+  ]
+}

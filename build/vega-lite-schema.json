@@ -1166,7 +1166,7 @@
         },
         "type": {
           "$ref": "#/definitions/BoxPlot",
-          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -2589,10 +2589,6 @@
             }
           ]
         },
-        "center": {
-          "$ref": "#/definitions/ErrorBarCenter",
-          "description": "The center of the error band. Available options include:\n- `\"mean\"`: the mean of the data points.\n- `\"median\"`: the median of the data points.\n\n__Default value:__ `\"mean\"`."
-        },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
           "description": "The extent of the band. Available options include:\n- `\"ci\"`: Extend the band to the confidence interval of the mean.\n- `\"stderr\"`: The size of band are set to the value of standard error, extending from the center.\n- `\"stdev\"`: The size of band are set to the value of standard deviation, extending from the center.\n- `\"iqr\"`: Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
@@ -2623,10 +2619,6 @@
             }
           ]
         },
-        "center": {
-          "$ref": "#/definitions/ErrorBarCenter",
-          "description": "The center of the error band. Available options include:\n- `\"mean\"`: the mean of the data points.\n- `\"median\"`: the median of the data points.\n\n__Default value:__ `\"mean\"`."
-        },
         "color": {
           "description": "Color of the marks.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`",
           "type": "string"
@@ -2645,7 +2637,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBand",
-          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -2656,13 +2648,6 @@
     "ErrorBar": {
       "enum": [
         "errorbar"
-      ],
-      "type": "string"
-    },
-    "ErrorBarCenter": {
-      "enum": [
-        "mean",
-        "median"
       ],
       "type": "string"
     },
@@ -2737,7 +2722,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBar",
-          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -5133,7 +5118,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [

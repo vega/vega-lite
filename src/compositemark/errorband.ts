@@ -31,7 +31,10 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
+   * @hide
    */
+
+   // center is not needed right now but will be added back to the schema if future features require it.
   center?: ErrorBarCenter;
 
   /**
