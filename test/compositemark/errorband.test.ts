@@ -73,7 +73,8 @@ describe('normalizeErrorBand', () => {
             },
             "x": {
               "field": "age",
-              "type": "ordinal"
+              "type": "ordinal",
+              "title": "age"
             }
           }
         }

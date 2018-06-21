@@ -72,7 +72,8 @@
             },
             "y": {
               "field": "age",
-              "type": "ordinal"
+              "type": "ordinal",
+              "title": "age"
             }
           }
         },
@@ -95,7 +96,8 @@
             },
             "y": {
               "field": "age",
-              "type": "ordinal"
+              "type": "ordinal",
+              "title": "age"
             }
           }
         },
@@ -119,7 +121,8 @@
             },
             "y": {
               "field": "age",
-              "type": "ordinal"
+              "type": "ordinal",
+              "title": "age"
             },
             "size": {
               "value": 5
@@ -147,7 +150,8 @@
             },
             "y": {
               "field": "age",
-              "type": "ordinal"
+              "type": "ordinal",
+              "title": "age"
             },
             "size": {
               "value": 5
@@ -194,7 +198,8 @@
         },
         "y": {
           "field": "age",
-          "type": "ordinal"
+          "type": "ordinal",
+          "title": "age"
         }
       }
     }
