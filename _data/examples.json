@@ -229,6 +229,36 @@
       }
     ]
   },
+  "Composite Mark": {
+    "Error Bars & Error Bands": [
+      {
+        "name": "layer_point_errorbar_ci",
+        "title": "Error Bars showing Confidence Interval"
+      },
+      {
+        "name": "layer_point_errorbar_stdev",
+        "title": "Error Bars showing Standard Deviation"
+      },
+      {
+        "name": "layer_line_errorband_ci",
+        "title": "Line Chart with Confidence Interval Band"
+      },
+      {
+        "name": "layer_scatter_errorband_1D_stdev_global_mean",
+        "title": "Scatterplot with Mean and Standard Deviation Overlay"
+      }
+    ],
+    "Box Plots": [
+      {
+        "name": "boxplot_minmax_2D_vertical",
+        "title": "Box Plot with Min/Max Whiskers"
+      },
+      {
+        "name": "boxplot_2D_vertical",
+        "title": "Tukey Box Plot (1.5 IQR)"
+      }
+    ]
+  },
   "Layered & Multi-View Displays": {
     "Faceting (Trellis Plot / Small Multiples)": [
       {
@@ -258,34 +288,6 @@
       {
         "name": "trellis_area",
         "title": "Trellis Area"
-      }
-    ],
-    "Error Bars & Error Bands": [
-      {
-        "name": "layer_error_bars",
-        "title": "Error Bars showing Confidence Interval"
-      },
-      {
-        "name": "layer_error_bars_dev",
-        "title": "Error Bars showing Standard Deviation"
-      },
-      {
-        "name": "layer_area_ci",
-        "title": "Line Chart with Confidence Interval Band"
-      },
-      {
-        "name": "layer_global_mean_dev",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay"
-      }
-    ],
-    "Box Plots": [
-      {
-        "name": "boxplot_minmax_2D_vertical",
-        "title": "Box Plot with Min/Max Whiskers"
-      },
-      {
-        "name": "boxplot_2D_vertical",
-        "title": "Tukey Box Plot (1.5 IQR)"
       }
     ],
     "Using Layer to Add Labels": [
