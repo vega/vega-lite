@@ -49,10 +49,10 @@ export interface EncodingSortField<F> {
   order?: SortOrder;
 }
 
-export function isSortField<F>(sort: string[] | SortOrder | EncodingSortField<F>): sort is EncodingSortField<F> {
+export function isSortField<F>(sort: (string | number | boolean)[] | SortOrder | EncodingSortField<F>): sort is EncodingSortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 
-export function isSortArray<F>(sort: string[] | SortOrder | EncodingSortField<F>): sort is string[] {
-  return !!sort && isArray(sort) && sort.every(s => isString(s));
+export function isSortArray<F>(sort: (string | number | boolean)[] | SortOrder | EncodingSortField<F>): sort is (string | number | boolean)[] {
+  return !!sort && isArray(sort);
 }

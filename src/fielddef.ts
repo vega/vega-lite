@@ -194,7 +194,7 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    *
    * __Default value:__ `"ascending"`
    */
-  sort?: string[] | SortOrder | EncodingSortField<F> | null;
+  sort?: (number|string|boolean)[] | SortOrder | EncodingSortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
