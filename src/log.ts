@@ -226,14 +226,6 @@ export namespace message {
     return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
   }
 
-  export function unclearOrientContinuous(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;
-  }
-
-  export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode discrete or empty fields.`;
-  }
-
   export function orientOverridden(original: string, actual: string) {
     return `Specified orient "${original}" overridden with "${actual}"`;
   }

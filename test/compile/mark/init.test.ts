@@ -3,7 +3,7 @@
 import * as log from '../../../src/log';
 
 import {assert} from 'chai';
-import {BAR, CIRCLE, Mark, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
+import {CIRCLE, Mark, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -73,7 +73,6 @@ describe('compile/mark/init', function() {
         },
       });
       assert.equal(model.markDef.orient, 'vertical');
-      assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
     }));
 
     it('should return correct default for empty plot', log.wrap((localLogger) => {
@@ -82,7 +81,6 @@ describe('compile/mark/init', function() {
         encoding: {}
       });
       assert.equal(model.markDef.orient, undefined);
-      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
     }));
 
     it('should return correct orient for bar with both axes discrete', log.wrap((localLogger) => {
@@ -94,7 +92,6 @@ describe('compile/mark/init', function() {
         },
       });
       assert.equal(model.markDef.orient, undefined);
-      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
     }));
 
 

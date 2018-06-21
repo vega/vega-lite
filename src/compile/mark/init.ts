@@ -154,14 +154,14 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
           return specifiedOrient;
         }
 
-        if (!(mark === LINE && encoding.order)) {
-          // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
-          log.warn(log.message.unclearOrientContinuous(mark));
-        }
         return 'vertical';
       } else {
-        // For Discrete x Discrete case, return undefined.
-        log.warn(log.message.unclearOrientDiscreteOrEmpty(mark));
+        // Discrete x Discrete case
+        if (specifiedOrient) {
+          // When ambiguous, use user specified one.
+          return specifiedOrient;
+        }
+
         return undefined;
       }
   }

@@ -614,7 +614,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       return COMPATIBLE;
 
     case 'order':
-      if (fieldDef.type === 'nominal') {
+      if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
         return {
           compatible: false,
           warning: `Channel order is inappropriate for nominal field, which has no inherent order.`
