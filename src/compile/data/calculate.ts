@@ -33,7 +33,7 @@ export class CalculateNode extends DataFlowNode {
     return parent;
   }
 
-  public static calculateExpressionFromSortField(field: string, sortFields: string[]): string {
+  public static calculateExpressionFromSortField(field: string, sortFields: (string | number | boolean)[]): string {
     let expression = '';
     let i: number;
     for (i = 0; i < sortFields.length; i++) {
