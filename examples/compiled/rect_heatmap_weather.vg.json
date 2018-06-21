@@ -2,8 +2,6 @@
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
-    "width": 300,
-    "height": 200,
     "style": "cell",
     "data": [
         {
@@ -44,6 +42,24 @@
                     ]
                 }
             ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 13
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        },
+        {
+            "name": "y_step",
+            "value": 13
+        },
+        {
+            "name": "height",
+            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
         }
     ],
     "marks": [
@@ -91,12 +107,11 @@
                 "field": "date_date",
                 "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "width"
+            "range": {
+                "step": {
+                    "signal": "x_step"
                 }
-            ],
+            },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },
@@ -108,12 +123,11 @@
                 "field": "month_date",
                 "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "height"
+            "range": {
+                "step": {
+                    "signal": "y_step"
                 }
-            ],
+            },
             "paddingInner": 0.1,
             "paddingOuter": 0.05
         },

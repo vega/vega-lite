@@ -3,7 +3,11 @@
   "data": {
     "url": "data/sf-temps.csv"
   },
-  "width": 300, "height": 200,
+  "config": {
+    "scale": {
+      "rangeStep": 13
+    }
+  },
   "mark": "rect",
   "encoding": {
     "x": {
