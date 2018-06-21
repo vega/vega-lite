@@ -1,7 +1,9 @@
 import {Channel} from '../channel';
 import {Config} from '../config';
+import {Data} from '../data';
 import {Field, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
 import {isMarkDef, MarkDef} from '../mark';
+import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {Encoding, extractTransformsFromEncoding} from './../encoding';
@@ -139,7 +141,15 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   encodingWithoutContinuousAxis: Encoding<string>,
   ticksOrient: Orient,
   markDef: MD,
-  outerSpec: {}
+  outerSpec: {
+    data?: Data;
+    title?: string | TitleParams;
+    name?: string;
+    description?: string;
+    transform?: Transform[];
+    width?: number;
+    height?: number;
+  }
 } {
   spec = filterUnsupportedChannels<M, MD>(spec, errorBarSupportedChannels, compositeMark);
 
