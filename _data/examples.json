@@ -197,6 +197,10 @@
         "style": "background-size: auto"
       },
       {
+        "name": "rect_heatmap_weather",
+        "title": "Annual Weather Heatmap"
+      },
+      {
         "name": "rect_binned_heatmap",
         "title": "Table Binned heatmap"
       },
