@@ -2,11 +2,14 @@
     "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
+    "title": {
+        "text": "2010 Daily Max Temperature (F) in Seattle, WA"
+    },
     "style": "cell",
     "data": [
         {
             "name": "source_0",
-            "url": "data/sf-temps.csv",
+            "url": "data/seattle-temps.csv",
             "format": {
                 "type": "csv",
                 "parse": {
@@ -148,33 +151,30 @@
             "scale": "x",
             "orient": "bottom",
             "grid": false,
-            "title": "day",
-            "labelOverlap": true,
+            "title": "Day",
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
-                            "signal": "timeFormat(datum.value, '%d')"
-                        },
-                        "angle": {
-                            "value": 270
+                            "signal": "timeFormat(datum.value, '%e')"
                         },
                         "align": {
-                            "value": "right"
+                            "value": "center"
                         },
                         "baseline": {
-                            "value": "middle"
+                            "value": "top"
                         }
                     }
                 }
             },
+            "labelOverlap": true,
             "zindex": 1
         },
         {
             "scale": "y",
             "orient": "left",
             "grid": false,
-            "title": "month",
+            "title": "Month",
             "labelOverlap": true,
             "encode": {
                 "labels": {
@@ -191,13 +191,20 @@
     "legends": [
         {
             "fill": "color",
-            "title": "Max of temp",
             "type": "gradient"
         }
     ],
     "config": {
+        "axis": {
+            "domain": false
+        },
         "axisY": {
             "minExtent": 30
+        },
+        "style": {
+            "cell": {
+                "strokeWidth": 0
+            }
         }
     }
 }
