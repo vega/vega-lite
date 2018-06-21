@@ -1,16 +1,14 @@
 import {Config} from '../config';
-import {isMarkDef} from '../mark';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
 import {
-  filterUnsupportedChannels,
   GenericCompositeMarkDef,
   makeCompositeAggregatePartFactory,
   PartsMixins,
 } from './common';
-import {ErrorBarCenter, ErrorBarExtent, errorBarParams, errorBarSupportedChannels} from './errorbar';
+import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
@@ -63,13 +61,8 @@ export interface ErrorBandConfigMixins {
 }
 
 export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, ERRORBAND);
-
-  // TODO: use selection
-  const {mark, encoding, selection: _selection, projection: _p, ...outerSpec} = spec;
-  const markDef: ErrorBandDef = isMarkDef(mark) ? mark : {type: mark};
-
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = errorBarParams(spec, markDef, ERRORBAND, config);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, markDef, outerSpec}
+    = errorBarParams(spec, ERRORBAND, config);
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
       markDef,
@@ -79,7 +72,7 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
       config.errorband
   );
 
-  const is2D = encoding.x !== undefined && encoding.y !== undefined;
+  const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
   const bandMark = is2D ? 'area' : 'rect';
   const bordersMark = is2D ? 'line' : 'rule';
 

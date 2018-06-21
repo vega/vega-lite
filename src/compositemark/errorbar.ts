@@ -71,16 +71,9 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
-export const errorBarSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
-
 export function normalizeErrorBar(spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>, config: Config): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, ERRORBAR);
-
-  // TODO: use selection
-  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
-  const markDef: ErrorBarDef = isMarkDef(mark) ? mark : {type: mark};
-
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, ticksOrient} = errorBarParams(spec, markDef, ERRORBAR, config);
+  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, ticksOrient, markDef, outerSpec}
+    = errorBarParams(spec, ERRORBAR, config);
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
       markDef,
@@ -132,9 +125,10 @@ function errorBarOrientAndRange(
   };
 }
 
+export const errorBarSupportedChannels: Channel[] = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
+
 export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)>(
   spec: GenericUnitSpec<Encoding<string>, M | MD>,
-  markDef: MD,
   compositeMark: M,
   config: Config
 ): {
@@ -143,10 +137,17 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>,
-  ticksOrient: Orient
+  ticksOrient: Orient,
+  markDef: MD,
+  outerSpec: {}
 } {
+  spec = filterUnsupportedChannels<M, MD>(spec, errorBarSupportedChannels, compositeMark);
+
+  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const markDef: MD = isMarkDef(mark) ? mark : {type: mark} as MD;
+
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
-  if (spec.selection) {
+  if (selection) {
     log.warn(log.message.selectionNotSupported(compositeMark));
   }
 
@@ -225,7 +226,7 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     }
   }
 
-  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
+  const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = encoding;
 
   const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
 
@@ -253,6 +254,8 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    ticksOrient
+    ticksOrient,
+    markDef,
+    outerSpec
   };
 }
