@@ -238,33 +238,23 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = encoding;
 
-  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
+  const {bins, timeUnits, aggregate: oldAggregate, groupby: oldGroupBy, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
 
-  const transform: Transform[] = [
-    ...(
-      (aggregate.length === 0 && errorbarSpecificAggregate.length === 0) ?
-        [] :
-        [{
-          aggregate: [...aggregate, ...errorbarSpecificAggregate],
-          groupby: isRangedErrorBar ? [] : groupby
-        }]
-    ),
-    ...[
-      ...bins,
-      ...timeUnits,
-      ...postAggregateCalculates
-    ]
-  ];
-
-  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+  const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorbarSpecificAggregate];
+  const groupby: string[] = isRangedErrorBar ? [] : oldGroupBy;
 
   return {
-    transform,
-    groupby: isRangedErrorBar ? [] : groupby,
+    transform: [
+      ...bins,
+      ...timeUnits,
+      ...(!aggregate.length ? [] : [{aggregate, groupby}]),
+      ...postAggregateCalculates
+    ],
+    groupby,
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    ticksOrient,
+    ticksOrient: orient === 'vertical' ? 'horizontal' : 'vertical',
     markDef,
     outerSpec
   };
