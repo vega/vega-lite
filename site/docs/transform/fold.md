@@ -5,7 +5,7 @@ title: Fold
 permalink: /docs/fold.html
 ---
 
-The **fold** transform collapses (or "folds") one or more data fields into two properties: a _key_ property (containing the original data field name) and a _value_ property (containing the data value).
+The fold transform collapses (or "folds") one or more data fields into two properties: a _key_ property (containing the original data field name) and a _value_ property (containing the data value).
 
 The fold transform is useful for mapping matrix or cross-tabulation data into a standardized format.
 
