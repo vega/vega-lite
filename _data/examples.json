@@ -198,7 +198,7 @@
       },
       {
         "name": "rect_heatmap_weather",
-        "title": "Table Heatmap of Weather"
+        "title": "Annual Weather Heatmap"
       },
       {
         "name": "rect_binned_heatmap",
