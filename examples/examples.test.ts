@@ -2,6 +2,7 @@ import Ajv from 'ajv';
 import {assert} from 'chai';
 
 import {compile} from '../src/compile/compile';
+import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 
 const inspect = require('util').inspect;
@@ -35,9 +36,7 @@ function validateVL(spec: TopLevelSpec) {
   assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/vega-lite/v2');
 }
 
-function validateVega(spec: TopLevelSpec) {
-  const vegaSpec = compile(spec).spec;
-
+function validateVega(vegaSpec: TopLevelSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
@@ -56,7 +55,9 @@ describe('Examples', function() {
     }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
-    describe(example, function() {
+    describe(example, log.wrap((localLogger) => {
+      const vegaSpec = compile(jsonSpec).spec;
+
       it('should be valid vega-lite with proper $schema', function() {
         if (
           // Do not validate overlay example until we have redesigned it
@@ -71,9 +72,13 @@ describe('Examples', function() {
         validateVL(jsonSpec);
       });
 
-      it('should produce valid vega', function() {
-        validateVega(jsonSpec);
+      it('should not include any warning', () => {
+        expect(localLogger.warns).toEqual([]);
       });
-    });
+
+      it('should produce valid vega', function() {
+        validateVega(vegaSpec);
+      });
+    }));
   });
 });
