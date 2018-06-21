@@ -57,7 +57,7 @@ describe('normalizeErrorBar with raw data input', () => {
               "title": "people"
             },
             "y2": {"field": "upper_people", "type": "quantitative"},
-            "x": {"field": "age", "type": "ordinal"}
+            "x": {"field": "age", "type": "ordinal", "title": "age"}
           }
         }
       ]
@@ -536,7 +536,7 @@ describe('normalizeErrorBar with aggregated data input', () => {
               "title": "people"
             },
             "y2": {"field": "upper_people", "type": "quantitative"},
-            "x": {"field": "age", "type": "ordinal"}
+            "x": {"field": "age", "type": "ordinal", "title": "age"}
           }
         }
       ]

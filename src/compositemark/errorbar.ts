@@ -238,7 +238,8 @@ export function errorBarParams<M extends ErrorBar | ErrorBand, MD extends Generi
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, [continuousAxis + '2']: oldContinuousAxisChannelDef2, ...oldEncodingWithoutContinuousAxis} = encoding;
 
-  const {bins, timeUnits, aggregate: oldAggregate, groupby: oldGroupBy, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis);
+  const {bins, timeUnits, aggregate: oldAggregate, groupby: oldGroupBy, encoding: encodingWithoutContinuousAxis}
+    = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
 
   const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorbarSpecificAggregate];
   const groupby: string[] = isRangedErrorBar ? [] : oldGroupBy;

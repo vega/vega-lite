@@ -90,7 +90,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -108,7 +108,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -127,7 +127,7 @@ describe("normalizeBoxMinMax", () => {
               size: 5
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -149,7 +149,7 @@ describe("normalizeBoxMinMax", () => {
               size: 5
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -334,7 +334,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -352,7 +352,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -371,7 +371,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -393,7 +393,7 @@ describe("normalizeBoxMinMax", () => {
               color: 'white'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -465,7 +465,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -483,7 +483,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -502,7 +502,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -524,7 +524,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -596,7 +596,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -614,7 +614,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -633,7 +633,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -655,7 +655,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -727,7 +727,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -745,7 +745,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -764,7 +764,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -786,7 +786,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "quantitative"},
+              "y": {"field": "age","type": "quantitative", "title": "age"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -857,7 +857,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "ordinal"},
+              "x": {"field": "age","type": "ordinal", "title": "age"},
               "y": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -875,7 +875,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "x": {"field": "age","type": "ordinal"},
+              "x": {"field": "age","type": "ordinal", "title": "age"},
               "y": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -894,7 +894,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "x": {"field": "age","type": "ordinal"},
+              "x": {"field": "age","type": "ordinal", "title": "age"},
               "y": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -916,7 +916,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "x": {"field": "age","type": "ordinal"},
+              "x": {"field": "age","type": "ordinal", "title": "age"},
               "y": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -987,7 +987,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -1005,7 +1005,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -1024,7 +1024,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -1046,7 +1046,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -1116,7 +1116,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "lower_whisker_people",
                 "type": "quantitative",
@@ -1134,7 +1134,7 @@ describe("normalizeBoxMinMax", () => {
               style: 'boxplot-rule'
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "upper_box_people",
                 "type": "quantitative",
@@ -1153,7 +1153,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "lower_box_people",
                 "type": "quantitative",
@@ -1174,7 +1174,7 @@ describe("normalizeBoxMinMax", () => {
               size: 14
             },
             "encoding": {
-              "y": {"field": "age","type": "ordinal"},
+              "y": {"field": "age","type": "ordinal", "title": "age"},
               "x": {
                 "field": "mid_box_people",
                 "type": "quantitative",
@@ -1506,7 +1506,7 @@ describe("normalizeBoxIQR", () => {
                 style: 'boxplot-rule'
               },
               "encoding": {
-                "x": {"field": "age","type": "quantitative"},
+                "x": {"field": "age","type": "quantitative", "title": "age"},
                 "y": {
                   "field": "lower_whisker_people",
                   "type": "quantitative",
@@ -1524,7 +1524,7 @@ describe("normalizeBoxIQR", () => {
                 style: 'boxplot-rule'
               },
               "encoding": {
-                "x": {"field": "age","type": "quantitative"},
+                "x": {"field": "age","type": "quantitative", "title": "age"},
                 "y": {
                   "field": "upper_box_people",
                   "type": "quantitative",
@@ -1543,7 +1543,7 @@ describe("normalizeBoxIQR", () => {
                 size: 14
               },
               "encoding": {
-                "x": {"field": "age","type": "quantitative"},
+                "x": {"field": "age","type": "quantitative", "title": "age"},
                 "y": {
                   "field": "lower_box_people",
                   "type": "quantitative",
@@ -1565,7 +1565,7 @@ describe("normalizeBoxIQR", () => {
                 size: 14
               },
               "encoding": {
-                "x": {"field": "age","type": "quantitative"},
+                "x": {"field": "age","type": "quantitative", "title": "age"},
                 "y": {
                   "field": "mid_box_people",
                   "type": "quantitative",
@@ -1602,7 +1602,7 @@ describe("normalizeBoxIQR", () => {
             style: "boxplot-outliers"
           },
           encoding: {
-            "x": {"field": "age","type": "quantitative"},
+            "x": {"field": "age","type": "quantitative", "title": "age"},
             "y": {
               "field": "people",
               "type": "quantitative"
@@ -1686,7 +1686,7 @@ describe("normalizeBoxIQR", () => {
                   style: 'boxplot-rule'
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
@@ -1704,7 +1704,7 @@ describe("normalizeBoxIQR", () => {
                   style: 'boxplot-rule'
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "upper_box_people",
                     "type": "quantitative",
@@ -1723,7 +1723,7 @@ describe("normalizeBoxIQR", () => {
                   size: 14
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "lower_box_people",
                     "type": "quantitative",
@@ -1745,7 +1745,7 @@ describe("normalizeBoxIQR", () => {
                   size: 14
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "mid_box_people",
                     "type": "quantitative",
@@ -1782,7 +1782,7 @@ describe("normalizeBoxIQR", () => {
               style: "boxplot-outliers"
             },
             encoding: {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "people",
                 "type": "quantitative"
@@ -1875,7 +1875,7 @@ describe("normalizeBoxIQR", () => {
                   style: 'boxplot-rule'
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
@@ -1893,7 +1893,7 @@ describe("normalizeBoxIQR", () => {
                   style: 'boxplot-rule'
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "upper_box_people",
                     "type": "quantitative",
@@ -1912,7 +1912,7 @@ describe("normalizeBoxIQR", () => {
                   size: 14
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "lower_box_people",
                     "type": "quantitative",
@@ -1924,6 +1924,7 @@ describe("normalizeBoxIQR", () => {
                   },
                   "color": {
                     "field": "mean_people",
+                    "title": "Mean of people",
                     "type": "quantitative"
                   }
                 }
@@ -1937,7 +1938,7 @@ describe("normalizeBoxIQR", () => {
                   size: 14
                 },
                 "encoding": {
-                  "x": {"field": "age","type": "quantitative"},
+                  "x": {"field": "age","type": "quantitative", "title": "age"},
                   "y": {
                     "field": "mid_box_people",
                     "type": "quantitative",
@@ -1974,7 +1975,7 @@ describe("normalizeBoxIQR", () => {
               style: "boxplot-outliers"
             },
             encoding: {
-              "x": {"field": "age","type": "quantitative"},
+              "x": {"field": "age","type": "quantitative", "title": "age"},
               "y": {
                 "field": "people",
                 "type": "quantitative"

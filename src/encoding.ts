@@ -2,6 +2,7 @@ import {isArray} from 'vega-util';
 
 import {isAggregateOp} from './aggregate';
 import {Channel, CHANNELS, isChannel, supportMark} from './channel';
+import {Config} from './config';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
@@ -19,6 +20,7 @@ import {
   OrderFieldDef,
   PositionFieldDef,
   TextFieldDef,
+  title,
   ValueDef,
   ValueDefWithCondition,
   vgField,
@@ -197,7 +199,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
   });
 }
 
-export function extractTransformsFromEncoding(oldEncoding: Encoding<string>) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
@@ -230,7 +232,8 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>) {
       // now the field should refer to post-transformed field instead
       encoding[channel] = {
         field: vgField(channelDef),
-        type: channelDef.type
+        type: channelDef.type,
+        title: title(channelDef, config)
         // TODO(@alanbanh): make title and format correct here
       };
     } else {

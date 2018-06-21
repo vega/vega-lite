@@ -145,7 +145,7 @@ describe('normalize()', function () {
                       "title": "people"
                     },
                     "y2": {"field": "upper_people", "type": "quantitative"},
-                    "x": {"field": "age", "type": "ordinal"}
+                    "x": {"field": "age", "type": "ordinal", "title": "age"}
                   }
                 }
               ]
