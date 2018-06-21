@@ -202,7 +202,7 @@ export interface WindowTransform {
   ignorePeers?: boolean;
 
   /**
-   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.
+   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.
    */
   groupby?: string[];
 

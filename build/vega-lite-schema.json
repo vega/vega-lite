@@ -8568,7 +8568,7 @@
           "type": "array"
         },
         "groupby": {
-          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.",
+          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.",
           "items": {
             "type": "string"
           },
