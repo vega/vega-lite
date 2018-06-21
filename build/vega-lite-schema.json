@@ -1185,7 +1185,11 @@
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
               },
               "type": "array"
             },
@@ -1419,7 +1423,11 @@
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
               },
               "type": "array"
             },
@@ -2745,7 +2753,11 @@
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
               },
               "type": "array"
             },
@@ -5649,7 +5661,11 @@
           "anyOf": [
             {
               "items": {
-                "type": "string"
+                "type": [
+                  "number",
+                  "string",
+                  "boolean"
+                ]
               },
               "type": "array"
             },
