@@ -307,51 +307,25 @@
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "b"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "b",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "a"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "a",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",

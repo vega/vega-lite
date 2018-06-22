@@ -66,26 +66,14 @@
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Origin / Cylinders"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "Origin / Cylinders",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "column_header",
