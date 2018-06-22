@@ -51,7 +51,5 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Interactive stacked time-series](https://bl.ocks.org/jakevdp/1643ebb6853e76c32e47a969f415f3ea) by @jakevdp
 * [Bicycle Count Time-series with Dynamic Scale](https://bl.ocks.org/jakevdp/b511d09ed4e2797234bd6236d7b428f7) by @jakevdp
 * [Vega-Lite downloads](https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2) by @domoritz
-* [Interactive Exploration of Seattle Weather](https://bl.ocks.org/jakevdp/5d1915d808d3d91ce86f0bc3ca066d48) by @jakevdp
 * [Waterfall Chart](https://bl.ocks.org/italo-batista/5f93b3c9f87dffcf01bb489d90f60652/ef01271c72c57dc940bb357019be1c6cdf9eb51a) by @italo-batista
 * [Bar, Small Multiple, Heatmap, Gantt Charts: Exploring NYC Event Permits](https://medium.com/enigma-engineering/exploring-new-york-city-event-permits-with-vega-lite-f83178ff9a8d) by [@hydrosquall](https://twitter.com/hydrosquall)
-* [Layered Floating Bar Chart](https://bl.ocks.org/melissatdiamond/014a58aead0b70c72f851938fefb6be4) by @melissatdiamond
