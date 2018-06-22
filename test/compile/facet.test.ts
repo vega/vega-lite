@@ -320,6 +320,37 @@ describe('FacetModel', function() {
     });
 
 
+    it('should add cross and sort if we facet by multiple dimensions with sort array', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: ['a1', 'a2']},
+          column: {field: 'b', type: 'ordinal', sort: ['b1', 'b2']}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      assert(marks[0].from.facet.aggregate.cross);
+      expect(marks[0].sort).toEqual({
+        field: [
+          'datum["row_a_sort_index"]',
+          'datum["column_b_sort_index"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
+      });
+    });
+
+
     it('should add cross and sort if we facet by multiple dimensions with sort fields', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
