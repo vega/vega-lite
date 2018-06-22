@@ -6,7 +6,7 @@ or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list](https://bit.ly/vega-discuss), [slack](https://bit.ly/vega-slack) or Github first,
+- For major changes, please discuss with us via [our mailing list](https://bit.ly/vega-discuss), [slack](https://bit.ly/join-vega-slack) or Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
