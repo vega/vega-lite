@@ -350,7 +350,7 @@
       {
         "name": "bar_layered_weather",
         "title": "Weekly Weather Plot",
-        "description": "Inspired by this Vega example https://vega.github.io/vega-editor/?mode=vega&spec=weather. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
+        "description": "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega&spec=weather'>this Vega example</a>. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
       }
     ]
   },
@@ -520,7 +520,7 @@
       {
         "name": "interactive_seattle_weather",
         "title": "Seattle Weather Exploration",
-        "description": "This shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp."
+        "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp."
       }
     ]
   }
