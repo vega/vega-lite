@@ -120,6 +120,53 @@ describe('compile/data/facet', function() {
     });
 
 
+    it('should calculate column and row sort array', () => {
+      const model = parseFacetModelWithScale({
+        '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',
+        'data': {
+          'name': 'a'
+        },
+        'facet': {
+          'row': {'field': 'r', 'type': 'nominal', sort: ['r1', 'r2']},
+          'column': {'field': 'c', 'type': 'nominal', sort: ['c1', 'c2']}
+        },
+        'spec': {
+          'mark': 'rect',
+          'encoding': {
+            'y': {'field': 'b', 'type': 'quantitative'},
+            'x': {'field': 'a', 'type': 'quantitative'}
+          }
+        }
+      });
+
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
+      const data = node.assemble();
+
+      assert.deepEqual(data[0], {
+        name: 'column_domain',
+        source: 'dataName',
+        transform: [{
+          type: 'aggregate',
+          groupby: ['c'],
+          fields: ['column_c_sort_index'],
+          ops: ['max'],
+          as: ['column_c_sort_index']
+        }]
+      });
+
+      assert.deepEqual(data[1], {
+        name: 'row_domain',
+        source: 'dataName',
+        transform: [{
+          type: 'aggregate',
+          groupby: ['r'],
+          fields: ['row_r_sort_index'],
+          ops: ['max'],
+          as: ['row_r_sort_index']
+        }]
+      });
+    });
+
     it('should calculate column and row sort field', () => {
       const model = parseFacetModelWithScale({
         '$schema': 'https://vega.github.io/schema/vega-lite/v2.json',

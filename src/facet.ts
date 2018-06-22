@@ -1,18 +1,11 @@
-import {FieldDef} from './fielddef';
+import {SortableFieldDef} from './fielddef';
 import {Header} from './header';
-import {EncodingSortField, SortOrder} from './sort';
 
-export interface FacetFieldDef<F> extends FieldDef<F> {
+export interface FacetFieldDef<F> extends SortableFieldDef<F> {
   /**
    * An object defining properties of a facet's header.
    */
   header?: Header;
-
-  /**
-   * Sort order for a facet field.
-   * This can be `"ascending"`, `"descending"`.
-   */
-  sort?: SortOrder | EncodingSortField<F>;
 }
 
 export interface FacetMapping<F> {

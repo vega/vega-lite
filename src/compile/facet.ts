@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -13,6 +14,7 @@ import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.sc
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
+import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
 import {getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
@@ -21,8 +23,8 @@ import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 
-export function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt: {expr?: 'datum'} = {}) {
-  return vgField(sort, {expr: opt.expr, suffix: `by_${vgField(fieldDef)}`});
+export function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, expr?: 'datum') {
+  return vgField(sort, {expr, suffix: `by_${vgField(fieldDef)}`});
 }
 
 export class FacetModel extends ModelWithField {
@@ -323,6 +325,11 @@ export class FacetModel extends ModelWithField {
             ops.push(op);
             as.push(outputName);
           }
+        } else if (isArray(sort)) {
+          const outputName = sortArrayIndexField(fieldDef, channel);
+          fields.push(outputName);
+          ops.push('max');
+          as.push(outputName);
         }
       }
     });
@@ -349,7 +356,9 @@ export class FacetModel extends ModelWithField {
 
     if (fieldDef) {
       if (isSortField(fieldDef.sort)) {
-        return [facetSortFieldName(fieldDef, fieldDef.sort, {expr: 'datum'})];
+        return [facetSortFieldName(fieldDef, fieldDef.sort, 'datum')];
+      } else if (isArray(fieldDef.sort)) {
+        return [sortArrayIndexField(fieldDef, channel, 'datum')];
       }
       return [vgField(fieldDef, {expr: 'datum'})];
     }
@@ -361,7 +370,7 @@ export class FacetModel extends ModelWithField {
     const fieldDef = facet[channel];
     if (fieldDef) {
       const {sort} = fieldDef;
-      const order = (isSortField(sort) ? sort.order : sort) || 'ascending';
+      const order = (isSortField(sort) ? sort.order : !isArray(sort) && sort) || 'ascending';
       return [order];
     }
     return [];
