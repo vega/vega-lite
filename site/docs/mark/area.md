@@ -76,7 +76,7 @@ You can also create a normalized stacked area chart by setting `"stack"` to `"no
 
 ### Streamgraph
 
-We can also shift the stacked area chart's baseline to center and produces a [streamgraph](http://www.leebyron.com/else/streamgraph/) by setting `"stack"` to `"center"` in the encoding channel.
+We can also shift the stacked area chart's baseline to center and produces a [streamgraph](https://datavizcatalogue.com/methods/stream_graph.html) by setting `"stack"` to `"center"` in the encoding channel.
 
 <span class="vl-example" data-name="stacked_area_stream"></span>
 
