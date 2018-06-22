@@ -3663,8 +3663,8 @@
             "null"
           ]
         },
-        "titleAlign": {
-          "description": "Horizontal text alignment of the header title.",
+        "titleAnchor": {
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
           "type": "string"
         },
         "titleAngle": {
@@ -3696,14 +3696,6 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
-        },
-        "titleX": {
-          "description": "X-coordinate of the header title relative to the axis group.",
-          "type": "number"
-        },
-        "titleY": {
-          "description": "Y-coordinate of the header title relative to the axis group.",
           "type": "number"
         }
       },
@@ -3735,8 +3727,8 @@
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
-        "titleAlign": {
-          "description": "Horizontal text alignment of the header title.",
+        "titleAnchor": {
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
           "type": "string"
         },
         "titleAngle": {
@@ -3768,14 +3760,6 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
-        },
-        "titleX": {
-          "description": "X-coordinate of the header title relative to the axis group.",
-          "type": "number"
-        },
-        "titleY": {
-          "description": "Y-coordinate of the header title relative to the axis group.",
           "type": "number"
         }
       },

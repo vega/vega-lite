@@ -1,9 +1,10 @@
 import {assert} from 'chai';
 import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
-import {VgMarkGroup} from '../../../src/vega.schema';
+import {getHeaderProperties} from '../../../src/compile/header/index';
+import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP} from '../../../src/header';
 import {parseFacetModel} from '../../util';
 
-describe('compile/layout/header', () => {
+describe('compile/header/index', () => {
   describe('label aligns correctly according to angle', () => {
     assert.deepEqual(labelAlign(23), {align: {value: 'right'}});
     assert.deepEqual(labelAlign(135), {align: {value: 'left'}});
@@ -82,61 +83,227 @@ describe('compile/layout/header', () => {
 
     describe('for column', () => {
       const columnLabelGroup = getTitleGroup(model, 'column');
-      const {marks, ...columnTitleGroupTopLevelProps} = columnLabelGroup;
-      it('returns a header group mark with correct name, role, type, and from.', () => {
-
+      const {title, ...columnTitleGroupTopLevelProps} = columnLabelGroup;
+      it('returns a header group mark with correct name, role, and type.', () => {
         assert.deepEqual(columnTitleGroupTopLevelProps, {
-          name: 'column_title',
+          name: 'column-title',
           type: 'group',
           role: 'column-title'
         });
       });
-      const textMark = marks[0];
-
-      it('contains a correct text mark with the correct role and encode as the only item in marks', () => {
-        assert.equal(marks.length, 1);
-        assert.deepEqual<VgMarkGroup>(textMark, {
-          type: 'text',
-          role: 'column-title-text',
-          style: 'guide-title',
-          encode: {
-            update: {
-              text: {value: 'a'},
-              align: {value: 'center'}
-            }
-          }
+      const name = title.text;
+      it('contains a correct title definition, including the correct name and orientation', () => {
+        assert.deepEqual(title, {
+          text: name,
+          offset: 10,
+          orient: undefined,
+          style: 'guide-title'
         });
       });
     });
 
     describe('for row', () => {
       const rowTitleGroup = getTitleGroup(model, 'row');
-      const {marks, ...rowTitleGroupTopLevelProps} = rowTitleGroup;
-      it('returns a header group mark with correct name, role, type, from, and encode.', () => {
-
+      const {title, ...rowTitleGroupTopLevelProps} = rowTitleGroup;
+      it('returns a header group mark with correct name, role, and type.', () => {
         assert.deepEqual(rowTitleGroupTopLevelProps, {
-          name: 'row_title',
+          name: 'row-title',
           type: 'group',
           role: 'row-title'
         });
       });
-      const textMark = marks[0];
-
-      it('contains a correct text mark with the correct role and encode as the only item in marks', () => {
-        assert.equal(marks.length, 1);
-        assert.deepEqual<VgMarkGroup>(textMark, {
-          type: 'text',
-          role: 'row-title-text',
-          style: 'guide-title',
-          encode: {
-            update: {
-              text: {value: 'a'},
-              angle: {value: 270},
-              align: {value: 'center'}
-            }
-          }
+      const name = title.text;
+      it('contains a correct title definition, including the correct name and orientation.', () => {
+        assert.deepEqual(title, {
+          text: name,
+          offset: 10,
+          orient: 'left',
+          style: 'guide-title'
         });
       });
     });
   });
+
+  describe('getHeaderProperties', () => {
+    describe('for title properties', () => {
+      const titleSpec = parseFacetModel({
+        config: {header: {titleFontSize: 20}},
+        facet: {
+          row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      titleSpec.parseScale();
+      titleSpec.parseLayoutSize();
+      titleSpec.parseAxisAndHeader();
+      const config = titleSpec.config;
+      const facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
+
+      const headerTitleProps = getHeaderProperties(undefined, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      it('should return the correct title property from header', () => {
+        assert.deepEqual(headerTitleProps, {fontSize: {value: 40}});
+      });
+
+      const configTitleProps = getHeaderProperties(config, undefined, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      it('should return the correct title property from config', () => {
+        assert.deepEqual(configTitleProps, {fontSize: {value: 20}});
+      });
+
+      const bothTitleProps = getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      it('should overwrite the config title property with the header title property', () => {
+        assert.deepEqual(bothTitleProps, {fontSize: {value: 40}});
+      });
+    });
+
+    describe('for label properties', () => {
+      const labelSpec = parseFacetModel({
+        config: {header: {labelFontSize: 20}},
+        facet: {
+          row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      labelSpec.parseScale();
+      labelSpec.parseLayoutSize();
+      labelSpec.parseAxisAndHeader();
+      const config = labelSpec.config;
+      const facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
+
+      const headerLabelProps = getHeaderProperties(undefined, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      it('should return the correct label property from header', () => {
+        assert.deepEqual(headerLabelProps, {fontSize: {value: 40}});
+      });
+
+      const configLabelProps = getHeaderProperties(config, undefined, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      it('should return the correct label property from config', () => {
+        assert.deepEqual(configLabelProps, {fontSize: {value: 20}});
+      });
+
+      const bothLabelProps = getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      it('should overwrite the config label property with the header label property', () => {
+        assert.deepEqual(bothLabelProps, {fontSize: {value: 40}});
+      });
+    });
+  });
+  /*
+  });
+  describe('getHeaderProperties', () => {
+    describe('for title', () => {
+      const titleHeaderSpec = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      titleHeaderSpec.parseScale();
+      titleHeaderSpec.parseLayoutSize();
+      titleHeaderSpec.parseAxisAndHeader();
+
+      const headerGroup = getTitleGroup(titleHeaderSpec, 'row');
+      const headerTitle = headerGroup.title;
+
+      it('should return the correct title properties from the header', () => {
+        assert(deepEqual(headerTitle, {
+          text: 'a',
+          offset: 10,
+          orient: 'left',
+          style: 'guide-title',
+          fontSize: {value: 40}
+        }));
+      });
+
+      const titleConfigSpec = parseFacetModel({
+        config: {
+           header: {titleFontSize: 40}
+        },
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      titleConfigSpec.parseScale();
+      titleConfigSpec.parseLayoutSize();
+      titleConfigSpec.parseAxisAndHeader();
+
+      const configGroup = getTitleGroup(titleConfigSpec, 'row');
+      const configTitle = configGroup.title;
+
+      it('should return the correct title properties from the header config', () => {
+        assert(deepEqual(configTitle, {
+          text: 'a',
+          offset: 10,
+          orient: 'left',
+          style: 'guide-title',
+          fontSize: {value: 40}
+        }));
+      });
+    });
+
+    describe('for label', () => {
+      const labelHeaderSpec = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      labelHeaderSpec.parseScale();
+      labelHeaderSpec.parseLayoutSize();
+      labelHeaderSpec.parseAxisAndHeader();
+
+      const labelConfigSpec = parseFacetModel({
+        config: {
+           header: {labelFontSize: 40}
+        },
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'},
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      labelConfigSpec.parseScale();
+      labelConfigSpec.parseLayoutSize();
+      labelConfigSpec.parseAxisAndHeader();
+
+      const configLayoutHeader = labelConfigSpec.component.layoutHeaders['row'];
+      const configGroup = getHeaderGroup(labelHeaderSpec, 'row', 'header', configLayoutHeader, configLayoutHeader['header'][0]);
+      const configTitle = configGroup.title;
+
+    });
+  });
+  */
 });
