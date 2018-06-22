@@ -272,7 +272,7 @@ export function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: S
   if (isSortArray(sort)) {
     return {
       op: 'min',
-      field: sortArrayIndexField(model, channel),
+      field: sortArrayIndexField(fieldDef, channel),
       order: 'ascending'
     };
   }

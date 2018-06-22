@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {isArray} from 'vega-util';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
@@ -8,6 +9,7 @@ import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
 import {assembleDomain, getFieldFromDomain} from '../scale/domain';
+import {sortArrayIndexField} from './calculate';
 import {DataFlowNode} from './dataflow';
 
 type ChildIndependentFieldsWithStep = {
@@ -19,6 +21,8 @@ interface FacetChannelInfo {
   name: string;
   fields: string[];
   sortField?: EncodingSortField<string>;
+
+  sortIndexField?: string;
 }
 
 /**
@@ -49,7 +53,11 @@ export class FacetNode extends DataFlowNode {
             vgField(fieldDef),
             ...(bin ? [vgField(fieldDef, {binSuffix: 'end'})] : [])
           ],
-          ...(isSortField(sort) ? {sortField: sort} : {})
+          ...(
+            isSortField(sort) ? {sortField: sort} :
+            isArray(sort) ? {sortIndexField: sortArrayIndexField(fieldDef, channel)} :
+            {}
+          )
         };
       }
     }
@@ -116,12 +124,16 @@ export class FacetNode extends DataFlowNode {
       as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
     }
 
-    const sort = this[channel].sortField;
-    if (sort) {
-      const {op, field} = sort;
+    const {sortField, sortIndexField} = this[channel];
+    if (sortField) {
+      const {op, field} = sortField;
       fields.push(field);
       ops.push(op);
-      as.push(vgField(sort));
+      as.push(vgField(sortField));
+    } else if (sortIndexField) {
+      fields.push(sortIndexField);
+      ops.push('max');
+      as.push(sortIndexField);
     }
 
     return {

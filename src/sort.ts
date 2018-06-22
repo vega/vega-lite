@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isArray, isString} from 'vega-util';
+import {isArray} from 'vega-util';
 
 import {VgComparatorOrder} from './vega.schema';
 
