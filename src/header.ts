@@ -1,20 +1,18 @@
 import {TextBaseline} from '../node_modules/vega';
 import {Guide} from './guide';
-import {FontWeight, VgEncodeEntry, VgTitleConfig} from './vega.schema';
+import {FontWeight, VgTitleConfig} from './vega.schema';
 
 export const HEADER_TITLE_PROPERTIES_MAP: {
-  [k in keyof HeaderConfig]: keyof VgEncodeEntry
+  [k in keyof HeaderConfig]: keyof VgTitleConfig
 } = {
-  titleAlign: 'align',
+  titleAnchor: 'anchor',
   titleAngle: 'angle',
   titleBaseline: 'baseline',
-  titleColor: 'fill',
+  titleColor: 'color',
   titleFont: 'font',
   titleFontSize: 'fontSize',
   titleFontWeight: 'fontWeight',
-  titleLimit: 'limit',
-  titleX: 'x',
-  titleY: 'y'
+  titleLimit: 'limit'
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: {
@@ -34,9 +32,14 @@ export const HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);
 export interface HeaderConfig {
   // ---------- Title ----------
   /**
-   * Horizontal text alignment of the header title.
+   * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
+   *
+   * __Default value:__ `"middle"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.
+   * `"start"` for other composite views.
+   *
+   * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
-  titleAlign?: string;
+  titleAnchor?: string;
 
   /**
    * The rotation angle of the header title.
@@ -82,16 +85,6 @@ export interface HeaderConfig {
    * __Default value:__ `0`, indicating no limit
    */
   titleLimit?: number;
-
-  /**
-   * X-coordinate of the header title relative to the axis group.
-   */
-  titleX?: number;
-
-  /**
-   * Y-coordinate of the header title relative to the axis group.
-   */
-  titleY?: number;
 
   // ---------- Label ----------
   /**
