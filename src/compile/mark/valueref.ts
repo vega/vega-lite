@@ -30,9 +30,9 @@ import {ScaleComponent} from '../scale/component';
 // but that's complicated.  For now, this is a huge step moving forward.
 
 /**
- * @return Vega ValueRef for stackable x or y
+ * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
     stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
@@ -42,9 +42,9 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
 }
 
 /**
- * @return Vega ValueRef for stackable x2 or y2
+ * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+export function position2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
   stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
   if (isFieldDef(aFieldDef) && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)

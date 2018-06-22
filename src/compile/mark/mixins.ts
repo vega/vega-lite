@@ -318,7 +318,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
     {
-      ...ref.stackable(channel, encoding[channel], scaleName, scale, stack,
+      ...ref.position(channel, encoding[channel], scaleName, scale, stack,
         ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
       ),
      ...(offset ? {offset}: {})
@@ -347,7 +347,7 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
     {
-      ...ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
+      ...ref.position2(channel, channelDef, encoding[channel], scaleName, scale, stack,
         ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
       ),
       ...(offset ? {offset} : {})
