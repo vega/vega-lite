@@ -87,29 +87,15 @@
     },
     "marks": [
         {
-            "name": "trellis_barley_row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "site"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "site",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "trellis_barley_row_header",
