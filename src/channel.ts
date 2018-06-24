@@ -6,8 +6,10 @@
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {FacetMapping} from './facet';
+import {isFieldDef} from './fielddef';
+import {CIRCLE, LINE, POINT, SQUARE, TICK} from './mark';
 import {Mark} from './mark';
-import {Flag, flagKeys} from './util';
+import {contains, Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
@@ -218,8 +220,16 @@ export type SupportedMark = {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(channel: Channel, mark: Mark) {
-  return mark in getSupportedMark(channel);
+export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
+  if (contains([CIRCLE, POINT, SQUARE, TICK, LINE], mark) && channel === X2) {
+    if (isFieldDef(encoding.x) && encoding.x.scale && encoding.x.scale.binned) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return mark in getSupportedMark(channel);
+  }
 }
 
 /**

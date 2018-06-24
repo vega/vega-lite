@@ -242,7 +242,11 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
       const scaleType = model.getScaleComponent(channel).get('type');
-      return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+      if (model.specifiedScales[channel].binned) {
+        return false;
+      } else {
+        return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+      }
     }
     case 'labelFlush':
       return properties.labelFlush(fieldDef, channel, specifiedAxis);

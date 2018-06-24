@@ -11,7 +11,7 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
+import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
@@ -33,6 +33,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];
+    const implicitValue = localScaleCmpt.get(property);
     const sType = mergedScaleCmpt.get('type');
 
     const supportedByScaleType = scaleTypeSupportProperty(sType, property);
@@ -46,7 +47,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         log.warn(channelIncompatability);
       }
     }
-    if (supportedByScaleType && channelIncompatability === undefined) {
+    if (supportedByScaleType && channelIncompatability === undefined && implicitValue === undefined) {
       if (specifiedValue !== undefined) {
         // copyKeyFromObject ensure type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);

@@ -75,10 +75,16 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       specifiedScale = specifiedScale || {};
       const specifiedScaleType = specifiedScale.type;
       const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
-      scaleComponents[channel] = new ScaleComponent(
+      const component = new ScaleComponent(
         model.scaleName(channel + '', true),
         {value: sType, explicit: specifiedScaleType === sType}
       );
+      if (specifiedScale.binned) {
+        component.set('zero', false, false);
+        component.set('nice', false, false);
+        component.set('padding', 0, false);
+      }
+      scaleComponents[channel] = component;
     }
     return scaleComponents;
   }, {});

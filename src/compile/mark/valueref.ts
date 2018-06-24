@@ -32,13 +32,13 @@ import {ScaleComponent} from '../scale/component';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, channel2Def: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+    stack: StackProperties, isScaleBinned: boolean, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
   }
-  return midPoint(channel, channelDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, isScaleBinned, defaultRef);
 }
 
 /**
@@ -52,10 +52,8 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, a2fieldDef, null, scaleName, scale, stack, false, defaultRef);
 }
-
-
 
 export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
   const offsetChannel = channel + 'Offset';
@@ -65,7 +63,6 @@ export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
   if (markDefOffsetValue) {
     return markDefOffsetValue;
   }
-
   return undefined;
 }
 
@@ -116,10 +113,23 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   };
 }
 
+function binnedMidSignal(fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, scaleName: string) {
+  return {
+    signal: `(` +
+      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
+      ` + ` +
+      `scale("${scaleName}", ${vgField(fieldDef2, {expr: 'datum'})})`+
+    `)/2`
+  };
+}
+
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function midPoint(
+  channel: Channel, channelDef: ChannelDef<string>, channelDef2: ChannelDef<string>, scaleName: string,
+  scale: ScaleComponent, stack: StackProperties, isScaleBinned: boolean, defaultRef: VgValueRef
+): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
@@ -138,6 +148,10 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
           return binMidSignal(channelDef, scaleName);
         }
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
+      }
+
+      if (isScaleBinned && isFieldDef(channelDef2)) {
+        return binnedMidSignal(channelDef, channelDef2, scaleName);
       }
 
       if (scale) {

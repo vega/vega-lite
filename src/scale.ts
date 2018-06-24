@@ -4,7 +4,7 @@ import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {Type, TYPE_INDEX} from './type';
-import {contains, Flag, flagKeys, keys} from './util';
+import {contains, Flag, flagKeys, keys, Omit} from './util';
 import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {
@@ -558,9 +558,11 @@ export interface Scale {
    * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
    */
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
+
+  binned?: boolean;
 }
 
-const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
+const SCALE_PROPERTY_INDEX: Flag<keyof Omit<Scale, 'binned'>> = {
   type: 1,
   domain: 1,
   range: 1,

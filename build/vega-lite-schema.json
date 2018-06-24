@@ -5518,6 +5518,9 @@
           "description": "The logarithm base of the `log` scale (default `10`).",
           "type": "number"
         },
+        "binned": {
+          "type": "boolean"
+        },
         "clamp": {
           "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](config.html#scale-config)'s `clamp` (`true` by default).",
           "type": "boolean"

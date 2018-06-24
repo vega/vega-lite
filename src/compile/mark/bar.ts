@@ -32,19 +32,29 @@ function x(model: UnitModel): VgEncodeEntry {
 
   const xDef = encoding.x;
   const x2Def = encoding.x2;
-  const xScaleName = model.scaleName(X);
   const xScale = model.getScaleComponent(X);
+  const xScaleName = model.scaleName(X);
+  const xScaleType = xScale ? xScale.get('type') : undefined;
+  const specifiedScale = model.specifiedScales[X];
+
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal' || x2Def) {
-    return {
-      ...mixins.pointPosition('x', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', 'x2'),
-    };
+    if (isFieldDef(xDef) && isFieldDef(x2Def) && specifiedScale.binned && !hasDiscreteDomain(xScaleType)) {
+      return mixins.binnedPosition(
+        xDef, x2Def, X, xScaleName,
+        markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+        xScale.get('reverse')
+      );
+    } else {
+      return {
+        ...mixins.pointPosition('x', model, 'zeroOrMin'),
+        ...mixins.pointPosition2(model, 'zeroOrMin', 'x2'),
+      };
+    }
   } else { // vertical
     if (isFieldDef(xDef)) {
-      const xScaleType = xScale.get('type');
       if (xDef.bin && !sizeDef && !hasDiscreteDomain(xScaleType)) {
-        return mixins.binnedPosition(
+        return mixins.binPosition(
           xDef, 'x', model.scaleName('x'), markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
           xScale.get('reverse')
         );
@@ -70,20 +80,29 @@ function y(model: UnitModel) {
 
   const yDef = encoding.y;
   const y2Def = encoding.y2;
-  const yScaleName = model.scaleName(Y);
   const yScale = model.getScaleComponent(Y);
+  const yScaleName = model.scaleName(Y);
+  const yScaleType = yScale ? yScale.get('type') : undefined;
+  const specifiedScale = model.specifiedScales[Y];
 
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical' || y2Def) {
-    return {
-      ...mixins.pointPosition('y', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', 'y2'),
-    };
+    if (isFieldDef(yDef) && isFieldDef(y2Def) && specifiedScale.binned && !hasDiscreteDomain(yScaleType)) {
+      return mixins.binnedPosition(
+        yDef, y2Def, Y, yScaleName,
+        markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+        yScale.get('reverse')
+      );
+    } else {
+      return {
+        ...mixins.pointPosition('y', model, 'zeroOrMin'),
+        ...mixins.pointPosition2(model, 'zeroOrMin', 'y2'),
+      };
+    }
   } else {
     if (isFieldDef(yDef)) {
-      const yScaleType = yScale.get('type');
       if (yDef.bin && !sizeDef && !hasDiscreteDomain(yScaleType)) {
-        return mixins.binnedPosition(
+        return mixins.binPosition(
           yDef, 'y', model.scaleName('y'),
           markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
           yScale.get('reverse')
