@@ -202,7 +202,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       return normalizedEncoding;
     }
 
-    if (!supportMark(channel, mark)) {
+    if (!supportMark(encoding, channel, mark)) {
       // Drop unsupported channel
 
       log.warn(log.message.incompatibleChannel(channel, mark));
