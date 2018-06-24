@@ -12,16 +12,10 @@ describe('compile/mark/valueref', () => {
       "x2Offset": 100
     };
     it('should correctly get the offset value for the given channel', function () {
-      assert.equal(getOffset('x2', markDef, false), 100);
+      assert.equal(getOffset('x2', markDef), 100);
     });
     it('should return undefined when the offset value for the given channel is not defined', function () {
-      assert.equal(getOffset('x', markDef, false), undefined);
-    });
-    it('should correctly get the offset value for binned scale', function () {
-      assert.equal(getOffset('x', {type: "point"}, true), 1);
-      assert.equal(getOffset('y', {type: "point"}, true), -1);
-      assert.equal(getOffset('x2', {type: "point"}, true), 0);
-      assert.equal(getOffset('y2', {type: "point"}, true), 0);
+      assert.equal(getOffset('x', markDef), undefined);
     });
   });
 

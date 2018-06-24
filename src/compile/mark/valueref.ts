@@ -55,24 +55,13 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
   return midPoint(channel, a2fieldDef, null, scaleName, scale, stack, false, defaultRef);
 }
 
-
-
-export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef, binned: boolean) {
+export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
   const offsetChannel = channel + 'Offset';
   // TODO: in the future read from encoding channel too
 
   const markDefOffsetValue = markDef[offsetChannel];
   if (markDefOffsetValue) {
     return markDefOffsetValue;
-  }
-  if (binned) {
-    if (channel === 'x') {
-      return 1;
-    } else if (channel === 'y') {
-      return -1;
-    } else {
-      return 0;
-    }
   }
   return undefined;
 }

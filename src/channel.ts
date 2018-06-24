@@ -7,7 +7,7 @@ import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {FacetMapping} from './facet';
 import {isFieldDef} from './fielddef';
-import {CIRCLE, POINT} from './mark';
+import {CIRCLE, LINE, POINT, SQUARE, TICK} from './mark';
 import {Mark} from './mark';
 import {contains, Flag, flagKeys} from './util';
 
@@ -221,7 +221,7 @@ export type SupportedMark = {
  * @return whether the mark supports the channel
  */
 export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
-  if (contains([CIRCLE, POINT], mark) && channel === X2) {
+  if (contains([CIRCLE, POINT, SQUARE, TICK, LINE], mark) && channel === X2) {
     if (isFieldDef(encoding.x) && encoding.x.scale && encoding.x.scale.binned) {
       return true;
     } else {

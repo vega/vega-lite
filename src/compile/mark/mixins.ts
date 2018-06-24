@@ -284,7 +284,27 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
+/**
+ * Return mixins for binned scale with position channel
+ */
+export function binnedPosition(
+  fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, channel: 'x'|'y',
+  scaleName: string, spacing: number, reverse: boolean
+) {
+  if (channel === 'x') {
+    return {
+      x2: ref.fieldRef(fieldDef2, scaleName, {}),
+      x: ref.fieldRef(fieldDef, scaleName, {}, {offset: reverse ? -spacing : spacing})
+    };
+  } else {
+    return {
+      y2: ref.fieldRef(fieldDef2, scaleName, {}),
+      y: ref.fieldRef(fieldDef, scaleName, {}, {offset: reverse ? spacing : -spacing})
+    };
+  }
+}
+
+export function binPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
   if (channel === 'x') {
     return {
       x2: ref.bin(fieldDef, scaleName, 'start', reverse ? 0 : spacing),
@@ -312,7 +332,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   const scale = model.getScaleComponent(channel);
   const specifiedScale = model.specifiedScales[channel] || {};
 
-  const offset = ref.getOffset(channel, model.markDef, specifiedScale.binned);
+  const offset = ref.getOffset(channel, model.markDef);
 
   const channelDef2 = encoding[channel === 'x' ? 'x2' : 'y2'];
 
@@ -342,9 +362,8 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const channelDef = encoding[baseChannel];
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
-  const specifiedScale = model.specifiedScales[channel] || {};
 
-  const offset = ref.getOffset(channel, model.markDef, specifiedScale.binned);
+  const offset = ref.getOffset(channel, model.markDef);
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
