@@ -3,8 +3,8 @@ import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
 import {Data} from './data';
-import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
+import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
@@ -17,7 +17,7 @@ import {stack} from './stack';
 import {TitleParams} from './title';
 import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {Dict, duplicate, hash, keys, omit, vals} from './util';
+import {Dict, duplicate, hash, keys, omit, pick, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -572,7 +572,6 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
     encoding: omit(encoding, ['shape'])
   }];
 
-  // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
   // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
@@ -591,13 +590,12 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
   }
 
   if (lineOverlay) {
-    const {interpolate} = markDef;
     layer.push({
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
-        ...lineOverlay,
-        ...(interpolate ? {interpolate} : {})
+        ...pick(markDef, ['clip', 'interpolate']),
+        ...lineOverlay
       },
       encoding: overlayEncoding
     });
@@ -609,6 +607,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
         type: 'point',
         opacity: 1,
         filled: true,
+        ...pick(markDef, ['clip']),
         ...pointOverlay
       },
       encoding: overlayEncoding

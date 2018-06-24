@@ -12,8 +12,8 @@ import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical
  * // → {'a': 1, 'c': 3}
  *
  */
-export function pick(obj: object, props: string[]) {
-  const copy = {};
+export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): Pick<T, K> {
+  const copy: any = {};
   for (const prop of props) {
     if (obj.hasOwnProperty(prop)) {
       copy[prop] = obj[prop];
@@ -26,8 +26,8 @@ export function pick(obj: object, props: string[]) {
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export function omit(obj: object, props: string[]) {
-  const copy = {...obj};
+export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T,K> {
+  const copy = {...obj as any};
   for (const prop of props) {
     delete copy[prop];
   }
