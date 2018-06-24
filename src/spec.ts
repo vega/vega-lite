@@ -572,7 +572,6 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
     encoding: omit(encoding, ['shape'])
   }];
 
-  // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
   // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
