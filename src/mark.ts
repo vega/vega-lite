@@ -252,7 +252,7 @@ export interface GenericMarkDef<M> {
    * The mark type. This could a primitive mark type
    * (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`)
-   * or a composite mark type (e.g., "boxplot").
+   * or a composite mark type (e.g., `"boxplot"`, `"errorbar"`).
    */
   type: M;
 }
