@@ -34,7 +34,7 @@ An error bar's mark definition contain the following properties:
 
 {% include table.html props="type,center,extent,orient,color,opacity" source="ErrorBarDef" %}
 
-Besides the properties listed above, `"rule"` and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the error bar](#parts) as well.
+Besides the properties listed above, `rule` and `ticks` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the error bar](#parts) as well.
 
 
 {:#raw-usage}
@@ -43,38 +43,32 @@ Besides the properties listed above, `"rule"` and `"ticks"` can be used to speci
 If the data is not aggregated yet, Vega-Lite will aggregate the data based on the `extent` and `center` properties in the mark definition.
 
 
-1) __Error Bar showing Standard Error__ is the default error bar in Vega-Lite, or cen be specified by setting `extent` to `stderr`. The size of lower and upper rules are standard error. As a default, the rules expand from the mean; however, `center` can be set to `median`, so that the rules expand from the median instead.
+1) __Error Bar showing Standard Error__ is the default error bar in Vega-Lite, or cen be specified by setting `extent` to `'stderr"`. The size of lower and upper rules are standard error. As a default, the rules expand from the mean
 
-<div class="vl-example" data-name="errorbar_2d_horizontal"></div>
-
-Explicitly setting `extent` to `stderr` with `center` set to `median`.
-
-<div class="vl-example" data-name="errorbar_2d_horizontal_median_stderr"></div>
-
-**Note:** if the `center`is `median`, and the `extent` is not specified, the default `extent` is `iqr` instead of `stderr`
-
-<div class="vl-example" data-name="errorbar_2d_horizontal_median"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal"></div>
 
 
-2) __Error Bar showing Standard Deviation__ can be spacified by setting `extent` to `stdev`. For this type of error bar, the size of lower and upper rules are standard deviation. Like Standard Error Error Bar, the rules expand from the mean, by default. And, the rules can be set to expand from the median with the same method.
+2) __Error Bar showing Standard Deviation__ can be spacified by setting `extent` to `"stdev"`. For this type of error bar, the size of lower and upper rules are standard deviation. Like Error Bar showing Standard Error, the rules expand from the mean, by default.
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_stdev"></div>
-
-Explicitly setting `extent` to `stdev` with `center` set to `median`.
-
-<div class="vl-example" data-name="errorbar_2d_horizontal_median_stdev"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_stdev"></div>
 
 
-3) __Error Bar showing Confidence Interval__ can be specified by setting `extent` to `ci`. For this type of error bar, rules expands from the `ci0` value to `ci1` value, as defined in [Aggregate](aggregate.html#ops). **Note:** When `extent` is `ci`, the `center` property is ignored.
+3) __Error Bar showing Confidence Interval__ can be specified by setting `extent` to `"ci"`. For this type of error bar, rules expands from the `"ci0"` value to `"ci1"` value, as defined in [Aggregate](aggregate.html#ops).
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_ci"></div>
+**Note:** When `extent` is `"ci"`, the `center` property is ignored.
+
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_ci"></div>
 
 
-4) __Error Bar showing Interquartile__ can be specified by setting `extent` to `iqr`. For this type of error bar, rules expands from the first quartile to the third quartile.
+4) __Error Bar showing Interquartile__ can be specified by setting `extent` to `"iqr"`. For this type of error bar, rules expands from the first quartile to the third quartile.
 
-**Note:** When `extent` is `iqr`, the `center` property is ignored.
+**Note:** When `extent` is `"iqr"`, the `center` property is ignored.
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_iqr"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_iqr"></div>
+
+**Note:** if the `center`is `"median"`, and the `extent` is not specified, the default `extent` becomes `"iqr"` instead of `"stderr"`
+
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_median"></div>
 
 
 {:#pre-aggregated-usage}
@@ -82,7 +76,7 @@ Explicitly setting `extent` to `stdev` with `center` set to `median`.
 
 If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`).
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_pre_aggregated"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated"></div>
 
 **Note** in this case, `center` and `extent` do not have to be specified.
 
@@ -91,39 +85,39 @@ There are two `errorbar` dimensions:
 
 {:#1d_horizontal}
 1) A 1D `errorbar` shows the error range of a continuous field.
-<div class="vl-example" data-name="errorbar_1d_horizontal"></div>
+<div class="vl-example" data-name="layer_point_errorbar_1d_horizontal"></div>
 
 2) A 2D `errorbar` shows the error range of a continuous field, broken down by categories.
-<div class="vl-example" data-name="errorbar_2d_horizontal"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal"></div>
 
 An errorbar's orientation is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D error bar by encoding a continuous field on the y axis.
 
-<div class="vl-example" data-name="errorbar_1d_vertical"></div>
+<div class="vl-example" data-name="layer_point_errorbar_1d_vertical"></div>
 
 {:#2d}
 
 For 2D error bars with one continuous field and one discrete field,
 the error bars will be horizontal if the continuous field is on the x axis.
 
-<div class="vl-example" data-name="errorbar_2d_horizontal"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal"></div>
 
 Alternatively, if the continuous field is on the y axis, the error bar will be vertical.
 
-<div class="vl-example" data-name="errorbar_2d_vertical"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_vertical"></div>
 
 {:#parts}
 ## The Parts of Error Bars
 
-Under the hood, the `"errorbar"` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D errorbar shown above](#1d_horizontal) is expanded to:
+Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D errorbar shown above](#1d_horizontal) is expanded to:
 
-<div class="vl-example" data-name="normalized/errorbar_1d_horizontal_normalized"></div>
+<div class="vl-example" data-name="normalized/layer_point_errorbar_1d_horizontal_normalized"></div>
 
 We can customize different parts of the error bar [mark definition](#properties) or [config](#config).
 
-For example, we can add the error bar's end ticks and customize it by adding a mark property to `ticks`, such as setting `color` to `gray`:
+For example, we can add the error bar's end ticks and customize it by setting `ticks` to `true` or adding a mark property to `ticks`, such as setting `color` to `"blue"`:
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_custom_ticks"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_custom_ticks"></div>
 
 ## Color, and Opacity Encoding Channels
 
@@ -131,7 +125,7 @@ You can customize the color, size, and opacity of the bar in the `errorbar` by u
 
 An example of a `errorbar` where the `color` encoding channel is specified.
 
-<div class="vl-example" data-name="errorbar_2d_horizontal_custom_mark"></div>
+<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_color_encoding"></div>
 
 
 {:#config}
@@ -151,5 +145,5 @@ An example of a `errorbar` where the `color` encoding channel is specified.
 
 The `errorbar` config object sets the default properties for `errorbar` marks.
 
-The errorbar config can contain all [errorbar mark properties](#properties) except `"orient"`.
+The errorbar config can contain all [errorbar mark properties](#properties) except `orient`.
 
