@@ -75,12 +75,9 @@ If the data is already pre-aggregated with low and high values of the error bars
 ## Dimension & Orientation
 There are two `errorbar` dimensions:
 
-{:#1d_horizontal}
-1) A 1D `errorbar` shows the error range of a continuous field.
+{:#1d}
+__1D error bar__ shows the error range of a continuous field.
 <div class="vl-example" data-name="layer_point_errorbar_1d_horizontal"></div>
-
-2) A 2D `errorbar` shows the error range of a continuous field, broken down by categories.
-<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal"></div>
 
 An errorbar's orientation is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D error bar by encoding a continuous field on the y axis.
@@ -88,6 +85,7 @@ For example, you can create a vertical 1D error bar by encoding a continuous fie
 <div class="vl-example" data-name="layer_point_errorbar_1d_vertical"></div>
 
 {:#2d}
+__2D error bar__ shows the error range of a continuous field, broken down by categories.
 
 For 2D error bars with one continuous field and one discrete field,
 the error bars will be horizontal if the continuous field is on the x axis.
@@ -101,7 +99,7 @@ Alternatively, if the continuous field is on the y axis, the error bar will be v
 {:#parts}
 ## The Parts of Error Bars
 
-Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D errorbar shown above](#1d_horizontal) is expanded to:
+Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D errorbar shown above](#1d) is expanded to:
 
 <div class="vl-example" data-name="normalized/layer_point_errorbar_1d_horizontal_normalized"></div>
 
