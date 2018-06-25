@@ -73,7 +73,7 @@ If the data is already pre-aggregated with low and high values of the error bars
 **Note** in this case, `extent` will be ignored.
 
 ## Dimension & Orientation
-There are two `errorbar` dimensions:
+Vega-Lite supports both 1D and 2D `errorbar`:
 
 {:#1d}
 __1D error bar__ shows the error range of a continuous field.
