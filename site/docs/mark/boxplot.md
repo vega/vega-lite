@@ -56,7 +56,7 @@ Explicitly setting `extent` to `1.5` produces the following identical plot.
 <div class="vl-example" data-name="boxplot_minmax_2D_horizontal"></div>
 
 ## Dimension & Orientation
-Vega-Lite supports both 1D and 2D `errorbar`:
+Vega-Lite supports both 1D and 2D box plots:
 
 {:#1d}
 __1D box plot__ shows the distribution of a continuous field.

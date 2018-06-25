@@ -73,19 +73,19 @@ If the data is already pre-aggregated with low and high values of the error bars
 **Note** in this case, `extent` will be ignored.
 
 ## Dimension & Orientation
-Vega-Lite supports both 1D and 2D `errorbar`:
+Vega-Lite supports both 1D and 2D error bars:
 
 {:#1d}
-__1D error bar__ shows the error range of a continuous field.
+A __1D error bar__ shows the error range of a continuous field.
 <div class="vl-example" data-name="layer_point_errorbar_1d_horizontal"></div>
 
-An errorbar's orientation is automatically determined by the continuous field axis.
+The orientation of an error bar is automatically determined by the continuous field axis.
 For example, you can create a vertical 1D error bar by encoding a continuous field on the y axis.
 
 <div class="vl-example" data-name="layer_point_errorbar_1d_vertical"></div>
 
 {:#2d}
-__2D error bar__ shows the error range of a continuous field, broken down by categories.
+A __2D error bar__ shows the error range of a continuous field, broken down by categories.
 
 For 2D error bars with one continuous field and one discrete field,
 the error bars will be horizontal if the continuous field is on the x axis.
@@ -99,7 +99,7 @@ Alternatively, if the continuous field is on the y axis, the error bar will be v
 {:#parts}
 ## The Parts of Error Bars
 
-Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D errorbar shown above](#1d) is expanded to:
+Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 1D error bar shown above](#1d) is expanded to:
 
 <div class="vl-example" data-name="normalized/layer_point_errorbar_1d_horizontal_normalized"></div>
 
@@ -113,7 +113,7 @@ For example, we can add the error bar's end ticks and customize it by setting `t
 
 You can customize the color, size, and opacity of the bar in the `errorbar` by using the `color`, and `opacity` [encoding channels](encoding.html#channels), which applied to the whole `errorbar`.
 
-An example of a `errorbar` where the `color` encoding channel is specified.
+Here is an example of a `errorbar` with the `color` encoding channel set to `{"value": "#4682b4"}`.
 
 <div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_color_encoding"></div>
 
@@ -134,5 +134,5 @@ An example of a `errorbar` where the `color` encoding channel is specified.
 
 The `errorbar` config object sets the default properties for `errorbar` marks.
 
-The errorbar config can contain all [errorbar mark properties](#properties) except `orient`.
+The error bar config can contain all [error bar mark properties](#properties) except `orient`.
 
