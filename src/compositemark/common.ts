@@ -87,7 +87,7 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   orient: Orient,
   compositeMark: M
 ) {
-  const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
+  const {encoding} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
   let continuousAxisChannelDef2: PositionFieldDef<string>;
@@ -131,7 +131,7 @@ export function compositeMarkOrient<M extends CompositeMark>(
   CompositeMark | CompositeMarkDef>,
   compositeMark: M
 ): Orient {
-  const {mark: mark, encoding: encoding, projection: _p, ..._outerSpec} = spec;
+  const {mark, encoding} = spec;
 
   if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
     // x is continuous

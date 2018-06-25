@@ -10,37 +10,7 @@
             "url": "data/barley.json",
             "format": {
                 "type": "json"
-            },
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "variety"
-                    ],
-                    "ops": [
-                        "mean",
-                        "stdev"
-                    ],
-                    "fields": [
-                        "yield",
-                        "yield"
-                    ],
-                    "as": [
-                        "mean",
-                        "stdev"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.mean-datum.stdev",
-                    "as": "lower"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.mean+datum.stdev",
-                    "as": "upper"
-                }
-            ]
+            }
         },
         {
             "name": "data_0",
@@ -48,12 +18,23 @@
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toNumber(datum[\"mean\"])",
-                    "as": "mean"
+                    "expr": "toNumber(datum[\"yield\"])",
+                    "as": "yield"
                 },
                 {
-                    "type": "filter",
-                    "expr": "datum[\"mean\"] !== null && !isNaN(datum[\"mean\"])"
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "ops": [
+                        "mean"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "as": [
+                        "mean_yield"
+                    ]
                 }
             ]
         },
@@ -62,8 +43,36 @@
             "source": "source_0",
             "transform": [
                 {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lower_yield\"])",
+                    "as": "lower_yield"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper_yield\"])",
+                    "as": "upper_yield"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "variety"
+                    ],
+                    "ops": [
+                        "ci0",
+                        "ci1"
+                    ],
+                    "fields": [
+                        "yield",
+                        "yield"
+                    ],
+                    "as": [
+                        "lower_yield",
+                        "upper_yield"
+                    ]
+                },
+                {
                     "type": "filter",
-                    "expr": "datum[\"upper\"] !== null && !isNaN(datum[\"upper\"])"
+                    "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
                 }
             ]
         }
@@ -90,15 +99,12 @@
             },
             "encode": {
                 "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
                     "fill": {
                         "value": "black"
                     },
                     "x": {
                         "scale": "x",
-                        "field": "mean"
+                        "field": "mean_yield"
                     },
                     "y": {
                         "scale": "y",
@@ -109,10 +115,11 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "rule",
             "style": [
-                "rule"
+                "rule",
+                "errorbar-rule"
             ],
             "from": {
                 "data": "data_1"
@@ -124,7 +131,7 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "upper"
+                        "field": "lower_yield"
                     },
                     "y": {
                         "scale": "y",
@@ -133,7 +140,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "lower"
+                        "field": "upper_yield"
                     }
                 }
             }
@@ -147,15 +154,15 @@
                 "fields": [
                     {
                         "data": "data_0",
-                        "field": "mean"
+                        "field": "mean_yield"
                     },
                     {
                         "data": "data_1",
-                        "field": "upper"
+                        "field": "lower_yield"
                     },
                     {
                         "data": "data_1",
-                        "field": "lower"
+                        "field": "upper_yield"
                     }
                 ]
             },

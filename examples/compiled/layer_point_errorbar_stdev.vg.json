@@ -43,27 +43,36 @@
             "source": "source_0",
             "transform": [
                 {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"yield\"])",
-                    "as": "yield"
-                },
-                {
                     "type": "aggregate",
                     "groupby": [
                         "variety"
                     ],
                     "ops": [
-                        "ci0",
-                        "ci1"
+                        "stdev",
+                        "mean"
                     ],
                     "fields": [
                         "yield",
                         "yield"
                     ],
                     "as": [
-                        "ci0_yield",
-                        "ci1_yield"
+                        "extent_yield",
+                        "center_yield"
                     ]
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.center_yield + datum.extent_yield",
+                    "as": "upper_yield"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.center_yield - datum.extent_yield",
+                    "as": "lower_yield"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
                 }
             ]
         }
@@ -106,10 +115,11 @@
             }
         },
         {
-            "name": "layer_1_marks",
+            "name": "layer_1_layer_0_marks",
             "type": "rule",
             "style": [
-                "rule"
+                "rule",
+                "errorbar-rule"
             ],
             "from": {
                 "data": "data_1"
@@ -121,7 +131,7 @@
                     },
                     "x": {
                         "scale": "x",
-                        "field": "ci0_yield"
+                        "field": "lower_yield"
                     },
                     "y": {
                         "scale": "y",
@@ -130,7 +140,7 @@
                     },
                     "x2": {
                         "scale": "x",
-                        "field": "ci1_yield"
+                        "field": "upper_yield"
                     }
                 }
             }
@@ -148,11 +158,11 @@
                     },
                     {
                         "data": "data_1",
-                        "field": "ci0_yield"
+                        "field": "lower_yield"
                     },
                     {
                         "data": "data_1",
-                        "field": "ci1_yield"
+                        "field": "upper_yield"
                     }
                 ]
             },

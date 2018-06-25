@@ -63,7 +63,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
 
   // TODO: use selection
-  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
