@@ -226,6 +226,9 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    */
   legend?: LegendConfig;
 
+  /**
+   * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
   header?: HeaderConfig;
 
   /**
