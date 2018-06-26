@@ -68,7 +68,7 @@ A __1D error band__ shows the error range of a continuous field; it can be used 
 <div class="vl-example" data-name="layer_scatter_errorband_1d_stdev"></div>
 
 {:#2d}
-A __2D error band__ shows the error range of a continuous field, broken down by categories.
+A __2D error band__ shows the error range of a continuous field for each dimension value such as year.
 <div class="vl-example" data-name="layer_line_errorband_ci"></div>
 
 
@@ -81,7 +81,7 @@ Under the hood, the `errorband` mark is a [composite mark](mark.html#composite-m
 
 We can customize different parts of the error band [mark definition](#properties) or [config](#config).
 
-For example, we can add the error band's borders and customize it by setting `borders` to `true` or adding a mark property to `borders`, such as setting `color` to `"black"`:
+For example, we can add the error band's borders and customize it by setting `borders` to `true` or adding a mark property to `borders`, such as `strokeDash` and `opacity`:
 
 <div class="vl-example" data-name="layer_line_errorband_2d_horizontal_borders_strokedash"></div>
 
