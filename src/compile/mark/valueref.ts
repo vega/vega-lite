@@ -3,6 +3,7 @@
  */
 import {isArray, isString} from 'vega-util';
 
+import {isExternalBin, isInternalBin} from '../../bin';
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {
@@ -32,13 +33,13 @@ import {ScaleComponent} from '../scale/component';
 /**
  * @return Vega ValueRef for stackable x or y
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, channel2Def: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
     stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
   }
-  return midPoint(channel, channelDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
 }
 
 /**
@@ -52,7 +53,7 @@ export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, 
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
 }
 
 
@@ -106,7 +107,7 @@ export function bandRef(scaleName: string, band: number|boolean = true): VgValue
 /**
  * Signal that returns the middle of a bin. Should only be used with x and y.
  */
-function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
+function internalBinMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
   return {
     signal: `(` +
       `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
@@ -117,16 +118,30 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 }
 
 /**
+ * Signal that returns the middle of a bin from two fieldDefs. Should only be used
+ * with x and y on externally binned data.
+ */
+function externalBinMidSignal(fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, scaleName: string) {
+  return {
+    signal: `(` +
+      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
+      ` + ` +
+      `scale("${scaleName}", ${vgField(fieldDef2, {expr: 'datum'})})`+
+      `)/2`
+  };
+}
+
+/**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function midPoint(channel: Channel, channelDef: ChannelDef<string>, channel2Def: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (channelDef.bin) {
+      if (isInternalBin(channelDef.bin)) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
@@ -135,9 +150,13 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
             return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
           }
           // For non-stack, we can just calculate bin mid on the fly using signal.
-          return binMidSignal(channelDef, scaleName);
+          return internalBinMidSignal(channelDef, scaleName);
         }
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
+      }
+
+      if (isFieldDef(channel2Def) && isExternalBin(channelDef.bin)) {
+        return externalBinMidSignal(channelDef, channel2Def, scaleName);
       }
 
       if (scale) {

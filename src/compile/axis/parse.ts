@@ -1,4 +1,5 @@
 import {Axis, AXIS_PARTS, AxisEncoding, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
+import {isExternalBin} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
@@ -241,8 +242,12 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
-      const scaleType = model.getScaleComponent(channel).get('type');
-      return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+      if (isExternalBin(model.fieldDef(channel).bin)) {
+        return false;
+      } else {
+        const scaleType = model.getScaleComponent(channel).get('type');
+        return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+      }
     }
     case 'labelFlush':
       return properties.labelFlush(fieldDef, channel, specifiedAxis);

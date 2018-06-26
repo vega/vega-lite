@@ -1,6 +1,7 @@
 import {isArray} from 'vega-util';
 
-import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
+import {isInternalBin} from '../../bin';
+import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
   FieldDef,
@@ -171,7 +172,7 @@ export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model
 
   return wrapCondition(model, channelDef, vgChannel || channel, (cDef) => {
     return ref.midPoint(
-      channel, cDef, model.scaleName(channel),
+      channel, cDef, undefined, model.scaleName(channel),
       model.getScaleComponent(channel),
       null, // No need to provide stack for non-position as it does not affect mid point
       defaultRef
@@ -283,16 +284,22 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
-  if (channel === 'x') {
+export function binnedPosition(fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
+  const binSpacing = {
+    x:  reverse ? spacing : 0,
+    x2: reverse ? 0 : spacing,
+    y:  reverse ? 0 : spacing,
+    y2: reverse ? spacing : 0
+  };
+  if (isInternalBin(fieldDef.bin)) {
     return {
-      x2: ref.bin(fieldDef, scaleName, 'start', reverse ? 0 : spacing),
-      x: ref.bin(fieldDef, scaleName, 'end', reverse ? spacing : 0)
+      [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel]),
+      [`${channel}2`]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
     };
   } else {
     return {
-      y2: ref.bin(fieldDef, scaleName, 'start', reverse ? spacing : 0),
-      y: ref.bin(fieldDef, scaleName, 'end', reverse ? 0 : spacing)
+      [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]}),
+      [`${channel}2`]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]})
     };
   }
 }
@@ -307,6 +314,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   const {encoding, mark, stack} = model;
 
   const channelDef = encoding[channel];
+  const channel2Def = encoding[channel === X ? X2 : Y2];
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
@@ -318,7 +326,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
     {
-      ...ref.stackable(channel, encoding[channel], scaleName, scale, stack,
+      ...ref.stackable(channel, channelDef, channel2Def, scaleName, scale, stack,
         ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
       ),
      ...(offset ? {offset}: {})

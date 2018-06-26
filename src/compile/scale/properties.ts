@@ -1,3 +1,4 @@
+import {isInternalBin} from '../../bin';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
@@ -5,13 +6,13 @@ import * as log from '../../log';
 import {BarConfig, MarkDef} from '../../mark';
 import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
 import {EncodingSortField, SortOrder} from '../../sort';
-import {contains, keys} from '../../util';
 import * as util from '../../util';
+import {contains, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
+import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
@@ -33,6 +34,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];
+    const implicitValue = localScaleCmpt.get(property);
     const sType = mergedScaleCmpt.get('type');
 
     const supportedByScaleType = scaleTypeSupportProperty(sType, property);
@@ -46,7 +48,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         log.warn(channelIncompatability);
       }
     }
-    if (supportedByScaleType && channelIncompatability === undefined) {
+    if (supportedByScaleType && channelIncompatability === undefined && implicitValue === undefined) {
       if (specifiedValue !== undefined) {
         // copyKeyFromObject ensure type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
@@ -135,7 +137,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 }
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
-  if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+  if (isInternalBin(fieldDef.bin) || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
   return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
@@ -149,7 +151,7 @@ export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: Sca
       }
 
       const {type, orient} = markDef;
-      if (type === 'bar' && !fieldDef.bin) {
+      if (type === 'bar' && !isInternalBin(fieldDef.bin)) {
         if (
           (orient === 'vertical' && channel === 'x') ||
           (orient === 'horizontal' && channel === 'y')
@@ -233,7 +235,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!fieldDef.bin && util.contains([X, Y], channel)) {
+  if (!isInternalBin(fieldDef.bin) && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if (

@@ -4,7 +4,7 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, BinParams, binToString} from './bin';
+import {autoMaxBins, BinParams, binToString, isInternalBin} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
@@ -133,12 +133,13 @@ export interface FieldDefBase<F> {
   timeUnit?: TimeUnit;
 
   /**
-   * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).
+   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `"binned"`.
    * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   * If set to `"binned"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.
    *
    * __Default value:__ `false`
    */
-  bin?: boolean | BinParams;
+  bin?: boolean | BinParams | 'binned';
 
   /**
    * Aggregation function for the field
@@ -313,7 +314,7 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
     let fn: string = undefined;
 
     if (!opt.nofn) {
-      if (fieldDef.bin) {
+      if (isInternalBin(fieldDef.bin)) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
@@ -375,7 +376,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
-  } else if (bin) {
+  } else if (isInternalBin(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
     const units = getTimeUnitParts(timeUnit).join('-');
@@ -387,7 +388,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isInternalBin(fieldDef.bin) && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
   } else {
@@ -424,7 +425,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
-  if (fieldDef.bin) {
+  if (isInternalBin(fieldDef.bin)) {
     return 'quantitative';
   }
   switch (rangeType(channel)) {
@@ -492,7 +493,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   }
 
   // Normalize bin
-  if (fieldDef.bin) {
+  if (isInternalBin(fieldDef.bin)) {
     fieldDef = {
       ...fieldDef,
       bin: normalizeBin(fieldDef.bin, channel)
@@ -588,7 +589,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (isDiscrete(fieldDef) && !fieldDef.bin) {
+      if (isDiscrete(fieldDef) && !isInternalBin(fieldDef.bin)) {
         return {
           compatible: false,
           warning: `Channel ${channel} should not be used with discrete field.`
@@ -618,7 +619,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
 }
 
 export function isNumberFieldDef(fieldDef: FieldDef<any>) {
-  return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+  return fieldDef.type === 'quantitative' || isInternalBin(fieldDef.bin);
 }
 
 export function isTimeFieldDef(fieldDef: FieldDef<any>) {

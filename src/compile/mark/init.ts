@@ -1,4 +1,5 @@
 
+import {isExternalBin, isInternalBin} from '../../bin';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
@@ -60,12 +61,14 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
       return undefined;
   }
 
-  const yIsRange = encoding.y2;
-  const xIsRange = encoding.x2;
+  const x = encoding.x;
+  const y = encoding.y;
+  const x2 = encoding.x2;
+  const y2 = encoding.y2;
 
   switch (mark) {
     case BAR:
-      if (yIsRange || xIsRange) {
+      if (y2 || x2) {
         // Ranged bar does not always have clear orientation, so we allow overriding
         if (specifiedOrient) {
           return specifiedOrient;
@@ -73,29 +76,37 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
 
         // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
         const xDef = encoding.x;
-        if (!xIsRange && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !xDef.bin) {
+        if (!x2 && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !isInternalBin(xDef.bin)) {
           return 'horizontal';
         }
 
         // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
         const yDef = encoding.y;
-        if (!yIsRange && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !yDef.bin) {
+        if (!y2 && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !isInternalBin(yDef.bin)) {
           return 'vertical';
         }
       }
       /* tslint:disable */
     case RULE: // intentionally fall through
       // return undefined for line segment rule and bar with both axis ranged
-      if (xIsRange && yIsRange) {
+      if (x2 && y2) {
         return undefined;
       }
 
     case AREA: // intentionally fall through
       // If there are range for both x and y, y (vertical) has higher precedence.
-      if (yIsRange) {
-        return 'vertical';
-      } else if (xIsRange) {
-        return 'horizontal';
+      if (y2) {
+        if (isFieldDef(y) && isExternalBin(y.bin)) {
+          return 'horizontal';
+        } else {
+          return 'vertical';
+        }
+      } else if (x2) {
+        if (isFieldDef(x) && isExternalBin(x.bin)) {
+          return 'vertical';
+        } else {
+          return 'horizontal';
+        }
       } else if (mark === RULE) {
         if (encoding.x && !encoding.y) {
           return 'vertical';

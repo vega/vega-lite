@@ -1112,6 +1112,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1166,6 +1172,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1262,6 +1274,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1341,6 +1359,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1396,6 +1420,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -1493,6 +1523,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2464,6 +2500,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2537,6 +2579,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2588,6 +2636,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2653,6 +2707,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -2760,6 +2820,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -4940,6 +5006,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -5075,6 +5147,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
@@ -6375,6 +6453,12 @@
             },
             {
               "$ref": "#/definitions/BinParams"
+            },
+            {
+              "enum": [
+                "binned"
+              ],
+              "type": "string"
             }
           ],
           "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
