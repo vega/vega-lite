@@ -64,7 +64,7 @@ If the data is already pre-aggregated with low and high values of the error band
 Vega-Lite supports both 1D and 2D error bands:
 
 {:#1d}
-A __1D error band__ shows the error range of a continuous field; it can be used with a scatter plot to show the error range of the whole plot.
+A __1D error band__ shows the error range of a continuous field; it can be used to show the global error range of the whole plot.
 <div class="vl-example" data-name="layer_scatter_errorband_1d_stdev"></div>
 
 {:#2d}
@@ -75,7 +75,7 @@ A __2D error band__ shows the error range of a continuous field, broken down by 
 {:#parts}
 ## The Parts of Error Band
 
-Under the hood, the `errorband` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 2D error band shown above](#2d) is expanded to:
+Under the hood, the `errorband` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [the basic 2D error band shown above](#2d) is equivalent to:
 
 <div class="vl-example" data-name="normalized/layer_line_errorband_ci_normalized"></div>
 
