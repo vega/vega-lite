@@ -41,6 +41,7 @@ Besides the properties listed above, `band` and `borders` can be used to specify
 
 All the properties and usage of error band are identical to error bar's, except the `band` and `borders` that replace the error bar's `rule` and `ticks`.
 
+{:#errorband-ex}
 #### Error Band
 <div class="vl-example" data-name="errorband_2d_vertical_borders"></div>
 
@@ -51,13 +52,15 @@ All the properties and usage of error band are identical to error bar's, except 
 {:#raw-usage}
 ## Using Error Band to Aggregate Raw Data
 
-If the data is not aggregated yet, Vega-Lite will aggregate the data based on the `extent` properties in the mark definition, like in [Error Bar](errorbar.html#raw-usage).
+If the data is not aggregated yet, Vega-Lite will aggregate the data based on the `extent` properties in the mark definition as done in the [error band showing confidence interval](#errorband-ex) above. All other `extent` values are defined in [Error Bar](errorbar.html#raw-usage).
 
 
 {:#pre-aggregated-usage}
 ## Using Error Band to Visualize Aggregated Data
 
-If the data is already pre-aggregated with low and high values of the error band, you can directly specify `x` and `x2` (or `y` and `y2`), like in [Error Bar](errorbar.html#pre-aggregated-usage).
+If the data is already pre-aggregated with low and high values of the error band, you can directly specify `x` and `x2` (or `y` and `y2`) to use error band as a ranged mark.
+
+<div class="vl-example" data-name="layer_line_errorband_pre_aggregated"></div>
 
 
 ## Dimension

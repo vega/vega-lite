@@ -66,7 +66,7 @@ If the data is not aggregated yet, Vega-Lite will aggregate the data based on th
 {:#pre-aggregated-usage}
 ## Using Error Bars to Visualize Aggregated Data
 
-If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`) to use `"errorbar"` as a ranged mark.
+If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`) to use error bar as a ranged mark.
 
 <div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated"></div>
 
