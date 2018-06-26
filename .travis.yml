@@ -17,9 +17,8 @@ before_install:
 script:
   - yarn data
   - yarn build
-  - yarn jest test/ --collectCoverage=true
+  - yarn jest test/ examples/ --collectCoverage=true
   - yarn codecov
-  - yarn jest examples/
   - yarn test:runtime
   - yarn lint
   - yarn check:schema

@@ -1,4 +1,4 @@
-import {isScaleFieldDef, ScaleFieldDef, vgField} from '../../fielddef';
+import {FieldDef, isScaleFieldDef, ScaleFieldDef, vgField} from '../../fielddef';
 import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
@@ -25,7 +25,7 @@ export class CalculateNode extends DataFlowNode {
       if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
         const transform: CalculateTransform = {
           calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
-          as: sortArrayIndexField(model, channel)
+          as: sortArrayIndexField(fieldDef, channel)
         };
         parent = new CalculateNode(parent, transform);
       }
@@ -33,7 +33,7 @@ export class CalculateNode extends DataFlowNode {
     return parent;
   }
 
-  public static calculateExpressionFromSortField(field: string, sortFields: string[]): string {
+  public static calculateExpressionFromSortField(field: string, sortFields: (string | number | boolean)[]): string {
     let expression = '';
     let i: number;
     for (i = 0; i < sortFields.length; i++) {
@@ -58,7 +58,6 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(model: ModelWithField, channel: SingleDefChannel) {
-  const fieldDef = model.fieldDef(channel);
-  return `${channel}_${vgField(fieldDef)}_sort_index`;
+export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum') {
+  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
 }

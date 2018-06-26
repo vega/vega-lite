@@ -1,12 +1,14 @@
 /**
  * Utility for generating row / column headers
  */
+import {isArray} from 'vega-util';
 import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
 import {isSortField} from '../../sort';
 import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
+import {sortArrayIndexField} from '../data/calculate';
 import {Model} from '../model';
 
 export type HeaderChannel = 'row' | 'column';
@@ -122,12 +124,17 @@ export function labelBaseline(angle: number) {
   return {baseline: {value: 'middle'}};
 }
 
-function getSort(facetFieldDef: FacetFieldDef<string>): VgComparator {
+function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'): VgComparator {
   const {sort} = facetFieldDef;
   if (isSortField(sort)) {
     return {
       field: vgField(sort, {expr: 'datum'}),
       order: sort.order || 'ascending'
+    };
+  } else if (isArray(sort)) {
+    return {
+      field: sortArrayIndexField(facetFieldDef, channel, 'datum'),
+      order: 'ascending'
     };
   } else {
     return {
@@ -177,7 +184,7 @@ function getHeaderGroup(model: Model, channel: HeaderChannel, headerType: Header
         role: `${channel}-${headerType}`,
         ...(layoutHeader.facetFieldDef ? {
           from: {data: model.getName(channel + '_domain')},
-          sort: getSort(facetFieldDef)
+          sort: getSort(facetFieldDef, channel)
         } : {}),
         ...(title ? {title} : {}),
         ...(headerCmpt.sizeSignal ? {
