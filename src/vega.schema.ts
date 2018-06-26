@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {Color} from '../node_modules/@types/d3';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
@@ -283,17 +284,29 @@ export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface VgAxis {
   scale: string;
+  bandPosition?: number;
   domain?: boolean;
+  domainColor?: Color;
+  domainWidth?: number;
   format?: string;
   grid?: boolean;
   gridScale?: string;
-
+  gridColor?: Color;
+  gridDash?: number[];
+  gridOpacity?: number;
+  gridWidth?: number;
   labels?: boolean;
-
+  labelBaseline?: string;
+  labelAlign?: string;
   labelBound?: boolean | number;
   labelFlush?: boolean | number;
   labelPadding?: number;
   labelOverlap?: boolean | 'parity' | 'greedy';
+  labelAngle?: number;
+  labelColor?: number;
+  labelFont?: string;
+  labelFontSize?: number;
+  labelLimit?: number;
   maxExtent?: number;
   minExtent?: number;
   offset?: number;
@@ -303,10 +316,21 @@ export interface VgAxis {
   ticks?: boolean;
   tickCount?: number;
   tickSize?: number;
-
+  tickRound?: boolean;
+  tickWidth?: number;
+  tickColor?: Color;
   title?: string;
   titlePadding?: number;
-
+  titleAlign?: string;
+  titleAngle?: number;
+  titleBaseline?: string;
+  titleColor?: Color;
+  titleFont?: string;
+  titleFontSize?: number;
+  titleFontWeight?: FontWeight;
+  titleLimit?: number;
+  titleX?: number;
+  titleY?: number;
   values?: any[] | VgSignalRef;
   zindex?: number;
 
@@ -501,7 +525,14 @@ export type VgBinding = VgCheckboxBinding | VgRadioBinding |
  * Base object for Vega's Axis and Axis Config.
  * All of these properties are both properties of Vega's Axis and Axis Config.
  */
-export interface VgAxisBase {
+export interface VgAxisConfig {
+  /**
+   * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
+   *
+   *  __Default value:__ `0.5`
+   */
+  bandPosition?: number;
+
   /**
    * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.
    *
@@ -510,6 +541,21 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
+   * Stroke width of axis domain line
+   *
+   * __Default value:__  `1`
+   */
+  domainWidth?: number;
+
+  /**
+   * Color of axis domain line.
+   *
+   * __Default value:__  `"gray"`.
+   */
+  domainColor?: string;
+
+  // ---------- Grid ----------
+  /**
    * A boolean flag indicating if grid lines should be included as part of the axis
    *
    * __Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.
@@ -517,11 +563,52 @@ export interface VgAxisBase {
   grid?: boolean;
 
   /**
+   * Color of gridlines.
+   *
+   * __Default value:__  `"lightGray"`.
+   */
+  gridColor?: string;
+
+  /**
+   * The offset (in pixels) into which to begin drawing with the grid dash array.
+   */
+  gridDash?: number[];
+
+  /**
+   * The stroke opacity of grid (value between [0,1])
+   *
+   * __Default value:__ `1`
+   * @minimum 0
+   * @maximum 1
+   */
+  gridOpacity?: number;
+
+  /**
+   * The grid width, in pixels.
+   *
+   * __Default value:__ `1`
+   * @minimum 0
+   */
+  gridWidth?: number;
+
+  // ---------- Labels ----------
+
+  /**
    * A boolean flag indicating if labels should be included as part of the axis.
    *
    * __Default value:__  `true`.
    */
   labels?: boolean;
+
+  /**
+   * Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.
+   */
+  labelBaseline?: string;
+
+  /**
+   * Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.
+   */
+  labelAlign?: string;
 
   /**
    * Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
@@ -546,100 +633,10 @@ export interface VgAxisBase {
 
   /**
    * The padding, in pixels, between axis and text labels.
+   *
+   * __Default value:__ `2`
    */
   labelPadding?: number;
-
-  /**
-   * Boolean value that determines whether the axis should include ticks.
-   */
-  ticks?: boolean;
-
-  /**
-   * The size in pixels of axis ticks.
-   *
-   * @minimum 0
-   */
-  tickSize?: number;
-
-  /**
-   * Max length for axis title if the title is automatically generated from the field's description.
-   *
-   * @minimum 0
-   * __Default value:__ `undefined`.
-   */
-  titleMaxLength?: number;
-
-  /**
-   * The padding, in pixels, between title and axis.
-   */
-  titlePadding?: number;
-
-  /**
-   * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
-   *
-   * __Default value:__ `30` for y-axis; `undefined` for x-axis.
-   */
-  minExtent?: number;
-
-  /**
-   * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
-   *
-   * __Default value:__ `undefined`.
-   */
-  maxExtent?: number;
-}
-
-export interface VgAxisConfig extends VgAxisBase {
-  /**
-   * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
-   */
-  bandPosition?: number;
-  /**
-   * Stroke width of axis domain line
-   *
-   * __Default value:__  (none, using Vega default).
-   */
-  domainWidth?: number;
-
-  /**
-   * Color of axis domain line.
-   *
-   * __Default value:__  (none, using Vega default).
-   */
-  domainColor?: string;
-
-  // ---------- Grid ----------
-  /**
-   * Color of gridlines.
-   */
-  gridColor?: string;
-
-  /**
-   * The offset (in pixels) into which to begin drawing with the grid dash array.
-   */
-  gridDash?: number[];
-
-  /**
-   * The stroke opacity of grid (value between [0,1])
-   *
-   * __Default value:__ (`1` by default)
-   * @minimum 0
-   * @maximum 1
-   */
-  gridOpacity?: number;
-
-  /**
-   * The grid width, in pixels.
-   * @minimum 0
-   */
-  gridWidth?: number;
-
-  // ---------- Ticks ----------
-  /**
-   * The color of the axis's tick.
-   */
-  tickColor?: string;
-
 
   /**
    * The rotation angle of the axis labels.
@@ -670,20 +667,75 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * Maximum allowed pixel width of axis tick labels.
+   *
+   * __Default value:__ `180`
    */
   labelLimit?: number;
 
+  // ---------- Ticks ----------
+  /**
+   * Boolean value that determines whether the axis should include ticks.
+   *
+   * __Default value:__ `true`
+   */
+  ticks?: boolean;
+
+  /**
+   * The color of the axis's tick.
+   *
+   * __Default value:__ `"gray"`
+   */
+  tickColor?: string;
+
+  /**
+   * The size in pixels of axis ticks.
+   *
+   * __Default value:__ `5`
+   * @minimum 0
+   */
+  tickSize?: number;
+
   /**
    * Boolean flag indicating if pixel position values should be rounded to the nearest integer.
+   *
+   * __Default value:__ `true`
    */
   tickRound?: boolean;
 
   /**
    * The width, in pixels, of ticks.
    *
+   * __Default value:__ `1`
    * @minimum 0
    */
   tickWidth?: number;
+
+  /**
+   * Max length for axis title if the title is automatically generated from the field's description.
+   *
+   * @minimum 0
+   * __Default value:__ `undefined`.
+   */
+  titleMaxLength?: number;
+
+  /**
+   * The padding, in pixels, between title and axis.
+   */
+  titlePadding?: number;
+
+  /**
+   * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
+   *
+   * __Default value:__ `30` for y-axis; `undefined` for x-axis.
+   */
+  minExtent?: number;
+
+  /**
+   * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
+   *
+   * __Default value:__ `undefined`.
+   */
+  maxExtent?: number;
 
   // ---------- Title ----------
 

@@ -1,4 +1,4 @@
-import {Axis, AXIS_PARTS, AxisEncoding, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
+import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
@@ -12,7 +12,6 @@ import {AxisComponent, AxisComponentIndex, AxisComponentProps} from './component
 import {getAxisConfig} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
-
 
 export function parseUnitAxis(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce(function(axis, channel) {
@@ -237,6 +236,12 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
 function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedAxis: Axis, channel: PositionScaleChannel, model: UnitModel): AxisComponentProps[K] {
   const fieldDef = model.fieldDef(channel);
+
+  // Some properties depend on labelAngle so we have to declare it here.
+  // Also, we don't use `getSpecifiedOrDefaultValue` for labelAngle
+  // as we want to normalize specified value to be within [0,360)
+  const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
+
   switch (property) {
     case 'scale':
       return model.scaleName(channel);
@@ -249,6 +254,12 @@ function getProperty<K extends keyof AxisComponentProps>(property: K, specifiedA
       const scaleType = model.getScaleComponent(channel).get('type');
       return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
     }
+    case 'labelAlign':
+      return getSpecifiedOrDefaultValue(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
+    case 'labelAngle':
+      return labelAngle;
+    case 'labelBaseline':
+      return getSpecifiedOrDefaultValue(specifiedAxis.labelBaseline, properties.labelBaseline(labelAngle, properties.orient(channel)));
     case 'labelFlush':
       return properties.labelFlush(fieldDef, channel, specifiedAxis);
     case 'labelOverlap': {

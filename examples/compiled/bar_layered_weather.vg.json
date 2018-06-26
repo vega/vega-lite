@@ -496,6 +496,9 @@
             "labels": false,
             "ticks": false,
             "titlePadding": 25,
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "labelOverlap": true,
             "zindex": 1
         },

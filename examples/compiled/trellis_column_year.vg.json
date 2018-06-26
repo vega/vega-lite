@@ -172,21 +172,15 @@
                     "orient": "bottom",
                     "grid": false,
                     "title": "date (quarter)",
+                    "labelBaseline": "middle",
+                    "labelAngle": 270,
+                    "labelAlign": "right",
                     "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
                                 "text": {
                                     "signal": "'Q' + quarter(datum.value)"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }

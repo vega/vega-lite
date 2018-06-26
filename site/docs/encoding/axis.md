@@ -51,28 +51,28 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 {:#general}
 ### General
 
-{% include table.html props="domain,grid,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
+{% include table.html props="bandPosition,domain,domainColor,domainWidth,grid,gridColor,gridDash,gridOpacity,gridWidth,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
 
 __See also:__ [General Axis Config](#general-config).
 
 {:#labels}
 ### Labels
 
-{% include table.html props="format,labels,labelAngle,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,labels,labelAlign,labelAngle,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOverlap,labelPadding" source= "Axis" %}
 
 __See also:__ [Axis Labels Config](#labels-config) and [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
 
 {:#ticks}
 ### Ticks
 
-{% include table.html props="ticks,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,tickColor,tickCount,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
 __See also:__ [Axis Ticks Config](#ticks-config).
 
 {:#title}
 ### Title
 
-{% include table.html props="title,titleMaxLength,titlePadding" source="Axis" %}
+{% include table.html props="title,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleMaxLength,titleLimit,titlePadding,titleX,titleY" source="Axis" %}
 
 For example, the following plot has a customized x-axis title.
 
@@ -128,7 +128,7 @@ __See also:__ [General Axis Properties](#general).
 {:#labels-config}
 ### Labels
 
-{% include table.html props="labels,labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOverlap,labelPadding" source="AxisConfig" %}
+{% include table.html props="labels,labelAlign,labelAngle,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOverlap,labelPadding" source="AxisConfig" %}
 
 The `shortTimeLabels` property is also available for the general axis config (`config.axis`), but not for specific axis config (e.g., `config.axisX`).
 

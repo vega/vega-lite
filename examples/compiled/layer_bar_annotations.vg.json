@@ -363,18 +363,9 @@
             "orient": "bottom",
             "grid": false,
             "title": "Day",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "align": {
-                            "value": "center"
-                        },
-                        "baseline": {
-                            "value": "top"
-                        }
-                    }
-                }
-            },
+            "labelAngle": 0,
+            "labelBaseline": "top",
+            "labelAlign": "center",
             "labelOverlap": true,
             "zindex": 1
         },

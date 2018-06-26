@@ -133,22 +133,10 @@
             "orient": "bottom",
             "grid": false,
             "title": "bin_IMDB_Rating",
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
             "zindex": 1
         },
         {

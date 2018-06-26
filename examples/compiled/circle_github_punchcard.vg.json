@@ -163,21 +163,15 @@
             "orient": "bottom",
             "grid": false,
             "title": "time (hours)",
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "labelOverlap": true,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%H')"
-                        },
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }

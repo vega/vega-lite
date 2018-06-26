@@ -474,21 +474,9 @@
                     "orient": "bottom",
                     "grid": false,
                     "title": "Major_Genre",
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "angle": {
-                                    "value": 320
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "top"
-                                }
-                            }
-                        }
-                    },
+                    "labelBaseline": "top",
+                    "labelAngle": 320,
+                    "labelAlign": "right",
                     "zindex": 1
                 },
                 {

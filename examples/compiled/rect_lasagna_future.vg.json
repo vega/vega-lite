@@ -134,18 +134,13 @@
             "orient": "bottom",
             "grid": false,
             "title": "Time",
+            "labelAngle": 0,
             "labelOverlap": false,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%Y')"
-                        },
-                        "align": {
-                            "value": "center"
-                        },
-                        "baseline": {
-                            "value": "top"
                         },
                         "fill": [
                             {
@@ -172,6 +167,8 @@
                     }
                 }
             },
+            "labelBaseline": "top",
+            "labelAlign": "center",
             "zindex": 1
         },
         {
