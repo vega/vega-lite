@@ -100,15 +100,14 @@ Here is an example of a `errorband` with the `color` encoding channel set to `{"
 ```json
 {
   "errorband": {
-    "size": ...,
     "extent": ...,
-    "rule": ...,
-    "ticks": ...
+    "band": ...,
+    "borders": ...
   }
 }
 ```
 
 The `errorband` config object sets the default properties for `errorband` marks.
 
-The error band config can contain all [error band mark properties](#properties) except `orient`.
+The error band config can contain all [error band mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
 

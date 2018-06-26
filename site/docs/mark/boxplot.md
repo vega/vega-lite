@@ -121,5 +121,4 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 The `boxplot` config object sets the default properties for `boxplot` marks.
 
-The boxplot config can contain all [boxplot mark properties](#properties) except `"orient"`.
-
+The boxplot config can contain all [boxplot mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
