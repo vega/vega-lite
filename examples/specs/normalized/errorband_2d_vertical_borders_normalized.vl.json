@@ -1,59 +1,56 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
-    "url": "data/barley.json"
+    "url": "data/cars.json"
   },
   "transform": [
     {
+      "timeUnit": "year",
+      "field": "Year",
+      "as": "year_Year"
+    },
+    {
       "aggregate": [
         {
-          "op": "stderr",
-          "field": "yield",
-          "as": "extent_yield"
+          "op": "ci0",
+          "field": "Miles_per_Gallon",
+          "as": "lower_Miles_per_Gallon"
         },
         {
-          "op": "mean",
-          "field": "yield",
-          "as": "center_yield"
+          "op": "ci1",
+          "field": "Miles_per_Gallon",
+          "as": "upper_Miles_per_Gallon"
         }
       ],
       "groupby": [
-        "variety"
+        "year_Year"
       ]
-    },
-    {
-      "calculate": "datum.center_yield + datum.extent_yield",
-      "as": "upper_yield"
-    },
-    {
-      "calculate": "datum.center_yield - datum.extent_yield",
-      "as": "lower_yield"
     }
   ],
   "layer": [
     {
       "mark": {
-        "opacity": 0.5,
+        "opacity": 0.3,
         "type": "area",
         "style": "errorband-band"
       },
       "encoding": {
         "y": {
-          "field": "lower_yield",
+          "field": "lower_Miles_per_Gallon",
           "type": "quantitative",
-          "title": "Barley Yield",
+          "title": "Miles per Gallon (95% CIs)",
           "scale": {
             "zero": false
           }
         },
         "y2": {
-          "field": "upper_yield",
+          "field": "upper_Miles_per_Gallon",
           "type": "quantitative"
         },
         "x": {
-          "field": "variety",
-          "type": "ordinal",
-          "title": "variety"
+          "field": "year_Year",
+          "type": "temporal",
+          "title": "Year (year)"
         }
       }
     },
@@ -64,17 +61,17 @@
       },
       "encoding": {
         "y": {
-          "field": "lower_yield",
+          "field": "lower_Miles_per_Gallon",
           "type": "quantitative",
-          "title": "Barley Yield",
+          "title": "Miles per Gallon (95% CIs)",
           "scale": {
             "zero": false
           }
         },
         "x": {
-          "field": "variety",
-          "type": "ordinal",
-          "title": "variety"
+          "field": "year_Year",
+          "type": "temporal",
+          "title": "Year (year)"
         }
       }
     },
@@ -85,17 +82,17 @@
       },
       "encoding": {
         "y": {
-          "field": "upper_yield",
+          "field": "upper_Miles_per_Gallon",
           "type": "quantitative",
-          "title": "Barley Yield",
+          "title": "Miles per Gallon (95% CIs)",
           "scale": {
             "zero": false
           }
         },
         "x": {
-          "field": "variety",
-          "type": "ordinal",
-          "title": "variety"
+          "field": "year_Year",
+          "type": "temporal",
+          "title": "Year (year)"
         }
       }
     }

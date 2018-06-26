@@ -6,7 +6,10 @@
       "mark": {
         "type": "errorband",
         "extent": "ci",
-        "borders": true
+        "borders": {
+          "opacity": 0.5,
+          "strokeDash": [6, 4]
+        }
       },
       "encoding": {
         "y": {
@@ -19,8 +22,22 @@
           "field": "Year",
           "type": "temporal",
           "timeUnit": "year"
+        }
+      }
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "aggregate": "mean"
         },
-        "color": {"value": "black"}
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "timeUnit": "year"
+        }
       }
     }
   ]

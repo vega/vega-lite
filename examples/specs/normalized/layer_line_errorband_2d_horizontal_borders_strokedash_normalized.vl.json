@@ -53,16 +53,18 @@
               "field": "year_Year",
               "type": "temporal",
               "title": "Year (year)"
-            },
-            "color": {
-              "value": "black"
             }
           }
         },
         {
           "mark": {
             "type": "line",
-            "style": "errorband-borders"
+            "style": "errorband-borders",
+            "opacity": 0.5,
+            "strokeDash": [
+              6,
+              4
+            ]
           },
           "encoding": {
             "y": {
@@ -77,16 +79,18 @@
               "field": "year_Year",
               "type": "temporal",
               "title": "Year (year)"
-            },
-            "color": {
-              "value": "black"
             }
           }
         },
         {
           "mark": {
             "type": "line",
-            "style": "errorband-borders"
+            "style": "errorband-borders",
+            "opacity": 0.5,
+            "strokeDash": [
+              6,
+              4
+            ]
           },
           "encoding": {
             "y": {
@@ -101,13 +105,25 @@
               "field": "year_Year",
               "type": "temporal",
               "title": "Year (year)"
-            },
-            "color": {
-              "value": "black"
             }
           }
         }
       ]
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "aggregate": "mean"
+        },
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "timeUnit": "year"
+        }
+      }
     }
   ]
 }

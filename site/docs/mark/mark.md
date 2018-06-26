@@ -85,6 +85,10 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 {% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkDef" %}
 
+Here is an example to the usage of the stroke dash where 6 is the size of dashes, and 4 is the size of spaces:
+
+<div class="vl-example" data-name="layer_line_errorband_2d_horizontal_borders_strokedash"></div>
+
 {:#hyperlink}
 ### Hyperlink Properties
 

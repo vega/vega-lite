@@ -40,8 +40,8 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   /**
    * The extent of the band. Available options include:
    * - `"ci"`: Extend the band to the confidence interval of the mean.
-   * - `"stderr"`: The size of band are set to the value of standard error, extending from the center.
-   * - `"stdev"`: The size of band are set to the value of standard deviation, extending from the center.
+   * - `"stderr"`: The size of band are set to the value of standard error, extending from the mean.
+   * - `"stdev"`: The size of band are set to the value of standard deviation, extending from the mean.
    * - `"iqr"`: Extend the band to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.

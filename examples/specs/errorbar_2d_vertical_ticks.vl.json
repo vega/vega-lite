@@ -1,19 +1,22 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "data": {"url": "data/barley.json"},
+  "data": {"url": "data/cars.json"},
   "mark": {
     "type": "errorbar",
+    "extent": "ci",
     "ticks": true
   },
   "encoding": {
     "y": {
-      "field": "yield",
+      "field": "Miles_per_Gallon",
       "type": "quantitative",
       "scale": {"zero": false},
-      "axis": {"title": "Barley Yield"}
+      "title": "Miles per Gallon (95% CIs)"
     },
     "x": {
-      "field": "variety", "type": "ordinal"
+      "field": "Year",
+      "type": "temporal",
+      "timeUnit": "year"
     }
   }
 }

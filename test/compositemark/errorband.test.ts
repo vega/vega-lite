@@ -57,7 +57,7 @@ describe('normalizeErrorBand', () => {
       "layer": [
         {
           "mark": {
-            "opacity": 0.5,
+            "opacity": 0.3,
             "type": "area",
             "style": "errorband-band"
           },

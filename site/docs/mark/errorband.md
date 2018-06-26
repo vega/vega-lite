@@ -41,11 +41,11 @@ Besides the properties listed above, `band` and `borders` can be used to specify
 
 All the properties and usage of error band are identical to error bar's, except the `band` and `borders` that replace the error bar's `rule` and `ticks`.
 
-#### Error Bar
-<div class="vl-example" data-name="errorbar_2d_vertical_ticks"></div>
-
 #### Error Band
 <div class="vl-example" data-name="errorband_2d_vertical_borders"></div>
+
+#### Error Bar
+<div class="vl-example" data-name="errorbar_2d_vertical_ticks"></div>
 
 
 {:#raw-usage}
@@ -69,7 +69,7 @@ A __1D error band__ shows the error range of a continuous field; it can be used 
 
 {:#2d}
 A __2D error band__ shows the error range of a continuous field, broken down by categories.
-<div class="vl-example" data-name="errorband_2d_horizontal"></div>
+<div class="vl-example" data-name="layer_line_errorband_ci"></div>
 
 
 {:#parts}
@@ -77,13 +77,13 @@ A __2D error band__ shows the error range of a continuous field, broken down by 
 
 Under the hood, the `errorband` mark is a [composite mark](mark.html#composite-marks) that expands into a layered plot.  For example, [a basic 2D error band shown above](#2d) is expanded to:
 
-<div class="vl-example" data-name="normalized/errorband_2d_horizontal_normalized"></div>
+<div class="vl-example" data-name="normalized/layer_line_errorband_ci_normalized"></div>
 
 We can customize different parts of the error band [mark definition](#properties) or [config](#config).
 
 For example, we can add the error band's borders and customize it by setting `borders` to `true` or adding a mark property to `borders`, such as setting `color` to `"black"`:
 
-<div class="vl-example" data-name="errorband_2d_horizontal_custom_borders"></div>
+<div class="vl-example" data-name="layer_line_errorband_2d_horizontal_borders_strokedash"></div>
 
 ## Color, and Opacity Encoding Channels
 
