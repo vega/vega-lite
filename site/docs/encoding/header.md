@@ -5,9 +5,9 @@ title: Header
 permalink: /docs/header.html
 ---
 
-Headers provide a title and labels for [faceted Trellis plots](facet.html). A header's title describes the plot in sum, while a header's labels describe the subplots individually.
+Headers provide a title and labels for [faceted plots](facet.html). A header's title describes the field that is used to facet the plot, while a header's labels describe that field's value for each subplot.
 
-By default, Vega-Lite automatically creates axes with default properties for `row` and `column` channels of a faceted view.
+By default, Vega-Lite automatically creates headers with default properties for `row` and `column` channels of a faceted view.
 User can set the `header` property of row- or column-[field definition](facet.html#field-def) to an object to customize [header properties](#header-properties).
 
 In addition to the `header` property of a row- or column-field definition, users can also set default header properties for all headers with the configuration object's ([`config`](config.html)) [header config](#config) (`config: {header: {...}}`).
@@ -63,7 +63,7 @@ __See also:__ You may also use `guide-title` and `guide-label` [style configs](m
 
 ### Example
 
-<span class="vl-example" data-name="facet_custom"></span>
+<span class="vl-example" data-name="facet_custom_header"></span>
 
 This example uses header properties to change the font size of this faceted plot's title and labels.
 
