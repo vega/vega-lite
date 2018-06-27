@@ -6,24 +6,14 @@
     "url": "data/population.json"
   },
   "transform": [
-    {
-      "filter": "datum.year == 2000"
-    },
-    {
-      "calculate": "datum.sex == 2 ? 'Female' : 'Male'",
-      "as": "gender"
-    },
+    {"filter": "datum.year == 2000"},
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"},
     {
       "stack": "people",
       "offset": "normalize",
       "as": ["v1", "v2"],
       "groupby": ["age"],
-      "sort": [
-        {
-          "field": "gender",
-          "order": "descending"
-        }
-      ]
+      "sort": [{"field": "gender", "order": "descending"}]
     }
   ],
   "mark": "bar",
@@ -31,20 +21,13 @@
     "y": {
       "field": "v1",
       "type": "quantitative",
-      "axis": {
-        "title": "population"
-      }
+      "axis": {"title": "population"}
     },
-    "y2": {
-      "field": "v2",
-      "type": "quantitative"
-    },
+    "y2": {"field": "v2", "type": "quantitative"},
     "x": {
       "field": "age",
       "type": "ordinal",
-      "scale": {
-        "rangeStep": 17
-      }
+      "scale": {"rangeStep": 17}
     },
     "color": {
       "field": "gender",

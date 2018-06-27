@@ -4,10 +4,17 @@ title: Stack
 permalink: /docs/stack.html
 ---
 
-The `stack` property of a [position field definition](encoding.html#position-field-def)
-determines type of stacking offset if the field should be stacked.
+To stack fields in Vega-Lite, users can either use the `stack` property of an [encoding field definition](#encoding) or a `stack` transform inside the [`transform`](#transform) array.
 
-{% include table.html props="stack" source="PositionFieldDef" %}
+## Documentation Overview
+{:.no_toc}
+
+- TOC
+{:toc}
+
+
+{:#encoding}
+## Stack in Encoding Field Definition
 
 {: .suppress-error}
 ```json
@@ -27,29 +34,27 @@ determines type of stacking offset if the field should be stacked.
 }
 ```
 
-## Documentation Overview
-{:.no_toc}
+The `stack` property of a [position field definition](encoding.html#position-field-def)
+determines type of stacking offset if the field should be stacked.
 
-- TOC
-{:toc}
-
+{% include table.html props="stack" source="PositionFieldDef" %}
 
 {:#bar}
-## Stack Bar Chart
+### Stack Bar Chart
 
 Adding a color field to a bar chart also creates stacked bar chart by default.
 
 <span class="vl-example" data-name="stacked_bar_v"></span>
 
 {:#area}
-## Stack Area Chart
+### Stack Area Chart
 
 Similarly, adding a color field to area chart also creates stacked area chart by default.
 
 <span class="vl-example" data-name="stacked_area"></span>
 
 {:#normalized}
-## Normalized Stacked Bar and Area Charts
+### Normalized Stacked Bar and Area Charts
 
 You can set `stack` to `"normalize"` to create normalized (or percentage) stacked bar and area charts.
 
@@ -57,13 +62,13 @@ You can set `stack` to `"normalize"` to create normalized (or percentage) stacke
 
 <div class="vl-example" data-name="stacked_area_normalize"></div>
 
-## Streamgraph
+### Streamgraph
 
 Setting `stack` to `"center"` for a stacked area chart creates a streamgraph:
 
 <div class="vl-example" data-name="stacked_area_stream"></div>
 
-## Layered Bar Chart
+### Layered Bar Chart
 
 If `stack` is `null`, the marks will be layered on top of each other.
 In this example, setting the mark's `opacity` to be semi-transparent (`0.6`) creates a layered bar chart.
@@ -72,7 +77,7 @@ In this example, setting the mark's `opacity` to be semi-transparent (`0.6`) cre
 
 
 {:#order}
-## Sorting Stack Order
+### Sorting Stack Order
 
 You can use the order channel to sort the order of stacked marks.
 
@@ -94,8 +99,52 @@ If you want to define custom sort order, you can derive a new field using the [`
 
 Note: we plan to have [a better syntax for customized sort order](https://github.com/vega/vega-lite/issues/2915) in the future.
 
-## Layering Lines on top of Stacked Area Chart
+### Layering Lines on top of Stacked Area Chart
 
 Since `line` marks are not stacked by default, to layer lines on top of stacked area charts, you have to manually set the `stack` offset for the lines.
 
 <div class="vl-example" data-name="normalized/stacked_area_overlay_normalized"></div>
+
+{:#transform}
+## Stack Transform
+
+{: .suppress-error}
+```json
+// A View Specification
+{
+  ...
+  "transform": [
+    {
+      "stack": ...,
+      "groupby": ...,
+      "offset": ...,
+      "sort": ...,
+      "as" ...} // Stack Transform
+    ...
+  ],
+  ...
+}
+```
+
+For example, here is the same [normalized stacked bar chart](stack.html#normalized) of the `"population"`, grouped by `"age"` and colored by `"gender"`, but this time using the `stack` property of `transform`.
+
+<div class="vl-example" data-name="stacked_bar_population_transform"></div>
+
+The `stack` transform in the `transform` array has the following properties:
+
+{% include table.html props="stack,groupby,offset,sort,as" source="StackTransform" %}
+
+
+We can use `stack` transform in conjunction with other transforms to create more complicated charts.
+
+### Diverging Bar Chart
+
+Here we initially `stack` by `"question"` and then use `window` transform to offset each stack.
+<div class="vl-example" data-name="bar_diverging_stack_transform"></div>
+
+### Mosaic Chart
+
+To create a mosaic chart we `stack` twice, once in each direction along with `window` transform.
+<div class="vl-example" data-name="rect_mosaic_simple"></div>
+
+To add labels to this chart, consult [this example]({{site.baseurl}}/examples/rect_mosaic_labelled_with_offset).
