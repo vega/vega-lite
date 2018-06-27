@@ -6,7 +6,6 @@ import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
 import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP, HeaderConfig} from '../../header';
 import {isSortField} from '../../sort';
-import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgComparator, VgMarkGroup, VgTitleConfig} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
