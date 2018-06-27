@@ -99,7 +99,7 @@
     "opacity": {
       "field": "Cylinders",
       "type": "quantitative",
-      "legend": false
+      "legend": null
     },
     "tooltip": [
       {

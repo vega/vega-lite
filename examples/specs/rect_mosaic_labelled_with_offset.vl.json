@@ -42,6 +42,15 @@
           "op": "max",
           "field": "stack_count_Origin2",
           "as": "x2"
+        },
+        {
+          "op": "dense_rank",
+          "as": "rank_Cylinders"
+        },
+        {
+          "op": "distinct",
+          "field": "Cylinders",
+          "as": "distinct_Cylinders"
         }
       ],
       "groupby": [
@@ -50,6 +59,30 @@
       "frame": [
         null,
         null
+      ],
+      "sort": [
+        {
+          "field": "Cylinders",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "dense_rank",
+          "as": "rank_Origin"
+        }
+      ],
+      "frame": [
+        null,
+        null
+      ],
+      "sort": [
+        {
+          "field": "Origin",
+          "order": "ascending"
+        }
       ]
     },
     {
@@ -70,11 +103,27 @@
       ]
     },
     {
-      "calculate": "(datum.x+datum.x2)/2",
+      "calculate": "datum.y + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
+      "as": "ny"
+    },
+    {
+      "calculate": "datum.y2 + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
+      "as": "ny2"
+    },
+    {
+      "calculate": "datum.x + (datum.rank_Origin - 1) * 0.01",
+      "as": "nx"
+    },
+    {
+      "calculate": "datum.x2 + (datum.rank_Origin - 1) * 0.01",
+      "as": "nx2"
+    },
+    {
+      "calculate": "(datum.nx+datum.nx2)/2",
       "as": "xc"
     },
     {
-      "calculate": "(datum.y+datum.y2)/2",
+      "calculate": "(datum.ny+datum.ny2)/2",
       "as": "yc"
     }
   ],
@@ -98,7 +147,7 @@
         "color": {
           "field": "Origin",
           "type": "nominal",
-          "legend": false
+          "legend": null
         },
         "text": {
           "field": "Origin",
@@ -114,32 +163,32 @@
           },
           "encoding": {
             "x": {
-              "field": "x",
+              "field": "nx",
               "type": "quantitative",
               "axis": null
             },
             "x2": {
-              "field": "x2",
+              "field": "nx2",
               "type": "quantitative"
             },
             "y": {
-              "field": "y",
+              "field": "ny",
               "type": "quantitative",
               "axis": null
             },
             "y2": {
-              "field": "y2",
+              "field": "ny2",
               "type": "quantitative"
             },
             "color": {
               "field": "Origin",
               "type": "nominal",
-              "legend": false
+              "legend": null
             },
             "opacity": {
               "field": "Cylinders",
               "type": "quantitative",
-              "legend": false
+              "legend": null
             },
             "tooltip": [
               {
@@ -187,7 +236,7 @@
   },
   "config": {
     "view": {
-      "stroke": null
+      "stroke": ""
     },
     "axis": {
       "domain": false,

@@ -111,10 +111,6 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
-
-/**
- * @hide
- */
 export interface StackTransform {
   /**
    * The field which is stacked.
