@@ -59,26 +59,14 @@
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "MPAA_Rating"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "MPAA_Rating",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -123,13 +111,7 @@
                 "offset": 10,
                 "orient": "top",
                 "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "baseline": "middle"
             },
             "encode": {
                 "update": {

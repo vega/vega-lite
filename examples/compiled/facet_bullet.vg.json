@@ -230,16 +230,12 @@
                 "offset": 10,
                 "orient": "left",
                 "style": "guide-label",
+                "angle": 0,
+                "baseline": "middle",
                 "encode": {
                     "update": {
-                        "angle": {
-                            "value": 0
-                        },
                         "align": {
                             "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }

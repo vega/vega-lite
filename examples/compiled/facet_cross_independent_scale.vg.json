@@ -123,51 +123,25 @@
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "r"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "r",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "c"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "c",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -187,13 +161,7 @@
                 "offset": 10,
                 "orient": "left",
                 "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "baseline": "middle"
             },
             "encode": {
                 "update": {
@@ -221,13 +189,7 @@
                 "offset": 10,
                 "orient": "top",
                 "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "baseline": "middle"
             },
             "encode": {
                 "update": {

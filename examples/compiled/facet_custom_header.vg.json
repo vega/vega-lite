@@ -1,46 +1,64 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Stock price mean per quarter broken down by years.",
+    "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
     "autosize": "pad",
     "padding": 5,
     "data": [
         {
             "name": "source_0",
-            "url": "data/stocks.csv",
+            "url": "data/population.json",
             "format": {
-                "type": "csv",
+                "type": "json",
                 "parse": {
-                    "date": "date",
-                    "price": "number"
+                    "people": "number"
                 }
             },
             "transform": [
                 {
-                    "type": "formula",
-                    "as": "year_date",
-                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
+                    "type": "filter",
+                    "expr": "datum.year == 2000"
                 },
                 {
                     "type": "formula",
-                    "as": "quarter_date",
-                    "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
+                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+                    "as": "gender"
                 },
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "quarter_date",
-                        "symbol",
-                        "year_date"
+                        "age",
+                        "gender"
                     ],
                     "ops": [
-                        "mean"
+                        "sum"
                     ],
                     "fields": [
-                        "price"
+                        "people"
                     ],
                     "as": [
-                        "mean_price"
+                        "sum_people"
                     ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
                 }
             ]
         },
@@ -51,7 +69,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "year_date"
+                        "gender"
                     ]
                 }
             ]
@@ -60,11 +78,11 @@
     "signals": [
         {
             "name": "x_step",
-            "value": 21
+            "value": 17
         },
         {
             "name": "child_width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "child_height",
@@ -91,9 +109,10 @@
             "type": "group",
             "role": "column-title",
             "title": {
-                "text": "date (year)",
+                "text": "gender",
                 "offset": 10,
-                "style": "guide-title"
+                "style": "guide-title",
+                "fontSize": 20
             }
         },
         {
@@ -112,7 +131,7 @@
                     "scale": "y",
                     "orient": "left",
                     "grid": false,
-                    "title": "Mean of price",
+                    "title": "population",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
@@ -129,17 +148,18 @@
                 "data": "column_domain"
             },
             "sort": {
-                "field": "datum[\"year_date\"]",
+                "field": "datum[\"gender\"]",
                 "order": "ascending"
             },
             "title": {
                 "text": {
-                    "signal": "timeFormat(parent[\"year_date\"], '%Y')"
+                    "signal": "''+parent[\"gender\"]"
                 },
                 "offset": 10,
                 "orient": "top",
                 "style": "guide-label",
-                "baseline": "middle"
+                "baseline": "middle",
+                "fontSize": 15
             },
             "encode": {
                 "update": {
@@ -157,7 +177,7 @@
                 "data": "column_domain"
             },
             "sort": {
-                "field": "datum[\"year_date\"]",
+                "field": "datum[\"gender\"]",
                 "order": "ascending"
             },
             "encode": {
@@ -172,14 +192,11 @@
                     "scale": "x",
                     "orient": "bottom",
                     "grid": false,
-                    "title": "date (quarter)",
+                    "title": "age",
                     "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
-                                "text": {
-                                    "signal": "'Q' + quarter(datum.value)"
-                                },
                                 "angle": {
                                     "value": 270
                                 },
@@ -205,13 +222,13 @@
                     "name": "facet",
                     "data": "source_0",
                     "groupby": [
-                        "year_date"
+                        "gender"
                     ]
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"year_date\"]"
+                    "datum[\"gender\"]"
                 ],
                 "order": [
                     "ascending"
@@ -229,66 +246,38 @@
             },
             "marks": [
                 {
-                    "name": "child_pathgroup",
-                    "type": "group",
+                    "name": "child_marks",
+                    "type": "rect",
+                    "style": [
+                        "bar"
+                    ],
                     "from": {
-                        "facet": {
-                            "name": "faceted_path_child_main",
-                            "data": "facet",
-                            "groupby": [
-                                "symbol"
-                            ]
-                        }
+                        "data": "facet"
                     },
                     "encode": {
                         "update": {
+                            "fill": {
+                                "scale": "color",
+                                "field": "gender"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "age"
+                            },
                             "width": {
-                                "field": {
-                                    "group": "width"
-                                }
+                                "scale": "x",
+                                "band": true
                             },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
+                            "y": {
+                                "scale": "y",
+                                "field": "sum_people_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_people_start"
                             }
                         }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "line",
-                            "style": [
-                                "line"
-                            ],
-                            "sort": {
-                                "field": "datum[\"quarter_date\"]",
-                                "order": "descending"
-                            },
-                            "from": {
-                                "data": "faceted_path_child_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "stroke": {
-                                        "scale": "color",
-                                        "field": "symbol"
-                                    },
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "quarter_date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "mean_price"
-                                    },
-                                    "defined": {
-                                        "signal": "datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
-                                    }
-                                }
-                            }
-                        }
-                    ]
+                    }
                 }
             ],
             "axes": [
@@ -313,10 +302,10 @@
     "scales": [
         {
             "name": "x",
-            "type": "point",
+            "type": "band",
             "domain": {
                 "data": "source_0",
-                "field": "quarter_date",
+                "field": "age",
                 "sort": true
             },
             "range": {
@@ -324,14 +313,18 @@
                     "signal": "x_step"
                 }
             },
-            "padding": 0.5
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "mean_price"
+                "fields": [
+                    "sum_people_start",
+                    "sum_people_end"
+                ]
             },
             "range": [
                 {
@@ -347,16 +340,28 @@
             "type": "ordinal",
             "domain": {
                 "data": "source_0",
-                "field": "symbol",
+                "field": "gender",
                 "sort": true
             },
-            "range": "category"
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
         }
     ],
     "legends": [
         {
-            "stroke": "color",
-            "title": "symbol"
+            "fill": "color",
+            "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {
