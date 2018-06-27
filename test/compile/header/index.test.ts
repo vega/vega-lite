@@ -1,14 +1,14 @@
 import {assert} from 'chai';
-import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
+import {getHeaderGroups, getTitleGroup, labelAnchor, labelBaseline} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
 import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP} from '../../../src/header';
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
   describe('label aligns correctly according to angle', () => {
-    assert.deepEqual(labelAlign(23), {align: {value: 'right'}});
-    assert.deepEqual(labelAlign(135), {align: {value: 'left'}});
-    assert.deepEqual(labelAlign(50), {align: {value: 'right'}});
+    assert.deepEqual(labelAnchor(23), {anchor: {value: 'start'}});
+    assert.deepEqual(labelAnchor(135), {anchor: {value: 'end'}});
+    assert.deepEqual(labelAnchor(50), {anchor: {value: 'start'}});
   });
 
   describe('label baseline adjusted according to angle', () => {

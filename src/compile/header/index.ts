@@ -98,15 +98,15 @@ export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGro
 
 // 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
 
-export function labelAlign(angle: number) {
+export function labelAnchor(angle: number) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if ((angle + 90) % 180 === 0) {  // for 90 and 270
     return {}; // default center
   } else if (angle < 90 || 270 < angle) {
-    return {align: {value: 'right'}};
+    return {anchor: {value: 'start'}};
   } else if (135 <= angle && angle < 225) {
-    return {align: {value: 'left'}};
+    return {anchor: {value: 'end'}};
   }
   return {};
 }
@@ -143,22 +143,18 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const {header = {}} = facetFieldDef;
       const {format, labelAngle} = header;
       const config = model.config? model.config : undefined;
-      const update = {
-        ...(
-          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
-        ),
-        ...labelAlign(labelAngle),
-        ...labelBaseline(labelAngle)
-
-      };
 
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
-        ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
-        ...(keys(update).length > 0 ? {encode: {update}} : {})
+        ...(
+          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
+        ),
+        ...labelAnchor(labelAngle),
+        ...labelBaseline(labelAngle),
+        ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
       };
     }
 
