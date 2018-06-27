@@ -31,14 +31,17 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * - `"median"`: the median of the data points.
    *
    * __Default value:__ `"mean"`.
+   * @hide
    */
+
+   // center is not needed right now but will be added back to the schema if future features require it.
   center?: ErrorBarCenter;
 
   /**
    * The extent of the band. Available options include:
    * - `"ci"`: Extend the band to the confidence interval of the mean.
-   * - `"stderr"`: The size of band are set to the value of standard error, extending from the center.
-   * - `"stdev"`: The size of band are set to the value of standard deviation, extending from the center.
+   * - `"stderr"`: The size of band are set to the value of standard error, extending from the mean.
+   * - `"stdev"`: The size of band are set to the value of standard deviation, extending from the mean.
    * - `"iqr"`: Extend the band to the q1 and q3.
    *
    * __Default value:__ `"stderr"`.

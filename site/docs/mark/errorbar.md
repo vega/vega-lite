@@ -66,7 +66,7 @@ If the data is not aggregated yet, Vega-Lite will aggregate the data based on th
 {:#pre-aggregated-usage}
 ## Using Error Bars to Visualize Aggregated Data
 
-If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`) to use `"errorbar"` as a ranged mark.
+If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`) to use error bar as a ranged mark.
 
 <div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated"></div>
 
@@ -124,7 +124,6 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 ```json
 {
   "errorbar": {
-    "size": ...,
     "extent": ...,
     "rule": ...,
     "ticks": ...
@@ -134,5 +133,5 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 
 The `errorbar` config object sets the default properties for `errorbar` marks.
 
-The error bar config can contain all [error bar mark properties](#properties) except `orient`.
+The error bar config can contain all [error bar mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
 
