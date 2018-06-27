@@ -6,6 +6,7 @@ import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
 import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP, HeaderConfig} from '../../header';
 import {isSortField} from '../../sort';
+import {keys} from '../../util';
 import {AxisOrient, VgAxis, VgComparator, VgMarkGroup, VgTitleConfig} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {Model} from '../model';
@@ -97,15 +98,15 @@ export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGro
 
 // 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
 
-export function labelAnchor(angle: number) {
+export function labelAlign(angle: number) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if ((angle + 90) % 180 === 0) {  // for 90 and 270
     return {}; // default center
   } else if (angle < 90 || 270 < angle) {
-    return {anchor: {value: 'start'}};
+    return {align: {value: 'right'}};
   } else if (135 <= angle && angle < 225) {
-    return {anchor: {value: 'end'}};
+    return {align: {value: 'left'}};
   }
   return {};
 }
@@ -114,9 +115,9 @@ export function labelBaseline(angle: number) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if (45 <= angle && angle <= 135) {
-    return {baseline: {value: 'top'}};
+    return {baseline: 'top'};
   }
-  return {baseline: {value: 'middle'}};
+  return {baseline: 'middle'};
 }
 
 function getSort(facetFieldDef: FacetFieldDef<string>): VgComparator {
@@ -143,17 +144,21 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const {format, labelAngle} = header;
       const config = model.config? model.config : undefined;
 
+      const update = {
+        ...labelAlign(labelAngle)
+      };
+
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
         ...(
-          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
+          labelAngle !== undefined ? {angle: labelAngle} : {}
         ),
-        ...labelAnchor(labelAngle),
         ...labelBaseline(labelAngle),
-        ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP)
+        ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
+        ...(keys(update).length > 0 ? {encode: {update}} : {})
       };
     }
 
@@ -193,12 +198,12 @@ export function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef
   for (const prop of properties) {
     if (config && config.header) {
       if (config.header[prop]) {
-        props[propertiesMap[prop]] = {value: config.header[prop]};
+        props[propertiesMap[prop]] = config.header[prop];
       }
     }
     if (facetFieldDef && facetFieldDef.header) {
       if (facetFieldDef.header[prop]) {
-        props[propertiesMap[prop]] = {value: facetFieldDef.header[prop]};
+        props[propertiesMap[prop]] = facetFieldDef.header[prop];
       }
     }
   }

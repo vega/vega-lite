@@ -93,9 +93,7 @@
                 "offset": 10,
                 "orient": "top",
                 "style": "guide-label",
-                "baseline": {
-                    "value": "middle"
-                }
+                "baseline": "middle"
             }
         },
         {
@@ -174,9 +172,7 @@
                         "offset": 10,
                         "orient": "left",
                         "style": "guide-label",
-                        "baseline": {
-                            "value": "middle"
-                        }
+                        "baseline": "middle"
                     },
                     "encode": {
                         "update": {

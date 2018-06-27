@@ -1,19 +1,19 @@
 import {assert} from 'chai';
-import {getHeaderGroups, getTitleGroup, labelAnchor, labelBaseline} from '../../../src/compile/header';
+import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
 import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP} from '../../../src/header';
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
   describe('label aligns correctly according to angle', () => {
-    assert.deepEqual(labelAnchor(23), {anchor: {value: 'start'}});
-    assert.deepEqual(labelAnchor(135), {anchor: {value: 'end'}});
-    assert.deepEqual(labelAnchor(50), {anchor: {value: 'start'}});
+    assert.deepEqual(labelAlign(23), {align: {value: 'right'}});
+    assert.deepEqual(labelAlign(135), {align: {value: 'left'}});
+    assert.deepEqual(labelAlign(50), {align: {value: 'right'}});
   });
 
   describe('label baseline adjusted according to angle', () => {
-    assert.deepEqual(labelBaseline(10), {baseline: {value: 'middle'}});
-    assert.deepEqual(labelBaseline(90), {baseline: {value: 'top'}});
+    assert.deepEqual(labelBaseline(10), {baseline: 'middle'});
+    assert.deepEqual(labelBaseline(90), {baseline: 'top'});
   });
 
   describe('getHeaderGroups', () => {
@@ -147,17 +147,17 @@ describe('compile/header/index', () => {
 
       const headerTitleProps = getHeaderProperties(undefined, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
       it('should return the correct title property from header', () => {
-        assert.deepEqual(headerTitleProps, {fontSize: {value: 40}});
+        assert.deepEqual(headerTitleProps, {fontSize: 40});
       });
 
       const configTitleProps = getHeaderProperties(config, undefined, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
       it('should return the correct title property from config', () => {
-        assert.deepEqual(configTitleProps, {fontSize: {value: 20}});
+        assert.deepEqual(configTitleProps, {fontSize: 20});
       });
 
       const bothTitleProps = getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
       it('should overwrite the config title property with the header title property', () => {
-        assert.deepEqual(bothTitleProps, {fontSize: {value: 40}});
+        assert.deepEqual(bothTitleProps, {fontSize: 40});
       });
     });
 
@@ -183,127 +183,18 @@ describe('compile/header/index', () => {
 
       const headerLabelProps = getHeaderProperties(undefined, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
       it('should return the correct label property from header', () => {
-        assert.deepEqual(headerLabelProps, {fontSize: {value: 40}});
+        assert.deepEqual(headerLabelProps, {fontSize: 40});
       });
 
       const configLabelProps = getHeaderProperties(config, undefined, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
       it('should return the correct label property from config', () => {
-        assert.deepEqual(configLabelProps, {fontSize: {value: 20}});
+        assert.deepEqual(configLabelProps, {fontSize: 20});
       });
 
       const bothLabelProps = getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
       it('should overwrite the config label property with the header label property', () => {
-        assert.deepEqual(bothLabelProps, {fontSize: {value: 40}});
+        assert.deepEqual(bothLabelProps, {fontSize: 40});
       });
     });
   });
-  /*
-  });
-  describe('getHeaderProperties', () => {
-    describe('for title', () => {
-      const titleHeaderSpec = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      titleHeaderSpec.parseScale();
-      titleHeaderSpec.parseLayoutSize();
-      titleHeaderSpec.parseAxisAndHeader();
-
-      const headerGroup = getTitleGroup(titleHeaderSpec, 'row');
-      const headerTitle = headerGroup.title;
-
-      it('should return the correct title properties from the header', () => {
-        assert(deepEqual(headerTitle, {
-          text: 'a',
-          offset: 10,
-          orient: 'left',
-          style: 'guide-title',
-          fontSize: {value: 40}
-        }));
-      });
-
-      const titleConfigSpec = parseFacetModel({
-        config: {
-           header: {titleFontSize: 40}
-        },
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      titleConfigSpec.parseScale();
-      titleConfigSpec.parseLayoutSize();
-      titleConfigSpec.parseAxisAndHeader();
-
-      const configGroup = getTitleGroup(titleConfigSpec, 'row');
-      const configTitle = configGroup.title;
-
-      it('should return the correct title properties from the header config', () => {
-        assert(deepEqual(configTitle, {
-          text: 'a',
-          offset: 10,
-          orient: 'left',
-          style: 'guide-title',
-          fontSize: {value: 40}
-        }));
-      });
-    });
-
-    describe('for label', () => {
-      const labelHeaderSpec = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      labelHeaderSpec.parseScale();
-      labelHeaderSpec.parseLayoutSize();
-      labelHeaderSpec.parseAxisAndHeader();
-
-      const labelConfigSpec = parseFacetModel({
-        config: {
-           header: {labelFontSize: 40}
-        },
-        facet: {
-          row: {field: 'a', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
-      });
-      labelConfigSpec.parseScale();
-      labelConfigSpec.parseLayoutSize();
-      labelConfigSpec.parseAxisAndHeader();
-
-      const configLayoutHeader = labelConfigSpec.component.layoutHeaders['row'];
-      const configGroup = getHeaderGroup(labelHeaderSpec, 'row', 'header', configLayoutHeader, configLayoutHeader['header'][0]);
-      const configTitle = configGroup.title;
-
-    });
-  });
-  */
 });

@@ -119,12 +119,8 @@
                 "offset": 10,
                 "orient": "left",
                 "style": "guide-label",
-                "angle": {
-                    "value": -90
-                },
-                "baseline": {
-                    "value": "middle"
-                }
+                "angle": -90,
+                "baseline": "middle"
             },
             "encode": {
                 "update": {
