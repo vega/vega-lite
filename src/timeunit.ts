@@ -246,7 +246,7 @@ export function convert(unit: TimeUnit, date: Date): Date {
   const isUTC = isUTCTimeUnit(unit);
   const result: Date = isUTC
     ? // start with uniform date
-      new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+    new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
     : new Date(0, 0, 1, 0, 0, 0, 0);
   for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
@@ -321,27 +321,13 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
   return dateTimeExpr(d);
 }
 
-/**
- * returns the signal expression used for axis labels for a time unit
- */
-export function formatExpression(
-  timeUnit: TimeUnit,
-  field: string,
-  shortTimeLabels: boolean,
-  isUTCScale: boolean
-): string {
+export function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabels: boolean) {
   if (!timeUnit) {
     return undefined;
   }
 
   const dateComponents: string[] = [];
-  let expression = '';
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
-
-  if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-    // special expression for quarter as prefix
-    expression = `'Q' + quarter(${field})`;
-  }
 
   if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
     // By default use short month name
@@ -380,6 +366,26 @@ export function formatExpression(
   if (timeComponents.length > 0) {
     dateTimeComponents.push(timeComponents.join(':'));
   }
+
+  return dateTimeComponents;
+}
+
+/**
+ * returns the signal expression used for axis labels for a time unit
+ */
+export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
+  if (!timeUnit) {
+    return undefined;
+  }
+
+  const dateTimeComponents: string[] = getDateTimeComponents(timeUnit, shortTimeLabels);
+  let expression = '';
+
+  if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
+    // special expression for quarter as prefix
+    expression = `'Q' + quarter(${field})`;
+  }
+
 
   if (dateTimeComponents.length > 0) {
     if (expression) {

@@ -1,9 +1,10 @@
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet} from './encoding';
+import {Encoding, EncodingWithFacet, extractTransformsFromEncoding} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
+import * as log from './log';
 import {AnyMark, isPrimitiveMark, Mark, MarkDef} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
@@ -354,4 +355,61 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
     return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
   }
   return false;
+}
+
+export function extractTransforms(spec: NormalizedSpec, config: Config): NormalizedSpec {
+  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+    return extractTransformsSingle(spec, config);
+  }
+  if (isLayerSpec(spec)) {
+    return extractTransformsLayered(spec, config);
+  }
+  if (isUnitSpec(spec)) {
+    return extractTransformsUnit(spec, config);
+  }
+  throw new Error(log.message.INVALID_SPEC);
+}
+
+function extractTransformsUnit(spec: NormalizedUnitSpec, config: Config): NormalizedUnitSpec {
+  if (spec.encoding) {
+    const {encoding: oldEncoding, transform: oldTransforms, ...rest} = spec;
+    const {bins, timeUnits, aggregate, groupby, encoding: newEncoding} = extractTransformsFromEncoding(
+      oldEncoding,
+      config
+    );
+    return {
+      transform: [
+        ...bins,
+        ...timeUnits,
+        ...(!aggregate.length ? [] : [{aggregate, groupby}]),
+        ...(oldTransforms ? oldTransforms : [])
+      ],
+      ...rest,
+      encoding: newEncoding
+    };
+  } else {
+    // No encoding, so there are no transforms to extract
+    return spec;
+  }
+}
+
+function extractTransformsSingle(
+  spec: NormalizedFacetSpec | NormalizedRepeatSpec,
+  config: Config
+): NormalizedFacetSpec | NormalizedRepeatSpec {
+  const {spec: subspec, ...rest} = spec;
+  return {
+    ...rest,
+    spec: extractTransforms(subspec, config) as any
+  };
+}
+
+function extractTransformsLayered(spec: NormalizedLayerSpec, config: Config): NormalizedLayerSpec {
+  const {layer, ...rest} = spec;
+  return {
+    ...rest,
+    layer: layer.map(subspec => {
+      return extractTransforms(subspec, config) as any;
+    })
+  };
 }

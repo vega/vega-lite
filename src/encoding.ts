@@ -1,7 +1,8 @@
 import {isArray} from 'vega-util';
 import {isAggregateOp} from './aggregate';
 import {isBinning} from './bin';
-import {Channel, CHANNELS, isChannel, supportMark} from './channel';
+import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} from './channel';
+import {binRequiresRange} from './compile/common';
 import {Config} from './config';
 import {FacetMapping} from './facet';
 import {isPositionFieldDef} from './fielddef';
@@ -21,6 +22,7 @@ import {
   normalizeFieldDef,
   OrderFieldDef,
   PositionFieldDef,
+  RepeatRef,
   TextFieldDef,
   title,
   ValueDef,
@@ -29,7 +31,9 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
+import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
+import {Type} from './type';
 import {keys, some} from './util';
 
 export interface Encoding<F> {
@@ -194,8 +198,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
     return false;
   });
 }
-
-export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, config: Config) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
@@ -204,34 +207,64 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
 
   forEach(oldEncoding, (channelDef, channel) => {
     if (isFieldDef(channelDef)) {
-      const transformedField = vgField(channelDef, {forAs: true});
-      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
-        aggregate.push({
-          op: channelDef.aggregate,
-          field: channelDef.field,
-          as: transformedField
-        });
-      } else {
-        // Add bin or timeUnit transform if applicable
-        const bin = channelDef.bin;
-        if (isBinning(bin)) {
-          const {field} = channelDef;
-          bins.push({bin, field, as: transformedField});
-        } else if (channelDef.timeUnit) {
-          const {timeUnit, field} = channelDef;
-          timeUnits.push({timeUnit, field, as: transformedField});
+      // Extract potential embedded transformations along with remaining properties
+      const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
+      const isTitleDefined =
+        channelDef['title'] ||
+        (channelDef['axis'] && channelDef['axis']['title']) ||
+        (channelDef['legend'] && channelDef['legend']['title']);
+      const newField = vgField(channelDef, {forAs: true});
+      const newChannelDef = {
+        // Only add title if it doesn't exist
+        ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
+        ...remaining,
+        // Always overwrite field
+        field: newField
+      };
+      const isPositionChannel: boolean = channel === Channel.X || channel === Channel.Y;
+      if (aggOp && isAggregateOp(aggOp)) {
+        const aggregateEntry: AggregatedFieldDef = {
+          op: aggOp,
+          as: newField
+        };
+        if (field) {
+          aggregateEntry.field = field;
         }
+        aggregate.push(aggregateEntry);
+      } else if (isBinning(bin)) {
+        bins.push({bin, field, as: newField});
+        // Add additional groupbys for range and end of bins
+        groupby.push(vgField(channelDef, {binSuffix: 'end'}));
+        if (binRequiresRange(channelDef, channel)) {
+          groupby.push(vgField(channelDef, {binSuffix: 'range'}));
+        }
+        // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
+        if (isPositionChannel) {
+          const secondaryChannel: FieldDef<string> = {
+            field: newField + '_end',
+            type: Type.QUANTITATIVE
+          };
+          encoding[channel + '2'] = secondaryChannel;
+        }
+        newChannelDef.type = Type.QUANTITATIVE;
+      } else if (timeUnit) {
+        timeUnits.push({timeUnit, field, as: newField});
 
-        // TODO(@alanbanh): make bin correct
-        groupby.push(transformedField);
+        // Add formatting to appropriate property based on the type of channel we're processing
+        const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
+        if (isNonPositionScaleChannel(channel)) {
+          newChannelDef['legend'] = {format, ...newChannelDef['legend']};
+        } else if (isPositionChannel) {
+          newChannelDef['axis'] = {format, ...newChannelDef['axis']};
+        } else if (channel === 'text' || channel === 'tooltip') {
+          newChannelDef['format'] = newChannelDef['format'] || format;
+        }
+      }
+      if (!aggOp) {
+        groupby.push(newField);
       }
       // now the field should refer to post-transformed field instead
-      encoding[channel] = {
-        field: vgField(channelDef),
-        type: channelDef.type,
-        title: title(channelDef, config, {allowDisabling: true}),
-        ...(isPositionFieldDef(channelDef) ? {axis: channelDef.axis} : {})
-      };
+      encoding[channel] = newChannelDef;
     } else {
       // For value def, just copy
       encoding[channel] = oldEncoding[channel];
