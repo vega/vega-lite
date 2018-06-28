@@ -124,26 +124,14 @@
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "gender"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "gender",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -187,14 +175,7 @@
                 },
                 "offset": 10,
                 "orient": "top",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {

@@ -232,14 +232,8 @@
                 "style": "guide-label",
                 "encode": {
                     "update": {
-                        "angle": {
-                            "value": 0
-                        },
                         "align": {
                             "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
                         }
                     }
                 }

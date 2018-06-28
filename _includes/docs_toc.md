@@ -244,6 +244,7 @@
 - [Config]({{site.baseurl}}/docs/config.html)
     - [Top-level Configuration]({{site.baseurl}}/docs/config.html#top-level-config)
     - [Axis Configurations]({{site.baseurl}}/docs/config.html#axis-config)
+    - [Header Configuration]({{site.baseurl}}/docs/config.html#header-config)
     - [Legend Configuration]({{site.baseurl}}/docs/config.html#legend-config)
     - [Mark and Mark Style Configurations]({{site.baseurl}}/docs/config.html#mark-config)
     - [Scale and Scale Range Configuration]({{site.baseurl}}/docs/config.html#scale-config)

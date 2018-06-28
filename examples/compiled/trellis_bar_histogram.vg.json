@@ -91,29 +91,15 @@
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Origin"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "Origin",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -132,14 +118,7 @@
                 },
                 "offset": 10,
                 "orient": "left",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {

@@ -1,22 +1,64 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
     "autosize": "pad",
     "padding": 5,
     "data": [
         {
             "name": "source_0",
-            "url": "data/movies.json",
+            "url": "data/population.json",
             "format": {
                 "type": "json",
                 "parse": {
-                    "Worldwide_Gross": "number",
-                    "US_DVD_Sales": "number"
+                    "people": "number"
                 }
             },
             "transform": [
                 {
                     "type": "filter",
-                    "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
+                    "expr": "datum.year == 2000"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+                    "as": "gender"
+                },
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "ops": [
+                        "sum"
+                    ],
+                    "fields": [
+                        "people"
+                    ],
+                    "as": [
+                        "sum_people"
+                    ]
+                },
+                {
+                    "type": "stack",
+                    "groupby": [
+                        "age",
+                        "gender"
+                    ],
+                    "field": "sum_people",
+                    "sort": {
+                        "field": [
+                            "gender"
+                        ],
+                        "order": [
+                            "descending"
+                        ]
+                    },
+                    "as": [
+                        "sum_people_start",
+                        "sum_people_end"
+                    ],
+                    "offset": "zero"
                 }
             ]
         },
@@ -27,7 +69,7 @@
                 {
                     "type": "aggregate",
                     "groupby": [
-                        "MPAA_Rating"
+                        "gender"
                     ]
                 }
             ]
@@ -35,12 +77,16 @@
     ],
     "signals": [
         {
+            "name": "x_step",
+            "value": 17
+        },
+        {
             "name": "child_width",
-            "value": 75
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
         },
         {
             "name": "child_height",
-            "value": 75
+            "value": 200
         }
     ],
     "layout": {
@@ -63,9 +109,10 @@
             "type": "group",
             "role": "column-title",
             "title": {
-                "text": "MPAA_Rating",
+                "text": "gender",
                 "offset": 10,
-                "style": "guide-title"
+                "style": "guide-title",
+                "fontSize": 20
             }
         },
         {
@@ -84,7 +131,7 @@
                     "scale": "y",
                     "orient": "left",
                     "grid": false,
-                    "title": "US_DVD_Sales",
+                    "title": "population",
                     "labelOverlap": true,
                     "tickCount": {
                         "signal": "ceil(child_height/40)"
@@ -101,16 +148,17 @@
                 "data": "column_domain"
             },
             "sort": {
-                "field": "datum[\"MPAA_Rating\"]",
+                "field": "datum[\"gender\"]",
                 "order": "ascending"
             },
             "title": {
                 "text": {
-                    "signal": "''+parent[\"MPAA_Rating\"]"
+                    "signal": "''+parent[\"gender\"]"
                 },
                 "offset": 10,
                 "orient": "top",
-                "style": "guide-label"
+                "style": "guide-label",
+                "fontSize": 15
             },
             "encode": {
                 "update": {
@@ -128,7 +176,7 @@
                 "data": "column_domain"
             },
             "sort": {
-                "field": "datum[\"MPAA_Rating\"]",
+                "field": "datum[\"gender\"]",
                 "order": "ascending"
             },
             "encode": {
@@ -143,11 +191,22 @@
                     "scale": "x",
                     "orient": "bottom",
                     "grid": false,
-                    "title": "Worldwide_Gross",
-                    "labelFlush": true,
+                    "title": "age",
                     "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(child_width/40)"
+                    "encode": {
+                        "labels": {
+                            "update": {
+                                "angle": {
+                                    "value": 270
+                                },
+                                "align": {
+                                    "value": "right"
+                                },
+                                "baseline": {
+                                    "value": "middle"
+                                }
+                            }
+                        }
                     },
                     "zindex": 1
                 }
@@ -162,13 +221,13 @@
                     "name": "facet",
                     "data": "source_0",
                     "groupby": [
-                        "MPAA_Rating"
+                        "gender"
                     ]
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"MPAA_Rating\"]"
+                    "datum[\"gender\"]"
                 ],
                 "order": [
                     "ascending"
@@ -187,52 +246,40 @@
             "marks": [
                 {
                     "name": "child_marks",
-                    "type": "symbol",
+                    "type": "rect",
                     "style": [
-                        "point"
+                        "bar"
                     ],
                     "from": {
                         "data": "facet"
                     },
                     "encode": {
                         "update": {
-                            "opacity": {
-                                "value": 0.7
-                            },
                             "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
+                                "scale": "color",
+                                "field": "gender"
                             },
                             "x": {
                                 "scale": "x",
-                                "field": "Worldwide_Gross"
+                                "field": "age"
+                            },
+                            "width": {
+                                "scale": "x",
+                                "band": true
                             },
                             "y": {
                                 "scale": "y",
-                                "field": "US_DVD_Sales"
+                                "field": "sum_people_end"
+                            },
+                            "y2": {
+                                "scale": "y",
+                                "field": "sum_people_start"
                             }
                         }
                     }
                 }
             ],
             "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(child_width/40)"
-                    },
-                    "gridScale": "y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
                 {
                     "scale": "y",
                     "orient": "left",
@@ -254,26 +301,29 @@
     "scales": [
         {
             "name": "x",
-            "type": "linear",
+            "type": "band",
             "domain": {
                 "data": "source_0",
-                "field": "Worldwide_Gross"
+                "field": "age",
+                "sort": true
             },
-            "range": [
-                0,
-                {
-                    "signal": "child_width"
+            "range": {
+                "step": {
+                    "signal": "x_step"
                 }
-            ],
-            "nice": true,
-            "zero": true
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
         },
         {
             "name": "y",
             "type": "linear",
             "domain": {
                 "data": "source_0",
-                "field": "US_DVD_Sales"
+                "fields": [
+                    "sum_people_start",
+                    "sum_people_end"
+                ]
             },
             "range": [
                 {
@@ -283,6 +333,34 @@
             ],
             "nice": true,
             "zero": true
+        },
+        {
+            "name": "color",
+            "type": "ordinal",
+            "domain": {
+                "data": "source_0",
+                "field": "gender",
+                "sort": true
+            },
+            "range": [
+                "#EA98D2",
+                "#659CCA"
+            ]
+        }
+    ],
+    "legends": [
+        {
+            "fill": "color",
+            "title": "gender",
+            "encode": {
+                "symbols": {
+                    "update": {
+                        "shape": {
+                            "value": "square"
+                        }
+                    }
+                }
+            }
         }
     ],
     "config": {
