@@ -4,14 +4,14 @@ import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, MarkDef} from '../../mark';
 import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
-import {EncodingSortField, SortOrder} from '../../sort';
-import {contains, keys} from '../../util';
+import {Sort} from '../../sort';
 import * as util from '../../util';
+import {contains, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex, ScaleComponentProps} from './component';
+import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
@@ -205,7 +205,7 @@ export function paddingOuter(paddingValue: number, channel: Channel, scaleType: 
   return undefined;
 }
 
-export function reverse(scaleType: ScaleType, sort: SortOrder | EncodingSortField<string> | (string | number | boolean)[]) {
+export function reverse(scaleType: ScaleType, sort: Sort<string>) {
   if (hasContinuousDomain(scaleType) && sort === 'descending') {
     // For continuous domain scales, Vega does not support domain sort.
     // Thus, we reverse range instead if sort is descending
