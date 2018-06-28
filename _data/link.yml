@@ -181,6 +181,8 @@ LegendType:
   name: String
 Scale:
   link: scale.html
+Sort:
+  link: sort.html
 SortOrder:
   name: String
 EncodingSortField:

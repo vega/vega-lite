@@ -13,7 +13,7 @@ import * as log from './log';
 import {LogicalOperand} from './logical';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
-import {EncodingSortField, SortOrder} from './sort';
+import {Sort, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
@@ -187,7 +187,7 @@ export interface SortableFieldDef<F> extends FieldDef<F> {
    *
    * __Note:__ `null` is not supported for `row` and `column`.
    */
-  sort?: (number | string | boolean)[] | SortOrder | EncodingSortField<F> | null;
+  sort?: Sort<F>;
 }
 
 export interface ScaleFieldDef<F> extends SortableFieldDef<F> {

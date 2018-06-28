@@ -1,8 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-
+import {DateTime} from './datetime';
 import {VgComparatorOrder} from './vega.schema';
-
 
 export type SortOrder = VgComparatorOrder | null;
 
@@ -49,10 +48,12 @@ export interface EncodingSortField<F> {
   order?: SortOrder;
 }
 
-export function isSortField<F>(sort: (string | number | boolean)[] | SortOrder | EncodingSortField<F>): sort is EncodingSortField<F> {
+export type Sort<F> = (string | number | boolean | DateTime)[] | SortOrder | EncodingSortField<F> | null;
+
+export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 
-export function isSortArray<F>(sort: (string | number | boolean)[] | SortOrder | EncodingSortField<F>): sort is (string | number | boolean)[] {
+export function isSortArray<F>(sort: Sort<F>): sort is (string | number | boolean | DateTime)[] {
   return !!sort && isArray(sort);
 }
