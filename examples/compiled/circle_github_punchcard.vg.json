@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "Punchcard Visualization like on Github. The day on y-axis uses a custom order from Monday to Sunday.",
     "autosize": "pad",
     "padding": 5,
     "style": "cell",
@@ -25,6 +26,17 @@
                     "as": "hours_time",
                     "expr": "datetime(0, 0, 1, hours(datum[\"time\"]), 0, 0, 0)"
                 },
+                {
+                    "type": "formula",
+                    "expr": "time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 1+1, 0, 0, 0, 0)) ? 0 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 2+1, 0, 0, 0, 0)) ? 1 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 3+1, 0, 0, 0, 0)) ? 2 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 4+1, 0, 0, 0, 0)) ? 3 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 5+1, 0, 0, 0, 0)) ? 4 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 6+1, 0, 0, 0, 0)) ? 5 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 0+1, 0, 0, 0, 0)) ? 6 : 7",
+                    "as": "y_day_time_sort_index"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
                 {
                     "type": "aggregate",
                     "groupby": [
@@ -70,7 +82,7 @@
                 "circle"
             ],
             "from": {
-                "data": "source_0"
+                "data": "data_0"
             },
             "encode": {
                 "update": {
@@ -101,7 +113,7 @@
             "name": "x",
             "type": "point",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "hours_time",
                 "sort": true
             },
@@ -118,7 +130,10 @@
             "domain": {
                 "data": "source_0",
                 "field": "day_time",
-                "sort": true
+                "sort": {
+                    "op": "min",
+                    "field": "y_day_time_sort_index"
+                }
             },
             "range": {
                 "step": {
@@ -131,7 +146,7 @@
             "name": "size",
             "type": "linear",
             "domain": {
-                "data": "source_0",
+                "data": "data_0",
                 "field": "sum_count"
             },
             "range": [
