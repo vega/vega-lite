@@ -115,9 +115,9 @@ export function labelBaseline(angle: number) {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if (45 <= angle && angle <= 135) {
-    return {baseline: {value: 'top'}};
+    return {baseline: 'top'};
   }
-  return {baseline: {value: 'middle'}};
+  return {baseline: 'middle'};
 }
 
 function getSort(facetFieldDef: FacetFieldDef<string>): VgComparator {
@@ -143,13 +143,9 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
       const {header = {}} = facetFieldDef;
       const {format, labelAngle} = header;
       const config = model.config? model.config : undefined;
-      const update = {
-        ...(
-          labelAngle !== undefined ? {angle: {value: labelAngle}} : {}
-        ),
-        ...labelAlign(labelAngle),
-        ...labelBaseline(labelAngle)
 
+      const update = {
+        ...labelAlign(labelAngle)
       };
 
       title = {
@@ -198,12 +194,12 @@ export function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef
   for (const prop of properties) {
     if (config && config.header) {
       if (config.header[prop]) {
-        props[propertiesMap[prop]] = {value: config.header[prop]};
+        props[propertiesMap[prop]] = config.header[prop];
       }
     }
     if (facetFieldDef && facetFieldDef.header) {
       if (facetFieldDef.header[prop]) {
-        props[propertiesMap[prop]] = {value: facetFieldDef.header[prop]};
+        props[propertiesMap[prop]] = facetFieldDef.header[prop];
       }
     }
   }

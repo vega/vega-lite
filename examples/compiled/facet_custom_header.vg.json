@@ -112,9 +112,7 @@
                 "text": "gender",
                 "offset": 10,
                 "style": "guide-title",
-                "fontSize": {
-                    "value": 20
-                }
+                "fontSize": 20
             }
         },
         {
@@ -160,12 +158,7 @@
                 "offset": 10,
                 "orient": "top",
                 "style": "guide-label",
-                "baseline": {
-                    "value": "middle"
-                },
-                "fontSize": {
-                    "value": 15
-                }
+                "fontSize": 15
             },
             "encode": {
                 "update": {

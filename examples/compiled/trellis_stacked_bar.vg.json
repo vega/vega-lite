@@ -143,14 +143,7 @@
                 },
                 "offset": 10,
                 "orient": "top",
-                "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
+                "style": "guide-label"
             },
             "encode": {
                 "update": {
