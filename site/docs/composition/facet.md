@@ -70,14 +70,9 @@ You can find more examples in the [example gallery]({{site.baseurl}}/examples/#t
 {:#header}
 ### Facet Headers
 
-Similar to axes of position channels, a header of a facet channel provides guides to convey the data value that each row and column represent.
+Similar to axes of position channels, a [header](header.html) of a facet channel provides guides to convey the data value that each row and column represent.
 
-By default, Vega-Lite automatically creates axes with default properties for `row` and `column` channels of a faceted view.
-User can set the `header` property of row- or column-[field definition](#field-def) to an object to customize header properties.
-
-{% include table.html props="format,title" source="Header" %}
-
-__See also:__ You may also use `guide-title` and `guide-label` [style configs](mark.html#style-config) to customize common styles for [axis](axis.html), [legend](legend.html), and header labels and titles.
+You can find more about facet headers in the [header documentation](header.html).
 
 ## Row & Column Encoding Channels
 

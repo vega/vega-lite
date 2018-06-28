@@ -153,10 +153,6 @@ export function getHeaderGroup(model: Model, channel: HeaderChannel, headerType:
         offset: 10,
         orient: channel === 'row' ? 'left' : 'top',
         style: 'guide-label',
-        ...(
-          labelAngle !== undefined ? {angle: labelAngle} : {}
-        ),
-        ...labelBaseline(labelAngle),
         ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
         ...(keys(update).length > 0 ? {encode: {update}} : {})
       };

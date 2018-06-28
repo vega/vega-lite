@@ -230,8 +230,6 @@
                 "offset": 10,
                 "orient": "left",
                 "style": "guide-label",
-                "angle": 0,
-                "baseline": "middle",
                 "encode": {
                     "update": {
                         "align": {
