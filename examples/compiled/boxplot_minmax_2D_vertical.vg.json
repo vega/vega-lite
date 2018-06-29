@@ -1,0 +1,399 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+    "autosize": "pad",
+    "padding": 5,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/population.json",
+            "format": {
+                "type": "json"
+            },
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "age"
+                    ],
+                    "ops": [
+                        "q1",
+                        "q3",
+                        "median",
+                        "min",
+                        "max"
+                    ],
+                    "fields": [
+                        "people",
+                        "people",
+                        "people",
+                        "people",
+                        "people"
+                    ],
+                    "as": [
+                        "lower_box_people",
+                        "upper_box_people",
+                        "mid_box_people",
+                        "lower_whisker_people",
+                        "upper_whisker_people"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lower_whisker_people\"])",
+                    "as": "lower_whisker_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lower_box_people\"])",
+                    "as": "lower_box_people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper_box_people\"])",
+                    "as": "upper_box_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper_whisker_people\"])",
+                    "as": "upper_whisker_people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"lower_box_people\"])",
+                    "as": "lower_box_people"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"upper_box_people\"])",
+                    "as": "upper_box_people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"mid_box_people\"])",
+                    "as": "mid_box_people"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "x_step",
+            "value": 21
+        },
+        {
+            "name": "width",
+            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "rule",
+            "style": [
+                "rule",
+                "boxplot-rule"
+            ],
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "lower_whisker_people"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "lower_box_people"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "rule",
+            "style": [
+                "rule",
+                "boxplot-rule"
+            ],
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "black"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "upper_box_people"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "upper_whisker_people"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "rect",
+            "style": [
+                "bar",
+                "boxplot-box"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "xc": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "width": {
+                        "value": 14
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "lower_box_people"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "upper_box_people"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_3_marks",
+            "type": "rect",
+            "style": [
+                "tick",
+                "boxplot-median"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "white"
+                    },
+                    "xc": {
+                        "scale": "x",
+                        "field": "age",
+                        "band": 0.5
+                    },
+                    "yc": {
+                        "scale": "y",
+                        "field": "mid_box_people"
+                    },
+                    "width": {
+                        "value": 14
+                    },
+                    "height": {
+                        "value": 1
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "band",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "age"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "age"
+                    }
+                ],
+                "sort": true
+            },
+            "range": {
+                "step": {
+                    "signal": "x_step"
+                }
+            },
+            "paddingInner": 0.1,
+            "paddingOuter": 0.05
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "lower_whisker_people"
+                    },
+                    {
+                        "data": "data_0",
+                        "field": "lower_box_people"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upper_box_people"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upper_whisker_people"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "lower_box_people"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "upper_box_people"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "mid_box_people"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "age",
+            "labelOverlap": true,
+            "encode": {
+                "labels": {
+                    "update": {
+                        "angle": {
+                            "value": 270
+                        },
+                        "align": {
+                            "value": "right"
+                        },
+                        "baseline": {
+                            "value": "middle"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": false,
+            "title": "population",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

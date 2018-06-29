@@ -6,8 +6,9 @@ import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
+import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
-import {FieldDef} from './fielddef';
+import {Aggregate, FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {Projection} from './projection';
 import {ScaleType} from './scale';
@@ -106,6 +107,10 @@ export namespace message {
 
   export function nearestNotSupportForContinuous(mark: string) {
     return `The "nearest" transform is not supported for ${mark} marks.`;
+  }
+
+  export function selectionNotSupported(mark: CompositeMark) {
+    return `Selection not supported for ${mark} yet`;
   }
 
   export function selectionNotFound(name: string) {
@@ -318,6 +323,22 @@ export namespace message {
 
   export function droppedDay(d: DateTime | DateTimeExpr) {
     return `Dropping day from datetime ${stringify(d)} as day cannot be combined with other units.`;
+  }
+
+  export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent) {
+    return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '}not needed when data are aggregated.`;
+  }
+
+  export function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `${center} is not usually used with ${extent} for ${mark}.`;
+  }
+
+  export function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark) {
+    return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
+  }
+
+  export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
 }
 

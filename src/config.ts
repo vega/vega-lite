@@ -1,7 +1,6 @@
 import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
-import {COMPOSITE_MARK_STYLES} from './compositemark';
-import {CompositeMarkConfigMixins, CompositeMarkStyle, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
+import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
@@ -15,6 +14,7 @@ import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
 import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+
 
 
 export interface ViewConfig {
@@ -268,9 +268,28 @@ export const defaultConfig: Config = {
   tick: mark.defaultTickConfig,
   trail: {},
 
-  box: {size: 14, extent: 1.5},
-  boxWhisker: {},
-  boxMid: {color: 'white'},
+  boxplot: {
+    size: 14,
+    extent: 1.5,
+    box: {},
+    median: {color: 'white'},
+    outliers: {},
+    rule: {},
+    ticks: null
+  },
+
+  errorbar: {
+    center: 'mean',
+    rule: true,
+    ticks: false
+  },
+
+  errorband: {
+    band: {
+      opacity: 0.3
+    },
+    borders: false
+  },
 
   scale: defaultScaleConfig,
   projection: {},
@@ -294,8 +313,7 @@ export function initConfig(config: Config) {
   return mergeDeep(duplicate(defaultConfig), config);
 }
 
-const MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES) as ('view' | Mark | CompositeMarkStyle)[];
-
+const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding', 'numberFormat', 'timeFormat', 'countTitle',
@@ -305,8 +323,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   view: ['width', 'height'],
-  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
-  ...VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
+  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 };
 
 export function stripAndRedirectConfig(config: Config) {
@@ -355,6 +372,11 @@ export function stripAndRedirectConfig(config: Config) {
     redirectConfig(config, markType);
   }
 
+  for (const m of getAllCompositeMarks()) {
+    // Clean up the composite mark config as we don't need them in the output specs anymore
+    delete config[m];
+  }
+
   // Redirect config.title -- so that title config do not
   // affect header labels, which also uses `title` directive to implement.
   redirectConfig(config, 'title', 'group-title');
@@ -369,8 +391,16 @@ export function stripAndRedirectConfig(config: Config) {
   return keys(config).length > 0 ? config : undefined;
 }
 
-function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title' | 'view', toProp?: string) {
-  const propConfig: VgMarkConfig = prop === 'title' ? extractTitleConfig(config.title).mark : config[prop];
+function redirectConfig(
+  config: Config,
+  prop: Mark | 'title' | 'view' | string, // string = composite mark
+  toProp?: string,
+  compositeMarkPart?: string
+) {
+  const propConfig: VgMarkConfig =
+    prop === 'title' ? extractTitleConfig(config.title).mark :
+    compositeMarkPart ? config[prop][compositeMarkPart] :
+    config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -384,5 +414,9 @@ function redirectConfig(config: Config, prop: Mark | CompositeMarkStyle | 'title
   if (keys(style).length > 0) {
     config.style[toProp || prop] = style;
   }
-  delete config[prop];
+
+  if (!compositeMarkPart) {
+    // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
+    delete config[prop];
+  }
 }

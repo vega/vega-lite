@@ -1,49 +1,58 @@
+import {keys} from '../util';
 import {Config} from './../config';
 import {AnyMark, isMarkDef} from './../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {BOXPLOT, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX} from './boxplot';
-import {ERRORBAR, normalizeErrorBar} from './errorbar';
+import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {ERRORBAND, ErrorBand, ERRORBAND_PARTS, ErrorBandConfigMixins, ErrorBandDef, normalizeErrorBand} from './errorband';
+import {ERRORBAR, ErrorBar, ERRORBAR_PARTS, ErrorBarConfigMixins, ErrorBarDef, normalizeErrorBar} from './errorbar';
 
-// This package import below makes the generated .d.ts file compatible with
-// Typescript 2.7 so that libraries requiring us can use Typedoc (which
-// currently is limited to Typescript 2.7). This comment and import can be
-// removed when Typedoc is updated to Typescript 2.9 or later. See
-// https://github.com/vega/vega-lite/issues/3862 for more details.
-import * as boxplot from './boxplot';
 
 export {BoxPlotConfig} from './boxplot';
+export {ErrorBandConfigMixins} from './errorband';
+export {ErrorBarConfigMixins} from './errorbar';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
 
 /**
  * Registry index for all composite mark's normalizer
  */
-const normalizerRegistry: {[mark: string]: UnitNormalizer} = {};
+const compositeMarkRegistry: {
+  [mark: string]: {
+    normalizer: UnitNormalizer,
+    parts: string[]
+  }
+} = {};
 
-export function add(mark: string, normalizer: UnitNormalizer) {
-  normalizerRegistry[mark] = normalizer;
+export function add(mark: string, normalizer: UnitNormalizer, parts: string[]) {
+  compositeMarkRegistry[mark] = {normalizer, parts};
 }
 
 export function remove(mark: string) {
-  delete normalizerRegistry[mark];
+  delete compositeMarkRegistry[mark];
 }
 
-export type CompositeMark = BOXPLOT | ERRORBAR;
+export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
-export type CompositeMarkDef = BoxPlotDef;
+export function getAllCompositeMarks() {
+  return keys(compositeMarkRegistry);
+}
 
-export type CompositeAggregate = BOXPLOT;
+export function getCompositeMarkParts(mark: string) {
+  if (mark in compositeMarkRegistry) {
+    return compositeMarkRegistry[mark].parts;
+  }
+  throw new Error(`Unregistered composite mark ${mark}`);
+}
 
-export const COMPOSITE_MARK_STYLES = boxplot.BOXPLOT_STYLES;
-export type CompositeMarkStyle = typeof COMPOSITE_MARK_STYLES[0];
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins {}
+export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export const VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-  ...VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX
-};
+export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
 
-add(BOXPLOT, normalizeBoxPlot);
-add(ERRORBAR, normalizeErrorBar);
+
+add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
+add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
+add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
 
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
@@ -55,8 +64,8 @@ export function normalize(
   ): NormalizedLayerSpec {
 
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-  const normalizer = normalizerRegistry[mark];
-  if (normalizer) {
+  if (mark in compositeMarkRegistry) {
+    const {normalizer} = compositeMarkRegistry[mark];
     return normalizer(spec, config);
   }
 
