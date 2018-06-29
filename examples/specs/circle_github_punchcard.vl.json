@@ -1,12 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Punchcard Visualization like on Github. The day on y-axis uses a custom order from Monday to Sunday.",
   "data": { "url": "data/github.csv"},
   "mark": "circle",
   "encoding": {
     "y": {
       "field": "time",
       "type": "ordinal",
-      "timeUnit": "day"
+      "timeUnit": "day",
+      "sort": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
     },
     "x": {
       "field": "time",

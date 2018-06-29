@@ -1387,28 +1387,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": [
-                  "number",
-                  "string",
-                  "boolean"
-                ]
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null`, or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
@@ -1625,28 +1605,8 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": [
-                  "number",
-                  "string",
-                  "boolean"
-                ]
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null`, or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2918,28 +2878,8 @@
           "description": "An object defining properties of a facet's header."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": [
-                  "number",
-                  "string",
-                  "boolean"
-                ]
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null`, or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3159,28 +3099,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": [
-                  "number",
-                  "string",
-                  "boolean"
-                ]
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null`, or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -6178,28 +6098,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": [
-                  "number",
-                  "string",
-                  "boolean"
-                ]
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null`, or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "stack": {
           "anyOf": [
@@ -7249,6 +7149,38 @@
         },
         {
           "$ref": "#/definitions/UtcSingleTimeUnit"
+        }
+      ]
+    },
+    "Sort": {
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "$ref": "#/definitions/DateTime"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/definitions/SortOrder"
+        },
+        {
+          "$ref": "#/definitions/EncodingSortField"
+        },
+        {
+          "type": "null"
         }
       ]
     },
