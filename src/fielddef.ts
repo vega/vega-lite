@@ -179,9 +179,14 @@ export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
 export interface SortableFieldDef<F> extends FieldDef<F> {
   /**
    * Sort order for the encoded field.
-   * Supported `sort` values include `"ascending"`, `"descending"`, `null`, or an array specifying the preferred order of values.
-   * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
-   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
+   *
+   * For continuous fields (quantitative or temporal), `sort` can be either `"ascending"` or `"descending"`.
+   *
+   * For discrete fields, `sort` can be one of the following:
+   * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in Javascript.
+   * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
+   * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
+   * - `null` indicating no sort.
    *
    * __Default value:__ `"ascending"`
    *
