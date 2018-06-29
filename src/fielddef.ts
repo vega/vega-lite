@@ -108,7 +108,22 @@ export type HiddenCompositeAggregate = CompositeAggregate;
 
 export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
-export interface FieldDefBase<F> {
+
+export interface GenericBinMixins<B> {
+  /**
+   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `"binned"`.
+   * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   * If set to `"binned"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.
+   *
+   * __Default value:__ `false`
+   */
+  bin?: B;
+}
+
+export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned'>;
+export type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
+
+export interface FieldDefBase<F> extends BaseBinMixins {
 
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
@@ -131,15 +146,6 @@ export interface FieldDefBase<F> {
    * __Default value:__ `undefined` (None)
    */
   timeUnit?: TimeUnit;
-
-  /**
-   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `"binned"`.
-   * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
-   * If set to `"binned"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.
-   *
-   * __Default value:__ `false`
-   */
-  bin?: boolean | BinParams | 'binned';
 
   /**
    * Aggregation function for the field
@@ -194,6 +200,11 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
   sort?: string[] | SortOrder | EncodingSortField<F> | null;
 }
 
+/**
+ * Field Def without scale (and without bin: "binned" support).
+ */
+export type FieldDefWithoutScale<F> = FieldDef<F> & BinWithoutBinnedMixins;
+
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
@@ -225,7 +236,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
+export type MarkPropFieldDef<F> = ScaleFieldDef<F> & BinWithoutBinnedMixins & {
    /**
     * An object defining properties of the legend.
     * If `null`, the legend for the encoding channel will be removed.
@@ -233,22 +244,22 @@ export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
     * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
     */
   legend?: Legend | null;
-}
+};
 
 // Detail
 
 // Order Path have no scale
 
-export interface OrderFieldDef<F> extends FieldDef<F> {
+export interface OrderFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
    */
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F> extends FieldDef<F> {
+export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
-   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+   * The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }
