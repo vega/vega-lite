@@ -1,24 +1,31 @@
 import {AggregateOp} from 'vega';
+import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FacetMapping} from '../facet';
+import {FacetFieldDef, FacetMapping} from '../facet';
 import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
+import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, RowCol, VgAxis, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
+import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
-import {getHeaderType, HeaderChannel, HeaderComponent} from './layout/header';
+import {getHeaderType, HeaderChannel, HeaderComponent} from './header/index';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
+
+export function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, expr?: 'datum') {
+  return vgField(sort, {expr, suffix: `by_${vgField(fieldDef)}`});
+}
 
 export class FacetModel extends ModelWithField {
   public readonly type: 'facet' = 'facet';
@@ -172,42 +179,41 @@ export class FacetModel extends ModelWithField {
     return this.child.assembleSelectionData(data);
   }
 
-  private getLayoutBandMixins(headerType: 'header' | 'footer'): {
-    headerBand?: RowCol<number>,
-    footerBand?: RowCol<number>
-  } {
-    const bandMixins = {};
+  private getHeaderLayoutMixins(): VgLayout {
+    const layoutMixins: VgLayout = {};
 
-    const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+      ['header', 'footer'].forEach((headerType: 'header' | 'footer') => {
+        const layoutHeaderComponent = this.component.layoutHeaders[channel];
+        const headerComponent = layoutHeaderComponent[headerType];
+        if (headerComponent && headerComponent[0]) {
+          // set header/footerBand
+          const sizeType = channel === 'row' ? 'height' : 'width';
+          const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
+          if (!this.child.component.layoutSize.get(sizeType)) {
+            // If facet child does not have size signal, then apply headerBand
+            layoutMixins[bandType] = layoutMixins[bandType] || {};
+            layoutMixins[bandType][channel] = 0.5;
+          }
 
-    for (const channel of ['row', 'column'] as ('row' | 'column')[]) {
-      const layoutHeaderComponent = this.component.layoutHeaders[channel];
-      const headerComponent = layoutHeaderComponent[headerType];
-      if (headerComponent && headerComponent[0]) {
-        const sizeType = channel === 'row' ? 'height' : 'width';
-
-        if (!this.child.component.layoutSize.get(sizeType)) {
-          // If facet child does not have size signal, then apply headerBand
-          bandMixins[bandType] = bandMixins[bandType] || {};
-          bandMixins[bandType][channel] = 0.5;
+          if (layoutHeaderComponent.title) {
+            layoutMixins.offset = layoutMixins.offset || {};
+            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
+          }
         }
-      }
-    }
-    return bandMixins;
+      });
+    });
+    return layoutMixins;
   }
 
-  public assembleLayout(): VgLayout {
+  protected assembleDefaultLayout(): VgLayout {
     const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
 
     // TODO: determine default align based on shared / independent scales
 
     return {
-      padding: {row: 10, column: 10},
-      ...this.getLayoutBandMixins('header'),
-      ...this.getLayoutBandMixins('footer'),
+      ...this.getHeaderLayoutMixins(),
 
-      // TODO: support offset for rowHeader/rowFooter/rowTitle/columnHeader/columnFooter/columnTitle
-      offset: 10,
       columns,
       bounds: 'full',
       align: 'all'
@@ -259,10 +265,14 @@ export class FacetModel extends ModelWithField {
   private getCardinalityAggregateForChild() {
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
+    const as: string[] = [];
+
     if (this.child instanceof FacetModel) {
       if (this.child.channelHasField('column')) {
-        fields.push(vgField(this.child.facet.column));
+        const field = vgField(this.child.facet.column);
+        fields.push(field);
         ops.push('distinct');
+        as.push(`distinct_${field}`);
       }
     } else {
       for (const channel of ['x', 'y'] as ScaleChannel[]) {
@@ -277,6 +287,7 @@ export class FacetModel extends ModelWithField {
             if (field) {
               fields.push(field);
               ops.push('distinct');
+              as.push(`distinct_${field}`);
             } else {
               log.warn('Unknown field for ${channel}.  Cannot calculate view size.');
             }
@@ -284,31 +295,95 @@ export class FacetModel extends ModelWithField {
         }
       }
     }
-    return fields.length ? {fields, ops} : undefined;
+    return {fields, ops, as};
+  }
+
+
+  private assembleFacet() {
+    const {name, data} = this.component.data.facetRoot;
+    const {row, column} = this.facet;
+    const {fields, ops, as} = this.getCardinalityAggregateForChild();
+    const groupby: string[] = [];
+
+    ['row', 'column'].forEach((channel: 'row' | 'column') => {
+      const fieldDef = this.facet[channel];
+      if (fieldDef) {
+        groupby.push(vgField(fieldDef));
+        const {sort} = fieldDef;
+        if (isSortField(sort)) {
+          const {field, op} = sort;
+          const outputName = facetSortFieldName(fieldDef, sort);
+          if (row && column) {
+            // For crossed facet, use pre-calculate field as it requires a different groupby
+            // For each calculated field, apply max and assign them to the same name as
+            // all values of the same group should be the same anyway.
+            fields.push(outputName);
+            ops.push('max');
+            as.push(outputName);
+          } else {
+            fields.push(field);
+            ops.push(op);
+            as.push(outputName);
+          }
+        } else if (isArray(sort)) {
+          const outputName = sortArrayIndexField(fieldDef, channel);
+          fields.push(outputName);
+          ops.push('max');
+          as.push(outputName);
+        }
+      }
+    });
+
+    const cross = !!row && !!column;
+
+    return {
+      name,
+      data,
+      groupby,
+      ...(cross || fields.length ? {
+        aggregate: {
+          ...(cross ? {cross} : {}),
+          ...(fields.length ? {fields, ops, as} : {})
+        }
+      } : {})
+    };
+  }
+
+
+  private headerSortFields(channel: 'row' | 'column'): string[] {
+    const {facet} = this;
+    const fieldDef = facet[channel];
+
+    if (fieldDef) {
+      if (isSortField(fieldDef.sort)) {
+        return [facetSortFieldName(fieldDef, fieldDef.sort, 'datum')];
+      } else if (isArray(fieldDef.sort)) {
+        return [sortArrayIndexField(fieldDef, channel, 'datum')];
+      }
+      return [vgField(fieldDef, {expr: 'datum'})];
+    }
+    return [];
+  }
+
+  private headerSortOrder(channel: 'row' | 'column'): SortOrder[] {
+    const {facet} = this;
+    const fieldDef = facet[channel];
+    if (fieldDef) {
+      const {sort} = fieldDef;
+      const order = (isSortField(sort) ? sort.order : !isArray(sort) && sort) || 'ascending';
+      return [order];
+    }
+    return [];
   }
 
   public assembleMarks(): VgMarkGroup[] {
-    const {child, facet} = this;
+    const {child} = this;
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const hasRow = this.channelHasField(ROW);
-    const hasColumn = this.channelHasField(COLUMN);
     const layoutSizeEncodeEntry = child.assembleLayoutSize();
-
-    const aggregateMixins: any = {};
-    if (hasRow && hasColumn) {
-      aggregateMixins.aggregate = {cross: true};
-    }
-    const cardinalityAggregateForChild = this.getCardinalityAggregateForChild();
-    if (cardinalityAggregateForChild) {
-      aggregateMixins.aggregate = {
-        ...aggregateMixins.aggregate,
-        ...cardinalityAggregateForChild
-      };
-    }
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -319,25 +394,18 @@ export class FacetModel extends ModelWithField {
       ...(title? {title} : {}),
       ...(style? {style} : {}),
       from: {
-        facet: {
-          name: facetRoot.name,
-          data: facetRoot.data,
-          groupby: [].concat(
-            hasRow ? [this.vgField(ROW)] : [],
-            hasColumn ? [this.vgField(COLUMN)] : []
-          ),
-          ...aggregateMixins
-        }
+        facet: this.assembleFacet()
       },
+      // TODO: move this to after data
       sort: {
-        field: [].concat(
-          hasRow ? [this.vgField(ROW, {expr: 'datum',})] : [],
-          hasColumn ? [this.vgField(COLUMN, {expr: 'datum'})] : []
-        ),
-        order: [].concat(
-          hasRow ? [ (facet.row.sort) || 'ascending'] : [],
-          hasColumn ? [ (facet.column.sort) || 'ascending'] : []
-        )
+        field: [
+          ...this.headerSortFields('row'),
+          ...this.headerSortFields('column')
+        ],
+        order: [
+          ...this.headerSortOrder('row'),
+          ...this.headerSortOrder('column')
+        ]
       },
       ...(data.length > 0 ? {data: data} : {}),
       ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
@@ -347,7 +415,9 @@ export class FacetModel extends ModelWithField {
     return [markGroup];
   }
 
+
   protected getMapping() {
     return this.facet;
   }
 }
+

@@ -4,9 +4,12 @@
     "target": "es5",
     "module": "ES2015",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": false,
-    "inlineSourceMap": true,
+    "sourceMap": true,
     "inlineSources": true,
     "isolatedModules": false,
     "noEmitOnError": true,
@@ -14,7 +17,6 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "preserveConstEnums": true,
-    "pretty": true,
     "removeComments": false,
     "strictFunctionTypes": false,
     "strictNullChecks": false,
@@ -23,7 +25,7 @@
   },
   "files": ["src/index.ts"],
   "include": [
-    "./typings/*.d.ts",
+    "typings/*.d.ts",
     "src/**/*.ts",
     "test/**/*.ts"
   ]

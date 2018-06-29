@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A scatterplot with custom star shapes.",
     "autosize": "pad",
     "padding": 5,
@@ -129,6 +129,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Horsepower",
             "labelFlush": true,
             "labelOverlap": true,
@@ -155,6 +156,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Miles_per_Gallon",
             "labelOverlap": true,
             "tickCount": {

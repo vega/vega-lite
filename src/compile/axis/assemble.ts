@@ -90,6 +90,7 @@ export function assembleAxis(
     return {
       scale,
       orient,
+      grid: false,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
       zindex: zindex !== undefined ? zindex : 1 // put axis line above marks by default

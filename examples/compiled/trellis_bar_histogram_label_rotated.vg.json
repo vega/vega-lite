@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "data": [
@@ -82,36 +82,24 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10
+        },
         "columns": 1,
         "bounds": "full",
         "align": "all"
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Origin"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "Origin",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -131,13 +119,7 @@
                 "offset": 10,
                 "orient": "left",
                 "style": "guide-label",
-                "encode": {
-                    "update": {
-                        "angle": {
-                            "value": -90
-                        }
-                    }
-                }
+                "angle": -90
             },
             "encode": {
                 "update": {
@@ -150,6 +132,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -174,6 +157,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,

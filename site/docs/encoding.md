@@ -96,7 +96,7 @@ an encoded constant value.
 }
 ```
 
-To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
+To encode a particular field in the data set with an encoding channel, the channel's field definition must describe the [`field`](field.html) name and its data [`type`](type.html).  To facilitate data exploration, Vega-Lite also provides inline field transforms ([`aggregate`](aggregate.html), [`bin`](bin.html), [`sort`](sort.html), [`stack`](stack.html), and [`timeUnit`](timeunit.html)) as a part of a field definition in addition to the top-level [`transform`](transform.html).
 
 All field definitions support the following properties:
 
@@ -236,10 +236,9 @@ Similar to [`detail`](#detail), you can use an array of field definitions. Vega-
 {:#href}
 ## Hyperlink Channel
 
-By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. The [`cursor` mark property](mark.html#hyperlink) can be set to `pointer` to serve as affordance for hyperlinks.
+By setting the `href` channel, a mark becomes a hyperlink. The specified URL is loaded upon a mouse click. When the `href` channel is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
 {% include table.html props="href" source="Encoding" %}
-
 
 {:#href-field-def}
 ### Hyperlink Field Definition
@@ -248,6 +247,10 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 [field definitions](#field-def) for the `href` channel can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="FieldDefWithCondition" %}
+
+The example below show how the href channel can be used to provide links to external resources with more details.
+
+<span class="vl-example" data-name="point_href"></span>
 
 {:#href-value-def}
 ### Hyperlink Value Definition

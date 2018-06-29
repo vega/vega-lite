@@ -149,7 +149,9 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
 
   // Check if it is a ranged mark
   if (channelHasField(encoding, fieldChannel === X ? X2 : Y2)) {
-    log.warn(log.message.cannotStackRangedMark(fieldChannel));
+    if (stackedFieldDef.stack !== undefined) {
+      log.warn(log.message.cannotStackRangedMark(fieldChannel));
+    }
     return null;
   }
 

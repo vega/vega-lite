@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -58,7 +58,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 2,
         "bounds": "full",
         "align": "all"
@@ -116,6 +115,7 @@
                 {
                     "scale": "child_Origin_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -142,6 +142,7 @@
                 {
                     "scale": "child_Origin_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {
@@ -236,6 +237,7 @@
                 {
                     "scale": "child_Cylinders_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -262,6 +264,7 @@
                 {
                     "scale": "child_Cylinders_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {

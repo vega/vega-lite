@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -339,7 +339,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 3,
         "bounds": "full",
         "align": "all"
@@ -721,6 +720,7 @@
                 {
                     "scale": "child_distance_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "distance (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -735,6 +735,7 @@
                 {
                     "scale": "child_distance_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1135,6 +1136,7 @@
                 {
                     "scale": "child_delay_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "delay (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1149,6 +1151,7 @@
                 {
                     "scale": "child_delay_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -1549,6 +1552,7 @@
                 {
                     "scale": "child_time_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "time (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -1563,6 +1567,7 @@
                 {
                     "scale": "child_time_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {

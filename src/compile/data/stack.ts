@@ -1,12 +1,12 @@
-import {isArray} from 'vega-util';
+import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
+import {StackTransform} from '../../transform';
 import {duplicate} from '../../util';
-import {VgSort, VgTransform} from '../../vega.schema';
+import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
-
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -21,35 +21,53 @@ function getStackByFields(model: UnitModel): string[] {
 }
 
 export interface StackComponent {
+
   /**
    * Faceted field.
    */
   facetby: string[];
 
-  dimensionFieldDef: FieldDef<string>;
+  dimensionFieldDef?: FieldDef<string>;
 
   /**
-   * Stack measure's field
+   * Stack measure's field. Used in makeFromEncoding.
    */
-  field: string;
+  stackField: string;
 
   /**
    * Level of detail fields for each level in the stacked charts such as color or detail.
+   * Used in makeFromEncoding.
    */
-  stackby: string[];
+  stackby?: string[];
 
   /**
    * Field that determines order of levels in the stacked charts.
+   * Used in both but optional in transform.
    */
   sort: VgSort;
 
-  /** Mode for stacking marks. */
+  /** Mode for stacking marks.
+   */
   offset: StackOffset;
 
   /**
-   * Whether to impute the data before stacking.
+   * Whether to impute the data before stacking. Used only in makeFromEncoding.
    */
-  impute: boolean;
+  impute?: boolean;
+
+  /**
+   * The data fields to group by.
+   */
+  groupby?: string[];
+  /**
+   * Output field names of each stack field.
+   */
+  as: string[];
+
+}
+
+function isValidAsArray(as: string[] | string): as is string[] {
+  return isArray(as) && as.every(s => isString(s)) && as.length >1;
 }
 
 export class StackNode extends DataFlowNode {
@@ -65,7 +83,42 @@ export class StackNode extends DataFlowNode {
     this._stack = stack;
   }
 
-  public static make(parent: DataFlowNode, model: UnitModel) {
+  public static makeFromTransform(parent: DataFlowNode, stackTransform: StackTransform) {
+
+    const {stack, groupby, as, offset='zero'} = stackTransform;
+
+    const sortFields: string[] = [];
+    const sortOrder: VgComparatorOrder[] = [];
+    if (stackTransform.sort !== undefined) {
+      for (const sortField of stackTransform.sort) {
+        sortFields.push(sortField.field);
+        sortOrder.push(sortField.order === undefined ? 'ascending' : sortField.order as VgComparatorOrder);
+      }
+    }
+    const sort: VgSort = {
+      field: sortFields,
+      order: sortOrder,
+    };
+    let normalizedAs: Array<string>;
+    if (isValidAsArray(as)) {
+      normalizedAs = as;
+    } else if(isString(as)) {
+      normalizedAs = [as, as + '_end'];
+    } else {
+      normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
+    }
+
+    return new StackNode (parent, {
+      stackField: stack,
+      groupby,
+      offset,
+      sort,
+      facetby: [],
+      as: normalizedAs
+    });
+
+  }
+  public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
 
     const stackProperties = model.stack;
 
@@ -93,15 +146,19 @@ export class StackNode extends DataFlowNode {
         return s;
       }, {field:[], order: []});
     }
+    // Refactored to add "as" in the make phase so that we can get producedFields
+    // from the as property
+    const field = model.vgField(stackProperties.fieldChannel);
 
     return new StackNode(parent, {
       dimensionFieldDef,
-      field: model.vgField(stackProperties.fieldChannel),
+      stackField:field,
       facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
       impute: stackProperties.impute,
+      as: [field + '_start', field + '_end']
     });
   }
 
@@ -116,7 +173,7 @@ export class StackNode extends DataFlowNode {
   public dependentFields() {
     const out = {};
 
-    out[this._stack.field] = true;
+    out[this._stack.stackField] = true;
 
     this.getGroupbyFields().forEach(f => out[f] = true);
     this._stack.facetby.forEach(f => out[f] = true);
@@ -127,16 +184,14 @@ export class StackNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
-
-    out[this._stack.field + '_start'] = true;
-    out[this._stack.field + '_end'] = true;
-
-    return out;
+    return this._stack.as.reduce((result, item) => {
+      result[item] = true;
+      return result;
+    }, {});
   }
 
   private getGroupbyFields() {
-    const {dimensionFieldDef, impute} = this._stack;
+    const {dimensionFieldDef, impute, groupby} = this._stack;
     if (dimensionFieldDef) {
       if (dimensionFieldDef.bin) {
         if (impute) {
@@ -152,15 +207,14 @@ export class StackNode extends DataFlowNode {
       }
       return [vgField(dimensionFieldDef)];
     }
-    return [];
+    return groupby || [];
   }
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
+    const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, as} = this._stack;
 
-    const {facetby, field: stackField, dimensionFieldDef, impute, offset, sort, stackby} = this._stack;
-
-    // Impute
+      // Impute
     if (impute && dimensionFieldDef) {
       const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
 
@@ -180,7 +234,7 @@ export class StackNode extends DataFlowNode {
 
       transform.push({
         type: 'impute',
-        field: stackField,
+        field,
         groupby: stackby,
         key: dimensionField,
         method: 'value',
@@ -192,12 +246,9 @@ export class StackNode extends DataFlowNode {
     transform.push({
       type: 'stack',
       groupby: this.getGroupbyFields().concat(facetby),
-      field: stackField,
+      field,
       sort,
-      as: [
-        stackField + '_start',
-        stackField + '_end'
-      ],
+      as,
       offset
     });
 

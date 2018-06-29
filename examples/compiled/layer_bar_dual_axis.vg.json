@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "height": 200,
@@ -225,6 +225,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "date (month)",
             "labelOverlap": true,
             "encode": {
@@ -250,6 +251,7 @@
         {
             "scale": "layer_0_y",
             "orient": "left",
+            "grid": false,
             "title": "Mean of precipitation",
             "labelOverlap": true,
             "tickCount": {
@@ -260,6 +262,7 @@
         {
             "scale": "layer_1_y",
             "orient": "right",
+            "grid": false,
             "title": "Mean of temp_max",
             "labelOverlap": true,
             "tickCount": {

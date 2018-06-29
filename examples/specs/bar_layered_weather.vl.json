@@ -1,0 +1,154 @@
+{
+  "$schema":
+  "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A layered bar chart with floating bars representing weekly weather data",
+  "title": "Weekly Weather Observations and Predictions",
+  "data":{
+    "url": "data/weather.json" },
+    "width": 250,
+    "height": 200,
+    "layer": [
+      {
+        "mark": {
+          "type": "bar", "style": "box"
+        },
+        "encoding": {
+          "y": {
+            "field": "record.low",
+            "type": "quantitative",
+            "scale": {"domain": [10,70]},
+            "axis": {"title": "Temperature (F)"}
+          },
+          "y2": {
+            "field": "record.high",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal",
+            "axis": {"title": "Day"}
+          },
+          "size": {"value": 20},
+          "color": {"value": "#ccc"}
+        }
+      },
+      {
+        "mark": {
+          "type": "bar", "style": "box"
+        },
+        "encoding": {
+          "y": {
+            "field": "normal.low",
+            "type": "quantitative"
+          },
+          "y2": {
+            "field": "normal.high",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal"
+          },
+          "size": {"value": 20},
+          "color": {"value": "#999"}
+        }
+      },
+      {
+        "mark": {"type": "bar", "style": "box"},
+        "encoding": {
+          "y": {
+            "field": "actual.low",
+            "type": "quantitative"
+          },
+          "y2": {
+            "field": "actual.high",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal"
+          },
+          "size": {"value": 12},
+          "color": {"value": "#000"}
+        }
+      },
+      {
+        "mark": {"type": "bar", "style": "box"},
+        "encoding": {
+          "y": {
+            "field": "forecast.low.low",
+            "type": "quantitative"
+          },
+          "y2": {
+            "field": "forecast.low.high",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal"
+          },
+          "size": {"value": 12},
+          "color": {"value": "#000"}
+        }
+      },
+      {
+        "mark": {"type": "bar", "style": "box"},
+        "encoding": {
+          "y": {
+            "field": "forecast.low.high",
+            "type": "quantitative"
+          },
+          "y2": {
+            "field": "forecast.high.low",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal"
+          },
+          "size": {"value": 3},
+          "color": {"value": "#000"}
+        }
+      },
+      {
+        "mark": {"type": "bar", "style": "box"},
+        "encoding": {
+          "y": {
+            "field": "forecast.high.low",
+            "type": "quantitative"
+          },
+          "y2": {
+            "field": "forecast.high.high",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "id",
+            "type": "ordinal"
+          },
+          "size": {"value": 12},
+          "color": {"value": "#000"}
+        }
+      },
+      {
+        "mark": {"type": "text", "align": "center", "dy": -105},
+        "encoding": {
+          "x": {
+            "field": "id",
+            "type": "ordinal",
+            "axis": {
+              "domain": false,
+              "ticks": false,
+              "labels": false,
+              "title": "Day",
+              "titlePadding": 25,
+              "orient": "top"
+            }
+          },
+          "text": {
+            "field": "day",
+            "type": "nominal"
+          }
+        }
+      }
+    ]
+}

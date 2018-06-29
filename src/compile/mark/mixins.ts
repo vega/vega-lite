@@ -183,7 +183,7 @@ export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model
  * Return a mixin that include a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-function wrapCondition(
+export function wrapCondition(
     model: UnitModel, channelDef: ChannelDef<string>, vgChannel: string,
     refFn: (cDef: ChannelDef<string>) => VgValueRef
   ): VgEncodeEntry {
@@ -249,12 +249,10 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', model
       };
 
       if (getFieldDef(model.encoding.size)) {
-        log.warn(log.message.cannotUseSizeFieldWithBandSize(channel));
-        // TODO: apply size to band and set scale range to some values between 0-1.
-        // return {
-        //   ...centeredBandPositionMixins,
-        //   ...bandSize('size', model, {vgChannel: sizeChannel})
-        // };
+        return {
+          ...centeredBandPositionMixins,
+          ...nonPosition('size', model, {vgChannel: sizeChannel})
+        };
       } else if (isValueDef(model.encoding.size)) {
         return {
           ...centeredBandPositionMixins,
@@ -299,6 +297,7 @@ export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', sca
   }
 }
 
+
 /**
  * Return mixins for point (non-band) position channels.
  */
@@ -311,12 +310,19 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
+
+  const offset = ref.getOffset(channel, model.markDef);
+
+
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
-    ref.stackable(channel, encoding[channel], scaleName, scale, stack,
-      ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
-    );
+    {
+      ...ref.position(channel, encoding[channel], scaleName, scale, stack,
+        ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+      ),
+     ...(offset ? {offset}: {})
+    };
 
   return {
     [vgChannel || channel]: valueRef
@@ -327,21 +333,25 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
  * Return mixins for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel?: 'x2' | 'y2') {
-  const {encoding, mark, markDef, stack} = model;
-  channel = channel || (markDef.orient === 'horizontal' ? 'x2' : 'y2');
+export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
+  const {encoding, mark, stack} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
   const channelDef = encoding[baseChannel];
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
 
+  const offset = ref.getOffset(channel, model.markDef);
+
   const valueRef = !channelDef && (encoding.latitude || encoding.longitude) ?
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     {field: model.getName(channel)}:
-    ref.stackable2(channel, channelDef, encoding[channel], scaleName, scale, stack,
-      ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
-    );
+    {
+      ...ref.position2(channel, channelDef, encoding[channel], scaleName, scale, stack,
+        ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+      ),
+      ...(offset ? {offset} : {})
+    };
 
   return {[channel]: valueRef};
 }

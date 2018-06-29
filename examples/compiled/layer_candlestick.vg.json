@@ -1,6 +1,6 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
-    "description": "A candlestick chart inspired from Protovis(http://mbostock.github.io/protovis/ex/candlestick.html)",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
     "autosize": "pad",
     "padding": 5,
     "width": 320,
@@ -208,17 +208,24 @@
                     "signal": "long",
                     "ret": 6.73758865248228
                 }
-            ]
+            ],
+            "format": {}
         },
         {
-            "name": "data_1",
+            "name": "data_0",
             "source": "source_0",
             "transform": [
                 {
                     "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
+                    "expr": "timeParse(datum[\"date\"],'%Y-%m-%d')",
                     "as": "date"
-                },
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "data_0",
+            "transform": [
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"low\"])",
@@ -230,25 +237,15 @@
                     "as": "high"
                 },
                 {
-                    "type": "formula",
-                    "as": "yearmonthdate_date",
-                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
                 }
             ]
         },
         {
             "name": "data_2",
-            "source": "source_0",
+            "source": "data_0",
             "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
                 {
                     "type": "formula",
                     "expr": "toNumber(datum[\"open\"])",
@@ -260,13 +257,8 @@
                     "as": "close"
                 },
                 {
-                    "type": "formula",
-                    "as": "yearmonthdate_date",
-                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-                },
-                {
                     "type": "filter",
-                    "expr": "datum[\"yearmonthdate_date\"] !== null && !isNaN(datum[\"yearmonthdate_date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
                 }
             ]
         }
@@ -294,7 +286,7 @@
                     ],
                     "x": {
                         "scale": "x",
-                        "field": "yearmonthdate_date"
+                        "field": "date"
                     },
                     "y": {
                         "scale": "y",
@@ -329,7 +321,7 @@
                     ],
                     "xc": {
                         "scale": "x",
-                        "field": "yearmonthdate_date"
+                        "field": "date"
                     },
                     "width": {
                         "value": 5
@@ -353,10 +345,12 @@
             "domain": {
                 "fields": [
                     {
-                        "signal": "{data: datetime(2009, 4, 31, 0, 0, 0, 0)}"
+                        "data": "data_1",
+                        "field": "date"
                     },
                     {
-                        "signal": "{data: datetime(2009, 6, 1, 0, 0, 0, 0)}"
+                        "data": "data_2",
+                        "field": "date"
                     }
                 ]
             },
@@ -405,20 +399,12 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Date in 2009",
             "labelFlush": true,
             "labelOverlap": true,
             "tickCount": {
                 "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%m/%d')"
-                        }
-                    }
-                }
             },
             "zindex": 1
         },
@@ -440,6 +426,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "low, high, open, close",
             "labelOverlap": true,
             "tickCount": {

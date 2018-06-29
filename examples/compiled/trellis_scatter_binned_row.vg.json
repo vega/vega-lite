@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A trellis scatterplot showing Horsepower and Miles per gallons, faceted by binned values of Acceleration.",
     "autosize": "pad",
     "padding": 5,
@@ -69,36 +69,24 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10
+        },
         "columns": 1,
         "bounds": "full",
         "align": "all"
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Acceleration (binned)"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "Acceleration (binned)",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -130,6 +118,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Miles_per_Gallon",
                     "labelOverlap": true,
                     "tickCount": {
@@ -154,6 +143,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower",
                     "labelFlush": true,
                     "labelOverlap": true,

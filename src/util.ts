@@ -1,8 +1,6 @@
-import * as stableStringify_ from 'json-stable-stringify';
+import stableStringify from 'json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
-
-const stableStringify = stableStringify_['default'] || stableStringify_;
 
 /**
  * Creates an object composed of the picked object properties.
@@ -14,8 +12,8 @@ const stableStringify = stableStringify_['default'] || stableStringify_;
  * // → {'a': 1, 'c': 3}
  *
  */
-export function pick(obj: object, props: string[]) {
-  const copy = {};
+export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): Pick<T, K> {
+  const copy: any = {};
   for (const prop of props) {
     if (obj.hasOwnProperty(prop)) {
       copy[prop] = obj[prop];
@@ -28,8 +26,8 @@ export function pick(obj: object, props: string[]) {
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export function omit(obj: object, props: string[]) {
-  const copy = duplicate(obj);
+export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T,K> {
+  const copy = {...obj as any};
   for (const prop of props) {
     delete copy[prop];
   }
@@ -209,7 +207,7 @@ export function differArray<T>(array: T[], other: T[]) {
 }
 
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-export const keys = Object.keys as <T>(o: T) => (keyof T)[];
+export const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[];
 
 export function vals<T>(x: {[key: string]: T}): T[] {
   const _vals: T[] = [];
@@ -262,9 +260,7 @@ export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
   }
 }
 
-// Omit from http://ideasintosoftware.com/typescript-advanced-tricks/
-export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T];
-export type Omit<T, K extends keyof T> = {[P in Diff<keyof T, K>]: T[P]};
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 /**
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
@@ -328,5 +324,8 @@ export function removePathFromField(path: string) {
  * Count the depth of the path. Returns 1 for fields that are not nested.
  */
 export function accessPathDepth(path: string) {
+  if (!path) {
+    return 0;
+  }
   return splitAccessPath(path).length;
 }

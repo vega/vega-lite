@@ -57,24 +57,6 @@ Using `line` with one temporal or ordinal field (typically on `x`) and another q
 
 We can add create multiple lines by grouping along different attributes, such as `color` or `detail`.
 
-### Line Chart with Invalid Values
-
-By default, data points with invalid x- or y-values (`null` or `NaN`) will cause break in the lines.
-
-<span class="vl-example" data-name="line_skip_invalid"></span>
-
-Note that individual points without connecting points will still be invisible by default.
-
-<span class="vl-example" data-name="line_skip_invalid_mid"></span>
-
-To show individual points without connecting points, you may set `strokeCap` to `"square"`:
-
-<span class="vl-example" data-name="line_skip_invalid_mid_cap_square"></span>
-
-or overlay it with marker points:
-
-<span class="vl-example" data-name="line_skip_invalid_mid_overlay"></span>
-
 ### Multi-series Colored Line Chart
 
 Adding a field to a [mark property channel](encoding.html#mark-prop) such as `color` groups data points into different series, producing a multi-series colored line chart.
@@ -99,9 +81,29 @@ By setting the `point` property of the mark definition to `true` or an object de
 
 <span class="vl-example" data-name="line_overlay"></span>
 
-This is equilvalent to adding another layer of point marks.
+This is equilvalent to adding another layer of filled point marks.
 
 <span class="vl-example" data-name="normalized/line_overlay_normalized"></span>
+
+Note that the overlay point marks have `opacity` = 1 by default (instead of semi-transparent like normal point marks).
+
+### Line Chart with Invalid Values
+
+By default, data points with invalid x- or y-values (`null` or `NaN`) will cause break in the lines.
+
+<span class="vl-example" data-name="line_skip_invalid"></span>
+
+Note that individual points without connecting points will still be invisible by default.
+
+<span class="vl-example" data-name="line_skip_invalid_mid"></span>
+
+To show individual points without connecting points, you may set `strokeCap` to `"square"`:
+
+<span class="vl-example" data-name="line_skip_invalid_mid_cap_square"></span>
+
+or overlay it with marker points:
+
+<span class="vl-example" data-name="line_skip_invalid_mid_overlay"></span>
 
 {:#connected-scatter-plot}
 ### Connected Scatter Plot (Line Chart with Custom Path)

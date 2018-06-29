@@ -62,7 +62,7 @@ Day:
 # Transform - Window
 WindowFieldDef:
   link: window.html#field-def
-WindowSortField:
+SortField:
   link: window.html#sort-field-def
 WindowOnlyOp:
   link: window.html#ops
@@ -183,7 +183,7 @@ Scale:
   link: scale.html
 SortOrder:
   name: String
-SortField:
+EncodingSortField:
   link: "sort.html#sort-field"
 StackOffset:
   name: String

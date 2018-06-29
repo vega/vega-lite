@@ -238,7 +238,6 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
 
 function sizeRangeMax(mark: Mark, xyRangeSteps: number[], config: Config) {
   const scaleConfig = config.scale;
-  // TODO(#1168): make max size scale based on rangeStep / overall plot size
   switch (mark) {
     case 'bar':
     case 'tick':

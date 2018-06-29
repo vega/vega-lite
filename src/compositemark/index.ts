@@ -8,8 +8,8 @@ import {ERRORBAR, ErrorBar, ERRORBAR_PARTS, ErrorBarConfigMixins, ErrorBarDef, n
 
 
 export {BoxPlotConfig} from './boxplot';
-export {ErrorBarConfigMixins} from './errorbar';
 export {ErrorBandConfigMixins} from './errorband';
+export {ErrorBarConfigMixins} from './errorbar';
 export type UnitNormalizer = (spec: GenericUnitSpec<any, any>, config: Config)=> NormalizedLayerSpec;
 
 /**

@@ -12,6 +12,11 @@
   "tslint.autoFixOnSave": true,
   "tsimporter.filesToExclude": ["build/**"],
   "tsimporter.spaceBetweenBraces": false,
-  "typescriptHero.resolver.insertSpaceBeforeAndAfterImportBraces": false,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
 }

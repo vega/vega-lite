@@ -13,11 +13,11 @@ Vega-Lite and Vega are visualization specification languages in JSON. The Vega w
 
 ## Grammar of Graphics, GGPlot and Tableau
 
-GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the [Grammar of Graphics](http://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448). Vega-Lite adds common data analysis transformations such as aggregation. GGPlot is embedded in R so that data can be transformed outside of the visualization specification. Vega-Lite is implemented in Java-Script and thus available in all modern browsers.
+GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the [Grammar of Graphics](https://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448). Vega-Lite adds common data analysis transformations such as aggregation. GGPlot is embedded in R so that data can be transformed outside of the visualization specification. Vega-Lite is implemented in Java-Script and thus available in all modern browsers.
 
 [Tableau](https://www.tableau.com/) is a graphical interface. The underlying formalism ([VizQL](https://www.tableau.com/products/technology)) heavily influenced the design of Vega-Lite. Vega-Lite and Tableau both provide smart defaults.
 
 
 ## Highcharts and plotly
 
-[Highcharts](http://www.highcharts.com/) and [plotly](https://plot.ly/) use templates for common chart types rather than composing primitive marks. Templates make it easier to add a new chart type but limit expressiveness and makes it harder to change just a single aspect of a visualization.
+[Highcharts](https://www.highcharts.com/) and [plotly](https://plot.ly/) use templates for common chart types rather than composing primitive marks. Templates make it easier to add a new chart type but limit expressiveness and makes it harder to change just a single aspect of a visualization.

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
     "autosize": "pad",
     "padding": 5,
@@ -224,6 +224,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Life Expectancy (years)",
             "labelFlush": true,
             "labelOverlap": true,
@@ -250,6 +251,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Country",
             "domain": false,
             "minExtent": 70,

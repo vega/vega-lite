@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "the population per state, engineers per state, and hurricanes per state",
     "autosize": "pad",
     "padding": 5,
@@ -132,7 +132,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 1,
         "bounds": "full",
         "align": "all"

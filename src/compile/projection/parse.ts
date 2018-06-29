@@ -1,7 +1,5 @@
-import {GEOPOSITION_CHANNELS, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
+import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {MAIN} from '../../data';
-import {isFieldDef} from '../../fielddef';
-import {GEOSHAPE} from '../../mark';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
 import {duplicate, every, stringify} from '../../util';
@@ -23,14 +21,9 @@ export function parseProjection(model: Model) {
 }
 
 function parseUnitProjection(model: UnitModel): ProjectionComponent {
-  const {specifiedProjection, markDef, config, encoding} = model;
+  const {specifiedProjection, config, hasProjection} = model;
 
-  const isGeoShapeMark = markDef && markDef.type === GEOSHAPE;
-  const isGeoPointOrLineMark = encoding && GEOPOSITION_CHANNELS.some(
-    (channel) => isFieldDef(encoding[channel])
-  );
-
-  if (isGeoShapeMark || isGeoPointOrLineMark) {
+  if (hasProjection) {
     const data: (VgSignalRef | string)[] = [];
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((posssiblePair) => {

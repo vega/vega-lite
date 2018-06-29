@@ -4,11 +4,10 @@ import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, keys} from '../../util';
 import {VgLegend, VgLegendEncode} from '../../vega.schema';
-import {getSpecifiedOrDefaultValue, numberFormat, titleMerger} from '../common';
+import {getSpecifiedOrDefaultValue, guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
-import {Explicit, makeImplicit} from '../split';
-import {defaultTieBreaker, mergeValuesWithExplicit} from '../split';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
@@ -74,10 +73,11 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   // 2) Add mark property definition groups
   const legendEncoding = legend.encoding || {};
   const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: VgLegendEncode, part) => {
+    const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
     const value = encode[part] ?
       // TODO: replace legendCmpt with type is sufficient
-      encode[part](fieldDef, legendEncoding[part], model, channel, legendCmpt.get('type')) : // apply rule
-      legendEncoding[part]; // no rule -- just default values
+      encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt.get('type')) : // apply rule
+      legendEncodingPart; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       e[part] = {update: value};
     }
@@ -184,7 +184,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
       (v1: Explicit<any>, v2: Explicit<any>): any => {
         switch (prop) {
           case 'title':
-            return titleMerger(v1, v2);
+            return mergeTitleComponent(v1, v2);
           case 'type':
             // There are only two types. If we have different types, then prefer symbol over gradient.
             typeMerged = true;

@@ -1,7 +1,6 @@
 // Declaration and utility for variants of a field definition object
 import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString} from './bin';
@@ -14,11 +13,13 @@ import * as log from './log';
 import {LogicalOperand} from './logical';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
-import {SortField, SortOrder} from './sort';
+import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
+
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -53,6 +54,16 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
+export interface ConditionValueDefMixins {
+  /**
+   * One or more value definition(s) with a selection predicate.
+   *
+   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
+   * since Vega-Lite only allows at most one encoded field per encoding channel.
+   */
+  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
+}
+
 /**
  * A FieldDef with Condition<ValueDef>
  * {
@@ -61,15 +72,8 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
  *   ...
  * }
  */
-export type FieldDefWithCondition<F extends FieldDef<any>> = F & {
-  /**
-   * One or more value definition(s) with a selection predicate.
-   *
-   * __Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)
-   * since Vega-Lite only allows at most one encoded field per encoding channel.
-   */
-  condition?: Conditional<ValueDef> | Conditional<ValueDef>[];
-};
+
+export type FieldDefWithCondition<F extends FieldDef<any>> = F & ConditionValueDefMixins;
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef>
@@ -165,14 +169,28 @@ export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>
 export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
-   * It can also be a `"geojson"` type for encoding ['geoshape'](geoshape.html).
+   * It can also be a `"geojson"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
   type: Type;
 }
 
-export interface ScaleFieldDef<F> extends FieldDef<F> {
+export interface SortableFieldDef<F> extends FieldDef<F> {
+  /**
+   * Sort order for the encoded field.
+   * Supported `sort` values include `"ascending"`, `"descending"`, `null`, or an array specifying the preferred order of values.
+   * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
+   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
+   *
+   * __Default value:__ `"ascending"`
+   *
+   * __Note:__ `null` is not supported for `row` and `column`.
+   */
+  sort?: (number | string | boolean)[] | SortOrder | EncodingSortField<F> | null;
+}
+
+export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
@@ -181,16 +199,6 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
    * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
    */
   scale?: Scale | null;
-
-  /**
-   * Sort order for the encoded field.
-   * Supported `sort` values include `"ascending"`, `"descending"`, `null` (no sorting), or an array specifying the preferred order of values.
-   * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
-   * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
-   *
-   * __Default value:__ `"ascending"`
-   */
-  sort?: string[] | SortOrder | SortField<F> | null;
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
@@ -283,7 +291,7 @@ export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
 
-export function isScaleFieldDef(channelDef: ChannelDef<any>): channelDef is ScaleFieldDef<any> {
+export function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F> {
   return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
@@ -298,11 +306,13 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** append suffix to the field ref (general) */
   suffix?: string;
-  /** Override which aggregate to use. Needed for unaggregated domain. */
-  aggregate?: AggregateOp;
 }
 
-export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}): string {
+function isOpFieldDef(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef): fieldDef is WindowFieldDef | AggregatedFieldDef {
+  return !!fieldDef['op'];
+}
+
+export function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef, opt: FieldRefOption = {}): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -313,18 +323,20 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
     let fn: string = undefined;
 
     if (!opt.nofn) {
-      if (fieldDef.bin) {
+      if (isOpFieldDef(fieldDef)) {
+        fn = fieldDef.op;
+      } else if (fieldDef.bin) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
-        fn = String(opt.aggregate || fieldDef.aggregate);
+        fn = String(fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
         fn = String(fieldDef.timeUnit);
       }
     }
 
     if (fn) {
-      field = `${fn}_${field}`;
+      field = field ? `${fn}_${field}` : fn;
     }
   }
 
@@ -547,12 +559,12 @@ export function normalizeBin(bin: BinParams|boolean, channel: Channel) {
 
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {compatible: boolean; warning?: string;} {
+  const type = fieldDef.type;
+
   switch (channel) {
     case 'row':
     case 'column':
-      if (isContinuous(fieldDef) && !fieldDef.timeUnit) {
-        // TODO:(https://github.com/vega/vega-lite/issues/2011):
-        // with timeUnit it's not always strictly continuous
+      if (isContinuous(fieldDef)) {
         return {
           compatible: false,
           warning: log.message.facetChannelShouldBeDiscrete(channel)
@@ -576,10 +588,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'longitude2':
     case 'latitude':
     case 'latitude2':
-      if (fieldDef.type !== QUANTITATIVE) {
+      if (type !== QUANTITATIVE) {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with ${fieldDef.type} field.`
+          warning: `Channel ${channel} should be used with a quantitative field only, not ${fieldDef.type} field.`
         };
       }
       return COMPATIBLE;
@@ -588,10 +600,10 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (isDiscrete(fieldDef) && !fieldDef.bin) {
+      if ((type === 'nominal' && !fieldDef['sort']) || type === 'geojson') {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with discrete field.`
+          warning: `Channel ${channel} should not be used with an unsorted discrete field.`
         };
       }
       return COMPATIBLE;
@@ -600,13 +612,13 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
       if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with nominal data or geojson only'
+          warning: 'Shape channel should be used with only either nominal or geojson data'
         };
       }
       return COMPATIBLE;
 
     case 'order':
-      if (fieldDef.type === 'nominal') {
+      if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
         return {
           compatible: false,
           warning: `Channel order is inappropriate for nominal field, which has no inherent order.`

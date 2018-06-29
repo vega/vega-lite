@@ -1,36 +1,11 @@
-import {FieldDef} from './fielddef';
-import {Guide} from './guide';
-import {SortOrder} from './sort';
+import {SortableFieldDef} from './fielddef';
+import {Header} from './header';
 
-
-/**
- * Headers of row / column channels for faceted plots.
- */
-export interface Header extends Guide {
-  /**
-   * The rotation angle of the header labels.
-   *
-   * __Default value:__ `0`.
-   *
-   * @minimum -360
-   * @maximum 360
-   */
-  labelAngle?: number;
-
-  // TODO: labelPadding
-}
-
-export interface FacetFieldDef<F> extends FieldDef<F> {
+export interface FacetFieldDef<F> extends SortableFieldDef<F> {
   /**
    * An object defining properties of a facet's header.
    */
   header?: Header;
-
-  /**
-   * Sort order for a facet field.
-   * This can be `"ascending"`, `"descending"`.
-   */
-  sort?: SortOrder;
 }
 
 export interface FacetMapping<F> {

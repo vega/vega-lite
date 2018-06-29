@@ -85,7 +85,7 @@ describe('Nearest Selection Transform', function() {
     const selCmpts = model.component.selection;
     const marks: any[] = [];
     assert.equal(nearest.marks(model, selCmpts['one'], marks), marks);
-    assert.equal(localLogger.warns[1], log.message.nearestNotSupportForContinuous('line'));
+    assert.equal(localLogger.warns[0], log.message.nearestNotSupportForContinuous('line'));
   }));
 
   it('limits to a single voronoi per unit', function() {

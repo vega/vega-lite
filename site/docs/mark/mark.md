@@ -75,6 +75,12 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 {% include table.html props="type,style,clip" source="MarkDef" %}
 
+{:#offset}
+### Offset Properties
+
+{% include table.html props="xOffset,x2Offset,yOffset,y2Offset" source="MarkDef" %}
+
+
 {:#color}
 ### Color Properties
 
@@ -83,7 +89,7 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 {:#stroke}
 ### Stroke Style Properties
 
-{% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkDef" %}
+{% include table.html props="strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeWidth" source="MarkDef" %}
 
 Here is an example to the usage of the stroke dash where 6 is the size of dashes, and 4 is the size of spaces:
 
@@ -92,9 +98,11 @@ Here is an example to the usage of the stroke dash where 6 is the size of dashes
 {:#hyperlink}
 ### Hyperlink Properties
 
-Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. A `cursor` property can also be provided to serve as affordance for the links.
+Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
 {% include table.html props="href,cursor" source="MarkDef" %}
+
+<span class="vl-example" data-name="point_href"></span>
 
 {:#config}
 ## Mark Config
@@ -125,8 +133,9 @@ The `mark` property of the [`config`](config.html) object sets the default prope
 
 The global mark config (`config.mark`) supports all standard mark properties (except `type`, `style`, `clip`, and `orient`).  For mark-specific config, please see the documentation for each mark type.
 
-Note: If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
-
+Note:
+1) If [mark properties in mark definition](#mark-def) or [mark property encoding channels](encoding.html#mark-prop) are specified, these config values will be overridden.
+2) Mark config do not support [offset mark properties](#offset).
 
 {:#style-config}
 ## Mark Style Config

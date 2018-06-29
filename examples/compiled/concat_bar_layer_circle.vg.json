@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "A dashboard with cross-highlighting.",
     "autosize": "pad",
     "padding": 5,
@@ -225,7 +225,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 1,
         "bounds": "full",
         "align": "each"
@@ -314,6 +313,7 @@
                 {
                     "scale": "concat_0_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "IMDB_Rating (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -328,6 +328,7 @@
                 {
                     "scale": "concat_0_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Rotten_Tomatoes_Rating (binned)",
                     "labelOverlap": true,
                     "tickCount": {
@@ -471,6 +472,7 @@
                 {
                     "scale": "concat_1_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Major_Genre",
                     "encode": {
                         "labels": {
@@ -492,6 +494,7 @@
                 {
                     "scale": "concat_1_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {

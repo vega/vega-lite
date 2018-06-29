@@ -5,31 +5,31 @@ title: A High-Level Grammar of Interactive Graphics
 
 images:
  - spec: stacked_area_stream
- - spec: circle
- - spec: bar_layered_transparent
+ - spec: selection_translate_scatterplot_drag
+ - spec: layer_error_bars
  - spec: tick_strip
  - spec: layer_line_color_rule
  - spec: trellis_barley
- - spec: bar_grouped
+ - spec: geo_choropleth
  - spec: circle_github_punchcard
+ - spec: geo_layer_line_london
  - spec: stacked_bar_weather
- - spec: trellis_bar_histogram
- - spec: area
- - spec: stacked_bar_v
- - spec: line_color
- - spec: circle_opacity
+ - spec: layer_line_co2_concentration
+ - spec: circle_natural_disasters
+ - spec: trellis_area
+ - spec: layer_area_ci
  - spec: line_slope
- - spec: trellis_anscombe
- - spec: point_binned_opacity
- - spec: line_month
- - spec: rect_heatmap
+ - spec: layer_ranged_dot
+ - spec: layer_bar_annotations
+ - spec: rect_binned_heatmap
+ - spec: interactive_splom
  - spec: interactive_layered_crossfilter
- - spec: connected_scatterplot
+ - spec: interactive_overview_detail
 
 ---
 
 {:.lead}
-**Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](http://vega.github.io/vega) specifications.
+**Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
 
 
 <span class="lead-columns">
@@ -43,8 +43,6 @@ images:
 </span>
 
 Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/).
-
-**[We are looking to mentor students for a Google Summer of Code project with us. Apply if you want to shape the future of declarative data visualization!](https://summerofcode.withgoogle.com/organizations/5646868357316608/)**
 
 ## Example
 
@@ -76,9 +74,10 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 
 ## Additional Links
 
-- Award winning [research paper](http://idl.cs.washington.edu/papers/vega-lite) and [video of our OpenVis Conf talk](https://www.youtube.com/watch?v=9uaHRWj04D4) on the design of Vega-Lite
+- Award winning [research paper](https://idl.cs.washington.edu/papers/vega-lite) and [video of our OpenVis Conf talk](https://www.youtube.com/watch?v=9uaHRWj04D4) on the design of Vega-Lite
+- Listen to a Data Stories episode about [Declarative Visualization with Vega-Lite and Altair](http://datastori.es/121-declarative-visualization-with-vega-lite-and-altair-with-dominik-moritz-jacob-vanderplas-kanit-ham-wongsuphasawat/)
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v2.json))
-- Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](http://bit.ly/vega-discuss) or [Slack](http://bit.ly/vega-slack)
+- Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://bit.ly/vega-discuss) or [Slack](https://bit.ly/join-vega-slack)
 - Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
 
 

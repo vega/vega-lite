@@ -6,7 +6,7 @@ or even better, submit a pull request.
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
-- For major changes, please discuss with us via [our mailing list](https://bit.ly/vega-discuss), [slack](https://bit.ly/vega-slack) or Github first,
+- For major changes, please discuss with us via [our mailing list](https://bit.ly/vega-discuss), [slack](https://bit.ly/join-vega-slack) or Github first,
 so we can better coordinate our efforts, prevent duplication of work,
 and help you to craft the change so that it is successfully accepted into the project.
   - One way to use GitHub for this purpose is to submit a pull request (PR) with a "[WIP]" prefix in the PR's title.  With a WIP PR, you can annotate your modification with questions.
@@ -75,7 +75,9 @@ To name the example file:
 
 After building an updated code or add a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
 
-__Note:__ To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
+__Notes:__
+1) Our example building scripts only re-compile SVGs if the output Vega file changes (so it runs way faster). However, if you have a bug and accidentally change Vega outputs, please do not commit SVGs after you fix the bugs (as the SVGs are **not** recompiled if Vega output do not change from prior commits).  Instead, please reset your SVG changes.
+2) To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 
 
 # Development Guide
@@ -175,7 +177,7 @@ If you want to update only github pages, use `yarn deploy:gh`.
 
 ## Suggested Programming Environment.
 
-We use the [Visual Studio Code](http://code.visualstudio.com/) editor with TSLint plugin.
+We use the [Visual Studio Code](https://code.visualstudio.com/) editor with TSLint plugin.
 - VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
 - Make sure to install [TypeScript Importer](https://marketplace.visualstudio.com/items?itemName=pmneo.tsimporter) and [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint) extensions.

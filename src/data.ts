@@ -15,7 +15,7 @@ export interface DataFormatBase {
    * For example, `"parse": {"modified_on": "date"}` parses the `modified_on` field in each input record a Date value.
    *
    * For `"date"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
-   * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](timeunit.html#utc)
+   * For Specific date formats can be provided (e.g., `{foo: 'date:"%m%d%Y"'}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: 'utc:"%m%d%Y"'}`). See more about [UTC time](https://vega.github.io/vega-lite/docs/timeunit.html#utc)
    */
   parse?: 'auto' | Parse | null;
 }
@@ -92,12 +92,18 @@ export type Data = UrlData | InlineData | NamedData;
 
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
-export interface UrlData {
+export interface DataBase {
   /**
-   * An object that specifies the format for parsing the data file.
+   * An object that specifies the format for parsing the data.
    */
   format?: DataFormat;
+  /**
+   * Provide a placeholder name and bind data at runtime.
+   */
+  name?: string;
+}
 
+export interface UrlData extends DataBase {
   /**
    * An URL from which to load the data set. Use the `format.type` property
    * to ensure the loaded data is correctly parsed.
@@ -105,23 +111,15 @@ export interface UrlData {
   url: string;
 }
 
-export interface InlineData {
+export interface InlineData extends DataBase {
   /**
-   * An object that specifies the format for parsing the data values.
-   */
-  format?: DataFormat;
-  /**
-   * The full data set, included inline. This can be an array of objects or primitive values or a string.
+   * The full data set, included inline. This can be an array of objects or primitive values, an object, or a string.
    * Arrays of primitive values are ingested as objects with a `data` property. Strings are parsed according to the specified format type.
    */
   values: InlineDataset;
 }
 
-export interface NamedData {
-  /**
-   * An object that specifies the format for parsing the data.
-   */
-  format?: DataFormat;
+export interface NamedData extends DataBase {
   /**
    * Provide a placeholder name and bind data at runtime.
    */
@@ -137,7 +135,7 @@ export function isInlineData(data: Partial<Data> | Partial<VgData>): data is Inl
 }
 
 export function isNamedData(data: Partial<Data>): data is NamedData {
-  return !!data['name'];
+  return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
 
 export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';

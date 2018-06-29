@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
     "autosize": "pad",
     "padding": 5,
@@ -22,6 +22,15 @@
                     "type": "aggregate",
                     "groupby": [
                         "site"
+                    ],
+                    "fields": [
+                        "yield"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "as": [
+                        "median_yield"
                     ]
                 }
             ]
@@ -69,36 +78,24 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10
+        },
         "columns": 1,
         "bounds": "full",
         "align": "all"
     },
     "marks": [
         {
-            "name": "trellis_barley_row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "site"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "site",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "trellis_barley_row_header",
@@ -108,7 +105,7 @@
                 "data": "trellis_barley_row_domain"
             },
             "sort": {
-                "field": "datum[\"site\"]",
+                "field": "datum[\"median_yield\"]",
                 "order": "ascending"
             },
             "title": {
@@ -130,6 +127,7 @@
                 {
                     "scale": "trellis_barley_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "variety",
                     "labelOverlap": true,
                     "zindex": 1
@@ -151,6 +149,7 @@
                 {
                     "scale": "trellis_barley_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Median of yield",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -171,12 +170,23 @@
                     "data": "source_0",
                     "groupby": [
                         "site"
-                    ]
+                    ],
+                    "aggregate": {
+                        "fields": [
+                            "yield"
+                        ],
+                        "ops": [
+                            "median"
+                        ],
+                        "as": [
+                            "median_yield_by_site"
+                        ]
+                    }
                 }
             },
             "sort": {
                 "field": [
-                    "datum[\"site\"]"
+                    "datum[\"median_yield_by_site\"]"
                 ],
                 "order": [
                     "ascending"

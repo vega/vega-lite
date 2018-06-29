@@ -20,9 +20,6 @@
         "y": {
           "field": "price",
           "type": "quantitative"
-        },
-        "shape": {
-          "value": "square"
         }
       }
     },

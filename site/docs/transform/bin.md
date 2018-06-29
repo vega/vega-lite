@@ -101,7 +101,7 @@ __Note:__  Vega-Lite currently [does not track which fields are binned](https://
 
 If `bin` is `true`, default binning parameters are used. To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
 
-{% include table.html props="maxbins,base,step,steps,minstep,divide,extent,nice" source="BinParams" %}
+{% include table.html props="base,divide,extent,maxbins,minstep,nice,step,steps" source="BinParams" %}
 
 ### Example: Customizing Max Bins
 

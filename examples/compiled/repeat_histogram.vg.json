@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "width": 200,
@@ -231,7 +231,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 3,
         "bounds": "full",
         "align": "all"
@@ -292,6 +291,7 @@
                 {
                     "scale": "child_Horsepower_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Horsepower (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -306,6 +306,7 @@
                 {
                     "scale": "child_Horsepower_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -385,6 +386,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Miles_per_Gallon (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -399,6 +401,7 @@
                 {
                     "scale": "child_Miles_per_Gallon_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {
@@ -478,6 +481,7 @@
                 {
                     "scale": "child_Acceleration_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "Acceleration (binned)",
                     "labelFlush": true,
                     "labelOverlap": true,
@@ -492,6 +496,7 @@
                 {
                     "scale": "child_Acceleration_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Number of Records",
                     "labelOverlap": true,
                     "tickCount": {

@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "autosize": "pad",
     "padding": 5,
     "height": 200,
@@ -164,6 +164,7 @@
         {
             "scale": "x",
             "orient": "bottom",
+            "grid": false,
             "title": "Month of the year",
             "labelOverlap": true,
             "encode": {
@@ -189,6 +190,7 @@
         {
             "scale": "y",
             "orient": "left",
+            "grid": false,
             "title": "Number of Records",
             "labelOverlap": true,
             "tickCount": {

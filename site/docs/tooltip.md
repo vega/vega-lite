@@ -19,7 +19,7 @@ To create a tooltip, Vega-Lite's [`tooltip`]({{site.baseurl}}/docs/encoding.html
 
 <div class="vl-example" data-name="bar_tooltip"></div>
 
-To show more than one field, you can provide an array of field definitions. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. Here is an examle.
+To show more than one field, you can provide an array of field definitions. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. Here is an example.
 
 <div class="vl-example" data-name="bar_tooltip_multi"></div>
 

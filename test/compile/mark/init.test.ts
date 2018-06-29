@@ -3,7 +3,7 @@
 import * as log from '../../../src/log';
 
 import {assert} from 'chai';
-import {BAR, CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
+import {CIRCLE, Mark, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -73,7 +73,6 @@ describe('compile/mark/init', function() {
         },
       });
       assert.equal(model.markDef.orient, 'vertical');
-      assert.equal(localLogger.warns[0], log.message.unclearOrientContinuous(BAR));
     }));
 
     it('should return correct default for empty plot', log.wrap((localLogger) => {
@@ -82,7 +81,6 @@ describe('compile/mark/init', function() {
         encoding: {}
       });
       assert.equal(model.markDef.orient, undefined);
-      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
     }));
 
     it('should return correct orient for bar with both axes discrete', log.wrap((localLogger) => {
@@ -94,7 +92,6 @@ describe('compile/mark/init', function() {
         },
       });
       assert.equal(model.markDef.orient, undefined);
-      assert.equal(localLogger.warns[0], log.message.unclearOrientDiscreteOrEmpty(BAR));
     }));
 
 
@@ -299,6 +296,125 @@ describe('compile/mark/init', function() {
       });
       assert.equal(model.markDef.orient, 'vertical');
     });
+  });
+
+  describe('cursor', function() {
+    it('cursor should be undefined when no href channel defined', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        },
+      });
+      assert.equal(model.markDef.cursor, undefined);
+    });
+
+    it('should return pointer cursor when href channel present', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "selection": {"test": {"type": "single"}},
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"},
+          "href": {
+            "condition": {"selection": "test", "value": "https://vega.github.io/schema/vega-lite/v2.json"},
+            "field": "a",
+            "type": "ordinal"
+          },
+        },
+      });
+      assert.equal(model.markDef.cursor, 'pointer');
+    });
+
+    it('should return specified cursor when href channel present but cursor specified', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "cursor": "auto"},
+        "selection": {"test": {"type": "single"}},
+        "encoding": {
+          "x": {"field": "a", "type": "ordinal"},
+          "y": {"field": "b", "type": "quantitative"},
+          "href": {
+            "condition": {"selection": "test", "value": "http://www.google.com"},
+            "field": "a",
+            "type": "ordinal"
+          },
+        },
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should return pointer cursor when href channel specified in mark definition', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "href": "http://www.google.com"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'pointer');
+    });
+
+    it('should return specified cursor when href channel specified in mark definition but cursor also specified in mark', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "href": "http://www.google.com", "cursor": "auto"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should return pointer cursor when href channel specified in mark config', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com"
+          }
+        },
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'pointer');
+    });
+
+    it('should return specified cursor when href channel specified in mark config but cursor also specified in mark', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com"
+          }
+        },
+        "mark": {"type": "bar", "cursor": "auto"},
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, 'auto');
+    });
+
+    it('should not specify cursor in the markdef if defined in the config', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "config": {
+          "mark": {
+            "href": "http://www.google.com",
+            "cursor": "auto"
+          }
+        },
+        "mark": "bar",
+        "encoding": {
+          "y": {"type": "quantitative", "field": "foo"},
+          "x": {"type": "temporal", "field": "bar"}
+        }
+      });
+      assert.equal(model.markDef.cursor, undefined);
+    });
+
   });
 });
 

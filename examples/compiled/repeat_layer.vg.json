@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Summarized and per year weather information for Seatle and New York.",
     "autosize": "pad",
     "padding": 5,
@@ -284,7 +284,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 3,
         "bounds": "full",
         "align": "all"
@@ -438,6 +437,7 @@
                 {
                     "scale": "child_temp_max_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelOverlap": true,
                     "encode": {
@@ -463,6 +463,7 @@
                 {
                     "scale": "child_temp_max_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of temp_max",
                     "labelOverlap": true,
                     "tickCount": {
@@ -635,6 +636,7 @@
                 {
                     "scale": "child_precipitation_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelOverlap": true,
                     "encode": {
@@ -660,6 +662,7 @@
                 {
                     "scale": "child_precipitation_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of precipitation",
                     "labelOverlap": true,
                     "tickCount": {
@@ -832,6 +835,7 @@
                 {
                     "scale": "child_wind_x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (month)",
                     "labelOverlap": true,
                     "encode": {
@@ -857,6 +861,7 @@
                 {
                     "scale": "child_wind_y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of wind",
                     "labelOverlap": true,
                     "tickCount": {

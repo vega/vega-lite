@@ -234,7 +234,6 @@ describe('FacetModel', function() {
       const layout = model.assembleLayout();
       assert.deepEqual<VgLayout>(layout, {
         padding: {row: 10, column: 10},
-        offset: 10,
         columns: {
           signal: "length(data('column_domain'))"
         },
@@ -320,6 +319,74 @@ describe('FacetModel', function() {
       });
     });
 
+
+    it('should add cross and sort if we facet by multiple dimensions with sort array', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: ['a1', 'a2']},
+          column: {field: 'b', type: 'ordinal', sort: ['b1', 'b2']}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      assert(marks[0].from.facet.aggregate.cross);
+      expect(marks[0].sort).toEqual({
+        field: [
+          'datum["row_a_sort_index"]',
+          'datum["column_b_sort_index"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
+      });
+    });
+
+
+    it('should add cross and sort if we facet by multiple dimensions with sort fields', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'median'}},
+          column: {field: 'b', type: 'ordinal', sort: {field: 'e', op: 'median'}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'}
+          }
+        }
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      expect(marks[0].from.facet.aggregate).toEqual({
+        cross: true,
+        fields: ['median_d_by_a', 'median_e_by_b'],
+        ops: ['max', 'max'],
+        as: ['median_d_by_a', 'median_e_by_b']
+      });
+
+      expect(marks[0].sort).toEqual({
+        field: [
+          'datum["median_d_by_a"]',
+          'datum["median_e_by_b"]'
+        ],
+        order: [
+          'ascending',
+          'ascending'
+        ]
+      });
+    });
+
     it('should add calculate cardinality for independent scales', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
@@ -345,7 +412,8 @@ describe('FacetModel', function() {
 
       assert.deepEqual(marks[0].from.facet.aggregate, {
         fields: ['b', 'c'],
-        ops: ['distinct', 'distinct']
+        ops: ['distinct', 'distinct'],
+        as: ['distinct_b', 'distinct_c']
       });
     });
 
@@ -373,7 +441,8 @@ describe('FacetModel', function() {
 
       assert.deepEqual(marks[0].from.facet.aggregate, {
         fields: ['c'],
-        ops: ['distinct']
+        ops: ['distinct'],
+        as: ['distinct_c']
       });
     });
   });

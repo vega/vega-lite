@@ -12,7 +12,7 @@ import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
-import {IdentifierNode} from './indentifier';
+import {IdentifierNode} from './identifier';
 import {LookupNode} from './lookup';
 import {SourceNode} from './source';
 import {StackNode} from './stack';

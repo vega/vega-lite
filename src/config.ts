@@ -1,17 +1,11 @@
 import {isObject} from 'vega-util';
-
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
+import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {
-  Mark,
-  MarkConfigMixins,
-  PRIMITIVE_MARKS,
-  VL_ONLY_MARK_CONFIG_PROPERTIES,
-  VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
-} from './mark';
 import * as mark from './mark';
+import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
@@ -19,7 +13,8 @@ import {StackOffset} from './stack';
 import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+
 
 
 export interface ViewConfig {
@@ -100,6 +95,22 @@ export interface ViewConfig {
    *
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeMiterLimit?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {
@@ -182,11 +193,11 @@ export interface VLOnlyConfig {
   timeFormat?: string;
 
 
-  /** Default properties for [single view plots](spec.html#single). */
+  /** Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). */
   view?: ViewConfig;
 
   /**
-   * Scale configuration determines default properties for all [scales](scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
+   * Scale configuration determines default properties for all [scales](https://vega.github.io/vega-lite/docs/scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
    */
   scale?: ScaleConfig;
 
@@ -206,26 +217,31 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
 
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
-   * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](scale.html#config).
+   * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
    */
   range?: RangeConfig;
 
   /**
-   * Legend configuration, which determines default properties for all [legends](legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](legend.html#config).
+   * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
    */
   legend?: LegendConfig;
 
   /**
-   * Title configuration, which determines default properties for all [titles](title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](title.html#config).
+   * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  header?: HeaderConfig;
+
+  /**
+   * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
    */
   title?: VgTitleConfig;
 
   /**
-   * Projection configuration, which determines default properties for all [projections](projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](projection.html#config).
+   * Projection configuration, which determines default properties for all [projections](https://vega.github.io/vega-lite/docs/projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](https://vega.github.io/vega-lite/docs/projection.html#config).
    */
   projection?: ProjectionConfig;
 
-  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](mark.html#config).  */
+  /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  */
   style?: StyleConfigIndex;
 }
 

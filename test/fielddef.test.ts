@@ -122,7 +122,7 @@ describe('fieldDef', () => {
         }
       });
 
-      it('is incompatible with discrete field', () => {
+      it('is incompatible with nominal field', () => {
         for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
           assert(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
         }

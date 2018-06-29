@@ -1,5 +1,5 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
     "description": "Stock price mean per quarter broken down by years.",
     "autosize": "pad",
     "padding": 5,
@@ -76,7 +76,9 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "columnTitle": 10
+        },
         "columns": {
             "signal": "length(data('column_domain'))"
         },
@@ -85,26 +87,14 @@
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "date (year)"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "date (year)",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",
@@ -121,6 +111,7 @@
                 {
                     "scale": "y",
                     "orient": "left",
+                    "grid": false,
                     "title": "Mean of price",
                     "labelOverlap": true,
                     "tickCount": {
@@ -179,6 +170,7 @@
                 {
                     "scale": "x",
                     "orient": "bottom",
+                    "grid": false,
                     "title": "date (quarter)",
                     "labelOverlap": true,
                     "encode": {

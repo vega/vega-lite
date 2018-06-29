@@ -1,12 +1,12 @@
-import {text} from 'd3-request';
+import {text} from 'd3-fetch';
 import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
 import {post} from 'vega-embed/build/post';
 import {Handler} from 'vega-tooltip';
-
 import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
+
 
 window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;
@@ -49,7 +49,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
   embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
 }
 
-function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=true) {
+export function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=true) {
   const vgSpec = compile(spec).spec;
 
   const view = new vega.View(vega.parse(vgSpec), {loader: loader})
@@ -80,6 +80,8 @@ function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=tr
         event.preventDefault();
       });
   }
+
+  return view;
 }
 
 function getSpec(el: d3.BaseType) {
@@ -89,13 +91,9 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
 
-    text(fullUrl, function(error, spec) {
-      if (error) {
-        console.error(error);
-      } else {
-        renderExample(sel, spec);
-      }
-    });
+    text(fullUrl).then(spec => {
+      renderExample(sel, spec);
+    }).catch(console.error);
   } else {
     console.error('No "data-name" specified to import examples from');
   }
