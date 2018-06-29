@@ -1,4 +1,4 @@
-import {BinParams, binToString, isInternalBin} from '../../bin';
+import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, normalizeBin, vgField} from '../../fielddef';
@@ -90,7 +90,7 @@ export class BinNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
-      if (isInternalBin(fieldDef.bin)) {
+      if (isBinning(fieldDef.bin)) {
         const {key, binComponent} = createBinComponent(fieldDef, fieldDef.bin, model);
         binComponentIndex[key] = {
           ...binComponent,

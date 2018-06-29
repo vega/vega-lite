@@ -327,5 +327,10 @@ export namespace message {
   export function droppedDay(d: DateTime | DateTimeExpr) {
     return `Dropping day from datetime ${stringify(d)} as day cannot be combined with other units.`;
   }
+
+  // CHANNEL
+  export function channelRequiredForBinned(channel: Channel) {
+    return `Channel ${channel}2 is required for "binned" bin`;
+  }
 }
 

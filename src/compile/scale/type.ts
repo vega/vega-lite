@@ -1,4 +1,4 @@
-import {isInternalBin} from '../../bin';
+import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
@@ -85,7 +85,7 @@ function defaultType(
 
     case 'quantitative':
       if (isColorChannel(channel)) {
-        if (isInternalBin(fieldDef.bin)) {
+        if (isBinning(fieldDef.bin)) {
           return 'bin-ordinal';
         }
         // Use `sequential` as the default color scale for continuous data
@@ -99,7 +99,7 @@ function defaultType(
 
       // x and y use a linear scale because selections don't work with bin scales.
       // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
-      if (isInternalBin(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
+      if (isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
         return 'bin-linear';
       }
       return 'linear';

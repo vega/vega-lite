@@ -4,8 +4,8 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, BinParams, binToString, isInternalBin} from './bin';
-import {Channel, rangeType} from './channel';
+import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
+import {Channel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {TitleMixins} from './guide';
@@ -18,7 +18,7 @@ import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -314,7 +314,7 @@ export function vgField(fieldDef: FieldDefBase<string>, opt: FieldRefOption = {}
     let fn: string = undefined;
 
     if (!opt.nofn) {
-      if (isInternalBin(fieldDef.bin)) {
+      if (isBinning(fieldDef.bin)) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
@@ -376,7 +376,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
-  } else if (isInternalBin(bin)) {
+  } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
     const units = getTimeUnitParts(timeUnit).join('-');
@@ -388,7 +388,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isInternalBin(fieldDef.bin) && 'bin');
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
   } else {
@@ -425,7 +425,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
-  if (isInternalBin(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin)) {
     return 'quantitative';
   }
   switch (rangeType(channel)) {
@@ -493,11 +493,15 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   }
 
   // Normalize bin
-  if (isInternalBin(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin)) {
     fieldDef = {
       ...fieldDef,
       bin: normalizeBin(fieldDef.bin, channel)
     };
+  }
+
+  if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+    log.warn(`Channel ${channel} should not be used with "binned" bin`);
   }
 
   // Normalize Type
@@ -589,7 +593,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if (isDiscrete(fieldDef) && !isInternalBin(fieldDef.bin)) {
+      if (isDiscrete(fieldDef) && !isBinning(fieldDef.bin)) {
         return {
           compatible: false,
           warning: `Channel ${channel} should not be used with discrete field.`
@@ -619,7 +623,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
 }
 
 export function isNumberFieldDef(fieldDef: FieldDef<any>) {
-  return fieldDef.type === 'quantitative' || isInternalBin(fieldDef.bin);
+  return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 
 export function isTimeFieldDef(fieldDef: FieldDef<any>) {

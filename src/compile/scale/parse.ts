@@ -1,4 +1,3 @@
-import {isExternalBin} from '../../bin';
 import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
 import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
@@ -80,11 +79,6 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
         model.scaleName(channel + '', true),
         {value: sType, explicit: specifiedScaleType === sType}
       );
-      if (isExternalBin(model.fieldDef(channel).bin)) {
-        component.set('zero', false, false);
-        component.set('nice', false, false);
-        component.set('padding', 0, false);
-      }
       scaleComponents[channel] = component;
     }
     return scaleComponents;

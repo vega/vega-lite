@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 
-import {isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
@@ -8,8 +8,10 @@ import {
   FieldDefWithCondition,
   getFieldDef,
   isConditionalSelection,
+  isFieldDef,
   isValueDef,
   TextFieldDef,
+  ValueDef,
   ValueDefWithCondition,
   vgField,
 } from '../../fielddef';
@@ -284,23 +286,26 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
+export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
   const binSpacing = {
     x:  reverse ? spacing : 0,
     x2: reverse ? 0 : spacing,
     y:  reverse ? 0 : spacing,
     y2: reverse ? spacing : 0
   };
-  if (isInternalBin(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin) && fieldDef2 === undefined) {
     return {
       [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel]),
       [`${channel}2`]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
     };
-  } else {
+  } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
       [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]}),
       [`${channel}2`]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]})
     };
+  } else {
+    log.warn(log.message.channelRequiredForBinned(channel));
+    return undefined;
   }
 }
 

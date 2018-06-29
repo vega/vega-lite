@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {isInternalBin} from '../bin';
+import {isBinning} from '../bin';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
 import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, vgField} from '../fielddef';
@@ -73,7 +73,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
 
 export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
-  if (isInternalBin(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin)) {
     const startField = vgField(fieldDef, {expr});
     const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
     return {
@@ -210,7 +210,7 @@ export function mergeTitleComponent(
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
 export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
-  if (!isInternalBin(fieldDef.bin)) {
+  if (!isBinning(fieldDef.bin)) {
     console.warn('Only use this method with binned field defs');
     return false;
   }

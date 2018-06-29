@@ -1,5 +1,5 @@
 
-import {isExternalBin, isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
@@ -61,13 +61,16 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
       return undefined;
   }
 
-  const x = encoding.x;
-  const y = encoding.y;
-  const x2 = encoding.x2;
-  const y2 = encoding.y2;
+  const {x, y, x2, y2} = encoding;
 
   switch (mark) {
     case BAR:
+      if (isFieldDef(x) && isBinned(x.bin)) {
+        return 'vertical';
+      }
+      if (isFieldDef(y) && isBinned(y.bin)) {
+        return 'horizontal';
+      }
       if (y2 || x2) {
         // Ranged bar does not always have clear orientation, so we allow overriding
         if (specifiedOrient) {
@@ -75,14 +78,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
         }
 
         // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
-        const xDef = encoding.x;
-        if (!x2 && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !isInternalBin(xDef.bin)) {
+        if (!x2 && isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) {
           return 'horizontal';
         }
 
         // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
-        const yDef = encoding.y;
-        if (!y2 && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !isInternalBin(yDef.bin)) {
+        if (!y2 && isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) {
           return 'vertical';
         }
       }
@@ -96,13 +97,13 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
     case AREA: // intentionally fall through
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {
-        if (isFieldDef(y) && isExternalBin(y.bin)) {
+        if (isFieldDef(y) && isBinned(y.bin)) {
           return 'horizontal';
         } else {
           return 'vertical';
         }
       } else if (x2) {
-        if (isFieldDef(x) && isExternalBin(x.bin)) {
+        if (isFieldDef(x) && isBinned(x.bin)) {
           return 'vertical';
         } else {
           return 'horizontal';

@@ -1,4 +1,4 @@
-import {isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
@@ -34,7 +34,6 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];
-    const implicitValue = localScaleCmpt.get(property);
     const sType = mergedScaleCmpt.get('type');
 
     const supportedByScaleType = scaleTypeSupportProperty(sType, property);
@@ -48,7 +47,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         log.warn(channelIncompatability);
       }
     }
-    if (supportedByScaleType && channelIncompatability === undefined && implicitValue === undefined) {
+    if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
         // copyKeyFromObject ensure type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
@@ -137,8 +136,10 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 }
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
-  if (isInternalBin(fieldDef.bin) || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+  if (isBinning(fieldDef.bin) || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
+  } else if (isBinned(fieldDef.bin)) {
+    return false;
   }
   return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
 }
@@ -151,7 +152,10 @@ export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: Sca
       }
 
       const {type, orient} = markDef;
-      if (type === 'bar' && !isInternalBin(fieldDef.bin)) {
+      if (isBinned(fieldDef.bin)) {
+        return 0;
+      }
+      if (type === 'bar' && !isBinning(fieldDef.bin)) {
         if (
           (orient === 'vertical' && channel === 'x') ||
           (orient === 'horizontal' && channel === 'y')
@@ -235,8 +239,11 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!isInternalBin(fieldDef.bin) && util.contains([X, Y], channel)) {
+  if (!isBinning(fieldDef.bin) && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
+    if (isBinned(fieldDef.bin)) {
+      return false;
+    }
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if (
         (orient === 'horizontal' && channel === 'y') ||

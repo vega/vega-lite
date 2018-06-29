@@ -1120,7 +1120,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1180,7 +1180,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1282,7 +1282,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1367,7 +1367,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1428,7 +1428,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1531,7 +1531,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -2508,7 +2508,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -2587,7 +2587,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -2644,7 +2644,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2715,7 +2715,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2828,7 +2828,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -5014,7 +5014,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -5155,7 +5155,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -6461,7 +6461,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [

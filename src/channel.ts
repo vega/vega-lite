@@ -3,7 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {isExternalBin} from './bin';
+import {isBinned} from './bin';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {FacetMapping} from './facet';
@@ -223,7 +223,9 @@ export type SupportedMark = {
 export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
   if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
     const primaryFieldDef = encoding[channel === X2 ? X : Y];
-    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isExternalBin(primaryFieldDef.bin)) {
+    // circle, point, square and tick only support x2 and y2 when their corresponding x and y fieldDef
+    // has binned data
+    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
       return true;
     } else {
       return false;
