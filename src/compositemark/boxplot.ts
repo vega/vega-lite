@@ -1,5 +1,5 @@
 import {isNumber} from 'vega-util';
-import {isInternalBin} from '../bin';
+import {isBinning} from '../bin';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -345,7 +345,7 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BOXPLOT | BoxPlotDef>
 
         // Add bin or timeUnit transform if applicable
         const bin = channelDef.bin;
-        if (isInternalBin(bin)) {
+        if (isBinning(bin)) {
           const {field} = channelDef;
           bins.push({bin, field, as: transformedField});
         } else if (channelDef.timeUnit) {

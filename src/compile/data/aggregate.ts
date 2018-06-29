@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isInternalBin} from '../../bin';
+import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
@@ -11,7 +11,7 @@ import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
-  if (isInternalBin(fieldDef.bin)) {
+  if (isBinning(fieldDef.bin)) {
     dims[vgField(fieldDef, {})] = true;
     dims[vgField(fieldDef, {binSuffix: 'end'})] = true;
 

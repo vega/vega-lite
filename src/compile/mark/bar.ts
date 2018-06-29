@@ -1,5 +1,5 @@
 import {isNumber} from 'vega-util';
-import {isExternalBin, isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {X, Y} from '../../channel';
 import {Config} from '../../config';
 import {isFieldDef} from '../../fielddef';
@@ -37,7 +37,7 @@ function x(model: UnitModel): VgEncodeEntry {
   const xScale = model.getScaleComponent(X);
   // x, x2, and width -- we must specify two of these in all conditions
   if (orient === 'horizontal' || x2Def) {
-    if (isFieldDef(xDef) && isFieldDef(x2Def) && isExternalBin(xDef.bin)) {
+    if (isFieldDef(xDef) && isFieldDef(x2Def) && isBinned(xDef.bin)) {
       return mixins.binnedPosition(
         xDef, x2Def, X, xScaleName,
         markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
@@ -51,7 +51,7 @@ function x(model: UnitModel): VgEncodeEntry {
   } else { // vertical
     if (isFieldDef(xDef)) {
       const xScaleType = xScale.get('type');
-      if (isInternalBin(xDef.bin) && !sizeDef && !hasDiscreteDomain(xScaleType)) {
+      if (isBinning(xDef.bin) && !sizeDef && !hasDiscreteDomain(xScaleType)) {
         return mixins.binnedPosition(
           xDef, undefined, X, model.scaleName('x'), markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
           xScale.get('reverse')
@@ -83,7 +83,7 @@ function y(model: UnitModel) {
 
   // y, y2 & height -- we must specify two of these in all conditions
   if (orient === 'vertical' || y2Def) {
-    if (isFieldDef(yDef) && isFieldDef(y2Def) && isExternalBin(yDef.bin)) {
+    if (isFieldDef(yDef) && isFieldDef(y2Def) && isBinned(yDef.bin)) {
       return mixins.binnedPosition(
         yDef, y2Def, Y, yScaleName,
         markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
@@ -97,7 +97,7 @@ function y(model: UnitModel) {
   } else {
     if (isFieldDef(yDef)) {
       const yScaleType = yScale.get('type');
-      if (isInternalBin(yDef.bin) && !sizeDef && !hasDiscreteDomain(yScaleType)) {
+      if (isBinning(yDef.bin) && !sizeDef && !hasDiscreteDomain(yScaleType)) {
         return mixins.binnedPosition(
           yDef, undefined, Y, model.scaleName('y'),
           markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,

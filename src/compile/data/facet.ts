@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isInternalBin} from '../../bin';
+import {isBinning} from '../../bin';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
@@ -37,7 +37,7 @@ export class FacetNode extends DataFlowNode {
     if (model.facet.column) {
       this.columnFields = [model.vgField(COLUMN)];
       this.columnName = model.getName('column_domain');
-      if (isInternalBin(model.fieldDef(COLUMN).bin)) {
+      if (isBinning(model.fieldDef(COLUMN).bin)) {
         this.columnFields.push(model.vgField(COLUMN, {binSuffix: 'end'}));
       }
     }
@@ -45,7 +45,7 @@ export class FacetNode extends DataFlowNode {
     if (model.facet.row) {
       this.rowFields = [model.vgField(ROW)];
       this.rowName = model.getName('row_domain');
-      if (isInternalBin(model.fieldDef(ROW).bin)) {
+      if (isBinning(model.fieldDef(ROW).bin)) {
         this.rowFields.push(model.vgField(ROW, {binSuffix: 'end'}));
       }
     }

@@ -1,4 +1,5 @@
 import {isBoolean, isObject} from 'vega-util';
+import {BinParams} from './bin';
 import {Channel, COLOR, COLUMN, FILL, OPACITY, ROW, SHAPE, SIZE, STROKE} from './channel';
 import {keys, varName} from './util';
 
@@ -68,11 +69,11 @@ export function binToString(bin: BinParams | boolean) {
   return 'bin' + keys(bin).map(p => varName(`_${p}_${bin[p]}`)).join('');
 }
 
-export function isInternalBin(bin: BinParams | boolean | 'binned'): bin is BinParams | boolean {
+export function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams | true {
   return bin === true || isBinParams(bin);
 }
 
-export function isExternalBin(bin: BinParams | boolean | 'binned'): bin is 'binned' {
+export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
   return bin === 'binned';
 }
 

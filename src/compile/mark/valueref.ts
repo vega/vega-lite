@@ -3,7 +3,7 @@
  */
 import {isArray, isString} from 'vega-util';
 
-import {isExternalBin, isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {
@@ -105,29 +105,11 @@ export function bandRef(scaleName: string, band: number|boolean = true): VgValue
 }
 
 /**
- * Signal that returns the middle of a bin. Should only be used with x and y.
+ * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function internalBinMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
+function binMidSignal(start: string, end: string, scaleName: string) {
   return {
-    signal: `(` +
-      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
-      ` + ` +
-      `scale("${scaleName}", ${vgField(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
-    `)/2`
-  };
-}
-
-/**
- * Signal that returns the middle of a bin from two fieldDefs. Should only be used
- * with x and y on externally binned data.
- */
-function externalBinMidSignal(fieldDef: FieldDef<string>, fieldDef2: FieldDef<string>, scaleName: string) {
-  return {
-    signal: `(` +
-      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
-      ` + ` +
-      `scale("${scaleName}", ${vgField(fieldDef2, {expr: 'datum'})})`+
-      `)/2`
+    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
   };
 }
 
@@ -141,7 +123,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, chann
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (isInternalBin(channelDef.bin)) {
+      if (isBinning(channelDef.bin)) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
@@ -150,13 +132,15 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, chann
             return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
           }
           // For non-stack, we can just calculate bin mid on the fly using signal.
-          return internalBinMidSignal(channelDef, scaleName);
+          return binMidSignal(vgField(channelDef, {expr: 'datum'}),
+                              vgField(channelDef, {binSuffix: 'end', expr: 'datum'}),
+                              scaleName);
         }
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
       }
 
-      if (isFieldDef(channel2Def) && isExternalBin(channelDef.bin)) {
-        return externalBinMidSignal(channelDef, channel2Def, scaleName);
+      if (isFieldDef(channel2Def) && isBinned(channelDef.bin)) {
+        return binMidSignal(vgField(channelDef, {expr: 'datum'}), vgField(channel2Def, {expr: 'datum'}), scaleName);
       }
 
       if (scale) {

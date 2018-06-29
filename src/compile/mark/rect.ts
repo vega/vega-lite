@@ -1,4 +1,4 @@
-import {isExternalBin, isInternalBin} from '../../bin';
+import {isBinned, isBinning} from '../../bin';
 import {X, Y} from '../../channel';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
@@ -27,9 +27,9 @@ export function x(model: UnitModel): VgEncodeEntry {
   const xScaleType = xScale ? xScale.get('type') : undefined;
   const xScaleName = model.scaleName(X);
 
-  if (isFieldDef(xDef) && isInternalBin(xDef.bin) && !x2Def) {
+  if (isFieldDef(xDef) && isBinning(xDef.bin) && !x2Def) {
     return mixins.binnedPosition(xDef, undefined, 'x', xScaleName, 0, xScale.get('reverse'));
-  } else if (isFieldDef(xDef) && isFieldDef(x2Def) && isExternalBin(xDef.bin)) {
+  } else if (isFieldDef(xDef) && isFieldDef(x2Def) && isBinned(xDef.bin)) {
     return mixins.binnedPosition(xDef, x2Def, X, xScaleName, 0, xScale.get('reverse'));
   } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
     /* istanbul ignore else */
@@ -54,9 +54,7 @@ export function y(model: UnitModel): VgEncodeEntry {
   const yScaleType = yScale ? yScale.get('type') : undefined;
   const yScaleName = model.scaleName(Y);
 
-  if (isFieldDef(yDef) && isInternalBin(yDef.bin) && !y2Def) {
-    return mixins.binnedPosition(yDef, undefined, 'y', model.scaleName('y'), 0, yScale.get('reverse'));
-  } else if (isFieldDef(yDef) && isFieldDef(y2Def) && isExternalBin(yDef.bin)) {
+  if (isFieldDef(yDef) && (isBinning(yDef.bin) || isBinned(yDef.bin))) {
     return mixins.binnedPosition(yDef, y2Def, Y, yScaleName, 0, yScale.get('reverse'));
   } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
     /* istanbul ignore else */
