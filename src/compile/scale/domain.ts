@@ -3,11 +3,13 @@ import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
-import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef, ScaleFieldDef, vgField} from '../../fielddef';
+import {DateTime} from '../../datetime';
+import {FieldDef, ScaleFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {EncodingSortField, isSortArray, isSortField} from '../../sort';
+import {TimeUnit} from '../../timeunit';
+import {Type} from '../../type';
 import * as util from '../../util';
 import {isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain, VgDataRef, VgDomain, VgFieldRefUnionDomain, VgNonUnionDomain, VgSortField, VgUnionSortField} from '../../vega.schema';
 import {binRequiresRange} from '../common';
@@ -160,15 +162,22 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
+function mapDomainToDataSignal<T>(domain: T[], type: Type, timeUnit: TimeUnit) {
+  return domain.map(v => {
+    const data = valueExpr(v, {timeUnit, type});
+    return {signal: `{data: ${data}}`};
+  });
+}
+
 function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: UnitModel, channel: ScaleChannel | 'x2' | 'y2'): VgNonUnionDomain[] {
   const fieldDef = model.fieldDef(channel);
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-    if (isDateTime(domain[0])) {
-      return (domain as DateTime[]).map((dt) => {
-        return {signal: `{data: ${dateTimeExpr(dt, true)}}`};
-      });
+    const {type, timeUnit} = fieldDef;
+    if (type === 'temporal' || timeUnit) {
+      return mapDomainToDataSignal<number|string|boolean|DateTime>(domain, type, timeUnit);
     }
+
     return [domain];
   }
 

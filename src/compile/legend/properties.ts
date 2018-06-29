@@ -1,19 +1,17 @@
 import {Channel, isColorChannel} from '../../channel';
-import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
+import {FieldDef, valueArray} from '../../fielddef';
 import {Legend} from '../../legend';
 import {isBinScale, ScaleType} from '../../scale';
 import {Type} from '../../type';
 import {contains} from '../../util';
 
-export function values(legend: Legend) {
+export function values(legend: Legend, fieldDef: FieldDef<string>) {
   const vals = legend.values;
-  if (vals && isDateTime(vals[0])) {
-    return (vals as DateTime[]).map((dt) => {
-      // normalize = true as end user won't put 0 = January
-      return {signal: dateTimeExpr(dt, true)};
-    });
+
+  if (vals) {
+    return valueArray(fieldDef, vals);
   }
-  return vals;
+  return undefined;
 }
 
 export function type(t: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
