@@ -88,6 +88,12 @@
     "AnyMark": {
       "anyOf": [
         {
+          "$ref": "#/definitions/CompositeMark"
+        },
+        {
+          "$ref": "#/definitions/CompositeMarkDef"
+        },
+        {
           "$ref": "#/definitions/Mark"
         },
         {
@@ -977,6 +983,179 @@
       ],
       "type": "object"
     },
+    "BoxPlot": {
+      "enum": [
+        "boxplot"
+      ],
+      "type": "string"
+    },
+    "BoxPlotConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "size": {
+          "description": "Size of the box and median tick of a box plot ",
+          "type": "number"
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "BoxPlotDef": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.\n\n__Default value:__ `\"vertical\"`."
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "size": {
+          "description": "Size of the box and median tick of a box plot ",
+          "type": "number"
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/BoxPlot",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
@@ -1031,6 +1210,32 @@
         "as"
       ],
       "type": "object"
+    },
+    "CompositeMark": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlot"
+        },
+        {
+          "$ref": "#/definitions/ErrorBar"
+        },
+        {
+          "$ref": "#/definitions/ErrorBand"
+        }
+      ]
+    },
+    "CompositeMarkDef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlotDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBarDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBandDef"
+        }
+      ]
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -1564,6 +1769,10 @@
           "$ref": "#/definitions/BarConfig",
           "description": "Bar-Specific Config "
         },
+        "boxplot": {
+          "$ref": "#/definitions/BoxPlotConfig",
+          "description": "Box Config"
+        },
         "circle": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Circle-Specific Config "
@@ -1575,6 +1784,14 @@
         "datasets": {
           "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "errorband": {
+          "$ref": "#/definitions/ErrorBandConfig",
+          "description": "ErrorBand Config"
+        },
+        "errorbar": {
+          "$ref": "#/definitions/ErrorBarConfig",
+          "description": "ErrorBar Config"
         },
         "fieldTitle": {
           "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
@@ -2373,6 +2590,185 @@
         }
       },
       "type": "object"
+    },
+    "ErrorBand": {
+      "enum": [
+        "errorband"
+      ],
+      "type": "string"
+    },
+    "ErrorBandConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the band. Available options include:\n- `\"ci\"`: Extend the band to the confidence interval of the mean.\n- `\"stderr\"`: The size of band are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of band are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBandDef": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the band. Available options include:\n- `\"ci\"`: Extend the band to the confidence interval of the mean.\n- `\"stderr\"`: The size of band are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of band are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBand",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ErrorBar": {
+      "enum": [
+        "errorbar"
+      ],
+      "type": "string"
+    },
+    "ErrorBarConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBarDef": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBar",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ErrorBarExtent": {
+      "enum": [
+        "ci",
+        "iqr",
+        "stderr",
+        "stdev"
+      ],
+      "type": "string"
     },
     "LayerSpec": {
       "additionalProperties": false,
@@ -5536,6 +5932,117 @@
             "type": "string"
           }
         ]
+      },
+      "type": "object"
+    },
+    "PartsMixins<BoxPlotPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PartsMixins<ErrorBandPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PartsMixins<ErrorBarPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
       },
       "type": "object"
     },

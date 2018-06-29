@@ -22,6 +22,14 @@ describe('config', () => {
       title: {
         color: 'red',
         fontWeight: 'bold'
+      },
+      boxplot: {
+        rule: {
+          fill: 'red'
+        },
+        median: {
+          color: 'white'
+        }
       }
     };
     const copy = duplicate(config);
