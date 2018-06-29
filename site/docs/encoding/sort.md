@@ -25,9 +25,16 @@ permalink: /docs/sort.html
 
 The `sort` property of [a mark properties channel](encoding.html#mark-props) determines the order of the scale domain. Supported `sort` values depend on the field's scale type.
 
-## Sorting Continuous Scales
+## Documentation Overview
+{:.no_toc}
 
-If the channel has a continuous scale (quantitative or time), `sort` can have the following values:
+- TOC
+{:toc}
+
+
+## Sorting Continuous Fields
+
+If the channel has a continuous field (quantitative or time), `sort` can have the following values:
 - `"ascending"` (Default) –  the field is sorted by the field's value in ascending order.
 - `"descending"` –  the field is sorted by the field's value in descending order.
 
@@ -38,28 +45,33 @@ Setting x's `sort` to `"descending"` reverses the x-axis. Thus, the following vi
 <div class="vl-example" data-name="tick_sort"></div>
 
 
-## Sorting Discrete Scales
+## Sorting Discrete Fields
 
-If the channel has a discrete scale (`band`, `point` or `ordinal`), the field's values of the channel can be sorted in the following ways:
+If the channel has a discrete scale (ordinal or nominal), `sort` can be one of: `"ascending"`, `"descending"`, [a sort field definition](#sort-field) for sorting by another field, [an array specifying preferred order](#sort), or `null`.
+
+### Sort by the Field's Natural Order
 
 1) Sorting by the values' natural order in Javascript. For example, `"a"` < `"b"`. In this case, `sort` can be:
 
 - `"ascending"` (Default) –  sort by the field's value in ascending order.
 - `"descending"` –  sort by the field's value in descending order.
 
+### Sort by a Different Field
 {:#sort-field}
 
 2) Sorting by aggregated value of another "sort" field. In this case, `sort` is an __encoding sort field definition__, which has the following properties:
 
 {% include table.html props="field,op,order" source="EncodingSortField" %}
 
-3) Unsorted – `null` – The field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
+For example, the following plot sorts x by mean of Horsepower.
 
+<div class="vl-example" data-name="histogram_sort_mean"></div>
+
+
+### Specifying Custom Sort Order
 {:#sort-array}
 
-4) Sorting by preferred order of values by providing `sort` as an array of values that specify the order. Unspecified values will assume their original orders in the data source, preceded by the orders in the sort array.
-
-__Note__: It is also possible to sort by providing custom `scale`'s [`domain`](scale.html#domain). However, it is more error-prone compared to using `sort` array since `domain` requires every possible value to be included in the array. Thus, any value omitted from `domain` will not render properly.
+If the `sort` property is an array, it specifies the preferred order of values.
 
 In the case that sort array contains every field value, the sort order will follow the specified values in the array.
 
@@ -69,11 +81,22 @@ If some values are ignored, the sort order will precede by the specified values 
 
 <div class="vl-example" data-name="bar_custom_sort_partial"></div>
 
-#### Example: Sorting Ordinal Scale by Another Field
+For discrete time fields, values in the sort array can be [date-time definition objects](types#datetime).
+In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
 
-The following example sorts x by mean of Horsepower.
+For example, the following chart orders the day to start on Monday (instead of Sunday by default).
 
-<div class="vl-example" data-name="histogram_sort_mean"></div>
+<div class="vl-example" data-name="circle_github_punchcard"></div>
+
+
+__Note__: It is also possible to sort by providing custom `scale`'s [`domain`](scale.html#domain). However, it is more error-prone compared to using a `sort` array since `domain` requires every possible value to be included in the array. Thus, any value omitted from `domain` will not render properly.
+
+
+### No Sorting
+
+If `sort` is `null`, the field is not sorted. This is equivalent to specifying `sort: false` in [Vega's scales](https://vega.github.io/vega/docs/scales/#sort).
+
+__Note:__ `null` is not supported for `row` and `column`.
 
 <!-- TODO
 
