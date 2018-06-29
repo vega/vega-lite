@@ -163,51 +163,61 @@ export function expression(model: Model, filterOp: LogicalOperand<Predicate>, no
   });
 }
 
+function predicateValueExpr(v: number | string | boolean | DateTime, timeUnit: TimeUnit) {
+  return valueExpr(v, {timeUnit, time: true});
+}
+
+function predicateValuesExpr(vals: (number|string | boolean | DateTime)[], timeUnit: TimeUnit) {
+  return vals.map((v) => predicateValueExpr(v, timeUnit));
+}
+
 // This method is used by Voyager.  Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange=true) {
-  const fieldExpr = predicate.timeUnit ?
+  const {field, timeUnit} = predicate;
+  const fieldExpr = timeUnit ?
     // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-    ('time(' + timeUnitFieldExpr(predicate.timeUnit, predicate.field) + ')') :
+    ('time(' + timeUnitFieldExpr(timeUnit, field) + ')') :
     vgField(predicate, {expr: 'datum'});
 
   if (isFieldEqualPredicate(predicate)) {
-    return fieldExpr + '===' + valueExpr(predicate.equal, predicate.timeUnit);
+    return fieldExpr + '===' + predicateValueExpr(predicate.equal, timeUnit);
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
-    return `${fieldExpr}<${valueExpr(upper, predicate.timeUnit)}`;
+    return `${fieldExpr}<${predicateValueExpr(upper, timeUnit)}`;
   } else if (isFieldGTPredicate(predicate)) {
     const lower = predicate.gt;
-    return `${fieldExpr}>${valueExpr(lower, predicate.timeUnit)}`;
+    return `${fieldExpr}>${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldLTEPredicate(predicate)) {
     const upper = predicate.lte;
-    return `${fieldExpr}<=${valueExpr(upper, predicate.timeUnit)}`;
+    return `${fieldExpr}<=${predicateValueExpr(upper, timeUnit)}`;
   } else if (isFieldGTEPredicate(predicate)) {
     const lower = predicate.gte;
-    return `${fieldExpr}>=${valueExpr(lower, predicate.timeUnit)}`;
+    return `${fieldExpr}>=${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
     // "oneOf" was formerly "in" -- so we need to add backward compatibility
-    const oneOf: FieldOneOfPredicate[] = predicate.oneOf || predicate['in'];
+    let oneOf = predicate.oneOf;
+    oneOf = oneOf || predicate['in'];
     return 'indexof([' +
-      oneOf.map((v) => valueExpr(v, predicate.timeUnit)).join(',') +
-      '], ' + fieldExpr + ') !== -1';
+      predicateValuesExpr(oneOf, timeUnit).join(',') +
+    '], ' + fieldExpr + ') !== -1';
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
     const upper = predicate.range[1];
 
     if (lower !== null && upper !== null && useInRange) {
       return 'inrange(' + fieldExpr + ', [' +
-        valueExpr(lower, predicate.timeUnit) + ', ' +
-        valueExpr(upper, predicate.timeUnit) + '])';
+        predicateValueExpr(lower, timeUnit) + ', ' +
+        predicateValueExpr(upper, timeUnit) + '])';
     }
 
     const exprs = [];
     if (lower !== null) {
-      exprs.push(`${fieldExpr} >= ${valueExpr(lower, predicate.timeUnit)}`);
+      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, timeUnit)}`);
     }
     if (upper !== null) {
-      exprs.push(`${fieldExpr} <= ${valueExpr(upper, predicate.timeUnit)}`);
+      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, timeUnit)}`);
     }
 
     return exprs.length > 0 ? exprs.join(' && ') : 'true';

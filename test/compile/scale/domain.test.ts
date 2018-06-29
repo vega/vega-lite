@@ -361,14 +361,33 @@ describe('compile/scale', () => {
             }
           }
         });
-        const _domain = testParseDomainForChannel(model,'y');
+        const _domain = testParseDomainForChannel(model, 'y');
 
-        assert.deepEqual(_domain, [
+        expect(_domain).toEqual([
           {"signal": "{data: datetime(1970, 0, 1, 0, 0, 0, 0)}"},
           {"signal": "{data: datetime(1980, 0, 1, 0, 0, 0, 0)}"}
         ]);
       });
+
+    it('should return the right custom domain with date strings', () => {
+      const model = parseUnitModel({
+        mark: "point",
+        encoding: {
+          y: {
+            field: 'year',
+            type: "temporal",
+            scale: {domain: ["Jan 1, 2007", "Jan 1, 2009"]}
+          }
+        }
+      });
+      const _domain = testParseDomainForChannel(model, 'y');
+
+      expect(_domain).toEqual([
+        {"signal": `{data: datetime("Jan 1, 2007")}`},
+        {"signal": `{data: datetime("Jan 1, 2009")}`},
+      ]);
     });
+  });
 
     describe('for ordinal', function() {
       it('should have correct domain for binned ordinal color', function() {

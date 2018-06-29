@@ -643,22 +643,59 @@ export function isTimeFieldDef(fieldDef: FieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }
 
-/**
- * Getting any value associated with a fielddef
- */
-export function valueExpr(v: number | string | boolean | DateTime, timeUnit: TimeUnit): string {
 
+/**
+ * Getting a value associated with a fielddef.
+ * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
+ */
+export function valueExpr(
+  v: number | string | boolean | DateTime,
+  {timeUnit, type, time, undefinedIfExprNotRequired}: {
+    timeUnit: TimeUnit,
+    type?: Type,
+    time?: boolean
+    undefinedIfExprNotRequired?: boolean
+  }
+): string {
+
+  let expr = undefined;
   if (isDateTime(v)) {
-    return `time(${dateTimeExpr(v, true)})`;
-  } else if (isString(v)) {
-    if (isLocalSingleTimeUnit(timeUnit)) {
-      const expr = dateTimeExpr({[timeUnit]: v}, true);
-      return 'time(' + expr + ')';
-    } else if (isUtcSingleTimeUnit(timeUnit)) {
-      return valueExpr(v, getLocalTimeUnit(timeUnit);
+    expr = dateTimeExpr(v, true);
+  } else if (isString(v) || isNumber(v)) {
+    if (timeUnit || type === 'temporal') {
+      if (isLocalSingleTimeUnit(timeUnit)) {
+        expr = dateTimeExpr({[timeUnit]: v}, true);
+      } else if (isUtcSingleTimeUnit(timeUnit)) {
+        // FIXME is this really correct?
+        expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnit)});
+      } else {
+        // just pass the string to date function (which will call JS Date.parse())
+        expr = `datetime(${JSON.stringify(v)})`;
+      }
     }
   }
+  if (expr) {
+    return time ? `time(${expr})` : expr;
+  }
   // number or boolean or normal string
-  return JSON.stringify(v);
+  return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
+}
 
+/**
+ * Standardize value array -- convert each value to Vega expression if applicable
+ */
+export function valueArray(
+  fieldDef: FieldDef<string>,
+  values: (number | string | boolean | DateTime)[]
+) {
+  const {timeUnit, type} = fieldDef;
+  return values.map(v => {
+    const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});
+    // return signal for the expression if we need an expression
+    if (expr !== undefined) {
+      return {signal: expr};
+    }
+    // otherwise just return the original value
+    return v;
+  });
 }
