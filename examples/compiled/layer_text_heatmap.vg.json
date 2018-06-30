@@ -216,22 +216,10 @@
             "orient": "bottom",
             "grid": false,
             "title": "Cylinders",
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
             "zindex": 1
         },
         {

@@ -1,13 +1,13 @@
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {AxisOrient, VgAxis, VgAxisBase, VgAxisConfig} from './vega.schema';
+import {AxisOrient, VgAxis, VgAxisConfig} from './vega.schema';
 
 
 
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
-export interface Axis extends VgAxisBase, Guide {
+export interface Axis extends VgAxisConfig, Guide {
   /**
    * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
@@ -28,17 +28,6 @@ export interface Axis extends VgAxisBase, Guide {
    * __Default value__: `0`
    */
   position?: number;
-
-
-  /**
-   * The rotation angle of the axis labels.
-   *
-   * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
-   *
-   * @minimum -360
-   * @maximum 360
-   */
-  labelAngle?: number;
 
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
@@ -140,13 +129,27 @@ export interface AxisEncoding {
 const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
+  bandPosition: 1,
   domain: 1,
+  domainColor: 1,
+  domainWidth: 1,
   format: 1,
   grid: 1,
+  gridColor: 1,
+  gridDash: 1,
+  gridOpacity: 1,
+  gridWidth: 1,
   labelBound: 1,
+  labelBaseline: 1,
   labelFlush: 1,
   labelPadding: 1,
   labels: 1,
+  labelAngle: 1,
+  labelAlign: 1,
+  labelColor: 1,
+  labelFontSize: 1,
+  labelFont: 1,
+  labelLimit: 1,
   labelOverlap: 1,
   maxExtent: 1,
   minExtent: 1,
@@ -155,8 +158,21 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   tickCount: 1,
   ticks: 1,
   tickSize: 1,
+  tickRound: 1,
+  tickWidth: 1,
+  tickColor: 1,
   title: 1,
   titlePadding: 1,
+  titleAlign: 1,
+  titleAngle: 1,
+  titleBaseline: 1,
+  titleColor: 1,
+  titleFont: 1,
+  titleFontSize: 1,
+  titleFontWeight: 1,
+  titleLimit: 1,
+  titleX: 1,
+  titleY: 1,
   values: 1,
   zindex: 1,
 };

@@ -124,21 +124,9 @@
             "orient": "bottom",
             "grid": false,
             "title": "color",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "zindex": 1
         },
         {

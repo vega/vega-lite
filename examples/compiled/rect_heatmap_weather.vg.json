@@ -152,21 +152,18 @@
             "orient": "bottom",
             "grid": false,
             "title": "Day",
+            "labelAngle": 0,
             "encode": {
                 "labels": {
                     "update": {
                         "text": {
                             "signal": "timeFormat(datum.value, '%e')"
-                        },
-                        "align": {
-                            "value": "center"
-                        },
-                        "baseline": {
-                            "value": "top"
                         }
                     }
                 }
             },
+            "labelBaseline": "top",
+            "labelAlign": "center",
             "labelOverlap": true,
             "zindex": 1
         },
