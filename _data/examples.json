@@ -46,7 +46,7 @@
         "title": "Layered Bar Chart"
       },
       {
-        "name": "bar_diverging_stacked",
+        "name": "bar_diverging_stack_transform",
         "title": "Diverging Stacked Bar Chart"
       },
       {
@@ -188,6 +188,10 @@
         "name": "area_horizon",
         "title": "Horizon Graph",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "rect_mosaic_labelled_with_offset",
+        "title": "Mosaic Chart with Labels",
       }
     ],
     "Table-based Plots": [

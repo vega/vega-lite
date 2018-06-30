@@ -7341,6 +7341,58 @@
       ],
       "type": "string"
     },
+    "StackTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Output field names. This can be either a string or an array of strings with\ntwo elements denoting the name for the fields for stack start and stack end\nrespectively.\nIf a single string(eg.\"val\") is provided, the end field will be \"val_end\"."
+        },
+        "groupby": {
+          "description": "The data fields to group by.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "offset": {
+          "description": "Mode for stacking marks.\n__Default value:__ `\"zero\"`",
+          "enum": [
+            "zero",
+            "center",
+            "normalize"
+          ],
+          "type": "string"
+        },
+        "sort": {
+          "description": "Field that determines the order of leaves in the stacked charts.",
+          "items": {
+            "$ref": "#/definitions/SortField"
+          },
+          "type": "array"
+        },
+        "stack": {
+          "description": "The field which is stacked.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stack",
+        "groupby",
+        "as"
+      ],
+      "type": "object"
+    },
     "StrokeCap": {
       "enum": [
         "butt",
@@ -8606,6 +8658,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/StackTransform"
         }
       ]
     },

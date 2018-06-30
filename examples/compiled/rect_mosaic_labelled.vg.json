@@ -49,66 +49,27 @@
                     "type": "window",
                     "params": [
                         null,
-                        null,
-                        null,
                         null
                     ],
                     "as": [
                         "x",
-                        "x2",
-                        "rank_Cylinders",
-                        "distinct_Cylinders"
+                        "x2"
                     ],
                     "ops": [
                         "min",
-                        "max",
-                        "dense_rank",
-                        "distinct"
+                        "max"
                     ],
                     "fields": [
                         "stack_count_Origin1",
-                        "stack_count_Origin2",
-                        null,
-                        "Cylinders"
+                        "stack_count_Origin2"
                     ],
                     "sort": {
-                        "field": [
-                            "Cylinders"
-                        ],
-                        "order": [
-                            "ascending"
-                        ]
+                        "field": [],
+                        "order": []
                     },
                     "groupby": [
                         "Origin"
                     ],
-                    "frame": [
-                        null,
-                        null
-                    ]
-                },
-                {
-                    "type": "window",
-                    "params": [
-                        null
-                    ],
-                    "as": [
-                        "rank_Origin"
-                    ],
-                    "ops": [
-                        "dense_rank"
-                    ],
-                    "fields": [
-                        null
-                    ],
-                    "sort": {
-                        "field": [
-                            "Origin"
-                        ],
-                        "order": [
-                            "ascending"
-                        ]
-                    },
                     "frame": [
                         null,
                         null
@@ -136,32 +97,12 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.y + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
-                    "as": "ny"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.y2 + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
-                    "as": "ny2"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.x + (datum.rank_Origin - 1) * 0.01",
-                    "as": "nx"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.x2 + (datum.rank_Origin - 1) * 0.01",
-                    "as": "nx2"
-                },
-                {
-                    "type": "formula",
-                    "expr": "(datum.nx+datum.nx2)/2",
+                    "expr": "(datum.x+datum.x2)/2",
                     "as": "xc"
                 },
                 {
                     "type": "formula",
-                    "expr": "(datum.ny+datum.ny2)/2",
+                    "expr": "(datum.y+datum.y2)/2",
                     "as": "yc"
                 }
             ]
@@ -198,7 +139,7 @@
                 },
                 {
                     "type": "filter",
-                    "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"]) && datum[\"ny\"] !== null && !isNaN(datum[\"ny\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
                 }
             ]
         },
@@ -338,19 +279,19 @@
                             },
                             "x": {
                                 "scale": "x",
-                                "field": "nx"
+                                "field": "x"
                             },
                             "x2": {
                                 "scale": "x",
-                                "field": "nx2"
+                                "field": "x2"
                             },
                             "y": {
                                 "scale": "concat_1_y",
-                                "field": "ny"
+                                "field": "y"
                             },
                             "y2": {
                                 "scale": "concat_1_y",
-                                "field": "ny2"
+                                "field": "y2"
                             }
                         }
                     }
@@ -417,11 +358,11 @@
                     },
                     {
                         "data": "data_1",
-                        "field": "nx"
+                        "field": "x"
                     },
                     {
                         "data": "data_1",
-                        "field": "nx2"
+                        "field": "x2"
                     },
                     {
                         "data": "data_2",
@@ -477,11 +418,11 @@
                 "fields": [
                     {
                         "data": "data_1",
-                        "field": "ny"
+                        "field": "y"
                     },
                     {
                         "data": "data_1",
-                        "field": "ny2"
+                        "field": "y2"
                     },
                     {
                         "data": "data_2",
@@ -511,7 +452,7 @@
         },
         "style": {
             "cell": {
-                "stroke": null
+                "stroke": ""
             }
         }
     }
