@@ -3049,6 +3049,10 @@
       },
       "type": "object"
     },
+    "FacetedUnitSpec": {
+      "$ref": "#/definitions/FacetedCompositeUnitSpecAlias",
+      "description": "Unit spec that can have a composite mark and row or column channels."
+    },
     "FieldDef": {
       "additionalProperties": false,
       "description": "Definition object for a data field, its type and transformation of an encoding channel.",
@@ -3684,7 +3688,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/CompositeUnitSpec"
+              "$ref": "#/definitions/FacetedUnitSpec"
             }
           ],
           "description": "A specification of the view that gets faceted."
@@ -3875,7 +3879,7 @@
     "Spec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/CompositeUnitSpec"
+          "$ref": "#/definitions/FacetedUnitSpec"
         },
         {
           "$ref": "#/definitions/LayerSpec"
@@ -8469,7 +8473,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/CompositeUnitSpec"
+              "$ref": "#/definitions/FacetedUnitSpec"
             }
           ],
           "description": "A specification of the view that gets faceted."
