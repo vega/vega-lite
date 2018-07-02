@@ -3,8 +3,7 @@ import {Axis} from '../../axis';
 import {binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef, title as fieldDefTitle} from '../../fielddef';
+import {FieldDef, title as fieldDefTitle, valueArray} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
@@ -157,21 +156,20 @@ export function title(maxLength: number, fieldDef: FieldDef<string>, config: Con
 
 export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
   const vals = specifiedAxis.values;
-  if (specifiedAxis.values && isDateTime(vals[0])) {
-    return (vals as DateTime[]).map((dt) => {
-      // normalize = true as end user won't put 0 = January
-      return {signal: dateTimeExpr(dt, true)};
-    });
+
+  if (vals) {
+    return valueArray(fieldDef, vals);
   }
 
-  if (!vals && fieldDef.bin && fieldDef.type === QUANTITATIVE) {
+  if (fieldDef.bin && fieldDef.type === QUANTITATIVE) {
     const domain = model.scaleDomain(channel);
     if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-      return vals;
+      return undefined;
     }
+
     const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
     return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }
 
-  return vals;
+  return undefined;
 }

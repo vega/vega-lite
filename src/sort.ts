@@ -48,12 +48,12 @@ export interface EncodingSortField<F> {
   order?: SortOrder;
 }
 
-export type Sort<F> = (string | number | boolean | DateTime)[] | SortOrder | EncodingSortField<F> | null;
+export type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']) && !!sort['op'];
 }
 
-export function isSortArray<F>(sort: Sort<F>): sort is (string | number | boolean | DateTime)[] {
+export function isSortArray<F>(sort: Sort<F>): sort is number[] | string[] | boolean[] | DateTime[] {
   return !!sort && isArray(sort);
 }

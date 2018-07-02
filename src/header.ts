@@ -1,4 +1,4 @@
-import {TextBaseline} from '../node_modules/vega';
+import {TextBaseline} from 'vega';
 import {Guide} from './guide';
 import {FontWeight, VgTitleConfig} from './vega.schema';
 

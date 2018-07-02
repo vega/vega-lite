@@ -7,6 +7,7 @@ import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
+import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {TitleMixins} from './guide';
 import {Legend} from './legend';
 import * as log from './log';
@@ -15,7 +16,7 @@ import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {Sort, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
@@ -640,4 +641,61 @@ export function isNumberFieldDef(fieldDef: FieldDef<any>) {
 
 export function isTimeFieldDef(fieldDef: FieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
+}
+
+
+/**
+ * Getting a value associated with a fielddef.
+ * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
+ */
+export function valueExpr(
+  v: number | string | boolean | DateTime,
+  {timeUnit, type, time, undefinedIfExprNotRequired}: {
+    timeUnit: TimeUnit,
+    type?: Type,
+    time?: boolean
+    undefinedIfExprNotRequired?: boolean
+  }
+): string {
+
+  let expr = undefined;
+  if (isDateTime(v)) {
+    expr = dateTimeExpr(v, true);
+  } else if (isString(v) || isNumber(v)) {
+    if (timeUnit || type === 'temporal') {
+      if (isLocalSingleTimeUnit(timeUnit)) {
+        expr = dateTimeExpr({[timeUnit]: v}, true);
+      } else if (isUtcSingleTimeUnit(timeUnit)) {
+        // FIXME is this really correct?
+        expr = valueExpr(v, {timeUnit: getLocalTimeUnit(timeUnit)});
+      } else {
+        // just pass the string to date function (which will call JS Date.parse())
+        expr = `datetime(${JSON.stringify(v)})`;
+      }
+    }
+  }
+  if (expr) {
+    return time ? `time(${expr})` : expr;
+  }
+  // number or boolean or normal string
+  return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
+}
+
+/**
+ * Standardize value array -- convert each value to Vega expression if applicable
+ */
+export function valueArray(
+  fieldDef: FieldDef<string>,
+  values: (number | string | boolean | DateTime)[]
+) {
+  const {timeUnit, type} = fieldDef;
+  return values.map(v => {
+    const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});
+    // return signal for the expression if we need an expression
+    if (expr !== undefined) {
+      return {signal: expr};
+    }
+    // otherwise just return the original value
+    return v;
+  });
 }

@@ -564,6 +564,18 @@
             },
             {
               "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
@@ -4533,6 +4545,12 @@
             },
             {
               "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
@@ -7277,20 +7295,25 @@
       "anyOf": [
         {
           "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "boolean"
-              },
-              {
-                "$ref": "#/definitions/DateTime"
-              }
-            ]
+            "type": "number"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "boolean"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "$ref": "#/definitions/DateTime"
           },
           "type": "array"
         },
