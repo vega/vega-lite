@@ -83,8 +83,6 @@ export declare namespace message {
     function discreteChannelCannotEncode(channel: Channel, type: Type): string;
     const BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL = "Bar mark should not be used with point scale when rangeStep is null. Please use band scale instead.";
     function lineWithRange(hasX2: boolean, hasY2: boolean): string;
-    function unclearOrientContinuous(mark: Mark): string;
-    function unclearOrientDiscreteOrEmpty(mark: Mark): string;
     function orientOverridden(original: string, actual: string): string;
     const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = "custom domain scale cannot be unioned with default field-based domain";
     function cannotUseScalePropertyWithNonColor(prop: string): string;
@@ -97,7 +95,7 @@ export declare namespace message {
     function scaleTypeNotWorkWithFieldDef(scaleType: ScaleType, defaultScaleType: ScaleType): string;
     function scalePropertyNotWorkWithScaleType(scaleType: ScaleType, propName: string, channel: Channel): string;
     function scaleTypeNotWorkWithMark(mark: Mark, scaleType: ScaleType): string;
-    function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T): string;
+    function mergeConflictingProperty<T>(property: string | number | symbol, propertyOf: string | number | symbol, v1: T, v2: T): string;
     function independentScaleMeansIndependentGuide(channel: Channel): string;
     function domainSortDropped(sort: VgSortField): string;
     const UNABLE_TO_MERGE_DOMAINS = "Unable to merge domains";

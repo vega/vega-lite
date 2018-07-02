@@ -39,6 +39,12 @@ export interface BaseBin {
      */
     maxbins?: number;
     /**
+     * A value in the binned domain at which to anchor the bins, shifting the bin boundaries if necessary to ensure that a boundary aligns with the anchor value.
+     *
+     * __Default Value:__ the minimum bin extent value
+     */
+    anchor?: number;
+    /**
      * If true (the default), attempts to make the bin boundaries use human-friendly boundaries, such as multiples of ten.
      */
     nice?: boolean;

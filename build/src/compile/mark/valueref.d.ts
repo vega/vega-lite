@@ -6,13 +6,13 @@ import { StackProperties } from '../../stack';
 import { VgSignalRef, VgValueRef } from '../../vega.schema';
 import { ScaleComponent } from '../scale/component';
 /**
- * @return Vega ValueRef for stackable x or y
+ * @return Vega ValueRef for normal x- or y-position without projection
  */
-export declare function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef;
+export declare function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef;
 /**
- * @return Vega ValueRef for stackable x2 or y2
+ * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export declare function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef;
+export declare function position2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef;
 export declare function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef): any;
 /**
  * Value Ref for binned fields
@@ -26,7 +26,7 @@ export declare function bandRef(scaleName: string, band?: number | boolean): VgV
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export declare function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef;
+export declare function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef;
 export declare function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef;
 export declare function mid(sizeRef: VgSignalRef): VgValueRef;
-export declare function getDefaultRef(defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', channel: 'x' | 'y', scaleName: string, scale: ScaleComponent, mark: Mark): VgValueRef;
+export declare function getDefaultRef(defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax', channel: 'x' | 'y', scaleName: string, scale: ScaleComponent, mark: Mark): () => VgValueRef;

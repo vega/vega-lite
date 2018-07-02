@@ -9,7 +9,7 @@ import { Repeat } from './repeat';
 import { Resolve } from './resolve';
 import { SelectionDef } from './selection';
 import { TitleParams } from './title';
-import { TopLevelProperties } from './toplevelprops';
+import { ConcatLayout, GenericCompositionLayout, TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
 export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
     /**
@@ -136,7 +136,7 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
     projection?: Projection;
 }
 export declare type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
-export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec {
+export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, GenericCompositionLayout {
     /**
      * An object that describes mappings between `row` and `column` channels and their field definitions.
      */
@@ -151,7 +151,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
     resolve?: Resolve;
 }
 export declare type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
-export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec {
+export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, GenericCompositionLayout {
     /**
      * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
      */
@@ -163,7 +163,7 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
     resolve?: Resolve;
 }
 export declare type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
-export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec {
+export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, ConcatLayout {
     /**
      * A list of views that should be concatenated and put into a column.
      */
@@ -173,7 +173,7 @@ export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L exten
      */
     resolve?: Resolve;
 }
-export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec {
+export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> extends BaseSpec, ConcatLayout {
     /**
      * A list of views that should be concatenated and put into a row.
      */

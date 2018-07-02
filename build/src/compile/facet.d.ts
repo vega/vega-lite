@@ -1,18 +1,20 @@
 import { Channel } from '../channel';
 import { Config } from '../config';
-import { FacetMapping } from '../facet';
+import { FacetFieldDef, FacetMapping } from '../facet';
 import { FieldDef } from '../fielddef';
+import { EncodingSortField } from '../sort';
 import { NormalizedFacetSpec } from '../spec';
 import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
+export declare function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, expr?: 'datum'): string;
 export declare class FacetModel extends ModelWithField {
     readonly type: 'facet';
     readonly facet: FacetMapping<string>;
     readonly child: Model;
     readonly children: Model[];
     constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
-    private initFacet(facet);
+    private initFacet;
     channelHasField(channel: Channel): boolean;
     fieldDef(channel: Channel): FieldDef<string>;
     parseData(): void;
@@ -20,21 +22,24 @@ export declare class FacetModel extends ModelWithField {
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;
-    private parseHeader(channel);
-    private makeHeaderComponent(channel, labels);
-    private mergeChildAxis(channel);
+    private parseHeader;
+    private makeHeaderComponent;
+    private mergeChildAxis;
     assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
     assembleSelectionSignals(): VgSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
-    private getLayoutBandMixins(headerType);
-    assembleLayout(): VgLayout;
+    private getHeaderLayoutMixins;
+    protected assembleDefaultLayout(): VgLayout;
     assembleLayoutSignals(): VgSignal[];
-    private columnDistinctSignal();
+    private columnDistinctSignal;
     assembleGroup(signals: VgSignal[]): any;
     /**
      * Aggregate cardinality for calculating size
      */
-    private getCardinalityAggregateForChild();
+    private getCardinalityAggregateForChild;
+    private assembleFacet;
+    private headerSortFields;
+    private headerSortOrder;
     assembleMarks(): VgMarkGroup[];
     protected getMapping(): FacetMapping<string>;
 }

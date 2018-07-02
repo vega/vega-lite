@@ -8,7 +8,8 @@ import { VgEncodeEntry, VgSort } from '../vega.schema';
 import { AxisComponentProps } from './axis/component';
 import { Explicit } from './split';
 import { UnitModel } from './unit';
-export declare function applyConfig(e: VgEncodeEntry, config: ViewConfig | MarkConfig | TextConfig, propsList: string[]): VgEncodeEntry;
+export declare function applyConfig(e: VgEncodeEntry, config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
+propsList: string[]): VgEncodeEntry;
 export declare function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]): VgEncodeEntry;
 export declare function getStyles(mark: MarkDef): string[];
 /**

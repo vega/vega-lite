@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isScaleFieldDef, vgField } from '../../fielddef';
+import { fieldFilterExpression } from '../../predicate';
 import { isSortArray } from '../../sort';
 import { duplicate } from '../../util';
 import { DataFlowNode } from './dataflow';
@@ -19,24 +20,23 @@ var CalculateNode = /** @class */ (function (_super) {
     CalculateNode.parseAllForSortIndex = function (parent, model) {
         // get all the encoding with sort fields from model
         model.forEachFieldDef(function (fieldDef, channel) {
-            if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
-                var transform = {
-                    calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
-                    as: sortArrayIndexField(model, channel)
-                };
-                parent = new CalculateNode(parent, transform);
+            if (!isScaleFieldDef(fieldDef)) {
+                return;
+            }
+            if (isSortArray(fieldDef.sort)) {
+                var field_1 = fieldDef.field, timeUnit_1 = fieldDef.timeUnit;
+                var sort = fieldDef.sort;
+                // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
+                var calculate = sort.map(function (sortValue, i) {
+                    return fieldFilterExpression({ field: field_1, timeUnit: timeUnit_1, equal: sortValue }) + " ? " + i + " : ";
+                }).join('') + sort.length;
+                parent = new CalculateNode(parent, {
+                    calculate: calculate,
+                    as: sortArrayIndexField(fieldDef, channel)
+                });
             }
         });
         return parent;
-    };
-    CalculateNode.calculateExpressionFromSortField = function (field, sortFields) {
-        var expression = '';
-        var i;
-        for (i = 0; i < sortFields.length; i++) {
-            expression += "datum." + field + " === '" + sortFields[i] + "' ? " + i + " : ";
-        }
-        expression += i;
-        return expression;
     };
     CalculateNode.prototype.producedFields = function () {
         var out = {};
@@ -53,8 +53,7 @@ var CalculateNode = /** @class */ (function (_super) {
     return CalculateNode;
 }(DataFlowNode));
 export { CalculateNode };
-export function sortArrayIndexField(model, channel) {
-    var fieldDef = model.fieldDef(channel);
-    return channel + "_" + vgField(fieldDef) + "_sort_index";
+export function sortArrayIndexField(fieldDef, channel, expr) {
+    return vgField(fieldDef, { prefix: channel, suffix: 'sort_index', expr: expr });
 }
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FsY3VsYXRlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2NvbXBpbGUvZGF0YS9jYWxjdWxhdGUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjtBQUFBLE9BQU8sRUFBQyxlQUFlLEVBQWlCLE9BQU8sRUFBQyxNQUFNLGdCQUFnQixDQUFDO0FBQ3ZFLE9BQU8sRUFBQyxXQUFXLEVBQUMsTUFBTSxZQUFZLENBQUM7QUFDdkMsT0FBTyxFQUFDLFNBQVMsRUFBQyxNQUFNLFlBQVksQ0FBQztBQUtyQyxPQUFPLEVBQUMsWUFBWSxFQUFDLE1BQU0sWUFBWSxDQUFDO0FBRXhDOztHQUVHO0FBQ0g7SUFBbUMseUNBQVk7SUFLN0MsdUJBQVksTUFBb0IsRUFBVSxTQUE2QjtRQUF2RSxZQUNFLGtCQUFNLE1BQU0sQ0FBQyxTQUNkO1FBRnlDLGVBQVMsR0FBVCxTQUFTLENBQW9COztJQUV2RSxDQUFDO0lBTk0sNkJBQUssR0FBWjtRQUNFLE9BQU8sSUFBSSxhQUFhLENBQUMsSUFBSSxFQUFFLFNBQVMsQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLENBQUMsQ0FBQztJQUM1RCxDQUFDO0lBTWEsa0NBQW9CLEdBQWxDLFVBQW1DLE1BQW9CLEVBQUUsS0FBcUI7UUFDNUUsbURBQW1EO1FBQ25ELEtBQUssQ0FBQyxlQUFlLENBQUMsVUFBQyxRQUErQixFQUFFLE9BQXlCO1lBQy9FLElBQUksZUFBZSxDQUFDLFFBQVEsQ0FBQyxJQUFJLFdBQVcsQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLEVBQUU7Z0JBQzNELElBQU0sU0FBUyxHQUF1QjtvQkFDcEMsU0FBUyxFQUFFLGFBQWEsQ0FBQyxnQ0FBZ0MsQ0FBQyxRQUFRLENBQUMsS0FBSyxFQUFFLFFBQVEsQ0FBQyxJQUFJLENBQUM7b0JBQ3hGLEVBQUUsRUFBRSxtQkFBbUIsQ0FBQyxLQUFLLEVBQUUsT0FBTyxDQUFDO2lCQUN4QyxDQUFDO2dCQUNGLE1BQU0sR0FBRyxJQUFJLGFBQWEsQ0FBQyxNQUFNLEVBQUUsU0FBUyxDQUFDLENBQUM7YUFDL0M7UUFDSCxDQUFDLENBQUMsQ0FBQztRQUNILE9BQU8sTUFBTSxDQUFDO0lBQ2hCLENBQUM7SUFFYSw4Q0FBZ0MsR0FBOUMsVUFBK0MsS0FBYSxFQUFFLFVBQW9CO1FBQ2hGLElBQUksVUFBVSxHQUFHLEVBQUUsQ0FBQztRQUNwQixJQUFJLENBQVMsQ0FBQztRQUNkLEtBQUssQ0FBQyxHQUFHLENBQUMsRUFBRSxDQUFDLEdBQUcsVUFBVSxDQUFDLE1BQU0sRUFBRSxDQUFDLEVBQUUsRUFBRTtZQUN0QyxVQUFVLElBQUksV0FBUyxLQUFLLGNBQVMsVUFBVSxDQUFDLENBQUMsQ0FBQyxZQUFPLENBQUMsUUFBSyxDQUFDO1NBQ2pFO1FBQ0QsVUFBVSxJQUFJLENBQUMsQ0FBQztRQUNoQixPQUFPLFVBQVUsQ0FBQztJQUNwQixDQUFDO0lBRU0sc0NBQWMsR0FBckI7UUFDRSxJQUFNLEdBQUcsR0FBRyxFQUFFLENBQUM7UUFDZixHQUFHLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxFQUFFLENBQUMsR0FBRyxJQUFJLENBQUM7UUFDOUIsT0FBTyxHQUFHLENBQUM7SUFDYixDQUFDO0lBRU0sZ0NBQVEsR0FBZjtRQUNFLE9BQU87WUFDTCxJQUFJLEVBQUUsU0FBUztZQUNmLElBQUksRUFBRSxJQUFJLENBQUMsU0FBUyxDQUFDLFNBQVM7WUFDOUIsRUFBRSxFQUFFLElBQUksQ0FBQyxTQUFTLENBQUMsRUFBRTtTQUN0QixDQUFDO0lBQ0osQ0FBQztJQUNILG9CQUFDO0FBQUQsQ0FBQyxBQTlDRCxDQUFtQyxZQUFZLEdBOEM5Qzs7QUFFRCxNQUFNLDhCQUE4QixLQUFxQixFQUFFLE9BQXlCO0lBQ2xGLElBQU0sUUFBUSxHQUFHLEtBQUssQ0FBQyxRQUFRLENBQUMsT0FBTyxDQUFDLENBQUM7SUFDekMsT0FBVSxPQUFPLFNBQUksT0FBTyxDQUFDLFFBQVEsQ0FBQyxnQkFBYSxDQUFDO0FBQ3RELENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQge2lzU2NhbGVGaWVsZERlZiwgU2NhbGVGaWVsZERlZiwgdmdGaWVsZH0gZnJvbSAnLi4vLi4vZmllbGRkZWYnO1xuaW1wb3J0IHtpc1NvcnRBcnJheX0gZnJvbSAnLi4vLi4vc29ydCc7XG5pbXBvcnQge2R1cGxpY2F0ZX0gZnJvbSAnLi4vLi4vdXRpbCc7XG5pbXBvcnQge1ZnRm9ybXVsYVRyYW5zZm9ybX0gZnJvbSAnLi4vLi4vdmVnYS5zY2hlbWEnO1xuaW1wb3J0IHtNb2RlbFdpdGhGaWVsZH0gZnJvbSAnLi4vbW9kZWwnO1xuaW1wb3J0IHtTaW5nbGVEZWZDaGFubmVsfSBmcm9tICcuLy4uLy4uL2NoYW5uZWwnO1xuaW1wb3J0IHtDYWxjdWxhdGVUcmFuc2Zvcm19IGZyb20gJy4vLi4vLi4vdHJhbnNmb3JtJztcbmltcG9ydCB7RGF0YUZsb3dOb2RlfSBmcm9tICcuL2RhdGFmbG93JztcblxuLyoqXG4gKiBXZSBkb24ndCBrbm93IHdoYXQgYSBjYWxjdWxhdGUgbm9kZSBkZXBlbmRzIG9uIHNvIHdlIHNob3VsZCBuZXZlciBtb3ZlIGl0IGJleW9uZCBhbnl0aGluZyB0aGF0IHByb2R1Y2VzIGZpZWxkcy5cbiAqL1xuZXhwb3J0IGNsYXNzIENhbGN1bGF0ZU5vZGUgZXh0ZW5kcyBEYXRhRmxvd05vZGUge1xuICBwdWJsaWMgY2xvbmUoKSB7XG4gICAgcmV0dXJuIG5ldyBDYWxjdWxhdGVOb2RlKG51bGwsIGR1cGxpY2F0ZSh0aGlzLnRyYW5zZm9ybSkpO1xuICB9XG5cbiAgY29uc3RydWN0b3IocGFyZW50OiBEYXRhRmxvd05vZGUsIHByaXZhdGUgdHJhbnNmb3JtOiBDYWxjdWxhdGVUcmFuc2Zvcm0pIHtcbiAgICBzdXBlcihwYXJlbnQpO1xuICB9XG5cbiAgcHVibGljIHN0YXRpYyBwYXJzZUFsbEZvclNvcnRJbmRleChwYXJlbnQ6IERhdGFGbG93Tm9kZSwgbW9kZWw6IE1vZGVsV2l0aEZpZWxkKSB7XG4gICAgLy8gZ2V0IGFsbCB0aGUgZW5jb2Rpbmcgd2l0aCBzb3J0IGZpZWxkcyBmcm9tIG1vZGVsXG4gICAgbW9kZWwuZm9yRWFjaEZpZWxkRGVmKChmaWVsZERlZjogU2NhbGVGaWVsZERlZjxzdHJpbmc+LCBjaGFubmVsOiBTaW5nbGVEZWZDaGFubmVsKSA9PiB7XG4gICAgICBpZiAoaXNTY2FsZUZpZWxkRGVmKGZpZWxkRGVmKSAmJiBpc1NvcnRBcnJheShmaWVsZERlZi5zb3J0KSkge1xuICAgICAgICBjb25zdCB0cmFuc2Zvcm06IENhbGN1bGF0ZVRyYW5zZm9ybSA9IHtcbiAgICAgICAgICBjYWxjdWxhdGU6IENhbGN1bGF0ZU5vZGUuY2FsY3VsYXRlRXhwcmVzc2lvbkZyb21Tb3J0RmllbGQoZmllbGREZWYuZmllbGQsIGZpZWxkRGVmLnNvcnQpLFxuICAgICAgICAgIGFzOiBzb3J0QXJyYXlJbmRleEZpZWxkKG1vZGVsLCBjaGFubmVsKVxuICAgICAgICB9O1xuICAgICAgICBwYXJlbnQgPSBuZXcgQ2FsY3VsYXRlTm9kZShwYXJlbnQsIHRyYW5zZm9ybSk7XG4gICAgICB9XG4gICAgfSk7XG4gICAgcmV0dXJuIHBhcmVudDtcbiAgfVxuXG4gIHB1YmxpYyBzdGF0aWMgY2FsY3VsYXRlRXhwcmVzc2lvbkZyb21Tb3J0RmllbGQoZmllbGQ6IHN0cmluZywgc29ydEZpZWxkczogc3RyaW5nW10pOiBzdHJpbmcge1xuICAgIGxldCBleHByZXNzaW9uID0gJyc7XG4gICAgbGV0IGk6IG51bWJlcjtcbiAgICBmb3IgKGkgPSAwOyBpIDwgc29ydEZpZWxkcy5sZW5ndGg7IGkrKykge1xuICAgICAgZXhwcmVzc2lvbiArPSBgZGF0dW0uJHtmaWVsZH0gPT09ICcke3NvcnRGaWVsZHNbaV19JyA/ICR7aX0gOiBgO1xuICAgIH1cbiAgICBleHByZXNzaW9uICs9IGk7XG4gICAgcmV0dXJuIGV4cHJlc3Npb247XG4gIH1cblxuICBwdWJsaWMgcHJvZHVjZWRGaWVsZHMoKSB7XG4gICAgY29uc3Qgb3V0ID0ge307XG4gICAgb3V0W3RoaXMudHJhbnNmb3JtLmFzXSA9IHRydWU7XG4gICAgcmV0dXJuIG91dDtcbiAgfVxuXG4gIHB1YmxpYyBhc3NlbWJsZSgpOiBWZ0Zvcm11bGFUcmFuc2Zvcm0ge1xuICAgIHJldHVybiB7XG4gICAgICB0eXBlOiAnZm9ybXVsYScsXG4gICAgICBleHByOiB0aGlzLnRyYW5zZm9ybS5jYWxjdWxhdGUsXG4gICAgICBhczogdGhpcy50cmFuc2Zvcm0uYXNcbiAgICB9O1xuICB9XG59XG5cbmV4cG9ydCBmdW5jdGlvbiBzb3J0QXJyYXlJbmRleEZpZWxkKG1vZGVsOiBNb2RlbFdpdGhGaWVsZCwgY2hhbm5lbDogU2luZ2xlRGVmQ2hhbm5lbCkge1xuICBjb25zdCBmaWVsZERlZiA9IG1vZGVsLmZpZWxkRGVmKGNoYW5uZWwpO1xuICByZXR1cm4gYCR7Y2hhbm5lbH1fJHt2Z0ZpZWxkKGZpZWxkRGVmKX1fc29ydF9pbmRleGA7XG59XG4iXX0=
+//# sourceMappingURL=calculate.js.map

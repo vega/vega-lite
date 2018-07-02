@@ -1,3 +1,4 @@
+import { FieldDef } from '../../fielddef';
 import { VgFormulaTransform } from '../../vega.schema';
 import { ModelWithField } from '../model';
 import { SingleDefChannel } from './../../channel';
@@ -11,8 +12,7 @@ export declare class CalculateNode extends DataFlowNode {
     clone(): CalculateNode;
     constructor(parent: DataFlowNode, transform: CalculateTransform);
     static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField): DataFlowNode;
-    static calculateExpressionFromSortField(field: string, sortFields: string[]): string;
     producedFields(): {};
     assemble(): VgFormulaTransform;
 }
-export declare function sortArrayIndexField(model: ModelWithField, channel: SingleDefChannel): string;
+export declare function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum'): string;

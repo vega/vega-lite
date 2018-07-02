@@ -138,25 +138,23 @@ export declare type RowCol<T> = {
     column?: T;
 };
 export interface VgLayout {
-    padding: number | RowCol<number>;
+    center?: boolean | RowCol<boolean>;
+    padding?: number | RowCol<number>;
     headerBand?: number | RowCol<number>;
     footerBand?: number | RowCol<number>;
-    offset: number | {
-        rowHeader: number;
-        rowFooter: number;
-        rowTitle: number;
-        columnHeader: number;
-        columnFooter: number;
-        columnTitle: number;
+    offset?: number | {
+        rowHeader?: number;
+        rowFooter?: number;
+        rowTitle?: number;
+        columnHeader?: number;
+        columnFooter?: number;
+        columnTitle?: number;
     };
-    bounds: 'full' | 'flush';
+    bounds?: 'full' | 'flush';
     columns?: number | {
         signal: string;
     };
-    align?: VgLayoutAlign | {
-        row: VgLayoutAlign;
-        column: VgLayoutAlign;
-    };
+    align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
 }
 export declare function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain;
 export declare function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain;
@@ -179,7 +177,7 @@ export interface VgSignal {
     value?: string | number | boolean | {} | VgSignalRef;
     push?: string;
 }
-export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeCap' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle' | 'tooltip' | 'href' | 'cursor' | 'defined';
+export declare type VgEncodeChannel = 'x' | 'x2' | 'xc' | 'width' | 'y' | 'y2' | 'yc' | 'height' | 'opacity' | 'fill' | 'fillOpacity' | 'stroke' | 'strokeWidth' | 'strokeCap' | 'strokeOpacity' | 'strokeDash' | 'strokeDashOffset' | 'strokeMiterLimit' | 'strokeJoin' | 'cursor' | 'clip' | 'size' | 'shape' | 'path' | 'innerRadius' | 'outerRadius' | 'startAngle' | 'endAngle' | 'interpolate' | 'tension' | 'orient' | 'url' | 'align' | 'baseline' | 'text' | 'dir' | 'ellipsis' | 'limit' | 'dx' | 'dy' | 'radius' | 'theta' | 'angle' | 'font' | 'fontSize' | 'fontWeight' | 'fontStyle' | 'tooltip' | 'href' | 'cursor' | 'defined' | 'cornerRadius';
 export declare type VgEncodeEntry = {
     [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {
         test?: string;
@@ -739,6 +737,10 @@ export declare type HorizontalAlign = 'left' | 'right' | 'center';
 export declare type Interpolate = 'linear' | 'linear-closed' | 'step' | 'step-before' | 'step-after' | 'basis' | 'basis-open' | 'basis-closed' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'bundle' | 'monotone';
 export declare type Orient = 'horizontal' | 'vertical';
 export declare type VerticalAlign = 'top' | 'middle' | 'bottom';
+export declare type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
+export declare type StrokeCap = 'butt' | 'round' | 'square';
+export declare type StrokeJoin = 'miter' | 'round' | 'bevel';
+export declare type Dir = 'ltr' | 'rtl';
 export interface VgMarkConfig {
     /**
      * Default Fill Color.  This has higher precedence than `config.color`
@@ -792,7 +794,7 @@ export interface VgMarkConfig {
      *
      * __Default value:__ `"square"`
      */
-    strokeCap?: 'butt' | 'round' | 'square';
+    strokeCap?: StrokeCap;
     /**
      * An array of alternating stroke, space lengths for creating dashed or dotted lines.
      */
@@ -801,6 +803,16 @@ export interface VgMarkConfig {
      * The offset (in pixels) into which to begin drawing with the stroke dash array.
      */
     strokeDashOffset?: number;
+    /**
+     * The stroke line join method. One of `"miter"`, `"round"` or `"bevel"`.
+     *
+     * __Default value:__ `"miter"`
+     */
+    strokeJoin?: StrokeJoin;
+    /**
+     * The miter limit at which to bevel a line join.
+     */
+    strokeMiterLimit?: number;
     /**
      * The orientation of a non-stacked bar, tick, area, and line charts.
      * The value is either horizontal (default) or vertical.
@@ -870,6 +882,12 @@ export interface VgMarkConfig {
      */
     baseline?: VerticalAlign;
     /**
+     * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+     *
+     * __Default value:__ `"ltr"`
+     */
+    dir?: Dir;
+    /**
      * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
      */
     dx?: number;
@@ -883,9 +901,17 @@ export interface VgMarkConfig {
      */
     radius?: number;
     /**
-     * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
+     * The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
+     *
+     * __Default value:__ `0`, indicating no limit
      */
     limit?: number;
+    /**
+     * The ellipsis string for text truncated in response to the limit parameter.
+     *
+     * __Default value:__ `"…"`
+     */
+    ellipsis?: string;
     /**
      * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
      */
@@ -921,9 +947,19 @@ export interface VgMarkConfig {
     /**
      * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
      */
-    cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
+    cursor?: Cursor;
+    /**
+     * The tooltip text to show upon mouse hover.
+     */
+    tooltip?: any;
+    /**
+     * The radius in pixels of rounded rectangle corners.
+     *
+     * __Default value:__ `0`
+     */
+    cornerRadius?: number;
 }
-export declare const VG_MARK_CONFIGS: ("font" | "text" | "shape" | "orient" | "interpolate" | "fill" | "stroke" | "opacity" | "size" | "href" | "radius" | "fillOpacity" | "strokeWidth" | "strokeCap" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "cursor" | "tension" | "align" | "baseline" | "limit" | "dx" | "dy" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle")[];
+export declare const VG_MARK_CONFIGS: ("dir" | "font" | "text" | "shape" | "orient" | "interpolate" | "fill" | "stroke" | "opacity" | "size" | "tooltip" | "href" | "fillOpacity" | "strokeWidth" | "strokeCap" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "cursor" | "tension" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "strokeJoin" | "strokeMiterLimit" | "cornerRadius")[];
 export declare type Anchor = 'start' | 'middle' | 'end';
 export interface VgTitle {
     /**

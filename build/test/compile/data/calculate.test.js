@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { CalculateNode } from '../../../src/compile/data/calculate';
 import { parseUnitModel } from '../../util';
 function assembleFromSortArray(model) {
@@ -7,29 +6,27 @@ function assembleFromSortArray(model) {
     return node.assemble();
 }
 describe('compile/data/calculate', function () {
-    it('makeAllForSortIndex', function () {
-        var model = parseUnitModel({
-            data: {
-                values: [
-                    { a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }
-                ]
-            },
-            mark: 'bar',
-            encoding: {
-                x: { field: 'a', type: 'ordinal', sort: ['B', 'A', 'C'] },
-                y: { field: 'b', type: 'quantitative' }
-            }
+    describe('makeAllForSortIndex', function () {
+        it('produces correct formula transform', function () {
+            var model = parseUnitModel({
+                data: {
+                    values: [
+                        { a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }
+                    ]
+                },
+                mark: 'bar',
+                encoding: {
+                    x: { field: 'a', type: 'ordinal', sort: ['B', 'A', 'C'] },
+                    y: { field: 'b', type: 'quantitative' }
+                }
+            });
+            var nodes = assembleFromSortArray(model);
+            expect(nodes).toEqual({
+                type: 'formula',
+                expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
+                as: 'x_a_sort_index'
+            });
         });
-        var nodes = assembleFromSortArray(model);
-        assert.deepEqual(nodes, {
-            type: 'formula',
-            expr: "datum.a === 'B' ? 0 : datum.a === 'A' ? 1 : datum.a === 'C' ? 2 : 3",
-            as: 'x_a_sort_index'
-        });
-    });
-    it('calculateExpressionFromSortField', function () {
-        var expression = CalculateNode.calculateExpressionFromSortField('a', ["B", "A", "C"]);
-        assert.equal(expression, "datum.a === 'B' ? 0 : datum.a === 'A' ? 1 : datum.a === 'C' ? 2 : 3");
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2FsY3VsYXRlLnRlc3QuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi90ZXN0L2NvbXBpbGUvZGF0YS9jYWxjdWxhdGUudGVzdC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSw4QkFBOEI7QUFDOUIsT0FBTyxFQUFDLE1BQU0sRUFBQyxNQUFNLE1BQU0sQ0FBQztBQUU1QixPQUFPLEVBQUMsYUFBYSxFQUFDLE1BQU0scUNBQXFDLENBQUM7QUFFbEUsT0FBTyxFQUFDLGNBQWMsRUFBQyxNQUFNLFlBQVksQ0FBQztBQUcxQywrQkFBK0IsS0FBcUI7SUFDbEQsSUFBTSxJQUFJLEdBQUcsYUFBYSxDQUFDLG9CQUFvQixDQUFDLElBQUksRUFBRSxLQUFLLENBQWtCLENBQUM7SUFDOUUsT0FBTyxJQUFJLENBQUMsUUFBUSxFQUFFLENBQUM7QUFDekIsQ0FBQztBQUVELFFBQVEsQ0FBQyx3QkFBd0IsRUFBRTtJQUNqQyxFQUFFLENBQUMscUJBQXFCLEVBQUU7UUFDeEIsSUFBTSxLQUFLLEdBQUcsY0FBYyxDQUFDO1lBQzNCLElBQUksRUFBRTtnQkFDSixNQUFNLEVBQUU7b0JBQ04sRUFBQyxDQUFDLEVBQUUsR0FBRyxFQUFDLENBQUMsRUFBRSxFQUFFLEVBQUMsRUFBRSxFQUFDLENBQUMsRUFBRSxHQUFHLEVBQUMsQ0FBQyxFQUFFLEVBQUUsRUFBQyxFQUFFLEVBQUMsQ0FBQyxFQUFFLEdBQUcsRUFBQyxDQUFDLEVBQUUsRUFBRSxFQUFDO2lCQUMvQzthQUNGO1lBQ0QsSUFBSSxFQUFFLEtBQUs7WUFDVCxRQUFRLEVBQUU7Z0JBQ1IsQ0FBQyxFQUFFLEVBQUMsS0FBSyxFQUFFLEdBQUcsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFFLElBQUksRUFBRSxDQUFDLEdBQUcsRUFBRSxHQUFHLEVBQUUsR0FBRyxDQUFDLEVBQUM7Z0JBQ3ZELENBQUMsRUFBRSxFQUFDLEtBQUssRUFBRSxHQUFHLEVBQUUsSUFBSSxFQUFFLGNBQWMsRUFBQzthQUN0QztTQUNKLENBQUMsQ0FBQztRQUNILElBQU0sS0FBSyxHQUFHLHFCQUFxQixDQUFDLEtBQUssQ0FBQyxDQUFDO1FBQzNDLE1BQU0sQ0FBQyxTQUFTLENBQUMsS0FBSyxFQUFFO1lBQ3RCLElBQUksRUFBRSxTQUFTO1lBQ2YsSUFBSSxFQUFFLHFFQUFxRTtZQUMzRSxFQUFFLEVBQUUsZ0JBQWdCO1NBQ3JCLENBQUMsQ0FBQztJQUNMLENBQUMsQ0FBQyxDQUFDO0lBRUgsRUFBRSxDQUFDLGtDQUFrQyxFQUFFO1FBQ3JDLElBQU0sVUFBVSxHQUFHLGFBQWEsQ0FBQyxnQ0FBZ0MsQ0FBQyxHQUFHLEVBQUUsQ0FBQyxHQUFHLEVBQUUsR0FBRyxFQUFFLEdBQUcsQ0FBQyxDQUFDLENBQUM7UUFDeEYsTUFBTSxDQUFDLEtBQUssQ0FBQyxVQUFVLEVBQUUscUVBQXFFLENBQUMsQ0FBQztJQUNsRyxDQUFDLENBQUMsQ0FBQztBQUNMLENBQUMsQ0FBQyxDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLyogdHNsaW50OmRpc2FibGU6cXVvdGVtYXJrICovXG5pbXBvcnQge2Fzc2VydH0gZnJvbSAnY2hhaSc7XG5cbmltcG9ydCB7Q2FsY3VsYXRlTm9kZX0gZnJvbSAnLi4vLi4vLi4vc3JjL2NvbXBpbGUvZGF0YS9jYWxjdWxhdGUnO1xuaW1wb3J0IHtNb2RlbFdpdGhGaWVsZH0gZnJvbSAnLi4vLi4vLi4vc3JjL2NvbXBpbGUvbW9kZWwnO1xuaW1wb3J0IHtwYXJzZVVuaXRNb2RlbH0gZnJvbSAnLi4vLi4vdXRpbCc7XG5cblxuZnVuY3Rpb24gYXNzZW1ibGVGcm9tU29ydEFycmF5KG1vZGVsOiBNb2RlbFdpdGhGaWVsZCkge1xuICBjb25zdCBub2RlID0gQ2FsY3VsYXRlTm9kZS5wYXJzZUFsbEZvclNvcnRJbmRleChudWxsLCBtb2RlbCkgYXMgQ2FsY3VsYXRlTm9kZTtcbiAgcmV0dXJuIG5vZGUuYXNzZW1ibGUoKTtcbn1cblxuZGVzY3JpYmUoJ2NvbXBpbGUvZGF0YS9jYWxjdWxhdGUnLCAoKSA9PiB7XG4gIGl0KCdtYWtlQWxsRm9yU29ydEluZGV4JywgKCkgPT4ge1xuICAgIGNvbnN0IG1vZGVsID0gcGFyc2VVbml0TW9kZWwoe1xuICAgICAgZGF0YToge1xuICAgICAgICB2YWx1ZXM6IFtcbiAgICAgICAgICB7YTogJ0EnLGI6IDI4fSwge2E6ICdCJyxiOiA1NX0sIHthOiAnQycsYjogNDN9XG4gICAgICAgIF1cbiAgICAgIH0sXG4gICAgICBtYXJrOiAnYmFyJyxcbiAgICAgICAgZW5jb2Rpbmc6IHtcbiAgICAgICAgICB4OiB7ZmllbGQ6ICdhJywgdHlwZTogJ29yZGluYWwnLCBzb3J0OiBbJ0InLCAnQScsICdDJ119LFxuICAgICAgICAgIHk6IHtmaWVsZDogJ2InLCB0eXBlOiAncXVhbnRpdGF0aXZlJ31cbiAgICAgICAgfVxuICAgIH0pO1xuICAgIGNvbnN0IG5vZGVzID0gYXNzZW1ibGVGcm9tU29ydEFycmF5KG1vZGVsKTtcbiAgICBhc3NlcnQuZGVlcEVxdWFsKG5vZGVzLCB7XG4gICAgICB0eXBlOiAnZm9ybXVsYScsXG4gICAgICBleHByOiBcImRhdHVtLmEgPT09ICdCJyA/IDAgOiBkYXR1bS5hID09PSAnQScgPyAxIDogZGF0dW0uYSA9PT0gJ0MnID8gMiA6IDNcIixcbiAgICAgIGFzOiAneF9hX3NvcnRfaW5kZXgnXG4gICAgfSk7XG4gIH0pO1xuXG4gIGl0KCdjYWxjdWxhdGVFeHByZXNzaW9uRnJvbVNvcnRGaWVsZCcsICgpID0+IHtcbiAgICBjb25zdCBleHByZXNzaW9uID0gQ2FsY3VsYXRlTm9kZS5jYWxjdWxhdGVFeHByZXNzaW9uRnJvbVNvcnRGaWVsZCgnYScsIFtcIkJcIiwgXCJBXCIsIFwiQ1wiXSk7XG4gICAgYXNzZXJ0LmVxdWFsKGV4cHJlc3Npb24sIFwiZGF0dW0uYSA9PT0gJ0InID8gMCA6IGRhdHVtLmEgPT09ICdBJyA/IDEgOiBkYXR1bS5hID09PSAnQycgPyAyIDogM1wiKTtcbiAgfSk7XG59KTtcbiJdfQ==
+//# sourceMappingURL=calculate.test.js.map

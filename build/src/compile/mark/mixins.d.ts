@@ -64,12 +64,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     xc?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -115,6 +109,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    url?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -133,6 +130,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     dy?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    radius?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     theta?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -149,6 +149,15 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     defined?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeJoin?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeMiterLimit?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    cornerRadius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
 };
@@ -227,12 +236,6 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     xc?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -278,6 +281,9 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    url?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -296,6 +302,9 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
     dy?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    radius?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     theta?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -312,6 +321,15 @@ export declare function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 
         test?: string;
     })[];
     defined?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeJoin?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeMiterLimit?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    cornerRadius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
 };
@@ -373,12 +391,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    url?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
     xc?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -424,6 +436,9 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    url?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     align?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -442,6 +457,9 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     dy?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    radius?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     theta?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -458,6 +476,15 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
     defined?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeJoin?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    strokeMiterLimit?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
+    cornerRadius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
 };

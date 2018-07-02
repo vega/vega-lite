@@ -4,7 +4,7 @@ import { Dict, StringSet } from '../../util';
  * A node in the dataflow tree.
  */
 export declare class DataFlowNode {
-    readonly debugName: string;
+    readonly debugName?: string;
     private _children;
     private _parent;
     constructor(parent: DataFlowNode, debugName?: string);
@@ -18,8 +18,8 @@ export declare class DataFlowNode {
     producedFields(): StringSet;
     dependentFields(): StringSet;
     /**
-     * Set the parent of the node and also add this not to the parent's children.
-     */
+    * Set the parent of the node and also add this not to the parent's children.
+    */
     parent: DataFlowNode;
     readonly children: DataFlowNode[];
     numChildren(): number;

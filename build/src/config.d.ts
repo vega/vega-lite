@@ -1,5 +1,6 @@
 import { AxisConfigMixins } from './axis';
 import { CompositeMarkConfigMixins } from './compositemark/index';
+import { HeaderConfig } from './header';
 import { LegendConfig } from './legend';
 import { MarkConfigMixins } from './mark';
 import { ProjectionConfig } from './projection';
@@ -7,7 +8,7 @@ import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
 import { TopLevelProperties } from './toplevelprops';
-import { VgMarkConfig, VgScheme, VgTitleConfig } from './vega.schema';
+import { StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig } from './vega.schema';
 export interface ViewConfig {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
@@ -76,6 +77,20 @@ export interface ViewConfig {
      *
      */
     strokeDashOffset?: number;
+    /**
+     * The stroke line join method. One of miter (default), round or bevel.
+     *
+     * __Default value:__ 'miter'
+     *
+     */
+    strokeJoin?: StrokeJoin;
+    /**
+     * The stroke line join method. One of miter (default), round or bevel.
+     *
+     * __Default value:__ 'miter'
+     *
+     */
+    strokeMiterLimit?: number;
 }
 export declare const defaultViewConfig: ViewConfig;
 export declare type RangeConfigValue = (number | string)[] | VgScheme | {
@@ -167,6 +182,10 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
      * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
      */
     legend?: LegendConfig;
+    /**
+     * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+     */
+    header?: HeaderConfig;
     /**
      * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
      */

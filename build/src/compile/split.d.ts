@@ -28,6 +28,6 @@ export interface Explicit<T> {
 }
 export declare function makeExplicit<T>(value: T): Explicit<T>;
 export declare function makeImplicit<T>(value: T): Explicit<T>;
-export declare function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number): (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T>;
-export declare function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string): Explicit<T>;
+export declare function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number): (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string | number | symbol) => Explicit<T>;
+export declare function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string | number | symbol): Explicit<T>;
 export declare function mergeValuesWithExplicit<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: 'scale' | 'axis' | 'legend' | '', tieBreaker?: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T>): Explicit<T>;

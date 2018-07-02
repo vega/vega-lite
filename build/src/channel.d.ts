@@ -52,10 +52,10 @@ export declare const TOOLTIP: "tooltip";
 export declare const HREF: "href";
 export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
-export declare const GEOPOSITION_CHANNELS: ("longitude" | "latitude" | "longitude2" | "latitude2")[];
+export declare const GEOPOSITION_CHANNELS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/channel").GeoPositionChannel[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
 export declare function isColorChannel(channel: Channel): channel is ColorChannel;
-export declare const CHANNELS: ("text" | "shape" | "x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order" | "row" | "column")[];
+export declare const CHANNELS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/channel").Channel[];
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -67,7 +67,7 @@ export declare const CHANNELS: ("text" | "shape" | "x" | "y" | "x2" | "y2" | "lo
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
 export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'row' | 'column' | 'color' | 'fill' | 'stroke' | 'size' | 'shape' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
 export declare function isChannel(str: string): str is Channel;
-export declare const UNIT_CHANNELS: ("text" | "shape" | "x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
+export declare const UNIT_CHANNELS: ("text" | "shape" | "latitude" | "longitude" | "x" | "y" | "x2" | "y2" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
 export declare const NONPOSITION_CHANNELS: ("text" | "shape" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
 export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];

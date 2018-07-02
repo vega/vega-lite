@@ -1,3 +1,4 @@
+import { FacetMapping } from '../../facet';
 import { WindowTransform } from '../../transform';
 import { VgWindowTransform } from '../../vega.schema';
 import { DataFlowNode } from './dataflow';
@@ -6,9 +7,10 @@ import { DataFlowNode } from './dataflow';
  */
 export declare class WindowTransformNode extends DataFlowNode {
     private transform;
+    static makeFromFacet(parent: DataFlowNode, facet: FacetMapping<string>): WindowTransformNode;
     clone(): WindowTransformNode;
     constructor(parent: DataFlowNode, transform: WindowTransform);
     producedFields(): {};
-    private getDefaultName(windowFieldDef);
+    private getDefaultName;
     assemble(): VgWindowTransform;
 }

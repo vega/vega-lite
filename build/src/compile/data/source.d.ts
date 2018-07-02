@@ -14,6 +14,6 @@ export declare class SourceNode extends DataFlowNode {
     /**
      * Return a unique identifier for this data source.
      */
-    hash(): any;
+    hash(): string | number;
     assemble(): VgData;
 }

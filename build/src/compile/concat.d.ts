@@ -11,5 +11,5 @@ export declare class ConcatModel extends BaseConcatModel {
     constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     parseLayoutSize(): void;
     parseAxisGroup(): void;
-    assembleLayout(): VgLayout;
+    protected assembleDefaultLayout(): VgLayout;
 }

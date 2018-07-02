@@ -3,7 +3,7 @@ import { Config } from '../../config';
 import { FieldDef, ScaleFieldDef } from '../../fielddef';
 import { BarConfig, MarkDef } from '../../mark';
 import { Domain, NiceTime, Scale, ScaleConfig, ScaleType } from '../../scale';
-import { EncodingSortField, SortOrder } from '../../sort';
+import { Sort } from '../../sort';
 import { Model } from '../model';
 import { ScaleComponentProps } from './component';
 export declare function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)): void;
@@ -13,5 +13,5 @@ export declare function nice(scaleType: ScaleType, channel: Channel, fieldDef: F
 export declare function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig, fieldDef: FieldDef<string>, markDef: MarkDef, barConfig: BarConfig): number;
 export declare function paddingInner(paddingValue: number, channel: Channel, scaleConfig: ScaleConfig): number;
 export declare function paddingOuter(paddingValue: number, channel: Channel, scaleType: ScaleType, paddingInnerValue: number, scaleConfig: ScaleConfig): number;
-export declare function reverse(scaleType: ScaleType, sort: SortOrder | EncodingSortField<string> | string[]): boolean;
+export declare function reverse(scaleType: ScaleType, sort: Sort<string>): boolean;
 export declare function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain, markDef: MarkDef): boolean;

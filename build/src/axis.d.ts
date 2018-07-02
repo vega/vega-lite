@@ -41,7 +41,7 @@ export interface Axis extends VgAxisBase, Guide {
     /**
      * Explicitly set the visible axis tick values.
      */
-    values?: number[] | DateTime[];
+    values?: number[] | string[] | boolean[] | DateTime[];
     /**
      * A non-positive integer indicating z-index of the axis.
      * If zindex is 0, axes should be drawn behind all chart elements.

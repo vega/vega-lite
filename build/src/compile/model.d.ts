@@ -5,6 +5,7 @@ import { FieldDef, FieldRefOption } from '../fielddef';
 import { Resolve } from '../resolve';
 import { BaseSpec } from '../spec';
 import { TitleParams } from '../title';
+import { GenericCompositionLayout } from '../toplevelprops';
 import { Transform } from '../transform';
 import { Dict } from '../util';
 import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
@@ -12,8 +13,8 @@ import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
 import { DataComponent } from './data';
 import { FacetModel } from './facet';
+import { LayoutHeaderComponent } from './header/index';
 import { LayerModel } from './layer';
-import { LayoutHeaderComponent } from './layout/header';
 import { LayoutSizeComponent, LayoutSizeIndex } from './layoutsize/component';
 import { LegendComponentIndex } from './legend/component';
 import { ProjectionComponent } from './projection/component';
@@ -64,13 +65,14 @@ export declare function isRepeatModel(model: Model): model is RepeatModel;
 export declare function isConcatModel(model: Model): model is ConcatModel;
 export declare function isLayerModel(model: Model): model is LayerModel;
 export declare abstract class Model {
-    readonly abstract type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
+    abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly parent: Model;
     readonly name: string;
     readonly title: TitleParams;
     readonly description: string;
     readonly data: Data;
     readonly transforms: Transform[];
+    readonly layout: GenericCompositionLayout;
     /** Name map for scales, which can be renamed by a model's parent. */
     protected scaleNameMap: NameMapInterface;
     /** Name map for projections, which can be renamed by a model's parent. */
@@ -80,7 +82,7 @@ export declare abstract class Model {
     readonly repeater: RepeaterValue;
     readonly config: Config;
     readonly component: Component;
-    readonly abstract children: Model[];
+    abstract readonly children: Model[];
     constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve);
     readonly width: VgSignalRef;
     readonly height: VgSignalRef;
@@ -96,7 +98,7 @@ export declare abstract class Model {
      * This essentially merges the top-level spec's width/height signals with the width/height signals
      * to help us reduce redundant signals declaration.
      */
-    private renameTopLevelLayoutSize();
+    private renameTopLevelLayoutSize;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
     parseLegend(): void;
@@ -105,7 +107,8 @@ export declare abstract class Model {
     abstract assembleSelectionData(data: VgData[]): VgData[];
     assembleGroupStyle(): string;
     assembleLayoutSize(): VgEncodeEntry;
-    abstract assembleLayout(): VgLayout;
+    assembleLayout(): VgLayout;
+    protected assembleDefaultLayout(): VgLayout;
     abstract assembleLayoutSignals(): VgSignal[];
     assembleHeaderMarks(): VgMarkGroup[];
     abstract assembleMarks(): VgMarkGroup[];

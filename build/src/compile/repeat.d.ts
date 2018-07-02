@@ -10,7 +10,7 @@ export declare class RepeatModel extends BaseConcatModel {
     readonly repeat: Repeat;
     readonly children: Model[];
     constructor(spec: NormalizedRepeatSpec, parent: Model, parentGivenName: string, repeatValues: RepeaterValue, config: Config);
-    private _initChildren(spec, repeat, repeater, config);
+    private _initChildren;
     parseLayoutSize(): void;
-    assembleLayout(): VgLayout;
+    protected assembleDefaultLayout(): VgLayout;
 }

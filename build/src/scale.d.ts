@@ -20,8 +20,9 @@ export declare namespace ScaleType {
     const POINT: 'point';
     const BAND: 'band';
 }
-export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
-export declare const SCALE_TYPES: ("linear" | "time" | "ordinal" | "pow" | "sqrt" | "log" | "utc" | "sequential" | "band" | "point" | "bin-linear" | "bin-ordinal")[];
+export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
+typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
+export declare const SCALE_TYPES: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/scale").ScaleType[];
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -410,7 +411,7 @@ export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName:
 export declare function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string;
 export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams): boolean;
 export declare function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean;
-export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): ("linear" | "time" | "ordinal" | "pow" | "sqrt" | "log" | "utc" | "sequential" | "band" | "point" | "bin-linear" | "bin-ordinal")[];
+export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/scale").ScaleType[];
 export interface ScaleTypeIndex {
     [channel: string]: ScaleType[];
 }

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/unemployment-across-industries.json"},
+  "encoding": {
+      "x": {"timeUnit": "yearmonth", "field": "date", "type": "temporal"},
+      "y": {"aggregate": "sum", "field": "count", "type": "quantitative"}
+  },
+  "layer": [{
+    "selection": {
+      "brush": {
+        "type": "interval",
+        "encodings": ["x"]
+      }
+    },
+    "mark": "area"
+  }, {
+    "transform": [
+      {"filter": {"selection": "brush"}}
+    ],
+    "mark": {"type": "area", "color": "goldenrod"}
+  }]
+}

@@ -4,12 +4,13 @@ import { BinParams } from './bin';
 import { Channel } from './channel';
 import { CompositeAggregate } from './compositemark';
 import { Config } from './config';
+import { DateTime } from './datetime';
 import { TitleMixins } from './guide';
 import { Legend } from './legend';
 import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
 import { Scale } from './scale';
-import { EncodingSortField, SortOrder } from './sort';
+import { Sort, SortOrder } from './sort';
 import { StackOffset } from './stack';
 import { TimeUnit } from './timeunit';
 import { AggregatedFieldDef, WindowFieldDef } from './transform';
@@ -130,7 +131,25 @@ export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins {
      */
     type: Type;
 }
-export interface ScaleFieldDef<F> extends FieldDef<F> {
+export interface SortableFieldDef<F> extends FieldDef<F> {
+    /**
+     * Sort order for the encoded field.
+     *
+     * For continuous fields (quantitative or temporal), `sort` can be either `"ascending"` or `"descending"`.
+     *
+     * For discrete fields, `sort` can be one of the following:
+     * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in Javascript.
+     * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
+     * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
+     * - `null` indicating no sort.
+     *
+     * __Default value:__ `"ascending"`
+     *
+     * __Note:__ `null` is not supported for `row` and `column`.
+     */
+    sort?: Sort<F>;
+}
+export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
     /**
      * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
      *
@@ -139,15 +158,6 @@ export interface ScaleFieldDef<F> extends FieldDef<F> {
      * __Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.
      */
     scale?: Scale | null;
-    /**
-     * Sort order for the encoded field.
-     * Supported `sort` values include `"ascending"`, `"descending"`, `null` (no sorting), or an array specifying the preferred order of values.
-     * For fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).
-     * For `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.
-     *
-     * __Default value:__ `"ascending"`
-     */
-    sort?: string[] | SortOrder | EncodingSortField<F> | null;
 }
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
@@ -255,3 +265,19 @@ export declare function channelCompatibility(fieldDef: FieldDef<Field>, channel:
 };
 export declare function isNumberFieldDef(fieldDef: FieldDef<any>): boolean;
 export declare function isTimeFieldDef(fieldDef: FieldDef<any>): boolean;
+/**
+ * Getting a value associated with a fielddef.
+ * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
+ */
+export declare function valueExpr(v: number | string | boolean | DateTime, { timeUnit, type, time, undefinedIfExprNotRequired }: {
+    timeUnit: TimeUnit;
+    type?: Type;
+    time?: boolean;
+    undefinedIfExprNotRequired?: boolean;
+}): string;
+/**
+ * Standardize value array -- convert each value to Vega expression if applicable
+ */
+export declare function valueArray(fieldDef: FieldDef<string>, values: (number | string | boolean | DateTime)[]): (string | number | boolean | DateTime | {
+    signal: string;
+})[];

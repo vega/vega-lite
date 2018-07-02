@@ -42,9 +42,9 @@ export declare class UnitModel extends ModelWithField {
     scaleDomain(channel: ScaleChannel): Domain;
     axis(channel: Channel): Axis;
     legend(channel: Channel): Legend;
-    private initScales(mark, encoding);
-    private initAxes(encoding);
-    private initLegend(encoding);
+    private initScales;
+    private initAxes;
+    private initLegend;
     parseData(): void;
     parseLayoutSize(): void;
     parseSelection(): void;

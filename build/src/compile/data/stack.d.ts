@@ -50,6 +50,6 @@ export declare class StackNode extends DataFlowNode {
     addDimensions(fields: string[]): void;
     dependentFields(): {};
     producedFields(): {};
-    private getGroupbyFields();
+    private getGroupbyFields;
     assemble(): VgTransform[];
 }

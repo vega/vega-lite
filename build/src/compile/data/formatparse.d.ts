@@ -20,7 +20,7 @@ export declare class ParseNode extends DataFlowNode {
     /**
      * Creates a parse node from "explicit" parse and "implicit" parse and updates ancestorParse.
      */
-    private static makeWithAncestors(parent, explicit, implicit, ancestorParse);
+    private static makeWithAncestors;
     readonly parse: Dict<string>;
     merge(other: ParseNode): void;
     /**
