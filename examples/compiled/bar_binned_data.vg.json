@@ -92,15 +92,15 @@
                     "fill": {
                         "value": "#4c78a8"
                     },
-                    "x": {
-                        "scale": "x",
-                        "field": "bin_end",
-                        "offset": 0
-                    },
                     "x2": {
                         "scale": "x",
                         "field": "bin_start",
                         "offset": 1
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "bin_end",
+                        "offset": 0
                     },
                     "y": {
                         "scale": "y",
@@ -131,9 +131,7 @@
                     "signal": "width"
                 }
             ],
-            "zero": false,
-            "nice": false,
-            "padding": 0
+            "zero": false
         },
         {
             "name": "y",

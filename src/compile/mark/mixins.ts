@@ -293,15 +293,16 @@ export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | Fi
     y:  reverse ? 0 : spacing,
     y2: reverse ? spacing : 0
   };
+  const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) && fieldDef2 === undefined) {
     return {
+      [channel2]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
       [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel]),
-      [`${channel}2`]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
+      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]}),
       [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]}),
-      [`${channel}2`]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]})
     };
   } else {
     log.warn(log.message.channelRequiredForBinned(channel));
