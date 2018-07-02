@@ -25,11 +25,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'formula',
-        expr: '200',
-        as: 'derived_field'
-      }, {
-        type: 'formula',
-        expr: 'datum.y === null ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? 200 : datum.y',
         as: 'y'
       }]);
     });
@@ -51,14 +47,14 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_y_value'],
         ops: ['mean'],
         fields: ['y'],
         frame: [null, null],
         ignorePeers: false
       }, {
         type: 'formula',
-        expr: 'datum.y === null ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
         as: 'y'
       }]);
     });
@@ -83,7 +79,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_y_value'],
         ops: ['max'],
         fields: ['y'],
         frame: [null, null],
@@ -91,7 +87,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       }, {
         type: 'formula',
-        expr: 'datum.y === null ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
         as: 'y'
       }]);
     });
@@ -116,7 +112,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_y_value'],
         ops: ['max'],
         fields: ['y'],
         frame: [null, null],
@@ -124,7 +120,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       }, {
         type: 'formula',
-        expr: 'datum.y === null ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
         as: 'y'
       }]);
     });
@@ -148,7 +144,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_y_value'],
         ops: ['max'],
         fields: ['y'],
         frame: [-2, 2],
@@ -156,7 +152,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       }, {
         type: 'formula',
-        expr: 'datum.y === null ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
         as: 'y'
       }]);
     });
@@ -183,11 +179,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'formula',
-        expr: '500',
-        as: 'derived_field'
-      }, {
-        type: 'formula',
-        expr: 'datum.variety === null ? datum.derived_field : datum.variety',
+        expr: 'datum.variety === null ? 500 : datum.variety',
         as: 'variety'
       }]);
     });
@@ -211,7 +203,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_variety_value'],
         ops: ['max'],
         fields: ['variety'],
         frame: [null, null],
@@ -220,7 +212,7 @@ describe('compile/data/impute', () => {
 
       }, {
         type: 'formula',
-        expr: 'datum.variety === null ? datum.derived_field : datum.variety',
+        expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
         as: 'variety'
       }]);
     });
@@ -244,7 +236,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_variety_value'],
         ops: ['mean'],
         fields: ['variety'],
         frame: [-2, 2],
@@ -252,7 +244,7 @@ describe('compile/data/impute', () => {
         groupby: ['site']
       }, {
         type: 'formula',
-        expr: 'datum.variety === null ? datum.derived_field : datum.variety',
+        expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
         as: 'variety'
       }]);
     });
@@ -277,11 +269,7 @@ describe('compile/data/impute', () => {
         value: null
       }, {
         type: 'formula',
-        expr: '20',
-        as: 'derived_field'
-      }, {
-        type: 'formula',
-        expr: 'datum.variety === null ? datum.derived_field : datum.variety',
+        expr: 'datum.variety === null ? 20 : datum.variety',
         as: 'variety'
       }]);
 
