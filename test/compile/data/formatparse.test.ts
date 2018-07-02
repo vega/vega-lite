@@ -309,13 +309,21 @@ describe('compile/data/formatparse', () => {
   });
 
   describe('dependentFields', function() {
-    it('should give the correct dependent fields', function() {
+    it('should give the correct dependent fields for dot accessors', function() {
       const p = new ParseNode(null, {
         d: 'number',
         'a.b.c': 'boolean'
       });
+      console.log(p.dependentFields());
+      // 'a.b.c' and 'a[b][c]' are both necessary since 'a.b.c' will not be produced from more nested strings
+      assert.deepEqual(p.dependentFields(), {d: true, a: true, 'a[b]': true, 'a[b][c]': true, 'a.b.c': true});
+    });
 
-      assert.deepEqual(p.dependentFields(), {d: true, a: true, 'a.b': true, 'a.b.c': true});
+    it('should give the correct dependent fields for array accessors', function() {
+      const p = new ParseNode(null, {
+        "a['b.c']['d']": 'number'
+      });
+      assert.deepEqual(p.dependentFields(), {a: true, "a[b.c]": true, "a[b.c][d]": true, "a['b.c']['d']": true});
     });
   });
 });

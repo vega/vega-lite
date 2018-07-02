@@ -224,7 +224,9 @@ export class ParseNode extends DataFlowNode {
   public dependentFields(): StringSet {
     const fields = keys(this._parse);
     const splitFields = fields.map(field => splitAccessPath(field));
-    const computedParents = splitFields.map(x => x.map((y,i) => x.slice(0,i+1).join('.')));
+    // Wrap every element other than the firsts  in `[]`
+    const wrappedWithAccessors = splitFields.map(x => [x[0],...x.slice(1).map(y => `[${y}]`)]);
+    const computedParents = wrappedWithAccessors.map(x => x.map((y,i) => x.slice(0,i+1).join('')));
     const flattenedParents = computedParents.reduce((a,b) => a.concat(b), []);
     return toSet([...fields, ...flattenedParents]);
   }
