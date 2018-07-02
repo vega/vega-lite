@@ -9,11 +9,15 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
+import {FlattenTransformNode} from './flatten';
+import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
+import {ImputeNode} from './impute';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -96,13 +100,17 @@ function makeWalkTree(data: VgData[]) {
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof WindowTransformNode ||
-      node instanceof IdentifierNode) {
+      node instanceof FoldTransformNode ||
+      node instanceof FlattenTransformNode ||
+      node instanceof IdentifierNode ||
+      node instanceof SampleTransformNode ) {
       dataSource.transform.push(node.assemble());
     }
 
     if (node instanceof FilterInvalidNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
+      node instanceof ImputeNode ||
       node instanceof StackNode) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
     }

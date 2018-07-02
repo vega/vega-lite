@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, SampleTransform as VgSampleTransform} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {Color} from '../node_modules/@types/d3';
 import {BaseBin} from './bin';
@@ -426,7 +427,7 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform;
+export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgFlattenTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform | VgFoldTransform | VgSampleTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -477,13 +478,15 @@ export type VgSort = {
   order?: (VgComparatorOrder)[];
 };
 
+export type ImputeMethods = 'value' | 'median' | 'max' | 'min' | 'mean';
+
 export interface VgImputeTransform {
   type: 'impute';
   groupby?: string[];
   field: string;
   key: string;
-  keyvals?: string[];
-  method?: 'value' | 'median' | 'max' | 'min' | 'mean';
+  keyvals?: any[] | VgSignalRef;
+  method?: ImputeMethods;
   value?: any;
 }
 

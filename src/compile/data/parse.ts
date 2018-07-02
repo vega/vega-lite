@@ -1,6 +1,6 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
+import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -11,12 +11,16 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
+import {FlattenTransformNode} from './flatten';
+import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
+import {ImputeNode} from './impute';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -93,6 +97,27 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       const stack = head = StackNode.makeFromTransform(head, t);
 
       for (const field of keys(stack.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
+    } else if (isFold(t)) {
+      const fold = head = new FoldTransformNode(head, t);
+
+      for (const field of keys(fold.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
+    } else if (isFlatten(t)) {
+      const flatten = head = new FlattenTransformNode(head, t);
+
+      for (const field of keys(flatten.producedFields())) {
+        ancestorParse.set(field, 'derived', false);
+      }
+    } else if (isSample(t)) {
+      head = new SampleTransformNode(head, t);
+
+    } else if (isImpute(t)) {
+      const impute = head = ImputeNode.makeFromTransform(head, t);
+
+      for (const field of keys(impute.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else {
@@ -227,7 +252,7 @@ export function parseData(model: Model): DataComponent {
         head = new IdentifierNode(head);
       }
     }
-
+    head = ImputeNode.makeFromEncoding(head, model) || head;
     head = StackNode.makeFromEncoding(head, model) || head;
   }
 

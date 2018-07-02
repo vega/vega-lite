@@ -9,6 +9,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {TitleMixins} from './guide';
+import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalOperand} from './logical';
@@ -208,6 +209,7 @@ export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
 }
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
+
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -233,6 +235,13 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
    * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
    */
   stack?: StackOffset | null;
+
+  /**
+   * An object defining the properties of the Impute Operation to be applied.
+   * The field value of the other positional channel is taken as `key` of the `Impute` Operation.
+   * The field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.
+   */
+  impute?: ImputeParams;
 }
 
 /**

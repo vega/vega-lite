@@ -3589,6 +3589,68 @@
       ],
       "type": "object"
     },
+    "FlattenTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output field names for extracted array values.\n\n__Default value:__ The field name of the corresponding array field",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "flatten": {
+          "description": "An array of one or more data fields containing arrays to flatten.\nIf multiple fields are specified, their array values should have a parallel structure, ideally with the same length.\nIf the lengths of parallel arrays do not match,\nthe longest array will be used with `null` values added for missing entries.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "flatten"
+      ],
+      "type": "object"
+    },
+    "FoldTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "additionalItems": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "minItems": 2,
+          "type": "array"
+        },
+        "fold": {
+          "description": "An array of data fields indicating the properties to fold.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "fold"
+      ],
+      "type": "object"
+    },
     "FontStyle": {
       "enum": [
         "normal",
@@ -4251,6 +4313,115 @@
         "center"
       ],
       "type": "string"
+    },
+    "ImputeMethods": {
+      "enum": [
+        "value",
+        "median",
+        "max",
+        "min",
+        "mean"
+      ],
+      "type": "string"
+    },
+    "ImputeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "The frame over which the `method` will be applied.",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "method": {
+          "$ref": "#/definitions/ImputeMethods",
+          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__  `\"value\"`"
+        },
+        "value": {
+          "description": "The field value to use when the imputation `method` is `\"value\"`."
+        }
+      },
+      "type": "object"
+    },
+    "ImputeSequence": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "description": "The starting value of the sequence.\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "step": {
+          "description": "The step value between sequence entries.\n__Default value:__ `1` or `-1` if `stop < start`",
+          "type": "number"
+        },
+        "stop": {
+          "description": "The ending value(exclusive) of the sequence.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "stop"
+      ],
+      "type": "object"
+    },
+    "ImputeTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "frame": {
+          "description": "The frame over which the `method` will be applied.",
+          "items": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "type": "array"
+        },
+        "groupby": {
+          "description": "An optional array of fields by which to group the values.\nImputation will then be performed on a per-group basis.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "impute": {
+          "description": "The data field for which the missing values should be imputed.",
+          "type": "string"
+        },
+        "key": {
+          "description": "A key field that uniquely identifies data objects within a group.\nMissing key values (those occurring in the data but not in the current group) will be imputed.",
+          "type": "string"
+        },
+        "keyvals": {
+          "anyOf": [
+            {
+              "items": {
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ImputeSequence"
+            }
+          ],
+          "description": "An optional array of key values that should be considered for imputation.\nIf provided, this array will be used in addition to the key values observed within the input data."
+        },
+        "method": {
+          "$ref": "#/definitions/ImputeMethods",
+          "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__  `\"value\"`"
+        },
+        "value": {
+          "description": "The field value to use when the imputation `method` is `\"value\"`."
+        }
+      },
+      "required": [
+        "impute",
+        "key"
+      ],
+      "type": "object"
     },
     "InlineData": {
       "additionalProperties": false,
@@ -6229,6 +6400,10 @@
           ],
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
+        "impute": {
+          "$ref": "#/definitions/ImputeParams",
+          "description": "An object defining the properties of the Impute Operation to be applied.\nThe field value of the other positional channel is taken as `key` of the `Impute` Operation.\nThe field of the `color` channel if specified is used as `groupby` of the `Impute` Operation."
+        },
         "scale": {
           "anyOf": [
             {
@@ -6680,6 +6855,19 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "SampleTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "sample": {
+          "description": "The maximum number of data objects to include in the sample.\n\n__Default value:__ `1000`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "sample"
+      ],
       "type": "object"
     },
     "Scale": {
@@ -8681,6 +8869,9 @@
           "$ref": "#/definitions/TimeUnitTransform"
         },
         {
+          "$ref": "#/definitions/ImputeTransform"
+        },
+        {
           "$ref": "#/definitions/AggregateTransform"
         },
         {
@@ -8688,6 +8879,15 @@
         },
         {
           "$ref": "#/definitions/StackTransform"
+        },
+        {
+          "$ref": "#/definitions/FlattenTransform"
+        },
+        {
+          "$ref": "#/definitions/FoldTransform"
+        },
+        {
+          "$ref": "#/definitions/SampleTransform"
         }
       ]
     },

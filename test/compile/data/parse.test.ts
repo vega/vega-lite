@@ -7,8 +7,12 @@ import {BinNode} from '../../../src/compile/data/bin';
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {FilterNode} from '../../../src/compile/data/filter';
+import {FlattenTransformNode} from '../../../src/compile/data/flatten';
+import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
+import {ImputeNode} from '../../../src/compile/data/impute';
 import {parseTransformArray} from '../../../src/compile/data/parse';
+import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
@@ -106,6 +110,22 @@ describe('compile/data/parse', () => {
       assert.isTrue(result instanceof AggregateNode);
     });
 
+    it('should return a ImputeTransform Node', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [{impute: 'x', key: 'y', method: 'mean'}],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof ImputeNode);
+      assert.isTrue(result instanceof ImputeNode);
+
+    });
     it ('should return a WindowTransform Node', () => {
       const transform: Transform = {
         window: [
@@ -214,6 +234,97 @@ describe('compile/data/parse', () => {
       const root = new DataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof WindowTransformNode);
+    });
+
+    it('should return a FoldTransformNode', () => {
+      const transform: Transform = {
+        fold : ['a','b'],
+        as: ['A', 'B']
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'A', type: 'temporal'},
+          y: {field: 'B', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof FoldTransformNode);
+      assert.isTrue(result instanceof FoldTransformNode);
+    });
+
+    it('should return a FlattenTransformNode', () => {
+      const transform: Transform = {
+        flatten : ['a','b']
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof FlattenTransformNode);
+      assert.isTrue(result instanceof FlattenTransformNode);
+    });
+
+    it('should return a SampleTransformNode', () => {
+      const transform: Transform = {
+        sample : 1000,
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'A', type: 'temporal'},
+          y: {field: 'B', type: 'quantitative'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof SampleTransformNode);
+      assert.isTrue(result instanceof SampleTransformNode);
+    });
+
+    it('should return a 3 Transforms from an Impute', () => {
+      const transform: Transform= {
+        impute: 'y',
+        key: 'x',
+        method: 'max',
+        groupby: ['a', 'b'],
+        frame: [-2, 2]
+      };
+
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [
+          transform
+        ],
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+          color: {field: 'c', type: 'nominal'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof ImputeNode);
+      assert.isTrue(result instanceof ImputeNode);
     });
   });
 });
