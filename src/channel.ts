@@ -223,8 +223,8 @@ export type SupportedMark = {
 export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
   if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
     const primaryFieldDef = encoding[channel === X2 ? X : Y];
-    // circle, point, square and tick only support x2 and y2 when their corresponding x and y fieldDef
-    // has binned data
+    // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
+    // has "binned" data and thus need x2/y2 to specify the bin-end field.
     if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
       return true;
     } else {
