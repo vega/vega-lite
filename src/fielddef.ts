@@ -7,6 +7,7 @@ import {autoMaxBins, BinParams, binToString} from './bin';
 import {Channel, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
+import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {TitleMixins} from './guide';
 import {Legend} from './legend';
 import * as log from './log';
@@ -15,7 +16,7 @@ import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {Sort, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
@@ -640,4 +641,24 @@ export function isNumberFieldDef(fieldDef: FieldDef<any>) {
 
 export function isTimeFieldDef(fieldDef: FieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
+}
+
+/**
+ * Getting any value associated with a fielddef
+ */
+export function valueExpr(v: number | string | boolean | DateTime, timeUnit: TimeUnit): string {
+
+  if (isDateTime(v)) {
+    return `time(${dateTimeExpr(v, true)})`;
+  } else if (isString(v)) {
+    if (isLocalSingleTimeUnit(timeUnit)) {
+      const expr = dateTimeExpr({[timeUnit]: v}, true);
+      return 'time(' + expr + ')';
+    } else if (isUtcSingleTimeUnit(timeUnit)) {
+      return valueExpr(v, getLocalTimeUnit(timeUnit);
+    }
+  }
+  // number or boolean or normal string
+  return JSON.stringify(v);
+
 }
