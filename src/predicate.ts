@@ -2,10 +2,10 @@ import {isArray, isString} from 'vega-util';
 import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
 import {selectionPredicate} from './compile/selection/selection';
-import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {vgField} from './fielddef';
+import {DateTime} from './datetime';
+import {valueExpr, vgField} from './fielddef';
 import {LogicalOperand} from './logical';
-import {fieldExpr as timeUnitFieldExpr, getLocalTimeUnit, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {logicalExpr} from './util';
 
 export type Predicate =
@@ -215,22 +215,6 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange=true
 
   /* istanbul ignore next: it should never reach here */
   throw new Error(`Invalid field predicate: ${JSON.stringify(predicate)}`);
-}
-
-function valueExpr(v: any, timeUnit: TimeUnit): string {
-  if (isDateTime(v)) {
-    const expr = dateTimeExpr(v, true);
-    return 'time(' + expr + ')';
-  }
-  if (isLocalSingleTimeUnit(timeUnit)) {
-    const datetime: DateTime = {};
-    datetime[timeUnit] = v;
-    const expr = dateTimeExpr(datetime, true);
-    return 'time(' + expr + ')';
-  } else if (isUtcSingleTimeUnit(timeUnit)) {
-    return valueExpr(v, getLocalTimeUnit(timeUnit));
-  }
-  return JSON.stringify(v);
 }
 
 export function normalizePredicate(f: Predicate): Predicate {
