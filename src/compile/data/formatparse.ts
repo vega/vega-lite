@@ -1,4 +1,4 @@
-import {isNumber, isString, toSet} from 'vega-util';
+import {isNumber, isString, splitAccessPath, toSet} from 'vega-util';
 import {AncestorParse} from '.';
 import {isCountingAggregateOp} from '../../aggregate';
 import {DateTime, isDateTime} from '../../datetime';
@@ -222,7 +222,13 @@ export class ParseNode extends DataFlowNode {
   }
 
   public dependentFields(): StringSet {
-    return toSet(keys(this._parse));
+    const fields = keys(this._parse);
+    const splitFields = fields.map(field => splitAccessPath(field));
+    // Wrap every element other than the firsts  in `[]`
+    const wrappedWithAccessors = splitFields.map(x => [x[0],...x.slice(1).map(y => `[${y}]`)]);
+    const computedParents = wrappedWithAccessors.map(x => x.map((y,i) => x.slice(0,i+1).join('')));
+    const flattenedParents = computedParents.reduce((a,b) => a.concat(b), []);
+    return toSet([...fields, ...flattenedParents]);
   }
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
