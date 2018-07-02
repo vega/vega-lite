@@ -40,6 +40,9 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 <span class="vl-example" data-name="bar"></span>
 
+### Composite Marks
+Composite marks are "macros" for more complex layered graphics with multiple primitive marks. Composite marks are "macros" because under the hood they expand to become layered graphics. Currently, we include only one composite mark type: [boxplot](boxplot.html).
+
 ## Documentation Overview
 {:.no_toc}
 
@@ -86,12 +89,16 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 {:#stroke}
 ### Stroke Style Properties
 
-{% include table.html props="strokeWidth,strokeDash,strokeDashOffset" source="MarkDef" %}
+{% include table.html props="strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeWidth" source="MarkDef" %}
+
+Here is an example to the usage of the stroke dash where 6 is the size of dashes, and 4 is the size of spaces:
+
+<div class="vl-example" data-name="layer_line_errorband_2d_horizontal_borders_strokedash"></div>
 
 {:#hyperlink}
 ### Hyperlink Properties
 
-Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. A `cursor` property can also be provided to serve as affordance for the links.
+Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
 {% include table.html props="href,cursor" source="MarkDef" %}
 

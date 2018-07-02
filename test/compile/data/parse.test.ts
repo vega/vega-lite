@@ -91,7 +91,7 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, parse);
       assert.isTrue(root.children[0] instanceof BinNode);
       assert.isTrue(result instanceof TimeUnitNode);
-      assert.deepEqual(parse.combine(), {a: 'number', b: 'date'});
+      assert.deepEqual(parse.combine(), {a: 'number', a_end: 'number', b: 'date'});
     });
 
     it('should return a BinNode and a AggregateNode', () => {

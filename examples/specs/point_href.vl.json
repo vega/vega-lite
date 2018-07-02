@@ -2,10 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "A scatterplot showing horsepower and miles per gallons that opens a Google search for the car that you click on.",
   "data": {"url": "data/cars.json"},
-  "mark": {
-    "type": "point",
-    "cursor": "pointer"
-  },
+  "mark": "point",
   "transform": [{
     "calculate": "'https://www.google.com/search?q=' + datum.Name", "as": "url"
   }],

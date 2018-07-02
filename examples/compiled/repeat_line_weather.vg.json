@@ -129,7 +129,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "columns": 3,
         "bounds": "full",
         "align": "all"

@@ -1,0 +1,279 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "ci1": 23.5007,
+                    "ci0": 19.6912,
+                    "center": 21.5735,
+                    "Year": 189302400000
+                },
+                {
+                    "ci1": 25.8214,
+                    "ci0": 20.8554,
+                    "center": 23.375,
+                    "Year": 220924800000
+                },
+                {
+                    "ci1": 26.4472,
+                    "ci0": 21.9749,
+                    "center": 24.0611,
+                    "Year": 252460800000
+                },
+                {
+                    "ci1": 27.7074,
+                    "ci0": 22.6203,
+                    "center": 25.0931,
+                    "Year": 283996800000
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "as": "year_Year",
+                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.ci1",
+                    "as": "lower_ci1"
+                },
+                {
+                    "type": "formula",
+                    "expr": "datum.ci0",
+                    "as": "upper_ci1"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"center\"])",
+                    "as": "center"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"Year\"])",
+                    "as": "Year"
+                },
+                {
+                    "type": "formula",
+                    "as": "year_Year",
+                    "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_layer_0_marks",
+            "type": "area",
+            "style": [
+                "area",
+                "errorband-band"
+            ],
+            "sort": {
+                "field": "datum[\"year_Year\"]",
+                "order": "descending"
+            },
+            "from": {
+                "data": "data_1"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.3
+                    },
+                    "orient": {
+                        "value": "vertical"
+                    },
+                    "fill": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_Year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "lower_ci1"
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "upper_ci1"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"lower_ci1\"] !== null && !isNaN(datum[\"lower_ci1\"])"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_marks",
+            "type": "line",
+            "style": [
+                "line"
+            ],
+            "sort": {
+                "field": "datum[\"year_Year\"]",
+                "order": "descending"
+            },
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "year_Year"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "center"
+                    },
+                    "defined": {
+                        "signal": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "year_Year"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "year_Year"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_1",
+                        "field": "lower_ci1"
+                    },
+                    {
+                        "data": "data_1",
+                        "field": "upper_ci1"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "center"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "zero": false,
+            "nice": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": false,
+            "title": "Year (year)",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%Y')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": false,
+            "title": "Mean of Miles per Gallon (95% CIs)",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

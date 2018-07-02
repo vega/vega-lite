@@ -1,7 +1,8 @@
-import * as Ajv from 'ajv';
+import Ajv from 'ajv';
 import {assert} from 'chai';
 
 import {compile} from '../src/compile/compile';
+import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 
 const inspect = require('util').inspect;
@@ -35,9 +36,7 @@ function validateVL(spec: TopLevelSpec) {
   assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/vega-lite/v2');
 }
 
-function validateVega(spec: TopLevelSpec) {
-  const vegaSpec = compile(spec).spec;
-
+function validateVega(vegaSpec: TopLevelSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
@@ -46,7 +45,10 @@ function validateVega(spec: TopLevelSpec) {
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 }
 
-const suffixLength = '_future.vl.json'.length;
+const futureSuffixLength = '_future.vl.json'.length;
+const brokenSuffixLength = '_broken.vl.json'.length;
+
+
 describe('Examples', function() {
   const examples = fs.readdirSync('examples/specs');
 
@@ -56,24 +58,40 @@ describe('Examples', function() {
     }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
 
-    describe(example, function() {
+    describe(example, log.wrap((localLogger) => {
+      const vegaSpec = compile(jsonSpec).spec;
+
       it('should be valid vega-lite with proper $schema', function() {
         if (
           // Do not validate overlay example until we have redesigned it
           example.indexOf('overlay') >= 0 ||
-          // Also ignore box-plot examples until we support selections
-          example.indexOf('box-plot') >= 0 ||
+          // Also ignore boxplot examples until we support selections
+          example.indexOf('boxplot') >= 0 ||
           // Also ignore all examples with "_future" suffix
-          example.lastIndexOf('_future.vl.json', example.length - suffixLength) >= 0
+          example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0
           ) {
           return;
         }
         validateVL(jsonSpec);
       });
 
-      it('should produce valid vega', function() {
-        validateVega(jsonSpec);
+      it('should not include any warning', () => {
+        if (example.lastIndexOf('_broken.vl.json', example.length - brokenSuffixLength) >= 0) {
+          // Ignore all examples with "_broken" suffix
+          return;
+        }
+
+        expect(localLogger.warns).toEqual([]);
       });
-    });
+
+      it('should produce valid vega', function() {
+        if (example.lastIndexOf('_broken.vl.json', example.length - brokenSuffixLength) >= 0) {
+          // Ignore all examples with "_broken" suffix
+          return;
+        }
+
+        validateVega(vegaSpec);
+      });
+    }));
   });
 });

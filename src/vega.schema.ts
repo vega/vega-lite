@@ -1,6 +1,7 @@
 import {AggregateOp} from 'vega';
 import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, SampleTransform as VgSampleTransform} from 'vega-typings';
 import {isArray} from 'vega-util';
+import {Color} from '../node_modules/@types/d3';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
@@ -201,23 +202,21 @@ export type RowCol<T> = {
 };
 
 export interface VgLayout {
-  padding: number | RowCol<number>;
+  center?: boolean | RowCol<boolean>;
+  padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
-  offset: number | {
-    rowHeader: number,
-    rowFooter: number,
-    rowTitle: number,
-    columnHeader: number,
-    columnFooter: number,
-    columnTitle: number
+  offset?: number | {
+    rowHeader?: number,
+    rowFooter?: number,
+    rowTitle?: number,
+    columnHeader?: number,
+    columnFooter?: number,
+    columnTitle?: number
   };
-  bounds: 'full' | 'flush';
+  bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | {
-    row: VgLayoutAlign,
-    column: VgLayoutAlign
-  };
+  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -268,7 +267,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'strokeMiterLimit'|'strokeJoin'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined'|'cornerRadius';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -286,17 +285,29 @@ export type AxisOrient = 'top' | 'right' | 'left' | 'bottom';
 
 export interface VgAxis {
   scale: string;
+  bandPosition?: number;
   domain?: boolean;
+  domainColor?: Color;
+  domainWidth?: number;
   format?: string;
   grid?: boolean;
   gridScale?: string;
-
+  gridColor?: Color;
+  gridDash?: number[];
+  gridOpacity?: number;
+  gridWidth?: number;
   labels?: boolean;
-
+  labelBaseline?: string;
+  labelAlign?: string;
   labelBound?: boolean | number;
   labelFlush?: boolean | number;
   labelPadding?: number;
   labelOverlap?: boolean | 'parity' | 'greedy';
+  labelAngle?: number;
+  labelColor?: number;
+  labelFont?: string;
+  labelFontSize?: number;
+  labelLimit?: number;
   maxExtent?: number;
   minExtent?: number;
   offset?: number;
@@ -306,10 +317,21 @@ export interface VgAxis {
   ticks?: boolean;
   tickCount?: number;
   tickSize?: number;
-
+  tickRound?: boolean;
+  tickWidth?: number;
+  tickColor?: Color;
   title?: string;
   titlePadding?: number;
-
+  titleAlign?: string;
+  titleAngle?: number;
+  titleBaseline?: string;
+  titleColor?: Color;
+  titleFont?: string;
+  titleFontSize?: number;
+  titleFontWeight?: FontWeight;
+  titleLimit?: number;
+  titleX?: number;
+  titleY?: number;
   values?: any[] | VgSignalRef;
   zindex?: number;
 
@@ -506,7 +528,14 @@ export type VgBinding = VgCheckboxBinding | VgRadioBinding |
  * Base object for Vega's Axis and Axis Config.
  * All of these properties are both properties of Vega's Axis and Axis Config.
  */
-export interface VgAxisBase {
+export interface VgAxisConfig {
+  /**
+   * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
+   *
+   *  __Default value:__ `0.5`
+   */
+  bandPosition?: number;
+
   /**
    * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.
    *
@@ -515,6 +544,21 @@ export interface VgAxisBase {
   domain?: boolean;
 
   /**
+   * Stroke width of axis domain line
+   *
+   * __Default value:__  `1`
+   */
+  domainWidth?: number;
+
+  /**
+   * Color of axis domain line.
+   *
+   * __Default value:__  `"gray"`.
+   */
+  domainColor?: string;
+
+  // ---------- Grid ----------
+  /**
    * A boolean flag indicating if grid lines should be included as part of the axis
    *
    * __Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.
@@ -522,11 +566,52 @@ export interface VgAxisBase {
   grid?: boolean;
 
   /**
+   * Color of gridlines.
+   *
+   * __Default value:__  `"lightGray"`.
+   */
+  gridColor?: string;
+
+  /**
+   * The offset (in pixels) into which to begin drawing with the grid dash array.
+   */
+  gridDash?: number[];
+
+  /**
+   * The stroke opacity of grid (value between [0,1])
+   *
+   * __Default value:__ `1`
+   * @minimum 0
+   * @maximum 1
+   */
+  gridOpacity?: number;
+
+  /**
+   * The grid width, in pixels.
+   *
+   * __Default value:__ `1`
+   * @minimum 0
+   */
+  gridWidth?: number;
+
+  // ---------- Labels ----------
+
+  /**
    * A boolean flag indicating if labels should be included as part of the axis.
    *
    * __Default value:__  `true`.
    */
   labels?: boolean;
+
+  /**
+   * Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.
+   */
+  labelBaseline?: string;
+
+  /**
+   * Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.
+   */
+  labelAlign?: string;
 
   /**
    * Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.
@@ -551,100 +636,10 @@ export interface VgAxisBase {
 
   /**
    * The padding, in pixels, between axis and text labels.
+   *
+   * __Default value:__ `2`
    */
   labelPadding?: number;
-
-  /**
-   * Boolean value that determines whether the axis should include ticks.
-   */
-  ticks?: boolean;
-
-  /**
-   * The size in pixels of axis ticks.
-   *
-   * @minimum 0
-   */
-  tickSize?: number;
-
-  /**
-   * Max length for axis title if the title is automatically generated from the field's description.
-   *
-   * @minimum 0
-   * __Default value:__ `undefined`.
-   */
-  titleMaxLength?: number;
-
-  /**
-   * The padding, in pixels, between title and axis.
-   */
-  titlePadding?: number;
-
-  /**
-   * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
-   *
-   * __Default value:__ `30` for y-axis; `undefined` for x-axis.
-   */
-  minExtent?: number;
-
-  /**
-   * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
-   *
-   * __Default value:__ `undefined`.
-   */
-  maxExtent?: number;
-}
-
-export interface VgAxisConfig extends VgAxisBase {
-  /**
-   * An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.
-   */
-  bandPosition?: number;
-  /**
-   * Stroke width of axis domain line
-   *
-   * __Default value:__  (none, using Vega default).
-   */
-  domainWidth?: number;
-
-  /**
-   * Color of axis domain line.
-   *
-   * __Default value:__  (none, using Vega default).
-   */
-  domainColor?: string;
-
-  // ---------- Grid ----------
-  /**
-   * Color of gridlines.
-   */
-  gridColor?: string;
-
-  /**
-   * The offset (in pixels) into which to begin drawing with the grid dash array.
-   */
-  gridDash?: number[];
-
-  /**
-   * The stroke opacity of grid (value between [0,1])
-   *
-   * __Default value:__ (`1` by default)
-   * @minimum 0
-   * @maximum 1
-   */
-  gridOpacity?: number;
-
-  /**
-   * The grid width, in pixels.
-   * @minimum 0
-   */
-  gridWidth?: number;
-
-  // ---------- Ticks ----------
-  /**
-   * The color of the axis's tick.
-   */
-  tickColor?: string;
-
 
   /**
    * The rotation angle of the axis labels.
@@ -675,20 +670,75 @@ export interface VgAxisConfig extends VgAxisBase {
 
   /**
    * Maximum allowed pixel width of axis tick labels.
+   *
+   * __Default value:__ `180`
    */
   labelLimit?: number;
 
+  // ---------- Ticks ----------
+  /**
+   * Boolean value that determines whether the axis should include ticks.
+   *
+   * __Default value:__ `true`
+   */
+  ticks?: boolean;
+
+  /**
+   * The color of the axis's tick.
+   *
+   * __Default value:__ `"gray"`
+   */
+  tickColor?: string;
+
+  /**
+   * The size in pixels of axis ticks.
+   *
+   * __Default value:__ `5`
+   * @minimum 0
+   */
+  tickSize?: number;
+
   /**
    * Boolean flag indicating if pixel position values should be rounded to the nearest integer.
+   *
+   * __Default value:__ `true`
    */
   tickRound?: boolean;
 
   /**
    * The width, in pixels, of ticks.
    *
+   * __Default value:__ `1`
    * @minimum 0
    */
   tickWidth?: number;
+
+  /**
+   * Max length for axis title if the title is automatically generated from the field's description.
+   *
+   * @minimum 0
+   * __Default value:__ `undefined`.
+   */
+  titleMaxLength?: number;
+
+  /**
+   * The padding, in pixels, between title and axis.
+   */
+  titlePadding?: number;
+
+  /**
+   * The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.
+   *
+   * __Default value:__ `30` for y-axis; `undefined` for x-axis.
+   */
+  minExtent?: number;
+
+  /**
+   * The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.
+   *
+   * __Default value:__ `undefined`.
+   */
+  maxExtent?: number;
 
   // ---------- Title ----------
 
@@ -962,6 +1012,21 @@ export type Interpolate = 'linear' | 'linear-closed' |
   'bundle' | 'monotone';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
+export type Cursor = 'auto' | 'default' | 'none' |
+  'context-menu' | 'help' | 'pointer' |
+  'progress' | 'wait' | 'cell' |
+  'crosshair' | 'text' | 'vertical-text' |
+  'alias' | 'copy' | 'move' |
+  'no-drop' | 'not-allowed' | 'e-resize' |
+  'n-resize' | 'ne-resize' | 'nw-resize' |
+  's-resize' | 'se-resize' | 'sw-resize' |
+  'w-resize' | 'ew-resize' | 'ns-resize' |
+  'nesw-resize' | 'nwse-resize' | 'col-resize' |
+  'row-resize' | 'all-scroll' | 'zoom-in' |
+  'zoom-out' | 'grab' | 'grabbing';
+export type StrokeCap = 'butt' | 'round' | 'square';
+export type StrokeJoin = 'miter' | 'round' | 'bevel';
+export type Dir = 'ltr' | 'rtl';
 
 export interface VgMarkConfig {
 
@@ -1026,7 +1091,7 @@ export interface VgMarkConfig {
    *
    * __Default value:__ `"square"`
    */
-  strokeCap?: 'butt' | 'round' | 'square';
+  strokeCap?: StrokeCap;
 
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
@@ -1037,6 +1102,18 @@ export interface VgMarkConfig {
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of `"miter"`, `"round"` or `"bevel"`.
+   *
+   * __Default value:__ `"miter"`
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The miter limit at which to bevel a line join.
+   */
+  strokeMiterLimit?: number;
 
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**
@@ -1118,6 +1195,13 @@ export interface VgMarkConfig {
   baseline?: VerticalAlign;
 
   /**
+   * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"ltr"`
+   */
+  dir?: Dir;
+
+  /**
    * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dx?: number;
@@ -1134,9 +1218,18 @@ export interface VgMarkConfig {
   radius?: number;
 
   /**
-   * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
+   * The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
+   *
+   * __Default value:__ `0`, indicating no limit
    */
   limit?: number;
+
+  /**
+   * The ellipsis string for text truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"…"`
+   */
+  ellipsis?: string;
 
   /**
    * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
@@ -1179,7 +1272,21 @@ export interface VgMarkConfig {
   /**
    * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
-  cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
+  cursor?: Cursor;
+
+  /**
+   * The tooltip text to show upon mouse hover.
+   */
+  tooltip?: any;
+
+  // ---------- Corner Radius: Bar, Tick, Rect ----------
+
+  /**
+   * The radius in pixels of rounded rectangle corners.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadius?: number;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -1192,6 +1299,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   strokeOpacity: 1,
   strokeDash: 1,
   strokeDashOffset: 1,
+  strokeJoin: 1,
+  strokeMiterLimit: 1,
   size: 1,
   shape: 1,
   interpolate: 1,
@@ -1200,9 +1309,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   align: 1,
   baseline: 1,
   text: 1,
-  limit: 1,
+  dir: 1,
   dx: 1,
   dy: 1,
+  ellipsis: 1,
+  limit: 1,
   radius: 1,
   theta: 1,
   angle: 1,
@@ -1212,11 +1323,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fontStyle: 1,
   cursor: 1,
   href: 1,
+  tooltip: 1,
+  cornerRadius: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
-  // dir: 1,
-  // ellipsis: 1,
   // endAngle: 1,
   // innerRadius: 1,
   // outerRadius: 1,

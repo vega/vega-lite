@@ -12,6 +12,7 @@ permalink: /docs/config.html
   "config": {                // Configuration Object
     ...                      // - Top-level Configuration
     "axis"      : { ... },   // - Axis Configuration
+    "header"    : { ... },   // - Header Configuration
     "legend"    : { ... },   // - Legend Configuration
     "mark"      : { ... },   // - Mark Configuration
     "style"     : { ... },   // - Mark Style Configuration
@@ -50,6 +51,10 @@ Additional property blocks can target more specific axis types based on the orie
 
 {% include table.html props="axis,axisX,axisY,axisLeft,axisRight,axisTop,axisBottom,axisBand" source="Config" %}
 
+{:#header-config}
+## Header Configuration
+
+{% include table.html props="header" source="Config" %}
 
 {:#legend-config}
 ## Legend Configuration

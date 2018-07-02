@@ -16,8 +16,8 @@ import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
+import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
-import {IdentifierNode} from './indentifier';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
@@ -61,9 +61,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      head = BinNode.makeFromTransform(head, t, model);
+      const bin = head = BinNode.makeFromTransform(head, t, model);
 
-      ancestorParse.set(t.as, 'number', false);
+      for (const field of keys(bin.producedFields())) {
+        ancestorParse.set(field, 'number', false);
+      }
+
     } else if (isTimeUnit(t)) {
       head = TimeUnitNode.makeFromTransform(head, t);
 
@@ -267,6 +270,15 @@ export function parseData(model: Model): DataComponent {
   let facetRoot = null;
   if (isFacetModel(model)) {
     const facetName = model.getName('facet');
+
+    // Derive new sort index field for facet's sort array
+    head = CalculateNode.parseAllForSortIndex(head, model);
+
+    // Derive new aggregate (via window) for facet's sort field
+    // TODO: use JoinAggregate once we have it
+    // augment data source with new fields for crossed facet
+    head = WindowTransformNode.makeFromFacet(head, model.facet) || head;
+
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
     head = facetRoot;

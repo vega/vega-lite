@@ -43,7 +43,7 @@ Note how the field for the y channel refers to a repeated field.
 
 In addition to [common properties of a view specification](spec.html#common), a repeat specification has the following properties:
 
-{% include table.html props="repeat,resolve" source="RepeatSpec" %}
+{% include table.html props="repeat,spec,align,bounds,center,spacing,resolve" source="RepeatSpec" %}
 
 The `repeat` property is an object with two optional properties. They define the list of fields that should be repeated into a row or column.
 

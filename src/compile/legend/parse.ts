@@ -109,7 +109,7 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
         fieldDefTitle(fieldDef, model.config)
       ) || undefined; // make falsy value undefined so output Vega spec is shorter
     case 'values':
-      return properties.values(specifiedLegend);
+      return properties.values(specifiedLegend, fieldDef);
     case 'type':
       return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
   }

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/cars.json"},
+  "layer": [
+    {
+      "mark": {
+        "type": "errorband",
+        "extent": "ci",
+        "borders": {
+          "opacity": 0.5,
+          "strokeDash": [6, 4]
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "title": "Miles per Gallon (95% CIs)"
+        },
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "timeUnit": "year"
+        }
+      }
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "aggregate": "mean"
+        },
+        "x": {
+          "field": "Year",
+          "type": "temporal",
+          "timeUnit": "year"
+        }
+      }
+    }
+  ]
+}

@@ -7,6 +7,6 @@
     "x": {"timeUnit": "quarter", "field": "date", "type": "ordinal"},
     "y": {"field": "price", "type": "quantitative", "aggregate": "mean"},
     "color": {"field": "symbol", "type": "nominal"},
-    "column": {"field": "date", "type": "temporal", "timeUnit": "year"}
+    "column": {"field": "date", "type": "ordinal", "timeUnit": "year"}
   }
 }

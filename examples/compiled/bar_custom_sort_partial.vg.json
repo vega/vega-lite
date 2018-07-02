@@ -46,7 +46,7 @@
                 },
                 {
                     "type": "formula",
-                    "expr": "datum.a === 'B' ? 0 : datum.a === 'A' ? 1 : datum.a === 'C' ? 2 : 3",
+                    "expr": "datum[\"a\"]===\"B\" ? 0 : datum[\"a\"]===\"A\" ? 1 : datum[\"a\"]===\"C\" ? 2 : 3",
                     "as": "x_a_sort_index"
                 }
             ]
@@ -150,22 +150,10 @@
             "orient": "bottom",
             "grid": false,
             "title": "a",
+            "labelBaseline": "middle",
+            "labelAngle": 270,
+            "labelAlign": "right",
             "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
             "zindex": 1
         },
         {

@@ -53,11 +53,8 @@ export class RepeatModel extends BaseConcatModel {
     parseRepeatLayoutSize(this);
   }
 
-  public assembleLayout(): VgLayout {
-    // TODO: allow customization
+  protected assembleDefaultLayout(): VgLayout {
     return {
-      padding: {row: 10, column: 10},
-      offset: 10,
       columns: this.repeat && this.repeat.column ? this.repeat.column.length : 1,
       bounds: 'full',
       align: 'all'

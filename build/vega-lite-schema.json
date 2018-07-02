@@ -88,6 +88,12 @@
     "AnyMark": {
       "anyOf": [
         {
+          "$ref": "#/definitions/CompositeMark"
+        },
+        {
+          "$ref": "#/definitions/CompositeMarkDef"
+        },
+        {
           "$ref": "#/definitions/Mark"
         },
         {
@@ -116,47 +122,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -165,6 +141,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -207,7 +187,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "line": {
@@ -216,7 +196,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/OverlayMarkDef"
             }
           ],
           "description": "A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.\n\n- If this value is an empty object (`{}`) or `true`, lines with default properties will be used.\n\n- If this value is `false`, no lines would be automatically added to area marks.\n\n__Default value:__ `false`."
@@ -237,7 +217,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/OverlayMarkDef"
             },
             {
               "enum": [
@@ -267,13 +247,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -284,6 +259,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -310,6 +293,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -347,9 +333,21 @@
     "Axis": {
       "additionalProperties": false,
       "properties": {
+        "bandPosition": {
+          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+          "type": "number"
+        },
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "domainColor": {
+          "description": "Color of axis domain line.\n\n__Default value:__  `\"gray\"`.",
+          "type": "string"
+        },
+        "domainWidth": {
+          "description": "Stroke width of axis domain line\n\n__Default value:__  `1`",
+          "type": "number"
         },
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
@@ -359,152 +357,8 @@
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
         },
-        "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
-          "maximum": 360,
-          "minimum": -360,
-          "type": "number"
-        },
-        "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
-          "type": [
-            "boolean",
-            "number"
-          ]
-        },
-        "labelFlush": {
-          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
-          "type": [
-            "boolean",
-            "number"
-          ]
-        },
-        "labelOverlap": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "enum": [
-                "parity"
-              ],
-              "type": "string"
-            },
-            {
-              "enum": [
-                "greedy"
-              ],
-              "type": "string"
-            }
-          ],
-          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
-        },
-        "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.",
-          "type": "number"
-        },
-        "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
-          "type": "boolean"
-        },
-        "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
-          "type": "number"
-        },
-        "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/AxisOrient",
-          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
-        },
-        "position": {
-          "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
-          "type": "number"
-        },
-        "tickCount": {
-          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
-          "type": "number"
-        },
-        "tickSize": {
-          "description": "The size in pixels of axis ticks.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.",
-          "type": "boolean"
-        },
-        "title": {
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "titleMaxLength": {
-          "description": "Max length for axis title if the title is automatically generated from the field's description.",
-          "type": "number"
-        },
-        "titlePadding": {
-          "description": "The padding, in pixels, between title and axis.",
-          "type": "number"
-        },
-        "values": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Explicitly set the visible axis tick values."
-        },
-        "zindex": {
-          "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `1` (in front of the marks) for actual axis and `0` (behind the marks) for grids.",
-          "minimum": 0,
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "AxisConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "bandPosition": {
-          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.",
-          "type": "number"
-        },
-        "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
-          "type": "boolean"
-        },
-        "domainColor": {
-          "description": "Color of axis domain line.\n\n__Default value:__  (none, using Vega default).",
-          "type": "string"
-        },
-        "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__  (none, using Vega default).",
-          "type": "number"
-        },
-        "grid": {
-          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
-          "type": "boolean"
-        },
         "gridColor": {
-          "description": "Color of gridlines.",
+          "description": "Color of gridlines.\n\n__Default value:__  `\"lightGray\"`.",
           "type": "string"
         },
         "gridDash": {
@@ -515,21 +369,29 @@
           "type": "array"
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ (`1` by default)",
+          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.",
+          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "labelAlign": {
+          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBaseline": {
+          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -559,7 +421,7 @@
           "type": "number"
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.",
+          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOverlap": {
@@ -583,7 +445,264 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.",
+          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+          "type": "number"
+        },
+        "labels": {
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
+          "type": "boolean"
+        },
+        "maxExtent": {
+          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
+          "type": "number"
+        },
+        "minExtent": {
+          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/AxisOrient",
+          "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
+        },
+        "position": {
+          "description": "The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
+          "type": "number"
+        },
+        "tickColor": {
+          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`",
+          "type": "string"
+        },
+        "tickCount": {
+          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.",
+          "type": "number"
+        },
+        "tickRound": {
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
+        "tickSize": {
+          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "tickWidth": {
+          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "ticks": {
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
+        "title": {
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "titleAlign": {
+          "description": "Horizontal text alignment of axis titles.",
+          "type": "string"
+        },
+        "titleAngle": {
+          "description": "Angle in degrees of axis titles.",
+          "type": "number"
+        },
+        "titleBaseline": {
+          "description": "Vertical text baseline for axis titles.",
+          "type": "string"
+        },
+        "titleColor": {
+          "description": "Color of the title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "Font size of the title.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "Maximum allowed pixel width of axis titles.",
+          "type": "number"
+        },
+        "titleMaxLength": {
+          "description": "Max length for axis title if the title is automatically generated from the field's description.",
+          "type": "number"
+        },
+        "titlePadding": {
+          "description": "The padding, in pixels, between title and axis.",
+          "type": "number"
+        },
+        "titleX": {
+          "description": "X-coordinate of the axis title relative to the axis group.",
+          "type": "number"
+        },
+        "titleY": {
+          "description": "Y-coordinate of the axis title relative to the axis group.",
+          "type": "number"
+        },
+        "values": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Explicitly set the visible axis tick values."
+        },
+        "zindex": {
+          "description": "A non-positive integer indicating z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, use `\"zindex = 1\"`.\n\n__Default value:__ `1` (in front of the marks) for actual axis and `0` (behind the marks) for grids.",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "AxisConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "bandPosition": {
+          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+          "type": "number"
+        },
+        "domain": {
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
+        "domainColor": {
+          "description": "Color of axis domain line.\n\n__Default value:__  `\"gray\"`.",
+          "type": "string"
+        },
+        "domainWidth": {
+          "description": "Stroke width of axis domain line\n\n__Default value:__  `1`",
+          "type": "number"
+        },
+        "grid": {
+          "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
+          "type": "boolean"
+        },
+        "gridColor": {
+          "description": "Color of gridlines.\n\n__Default value:__  `\"lightGray\"`.",
+          "type": "string"
+        },
+        "gridDash": {
+          "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "gridOpacity": {
+          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "gridWidth": {
+          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelAlign": {
+          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
+        },
+        "labelAngle": {
+          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "labelBaseline": {
+          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
+        },
+        "labelBound": {
+          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelColor": {
+          "description": "The color of the tick label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFlush": {
+          "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
+          "type": [
+            "boolean",
+            "number"
+          ]
+        },
+        "labelFont": {
+          "description": "The font of the tick label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of the label, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelLimit": {
+          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
+          "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
+        },
+        "labelPadding": {
+          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
           "type": "number"
         },
         "labels": {
@@ -603,25 +722,25 @@
           "type": "boolean"
         },
         "tickColor": {
-          "description": "The color of the axis's tick.",
+          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`",
           "type": "string"
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.",
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.",
+          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
           "minimum": 0,
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.",
+          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.",
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "titleAlign": {
@@ -728,47 +847,17 @@
           "minimum": 0,
           "type": "number"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "discreteBandSize": {
           "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
@@ -782,6 +871,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -824,7 +917,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -856,13 +949,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -873,6 +961,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -899,9 +995,20 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
+    },
+    "Baseline": {
+      "enum": [
+        "top",
+        "middle",
+        "bottom"
+      ],
+      "type": "string"
     },
     "BasicType": {
       "enum": [
@@ -916,6 +1023,10 @@
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
       "properties": {
+        "anchor": {
+          "description": "A value in the binned domain at which to anchor the bins, shifting the bin boundaries if necessary to ensure that a boundary aligns with the anchor value.\n\n__Default Value:__ the minimum bin extent value",
+          "type": "number"
+        },
         "base": {
           "description": "The number base to use for automatic bin determination (default is base 10).\n\n__Default value:__ `10`",
           "type": "number"
@@ -969,8 +1080,18 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "description": "The output fields at which to write the start and end bin values.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "The output fields at which to write the start and end bin values."
         },
         "bin": {
           "anyOf": [
@@ -992,6 +1113,179 @@
         "bin",
         "field",
         "as"
+      ],
+      "type": "object"
+    },
+    "BoxPlot": {
+      "enum": [
+        "boxplot"
+      ],
+      "type": "string"
+    },
+    "BoxPlotConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "size": {
+          "description": "Size of the box and median tick of a box plot ",
+          "type": "number"
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "BoxPlotDef": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "anyOf": [
+            {
+              "enum": [
+                "min-max"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.\n\n__Default value:__ `\"vertical\"`."
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "size": {
+          "description": "Size of the box and median tick of a box plot ",
+          "type": "number"
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/BoxPlot",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
       ],
       "type": "object"
     },
@@ -1049,6 +1343,32 @@
         "as"
       ],
       "type": "object"
+    },
+    "CompositeMark": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlot"
+        },
+        {
+          "$ref": "#/definitions/ErrorBar"
+        },
+        {
+          "$ref": "#/definitions/ErrorBand"
+        }
+      ]
+    },
+    "CompositeMarkDef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BoxPlotDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBarDef"
+        },
+        {
+          "$ref": "#/definitions/ErrorBandDef"
+        }
+      ]
     },
     "CompositeUnitSpec": {
       "$ref": "#/definitions/CompositeUnitSpecAlias",
@@ -1200,24 +1520,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "test": {
           "$ref": "#/definitions/LogicalOperand<Predicate>"
@@ -1434,24 +1738,8 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -1614,6 +1902,10 @@
           "$ref": "#/definitions/BarConfig",
           "description": "Bar-Specific Config "
         },
+        "boxplot": {
+          "$ref": "#/definitions/BoxPlotConfig",
+          "description": "Box Config"
+        },
         "circle": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Circle-Specific Config "
@@ -1625,6 +1917,14 @@
         "datasets": {
           "$ref": "#/definitions/Datasets",
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "errorband": {
+          "$ref": "#/definitions/ErrorBandConfig",
+          "description": "ErrorBand Config"
+        },
+        "errorbar": {
+          "$ref": "#/definitions/ErrorBarConfig",
+          "description": "ErrorBar Config"
         },
         "fieldTitle": {
           "description": "Defines how Vega-Lite generates title for fields.  There are three possible styles:\n- `\"verbal\"` (Default) - displays function in a verbal style (e.g., \"Sum of field\", \"Year-month of date\", \"field (binned)\").\n- `\"function\"` - displays function using parentheses and capitalized texts (e.g., \"SUM(field)\", \"YEARMONTH(date)\", \"BIN(field)\").\n- `\"plain\"` - displays only the field name without functions (e.g., \"field\", \"date\", \"field\").",
@@ -1638,6 +1938,10 @@
         "geoshape": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Geoshape-Specific Config "
+        },
+        "header": {
+          "$ref": "#/definitions/HeaderConfig",
+          "description": "Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config)."
         },
         "invalidValues": {
           "description": "Defines how Vega-Lite should handle invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
@@ -1768,6 +2072,47 @@
       },
       "type": "object"
     },
+    "Cursor": {
+      "enum": [
+        "auto",
+        "default",
+        "none",
+        "context-menu",
+        "help",
+        "pointer",
+        "progress",
+        "wait",
+        "cell",
+        "crosshair",
+        "text",
+        "vertical-text",
+        "alias",
+        "copy",
+        "move",
+        "no-drop",
+        "not-allowed",
+        "e-resize",
+        "n-resize",
+        "ne-resize",
+        "nw-resize",
+        "s-resize",
+        "se-resize",
+        "sw-resize",
+        "w-resize",
+        "ew-resize",
+        "ns-resize",
+        "nesw-resize",
+        "nwse-resize",
+        "col-resize",
+        "row-resize",
+        "all-scroll",
+        "zoom-in",
+        "zoom-out",
+        "grab",
+        "grabbing"
+      ],
+      "type": "string"
+    },
     "Data": {
       "anyOf": [
         {
@@ -1883,6 +2228,13 @@
         "$ref": "#/definitions/InlineDataset"
       },
       "type": "object"
+    },
+    "Dir": {
+      "enum": [
+        "ltr",
+        "rtl"
+      ],
+      "type": "string"
     },
     "DsvDataFormat": {
       "additionalProperties": false,
@@ -2372,6 +2724,185 @@
       },
       "type": "object"
     },
+    "ErrorBand": {
+      "enum": [
+        "errorband"
+      ],
+      "type": "string"
+    },
+    "ErrorBandConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the band. Available options include:\n- `\"ci\"`: Extend the band to the confidence interval of the mean.\n- `\"stderr\"`: The size of band are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of band are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBandDef": {
+      "additionalProperties": false,
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the band. Available options include:\n- `\"ci\"`: Extend the band to the confidence interval of the mean.\n- `\"stderr\"`: The size of band are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of band are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the band to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBand",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ErrorBar": {
+      "enum": [
+        "errorbar"
+      ],
+      "type": "string"
+    },
+    "ErrorBarConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "ErrorBarDef": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "extent": {
+          "$ref": "#/definitions/ErrorBarExtent",
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+        },
+        "opacity": {
+          "description": "Opacity of the marks.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Orientation of the error bar.  This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined."
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "type": {
+          "$ref": "#/definitions/ErrorBar",
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (e.g., `\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ErrorBarExtent": {
+      "enum": [
+        "ci",
+        "iqr",
+        "stderr",
+        "stdev"
+      ],
+      "type": "string"
+    },
     "LayerSpec": {
       "additionalProperties": false,
       "description": "Layer Spec with encoding and projection",
@@ -2480,8 +3011,8 @@
           "description": "An object defining properties of a facet's header."
         },
         "sort": {
-          "$ref": "#/definitions/SortOrder",
-          "description": "Sort order for a facet field.\nThis can be `\"ascending\"`, `\"descending\"`."
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -2701,24 +3232,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "timeUnit": {
           "$ref": "#/definitions/TimeUnit",
@@ -3164,6 +3679,36 @@
     "FacetSpec": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3183,6 +3728,17 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for facets."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
         },
         "spec": {
           "anyOf": [
@@ -3223,6 +3779,18 @@
     "HConcatSpec": {
       "additionalProperties": false,
       "properties": {
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3245,6 +3813,10 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
+        },
+        "spacing": {
+          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
+          "type": "number"
         },
         "title": {
           "anyOf": [
@@ -3273,6 +3845,36 @@
     "RepeatSpec": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3292,6 +3894,17 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale and legend resolutions for repeated charts."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -3478,6 +4091,18 @@
     "VConcatSpec": {
       "additionalProperties": false,
       "properties": {
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -3493,6 +4118,10 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+        },
+        "spacing": {
+          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
+          "type": "number"
         },
         "title": {
           "anyOf": [
@@ -3547,12 +4176,128 @@
           "minimum": -360,
           "type": "number"
         },
+        "labelColor": {
+          "description": "The color of the header label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFont": {
+          "description": "The font of the header label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of the header label, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelLimit": {
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
         "title": {
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle` property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
           "type": [
             "string",
             "null"
           ]
+        },
+        "titleAnchor": {
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
+          "type": "string"
+        },
+        "titleAngle": {
+          "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "titleBaseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "titleColor": {
+          "description": "Color of the header title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "Font size of the header title.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "HeaderConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "labelAngle": {
+          "description": "The rotation angle of the header labels.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "labelColor": {
+          "description": "The color of the header label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFont": {
+          "description": "The font of the header label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of the header label, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelLimit": {
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "titleAnchor": {
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`.",
+          "type": "string"
+        },
+        "titleAngle": {
+          "description": "The rotation angle of the header title.\n\n__Default value:__ `0`.",
+          "maximum": 360,
+          "minimum": -360,
+          "type": "number"
+        },
+        "titleBaseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "titleColor": {
+          "description": "Color of the header title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "Font size of the header title.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
         }
       },
       "type": "object"
@@ -3971,6 +4716,12 @@
             },
             {
               "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
@@ -4203,47 +4954,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4252,6 +4973,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -4294,7 +5019,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -4313,7 +5038,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/OverlayMarkDef"
             },
             {
               "enum": [
@@ -4343,13 +5068,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -4360,6 +5080,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -4386,6 +5114,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -4638,47 +5369,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4687,6 +5388,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -4729,7 +5434,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -4761,13 +5466,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -4778,6 +5478,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -4804,6 +5512,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -4838,47 +5549,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -4887,6 +5568,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -4929,7 +5614,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "line": {
@@ -4938,7 +5623,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/OverlayMarkDef"
             }
           ],
           "description": "A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.\n\n- If this value is an empty object (`{}`) or `true`, lines with default properties will be used.\n\n- If this value is `false`, no lines would be automatically added to area marks.\n\n__Default value:__ `false`."
@@ -4959,7 +5644,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/OverlayMarkDef"
             },
             {
               "enum": [
@@ -4989,13 +5674,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -5006,6 +5686,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -5051,6 +5739,9 @@
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         },
         "type": {
           "$ref": "#/definitions/Mark",
@@ -5286,6 +5977,211 @@
       ],
       "type": "string"
     },
+    "OverlayMarkDef": {
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/HorizontalAlign",
+          "description": "The horizontal alignment of the text. One of `\"left\"`, `\"right\"`, `\"center\"`."
+        },
+        "angle": {
+          "description": "The rotation angle of the text, in degrees.",
+          "maximum": 360,
+          "minimum": 0,
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/VerticalAlign",
+          "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
+        },
+        "clip": {
+          "description": "Whether a mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
+        "color": {
+          "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "string"
+        },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
+        },
+        "dx": {
+          "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
+          "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
+        },
+        "fill": {
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "filled": {
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `true` for all marks except `point` and `false` for `point`.\n\n__Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
+          "type": "boolean"
+        },
+        "font": {
+          "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "The font size, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style (e.g., `\"italic\"`)."
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "href": {
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
+          "format": "uri",
+          "type": "string"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/Interpolate",
+          "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
+        },
+        "limit": {
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
+        },
+        "radius": {
+          "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "shape": {
+          "description": "The default symbol shape to use. One of: `\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, or `\"triangle-down\"`, or a custom SVG path.\n\n__Default value:__ `\"circle\"`",
+          "type": "string"
+        },
+        "size": {
+          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
+          "type": "string"
+        },
+        "strokeCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ The mark's name.  For example, a bar mark will have style `\"bar\"` by default.\n__Note:__ Any specified style will augment the default style. For example, a bar mark with `\"style\": \"foo\"` will receive from `config.style.bar` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
+        },
+        "tension": {
+          "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "text": {
+          "description": "Placeholder text if the `text` channel is not specified",
+          "type": "string"
+        },
+        "theta": {
+          "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
+          "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
+        },
+        "x2Offset": {
+          "description": "Offset for x2-position.",
+          "type": "number"
+        },
+        "xOffset": {
+          "description": "Offset for x-position.",
+          "type": "number"
+        },
+        "y2Offset": {
+          "description": "Offset for y2-position.",
+          "type": "number"
+        },
+        "yOffset": {
+          "description": "Offset for y-position.",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
     "Padding": {
       "anyOf": [
         {
@@ -5349,6 +6245,117 @@
       },
       "type": "object"
     },
+    "PartsMixins<BoxPlotPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "box": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "median": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "outliers": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PartsMixins<ErrorBandPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "band": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "borders": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "PartsMixins<ErrorBarPart>": {
+      "additionalProperties": false,
+      "description": "Make all properties in T optional",
+      "properties": {
+        "rule": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        },
+        "ticks": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/MarkConfig"
+            }
+          ]
+        }
+      },
+      "type": "object"
+    },
     "PositionFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -5405,24 +6412,8 @@
           "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied."
         },
         "sort": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\nSupported `sort` values include `\"ascending\"`, `\"descending\"`, `null` (no sorting), or an array specifying the preferred order of values.\nFor fields with discrete domains, `sort` can also be a [sort field definition object](https://vega.github.io/vega-lite/docs/sort.html#sort-field).\nFor `sort` as an [array specifying the preferred order of values](https://vega.github.io/vega-lite/docs/sort.html#sort-array), the sort order will obey the values in the array, followed by any unspecified values in their original order.\n\n__Default value:__ `\"ascending\"`"
+          "$ref": "#/definitions/Sort",
+          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following:\n- `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in Javascript.\n- [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.\n- [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`).\n- `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
         },
         "stack": {
           "anyOf": [
@@ -5825,6 +6816,42 @@
         "shared"
       ],
       "type": "string"
+    },
+    "RowCol<VgLayoutAlign>": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "$ref": "#/definitions/VgLayoutAlign"
+        },
+        "row": {
+          "$ref": "#/definitions/VgLayoutAlign"
+        }
+      },
+      "type": "object"
+    },
+    "RowCol<boolean>": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "boolean"
+        },
+        "row": {
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "RowCol<number>": {
+      "additionalProperties": false,
+      "properties": {
+        "column": {
+          "type": "number"
+        },
+        "row": {
+          "type": "number"
+        }
+      },
+      "type": "object"
     },
     "SampleTransform": {
       "additionalProperties": false,
@@ -6452,6 +7479,43 @@
         }
       ]
     },
+    "Sort": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "boolean"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "$ref": "#/definitions/DateTime"
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/definitions/SortOrder"
+        },
+        {
+          "$ref": "#/definitions/EncodingSortField"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "SortField": {
       "additionalProperties": false,
       "description": "A sort definition for transform",
@@ -6488,11 +7552,92 @@
       ],
       "type": "string"
     },
+    "StackTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Output field names. This can be either a string or an array of strings with\ntwo elements denoting the name for the fields for stack start and stack end\nrespectively.\nIf a single string(eg.\"val\") is provided, the end field will be \"val_end\"."
+        },
+        "groupby": {
+          "description": "The data fields to group by.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "offset": {
+          "description": "Mode for stacking marks.\n__Default value:__ `\"zero\"`",
+          "enum": [
+            "zero",
+            "center",
+            "normalize"
+          ],
+          "type": "string"
+        },
+        "sort": {
+          "description": "Field that determines the order of leaves in the stacked charts.",
+          "items": {
+            "$ref": "#/definitions/SortField"
+          },
+          "type": "array"
+        },
+        "stack": {
+          "description": "The field which is stacked.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stack",
+        "groupby",
+        "as"
+      ],
+      "type": "object"
+    },
+    "StrokeCap": {
+      "enum": [
+        "butt",
+        "round",
+        "square"
+      ],
+      "type": "string"
+    },
+    "StrokeJoin": {
+      "enum": [
+        "miter",
+        "round",
+        "bevel"
+      ],
+      "type": "string"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "$ref": "#/definitions/VgMarkConfig"
       },
       "type": "object"
+    },
+    "TextBaseline": {
+      "anyOf": [
+        {
+          "enum": [
+            "alphabetic"
+          ],
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/Baseline"
+        }
+      ]
     },
     "TextConfig": {
       "additionalProperties": false,
@@ -6515,47 +7660,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6564,6 +7679,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -6606,7 +7725,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -6642,13 +7761,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -6659,6 +7773,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -6685,6 +7807,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -6769,47 +7894,17 @@
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -6818,6 +7913,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -6860,7 +7959,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -6892,13 +7991,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -6909,6 +8003,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -6940,6 +8042,9 @@
           "description": "Thickness of the tick mark.\n\n__Default value:__  `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -7153,6 +8258,18 @@
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -7188,6 +8305,10 @@
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
         },
+        "spacing": {
+          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
+          "type": "number"
+        },
         "title": {
           "anyOf": [
             {
@@ -7220,6 +8341,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -7234,6 +8366,25 @@
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -7266,6 +8417,17 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale and legend resolutions for repeated charts."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -7318,6 +8480,18 @@
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -7345,6 +8519,10 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+        },
+        "spacing": {
+          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
+          "type": "number"
         },
         "title": {
           "anyOf": [
@@ -7385,6 +8563,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/VgLayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<VgLayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -7399,6 +8588,25 @@
         "background": {
           "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
           "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -7431,6 +8639,17 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for facets."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
         },
         "spec": {
           "anyOf": [
@@ -7655,6 +8874,9 @@
           "$ref": "#/definitions/WindowTransform"
         },
         {
+          "$ref": "#/definitions/StackTransform"
+        },
+        {
           "$ref": "#/definitions/FlattenTransform"
         },
         {
@@ -7853,9 +9075,10 @@
     },
     "VgAxisConfig": {
       "additionalProperties": false,
+      "description": "Base object for Vega's Axis and Axis Config.\nAll of these properties are both properties of Vega's Axis and Axis Config.",
       "properties": {
         "bandPosition": {
-          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.",
+          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
         },
         "domain": {
@@ -7863,11 +9086,11 @@
           "type": "boolean"
         },
         "domainColor": {
-          "description": "Color of axis domain line.\n\n__Default value:__  (none, using Vega default).",
+          "description": "Color of axis domain line.\n\n__Default value:__  `\"gray\"`.",
           "type": "string"
         },
         "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__  (none, using Vega default).",
+          "description": "Stroke width of axis domain line\n\n__Default value:__  `1`",
           "type": "number"
         },
         "grid": {
@@ -7875,7 +9098,7 @@
           "type": "boolean"
         },
         "gridColor": {
-          "description": "Color of gridlines.",
+          "description": "Color of gridlines.\n\n__Default value:__  `\"lightGray\"`.",
           "type": "string"
         },
         "gridDash": {
@@ -7886,21 +9109,29 @@
           "type": "array"
         },
         "gridOpacity": {
-          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ (`1` by default)",
+          "description": "The stroke opacity of grid (value between [0,1])\n\n__Default value:__ `1`",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "gridWidth": {
-          "description": "The grid width, in pixels.",
+          "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "labelAlign": {
+          "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
         },
         "labelAngle": {
           "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
           "maximum": 360,
           "minimum": -360,
           "type": "number"
+        },
+        "labelBaseline": {
+          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.",
+          "type": "string"
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false `(the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -7930,7 +9161,7 @@
           "type": "number"
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.",
+          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
         "labelOverlap": {
@@ -7954,7 +9185,7 @@
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
-          "description": "The padding, in pixels, between axis and text labels.",
+          "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
           "type": "number"
         },
         "labels": {
@@ -7970,25 +9201,25 @@
           "type": "number"
         },
         "tickColor": {
-          "description": "The color of the axis's tick.",
+          "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`",
           "type": "string"
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.",
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "tickSize": {
-          "description": "The size in pixels of axis ticks.",
+          "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
           "minimum": 0,
           "type": "number"
         },
         "tickWidth": {
-          "description": "The width, in pixels, of ticks.",
+          "description": "The width, in pixels, of ticks.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.",
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
           "type": "boolean"
         },
         "titleAlign": {
@@ -8104,6 +9335,14 @@
       ],
       "type": "object"
     },
+    "VgLayoutAlign": {
+      "enum": [
+        "none",
+        "each",
+        "all"
+      ],
+      "type": "string"
+    },
     "VgMarkConfig": {
       "additionalProperties": false,
       "properties": {
@@ -8121,47 +9360,17 @@
           "$ref": "#/definitions/VerticalAlign",
           "description": "The vertical alignment of the text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Default value:__ `\"middle\"`"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "cursor": {
-          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.",
-          "enum": [
-            "auto",
-            "default",
-            "none",
-            "context-menu",
-            "help",
-            "pointer",
-            "progress",
-            "wait",
-            "cell",
-            "crosshair",
-            "text",
-            "vertical-text",
-            "alias",
-            "copy",
-            "move",
-            "no-drop",
-            "not-allowed",
-            "e-resize",
-            "n-resize",
-            "ne-resize",
-            "nw-resize",
-            "s-resize",
-            "se-resize",
-            "sw-resize",
-            "w-resize",
-            "ew-resize",
-            "ns-resize",
-            "nesw-resize",
-            "nwse-resize",
-            "col-resize",
-            "row-resize",
-            "all-scroll",
-            "zoom-in",
-            "zoom-out",
-            "grab",
-            "grabbing"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/Cursor",
+          "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "dir": {
+          "$ref": "#/definitions/Dir",
+          "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -8170,6 +9379,10 @@
         "dy": {
           "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
           "type": "number"
+        },
+        "ellipsis": {
+          "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
+          "type": "string"
         },
         "fill": {
           "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
@@ -8208,7 +9421,7 @@
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "limit": {
-          "description": "The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.",
+          "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
           "type": "number"
         },
         "opacity": {
@@ -8240,13 +9453,8 @@
           "type": "string"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`",
-          "enum": [
-            "butt",
-            "round",
-            "square"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -8257,6 +9465,14 @@
         },
         "strokeDashOffset": {
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
@@ -8283,6 +9499,9 @@
         "theta": {
           "description": "Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating \"north\".",
           "type": "number"
+        },
+        "tooltip": {
+          "description": "The tooltip text to show upon mouse hover."
         }
       },
       "type": "object"
@@ -8485,6 +9704,14 @@
           "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
           "type": "number"
         },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'"
+        },
+        "strokeMiterLimit": {
+          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'",
+          "type": "number"
+        },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ (none)",
           "type": "number"
@@ -8563,7 +9790,7 @@
           "type": "array"
         },
         "groupby": {
-          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.",
+          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.",
           "items": {
             "type": "string"
           },

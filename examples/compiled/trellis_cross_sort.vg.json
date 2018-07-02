@@ -1,0 +1,719 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.json",
+    "description": "A simple bar chart with embedded data.",
+    "autosize": "pad",
+    "padding": 5,
+    "data": [
+        {
+            "name": "source_0",
+            "values": [
+                {
+                    "a": "A",
+                    "b": "X",
+                    "x": 1,
+                    "y": 4
+                },
+                {
+                    "a": "A",
+                    "b": "Y",
+                    "x": 3,
+                    "y": 5
+                },
+                {
+                    "a": "A",
+                    "b": "Z",
+                    "x": 5,
+                    "y": 6
+                },
+                {
+                    "a": "B",
+                    "b": "X",
+                    "x": 2,
+                    "y": 7
+                },
+                {
+                    "a": "B",
+                    "b": "Y",
+                    "x": 9,
+                    "y": 8
+                },
+                {
+                    "a": "B",
+                    "b": "Z",
+                    "x": 8,
+                    "y": 9
+                },
+                {
+                    "a": "C",
+                    "b": "X",
+                    "x": 7,
+                    "y": 1
+                },
+                {
+                    "a": "C",
+                    "b": "Y",
+                    "x": 6,
+                    "y": 2
+                },
+                {
+                    "a": "C",
+                    "b": "Z",
+                    "x": 4,
+                    "y": 3
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "median_x_by_a"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "x"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "a"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "median_y_by_b"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "y"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "b"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "median_y_by_b"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "y"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "b"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "type": "window",
+                    "params": [
+                        null
+                    ],
+                    "as": [
+                        "median_x_by_a"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "x"
+                    ],
+                    "sort": {
+                        "field": [],
+                        "order": []
+                    },
+                    "groupby": [
+                        "a"
+                    ],
+                    "frame": [
+                        null,
+                        null
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "column_domain",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "a"
+                    ],
+                    "fields": [
+                        "x"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "as": [
+                        "median_x"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "row_domain",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "b"
+                    ],
+                    "fields": [
+                        "y"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "as": [
+                        "median_y"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"x\"])",
+                    "as": "x"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"y\"])",
+                    "as": "y"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "a",
+                        "b"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "median_x_by_a"
+                    ],
+                    "as": [
+                        "median_median_x_by_a"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "data_0",
+            "transform": [
+                {
+                    "type": "aggregate",
+                    "groupby": [
+                        "a",
+                        "b"
+                    ],
+                    "ops": [
+                        "median"
+                    ],
+                    "fields": [
+                        "median_y_by_b"
+                    ],
+                    "as": [
+                        "median_median_y_by_b"
+                    ]
+                }
+            ]
+        }
+    ],
+    "signals": [
+        {
+            "name": "child_width",
+            "value": 50
+        },
+        {
+            "name": "child_height",
+            "value": 50
+        }
+    ],
+    "layout": {
+        "padding": {
+            "row": 10,
+            "column": 10
+        },
+        "offset": {
+            "rowTitle": 10,
+            "columnTitle": 10
+        },
+        "columns": {
+            "signal": "length(data('column_domain'))"
+        },
+        "bounds": "full",
+        "align": "all"
+    },
+    "marks": [
+        {
+            "name": "row-title",
+            "type": "group",
+            "role": "row-title",
+            "title": {
+                "text": "b",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
+        },
+        {
+            "name": "column-title",
+            "type": "group",
+            "role": "column-title",
+            "title": {
+                "text": "a",
+                "offset": 10,
+                "style": "guide-title"
+            }
+        },
+        {
+            "name": "row_header",
+            "type": "group",
+            "role": "row-header",
+            "from": {
+                "data": "row_domain"
+            },
+            "sort": {
+                "field": "datum[\"median_y\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "''+parent[\"b\"]"
+                },
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-label"
+            },
+            "encode": {
+                "update": {
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "grid": false,
+                    "title": "y",
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "column_header",
+            "type": "group",
+            "role": "column-header",
+            "from": {
+                "data": "column_domain"
+            },
+            "sort": {
+                "field": "datum[\"median_x\"]",
+                "order": "ascending"
+            },
+            "title": {
+                "text": {
+                    "signal": "''+parent[\"a\"]"
+                },
+                "offset": 10,
+                "orient": "top",
+                "style": "guide-label"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            }
+        },
+        {
+            "name": "column_footer",
+            "type": "group",
+            "role": "column-footer",
+            "from": {
+                "data": "column_domain"
+            },
+            "sort": {
+                "field": "datum[\"median_x\"]",
+                "order": "ascending"
+            },
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    }
+                }
+            },
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "grid": false,
+                    "title": "x",
+                    "labelFlush": true,
+                    "labelOverlap": true,
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
+                    "zindex": 1
+                }
+            ]
+        },
+        {
+            "name": "cell",
+            "type": "group",
+            "style": "cell",
+            "from": {
+                "facet": {
+                    "name": "facet",
+                    "data": "data_0",
+                    "groupby": [
+                        "b",
+                        "a"
+                    ],
+                    "aggregate": {
+                        "cross": true,
+                        "fields": [
+                            "median_y_by_b",
+                            "median_x_by_a"
+                        ],
+                        "ops": [
+                            "max",
+                            "max"
+                        ],
+                        "as": [
+                            "median_y_by_b",
+                            "median_x_by_a"
+                        ]
+                    }
+                }
+            },
+            "sort": {
+                "field": [
+                    "datum[\"median_y_by_b\"]",
+                    "datum[\"median_x_by_a\"]"
+                ],
+                "order": [
+                    "ascending",
+                    "ascending"
+                ]
+            },
+            "data": [
+                {
+                    "source": "facet",
+                    "name": "data_0",
+                    "transform": [
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"x\"])",
+                            "as": "x"
+                        },
+                        {
+                            "type": "formula",
+                            "expr": "toNumber(datum[\"y\"])",
+                            "as": "y"
+                        },
+                        {
+                            "type": "filter",
+                            "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_1",
+                    "transform": [
+                        {
+                            "type": "aggregate",
+                            "groupby": [],
+                            "ops": [
+                                "median"
+                            ],
+                            "fields": [
+                                "median_x_by_a"
+                            ],
+                            "as": [
+                                "median_median_x_by_a"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "source": "facet",
+                    "name": "data_2",
+                    "transform": [
+                        {
+                            "type": "aggregate",
+                            "groupby": [],
+                            "ops": [
+                                "median"
+                            ],
+                            "fields": [
+                                "median_y_by_b"
+                            ],
+                            "as": [
+                                "median_median_y_by_b"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "encode": {
+                "update": {
+                    "width": {
+                        "signal": "child_width"
+                    },
+                    "height": {
+                        "signal": "child_height"
+                    }
+                }
+            },
+            "marks": [
+                {
+                    "name": "child_layer_0_marks",
+                    "type": "symbol",
+                    "style": [
+                        "point"
+                    ],
+                    "from": {
+                        "data": "data_0"
+                    },
+                    "encode": {
+                        "update": {
+                            "opacity": {
+                                "value": 0.7
+                            },
+                            "fill": {
+                                "value": "transparent"
+                            },
+                            "stroke": {
+                                "value": "#4c78a8"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "x"
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "y"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_1_marks",
+                    "type": "rule",
+                    "style": [
+                        "rule"
+                    ],
+                    "from": {
+                        "data": "data_1"
+                    },
+                    "encode": {
+                        "update": {
+                            "stroke": {
+                                "value": "black"
+                            },
+                            "x": {
+                                "scale": "x",
+                                "field": "median_median_x_by_a"
+                            },
+                            "y": {
+                                "field": {
+                                    "group": "height"
+                                }
+                            },
+                            "y2": {
+                                "value": 0
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "child_layer_2_marks",
+                    "type": "rule",
+                    "style": [
+                        "rule"
+                    ],
+                    "from": {
+                        "data": "data_2"
+                    },
+                    "encode": {
+                        "update": {
+                            "stroke": {
+                                "value": "black"
+                            },
+                            "x": {
+                                "value": 0
+                            },
+                            "y": {
+                                "scale": "y",
+                                "field": "median_median_y_by_b"
+                            },
+                            "x2": {
+                                "field": {
+                                    "group": "width"
+                                }
+                            }
+                        }
+                    }
+                }
+            ],
+            "axes": [
+                {
+                    "scale": "x",
+                    "orient": "bottom",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(child_width/40)"
+                    },
+                    "gridScale": "y",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "ticks": false,
+                    "zindex": 0
+                },
+                {
+                    "scale": "y",
+                    "orient": "left",
+                    "grid": true,
+                    "tickCount": {
+                        "signal": "ceil(child_height/40)"
+                    },
+                    "gridScale": "x",
+                    "domain": false,
+                    "labels": false,
+                    "maxExtent": 0,
+                    "minExtent": 0,
+                    "ticks": false,
+                    "zindex": 0
+                }
+            ]
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_2",
+                        "field": "x"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "median_median_x_by_a"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "child_width"
+                }
+            ],
+            "nice": true,
+            "zero": true
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_2",
+                        "field": "y"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "median_median_y_by_b"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "child_height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

@@ -148,7 +148,6 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
         "bounds": "full",
         "align": "each"
     },
@@ -208,21 +207,15 @@
                     "orient": "bottom",
                     "grid": false,
                     "title": "date (month)",
+                    "labelBaseline": "middle",
+                    "labelAngle": 270,
+                    "labelAlign": "right",
                     "labelOverlap": true,
                     "encode": {
                         "labels": {
                             "update": {
                                 "text": {
                                     "signal": "timeFormat(datum.value, '%b')"
-                                },
-                                "angle": {
-                                    "value": 270
-                                },
-                                "align": {
-                                    "value": "right"
-                                },
-                                "baseline": {
-                                    "value": "middle"
                                 }
                             }
                         }

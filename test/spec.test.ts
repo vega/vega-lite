@@ -78,113 +78,84 @@ describe('normalize()', function () {
       assert.deepEqual(normalize({
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
         "data": {"url": "data/population.json"},
-        "transform": [{"filter": "datum.year == 2000"}],
-        facet: {
-          "row": {"field": "MPAA_Rating","type": "ordinal"}
-        },
-        spec: {
-          layer: [
+        "transform": [{"calculate": "(datum.sex==1) ? 'Men':'Women'", "as": "sex"}],
+        "facet": {"row": {"field": "sex", "type": "ordinal"}},
+        "spec": {
+          "layer": [
             {
-              "mark": "point",
+              "mark": "errorbar",
               "encoding": {
-                "x": {"field": "age","type": "ordinal"},
-                "y": {
-                  "aggregate": "mean",
-                  "field": "people",
-                  "type": "quantitative",
-                  "axis": {"title": "population"}
-                },
-                "size": {"value": 2}
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative"}
               }
             },
             {
-              mark: 'error-bar',
-              encoding: {
-                "x": {"field": "age","type": "ordinal"},
-                "y": {
-                  "aggregate": "min",
-                  "field": "people",
-                  "type": "quantitative",
-                  "axis": {"title": "population"}
-                },
-                "y2": {
-                  "aggregate": "max",
-                  "field": "people",
-                  "type": "quantitative"
-                },
-                "size": {"value": 5}
+              "mark": {"type": "point", "opacity": 1, "filled": true},
+              "encoding": {
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative", "aggregate": "mean"}
               }
             }
           ]
         }
       }, defaultConfig), {
         "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
-        "data": {"url": "data/population.json"},
-        "transform": [{"filter": "datum.year == 2000"}],
-        facet: {
-          "row": {"field": "MPAA_Rating","type": "ordinal"}
+        "data": {
+          "url": "data/population.json"
         },
-        spec: {
-          layer: [
+        "transform": [
+          {
+            "calculate": "(datum.sex==1) ? 'Men':'Women'",
+            "as": "sex"
+          }
+        ],
+        "facet": {
+          "row": {
+            "field": "sex",
+            "type": "ordinal"
+          }
+        },
+        "spec": {
+          "layer": [
             {
-              "mark": "point",
-              "encoding": {
-                "x": {"field": "age","type": "ordinal"},
-                "y": {
-                  "aggregate": "mean",
-                  "field": "people",
-                  "type": "quantitative",
-                  "axis": {"title": "population"}
+              "transform": [
+                {
+                  "aggregate": [
+                    {"op": "stderr", "field": "people", "as": "extent_people"},
+                    {"op": "mean", "field": "people", "as": "center_people"}
+                  ],
+                  "groupby": ["age"]
                 },
-                "size": {"value": 2}
-              }
-            },
-            {
+                {
+                  "calculate": "datum.center_people + datum.extent_people",
+                  "as": "upper_people"
+                },
+                {
+                  "calculate": "datum.center_people - datum.extent_people",
+                  "as": "lower_people"
+                }
+              ],
               "layer": [
                 {
-                  "mark": "rule",
+                  "mark": {"type": "rule", "style": "errorbar-rule"},
                   "encoding": {
-                    "x": {"field": "age","type": "ordinal"},
                     "y": {
-                      "aggregate": "min",
-                      "field": "people",
+                      "field": "lower_people",
                       "type": "quantitative",
-                      "axis": {"title": "population"}
+                      "title": "people"
                     },
-                    "y2": {
-                      "aggregate": "max",
-                      "field": "people",
-                      "type": "quantitative"
-                    }
-                  }
-                },
-                {
-                  "mark": "tick",
-                  "encoding": {
-                    "x": {"field": "age","type": "ordinal"},
-                    "y": {
-                      "aggregate": "min",
-                      "field": "people",
-                      "type": "quantitative",
-                      "axis": {"title": "population"}
-                    },
-                    "size": {"value": 5}
-                  }
-                },
-                {
-                  "mark": "tick",
-                  "encoding": {
-                    "x": {"field": "age","type": "ordinal"},
-                    "y": {
-                      "aggregate": "max",
-                      "field": "people",
-                      "type": "quantitative",
-                      // "axis": {"title": "population"}
-                    },
-                    "size": {"value": 5}
+                    "y2": {"field": "upper_people", "type": "quantitative"},
+                    "x": {"field": "age", "type": "ordinal", "title": "age"}
                   }
                 }
               ]
+            },
+            {
+              "mark": {"type": "point", "opacity": 1, "filled": true},
+              "encoding": {
+                "x": {"field": "age", "type": "ordinal"},
+                "y": {"field": "people", "type": "quantitative", "aggregate": "mean"}
+              }
             }
           ]
         }
@@ -300,112 +271,9 @@ describe('normalize()', function () {
         ]
       });
     }));
-
-    it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(normalize({
-        "data": {"url": "data/population.json"},
-        layer: [
-          {
-            "mark": "point",
-            "encoding": {
-              "x": {"field": "age","type": "ordinal"},
-              "y": {
-                "aggregate": "mean",
-                "field": "people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
-              },
-              "size": {"value": 2}
-            }
-          },
-          {
-            mark: 'error-bar',
-            encoding: {
-              "x": {"field": "age","type": "ordinal"},
-              "y": {
-                "aggregate": "min",
-                "field": "people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
-              },
-              "y2": {
-                "aggregate": "max",
-                "field": "people",
-                "type": "quantitative"
-              },
-              "size": {"value": 5}
-            }
-          }
-        ]
-      }, defaultConfig), {
-        "data": {"url": "data/population.json"},
-        layer: [
-          {
-            "mark": "point",
-            "encoding": {
-              "x": {"field": "age","type": "ordinal"},
-              "y": {
-                "aggregate": "mean",
-                "field": "people",
-                "type": "quantitative",
-                "axis": {"title": "population"}
-              },
-              "size": {"value": 2}
-            }
-          },
-          {
-            "layer": [
-              {
-                "mark": "rule",
-                "encoding": {
-                  "x": {"field": "age","type": "ordinal"},
-                  "y": {
-                    "aggregate": "min",
-                    "field": "people",
-                    "type": "quantitative",
-                    "axis": {"title": "population"}
-                  },
-                  "y2": {
-                    "aggregate": "max",
-                    "field": "people",
-                    "type": "quantitative"
-                  }
-                }
-              },
-              {
-                "mark": "tick",
-                "encoding": {
-                  "x": {"field": "age","type": "ordinal"},
-                  "y": {
-                    "aggregate": "min",
-                    "field": "people",
-                    "type": "quantitative",
-                    "axis": {"title": "population"}
-                  },
-                  "size": {"value": 5}
-                }
-              },
-              {
-                "mark": "tick",
-                "encoding": {
-                  "x": {"field": "age","type": "ordinal"},
-                  "y": {
-                    "aggregate": "max",
-                    "field": "people",
-                    "type": "quantitative",
-                    // "axis": {"title": "population"}
-                  },
-                  "size": {"value": 5}
-                }
-              }
-            ]
-          }
-        ]
-      });
-    });
   });
 
-  describe('normalizeOverlay', () => {
+  describe('normalizePathOverlay', () => {
     it('correctly normalizes line with overlayed point.', () => {
       const spec: TopLevelSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
@@ -580,10 +448,10 @@ describe('normalize()', function () {
       });
     });
 
-    it('correctly normalizes area with overlay line', () => {
+    it('correctly normalizes interpolated area with overlay line', () => {
       const spec: TopLevelSpec = {
         "data": {"url": "data/stocks.csv", "format": {"type": "csv"}},
-        "mark": "area",
+        "mark": {"type": "area", "interpolate": "monotone"},
         "encoding": {
           "x": {"field": "date", "type": "temporal"},
           "y": {"field": "price", "type": "quantitative"}
@@ -595,14 +463,14 @@ describe('normalize()', function () {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
-            "mark": {"type": "area", "opacity": 0.7},
+            "mark": {"type": "area", "opacity": 0.7, "interpolate": "monotone"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}
             }
           },
           {
-            "mark": {"type": "line"},
+            "mark": {"type": "line", "interpolate": "monotone"},
             "encoding": {
               "x": {"field": "date","type": "temporal"},
               "y": {"field": "price","type": "quantitative"}

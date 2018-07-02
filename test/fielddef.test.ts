@@ -76,9 +76,9 @@ describe('fieldDef', () => {
     }));
 
     it('should drop invalid aggregate ops and throw warning.', log.wrap((localLogger) => {
-      const fieldDef: FieldDef<string> = {aggregate: 'box-plot', field: 'a', type: 'quantitative'};
+      const fieldDef: FieldDef<string> = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns[0], log.message.invalidAggregate('box-plot'));
+      assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
     }));
   });
 

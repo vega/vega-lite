@@ -1,6 +1,8 @@
-
 import {isArray} from 'vega-util';
+
+import {isAggregateOp} from './aggregate';
 import {Channel, CHANNELS, isChannel, supportMark} from './channel';
+import {Config} from './config';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
@@ -18,13 +20,17 @@ import {
   OrderFieldDef,
   PositionFieldDef,
   TextFieldDef,
+  title,
   ValueDef,
-  ValueDefWithCondition
+  ValueDefWithCondition,
+  vgField,
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
+import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
 import {contains, keys, some} from './util';
+
 
 export interface Encoding<F> {
   /**
@@ -126,7 +132,6 @@ export interface Encoding<F> {
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property.
    */
   shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
-
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
@@ -194,6 +199,57 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
   });
 }
 
+export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, config: Config) {
+  const groupby: string[] = [];
+  const bins: BinTransform[] = [];
+  const timeUnits: TimeUnitTransform[] = [];
+  const aggregate: AggregatedFieldDef[] = [];
+  const encoding: Encoding<string> = {};
+
+  forEach(oldEncoding, (channelDef, channel) => {
+    if (isFieldDef(channelDef)) {
+      const transformedField = vgField(channelDef);
+      if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
+        aggregate.push({
+          op: channelDef.aggregate,
+          field: channelDef.field,
+          as: transformedField
+        });
+      } else {
+        // Add bin or timeUnit transform if applicable
+        const bin = channelDef.bin;
+        if (bin) {
+          const {field} = channelDef;
+          bins.push({bin, field, as: transformedField});
+        } else if (channelDef.timeUnit) {
+          const {timeUnit, field} = channelDef;
+          timeUnits.push({timeUnit, field, as: transformedField});
+        }
+
+        // TODO(@alanbanh): make bin correct
+        groupby.push(transformedField);
+      }
+      // now the field should refer to post-transformed field instead
+      encoding[channel] = {
+        field: vgField(channelDef),
+        type: channelDef.type,
+        title: title(channelDef, config)
+      };
+    } else {
+      // For value def, just copy
+      encoding[channel] = oldEncoding[channel];
+    }
+  });
+
+  return {
+    bins,
+    timeUnits,
+    aggregate,
+    groupby,
+    encoding
+  };
+}
+
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
    return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
     if (!isChannel(channel)) {
@@ -204,7 +260,6 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
 
     if (!supportMark(channel, mark)) {
       // Drop unsupported channel
-
       log.warn(log.message.incompatibleChannel(channel, mark));
       return normalizedEncoding;
     }

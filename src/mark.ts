@@ -65,7 +65,18 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
 
-export interface MarkConfig extends VgMarkConfig {
+export interface ColorMixins {
+  /**
+   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   *
+   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
+   *
+   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   */
+  color?: string;
+}
+
+export interface MarkConfig extends ColorMixins, VgMarkConfig {
   // ---------- Color ----------
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
@@ -78,15 +89,6 @@ export interface MarkConfig extends VgMarkConfig {
    *
    */
   filled?: boolean;
-
-  /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
-   *
-   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
-   *
-   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
-   */
-  color?: string;
 }
 
 export interface BarBinSpacingMixins {
@@ -101,11 +103,8 @@ export interface BarBinSpacingMixins {
 }
 
 
-/** @hide */
-export type HiddenComposite = CompositeMark | CompositeMarkDef;
-
 export type AnyMark =
-  HiddenComposite |
+  CompositeMark | CompositeMarkDef |
   Mark |
   MarkDef;
 
@@ -121,7 +120,7 @@ export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | 
 }
 
 export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity'];
+  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
@@ -205,6 +204,8 @@ export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
   discreteBandSize?: number;
 }
 
+export type OverlayMarkDef = MarkConfig & MarkDefMixins;
+
 export interface PointOverlayMixins {
   /**
    * A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.
@@ -217,7 +218,7 @@ export interface PointOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  point?: boolean | MarkConfig | 'transparent';
+  point?: boolean | OverlayMarkDef | 'transparent';
 }
 
 export interface LineConfig extends MarkConfig, PointOverlayMixins {}
@@ -232,7 +233,7 @@ export interface LineOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  line?: boolean | MarkConfig;
+  line?: boolean | OverlayMarkDef;
 }
 
 export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {}
@@ -248,15 +249,18 @@ export interface TickThicknessMixins {
   thickness?: number;
 }
 
-// Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins {
+export interface GenericMarkDef<M> {
   /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+   * The mark type. This could a primitive mark type
+   * (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`)
+   * or a composite mark type (e.g., `"boxplot"`, `"errorband"`, `"errorbar"`).
    */
-  type: Mark;
+  type: M;
+}
 
+
+export interface MarkDefMixins {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
@@ -292,6 +296,20 @@ export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMi
    */
   y2Offset?: number;
 }
+
+// Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
+
+
+// Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
+export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins, MarkDefMixins {
+  /**
+   * The mark type.
+   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
+   */
+  type: Mark;
+}
+
 
 export const defaultBarConfig: BarConfig = {
   binSpacing: 1,

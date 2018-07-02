@@ -1,8 +1,4 @@
-# [Vega-Lite](https://vega.github.io/vega-lite/) 2
-
-The `master` branch hosts Vega-Lite 2.0. In Version 2, we have migrated Vega-Lite to use the new Vega 3, and include composition and interaction features from [our research publication](http://idl.cs.washington.edu/papers/vega-lite).
-
-You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://github.com/vega/vega-lite/tree/1.x) ([website for Vega-Lite 1](https://vega.github.io/vega-lite-v1/)).
+# Vega-Lite
 
 [![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
@@ -11,7 +7,7 @@ You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://githu
 
 ![Teaser](site/static/teaser.png)
 
-Vega-Lite provides a higher-level grammar for visual analysis that generates complete [Vega](https://vega.github.io/) specifications.
+[Vega-Lite](https://vega.github.io/vega-lite/) provides a higher-level grammar for visual analysis that generates complete [Vega](https://vega.github.io/) specifications.
 
 You can find more details, [documentation](https://vega.github.io/vega-lite/docs/), [examples](https://vega.github.io/vega-lite/examples/), [usage instructions](https://vega.github.io/vega-lite/usage/embed.html), and [tutorials](https://vega.github.io/vega-lite/tutorials/getting_started.html) on the [Vega-Lite website](https://vega.github.io/vega-lite/).
 

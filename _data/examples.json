@@ -46,7 +46,7 @@
         "title": "Layered Bar Chart"
       },
       {
-        "name": "bar_diverging_stacked",
+        "name": "bar_diverging_stack_transform",
         "title": "Diverging Stacked Bar Chart"
       },
       {
@@ -117,7 +117,7 @@
         "name": "line_overlay",
         "title": "Line Chart with Overlaying Point Markers",
         "style": "background-size: auto 105%; background-position: center center !important;",
-        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `\"red\"` and set the line color to `\"green\"`. \n\n Notes: (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
+        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `\"red\"` and set the line color to `\"green\"`. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
       },
       {
         "name": "line_color",
@@ -188,6 +188,10 @@
         "name": "area_horizon",
         "title": "Horizon Graph",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "rect_mosaic_labelled_with_offset",
+        "title": "Mosaic Chart with Labels",
       }
     ],
     "Table-based Plots": [
@@ -195,6 +199,10 @@
         "name": "rect_heatmap",
         "title": "Table Heatmap",
         "style": "background-size: auto"
+      },
+      {
+        "name": "rect_heatmap_weather",
+        "title": "Annual Weather Heatmap"
       },
       {
         "name": "rect_binned_heatmap",
@@ -210,6 +218,29 @@
         "style": "background-size: auto 55%; background-position-y: center !important;"
       }
     ],
+    "Distribution Plots": [{
+      "name": "histogram",
+      "title": "Histogram",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
+      "name": "area_cumulative_freq",
+      "title": "Cumulative Frequency Distribution",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
+      "name": "layer_cumulative_histogram",
+      "title": "Layered Histogram and Cumulative Histogram",
+      "style": "background-size: auto 105%; background-position: center center !important;"
+    },
+    {
+      "name": "box-plot_minmax_2D_vertical_normalized",
+      "title": "Box Plot with Min/Max Whiskers"
+    },
+    {
+      "name": "box-plot_tukey_2D_vertical_normalized",
+      "title": "Tukey Box Plot (1.5 IQR)"
+    }],
     "Advanced Calculations": [
       {
         "name": "window_percent_of_total",
@@ -233,43 +264,47 @@
         "title": "Line Charts Showing Ranks Over Time"
       },
       {
+        "name": "window_sum_waterfall_chart",
+        "title": "Waterfall Chart of Monthly Profit and Loss"
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
       }
     ]
   },
-  "Layered Plots": {
+  "Composite Mark": {
     "Error Bars & Error Bands": [
       {
-        "name": "layer_error_bars",
+        "name": "layer_point_errorbar_ci",
         "title": "Error Bars showing Confidence Interval"
       },
       {
-        "name": "layer_error_bars_dev",
+        "name": "layer_point_errorbar_stdev",
         "title": "Error Bars showing Standard Deviation"
       },
       {
-        "name": "layer_area_ci",
-        "title": "Line Chart with Confidence Interval Band",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "name": "layer_line_errorband_ci",
+        "title": "Line Chart with Confidence Interval Band"
       },
       {
-        "name": "layer_global_mean_dev",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "name": "layer_scatter_errorband_1D_stdev_global_mean",
+        "title": "Scatterplot with Mean and Standard Deviation Overlay"
       }
     ],
     "Box Plots": [
       {
-        "name": "box-plot_minmax_2D_vertical_normalized",
+        "name": "boxplot_minmax_2D_vertical",
         "title": "Box Plot with Min/Max Whiskers"
       },
       {
-        "name": "box-plot_tukey_2D_vertical_normalized",
+        "name": "boxplot_2D_vertical",
         "title": "Tukey Box Plot (1.5 IQR)"
       }
-    ],
+    ]
+  },
+  "Layered Plots": {
     "Labeling & Annotation": [
       {
         "name": "layer_bar_labels",
@@ -317,6 +352,10 @@
         "style": "background-size: auto 70%; background-position-y: center;"
       },
       {
+        "name": "facet_bullet",
+        "title": "Bullet Chart"
+      },
+      {
         "name": "layer_bar_dual_axis",
         "title": "Layered Plot with Dual-Axis",
         "style": "background-size: 100% auto; background-position-y: center;"
@@ -325,6 +364,11 @@
         "name": "area_horizon",
         "title": "Horizon Graph",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "bar_layered_weather",
+        "title": "Weekly Weather Plot",
+        "description": "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega&spec=weather'>this Vega example</a>. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
       }
     ]
   },
@@ -378,6 +422,11 @@
         "name": "interactive_splom",
         "png": true,
         "title": "Interactive Scatterplot Matrix"
+      },
+      {
+        "name": "concat_marginal_histograms",
+        "title": "Marginal Histograms",
+        "description": "Marginal histograms show the counts along the x and y dimension."
       }
     ]
   },
@@ -441,6 +490,11 @@
         "title": "Rectangular Brush"
       },
       {
+        "name": "interactive_area_brush",
+        "title": "Area Chart with Rectangular Brush",
+        "descripton": "In this example, we apply an `interval` selection to select subset of data in an area chart. The selected data is highlighted in gold by the second layer of an area mark that `filter`s its data by the `brush` selection."
+      },
+      {
         "name": "interactive_paintbrush",
         "title": "Paintbrush Highlight"
       },
@@ -480,6 +534,11 @@
       {
         "name": "interactive_concat_layer",
         "title": "Interactive Dashboard with Cross Highlight"
+      },
+      {
+        "name": "interactive_seattle_weather",
+        "title": "Seattle Weather Exploration",
+        "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp."
       }
     ]
   }

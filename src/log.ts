@@ -6,8 +6,9 @@ import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
+import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
-import {FieldDef} from './fielddef';
+import {Aggregate, FieldDef} from './fielddef';
 import {Mark} from './mark';
 import {Projection} from './projection';
 import {ScaleType} from './scale';
@@ -108,6 +109,10 @@ export namespace message {
     return `The "nearest" transform is not supported for ${mark} marks.`;
   }
 
+  export function selectionNotSupported(mark: CompositeMark) {
+    return `Selection not supported for ${mark} yet`;
+  }
+
   export function selectionNotFound(name: string) {
     return `Cannot find a selection named "${name}"`;
   }
@@ -172,7 +177,7 @@ export namespace message {
       opt.zeroFalse ? 'scale with zero=false' :
       'scale with custom domain that excludes zero';
 
-    return `A ${scaleText} is used with ${mark} mark. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
+    return `A ${scaleText} is used to encode ${mark}'s ${channel}. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
   }
 
   export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
@@ -226,14 +231,6 @@ export namespace message {
     return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
   }
 
-  export function unclearOrientContinuous(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;
-  }
-
-  export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode discrete or empty fields.`;
-  }
-
   export function orientOverridden(original: string, actual: string) {
     return `Specified orient "${original}" overridden with "${actual}"`;
   }
@@ -282,8 +279,8 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark "${mark}".`;
   }
 
-  export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
-    return `Conflicting ${propertyOf} property "${property}" (${stringify(v1)} and ${stringify(v2)}).  Using ${stringify(v1)}.`;
+  export function mergeConflictingProperty<T>(property: string | number | symbol, propertyOf: string | number | symbol, v1: T, v2: T) {
+    return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(v2)}).  Using ${stringify(v1)}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {
@@ -326,6 +323,22 @@ export namespace message {
 
   export function droppedDay(d: DateTime | DateTimeExpr) {
     return `Dropping day from datetime ${stringify(d)} as day cannot be combined with other units.`;
+  }
+
+  export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent) {
+    return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '}not needed when data are aggregated.`;
+  }
+
+  export function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `${center} is not usually used with ${extent} for ${mark}.`;
+  }
+
+  export function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark) {
+    return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
+  }
+
+  export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
+    return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
 }
 

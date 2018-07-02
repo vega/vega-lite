@@ -7,7 +7,7 @@
   "facet": {
     "column": {
       "field": "date",
-      "type": "temporal",
+      "type": "ordinal",
       "timeUnit": "year"
     }
   },

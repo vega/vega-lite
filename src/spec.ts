@@ -3,8 +3,8 @@ import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
 import {Data} from './data';
-import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import * as vlEncoding from './encoding';
+import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
@@ -15,9 +15,9 @@ import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TitleParams} from './title';
-import {TopLevelProperties} from './toplevelprops';
+import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
-import {Dict, duplicate, hash, keys, omit, vals} from './util';
+import {Dict, duplicate, hash, keys, omit, pick, vals} from './util';
 
 
 export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
@@ -174,7 +174,7 @@ export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 export interface GenericFacetSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-  > extends BaseSpec {
+  > extends BaseSpec, GenericCompositionLayout {
   /**
    * An object that describes mappings between `row` and `column` channels and their field definitions.
    */
@@ -197,7 +197,7 @@ export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, Normalize
 export interface GenericRepeatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, GenericCompositionLayout {
   /**
    * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
    */
@@ -216,7 +216,7 @@ export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, Normali
 export interface GenericVConcatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a column.
    */
@@ -231,7 +231,7 @@ export interface GenericVConcatSpec<
 export interface GenericHConcatSpec<
   U extends GenericUnitSpec<any, any>,
   L extends GenericLayerSpec<any>
-> extends BaseSpec {
+> extends BaseSpec, ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a row.
    */
@@ -572,7 +572,6 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
     encoding: omit(encoding, ['shape'])
   }];
 
-  // FIXME: disable tooltip for the line layer if tooltip is not group-by field.
   // FIXME: determine rules for applying selections.
 
   // Need to copy stack config to overlayed layer
@@ -595,6 +594,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
+        ...pick(markDef, ['clip', 'interpolate']),
         ...lineOverlay
       },
       encoding: overlayEncoding
@@ -607,6 +607,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
         type: 'point',
         opacity: 1,
         filled: true,
+        ...pick(markDef, ['clip']),
         ...pointOverlay
       },
       encoding: overlayEncoding

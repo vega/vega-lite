@@ -3,14 +3,14 @@ import {Axis} from '../../axis';
 import {binToString} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
-import {FieldDef, title as fieldDefTitle} from '../../fielddef';
+import {FieldDef, title as fieldDefTitle, valueArray} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
-import {QUANTITATIVE} from '../../type';
+import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
-import {VgSignalRef} from '../../vega.schema';
+import {AxisOrient, HorizontalAlign, VgSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
+import {getAxisConfig} from './config';
 
 
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -26,6 +26,74 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
   const gridChannel: PositionScaleChannel = channel === 'x' ? 'y' : 'x';
   if (model.getScaleComponent(gridChannel)) {
     return model.scaleName(gridChannel);
+  }
+  return undefined;
+}
+
+export function labelAngle(model: UnitModel, specifiedAxis: Axis, channel: PositionScaleChannel, fieldDef: FieldDef<string>) {
+  // try axis value
+  if (specifiedAxis.labelAngle !== undefined) {
+    // Make angle within [0,360)
+    return ((specifiedAxis.labelAngle % 360) + 360) % 360;
+  } else {
+    // try axis config value
+    const angle = getAxisConfig('labelAngle', model.config, channel, orient(channel), model.getScaleComponent(channel).get('type'));
+    if (angle !== undefined) {
+      return ((angle % 360) + 360) % 360;
+    } else {
+      // get default value
+      if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
+        return 270;
+      }
+      // no default
+      return undefined;
+    }
+  }
+}
+
+export function labelBaseline(angle: number, axisOrient: AxisOrient) {
+  if (angle !== undefined) {
+    if (axisOrient === 'top' || axisOrient === 'bottom') {
+      if (angle <= 45 || 315 <= angle) {
+        return axisOrient === 'top' ? 'bottom' : 'top';
+      } else if (135 <= angle && angle <= 225) {
+        return axisOrient === 'top' ? 'top' : 'bottom';
+      } else {
+        return 'middle';
+      }
+    } else {
+      if ((angle <= 45 || 315 <= angle) || (135 <= angle && angle <= 225)) {
+        return 'middle';
+      } else if (45 <= angle && angle <= 135) {
+        return axisOrient === 'left' ? 'top' : 'bottom';
+      } else {
+        return axisOrient === 'left' ? 'bottom' : 'top';
+      }
+    }
+  }
+  return undefined;
+}
+
+export function labelAlign(angle: number, axisOrient: AxisOrient): HorizontalAlign {
+  if (angle !== undefined) {
+    angle = ((angle % 360) + 360) % 360;
+    if (axisOrient === 'top' || axisOrient === 'bottom') {
+      if (angle % 180 === 0) {
+        return 'center';
+      } else if (0 < angle && angle < 180) {
+        return axisOrient === 'top' ? 'right' : 'left';
+      } else {
+        return axisOrient === 'top' ? 'left' : 'right';
+      }
+    } else {
+      if ((angle + 90) % 180 === 0) {
+        return 'center';
+      } else if (90 <= angle && angle < 270) {
+        return axisOrient === 'left' ? 'left' : 'right';
+      } else {
+        return axisOrient === 'left' ? 'right' : 'left';
+      }
+    }
   }
   return undefined;
 }
@@ -88,21 +156,20 @@ export function title(maxLength: number, fieldDef: FieldDef<string>, config: Con
 
 export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
   const vals = specifiedAxis.values;
-  if (specifiedAxis.values && isDateTime(vals[0])) {
-    return (vals as DateTime[]).map((dt) => {
-      // normalize = true as end user won't put 0 = January
-      return {signal: dateTimeExpr(dt, true)};
-    });
+
+  if (vals) {
+    return valueArray(fieldDef, vals);
   }
 
-  if (!vals && fieldDef.bin && fieldDef.type === QUANTITATIVE) {
+  if (fieldDef.bin && fieldDef.type === QUANTITATIVE) {
     const domain = model.scaleDomain(channel);
     if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
-      return vals;
+      return undefined;
     }
+
     const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
     return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
   }
 
-  return vals;
+  return undefined;
 }

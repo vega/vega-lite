@@ -60,7 +60,7 @@ export interface BinTransform {
   /**
    * The output fields at which to write the start and end bin values.
    */
-  as: string;
+  as: string | string[];
 }
 
 export interface TimeUnitTransform {
@@ -111,10 +111,6 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
-
-/**
- * @hide
- */
 export interface StackTransform {
   /**
    * The field which is stacked.
@@ -202,7 +198,7 @@ export interface WindowTransform {
   ignorePeers?: boolean;
 
   /**
-   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be a single group.
+   * The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.
    */
   groupby?: string[];
 
