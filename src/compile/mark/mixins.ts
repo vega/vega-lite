@@ -286,7 +286,7 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
+export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
   const binSpacing = {
     x:  reverse ? spacing : 0,
     x2: reverse ? 0 : spacing,
@@ -304,6 +304,7 @@ export function binnedPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef |
       [`${channel}2`]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]})
     };
   } else {
+    log.warn(log.message.channelRequiredForBinned(channel));
     return undefined;
   }
 }

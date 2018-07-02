@@ -65,6 +65,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
 
   switch (mark) {
     case BAR:
+      if (isFieldDef(x) && isBinned(x.bin)) {
+        return 'vertical';
+      }
+      if (isFieldDef(y) && isBinned(y.bin)) {
+        return 'horizontal';
+      }
       if (y2 || x2) {
         // Ranged bar does not always have clear orientation, so we allow overriding
         if (specifiedOrient) {
@@ -72,14 +78,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
         }
 
         // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
-        const xDef = encoding.x;
-        if (!x2 && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !isBinning(xDef.bin)) {
+        if (!x2 && isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) {
           return 'horizontal';
         }
 
         // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
-        const yDef = encoding.y;
-        if (!y2 && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !isBinning(yDef.bin)) {
+        if (!y2 && isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) {
           return 'vertical';
         }
       }

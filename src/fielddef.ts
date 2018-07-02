@@ -4,8 +4,8 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, BinParams, binToString, isBinning} from './bin';
-import {Channel, rangeType} from './channel';
+import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
+import {Channel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {TitleMixins} from './guide';
@@ -18,7 +18,7 @@ import {EncodingSortField, SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {getTimeUnitParts, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -509,6 +509,10 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
       ...fieldDef,
       bin: normalizeBin(fieldDef.bin, channel)
     };
+  }
+
+  if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+    log.warn(`Channel ${channel} should not be used with "binned" bin`);
   }
 
   // Normalize Type

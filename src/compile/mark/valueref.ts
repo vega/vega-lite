@@ -139,8 +139,12 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, chann
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
       }
 
-      if (isFieldDef(channel2Def) && isBinned(channelDef.bin)) {
-        return binMidSignal(vgField(channelDef, {expr: 'datum'}), vgField(channel2Def, {expr: 'datum'}), scaleName);
+      if (isBinned(channelDef.bin)) {
+        if (isFieldDef(channel2Def)) {
+          return binMidSignal(vgField(channelDef, {expr: 'datum'}), vgField(channel2Def, {expr: 'datum'}), scaleName);
+        } else {
+          log.warn(log.message.channelRequiredForBinned(channel));
+        }
       }
 
       if (scale) {

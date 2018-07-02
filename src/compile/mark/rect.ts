@@ -27,10 +27,8 @@ export function x(model: UnitModel): VgEncodeEntry {
   const xScaleType = xScale ? xScale.get('type') : undefined;
   const xScaleName = model.scaleName(X);
 
-  if (isFieldDef(xDef) && isBinning(xDef.bin) && !x2Def) {
-    return mixins.binnedPosition(xDef, undefined, 'x', xScaleName, 0, xScale.get('reverse'));
-  } else if (isFieldDef(xDef) && isFieldDef(x2Def) && isBinned(xDef.bin)) {
-    return mixins.binnedPosition(xDef, x2Def, X, xScaleName, 0, xScale.get('reverse'));
+  if (isFieldDef(xDef) && (isBinning(xDef.bin) || isBinned(xDef.bin))) {
+    return mixins.binPosition(xDef, x2Def, X, xScaleName, 0, xScale.get('reverse'));
   } else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
     /* istanbul ignore else */
     if (xScaleType === ScaleType.BAND) {
@@ -55,7 +53,7 @@ export function y(model: UnitModel): VgEncodeEntry {
   const yScaleName = model.scaleName(Y);
 
   if (isFieldDef(yDef) && (isBinning(yDef.bin) || isBinned(yDef.bin))) {
-    return mixins.binnedPosition(yDef, y2Def, Y, yScaleName, 0, yScale.get('reverse'));
+    return mixins.binPosition(yDef, y2Def, Y, yScaleName, 0, yScale.get('reverse'));
   } else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
     /* istanbul ignore else */
     if (yScaleType === ScaleType.BAND) {

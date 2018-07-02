@@ -410,7 +410,7 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', function() {
-      assert.deepEqual(props.yc, {signal: '(scale("y", datum["bin_maxbins_10_Horsepower"]) + scale("y", datum["bin_maxbins_10_Horsepower_end"]))/2'});
+      assert.deepEqual(props.yc, {signal: 'scale("y", (datum["bin_maxbins_10_Horsepower"] + datum["bin_maxbins_10_Horsepower_end"]) / 2)'});
       assert.deepEqual(props.height, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
@@ -428,7 +428,7 @@ describe('Mark: Bar', function() {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', function() {
-      assert.deepEqual(props.xc, {signal: '(scale(\"x\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"x\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2'});
+      assert.deepEqual(props.xc, {signal: 'scale(\"x\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)'});
       assert.deepEqual(props.width, {scale: 'size', field: 'mean_Acceleration'});
     });
   });
