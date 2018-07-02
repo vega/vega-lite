@@ -63,47 +63,45 @@ export class ImputeNode extends DataFlowNode {
     return null;
   }
 
-  public assemble(): [VgImputeTransform] | [VgImputeTransform, VgWindowTransform, VgFormulaTransform] {
-    const {impute, key, keyvals, method, groupby, value, frame} = this.transform;
-    if (method !== 'value' && frame !== undefined) {
-      const initialImpute: VgImputeTransform = {
-        type: 'impute',
-        field: impute,
-        key,
-        ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
-        method: 'value',
-        ...(groupby ? {groupby}: {}),
-        value: undefined
-      };
+  public assemble() {
+    const {impute, key, keyvals, method, groupby, value, frame=[null,null]} = this.transform;
 
+    const initialImpute: VgImputeTransform = {
+      type: 'impute',
+      field: impute,
+      key,
+      ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
+      method: 'value',
+      ...(groupby ? {groupby}: {}),
+      value: null
+    };
+    let setImputedField;
+    if (method && method !== 'value') {
       const deriveNewField: VgWindowTransform = {
         type: 'window',
-        as: ['derived_field'],
+        as: [`imputed_${impute}_value`],
         ops: [method],
         fields: [impute],
         frame,
         ignorePeers: false,
         ...(groupby ? {groupby}: {})
       };
-
       const replaceOriginal: VgFormulaTransform = {
         type: 'formula',
-        expr: `datum.${impute} === undefined ? datum.derived_field : datum.${impute}`,
+        expr: `datum.${impute} === null ? datum.imputed_${impute}_value : datum.${impute}`,
         as: impute
       };
-
-      return [initialImpute, deriveNewField, replaceOriginal];
+      setImputedField = [deriveNewField, replaceOriginal];
     } else {
-      return [{
-        type: 'impute',
-        field: impute,
-        key,
-        ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
-        ...(method ? {method}: {}),
-        ...(groupby ? {groupby}: {}),
-        ...(value ? {value}: {})
-      }];
+      const replaceWithValue: VgFormulaTransform = {
+        type: 'formula',
+        expr: `datum.${impute} === null ? ${value} : datum.${impute}`,
+        as: impute
+      };
+      setImputedField = [replaceWithValue];
     }
+
+    return [initialImpute, ...setImputedField];
 
   }
 }

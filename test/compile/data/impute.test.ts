@@ -16,12 +16,17 @@ describe('compile/data/impute', () => {
         value: 200
       };
       const impute = new ImputeNode(null, transform);
+
       assert.deepEqual(impute.assemble(), [{
         type: 'impute',
         field: 'y',
         key: 'x',
         method: 'value',
-        value: 200
+        value: null
+      }, {
+        type: 'formula',
+        expr: 'datum.y === null ? 200 : datum.y',
+        as: 'y'
       }]);
     });
 
@@ -38,7 +43,19 @@ describe('compile/data/impute', () => {
         field: 'y',
         key: 'x',
         keyvals: [2, 3],
-        method: 'mean'
+        method: 'value',
+        value: null
+      }, {
+        type: 'window',
+        as: ['imputed_y_value'],
+        ops: ['mean'],
+        fields: ['y'],
+        frame: [null, null],
+        ignorePeers: false
+      }, {
+        type: 'formula',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
+        as: 'y'
       }]);
     });
 
@@ -57,8 +74,21 @@ describe('compile/data/impute', () => {
         field: 'y',
         key: 'x',
         keyvals: [3, 5],
-        method: 'max',
-        groupby: ['a','b']
+        method: 'value',
+        groupby: ['a','b'],
+        value: null
+      }, {
+        type: 'window',
+        as: ['imputed_y_value'],
+        ops: ['max'],
+        fields: ['y'],
+        frame: [null, null],
+        ignorePeers: false,
+        groupby: ['a', 'b']
+      }, {
+        type: 'formula',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
+        as: 'y'
       }]);
     });
 
@@ -76,9 +106,22 @@ describe('compile/data/impute', () => {
         type: 'impute',
         field: 'y',
         key: 'x',
-        keyvals: {signal: 'sequence(3,5)'},
-        method: 'max',
-        groupby: ['a','b']
+        keyvals:  {signal: 'sequence(3,5)'},
+        method: 'value',
+        groupby: ['a','b'],
+        value: null
+      }, {
+        type: 'window',
+        as: ['imputed_y_value'],
+        ops: ['max'],
+        fields: ['y'],
+        frame: [null, null],
+        ignorePeers: false,
+        groupby: ['a', 'b']
+      }, {
+        type: 'formula',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
+        as: 'y'
       }]);
     });
 
@@ -98,10 +141,10 @@ describe('compile/data/impute', () => {
         key: 'x',
         method: 'value',
         groupby: ['a','b'],
-        value: undefined
+        value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_y_value'],
         ops: ['max'],
         fields: ['y'],
         frame: [-2, 2],
@@ -109,7 +152,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       }, {
         type: 'formula',
-        expr: 'datum.y === undefined ? datum.derived_field : datum.y',
+        expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
         as: 'y'
       }]);
     });
@@ -131,8 +174,13 @@ describe('compile/data/impute', () => {
         type: 'impute',
         field: 'variety',
         key: 'yield',
+        method: 'value',
         groupby: ['site'],
-        value: 500
+        value: null
+      }, {
+        type: 'formula',
+        expr: 'datum.variety === null ? 500 : datum.variety',
+        as: 'variety'
       }]);
     });
 
@@ -142,7 +190,7 @@ describe('compile/data/impute', () => {
         encoding: {
           x : {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y : {field: 'variety', type: 'quantitative', impute: {'method': 'max'}},
-          'color': {field: 'site', type: 'nominal'}
+          color: {field: 'site', type: 'nominal'}
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
@@ -150,8 +198,22 @@ describe('compile/data/impute', () => {
         type: 'impute',
         field: 'variety',
         key: 'yield',
-        method: 'max',
+        method: 'value',
+        groupby: ['site'],
+        value: null
+      }, {
+        type: 'window',
+        as: ['imputed_variety_value'],
+        ops: ['max'],
+        fields: ['variety'],
+        frame: [null, null],
+        ignorePeers: false,
         groupby: ['site']
+
+      }, {
+        type: 'formula',
+        expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
+        as: 'variety'
       }]);
     });
 
@@ -171,10 +233,10 @@ describe('compile/data/impute', () => {
         key: 'yield',
         method: 'value',
         groupby: ['site'],
-        value: undefined
+        value: null
       }, {
         type: 'window',
-        as: ['derived_field'],
+        as: ['imputed_variety_value'],
         ops: ['mean'],
         fields: ['variety'],
         frame: [-2, 2],
@@ -182,7 +244,7 @@ describe('compile/data/impute', () => {
         groupby: ['site']
       }, {
         type: 'formula',
-        expr: 'datum.variety === undefined ? datum.derived_field : datum.variety',
+        expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
         as: 'variety'
       }]);
     });
@@ -204,7 +266,11 @@ describe('compile/data/impute', () => {
         key: 'yield',
         method: 'value',
         groupby: ['site'],
-        value: 20
+        value: null
+      }, {
+        type: 'formula',
+        expr: 'datum.variety === null ? 20 : datum.variety',
+        as: 'variety'
       }]);
 
     });
