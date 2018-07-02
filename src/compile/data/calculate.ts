@@ -1,3 +1,4 @@
+import {DateTime} from '../../datetime';
 import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
@@ -27,7 +28,8 @@ export class CalculateNode extends DataFlowNode {
         return;
       }
       if (isSortArray(fieldDef.sort)) {
-        const {field, timeUnit, sort} = fieldDef;
+        const {field, timeUnit} = fieldDef;
+        const sort: (number | string | boolean | DateTime)[] = fieldDef.sort;
         // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
         const calculate = sort.map((sortValue, i) => {
           return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
