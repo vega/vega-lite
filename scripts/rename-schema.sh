@@ -6,7 +6,7 @@ perl -pi -e s,'<\(string\|RepeatRef\)\,','<',g build/vega-lite-schema.json
 perl -pi -e s,'FacetedCompositeUnitSpec','FacetedUnitSpec',g build/vega-lite-schema.json
 perl -pi -e s,'ExtendedLayerSpec','LayerSpec',g build/vega-lite-schema.json
 perl -pi -e s,'GenericLayerSpec<CompositeUnitSpec>','LayerSpec',g build/vega-lite-schema.json
-perl -pi -e s,'Generic(.*)<CompositeUnitSpec\,LayerSpec>','\1',g build/vega-lite-schema.json
+perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec>','\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'GenericUnitSpec<EncodingWithFacet\,AnyMark>','FacetedCompositeUnitSpecAlias',g build/vega-lite-schema.json
 perl -pi -e s,'GenericUnitSpec<Encoding\,AnyMark>','CompositeUnitSpecAlias',g build/vega-lite-schema.json

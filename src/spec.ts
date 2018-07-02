@@ -255,10 +255,10 @@ export type GenericSpec<
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 
 export type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> |
-TopLevel<GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>>;
+TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
 
