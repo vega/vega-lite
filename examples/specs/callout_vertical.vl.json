@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Google's stock price over time.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
+  "layer": [{
+    "mark": "line",
+    "encoding": {
+      "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+      "y": {"field": "price", "type": "quantitative"}
+    }
+
+  }, {
+    "transform": [{
+      "filter": {
+        "field": "date",
+        "range": [
+          {"year": 2006, "month": 1, "day": 1},
+          {"year": 2006, "month": 1, "day": 1}
+        ]
+      }
+    }],
+    "mark": {
+      "type": "callout",
+      "angle": -90,
+      "labelOffset": 5
+    },
+    "encoding": {
+      "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+      "y": {"field": "price", "type": "quantitative"},
+      "text": {"value": "high horsepower"},
+      "color": {"value": "red"}
+    }
+  }, {
+    "transform": [{
+      "filter": {
+        "field": "date",
+        "range": [
+          {"year": 2006, "month": 1, "day": 1},
+          {"year": 2006, "month": 1, "day": 1}
+        ]
+      }
+    }],
+    "mark": {
+      "type": "circle",
+      "color": "red"
+    },
+    "encoding": {
+      "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+      "y": {"field": "price", "type": "quantitative"},
+      "text": {"value": "high horsepower"}
+    }
+  }]
+}

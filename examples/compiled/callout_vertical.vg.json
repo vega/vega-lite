@@ -1,0 +1,388 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "description": "Google's stock price over time.",
+    "autosize": "pad",
+    "padding": 5,
+    "width": 200,
+    "height": 200,
+    "style": "cell",
+    "data": [
+        {
+            "name": "source_0",
+            "url": "data/stocks.csv",
+            "format": {
+                "type": "csv"
+            },
+            "transform": [
+                {
+                    "type": "filter",
+                    "expr": "datum.symbol==='GOOG'"
+                }
+            ]
+        },
+        {
+            "name": "data_0",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                }
+            ]
+        },
+        {
+            "name": "data_1",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "filter",
+                    "expr": "inrange(datum[\"date\"], [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2006, 0, 1, 0, 0, 0, 0))])"
+                }
+            ]
+        },
+        {
+            "name": "data_2",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_3",
+            "source": "data_1",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        },
+        {
+            "name": "data_4",
+            "source": "source_0",
+            "transform": [
+                {
+                    "type": "formula",
+                    "expr": "toDate(datum[\"date\"])",
+                    "as": "date"
+                },
+                {
+                    "type": "formula",
+                    "expr": "toNumber(datum[\"price\"])",
+                    "as": "price"
+                },
+                {
+                    "type": "filter",
+                    "expr": "inrange(datum[\"date\"], [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2006, 0, 1, 0, 0, 0, 0))])"
+                },
+                {
+                    "type": "filter",
+                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                }
+            ]
+        }
+    ],
+    "marks": [
+        {
+            "name": "layer_0_marks",
+            "type": "line",
+            "style": [
+                "line"
+            ],
+            "sort": {
+                "field": "datum[\"date\"]",
+                "order": "descending"
+            },
+            "from": {
+                "data": "data_0"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "#4c78a8"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "defined": {
+                        "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_0_marks",
+            "type": "rule",
+            "style": [
+                "rule",
+                "callout-line"
+            ],
+            "from": {
+                "data": "data_2"
+            },
+            "encode": {
+                "update": {
+                    "stroke": {
+                        "value": "red"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "x2": {
+                        "scale": "x",
+                        "field": "date",
+                        "offset": 1.83697019872103e-15
+                    },
+                    "y2": {
+                        "scale": "y",
+                        "field": "price",
+                        "offset": -30
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_1_layer_1_marks",
+            "type": "text",
+            "style": [
+                "text",
+                "callout-label"
+            ],
+            "from": {
+                "data": "data_3"
+            },
+            "encode": {
+                "update": {
+                    "align": {
+                        "value": "left"
+                    },
+                    "baseline": {
+                        "value": "middle"
+                    },
+                    "fill": {
+                        "value": "red"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date",
+                        "offset": 2.1431318985078682e-15
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price",
+                        "offset": -35
+                    },
+                    "text": {
+                        "value": "high horsepower"
+                    }
+                }
+            }
+        },
+        {
+            "name": "layer_2_marks",
+            "type": "symbol",
+            "style": [
+                "circle"
+            ],
+            "from": {
+                "data": "data_4"
+            },
+            "encode": {
+                "update": {
+                    "opacity": {
+                        "value": 0.7
+                    },
+                    "fill": {
+                        "value": "red"
+                    },
+                    "x": {
+                        "scale": "x",
+                        "field": "date"
+                    },
+                    "y": {
+                        "scale": "y",
+                        "field": "price"
+                    },
+                    "shape": {
+                        "value": "circle"
+                    }
+                }
+            }
+        }
+    ],
+    "scales": [
+        {
+            "name": "x",
+            "type": "time",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "date"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "date"
+                    }
+                ]
+            },
+            "range": [
+                0,
+                {
+                    "signal": "width"
+                }
+            ]
+        },
+        {
+            "name": "y",
+            "type": "linear",
+            "domain": {
+                "fields": [
+                    {
+                        "data": "data_0",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_2",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_3",
+                        "field": "price"
+                    },
+                    {
+                        "data": "data_4",
+                        "field": "price"
+                    }
+                ]
+            },
+            "range": [
+                {
+                    "signal": "height"
+                },
+                0
+            ],
+            "nice": true,
+            "zero": true
+        }
+    ],
+    "axes": [
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "title": "date",
+            "labelFlush": true,
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "encode": {
+                "labels": {
+                    "update": {
+                        "text": {
+                            "signal": "timeFormat(datum.value, '%Y')"
+                        }
+                    }
+                }
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "x",
+            "orient": "bottom",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(width/40)"
+            },
+            "gridScale": "y",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "title": "price",
+            "labelOverlap": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "zindex": 1
+        },
+        {
+            "scale": "y",
+            "orient": "left",
+            "grid": true,
+            "tickCount": {
+                "signal": "ceil(height/40)"
+            },
+            "gridScale": "x",
+            "domain": false,
+            "labels": false,
+            "maxExtent": 0,
+            "minExtent": 0,
+            "ticks": false,
+            "zindex": 0
+        }
+    ],
+    "config": {
+        "axisY": {
+            "minExtent": 30
+        }
+    }
+}

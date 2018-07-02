@@ -1,5 +1,4 @@
 import {isBoolean, isString} from 'vega-util';
-
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
 import {Encoding, reduce} from '../encoding';
@@ -8,6 +7,8 @@ import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from 
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {Orient} from '../vega.schema';
 import * as log from './../log';
+import {isCalloutDef} from './callout';
+
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -144,7 +145,7 @@ export function compositeMarkOrient<M extends CompositeMark>(
       } else if (encoding.x.aggregate === compositeMark && encoding.y.aggregate === compositeMark) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (isMarkDef(mark) && mark.orient) {
+        if (isMarkDef(mark) && !isCalloutDef(mark) && mark.orient) {
           return mark.orient;
         }
 

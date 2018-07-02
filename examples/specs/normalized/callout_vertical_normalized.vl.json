@@ -1,0 +1,160 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "Google's stock price over time.",
+  "data": {
+    "url": "data/stocks.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.symbol==='GOOG'"
+    }
+  ],
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "axis": {
+            "format": "%Y"
+          }
+        },
+        "y": {
+          "field": "price",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": {
+            "field": "date",
+            "range": [
+              {
+                "year": 2006,
+                "month": 1,
+                "day": 1
+              },
+              {
+                "year": 2006,
+                "month": 1,
+                "day": 1
+              }
+            ]
+          }
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "xOffset": 0,
+            "yOffset": 0,
+            "x2Offset": 1.83697019872103e-15,
+            "y2Offset": -30,
+            "style": "callout-line"
+          },
+          "encoding": {
+            "x2": {
+              "field": "date",
+              "type": "temporal",
+              "axis": {
+                "format": "%Y"
+              }
+            },
+            "y2": {
+              "field": "price",
+              "type": "quantitative"
+            },
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "axis": {
+                "format": "%Y"
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "red"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "xOffset": 2.1431318985078682e-15,
+            "yOffset": -35,
+            "style": "callout-label",
+            "align": "left",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "x": {
+              "field": "date",
+              "type": "temporal",
+              "axis": {
+                "format": "%Y"
+              }
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative"
+            },
+            "text": {
+              "value": "high horsepower"
+            },
+            "color": {
+              "value": "red"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "transform": [
+        {
+          "filter": {
+            "field": "date",
+            "range": [
+              {
+                "year": 2006,
+                "month": 1,
+                "day": 1
+              },
+              {
+                "year": 2006,
+                "month": 1,
+                "day": 1
+              }
+            ]
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "color": "red"
+      },
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "axis": {
+            "format": "%Y"
+          }
+        },
+        "y": {
+          "field": "price",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "high horsepower"
+        }
+      }
+    }
+  ]
+}
