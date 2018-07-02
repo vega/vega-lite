@@ -288,10 +288,10 @@
                                 "value": "#4c78a8"
                             },
                             "x": {
-                                "signal": "(scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min\"]) + scale(\"concat_1_x\", datum[\"bin_maxbins_10_temp_min_end\"]))/2"
+                                "signal": "scale(\"concat_1_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
                             },
                             "y": {
-                                "signal": "(scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max\"]) + scale(\"concat_1_y\", datum[\"bin_maxbins_10_temp_max_end\"]))/2"
+                                "signal": "scale(\"concat_1_y\", (datum[\"bin_maxbins_10_temp_max\"] + datum[\"bin_maxbins_10_temp_max_end\"]) / 2)"
                             },
                             "size": {
                                 "scale": "size",

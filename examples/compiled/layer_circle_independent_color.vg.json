@@ -183,10 +183,10 @@
                         "value": "#4c78a8"
                     },
                     "x": {
-                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
+                        "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
                     },
                     "y": {
-                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
+                        "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
                     },
                     "size": {
                         "scale": "size",
@@ -213,10 +213,10 @@
                         "value": "firebrick"
                     },
                     "x": {
-                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_Acceleration\"]) + scale(\"x\", datum[\"bin_maxbins_10_Acceleration_end\"]))/2"
+                        "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
                     },
                     "y": {
-                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Horsepower\"]) + scale(\"y\", datum[\"bin_maxbins_10_Horsepower_end\"]))/2"
+                        "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
                     },
                     "size": {
                         "scale": "size",
