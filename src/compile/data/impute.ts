@@ -63,9 +63,9 @@ export class ImputeNode extends DataFlowNode {
     return null;
   }
 
-  public assemble(): [VgImputeTransform] | [VgImputeTransform, VgWindowTransform, VgFormulaTransform] {
-    const {impute, key, keyvals, method, groupby, value, frame} = this.transform;
-    if (method !== 'value' && frame !== undefined) {
+  public assemble(): [VgImputeTransform, VgWindowTransform | VgFormulaTransform, VgFormulaTransform] {
+    const {impute, key, keyvals, method, groupby, value, frame=[null,null]} = this.transform;
+
       const initialImpute: VgImputeTransform = {
         type: 'impute',
         field: impute,
@@ -73,37 +73,34 @@ export class ImputeNode extends DataFlowNode {
         ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
         method: 'value',
         ...(groupby ? {groupby}: {}),
-        value: undefined
+        value: null
       };
 
-      const deriveNewField: VgWindowTransform = {
-        type: 'window',
-        as: ['derived_field'],
-        ops: [method],
-        fields: [impute],
-        frame,
-        ignorePeers: false,
-        ...(groupby ? {groupby}: {})
-      };
-
+    let deriveNewField: VgWindowTransform | VgFormulaTransform;
+      if (method && method !== 'value') {
+        deriveNewField = {
+          type: 'window',
+          as: ['derived_field'],
+          ops: [method],
+          fields: [impute],
+          frame,
+          ignorePeers: false,
+          ...(groupby ? {groupby}: {})
+        };
+      } else {
+        deriveNewField = {
+          type: 'formula',
+          expr: `${value}`,
+          as: 'derived_field'
+        };
+      }
       const replaceOriginal: VgFormulaTransform = {
         type: 'formula',
-        expr: `datum.${impute} === undefined ? datum.derived_field : datum.${impute}`,
+        expr: `datum.${impute} === null ? datum.derived_field : datum.${impute}`,
         as: impute
       };
 
       return [initialImpute, deriveNewField, replaceOriginal];
-    } else {
-      return [{
-        type: 'impute',
-        field: impute,
-        key,
-        ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
-        ...(method ? {method}: {}),
-        ...(groupby ? {groupby}: {}),
-        ...(value ? {value}: {})
-      }];
-    }
 
   }
 }
