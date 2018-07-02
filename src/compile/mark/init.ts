@@ -23,17 +23,31 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = markDef.opacity !== undefined ? markDef.opacity : getMarkConfig('opacity', markDef, config);
   if (specifiedOpacity === undefined) {
-    markDef.opacity = defaultOpacity(markDef.type, encoding);
+    markDef.opacity = opacity(markDef.type, encoding);
   }
 
   const specifiedFilled = markDef.filled;
   if (specifiedFilled === undefined) {
     markDef.filled = filled(markDef, config);
   }
+
+  // set cursor, which should be pointer if href channel is present unless otherwise specified
+  const specifiedCursor = markDef.cursor || getMarkConfig('cursor', markDef, config);
+  if (specifiedCursor === undefined) {
+    markDef.cursor = cursor(markDef, encoding, config);
+  }
+
   return markDef;
 }
 
-function defaultOpacity(mark: Mark, encoding: Encoding<string>) {
+function cursor(markDef: MarkDef, encoding: Encoding<String>, config: Config) {
+  if (encoding.href || markDef.href || getMarkConfig('href', markDef, config)) {
+    return 'pointer';
+  }
+  return markDef.cursor;
+}
+
+function opacity(mark: Mark, encoding: Encoding<string>) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {
@@ -140,14 +154,14 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
           return specifiedOrient;
         }
 
-        if (!(mark === LINE && encoding.order)) {
-          // Except for connected scatterplot, we should log warning for unclear orientation of QxQ plots.
-          log.warn(log.message.unclearOrientContinuous(mark));
-        }
         return 'vertical';
       } else {
-        // For Discrete x Discrete case, return undefined.
-        log.warn(log.message.unclearOrientDiscreteOrEmpty(mark));
+        // Discrete x Discrete case
+        if (specifiedOrient) {
+          // When ambiguous, use user specified one.
+          return specifiedOrient;
+        }
+
         return undefined;
       }
   }

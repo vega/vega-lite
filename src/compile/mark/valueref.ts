@@ -1,7 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-import {isArray, isString} from 'vega-util';
+import {isArray, isFunction, isString} from 'vega-util';
 
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
@@ -30,10 +30,10 @@ import {ScaleComponent} from '../scale/component';
 // but that's complicated.  For now, this is a huge step moving forward.
 
 /**
- * @return Vega ValueRef for stackable x or y
+ * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+    stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
@@ -42,10 +42,10 @@ export function stackable(channel: 'x' | 'y', channelDef: ChannelDef<string>, sc
 }
 
 /**
- * @return Vega ValueRef for stackable x2 or y2
+ * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function stackable2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function position2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+  stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
   if (isFieldDef(aFieldDef) && stack &&
       // If fieldChannel is X and channel is X2 (or Y and Y2)
       channel.charAt(0) === stack.fieldChannel.charAt(0)
@@ -119,7 +119,14 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent, stack: StackProperties, defaultRef: VgValueRef): VgValueRef {
+export function midPoint(
+  channel: Channel,
+  channelDef: ChannelDef<string>,
+  scaleName: string,
+  scale: ScaleComponent,
+  stack: StackProperties,
+  defaultRef: VgValueRef | (() => VgValueRef)
+): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {
@@ -167,7 +174,7 @@ export function midPoint(channel: Channel, channelDef: ChannelDef<string>, scale
     // In such case, we will use default ref.
   }
 
-  return defaultRef;
+  return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
 
 export function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {
@@ -204,38 +211,40 @@ export function getDefaultRef(
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
   channel: 'x' | 'y', scaleName: string, scale: ScaleComponent, mark: Mark
 ) {
-  if (isString(defaultRef)) {
-    if (scaleName) {
-      const scaleType = scale.get('type');
-      if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
-        // Log scales cannot have zero.
-        // Zero in time scale is arbitrary, and does not affect ratio.
-        // (Time is an interval level of measurement, not ratio).
-        // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-        if (mark === 'bar' || mark === 'area') {
-          log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
-        }
-      } else {
-        if (domainDefinitelyIncludeZero(scale)) {
-          return {
-            scale: scaleName,
-            value: 0
-          };
-        }
-        if (mark === 'bar' || mark === 'area') {
-          log.warn(log.message.nonZeroScaleUsedWithLengthMark(
-            mark, channel, {zeroFalse: scale.explicit.zero === false}
-          ));
+  return () => {
+    if (isString(defaultRef)) {
+      if (scaleName) {
+        const scaleType = scale.get('type');
+        if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
+          // Log scales cannot have zero.
+          // Zero in time scale is arbitrary, and does not affect ratio.
+          // (Time is an interval level of measurement, not ratio).
+          // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
+          if (mark === 'bar' || mark === 'area') {
+            log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
+          }
+        } else {
+          if (domainDefinitelyIncludeZero(scale)) {
+            return {
+              scale: scaleName,
+              value: 0
+            };
+          }
+          if (mark === 'bar' || mark === 'area') {
+            log.warn(log.message.nonZeroScaleUsedWithLengthMark(
+              mark, channel, {zeroFalse: scale.explicit.zero === false}
+            ));
+          }
         }
       }
-    }
 
-    if (defaultRef === 'zeroOrMin') {
-      return channel === 'x' ? {value: 0} : {field: {group: 'height'}};
-    } else { // zeroOrMax
-      return channel === 'x' ? {field: {group: 'width'}} : {value: 0};
+      if (defaultRef === 'zeroOrMin') {
+        return channel === 'x' ? {value: 0} : {field: {group: 'height'}};
+      } else { // zeroOrMax
+        return channel === 'x' ? {field: {group: 'width'}} : {value: 0};
+      }
     }
-  }
-  return defaultRef;
+    return defaultRef;
+  };
 }
 

@@ -85,7 +85,9 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "columnTitle": 10
+        },
         "columns": {
             "signal": "length(data('column_domain'))"
         },
@@ -94,26 +96,14 @@
     },
     "marks": [
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "year"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "year",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",

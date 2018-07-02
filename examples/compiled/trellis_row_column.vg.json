@@ -60,7 +60,10 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10,
+            "columnTitle": 10
+        },
         "columns": {
             "signal": "length(data('column_domain'))"
         },
@@ -69,51 +72,25 @@
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Cylinders"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "Cylinders",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
-            "name": "column_title",
-            "role": "column-title",
+            "name": "column-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "column-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "Origin"
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "column-title",
+            "title": {
+                "text": "Origin",
+                "offset": 10,
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",

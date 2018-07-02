@@ -54,6 +54,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
 -   [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
 -   [dashcard](https://github.com/scottcame/dashcard): a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and [Mondrian](https://community.hds.com/docs/DOC-1009853) via a [REST API](https://github.com/ojbc/mondrian-rest).
+-   [histbook](https://github.com/diana-hep/histbook), a versatile, high-performance histogram toolkit for Numpy.
 
 
 ## Tools for Embedding Vega-Lite Visualizations

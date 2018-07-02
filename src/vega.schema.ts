@@ -200,23 +200,21 @@ export type RowCol<T> = {
 };
 
 export interface VgLayout {
-  padding: number | RowCol<number>;
+  center?: boolean | RowCol<boolean>;
+  padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
-  offset: number | {
-    rowHeader: number,
-    rowFooter: number,
-    rowTitle: number,
-    columnHeader: number,
-    columnFooter: number,
-    columnTitle: number
+  offset?: number | {
+    rowHeader?: number,
+    rowFooter?: number,
+    rowTitle?: number,
+    columnHeader?: number,
+    columnFooter?: number,
+    columnTitle?: number
   };
-  bounds: 'full' | 'flush';
+  bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | {
-    row: VgLayoutAlign,
-    column: VgLayoutAlign
-  };
+  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -267,7 +265,7 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined';
+export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'strokeMiterLimit'|'strokeJoin'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined'|'cornerRadius';
 export type VgEncodeEntry = {
   [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
 };
@@ -959,6 +957,21 @@ export type Interpolate = 'linear' | 'linear-closed' |
   'bundle' | 'monotone';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
+export type Cursor = 'auto' | 'default' | 'none' |
+  'context-menu' | 'help' | 'pointer' |
+  'progress' | 'wait' | 'cell' |
+  'crosshair' | 'text' | 'vertical-text' |
+  'alias' | 'copy' | 'move' |
+  'no-drop' | 'not-allowed' | 'e-resize' |
+  'n-resize' | 'ne-resize' | 'nw-resize' |
+  's-resize' | 'se-resize' | 'sw-resize' |
+  'w-resize' | 'ew-resize' | 'ns-resize' |
+  'nesw-resize' | 'nwse-resize' | 'col-resize' |
+  'row-resize' | 'all-scroll' | 'zoom-in' |
+  'zoom-out' | 'grab' | 'grabbing';
+export type StrokeCap = 'butt' | 'round' | 'square';
+export type StrokeJoin = 'miter' | 'round' | 'bevel';
+export type Dir = 'ltr' | 'rtl';
 
 export interface VgMarkConfig {
 
@@ -1023,7 +1036,7 @@ export interface VgMarkConfig {
    *
    * __Default value:__ `"square"`
    */
-  strokeCap?: 'butt' | 'round' | 'square';
+  strokeCap?: StrokeCap;
 
   /**
    * An array of alternating stroke, space lengths for creating dashed or dotted lines.
@@ -1034,6 +1047,18 @@ export interface VgMarkConfig {
    * The offset (in pixels) into which to begin drawing with the stroke dash array.
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of `"miter"`, `"round"` or `"bevel"`.
+   *
+   * __Default value:__ `"miter"`
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The miter limit at which to bevel a line join.
+   */
+  strokeMiterLimit?: number;
 
   // ---------- Orientation: Bar, Tick, Line, Area ----------
   /**
@@ -1115,6 +1140,13 @@ export interface VgMarkConfig {
   baseline?: VerticalAlign;
 
   /**
+   * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"ltr"`
+   */
+  dir?: Dir;
+
+  /**
    * The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.
    */
   dx?: number;
@@ -1131,9 +1163,18 @@ export interface VgMarkConfig {
   radius?: number;
 
   /**
-   * The maximum length of the text mark in pixels (default 0, indicating no limit). The text value will be automatically truncated if the rendered size exceeds the limit.
+   * The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
+   *
+   * __Default value:__ `0`, indicating no limit
    */
   limit?: number;
+
+  /**
+   * The ellipsis string for text truncated in response to the limit parameter.
+   *
+   * __Default value:__ `"…"`
+   */
+  ellipsis?: string;
 
   /**
    * Polar coordinate angle, in radians, of the text label from the origin determined by the `x` and `y` properties. Values for `theta` follow the same convention of `arc` mark `startAngle` and `endAngle` properties: angles are measured in radians, with `0` indicating "north".
@@ -1176,7 +1217,21 @@ export interface VgMarkConfig {
   /**
    * The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
-  cursor?: 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';
+  cursor?: Cursor;
+
+  /**
+   * The tooltip text to show upon mouse hover.
+   */
+  tooltip?: any;
+
+  // ---------- Corner Radius: Bar, Tick, Rect ----------
+
+  /**
+   * The radius in pixels of rounded rectangle corners.
+   *
+   * __Default value:__ `0`
+   */
+  cornerRadius?: number;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -1189,6 +1244,8 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   strokeOpacity: 1,
   strokeDash: 1,
   strokeDashOffset: 1,
+  strokeJoin: 1,
+  strokeMiterLimit: 1,
   size: 1,
   shape: 1,
   interpolate: 1,
@@ -1197,9 +1254,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   align: 1,
   baseline: 1,
   text: 1,
-  limit: 1,
+  dir: 1,
   dx: 1,
   dy: 1,
+  ellipsis: 1,
+  limit: 1,
   radius: 1,
   theta: 1,
   angle: 1,
@@ -1209,11 +1268,11 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   fontStyle: 1,
   cursor: 1,
   href: 1,
+  tooltip: 1,
+  cornerRadius: 1,
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
-  // dir: 1,
-  // ellipsis: 1,
   // endAngle: 1,
   // innerRadius: 1,
   // outerRadius: 1,

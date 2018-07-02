@@ -7,7 +7,7 @@ permalink: /tutorials/explore.html
 
 In this tutorial, you'll learn a few more techniques for creating visualizations in Vega-Lite. If you are not familiar with Vega-Lite, please read the [getting started tutorial]({{site.baseurl}}/tutorials/getting_started.html) first.
 
-For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset]({{site.baseurl}}/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in centimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
+For this tutorial, we will create visualizations to explore weather data for Seattle, taken from [NOAA](https://www.ncdc.noaa.gov/cdo-web/). The [dataset]({{site.baseurl}}/data/seattle-weather.csv) is a [CSV file](https://en.wikipedia.org/wiki/Comma-separated_values) with columns for the temperature (in Celsius), precipitation (in millimeter), wind (in meter/second), and weather type. We have one row for each day from January 1st, 2012 to December 31st, 2015.
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 

@@ -25,7 +25,7 @@ export interface Legend extends VgLegendBase, Guide {
   /**
    * Explicitly set the visible legend values.
    */
-  values?: number[] | string[] | DateTime[];
+  values?: number[] | string[] | boolean[] | DateTime[];
 
   /**
    * The type of the legend. Use `"symbol"` to create a discrete legend and `"gradient"` for a continuous color gradient.

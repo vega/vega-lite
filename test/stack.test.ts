@@ -8,8 +8,6 @@ import {AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
 import {isStacked, NormalizedUnitSpec, TopLevel} from '../src/spec';
 import {stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS, StackOffset} from '../src/stack';
-import {stringify} from '../src/util';
-
 
 describe('stack', () => {
   const NON_STACKABLE_MARKS = [RECT];
@@ -222,7 +220,7 @@ describe('stack', () => {
     }
   });
 
-  it('should always be disabled if there is both x and x2', log.wrap((localLogger) => {
+  it('should always be disabled if there is both x and x2', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
@@ -240,15 +238,11 @@ describe('stack', () => {
         };
         assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
         assert.isFalse(isStacked(spec));
-        const warns = localLogger.warns;
-        assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(X),
-          stringify({stacked: stacked, mark: mark})
-        );
       });
     }
-  }));
+  });
 
-  it('should always be disabled if there is both y and y2', log.wrap((localLogger) => {
+  it('should always be disabled if there is both y and y2', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
       marks.forEach((mark) => {
@@ -266,13 +260,9 @@ describe('stack', () => {
         };
         assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
         assert.isFalse(isStacked(spec));
-        const warns = localLogger.warns;
-        assert.equal(warns[warns.length-1], log.message.cannotStackRangedMark(Y),
-          stringify({stacked: stacked, mark: mark})
-        );
       });
     }
-  }));
+  });
 
   it('should always be warned if the aggregated axis has non-linear scale', log.wrap((localLogger) => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {

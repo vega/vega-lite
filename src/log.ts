@@ -172,7 +172,7 @@ export namespace message {
       opt.zeroFalse ? 'scale with zero=false' :
       'scale with custom domain that excludes zero';
 
-    return `A ${scaleText} is used with ${mark} mark. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
+    return `A ${scaleText} is used to encode ${mark}'s ${channel}. This can be misleading as the ${channel === 'x' ? 'width' : 'height'} of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
   }
 
   export function invalidFieldTypeForCountAggregate(type: Type, aggregate: string) {
@@ -226,14 +226,6 @@ export namespace message {
     return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
   }
 
-  export function unclearOrientContinuous(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode continuous fields. In this case, we use vertical by default`;
-  }
-
-  export function unclearOrientDiscreteOrEmpty(mark: Mark) {
-    return `Cannot clearly determine orientation for "${mark}" since both x and y channel encode discrete or empty fields.`;
-  }
-
   export function orientOverridden(original: string, actual: string) {
     return `Specified orient "${original}" overridden with "${actual}"`;
   }
@@ -282,8 +274,8 @@ export namespace message {
     return `Scale type "${scaleType}" does not work with mark "${mark}".`;
   }
 
-  export function mergeConflictingProperty<T>(property: string, propertyOf: string, v1: T, v2: T) {
-    return `Conflicting ${propertyOf} property "${property}" (${stringify(v1)} and ${stringify(v2)}).  Using ${stringify(v1)}.`;
+  export function mergeConflictingProperty<T>(property: string | number | symbol, propertyOf: string | number | symbol, v1: T, v2: T) {
+    return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(v2)}).  Using ${stringify(v1)}.`;
   }
 
   export function independentScaleMeansIndependentGuide(channel: Channel) {

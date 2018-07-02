@@ -3,9 +3,10 @@ import {AxisConfigMixins} from './axis';
 import {COMPOSITE_MARK_STYLES} from './compositemark';
 import {CompositeMarkConfigMixins, CompositeMarkStyle, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './compositemark/index';
 import {VL_ONLY_GUIDE_CONFIG} from './guide';
+import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
-import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import * as mark from './mark';
+import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
@@ -13,7 +14,7 @@ import {StackOffset} from './stack';
 import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
 
 
 export interface ViewConfig {
@@ -94,6 +95,22 @@ export interface ViewConfig {
    *
    */
   strokeDashOffset?: number;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeJoin?: StrokeJoin;
+
+  /**
+   * The stroke line join method. One of miter (default), round or bevel.
+   *
+   * __Default value:__ 'miter'
+   *
+   */
+  strokeMiterLimit?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {
@@ -208,6 +225,11 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
    * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
    */
   legend?: LegendConfig;
+
+  /**
+   * Header configuration, which determines default properties for all [header](https://vega.github.io/vega-lite/docs/header.html). For a full list of header configuration options, please see the [corresponding section of in the header documentation](https://vega.github.io/vega-lite/docs/header.html#config).
+   */
+  header?: HeaderConfig;
 
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).

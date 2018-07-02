@@ -94,36 +94,24 @@
             "row": 10,
             "column": 10
         },
-        "offset": 10,
+        "offset": {
+            "rowTitle": 10
+        },
         "columns": 1,
         "bounds": "full",
         "align": "all"
     },
     "marks": [
         {
-            "name": "row_title",
-            "role": "row-title",
+            "name": "row-title",
             "type": "group",
-            "marks": [
-                {
-                    "type": "text",
-                    "role": "row-title-text",
-                    "style": "guide-title",
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "center"
-                            },
-                            "text": {
-                                "value": "gender"
-                            },
-                            "angle": {
-                                "value": 270
-                            }
-                        }
-                    }
-                }
-            ]
+            "role": "row-title",
+            "title": {
+                "text": "gender",
+                "offset": 10,
+                "orient": "left",
+                "style": "guide-title"
+            }
         },
         {
             "name": "row_header",

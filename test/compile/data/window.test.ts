@@ -5,6 +5,34 @@ import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 
 describe('compile/data/window', () => {
+ it('creates correct window nodes for calculating sort field of crossed facet', () => {
+    const window = WindowTransformNode.makeFromFacet(null, {
+      row: {field: 'r', type: 'nominal'},
+      column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}}
+    });
+
+    expect(window.assemble()).toEqual({
+      type: 'window',
+      ops: ['median'],
+      fields: ['x'],
+      params: [null],
+      as: ['median_x_by_c'],
+      frame: [null, null],
+      groupby: ['c'],
+      sort: {
+        field: [],
+        order: []
+      }
+    });
+  });
+
+  it('does not create any window nodes for crossed facet', () => {
+    assert.deepEqual(WindowTransformNode.makeFromFacet(null, {
+      row: {field: 'a', type: 'nominal'}
+    }), null);
+  });
+
+
   it('should return a proper vg transform', () => {
     const transform: Transform = {
       window: [

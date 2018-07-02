@@ -14,7 +14,7 @@
     },
     "size": {
       "field": "weather",
-      "type": "nominal"
+      "type": "ordinal"
     },
     "opacity": {"value": 0.5}
   }

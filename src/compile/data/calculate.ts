@@ -1,4 +1,6 @@
-import {isScaleFieldDef, ScaleFieldDef, vgField} from '../../fielddef';
+import {DateTime} from '../../datetime';
+import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
+import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
@@ -21,26 +23,25 @@ export class CalculateNode extends DataFlowNode {
 
   public static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField) {
     // get all the encoding with sort fields from model
-    model.forEachFieldDef((fieldDef: ScaleFieldDef<string>, channel: SingleDefChannel) => {
-      if (isScaleFieldDef(fieldDef) && isSortArray(fieldDef.sort)) {
-        const transform: CalculateTransform = {
-          calculate: CalculateNode.calculateExpressionFromSortField(fieldDef.field, fieldDef.sort),
-          as: sortArrayIndexField(model, channel)
-        };
-        parent = new CalculateNode(parent, transform);
+    model.forEachFieldDef((fieldDef: FieldDef<string>, channel: SingleDefChannel) => {
+      if (!isScaleFieldDef(fieldDef)) {
+        return;
+      }
+      if (isSortArray(fieldDef.sort)) {
+        const {field, timeUnit} = fieldDef;
+        const sort: (number | string | boolean | DateTime)[] = fieldDef.sort;
+        // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
+        const calculate = sort.map((sortValue, i) => {
+          return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+        }).join('') + sort.length;
+
+        parent = new CalculateNode(parent, {
+          calculate,
+          as: sortArrayIndexField(fieldDef, channel)
+        });
       }
     });
     return parent;
-  }
-
-  public static calculateExpressionFromSortField(field: string, sortFields: string[]): string {
-    let expression = '';
-    let i: number;
-    for (i = 0; i < sortFields.length; i++) {
-      expression += `datum.${field} === '${sortFields[i]}' ? ${i} : `;
-    }
-    expression += i;
-    return expression;
   }
 
   public producedFields() {
@@ -58,7 +59,6 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(model: ModelWithField, channel: SingleDefChannel) {
-  const fieldDef = model.fieldDef(channel);
-  return `${channel}_${vgField(fieldDef)}_sort_index`;
+export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum') {
+  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
 }
