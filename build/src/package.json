@@ -1,0 +1,141 @@
+{
+  "name": "vega-lite",
+  "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
+  "version": "2.5.1",
+  "collaborators": [
+    "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
+    "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
+    "Jeffrey Heer <jheer@uw.edu> (http://jheer.org)"
+  ],
+  "homepage": "https://vega.github.io/vega-lite/",
+  "description": "Vega-Lite is a concise high-level language for interactive visualization.",
+  "main": "build/vega-lite.js",
+  "unpkg": "build/vega-lite.min.js",
+  "jsdelivr": "build/vega-lite.min.js",
+  "module": "build/src/index",
+  "types": "build/src/index.d.ts",
+  "bin": {
+    "vl2png": "./bin/vl2png",
+    "vl2svg": "./bin/vl2svg",
+    "vl2vg": "./bin/vl2vg"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "prebuild": "mkdir -p build/src",
+    "build": "npm run build:only",
+    "build:only": "tsc && cp package.json build/src/ && rollup -c",
+    "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
+    "build:examples": "npm run data && TZ=America/Los_Angeles scripts/build-examples.sh",
+    "build:examples-full": "TZ=America/Los_Angeles scripts/build-examples.sh 1",
+    "build:example": "TZ=America/Los_Angeles scripts/build-example.sh",
+    "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
+    "build:site": "tsc -p site && webpack --config site/webpack.config.js",
+    "build:versions": "scripts/update-version.sh",
+    "check:examples": "scripts/check-examples.sh",
+    "check:schema": "scripts/check-schema.sh",
+    "clean": "rm -rf build && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -delete",
+    "data": "rsync -r node_modules/vega-datasets/data/* data",
+    "deploy": "scripts/deploy.sh",
+    "deploy:gh": "scripts/deploy-gh.sh",
+    "deploy:schema": "scripts/deploy-schema.sh",
+    "preschema": "npm run prebuild",
+    "schema": "node --stack-size=1200 ./node_modules/.bin/ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "renameschema": "scripts/rename-schema.sh",
+    "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
+    "site": "bundle exec jekyll serve --incremental",
+    "lint": "tslint -p .",
+    "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
+    "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
+    "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
+    "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
+    "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
+    "watch:site": "concurrently --kill-others -n Typescript,Webpack 'tsc -p site --watch' 'webpack --config site/webpack.config.js --mode development --watch'",
+    "watch:test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vega/vega-lite.git"
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/vega/vega-lite/issues"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.3",
+    "@types/d3": "^5.0.0",
+    "@types/highlight.js": "^9.12.3",
+    "@types/jest": "^22.2.3",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^9.0.0",
+    "@types/webdriverio": "^4.10.2",
+    "ajv": "^6.5.0",
+    "chai": "^4.1.2",
+    "cheerio": "^1.0.0-rc.2",
+    "chromedriver": "^2.38.3",
+    "codecov": "^3.0.2",
+    "concurrently": "^3.5.1",
+    "d3": "^5.4.0",
+    "highlight.js": "^9.12.0",
+    "jest": "^23.1.0",
+    "mkdirp": "^0.5.1",
+    "rollup": "^0.59.4",
+    "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-json": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "source-map-support": "^0.5.6",
+    "svg2png-many": "^0.0.7",
+    "ts-jest": "^22.4.6",
+    "ts-json-schema-generator": "^0.26.0",
+    "ts-node": "^6.0.5",
+    "tslint": "5.10.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "typescript": "^2.9.1",
+    "uglify-js": "^3.3.28",
+    "vega": "^4.0.0-rc.2",
+    "vega-datasets": "^1.19.0",
+    "vega-embed": "^3.14.0",
+    "vega-tooltip": "^0.11.0",
+    "wdio-chromedriver-service": "^0.1.3",
+    "wdio-dot-reporter": "0.0.9",
+    "wdio-mocha-framework": "^0.5.13",
+    "wdio-static-server-service": "^1.0.1",
+    "webdriverio": "^4.12.0",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.4",
+    "yaml-front-matter": "^4.0.0"
+  },
+  "dependencies": {
+    "@types/json-stable-stringify": "^1.0.32",
+    "json-stable-stringify": "^1.0.1",
+    "tslib": "^1.9.2",
+    "vega-event-selector": "^2.0.0",
+    "vega-typings": "^0.3.4",
+    "vega-util": "^1.7.0",
+    "yargs": "^11.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "node_modules",
+      "test-runtime",
+      "<rootDir>/build",
+      "_site",
+      "src"
+    ],
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": false
+  }
+}
