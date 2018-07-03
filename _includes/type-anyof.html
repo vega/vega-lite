@@ -10,7 +10,11 @@ for type in include.types %}{%
         include type-anyof.html types=para suffix="[]" %}{%
       endcapture %}{{ element | strip | append: include.suffix }}{%
     else %}{%
-      assign element = type.items.type | strip | append: "[]" | capitalize %}{{element | strip | append: include.suffix}}{%
+      if type.items.type == nil %}{%
+        assign element = "Any[]" %}{%
+      else %}{%
+        assign element = type.items.type | strip | append: "[]" | capitalize %}{%
+      endif %}{{element | strip | append: include.suffix}}{%
     endif %}{%
   elsif type.type %}{%
     if type.type.first != nil %}{% comment %}case for when type in the schema is an array of multiple types{% endcomment %}{%

@@ -479,7 +479,7 @@ export type VgSort =
       order?: (VgComparatorOrder)[];
     };
 
-export type ImputeMethods = 'value' | 'median' | 'max' | 'min' | 'mean';
+export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
 
 export interface VgImputeTransform {
   type: 'impute';
@@ -487,7 +487,7 @@ export interface VgImputeTransform {
   field: string;
   key: string;
   keyvals?: any[] | SignalRef;
-  method?: ImputeMethods;
+  method?: ImputeMethod;
   value?: any;
 }
 

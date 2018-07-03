@@ -53,6 +53,12 @@ LookupData:
 Window:
   link: "window.html"
 
+# Transform - Impute
+ImputeMethod:
+  name: String
+ImputeSequence:
+  link: impute.html#sequence-def
+
 # Transform - Time Unit
 Month:
   name: Number

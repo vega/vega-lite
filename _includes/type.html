@@ -4,8 +4,8 @@ assign type = src.type %}{%
     if src["$ref"] %}{{ src["$ref"]] | split: "/" | last | split: "<" | first }}{%
     elsif src.anyOf %}{% comment %}case for anyOf{% endcomment %}{%
         assign para = src.anyOf %}{%
-        include type-anyof.html types=para %}{%
-    endif %}{%
+        include type-anyof.html types=para %}
+    {% else %}Any{% endif %}{%
   elsif type == "array" %}{% comment %}case for type is array{% endcomment %}{%
     if src.items.anyOf %}{%
         assign para = src.items.anyOf %}{%
