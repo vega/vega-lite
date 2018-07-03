@@ -152,14 +152,6 @@ describe('Mark: Rect', function() {
 
   describe('vertical binned data', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-      "data": {
-        "values": [
-          {"bin_start": 8, "bin_end": 10, "count": 7},
-          {"bin_start": 10, "bin_end": 12, "count": 29},
-          {"bin_start": 12, "bin_end": 14, "count": 71}
-        ]
-      },
       "mark": "bar",
       "encoding": {
         "x": {
@@ -193,14 +185,6 @@ describe('Mark: Rect', function() {
 
   describe('horizontal binned data', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-      "data": {
-        "values": [
-          {"bin_start": 8, "bin_end": 10, "count": 7},
-          {"bin_start": 10, "bin_end": 12, "count": 29},
-          {"bin_start": 12, "bin_end": 14, "count": 71}
-        ]
-      },
       "mark": "bar",
       "encoding": {
         "y": {

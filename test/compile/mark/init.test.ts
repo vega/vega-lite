@@ -299,6 +299,106 @@ describe('compile/mark/init', function() {
       });
       assert.equal(model.markDef.orient, 'vertical');
     });
+
+    it('should return correct orient for bar with vertical binned data', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "x2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.equal(model.markDef.orient, 'vertical');
+    });
+
+    it('should return correct orient for bar with horizontal binned data', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "y2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.equal(model.markDef.orient, 'horizontal');
+    });
+
+    it('should return correct orient for area with vertical binned data', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "area",
+        "encoding": {
+          "x": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "x2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.equal(model.markDef.orient, 'vertical');
+    });
+
+    it('should return correct orient for area with horizontal binned data', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "area",
+        "encoding": {
+          "y": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "y2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      assert.equal(model.markDef.orient, 'horizontal');
+    });
   });
 });
 

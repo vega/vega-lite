@@ -2,6 +2,7 @@
 import {assert} from 'chai';
 
 import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
+import {FieldDef} from '../../../src/fielddef';
 import {MarkDef} from '../../../src/mark';
 
 
@@ -28,6 +29,12 @@ describe('compile/mark/valueref', () => {
     it('should return correct value for height', () => {
       const ref = midPoint('y', {value: 'height'}, undefined, undefined, undefined, undefined, undefined);
       assert.deepEqual(ref, {field: {group: 'height'}});
+    });
+    it('should return correct value for binned data', () => {
+      const fieldDef: FieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
+      const fieldDef2: FieldDef<string> = {field: 'bin_end', type: 'quantitative'};
+      const ref = midPoint('x', fieldDef, fieldDef2, 'x', undefined, undefined, undefined);
+      assert.deepEqual(ref, {signal: 'scale("x", (datum["bin_start"] + datum["bin_end"]) / 2)'});
     });
   });
 });

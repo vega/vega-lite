@@ -734,4 +734,140 @@ describe('Mark: Bar', function() {
       assert.deepEqual(props.x2, {scale: 'x', field: 'q3_people'});
     });
   });
+
+  describe('vertical binned data', function() {
+    describe('default offset', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "x2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      const props = bar.encodeEntry(model);
+
+      it('should draw bar with x and x2', function() {
+        assert.deepEqual(props.x2, {scale: "x", field: "bin_start", offset: 1});
+        assert.deepEqual(props.x, {scale: "x", field: "bin_end", offset: 0});
+        assert.deepEqual(props.y, {scale: "y", field: "count"});
+        assert.deepEqual(props.y2, {scale: "y", value: 0});
+        assert.isUndefined(props.width);
+      });
+    });
+
+    describe('custom offset', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "binSpacing": 10},
+        "encoding": {
+          "x": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "x2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "y": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      const props = bar.encodeEntry(model);
+
+      it('should draw bar with x and x2', function() {
+        assert.deepEqual(props.x2, {scale: "x", field: "bin_start", offset: 10});
+        assert.deepEqual(props.x, {scale: "x", field: "bin_end", offset: 0});
+        assert.deepEqual(props.y, {scale: "y", field: "count"});
+        assert.deepEqual(props.y2, {scale: "y", value: 0});
+        assert.isUndefined(props.width);
+      });
+    });
+  });
+
+  describe('horizontal binned data', function() {
+    describe('default offset', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": "bar",
+        "encoding": {
+          "y": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "y2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      const props = bar.encodeEntry(model);
+
+      it('should draw bar with y and y2', function() {
+        assert.deepEqual(props.y2, {scale: "y", field: "bin_start", offset: 0});
+        assert.deepEqual(props.y, {scale: "y", field: "bin_end", offset: 1});
+        assert.deepEqual(props.x, {scale: "x", field: "count"});
+        assert.deepEqual(props.x2, {scale: "x", value: 0});
+        assert.isUndefined(props.width);
+      });
+    });
+
+    describe('custom offset', function() {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        "mark": {"type": "bar", "binSpacing": 10},
+        "encoding": {
+          "y": {
+            "field": "bin_start",
+            "bin": "binned",
+            "type": "quantitative",
+            "axis": {
+              "tickStep": 2
+            }
+          },
+          "y2": {
+            "field": "bin_end",
+            "type": "quantitative"
+          },
+          "x": {
+            "field": "count",
+            "type": "quantitative"
+          }
+        }
+      });
+      const props = bar.encodeEntry(model);
+
+      it('should draw bar with y and y2', function() {
+        assert.deepEqual(props.y2, {scale: "y", field: "bin_start", offset: 0});
+        assert.deepEqual(props.y, {scale: "y", field: "bin_end", offset: 10});
+        assert.deepEqual(props.x, {scale: "x", field: "count"});
+        assert.deepEqual(props.x2, {scale: "x", value: 0});
+        assert.isUndefined(props.width);
+      });
+    });
+  });
 });

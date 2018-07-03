@@ -1,4 +1,3 @@
-import {isBinning} from '../../bin';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
@@ -234,7 +233,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!isBinning(fieldDef.bin) && util.contains([X, Y], channel)) {
+  if (!fieldDef.bin && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if (

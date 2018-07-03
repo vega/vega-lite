@@ -294,7 +294,7 @@ export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | Fi
     y2: reverse ? spacing : 0
   };
   const channel2 = channel === X ? X2 : Y2;
-  if (isBinning(fieldDef.bin) && fieldDef2 === undefined) {
+  if (isBinning(fieldDef.bin)) {
     return {
       [channel2]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
       [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel]),
@@ -305,7 +305,7 @@ export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | Fi
       [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]}),
     };
   } else {
-    log.warn(log.message.channelRequiredForBinned(channel));
+    log.warn(log.message.channelRequiredForBinned(channel2));
     return undefined;
   }
 }

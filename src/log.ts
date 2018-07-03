@@ -330,7 +330,7 @@ export namespace message {
 
   // CHANNEL
   export function channelRequiredForBinned(channel: Channel) {
-    return `Channel ${channel}2 is required for "binned" bin`;
+    return `Channel ${channel} is required for "binned" bin`;
   }
 }
 
