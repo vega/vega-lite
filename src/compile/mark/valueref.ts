@@ -107,15 +107,11 @@ export function bandRef(scaleName: string, band: number|boolean = true): VgValue
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
 function binMidSignal(scaleName: string, fieldDef: FieldDef<string>, fieldDef2?: FieldDef<string>) {
-  let start;
-  let end;
-  if (fieldDef2 !== undefined) {
-    start = vgField(fieldDef, {expr: 'datum'});
-    end = vgField(fieldDef2, {expr: 'datum'});
-  } else {
-    start = vgField(fieldDef, {expr: 'datum'});
-    end = vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
-  }
+  const start = vgField(fieldDef, {expr: 'datum'});
+  const end = fieldDef2 !== undefined ? 
+    vgField(fieldDef2, {expr: 'datum'}) :
+    vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
+  
   return {
     signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
   };
