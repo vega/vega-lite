@@ -6225,6 +6225,17 @@ vega-encode@^3.1.0:
     vega-scale "^2.4.0"
     vega-util "^1.7.0"
 
+vega-encode@^3.1.1:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/vega-encode/-/vega-encode-3.1.2.tgz#4ff176cce96c0cfe78143cc7710c881e27d1970f"
+  dependencies:
+    d3-array "^1.2.1"
+    d3-format "^1.3.0"
+    d3-interpolate "^1.2.0"
+    vega-dataflow "^4.0.3"
+    vega-scale "^2.4.0"
+    vega-util "^1.7.0"
+
 vega-event-selector@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.0.tgz#6af8dc7345217017ceed74e9155b8d33bad05d42"
@@ -6243,7 +6254,7 @@ vega-force@^3.0.0:
     vega-dataflow "^4.0.0"
     vega-util "^1.7.0"
 
-vega-geo@^3.0.0:
+vega-geo@^3.0.0, vega-geo@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/vega-geo/-/vega-geo-3.1.0.tgz#2022f0dc612199585b10d2274967fee94d7505b4"
   dependencies:
@@ -6263,7 +6274,43 @@ vega-hierarchy@^3.0.1:
     vega-dataflow "^4.0.3"
     vega-util "^1.7.0"
 
-vega-lib@4.0.0-rc.3, "vega-lib@^4.0.0-rc.3 || ^3.3.0":
+vega-hierarchy@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/vega-hierarchy/-/vega-hierarchy-3.0.2.tgz#84cd30ca0611f751f95c7b953ca041df23c142d6"
+  dependencies:
+    d3-collection "^1.0.4"
+    d3-hierarchy "^1.1.6"
+    vega-dataflow "^4.0.3"
+    vega-util "^1.7.0"
+
+vega-lib@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/vega-lib/-/vega-lib-4.0.0.tgz#17a462ab3ab01e37e733149675f39ceb1a9b323e"
+  dependencies:
+    vega-crossfilter "^3.0.0"
+    vega-dataflow "^4.0.3"
+    vega-encode "^3.1.1"
+    vega-event-selector "^2.0.0"
+    vega-expression "^2.3.1"
+    vega-force "^3.0.0"
+    vega-geo "^3.1.0"
+    vega-hierarchy "^3.0.2"
+    vega-loader "^3.0.1"
+    vega-parser "^3.5.0"
+    vega-projection "^1.2.0"
+    vega-runtime "^3.0.3"
+    vega-scale "^2.4.0"
+    vega-scenegraph "^3.2.1"
+    vega-statistics "^1.2.1"
+    vega-transforms "^2.1.0"
+    vega-typings "*"
+    vega-util "^1.7.0"
+    vega-view "^3.3.2"
+    vega-view-transforms "^2.0.1"
+    vega-voronoi "^3.0.0"
+    vega-wordcloud "^3.0.0"
+
+"vega-lib@^4.0.0-rc.3 || ^3.3.0":
   version "4.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/vega-lib/-/vega-lib-4.0.0-rc.3.tgz#d263e0e2271c1d09b022afde0a21e6284e28b3f7"
   dependencies:
@@ -6312,24 +6359,7 @@ vega-loader@^3.0.1:
     topojson-client "^3.0.0"
     vega-util "^1.7.0"
 
-vega-parser@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-3.3.0.tgz#890fdf6edafdea89e3abc837fa4def87c18eb530"
-  dependencies:
-    d3-array "^1.2.1"
-    d3-color "^1.2.0"
-    d3-format "^1.3.0"
-    d3-geo "^1.10.0"
-    d3-time-format "^2.1.1"
-    vega-dataflow "^4.0.3"
-    vega-event-selector "^2.0.0"
-    vega-expression "^2.3.1"
-    vega-scale "^2.4.0"
-    vega-scenegraph "^3.2.1"
-    vega-statistics "^1.2.1"
-    vega-util "^1.7.0"
-
-vega-parser@^3.2.0, vega-parser@^3.5.0:
+vega-parser@3.5.0, vega-parser@^3.2.0, vega-parser@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-3.5.0.tgz#eeb1e323e1535479cd40587352e08dbbccd24eed"
   dependencies:
@@ -6408,7 +6438,7 @@ vega-tooltip@^0.12.0:
   dependencies:
     vega-util "^1.7.0"
 
-vega-transforms@^2.0.0:
+vega-transforms@^2.0.0, vega-transforms@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-2.1.0.tgz#314f3effe98db50e76d820cd89fbd8acc1fc50f3"
   dependencies:
@@ -6435,7 +6465,7 @@ vega-view-transforms@^2.0.1:
     vega-scenegraph "^3.2.1"
     vega-util "^1.7.0"
 
-vega-view@^3.2.2:
+vega-view@^3.2.2, vega-view@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/vega-view/-/vega-view-3.3.2.tgz#f0bfd5aa0a6947c912aa94dcc77a46c20e44b675"
   dependencies:
@@ -6465,14 +6495,14 @@ vega-wordcloud@^3.0.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega@^4.0.0-rc.3:
-  version "4.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-4.0.0-rc.3.tgz#b1ff0ea42de76a5a221a90a2c67a7afe3d0cbca2"
+vega@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-4.0.0.tgz#9ee84fac66bd382593cc14d13f6c294d48e18ae2"
   dependencies:
-    vega-lib "4.0.0-rc.3"
-    vega-parser "3.3.0"
+    vega-lib "4.0.0"
+    vega-parser "3.5.0"
     vega-typings "*"
-    yargs "4"
+    yargs "12"
   optionalDependencies:
     canvas "^1.6.11"
     canvas-prebuilt "1.6.5-prerelease.1"
@@ -6803,24 +6833,22 @@ yargs-parser@^9.0.2:
   dependencies:
     camelcase "^4.1.0"
 
-yargs@4, yargs@^4.6.0:
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
+yargs@12, yargs@^12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.1.tgz#6432e56123bb4e7c3562115401e98374060261c2"
   dependencies:
-    cliui "^3.2.0"
-    decamelize "^1.1.1"
+    cliui "^4.0.0"
+    decamelize "^2.0.0"
+    find-up "^3.0.0"
     get-caller-file "^1.0.1"
-    lodash.assign "^4.0.3"
-    os-locale "^1.4.0"
-    read-pkg-up "^1.0.1"
+    os-locale "^2.0.0"
     require-directory "^2.1.1"
     require-main-filename "^1.0.1"
     set-blocking "^2.0.0"
-    string-width "^1.0.1"
-    which-module "^1.0.0"
-    window-size "^0.2.0"
-    y18n "^3.2.1"
-    yargs-parser "^2.4.1"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1 || ^4.0.0"
+    yargs-parser "^10.1.0"
 
 yargs@^11.0.0, yargs@^11.1.0:
   version "11.1.0"
@@ -6839,22 +6867,24 @@ yargs@^11.0.0, yargs@^11.1.0:
     y18n "^3.2.1"
     yargs-parser "^9.0.2"
 
-yargs@^12.0.1:
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.1.tgz#6432e56123bb4e7c3562115401e98374060261c2"
+yargs@^4.6.0:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
   dependencies:
-    cliui "^4.0.0"
-    decamelize "^2.0.0"
-    find-up "^3.0.0"
+    cliui "^3.2.0"
+    decamelize "^1.1.1"
     get-caller-file "^1.0.1"
-    os-locale "^2.0.0"
+    lodash.assign "^4.0.3"
+    os-locale "^1.4.0"
+    read-pkg-up "^1.0.1"
     require-directory "^2.1.1"
     require-main-filename "^1.0.1"
     set-blocking "^2.0.0"
-    string-width "^2.0.0"
-    which-module "^2.0.0"
-    y18n "^3.2.1 || ^4.0.0"
-    yargs-parser "^10.1.0"
+    string-width "^1.0.1"
+    which-module "^1.0.0"
+    window-size "^0.2.0"
+    y18n "^3.2.1"
+    yargs-parser "^2.4.1"
 
 yargs@~3.10.0:
   version "3.10.0"
