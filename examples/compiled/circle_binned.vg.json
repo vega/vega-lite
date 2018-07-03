@@ -94,10 +94,10 @@
                         "value": "#4c78a8"
                     },
                     "x": {
-                        "signal": "(scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating\"]) + scale(\"x\", datum[\"bin_maxbins_10_IMDB_Rating_end\"]))/2"
+                        "signal": "scale(\"x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
                     },
                     "y": {
-                        "signal": "(scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) + scale(\"y\", datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]))/2"
+                        "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]) / 2)"
                     },
                     "size": {
                         "scale": "size",

@@ -3,11 +3,13 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {isBinned} from './bin';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {FacetMapping} from './facet';
-import {Mark} from './mark';
-import {Flag, flagKeys} from './util';
+import {isFieldDef} from './fielddef';
+import {CIRCLE, Mark, POINT, SQUARE, TICK} from './mark';
+import {contains, Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
@@ -218,8 +220,19 @@ export type SupportedMark = {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(channel: Channel, mark: Mark) {
-  return mark in getSupportedMark(channel);
+export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
+  if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
+    const primaryFieldDef = encoding[channel === X2 ? X : Y];
+    // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
+    // has "binned" data and thus need x2/y2 to specify the bin-end field.
+    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return mark in getSupportedMark(channel);
+  }
 }
 
 /**

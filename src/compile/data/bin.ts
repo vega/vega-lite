@@ -1,5 +1,5 @@
 import {isString} from 'vega-util';
-import {BinParams, binToString} from '../../bin';
+import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, normalizeBin, vgField} from '../../fielddef';
@@ -42,7 +42,7 @@ function isBinTransform(t: FieldDef<string> | BinTransform): t is BinTransform {
   return 'as' in t;
 }
 
-function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
+function createBinComponent(t: FieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
   let as: [string, string];
 
   if (isBinTransform(t)) {
@@ -51,12 +51,12 @@ function createBinComponent(t: FieldDef<string> | BinTransform, model: Model) {
     as = [vgField(t, {}), vgField(t, {binSuffix: 'end'})];
   }
 
-  const bin = normalizeBin(t.bin, undefined) || {};
-  const key = binKey(bin, t.field);
+  const normalizedBin = normalizeBin(bin, undefined) || {};
+  const key = binKey(normalizedBin, t.field);
   const {signal, extentSignal} = getSignalsFromModel(model, key);
 
   const binComponent: BinComponent = {
-    bin: bin,
+    bin: normalizedBin,
     field: t.field,
     as: as,
     ...signal ? {signal} : {},
@@ -90,8 +90,8 @@ export class BinNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
-      if (fieldDef.bin) {
-        const {key, binComponent} = createBinComponent(fieldDef, model);
+      if (isBinning(fieldDef.bin)) {
+        const {key, binComponent} = createBinComponent(fieldDef, fieldDef.bin, model);
         binComponentIndex[key] = {
           ...binComponent,
           ...binComponentIndex[key],
@@ -113,7 +113,7 @@ export class BinNode extends DataFlowNode {
    * The optional parameter should provide
    */
   public static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model) {
-    const {key, binComponent} = createBinComponent(t, model);
+    const {key, binComponent} = createBinComponent(t, t.bin, model);
     return new BinNode(parent, {
       [key]: binComponent
     });

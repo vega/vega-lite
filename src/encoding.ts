@@ -1,35 +1,16 @@
 import {isArray} from 'vega-util';
-
 import {isAggregateOp} from './aggregate';
+import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, supportMark} from './channel';
 import {Config} from './config';
 import {FacetMapping} from './facet';
-import {
-  ChannelDef,
-  Field,
-  FieldDef,
-  FieldDefWithCondition,
-  getFieldDef,
-  hasConditionalFieldDef,
-  isConditionalDef,
-  isFieldDef,
-  isValueDef,
-  MarkPropFieldDef,
-  normalize,
-  normalizeFieldDef,
-  OrderFieldDef,
-  PositionFieldDef,
-  TextFieldDef,
-  title,
-  ValueDef,
-  ValueDefWithCondition,
-  vgField,
-} from './fielddef';
+import {ChannelDef, Field, FieldDef, FieldDefWithCondition, FieldDefWithoutScale, getFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isValueDef, MarkPropFieldDef, normalize, normalizeFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, title, ValueDef, ValueDefWithCondition, vgField} from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
 import {contains, keys, some} from './util';
+
 
 
 export interface Encoding<F> {
@@ -47,34 +28,34 @@ export interface Encoding<F> {
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  x2?: FieldDef<F> | ValueDef;
+  x2?: FieldDefWithoutScale<F> | ValueDef;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  y2?: FieldDef<F> | ValueDef;
+  y2?: FieldDefWithoutScale<F> | ValueDef;
 
 
   /**
    * Longitude position of geographically projected marks.
    */
-  longitude?: FieldDef<F>;
+  longitude?: FieldDefWithoutScale<F>;
 
   /**
    * Latitude position of geographically projected marks.
    */
-  latitude?: FieldDef<F>;
+  latitude?: FieldDefWithoutScale<F>;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
-  longitude2?: FieldDef<F>;
+  longitude2?: FieldDefWithoutScale<F>;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
-  latitude2?: FieldDef<F>;
+  latitude2?: FieldDefWithoutScale<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -136,12 +117,12 @@ export interface Encoding<F> {
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
    */
-  detail?: FieldDef<F> | FieldDef<F>[];
+  detail?: FieldDefWithoutScale<F> | FieldDefWithoutScale<F>[];
 
   /**
    * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
    */
-  key?: FieldDef<F>;
+  key?: FieldDefWithoutScale<F>;
 
   /**
    * Text of the `text` mark.
@@ -156,7 +137,7 @@ export interface Encoding<F> {
   /**
    * A URL to load upon mouse click.
    */
-  href?: FieldDefWithCondition<FieldDef<F>> | ValueDefWithCondition<FieldDef<F>>;
+  href?: FieldDefWithCondition<FieldDefWithoutScale<F>> | ValueDefWithCondition<FieldDefWithoutScale<F>>;
 
   /**
    * Order of the marks.
@@ -218,7 +199,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
       } else {
         // Add bin or timeUnit transform if applicable
         const bin = channelDef.bin;
-        if (bin) {
+        if (isBinning(bin)) {
           const {field} = channelDef;
           bins.push({bin, field, as: transformedField});
         } else if (channelDef.timeUnit) {
@@ -258,7 +239,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       return normalizedEncoding;
     }
 
-    if (!supportMark(channel, mark)) {
+    if (!supportMark(encoding, channel, mark)) {
       // Drop unsupported channel
       log.warn(log.message.incompatibleChannel(channel, mark));
       return normalizedEncoding;

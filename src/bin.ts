@@ -1,4 +1,5 @@
-import {isBoolean} from 'vega-util';
+import {isBoolean, isObject} from 'vega-util';
+import {BinParams} from './bin';
 import {Channel, COLOR, COLUMN, FILL, OPACITY, ROW, SHAPE, SIZE, STROKE} from './channel';
 import {keys, varName} from './util';
 
@@ -74,8 +75,16 @@ export function binToString(bin: BinParams | boolean) {
   return 'bin' + keys(bin).map(p => varName(`_${p}_${bin[p]}`)).join('');
 }
 
-export function isBinParams(bin: BinParams | boolean): bin is BinParams {
-  return bin && !isBoolean(bin);
+export function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams | true {
+  return bin === true || isBinParams(bin);
+}
+
+export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
+  return bin === 'binned';
+}
+
+export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams {
+  return isObject(bin);
 }
 
 export function autoMaxBins(channel: Channel): number {

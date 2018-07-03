@@ -3,8 +3,8 @@ import {AggregateOp} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
-import {autoMaxBins, BinParams, binToString} from './bin';
-import {Channel, rangeType} from './channel';
+import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
+import {Channel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -20,7 +20,7 @@ import {StackOffset} from './stack';
 import {getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {flatAccessWithDatum, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, replacePathInField, titlecase} from './util';
 
 
 /**
@@ -114,7 +114,24 @@ export type HiddenCompositeAggregate = CompositeAggregate;
 
 export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
-export interface FieldDefBase<F> {
+
+export interface GenericBinMixins<B> {
+  /**
+   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
+   *
+   * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   *
+   * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+   *
+   * __Default value:__ `false`
+   */
+  bin?: B;
+}
+
+export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned'>;
+export type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
+
+export interface FieldDefBase<F> extends BaseBinMixins {
 
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
@@ -137,14 +154,6 @@ export interface FieldDefBase<F> {
    * __Default value:__ `undefined` (None)
    */
   timeUnit?: TimeUnit;
-
-  /**
-   * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).
-   * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
-   *
-   * __Default value:__ `false`
-   */
-  bin?: boolean | BinParams;
 
   /**
    * Aggregation function for the field
@@ -208,6 +217,11 @@ export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
   scale?: Scale | null;
 }
 
+/**
+ * Field Def without scale (and without bin: "binned" support).
+ */
+export type FieldDefWithoutScale<F> = FieldDef<F> & BinWithoutBinnedMixins;
+
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
 
   /**
@@ -247,7 +261,7 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
+export type MarkPropFieldDef<F> = ScaleFieldDef<F> & BinWithoutBinnedMixins & {
    /**
     * An object defining properties of the legend.
     * If `null`, the legend for the encoding channel will be removed.
@@ -255,22 +269,22 @@ export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
     * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
     */
   legend?: Legend | null;
-}
+};
 
 // Detail
 
 // Order Path have no scale
 
-export interface OrderFieldDef<F> extends FieldDef<F> {
+export interface OrderFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
    */
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F> extends FieldDef<F> {
+export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
-   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+   * The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }
@@ -340,7 +354,7 @@ export function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | Aggreg
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
         fn = fieldDef.op;
-      } else if (fieldDef.bin) {
+      } else if (isBinning(fieldDef.bin)) {
         fn = binToString(fieldDef.bin);
         suffix = opt.binSuffix || '';
       } else if (fieldDef.aggregate) {
@@ -402,7 +416,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
   const {field: field, bin, timeUnit, aggregate} = fieldDef;
   if (aggregate === 'count') {
     return config.countTitle;
-  } else if (bin) {
+  } else if (isBinning(bin)) {
     return `${field} (binned)`;
   } else if (timeUnit) {
     const units = getTimeUnitParts(timeUnit).join('-');
@@ -414,7 +428,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
 }
 
 export function functionalTitleFormatter(fieldDef: FieldDefBase<string>, config: Config) {
-  const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+  const fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
   if (fn) {
     return fn.toUpperCase() + '(' + fieldDef.field + ')';
   } else {
@@ -451,7 +465,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
-  if (fieldDef.bin) {
+  if (isBinning(fieldDef.bin)) {
     return 'quantitative';
   }
   switch (rangeType(channel)) {
@@ -519,11 +533,15 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   }
 
   // Normalize bin
-  if (fieldDef.bin) {
+  if (isBinning(fieldDef.bin)) {
     fieldDef = {
       ...fieldDef,
       bin: normalizeBin(fieldDef.bin, channel)
     };
+  }
+
+  if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+    log.warn(`Channel ${channel} should not be used with "binned" bin`);
   }
 
   // Normalize Type
@@ -645,7 +663,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
 }
 
 export function isNumberFieldDef(fieldDef: FieldDef<any>) {
-  return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+  return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 
 export function isTimeFieldDef(fieldDef: FieldDef<any>) {

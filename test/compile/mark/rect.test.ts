@@ -72,7 +72,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('horizontal binned', function() {
+  describe('horizontal bin', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -90,7 +90,7 @@ describe('Mark: Rect', function() {
     });
   });
 
-  describe('vertical binned', function() {
+  describe('vertical bin', function() {
     const model = parseUnitModelWithScaleAndLayoutSize({
       "data": {"url": 'data/cars.json'},
       "mark": "rect",
@@ -147,6 +147,72 @@ describe('Mark: Rect', function() {
       assert.deepEqual(props.width, {scale: 'x', band: true});
       assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
       assert.deepEqual(props.height, {scale: 'y', band: true});
+    });
+  });
+
+  describe('vertical binned data', function() {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "bin_start",
+          "bin": "binned",
+          "type": "quantitative",
+          "axis": {
+            "tickStep": 2
+          }
+        },
+        "x2": {
+          "field": "bin_end",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "count",
+          "type": "quantitative"
+        }
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw bar with x and x2', function() {
+      assert.deepEqual(props.x2, {scale: "x", field: "bin_start", offset: 0});
+      assert.deepEqual(props.x, {scale: "x", field: "bin_end", offset: 0});
+      assert.deepEqual(props.y, {scale: "y", field: "count"});
+      assert.deepEqual(props.y2, {scale: "y", value: 0});
+      assert.isUndefined(props.width);
+    });
+  });
+
+  describe('horizontal binned data', function() {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      "mark": "bar",
+      "encoding": {
+        "y": {
+          "field": "bin_start",
+          "bin": "binned",
+          "type": "quantitative",
+          "axis": {
+            "tickStep": 2
+          }
+        },
+        "y2": {
+          "field": "bin_end",
+          "type": "quantitative"
+        },
+        "x": {
+          "field": "count",
+          "type": "quantitative"
+        }
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw bar with y and y2', function() {
+      assert.deepEqual(props.y2, {scale: "y", field: "bin_start", offset: 0});
+      assert.deepEqual(props.y, {scale: "y", field: "bin_end", offset: 0});
+      assert.deepEqual(props.x, {scale: "x", field: "count"});
+      assert.deepEqual(props.x2, {scale: "x", value: 0});
+      assert.isUndefined(props.width);
     });
   });
 });

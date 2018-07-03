@@ -2,7 +2,8 @@
 
 import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
-import {color, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
+import {binPosition, color, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
+import {FieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -244,5 +245,21 @@ describe('compile/mark/mixins', () => {
           assert.equal(mixins[channel].field, model.getName(channel));
       });
     });
+  });
+
+  describe('binPosition', function() {
+    it('generates warning for invalid binned spec without x2', log.wrap((logger) => {
+      const fieldDef: FieldDef<string> = {"field": "bin_start", "bin": "binned", "type": "quantitative"};
+      const props = binPosition(fieldDef, undefined, "x", undefined, undefined, undefined);
+      assert.isUndefined(props);
+      assert.equal(logger.warns[0], log.message.channelRequiredForBinned('x2'));
+    }));
+
+    it('generates warning for invalid binned spec without y2', log.wrap((logger) => {
+      const fieldDef: FieldDef<string> = {"field": "bin_start", "bin": "binned", "type": "quantitative"};
+      const props = binPosition(fieldDef, undefined, "y", undefined, undefined, undefined);
+      assert.isUndefined(props);
+      assert.equal(logger.warns[0], log.message.channelRequiredForBinned('y2'));
+    }));
   });
 });

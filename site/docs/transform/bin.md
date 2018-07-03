@@ -64,6 +64,14 @@ You can use binning to discretize color scales. Vega-Lite automatically creates 
 
 <div class="vl-example" data-name="point_binned_color"></div>
 
+{:#binned}
+### Example: Using Vega-Lite with Binned data
+
+If you have data that is already binned outside of Vega-Lite, setting the `bin` property to `"binned"` will trigger Vega-Lite to render scales and axes similar to setting the `bin` property in encoding field definitions.
+Note that you have to specify field names that encode the start and end of each bin. To adjust the axis ticks based on the bin step, you can set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+
+<div class="vl-example" data-name="bar_binned_data"></div>
+
 
 {:#transform}
 ## Bin Transform

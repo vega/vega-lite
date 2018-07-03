@@ -1,6 +1,6 @@
 import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
-import {binToString, isBinParams} from '../../bin';
+import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
@@ -209,7 +209,7 @@ function parseSingleChannelDomain(scaleType: ScaleType, domain: Domain, model: U
       data,
       field: vgField({field, aggregate: 'max'})
     }];
-  } else if (fieldDef.bin) { // bin
+  } else if (isBinning(fieldDef.bin)) { // bin
     if (isBinScale(scaleType)) {
       const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
       return [{signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`}];
