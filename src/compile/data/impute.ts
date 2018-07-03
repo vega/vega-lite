@@ -55,7 +55,7 @@ export class ImputeNode extends DataFlowNode {
         impute: imputedChannel.field,
         key: keyChannel.field,
         ...(method ? {method}:{}),
-        ...(value ? {value} : {}),
+        ...(value !== undefined ? {value} : {}),
         ...(frame ? {frame} : {}),
         ...(groupbyFields.length ? {groupby: groupbyFields} : {} )
       });

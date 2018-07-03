@@ -184,6 +184,30 @@ describe('compile/data/impute', () => {
       }]);
     });
 
+    it('should work for falsy value impute', () => {
+      const model = parseUnitModelWithScale ({
+        mark: "bar",
+        encoding: {
+          x : {aggregate: 'sum', field: 'yield', type: 'quantitative'},
+          y : {field: 'variety', type: 'quantitative', impute: {'value': 0}},
+          'color': {field: 'site', type: 'nominal'}
+        }
+      });
+      const result = ImputeNode.makeFromEncoding(null, model);
+      assert.deepEqual(result.assemble() as any, [{
+        type: 'impute',
+        field: 'variety',
+        key: 'yield',
+        method: 'value',
+        groupby: ['site'],
+        value: null
+      }, {
+        type: 'formula',
+        expr: 'datum.variety === null ? 0 : datum.variety',
+        as: 'variety'
+      }]);
+    });
+
     it('should work for method impute', () => {
       const model = parseUnitModelWithScale ({
         mark: "bar",
