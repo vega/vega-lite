@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
   "autosize": "pad",
   "padding": 5,
