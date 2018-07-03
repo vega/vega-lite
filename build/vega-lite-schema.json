@@ -437,7 +437,7 @@
           "type": "number"
         },
         "tickStep": {
-          "description": "A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for data that is binned before importing into Vega-Lite.\n\n__Default value__: `undefined`",
+          "description": "A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).\n\n__Default value__: `undefined`",
           "type": "number"
         },
         "ticks": {
@@ -1120,7 +1120,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1180,7 +1180,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1282,7 +1282,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1367,7 +1367,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1428,7 +1428,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -1531,7 +1531,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -2508,7 +2508,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -2587,7 +2587,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2658,7 +2658,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2771,7 +2771,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -2846,7 +2846,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -3053,7 +3053,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         }
       },
       "type": "object"
@@ -3076,7 +3076,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         }
       },
       "type": "object"
@@ -5054,7 +5054,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -5195,7 +5195,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [
@@ -6501,7 +6501,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `\"binned\"`.\nIf `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\nIf set to `\"binned\"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
           "anyOf": [

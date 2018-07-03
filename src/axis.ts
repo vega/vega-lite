@@ -49,7 +49,7 @@ export interface Axis extends VgAxisBase, Guide {
   tickCount?: number;
 
   /**
-   * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for data that is binned before importing into Vega-Lite.
+   * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).
    *
    * __Default value__: `undefined`
    */

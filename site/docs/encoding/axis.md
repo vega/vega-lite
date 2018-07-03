@@ -65,7 +65,7 @@ __See also:__ [Axis Labels Config](#labels-config) and [`guide-label` style conf
 {:#ticks}
 ### Ticks
 
-{% include table.html props="ticks,tickCount,tickSize,values" source="Axis" %}
+{% include table.html props="ticks,tickCount,tickSize,tickStep,values" source="Axis" %}
 
 __See also:__ [Axis Ticks Config](#ticks-config).
 

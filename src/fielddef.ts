@@ -111,9 +111,11 @@ export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
 export interface GenericBinMixins<B> {
   /**
-   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or `"binned"`.
-   * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
-   * If set to `"binned"`, it implies that the data is binned prior to being imported to Vega-lite. The scale and axis will be formatted similar to binning in Vega-lite.
+   * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
+   *
+   * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+   *
+   * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
    */
