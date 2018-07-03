@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {isBinning} from '../../bin';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
@@ -51,7 +52,7 @@ export class FacetNode extends DataFlowNode {
           name: model.getName(`${channel}_domain`),
           fields: [
             vgField(fieldDef),
-            ...(bin ? [vgField(fieldDef, {binSuffix: 'end'})] : [])
+            ...(isBinning(bin) ? [vgField(fieldDef, {binSuffix: 'end'})] : [])
           ],
           ...(
             isSortField(sort) ? {sortField: sort} :

@@ -663,7 +663,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   throw new Error(`Invalid scale property "${propName}".`);
 }
 
-export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean|BinParams):boolean {
+export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams | 'binned'): boolean {
   if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (fieldDefType === Type.TEMPORAL) {

@@ -1,6 +1,6 @@
 import {truncate} from 'vega-util';
 import {Axis} from '../../axis';
-import {binToString} from '../../bin';
+import {binToString, isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, title as fieldDefTitle, valueArray} from '../../fielddef';
@@ -19,7 +19,7 @@ import {getAxisConfig} from './config';
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
 export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
-  return !hasDiscreteDomain(scaleType) && !fieldDef.bin;
+  return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef.bin);
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
@@ -139,7 +139,7 @@ export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<stri
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
     if (specifiedAxis.tickStep) {
       return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
-    } else if (fieldDef.bin) {
+    } else if (isBinning(fieldDef.bin)) {
       // for binned data, we don't want more ticks than maxbins
       return {signal: `ceil(${size.signal}/20)`};
     }
@@ -162,9 +162,8 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
     return valueArray(fieldDef, vals);
   }
 
-
   if (fieldDef.type === QUANTITATIVE) {
-    if (fieldDef.bin) {
+    if (isBinning(fieldDef.bin)) {
       const domain = model.scaleDomain(channel);
       if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
         return vals;

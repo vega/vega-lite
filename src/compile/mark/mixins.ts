@@ -1,17 +1,7 @@
 import {isArray} from 'vega-util';
-
-import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel} from '../../channel';
-import {
-  ChannelDef,
-  FieldDef,
-  FieldDefWithCondition,
-  getFieldDef,
-  isConditionalSelection,
-  isValueDef,
-  TextFieldDef,
-  ValueDefWithCondition,
-  vgField,
-} from '../../fielddef';
+import {isBinned, isBinning} from '../../bin';
+import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
+import {ChannelDef, FieldDef, FieldDefWithCondition, getFieldDef, isConditionalSelection, isFieldDef, isValueDef, TextFieldDef, ValueDef, ValueDefWithCondition, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {expression} from '../../predicate';
@@ -22,6 +12,7 @@ import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
+
 
 export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: false}): VgEncodeEntry {
   const {markDef, encoding, config} = model;
@@ -171,7 +162,10 @@ export function nonPosition(channel: typeof NONPOSITION_SCALE_CHANNELS[0], model
 
   return wrapCondition(model, channelDef, vgChannel || channel, (cDef) => {
     return ref.midPoint(
-      channel, cDef, model.scaleName(channel),
+      channel,
+      cDef,
+      undefined,
+      model.scaleName(channel),
       model.getScaleComponent(channel),
       null, // No need to provide stack for non-position as it does not affect mid point
       defaultRef
@@ -283,17 +277,27 @@ export function centeredBandPosition(channel: 'x' | 'y', model: UnitModel, defau
   };
 }
 
-export function binnedPosition(fieldDef: FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
-  if (channel === 'x') {
+export function binPosition(fieldDef: FieldDef<string>, fieldDef2: ValueDef | FieldDef<string>, channel: 'x'|'y', scaleName: string, spacing: number, reverse: boolean) {
+  const binSpacing = {
+    x:  reverse ? spacing : 0,
+    x2: reverse ? 0 : spacing,
+    y:  reverse ? 0 : spacing,
+    y2: reverse ? spacing : 0
+  };
+  const channel2 = channel === X ? X2 : Y2;
+  if (isBinning(fieldDef.bin)) {
     return {
-      x2: ref.bin(fieldDef, scaleName, 'start', reverse ? 0 : spacing),
-      x: ref.bin(fieldDef, scaleName, 'end', reverse ? spacing : 0)
+      [channel2]: ref.bin(fieldDef, scaleName, 'start', binSpacing[`${channel}2`]),
+      [channel]: ref.bin(fieldDef, scaleName, 'end', binSpacing[channel]),
+    };
+  } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
+    return {
+      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: binSpacing[`${channel}2`]}),
+      [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: binSpacing[channel]}),
     };
   } else {
-    return {
-      y2: ref.bin(fieldDef, scaleName, 'start', reverse ? spacing : 0),
-      y: ref.bin(fieldDef, scaleName, 'end', reverse ? 0 : spacing)
-    };
+    log.warn(log.message.channelRequiredForBinned(channel2));
+    return undefined;
   }
 }
 
@@ -307,6 +311,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
   const {encoding, mark, stack} = model;
 
   const channelDef = encoding[channel];
+  const channel2Def = encoding[channel === X ? X2 : Y2];
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
@@ -318,7 +323,7 @@ export function pointPosition(channel: 'x'|'y', model: UnitModel, defaultRef: Vg
     // use geopoint output if there are lat/long and there is no point position overriding lat/long.
     {field: model.getName(channel)} :
     {
-      ...ref.position(channel, encoding[channel], scaleName, scale, stack,
+      ...ref.position(channel, channelDef, channel2Def, scaleName, scale, stack,
         ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
       ),
      ...(offset ? {offset}: {})

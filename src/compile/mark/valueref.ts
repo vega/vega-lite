@@ -2,19 +2,10 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {isArray, isFunction, isString} from 'vega-util';
-
+import {isBinned, isBinning} from '../../bin';
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {
-  ChannelDef,
-  ChannelDefWithCondition,
-  FieldDef,
-  FieldRefOption,
-  isFieldDef,
-  isValueDef,
-  TextFieldDef,
-  vgField,
-} from '../../fielddef';
+import {ChannelDef, ChannelDefWithCondition, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -26,19 +17,20 @@ import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 
+
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
+export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, channel2Def: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
     stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
   }
-  return midPoint(channel, channelDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
 }
 
 /**
@@ -52,7 +44,7 @@ export function position2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a
       ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
-  return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+  return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
 }
 
 
@@ -104,15 +96,16 @@ export function bandRef(scaleName: string, band: number|boolean = true): VgValue
 }
 
 /**
- * Signal that returns the middle of a bin. Should only be used with x and y.
+ * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
+function binMidSignal(scaleName: string, fieldDef: FieldDef<string>, fieldDef2?: FieldDef<string>) {
+  const start = vgField(fieldDef, {expr: 'datum'});
+  const end = fieldDef2 !== undefined ?
+    vgField(fieldDef2, {expr: 'datum'}) :
+    vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
+
   return {
-    signal: `(` +
-      `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})})` +
-      ` + ` +
-      `scale("${scaleName}", ${vgField(fieldDef, {binSuffix: 'end', expr: 'datum'})})`+
-    `)/2`
+    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
   };
 }
 
@@ -122,6 +115,7 @@ function binMidSignal(fieldDef: FieldDef<string>, scaleName: string) {
 export function midPoint(
   channel: Channel,
   channelDef: ChannelDef<string>,
+  channel2Def: ChannelDef<string>,
   scaleName: string,
   scale: ScaleComponent,
   stack: StackProperties,
@@ -133,7 +127,7 @@ export function midPoint(
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (channelDef.bin) {
+      if (isBinning(channelDef.bin)) {
         // Use middle only for x an y to place marks in the center between start and end of the bin range.
         // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
         if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
@@ -142,9 +136,15 @@ export function midPoint(
             return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
           }
           // For non-stack, we can just calculate bin mid on the fly using signal.
-          return binMidSignal(channelDef, scaleName);
+          return binMidSignal(scaleName, channelDef);
         }
         return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
+      } else if (isBinned(channelDef.bin)) {
+        if (isFieldDef(channel2Def)) {
+          return binMidSignal(scaleName, channelDef, channel2Def);
+        } else {
+          log.warn(log.message.channelRequiredForBinned(channel));
+        }
       }
 
       if (scale) {

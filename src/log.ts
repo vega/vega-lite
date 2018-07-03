@@ -340,5 +340,9 @@ export namespace message {
   export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
     return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
+  // CHANNEL
+  export function channelRequiredForBinned(channel: Channel) {
+    return `Channel ${channel} is required for "binned" bin`;
+  }
 }
 
