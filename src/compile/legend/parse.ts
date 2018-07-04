@@ -24,7 +24,7 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
+  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce((legendComponent, channel) => {
     const def = encoding[channel];
     if (model.legend(channel) && model.getScaleComponent(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
       legendComponent[channel] = parseLegendForChannel(model, channel);
@@ -70,13 +70,11 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     }
   }
 
-  // 2) Add mark property definition groups
   const legendEncoding = legend.encoding || {};
   const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce((e: LegendEncode, part) => {
     const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
     const value = encode[part] ?
-      // TODO: replace legendCmpt with type is sufficient
-      encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt.get('type')) : // apply rule
+      encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) : // apply rule
       legendEncodingPart; // no rule -- just default values
     if (value !== undefined && keys(value).length > 0) {
       e[part] = {update: value};
@@ -108,6 +106,9 @@ function getProperty(property: keyof (Legend | VgLegend), specifiedLegend: Legen
         specifiedTitle,
         fieldDefTitle(fieldDef, model.config)
       ) || undefined; // make falsy value undefined so output Vega spec is shorter
+    // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
+    // case 'clipHeight':
+    //   return getSpecifiedOrDefaultValue(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
   }

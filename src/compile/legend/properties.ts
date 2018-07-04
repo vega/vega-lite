@@ -1,15 +1,19 @@
-import {Channel, isColorChannel} from '../../channel';
 import {FieldDef, valueArray} from '../../fielddef';
 import {Legend} from '../../legend';
-import {isBinScale, ScaleType} from '../../scale';
-import {Type} from '../../type';
-import {contains} from '../../util';
+import {hasContinuousDomain, ScaleType} from '../../scale';
 
 export function values(legend: Legend, fieldDef: FieldDef<string>) {
   const vals = legend.values;
 
   if (vals) {
     return valueArray(fieldDef, vals);
+  }
+  return undefined;
+}
+
+export function clipHeight(scaleType: ScaleType) {
+  if (hasContinuousDomain(scaleType)) {
+    return 20;
   }
   return undefined;
 }

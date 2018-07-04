@@ -1,13 +1,18 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {COLOR} from '../../../src/channel';
+import {SignalRef} from '../../../node_modules/vega';
+import {COLOR, SIZE} from '../../../src/channel';
+import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';
 import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', function() {
+  const symbolLegend = new LegendComponent({type: 'symbol'});
+  const gradientLegend = new LegendComponent({type: 'gradient'});
+
   describe('encode.symbols', function() {
     it('should not have fill, strokeDash, or strokeDashOffset', function() {
 
@@ -17,10 +22,27 @@ describe('compile/legend', function() {
             x: {field: "a", type: "nominal"},
             color: {field: "a", type: "nominal"}
           }
-        }), COLOR, 'symbol');
+        }), COLOR, symbolLegend);
         assert.deepEqual(symbol.fill, {value: 'transparent'});
         assert.isUndefined((symbol||{}).strokeDash);
         assert.isUndefined((symbol||{}).strokeDashOffset);
+    });
+
+    it('should have fill if a color encoding exists', function() {
+
+      const symbol = encode.symbols({field: 'a', type: 'quantitative'}, {}, parseUnitModelWithScale({
+          mark: {
+            type: "circle",
+            opacity: 0.3
+          },
+          encoding: {
+            x: {field: "a", type: "nominal"},
+            color: {field: "a", type: "nominal"},
+            size: {field: "a", type: "quantitative"}
+          }
+        }), SIZE, symbolLegend);
+        assert.deepEqual(symbol.fill, {value: 'black'});
+        assert.deepEqual(symbol.fillOpacity, {value: 0.3});
     });
 
     it('should return specific symbols.shape.value if user has specified', function() {
@@ -30,7 +52,7 @@ describe('compile/legend', function() {
           encoding: {
             x: {field: "a", type: "nominal"},
             shape: {value: "square"}}
-        }), COLOR, 'symbol');
+        }), COLOR, symbolLegend);
         assert.deepEqual(symbol.shape['value'], 'square');
     });
 
@@ -40,7 +62,7 @@ describe('compile/legend', function() {
           mark: "point",
           encoding: {
             x: {field: "a", type: "nominal"}}
-        }), COLOR, 'symbol');
+        }), COLOR, symbolLegend);
       assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
     });
 
@@ -54,7 +76,7 @@ describe('compile/legend', function() {
               condition: {selection: "brush", value: 1},
               value: 0
             }}
-        }), COLOR, 'symbol');
+        }), COLOR, symbolLegend);
         assert.deepEqual(symbol.opacity['value'], 1);
     });
   });
@@ -65,7 +87,7 @@ describe('compile/legend', function() {
           mark: "point",
           encoding: {
             x: {field: "a", type: "quantitative"}}
-        }), COLOR, 'gradient');
+        }), COLOR, gradientLegend);
 
       assert.deepEqual(gradient.opacity['value'], 0.7); // default opacity is 0.7.
     });
@@ -83,9 +105,9 @@ describe('compile/legend', function() {
       });
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      const label = encode.labels(fieldDef, {}, model, COLOR, 'gradient');
+      const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
       const expected = `timeFormat(datum.value, '%b')`;
-      assert.deepEqual(label.text.signal, expected);
+      assert.deepEqual((label.text as SignalRef).signal, expected);
     });
 
     it('should return correct expression for the timeUnit: TimeUnit.QUARTER', function() {
@@ -98,9 +120,9 @@ describe('compile/legend', function() {
       });
 
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
-      const label = encode.labels(fieldDef, {}, model, COLOR, 'gradient');
+      const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
       const expected = `'Q' + quarter(datum.value)`;
-      assert.deepEqual(label.text.signal, expected);
+      assert.deepEqual((label.text as SignalRef).signal, expected);
     });
   });
 });

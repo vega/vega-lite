@@ -24,7 +24,7 @@
     "size": {
       "field": "Deaths",
       "type": "quantitative",
-      "legend": {"title": "Annual Global Deaths"},
+      "legend": {"title": "Annual Global Deaths", "clipHeight": 30},
       "scale": {"range": [0, 5000]}
     },
     "color": {"field": "Entity", "type": "nominal", "legend": null}
