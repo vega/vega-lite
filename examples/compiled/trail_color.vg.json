@@ -136,7 +136,19 @@
   ],
   "legends": [
     {"fill": "color", "title": "symbol"},
-    {"size": "size", "title": "price"}
+    {
+      "size": "size",
+      "title": "price",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "black"},
+            "fillOpacity": {"value": 1},
+            "stroke": {"value": "transparent"}
+          }
+        }
+      }
+    }
   ],
   "config": {"axisY": {"minExtent": 30}}
 }
