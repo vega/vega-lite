@@ -53,6 +53,11 @@
         "name": "layer_bar_labels",
         "title": "Simple Bar Chart with Labels",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "isotype_bar_chart",
+        "title": "Isotype Bar Chart",
+        "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
       }
     ],
     "Scatter & Strip Plots": [
@@ -502,6 +507,11 @@
         "name": "interactive_multi_line_tooltip",
         "title": "Multi Series Line Chart with Tooltips",
         "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+      },
+      {
+        "name": "isotype_grid",
+        "title": "Isotype Grid",
+        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
       }
     ],
     "Interactive Multi-View Displays": [
