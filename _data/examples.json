@@ -245,6 +245,11 @@
         "title": "Waterfall Chart of Monthly Profit and Loss"
       },
       {
+        "name": "window_top_k",
+        "title": "Filtering top-K items",
+        "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score."
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
