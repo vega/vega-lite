@@ -576,6 +576,13 @@ const COMPATIBLE = {compatible: true};
 export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {compatible: boolean; warning?: string;} {
   const type = fieldDef.type;
 
+  if (type === 'geojson' && channel !== 'shape') {
+    return {
+      compatible: false,
+      warning: `Channel ${channel} should not be used with a geojson data.`
+    };
+  }
+
   switch (channel) {
     case 'row':
     case 'column':
@@ -615,7 +622,7 @@ export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel
     case 'size':
     case 'x2':
     case 'y2':
-      if ((type === 'nominal' && !fieldDef['sort']) || type === 'geojson') {
+      if (type === 'nominal' && !fieldDef['sort']) {
         return {
           compatible: false,
           warning: `Channel ${channel} should not be used with an unsorted discrete field.`

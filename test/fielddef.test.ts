@@ -1,11 +1,11 @@
 import {assert} from 'chai';
-
 import {COUNTING_OPS} from '../src/aggregate';
-import {Channel} from '../src/channel';
+import {Channel, CHANNELS} from '../src/channel';
 import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title, vgField} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
+
 
 describe('fieldDef', () => {
   describe('vgField()', () => {
@@ -138,6 +138,13 @@ describe('fieldDef', () => {
       });
       it('is incompatible with quantitative field', () => {
         assert(!channelCompatibility({field: 'a', type: 'quantitative'}, 'shape').compatible);
+      });
+
+      it('is the only channel that is incompatible with geojson field', () => {
+        for (const channel of CHANNELS) {
+
+          assert(channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape'));
+        }
       });
     });
 
