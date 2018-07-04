@@ -116,7 +116,7 @@
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color", "type": "gradient"}],
+  "legends": [{"fill": "color"}],
   "config": {
     "axis": {"domain": false},
     "axisY": {"minExtent": 30},

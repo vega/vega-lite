@@ -1,12 +1,13 @@
+import {SignalRef} from 'vega';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {MAIN} from '../../data';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
 import {duplicate, every, stringify} from '../../util';
-import {VgSignalRef} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
+
 
 export function parseProjection(model: Model) {
   if (isUnitModel(model)) {
@@ -24,7 +25,7 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
   const {specifiedProjection, config, hasProjection} = model;
 
   if (hasProjection) {
-    const data: (VgSignalRef | string)[] = [];
+    const data: (SignalRef | string)[] = [];
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((posssiblePair) => {
       if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {

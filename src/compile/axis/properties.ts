@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {truncate} from 'vega-util';
 import {Axis} from '../../axis';
 import {binToString, isBinning} from '../../bin';
@@ -8,7 +9,7 @@ import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
-import {AxisOrient, HorizontalAlign, VgSignalRef} from '../../vega.schema';
+import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 
@@ -135,7 +136,7 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: VgSignalRef, scaleName: string, specifiedAxis: Axis) {
+export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: SignalRef, scaleName: string, specifiedAxis: Axis) {
   if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
     if (specifiedAxis.tickStep) {
       return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};

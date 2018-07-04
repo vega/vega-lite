@@ -142,13 +142,7 @@
           ]
         }
       ],
-      "legends": [
-        {
-          "fill": "child_population_color",
-          "title": "population",
-          "type": "gradient"
-        }
-      ]
+      "legends": [{"fill": "child_population_color", "title": "population"}]
     },
     {
       "type": "group",
@@ -177,13 +171,7 @@
           ]
         }
       ],
-      "legends": [
-        {
-          "fill": "child_engineers_color",
-          "title": "engineers",
-          "type": "gradient"
-        }
-      ]
+      "legends": [{"fill": "child_engineers_color", "title": "engineers"}]
     },
     {
       "type": "group",
@@ -212,13 +200,7 @@
           ]
         }
       ],
-      "legends": [
-        {
-          "fill": "child_hurricanes_color",
-          "title": "hurricanes",
-          "type": "gradient"
-        }
-      ]
+      "legends": [{"fill": "child_hurricanes_color", "title": "hurricanes"}]
     }
   ],
   "scales": [

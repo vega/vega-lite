@@ -120,6 +120,6 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "pct", "type": "gradient"}],
+  "legends": [{"fill": "color", "title": "pct"}],
   "config": {"axisY": {"minExtent": 30}}
 }

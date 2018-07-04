@@ -436,9 +436,7 @@
       "zero": false
     }
   ],
-  "legends": [
-    {"fill": "color", "title": "Number of Records", "type": "gradient"}
-  ],
+  "legends": [{"fill": "color", "title": "Number of Records"}],
   "config": {
     "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}},

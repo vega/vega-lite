@@ -4775,16 +4775,117 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
-        "entryPadding": {
-          "description": "Padding (in pixels) between legend entries in a symbol legend.",
+        "clipHeight": {
+          "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
+        },
+        "columnPadding": {
+          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
+          "type": "number"
+        },
+        "columns": {
+          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
+          "type": "number"
+        },
+        "cornerRadius": {
+          "description": "Corner radius for the full legend.",
+          "type": "number"
+        },
+        "direction": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The direction of the legend, one of `\"vertical\"` (default) or `\"horizontal\"`."
+        },
+        "fillColor": {
+          "description": "Background fill color for the full legend.",
+          "type": "string"
         },
         "format": {
           "description": "The formatting pattern for labels. This is D3's [number format pattern](https://github.com/d3/d3-format#locale_format) for quantitative fields and D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format) for time field.\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more information.\n\n__Default value:__  derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for quantitative fields and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for temporal fields.",
           "type": "string"
         },
+        "gradientLength": {
+          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "gradientStrokeColor": {
+          "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`.",
+          "type": "string"
+        },
+        "gradientStrokeWidth": {
+          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "gradientThickness": {
+          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "gridAlign": {
+          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`.",
+          "enum": [
+            "all",
+            "each",
+            "none"
+          ],
+          "type": "string"
+        },
+        "labelAlign": {
+          "description": "The alignment of the legend label, can be left, middle or right.",
+          "type": "string"
+        },
+        "labelBaseline": {
+          "description": "The position of the baseline of legend label, can be top, middle or bottom.\n\n__Default value:__ `\"middle\"`.",
+          "type": "string"
+        },
+        "labelColor": {
+          "description": "The color of the legend label, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "labelFont": {
+          "description": "The font of the legend label.",
+          "type": "string"
+        },
+        "labelFontSize": {
+          "description": "The font size of legend label.\n\n__Default value:__ `10`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "labelFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of legend label."
+        },
+        "labelLimit": {
+          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `160`.",
+          "type": "number"
+        },
+        "labelOffset": {
+          "description": "The offset of the legend label.",
+          "type": "number"
+        },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
+        },
         "offset": {
-          "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
+          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
         },
         "orient": {
@@ -4792,8 +4893,42 @@
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
-          "description": "The padding, in pixels, between the legend and axis.",
+          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
           "type": "number"
+        },
+        "rowPadding": {
+          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
+          "type": "number"
+        },
+        "strokeColor": {
+          "description": "Border stroke color for the full legend.",
+          "type": "string"
+        },
+        "strokeWidth": {
+          "description": "Border stroke width for the full legend.",
+          "type": "number"
+        },
+        "symbolFillColor": {
+          "description": "The color of the legend symbol,",
+          "type": "string"
+        },
+        "symbolSize": {
+          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "symbolStrokeColor": {
+          "description": "Stroke color for legend symbols.",
+          "type": "string"
+        },
+        "symbolStrokeWidth": {
+          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "symbolType": {
+          "$ref": "#/definitions/SymbolShape",
+          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -4805,6 +4940,39 @@
             "string",
             "null"
           ]
+        },
+        "titleAlign": {
+          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`.",
+          "type": "string"
+        },
+        "titleBaseline": {
+          "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`.",
+          "type": "string"
+        },
+        "titleColor": {
+          "description": "The color of the legend title, can be in hex color code or regular color name.",
+          "type": "string"
+        },
+        "titleFont": {
+          "description": "The font of the legend title.",
+          "type": "string"
+        },
+        "titleFontSize": {
+          "description": "The font size of the legend title.",
+          "type": "number"
+        },
+        "titleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "titleLimit": {
+          "description": "Maximum allowed pixel width of axis titles.\n\n__Default value:__ `180`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "titlePadding": {
+          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
+          "type": "number"
         },
         "type": {
           "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
@@ -4854,55 +5022,72 @@
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
-        "cornerRadius": {
-          "description": "Corner radius for the full legend.",
+        "clipHeight": {
+          "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
         },
-        "entryPadding": {
-          "description": "Padding (in pixels) between legend entries in a symbol legend.",
+        "columnPadding": {
+          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
+          "type": "number"
+        },
+        "columns": {
+          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
+          "type": "number"
+        },
+        "cornerRadius": {
+          "description": "Corner radius for the full legend.",
           "type": "number"
         },
         "fillColor": {
           "description": "Background fill color for the full legend.",
           "type": "string"
         },
-        "gradientHeight": {
-          "description": "The height of the gradient, in pixels.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "gradientLabelBaseline": {
-          "description": "Text baseline for color ramp gradient labels.",
-          "type": "string"
+        "gradientDirection": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends.\n\n__Default value:__ `\"vertical\"`."
         },
         "gradientLabelLimit": {
           "description": "The maximum allowed length in pixels of color ramp gradient labels.",
           "type": "number"
         },
         "gradientLabelOffset": {
-          "description": "Vertical offset in pixels for color ramp gradient labels.",
+          "description": "Vertical offset in pixels for color ramp gradient labels.\n\n__Default value:__ `2`.",
+          "type": "number"
+        },
+        "gradientLength": {
+          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
+          "minimum": 0,
           "type": "number"
         },
         "gradientStrokeColor": {
-          "description": "The color of the gradient stroke, can be in hex color code or regular color name.",
+          "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`.",
           "type": "string"
         },
         "gradientStrokeWidth": {
-          "description": "The width of the gradient stroke, in pixels.",
+          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
           "minimum": 0,
           "type": "number"
         },
-        "gradientWidth": {
-          "description": "The width of the gradient, in pixels.",
+        "gradientThickness": {
+          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
           "minimum": 0,
           "type": "number"
+        },
+        "gridAlign": {
+          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`.",
+          "enum": [
+            "all",
+            "each",
+            "none"
+          ],
+          "type": "string"
         },
         "labelAlign": {
           "description": "The alignment of the legend label, can be left, middle or right.",
           "type": "string"
         },
         "labelBaseline": {
-          "description": "The position of the baseline of legend label, can be top, middle or bottom.",
+          "description": "The position of the baseline of legend label, can be top, middle or bottom.\n\n__Default value:__ `\"middle\"`.",
           "type": "string"
         },
         "labelColor": {
@@ -4918,17 +5103,40 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of legend label."
+        },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.",
+          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `160`.",
           "type": "number"
         },
         "labelOffset": {
           "description": "The offset of the legend label.",
-          "minimum": 0,
           "type": "number"
         },
+        "labelOverlap": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "enum": [
+                "parity"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "greedy"
+              ],
+              "type": "string"
+            }
+          ],
+          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
+        },
         "offset": {
-          "description": "The offset, in pixels, by which to displace the legend from the edge of the enclosing group or data rectangle.\n\n__Default value:__  `0`",
+          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
         },
         "orient": {
@@ -4936,7 +5144,11 @@
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
-          "description": "The padding, in pixels, between the legend and axis.",
+          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
+          "type": "number"
+        },
+        "rowPadding": {
+          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
           "type": "number"
         },
         "shortTimeLabels": {
@@ -4958,30 +5170,50 @@
           "description": "Border stroke width for the full legend.",
           "type": "number"
         },
-        "symbolColor": {
+        "symbolBaseFillColor": {
+          "description": "Default fill color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"transparent\"`.",
+          "type": "string"
+        },
+        "symbolBaseStrokeColor": {
+          "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`.",
+          "type": "string"
+        },
+        "symbolDirection": {
+          "$ref": "#/definitions/LegendDirection",
+          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends.\n\n__Default value:__ `\"vertical\"`."
+        },
+        "symbolFillColor": {
           "description": "The color of the legend symbol,",
           "type": "string"
         },
+        "symbolOffset": {
+          "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
+          "type": "number"
+        },
         "symbolSize": {
-          "description": "The size of the legend symbol, in pixels.",
+          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
           "minimum": 0,
           "type": "number"
         },
+        "symbolStrokeColor": {
+          "description": "Stroke color for legend symbols.",
+          "type": "string"
+        },
         "symbolStrokeWidth": {
-          "description": "The width of the symbol's stroke.",
+          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
           "minimum": 0,
           "type": "number"
         },
         "symbolType": {
-          "description": "Default shape type (such as \"circle\") for legend symbols.",
-          "type": "string"
+          "$ref": "#/definitions/SymbolShape",
+          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
         },
         "titleAlign": {
-          "description": "Horizontal text alignment for legend titles.",
+          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`.",
           "type": "string"
         },
         "titleBaseline": {
-          "description": "Vertical text baseline for legend titles.",
+          "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`.",
           "type": "string"
         },
         "titleColor": {
@@ -5001,25 +5233,35 @@
           "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of axis titles.",
+          "description": "Maximum allowed pixel width of axis titles.\n\n__Default value:__ `180`.",
+          "minimum": 0,
           "type": "number"
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and legend.",
+          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
         }
       },
       "type": "object"
     },
+    "LegendDirection": {
+      "enum": [
+        "vertical",
+        "horizontal"
+      ],
+      "type": "string"
+    },
     "LegendOrient": {
       "enum": [
+        "none",
         "left",
         "right",
+        "top",
+        "bottom",
         "top-left",
         "top-right",
         "bottom-left",
-        "bottom-right",
-        "none"
+        "bottom-right"
       ],
       "type": "string"
     },
@@ -7751,6 +7993,9 @@
         "$ref": "#/definitions/VgMarkConfig"
       },
       "type": "object"
+    },
+    "SymbolShape": {
+      "type": "string"
     },
     "TextBaseline": {
       "anyOf": [

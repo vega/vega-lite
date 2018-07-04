@@ -1,34 +1,25 @@
+import {SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
-
 import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
-import {
-  Conditional,
-  FieldDef,
-  FieldDefWithCondition,
-  hasConditionalValueDef,
-  isTimeFieldDef,
-  isValueDef,
-  MarkPropFieldDef,
-  ValueDef,
-  ValueDefWithCondition,
-} from '../../fielddef';
+import {Conditional, FieldDef, FieldDefWithCondition, hasConditionalValueDef, isTimeFieldDef, isValueDef, MarkPropFieldDef, ValueDef, ValueDefWithCondition} from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
-import {LegendType, VgEncodeEntry} from '../../vega.schema';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {LegendComponent} from './component';
 
-export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, type: LegendType): VgEncodeEntry {
-  if (type === 'gradient') {
+
+export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: UnitModel, channel: Channel, legendCmp: LegendComponent): SymbolEncodeEntry {
+  if (legendCmp.get('type') === 'gradient') {
     return undefined;
   }
 
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
     ...mixins.color(model)
-  };
+  } as SymbolEncodeEntry;  // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
   switch (model.mark) {
     case BAR:
@@ -51,16 +42,23 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   const {markDef, encoding} = model;
   const filled = markDef.filled;
 
+  const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
+
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
     if (channel === 'fill' || (filled && channel === COLOR)) {
       delete out.fill;
     } else {
       if (out.fill['field']) {
-        // For others, remove fill field
-        delete out.fill;
+        // For others, set fill to some opaque value (or nothing if a color is already set)
+        if (legendCmp.get('symbolFillColor')) {
+          delete out.fill;
+        } else {
+          out.fill = {value: 'black'};
+          out.fillOpacity = {value: opacity || 1};
+        }
       } else if (isArray(out.fill)) {
-        const fill = getFirstConditionValue(encoding.fill || encoding.color) || markDef.fill || (filled && markDef.color);
+        const fill = getFirstConditionValue(encoding.fill || encoding.color) as string || markDef.fill || (filled && markDef.color);
         if (fill) {
           out.fill = {value: fill};
         }
@@ -76,7 +74,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {
-        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) || markDef.stroke || (!filled && markDef.color);
+        const stroke = getFirstConditionValue(encoding.stroke || encoding.color) as string || markDef.stroke || (!filled && markDef.color);
         if (stroke) {
           out.stroke = {value: stroke};
         }
@@ -90,14 +88,13 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   }
 
   if (channel !== SHAPE) {
-    const shape = getFirstConditionValue(encoding.shape) || markDef.shape;
+    const shape = getFirstConditionValue(encoding.shape) as string || markDef.shape;
     if (shape) {
       out.shape = {value: shape};
     }
   }
 
   if (channel !== OPACITY) {
-    const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
     }
@@ -108,10 +105,10 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   return keys(out).length > 0 ? out : undefined;
 }
 
-export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, type: LegendType) {
-  let out: any = {};
+export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: UnitModel, channel: Channel, legendCmp: LegendComponent) {
+  let out: SymbolEncodeEntry = {};
 
-  if (type === 'gradient') {
+  if (legendCmp.get('type') === 'gradient') {
     const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) { // only apply opacity if it is neither zero or undefined
       out.opacity = {value: opacity};
@@ -122,11 +119,11 @@ export function gradient(fieldDef: FieldDef<string>, gradientSpec: any, model: U
   return keys(out).length > 0 ? out : undefined;
 }
 
-export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, type: LegendType) {
+export function labels(fieldDef: FieldDef<string>, labelsSpec: any, model: UnitModel, channel: NonPositionScaleChannel, legendCmp: LegendComponent) {
   const legend = model.legend(channel);
   const config = model.config;
 
-  let out: any = {};
+  let out: SymbolEncodeEntry = {};
 
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;

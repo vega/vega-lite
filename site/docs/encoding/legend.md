@@ -61,7 +61,29 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 
 {:#properties}
 
-{% include table.html props="type,entryPadding,format,offset,orient,padding,tickCount,title,values,zindex" source="Legend" %}
+### General
+
+{% include table.html props="cornerRadius,direction,fillColor,offset,orient,padding,strokeColor,strokeWidth,type,tickCount,values,zindex" source="Legend" %}
+
+### Gradient
+
+{% include table.html props="gradientLength,gradientThickness,gradientStrokeColor,gradientStrokeWidth" source="Legend" %}
+
+### Labels
+
+{% include table.html props="format,labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOverlap" source="Legend" %}
+
+### Symbols
+
+{% include table.html props="symbolFillColor,symbolSize,symbolStrokeColor,symbolStrokeWidth,symbolType" source="Legend" %}
+
+### Symbol Layout
+
+{% include table.html props="clipHeight,columnPadding,columns,gridAlign,rowPadding" source="Legend" %}
+
+### Title
+
+{% include table.html props="title,titleAlign,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="Legend" %}
 
 <!--
 ### Custom Legend Encodings
@@ -85,25 +107,10 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 }
 ```
 
-To provide themes for all legends, the legends config (`config: {legend: {...}}`) can contain the following properties:
+To provide themes for all legends, the legend config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend-specific `gradientDirection` and `symbolDirection` instead), `format`, `tickCount`, `title`, `values`, and `zindex`.
 
-### General
+The legend config also supports the following properties:
 
-{% include table.html props="cornerRadius,fillColor,orient,offset,strokeColor,strokeDash,strokeWidth,padding" source="LegendConfig" %}
+{% include table.html props="gradientDirection,gradientLabelLimit,gradientLabelOffset,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,shortTimeLabels,strokeDash" source="LegendConfig" %}
 
-### Gradient
-
-{% include table.html props="gradientLabelBaseline,gradientLabelLimit,gradientLabelOffset,gradientStrokeColor,gradientStrokeWidth,gradientHeight,gradientWidth" source="LegendConfig" %}
-
-### Labels
-
-{% include table.html props="labelAlign,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,shortTimeLabels" source="LegendConfig" %}
-
-### Symbols
-
-{% include table.html props="entryPadding,symbolColor,symbolType,symbolSize,symbolStrokeWidth" source="LegendConfig" %}
-
-### Title
-
-{% include table.html props="titleAlign,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titlePadding" source="LegendConfig" %}
-
+{% include table.html props="gradientDirection,gradientLabelLimit,gradientLabelOffset,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,shortTimeLabels,strokeDash" source="LegendConfig" %}

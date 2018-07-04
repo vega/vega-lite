@@ -113,7 +113,7 @@
     },
     {"scale": "y", "orient": "left", "grid": false, "zindex": 1}
   ],
-  "legends": [{"title": "Price", "fill": "color", "type": "gradient"}],
+  "legends": [{"title": "Price", "fill": "color"}],
   "config": {
     "axisY": {"minExtent": 30},
     "range": {"heatmap": {"scheme": "viridis", "extent": [1, 0]}}

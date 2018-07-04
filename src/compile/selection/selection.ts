@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, X, Y} from '../../channel';
@@ -5,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, logicalExpr, varName} from '../../util';
-import {VgBinding, VgData, VgEventStream, VgSignalRef} from '../../vega.schema';
+import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -253,10 +254,10 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
 // selection expression function during scale.assemble. To not pollute the
 // type signatures to account for this setup, the selection domain definition
 // is coerced to a string and appended to SELECTION_DOMAIN.
-export function isRawSelectionDomain(domainRaw: VgSignalRef) {
+export function isRawSelectionDomain(domainRaw: SignalRef) {
   return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
 }
-export function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef {
+export function selectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
   const name = varName(selDomain.selection);
 

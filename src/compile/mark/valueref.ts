@@ -1,6 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
+import {SignalRef} from 'vega';
 import {isArray, isFunction, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, X, Y} from '../../channel';
@@ -12,7 +13,7 @@ import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, some} from '../../util';
-import {VgSignalRef, VgValueRef} from '../../vega.schema';
+import {VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
@@ -189,7 +190,7 @@ export function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, con
   return undefined;
 }
 
-export function mid(sizeRef: VgSignalRef): VgValueRef {
+export function mid(sizeRef: SignalRef): VgValueRef {
   return {...sizeRef, mult: 0.5};
 }
 

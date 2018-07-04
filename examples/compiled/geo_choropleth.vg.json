@@ -58,6 +58,6 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "rate", "type": "gradient"}],
+  "legends": [{"fill": "color", "title": "rate"}],
   "config": {"axisY": {"minExtent": 30}}
 }
