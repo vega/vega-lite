@@ -26,7 +26,6 @@ describe('compile/data/fold', () => {
       };
 
       const fold = new FoldTransformNode(null, transform);
-      console.log(fold.assemble());
       assert.deepEqual(fold.assemble(), {
         type: 'fold',
         fields: ['a','b'],
