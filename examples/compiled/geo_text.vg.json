@@ -1,203 +1,112 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 800,
-    "height": 500,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 800,
+  "height": 500,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"}
+    },
+    {
+      "name": "source_1",
+      "url": "data/us-state-capitals.json",
+      "format": {"type": "json"}
+    },
+    {
+      "name": "data_0",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"lon\"])", "as": "lon"},
+        {"type": "formula", "expr": "toNumber(datum[\"lat\"])", "as": "lat"},
         {
-            "name": "source_0",
-            "url": "data/us-10m.json",
-            "format": {
-                "type": "topojson",
-                "feature": "states"
-            }
+          "type": "geojson",
+          "fields": ["lon", "lat"],
+          "signal": "layer_1_layer_0_geojson_0"
         },
         {
-            "name": "source_1",
-            "url": "data/us-state-capitals.json",
-            "format": {
-                "type": "json"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lon\"])",
-                    "as": "lon"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lat\"])",
-                    "as": "lat"
-                },
-                {
-                    "type": "geojson",
-                    "fields": [
-                        "lon",
-                        "lat"
-                    ],
-                    "signal": "layer_1_layer_0_geojson_0"
-                },
-                {
-                    "type": "geopoint",
-                    "projection": "projection",
-                    "fields": [
-                        "lon",
-                        "lat"
-                    ],
-                    "as": [
-                        "layer_1_layer_0_x",
-                        "layer_1_layer_0_y"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lon\"])",
-                    "as": "lon"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lat\"])",
-                    "as": "lat"
-                },
-                {
-                    "type": "geojson",
-                    "fields": [
-                        "lon",
-                        "lat"
-                    ],
-                    "signal": "layer_1_layer_1_geojson_0"
-                },
-                {
-                    "type": "geopoint",
-                    "projection": "projection",
-                    "fields": [
-                        "lon",
-                        "lat"
-                    ],
-                    "as": [
-                        "layer_1_layer_1_x",
-                        "layer_1_layer_1_y"
-                    ]
-                }
-            ]
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lon", "lat"],
+          "as": ["layer_1_layer_0_x", "layer_1_layer_0_y"]
         }
-    ],
-    "projections": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"lon\"])", "as": "lon"},
+        {"type": "formula", "expr": "toNumber(datum[\"lat\"])", "as": "lat"},
         {
-            "name": "projection",
-            "size": {
-                "signal": "[width, height]"
-            },
-            "fit": {
-                "signal": "[data('source_0'), layer_1_layer_0_geojson_0, layer_1_layer_1_geojson_0]"
-            },
-            "type": "albersUsa"
-        }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_marks",
-            "type": "shape",
-            "style": [
-                "geoshape"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "lightgray"
-                    },
-                    "stroke": {
-                        "value": "white"
-                    }
-                }
-            },
-            "transform": [
-                {
-                    "type": "geoshape",
-                    "projection": "projection"
-                }
-            ]
+          "type": "geojson",
+          "fields": ["lon", "lat"],
+          "signal": "layer_1_layer_1_geojson_0"
         },
         {
-            "name": "layer_1_layer_0_marks",
-            "type": "symbol",
-            "style": [
-                "circle"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "orange"
-                    },
-                    "x": {
-                        "field": "layer_1_layer_0_x"
-                    },
-                    "y": {
-                        "field": "layer_1_layer_0_y"
-                    },
-                    "shape": {
-                        "value": "circle"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_layer_1_marks",
-            "type": "text",
-            "style": [
-                "text"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "dy": {
-                        "value": -6
-                    },
-                    "fill": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "field": "layer_1_layer_1_x"
-                    },
-                    "y": {
-                        "field": "layer_1_layer_1_y"
-                    },
-                    "text": {
-                        "signal": "''+datum[\"city\"]"
-                    },
-                    "align": {
-                        "value": "center"
-                    }
-                }
-            }
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lon", "lat"],
+          "as": ["layer_1_layer_1_x", "layer_1_layer_1_y"]
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {
+        "signal": "[data('source_0'), layer_1_layer_0_geojson_0, layer_1_layer_1_geojson_0]"
+      },
+      "type": "albersUsa"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {"fill": {"value": "lightgray"}, "stroke": {"value": "white"}}
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "orange"},
+          "x": {"field": "layer_1_layer_0_x"},
+          "y": {"field": "layer_1_layer_0_y"},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "dy": {"value": -6},
+          "fill": {"value": "black"},
+          "x": {"field": "layer_1_layer_1_x"},
+          "y": {"field": "layer_1_layer_1_y"},
+          "text": {"signal": "''+datum[\"city\"]"},
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

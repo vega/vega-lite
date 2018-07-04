@@ -1,458 +1,368 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 320,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 320,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "date": "2009-06-01",
-                    "open": 28.7,
-                    "high": 30.05,
-                    "low": 28.45,
-                    "close": 30.04,
-                    "signal": "short",
-                    "ret": -4.89396411092985
-                },
-                {
-                    "date": "2009-06-02",
-                    "open": 30.04,
-                    "high": 30.13,
-                    "low": 28.3,
-                    "close": 29.63,
-                    "signal": "short",
-                    "ret": -0.322580645161295
-                },
-                {
-                    "date": "2009-06-03",
-                    "open": 29.62,
-                    "high": 31.79,
-                    "low": 29.62,
-                    "close": 31.02,
-                    "signal": "short",
-                    "ret": 3.68663594470045
-                },
-                {
-                    "date": "2009-06-04",
-                    "open": 31.02,
-                    "high": 31.02,
-                    "low": 29.92,
-                    "close": 30.18,
-                    "signal": "short",
-                    "ret": 4.51010886469673
-                },
-                {
-                    "date": "2009-06-05",
-                    "open": 29.39,
-                    "high": 30.81,
-                    "low": 28.85,
-                    "close": 29.62,
-                    "signal": "short",
-                    "ret": 6.08424336973478
-                },
-                {
-                    "date": "2009-06-08",
-                    "open": 30.84,
-                    "high": 31.82,
-                    "low": 26.41,
-                    "close": 29.77,
-                    "signal": "short",
-                    "ret": 1.2539184952978
-                },
-                {
-                    "date": "2009-06-09",
-                    "open": 29.77,
-                    "high": 29.77,
-                    "low": 27.79,
-                    "close": 28.27,
-                    "signal": "short",
-                    "ret": -5.02431118314424
-                },
-                {
-                    "date": "2009-06-10",
-                    "open": 26.9,
-                    "high": 29.74,
-                    "low": 26.9,
-                    "close": 28.46,
-                    "signal": "short",
-                    "ret": -5.46623794212217
-                },
-                {
-                    "date": "2009-06-11",
-                    "open": 27.36,
-                    "high": 28.11,
-                    "low": 26.81,
-                    "close": 28.11,
-                    "signal": "short",
-                    "ret": -8.3743842364532
-                },
-                {
-                    "date": "2009-06-12",
-                    "open": 28.08,
-                    "high": 28.5,
-                    "low": 27.73,
-                    "close": 28.15,
-                    "signal": "short",
-                    "ret": -5.52763819095477
-                },
-                {
-                    "date": "2009-06-15",
-                    "open": 29.7,
-                    "high": 31.09,
-                    "low": 29.64,
-                    "close": 30.81,
-                    "signal": "long",
-                    "ret": 3.4920634920635
-                },
-                {
-                    "date": "2009-06-16",
-                    "open": 30.81,
-                    "high": 32.75,
-                    "low": 30.07,
-                    "close": 32.68,
-                    "signal": "short",
-                    "ret": 0.155038759689914
-                },
-                {
-                    "date": "2009-06-17",
-                    "open": 31.19,
-                    "high": 32.77,
-                    "low": 30.64,
-                    "close": 31.54,
-                    "signal": "short",
-                    "ret": 5.82822085889571
-                },
-                {
-                    "date": "2009-06-18",
-                    "open": 31.54,
-                    "high": 31.54,
-                    "low": 29.6,
-                    "close": 30.03,
-                    "signal": "short",
-                    "ret": 8.17610062893082
-                },
-                {
-                    "date": "2009-06-19",
-                    "open": 29.16,
-                    "high": 29.32,
-                    "low": 27.56,
-                    "close": 27.99,
-                    "signal": "short",
-                    "ret": 8.59872611464968
-                },
-                {
-                    "date": "2009-06-22",
-                    "open": 30.4,
-                    "high": 32.05,
-                    "low": 30.3,
-                    "close": 31.17,
-                    "signal": "short",
-                    "ret": 15.4907975460123
-                },
-                {
-                    "date": "2009-06-23",
-                    "open": 31.3,
-                    "high": 31.54,
-                    "low": 27.83,
-                    "close": 30.58,
-                    "signal": "short",
-                    "ret": 11.7370892018779
-                },
-                {
-                    "date": "2009-06-24",
-                    "open": 30.58,
-                    "high": 30.58,
-                    "low": 28.79,
-                    "close": 29.05,
-                    "signal": "long",
-                    "ret": -10.4234527687296
-                },
-                {
-                    "date": "2009-06-25",
-                    "open": 29.45,
-                    "high": 29.56,
-                    "low": 26.3,
-                    "close": 26.36,
-                    "signal": "long",
-                    "ret": 0
-                },
-                {
-                    "date": "2009-06-26",
-                    "open": 27.09,
-                    "high": 27.22,
-                    "low": 25.76,
-                    "close": 25.93,
-                    "signal": "long",
-                    "ret": 0
-                },
-                {
-                    "date": "2009-06-29",
-                    "open": 25.93,
-                    "high": 27.18,
-                    "low": 25.29,
-                    "close": 25.35,
-                    "signal": "long",
-                    "ret": 5.26315789473684
-                },
-                {
-                    "date": "2009-06-30",
-                    "open": 25.36,
-                    "high": 27.38,
-                    "low": 25.02,
-                    "close": 26.35,
-                    "signal": "long",
-                    "ret": 6.73758865248228
-                }
-            ],
-            "format": {}
+          "date": "2009-06-01",
+          "open": 28.7,
+          "high": 30.05,
+          "low": 28.45,
+          "close": 30.04,
+          "signal": "short",
+          "ret": -4.89396411092985
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"date\"],'%Y-%m-%d')",
-                    "as": "date"
-                }
-            ]
+          "date": "2009-06-02",
+          "open": 30.04,
+          "high": 30.13,
+          "low": 28.3,
+          "close": 29.63,
+          "signal": "short",
+          "ret": -0.322580645161295
         },
         {
-            "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"low\"])",
-                    "as": "low"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"high\"])",
-                    "as": "high"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
-                }
-            ]
+          "date": "2009-06-03",
+          "open": 29.62,
+          "high": 31.79,
+          "low": 29.62,
+          "close": 31.02,
+          "signal": "short",
+          "ret": 3.68663594470045
         },
         {
-            "name": "data_2",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"open\"])",
-                    "as": "open"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"close\"])",
-                    "as": "close"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
-                }
-            ]
+          "date": "2009-06-04",
+          "open": 31.02,
+          "high": 31.02,
+          "low": 29.92,
+          "close": 30.18,
+          "signal": "short",
+          "ret": 4.51010886469673
+        },
+        {
+          "date": "2009-06-05",
+          "open": 29.39,
+          "high": 30.81,
+          "low": 28.85,
+          "close": 29.62,
+          "signal": "short",
+          "ret": 6.08424336973478
+        },
+        {
+          "date": "2009-06-08",
+          "open": 30.84,
+          "high": 31.82,
+          "low": 26.41,
+          "close": 29.77,
+          "signal": "short",
+          "ret": 1.2539184952978
+        },
+        {
+          "date": "2009-06-09",
+          "open": 29.77,
+          "high": 29.77,
+          "low": 27.79,
+          "close": 28.27,
+          "signal": "short",
+          "ret": -5.02431118314424
+        },
+        {
+          "date": "2009-06-10",
+          "open": 26.9,
+          "high": 29.74,
+          "low": 26.9,
+          "close": 28.46,
+          "signal": "short",
+          "ret": -5.46623794212217
+        },
+        {
+          "date": "2009-06-11",
+          "open": 27.36,
+          "high": 28.11,
+          "low": 26.81,
+          "close": 28.11,
+          "signal": "short",
+          "ret": -8.3743842364532
+        },
+        {
+          "date": "2009-06-12",
+          "open": 28.08,
+          "high": 28.5,
+          "low": 27.73,
+          "close": 28.15,
+          "signal": "short",
+          "ret": -5.52763819095477
+        },
+        {
+          "date": "2009-06-15",
+          "open": 29.7,
+          "high": 31.09,
+          "low": 29.64,
+          "close": 30.81,
+          "signal": "long",
+          "ret": 3.4920634920635
+        },
+        {
+          "date": "2009-06-16",
+          "open": 30.81,
+          "high": 32.75,
+          "low": 30.07,
+          "close": 32.68,
+          "signal": "short",
+          "ret": 0.155038759689914
+        },
+        {
+          "date": "2009-06-17",
+          "open": 31.19,
+          "high": 32.77,
+          "low": 30.64,
+          "close": 31.54,
+          "signal": "short",
+          "ret": 5.82822085889571
+        },
+        {
+          "date": "2009-06-18",
+          "open": 31.54,
+          "high": 31.54,
+          "low": 29.6,
+          "close": 30.03,
+          "signal": "short",
+          "ret": 8.17610062893082
+        },
+        {
+          "date": "2009-06-19",
+          "open": 29.16,
+          "high": 29.32,
+          "low": 27.56,
+          "close": 27.99,
+          "signal": "short",
+          "ret": 8.59872611464968
+        },
+        {
+          "date": "2009-06-22",
+          "open": 30.4,
+          "high": 32.05,
+          "low": 30.3,
+          "close": 31.17,
+          "signal": "short",
+          "ret": 15.4907975460123
+        },
+        {
+          "date": "2009-06-23",
+          "open": 31.3,
+          "high": 31.54,
+          "low": 27.83,
+          "close": 30.58,
+          "signal": "short",
+          "ret": 11.7370892018779
+        },
+        {
+          "date": "2009-06-24",
+          "open": 30.58,
+          "high": 30.58,
+          "low": 28.79,
+          "close": 29.05,
+          "signal": "long",
+          "ret": -10.4234527687296
+        },
+        {
+          "date": "2009-06-25",
+          "open": 29.45,
+          "high": 29.56,
+          "low": 26.3,
+          "close": 26.36,
+          "signal": "long",
+          "ret": 0
+        },
+        {
+          "date": "2009-06-26",
+          "open": 27.09,
+          "high": 27.22,
+          "low": 25.76,
+          "close": 25.93,
+          "signal": "long",
+          "ret": 0
+        },
+        {
+          "date": "2009-06-29",
+          "open": 25.93,
+          "high": 27.18,
+          "low": 25.29,
+          "close": 25.35,
+          "signal": "long",
+          "ret": 5.26315789473684
+        },
+        {
+          "date": "2009-06-30",
+          "open": 25.36,
+          "high": 27.38,
+          "low": 25.02,
+          "close": 26.35,
+          "signal": "long",
+          "ret": 6.73758865248228
         }
-    ],
-    "marks": [
+      ],
+      "format": {}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "layer_0_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "stroke": [
-                        {
-                            "test": "datum.open < datum.close",
-                            "value": "#06982d"
-                        },
-                        {
-                            "value": "#ae1325"
-                        }
-                    ],
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "low"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "high"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "fill": [
-                        {
-                            "test": "datum.open < datum.close",
-                            "value": "#06982d"
-                        },
-                        {
-                            "value": "#ae1325"
-                        }
-                    ],
-                    "xc": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "width": {
-                        "value": 5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "open"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "close"
-                    }
-                }
-            }
+          "type": "formula",
+          "expr": "timeParse(datum[\"date\"],'%Y-%m-%d')",
+          "as": "date"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"low\"])", "as": "low"},
+        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"},
         {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "date"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "padding": 5
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "low"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "high"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "open"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "close"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "zero": false,
-            "nice": true
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
         }
-    ],
-    "axes": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"open\"])", "as": "open"},
         {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Date in 2009",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
+          "type": "formula",
+          "expr": "toNumber(datum[\"close\"])",
+          "as": "close"
         },
         {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "low, high, open, close",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
+          "type": "filter",
+          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {"test": "datum.open < datum.close", "value": "#06982d"},
+            {"value": "#ae1325"}
+          ],
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "low"},
+          "y2": {"scale": "y", "field": "high"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "fill": [
+            {"test": "datum.open < datum.close", "value": "#06982d"},
+            {"value": "#ae1325"}
+          ],
+          "xc": {"scale": "x", "field": "date"},
+          "width": {"value": 5},
+          "y": {"scale": "y", "field": "open"},
+          "y2": {"scale": "y", "field": "close"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "date"},
+          {"data": "data_2", "field": "date"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "padding": 5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "low"},
+          {"data": "data_1", "field": "high"},
+          {"data": "data_2", "field": "open"},
+          {"data": "data_2", "field": "close"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "zero": false,
+      "nice": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Date in 2009",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "low, high, open, close",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

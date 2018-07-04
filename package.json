@@ -81,6 +81,8 @@
     "d3": "^5.5.0",
     "highlight.js": "^9.12.0",
     "jest": "^23.2.0",
+    "json-stable-stringify": "^1.0.1",
+    "json-stringify-pretty-compact": "^1.2.0",
     "mkdirp": "^0.5.1",
     "rollup": "^0.62.0",
     "rollup-plugin-commonjs": "^9.1.3",
@@ -111,7 +113,6 @@
   },
   "dependencies": {
     "@types/json-stable-stringify": "^1.0.32",
-    "json-stable-stringify": "^1.0.1",
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
     "vega-typings": "^0.3.17",

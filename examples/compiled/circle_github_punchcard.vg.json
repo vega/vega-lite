@@ -1,225 +1,148 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Punchcard Visualization like on Github. The day on y-axis uses a custom order from Monday to Sunday.  The sort property supports both full day names (e.g., 'Monday') and their three letter initials (e.g., 'mon') -- both of which are case insensitive.",
-    "autosize": "pad",
-    "padding": 5,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Punchcard Visualization like on Github. The day on y-axis uses a custom order from Monday to Sunday.  The sort property supports both full day names (e.g., 'Monday') and their three letter initials (e.g., 'mon') -- both of which are case insensitive.",
+  "autosize": "pad",
+  "padding": 5,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/github.csv",
+      "format": {"type": "csv", "parse": {"time": "date", "count": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/github.csv",
-            "format": {
-                "type": "csv",
-                "parse": {
-                    "time": "date",
-                    "count": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "day_time",
-                    "expr": "datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "formula",
-                    "as": "hours_time",
-                    "expr": "datetime(0, 0, 1, hours(datum[\"time\"]), 0, 0, 0)"
-                },
-                {
-                    "type": "formula",
-                    "expr": "time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 1+1, 0, 0, 0, 0)) ? 0 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 2+1, 0, 0, 0, 0)) ? 1 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 3+1, 0, 0, 0, 0)) ? 2 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 4+1, 0, 0, 0, 0)) ? 3 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 5+1, 0, 0, 0, 0)) ? 4 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 6+1, 0, 0, 0, 0)) ? 5 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 0+1, 0, 0, 0, 0)) ? 6 : 7",
-                    "as": "y_day_time_sort_index"
-                }
-            ]
+          "type": "formula",
+          "as": "day_time",
+          "expr": "datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0)"
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "day_time",
-                        "hours_time"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "count"
-                    ],
-                    "as": [
-                        "sum_count"
-                    ]
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
+          "type": "formula",
+          "as": "hours_time",
+          "expr": "datetime(0, 0, 1, hours(datum[\"time\"]), 0, 0, 0)"
         },
         {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-        },
-        {
-            "name": "y_step",
-            "value": 21
-        },
-        {
-            "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+          "type": "formula",
+          "expr": "time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 1+1, 0, 0, 0, 0)) ? 0 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 2+1, 0, 0, 0, 0)) ? 1 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 3+1, 0, 0, 0, 0)) ? 2 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 4+1, 0, 0, 0, 0)) ? 3 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 5+1, 0, 0, 0, 0)) ? 4 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 6+1, 0, 0, 0, 0)) ? 5 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 0+1, 0, 0, 0, 0)) ? 6 : 7",
+          "as": "y_day_time_sort_index"
         }
-    ],
-    "marks": [
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "circle"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "hours_time"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "day_time"
-                    },
-                    "size": {
-                        "scale": "size",
-                        "field": "sum_count"
-                    },
-                    "shape": {
-                        "value": "circle"
-                    }
-                }
-            }
+          "type": "aggregate",
+          "groupby": ["day_time", "hours_time"],
+          "ops": ["sum"],
+          "fields": ["count"],
+          "as": ["sum_count"]
         }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "hours_time",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
-            "name": "y",
-            "type": "point",
-            "domain": {
-                "data": "source_0",
-                "field": "day_time",
-                "sort": {
-                    "op": "min",
-                    "field": "y_day_time_sort_index"
-                }
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
-            "name": "size",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "sum_count"
-            },
-            "range": [
-                0,
-                361
-            ],
-            "nice": false,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "time (hours)",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%H')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "time (day)",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%A')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        }
-    ],
-    "legends": [
-        {
-            "size": "size",
-            "title": "Sum of count",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "#4c78a8"
-                        },
-                        "shape": {
-                            "value": "circle"
-                        },
-                        "stroke": {
-                            "value": "transparent"
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "hours_time"},
+          "y": {"scale": "y", "field": "day_time"},
+          "size": {"scale": "size", "field": "sum_count"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "hours_time", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "data": "source_0",
+        "field": "day_time",
+        "sort": {"op": "min", "field": "y_day_time_sort_index"}
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum_count"},
+      "range": [0, 361],
+      "nice": false,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "time (hours)",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%H')"}}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "time (day)",
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%A')"}}
+        }
+      },
+      "zindex": 1
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "title": "Sum of count",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "#4c78a8"},
+            "shape": {"value": "circle"},
+            "stroke": {"value": "transparent"}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

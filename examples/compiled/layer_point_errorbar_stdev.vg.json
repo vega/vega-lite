@@ -1,245 +1,155 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/barley.json",
-            "format": {
-                "type": "json"
-            }
+          "type": "formula",
+          "expr": "toNumber(datum[\"yield\"])",
+          "as": "yield"
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"yield\"])",
-                    "as": "yield"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "variety"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "yield"
-                    ],
-                    "as": [
-                        "mean_yield"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "variety"
-                    ],
-                    "ops": [
-                        "stdev",
-                        "mean"
-                    ],
-                    "fields": [
-                        "yield",
-                        "yield"
-                    ],
-                    "as": [
-                        "extent_yield",
-                        "center_yield"
-                    ]
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.center_yield + datum.extent_yield",
-                    "as": "upper_yield"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.center_yield - datum.extent_yield",
-                    "as": "lower_yield"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["variety"],
+          "ops": ["mean"],
+          "fields": ["yield"],
+          "as": ["mean_yield"]
         }
-    ],
-    "signals": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "y_step",
-            "value": 21
+          "type": "aggregate",
+          "groupby": ["variety"],
+          "ops": ["stdev", "mean"],
+          "fields": ["yield", "yield"],
+          "as": ["extent_yield", "center_yield"]
         },
         {
-            "name": "height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "mean_yield"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "variety",
-                        "band": 0.5
-                    }
-                }
-            }
+          "type": "formula",
+          "expr": "datum.center_yield + datum.extent_yield",
+          "as": "upper_yield"
         },
         {
-            "name": "layer_1_layer_0_marks",
-            "type": "rule",
-            "style": [
-                "rule",
-                "errorbar-rule"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "lower_yield"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "variety",
-                        "band": 0.5
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "field": "upper_yield"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "mean_yield"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "lower_yield"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "upper_yield"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false,
-            "nice": true
+          "type": "formula",
+          "expr": "datum.center_yield - datum.extent_yield",
+          "as": "lower_yield"
         },
         {
-            "name": "y",
-            "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "variety"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "variety"
-                    }
-                ],
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+          "type": "filter",
+          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Barley Yield",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "variety",
-            "labelOverlap": true,
-            "zindex": 1
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "x": {"scale": "x", "field": "mean_yield"},
+          "y": {"scale": "y", "field": "variety", "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "rule",
+      "style": ["rule", "errorbar-rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "x": {"scale": "x", "field": "lower_yield"},
+          "y": {"scale": "y", "field": "variety", "band": 0.5},
+          "x2": {"scale": "x", "field": "upper_yield"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "mean_yield"},
+          {"data": "data_1", "field": "lower_yield"},
+          {"data": "data_1", "field": "upper_yield"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Barley Yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "variety",
+      "labelOverlap": true,
+      "zindex": 1
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

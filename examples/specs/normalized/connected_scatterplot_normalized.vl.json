@@ -1,8 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "data": {
-    "url": "data/driving.json"
-  },
+  "data": {"url": "data/driving.json"},
   "layer": [
     {
       "mark": "line",
@@ -10,48 +8,22 @@
         "x": {
           "field": "miles",
           "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
+          "scale": {"zero": false}
         },
-        "y": {
-          "field": "gas",
-          "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
-        },
-        "order": {
-          "field": "year",
-          "type": "temporal"
-        }
+        "y": {"field": "gas", "type": "quantitative", "scale": {"zero": false}},
+        "order": {"field": "year", "type": "temporal"}
       }
     },
     {
-      "mark": {
-        "type": "point",
-        "opacity": 1,
-        "filled": true
-      },
+      "mark": {"type": "point", "opacity": 1, "filled": true},
       "encoding": {
         "x": {
           "field": "miles",
           "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
+          "scale": {"zero": false}
         },
-        "y": {
-          "field": "gas",
-          "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
-        },
-        "order": {
-          "field": "year",
-          "type": "temporal"
-        }
+        "y": {"field": "gas", "type": "quantitative", "scale": {"zero": false}},
+        "order": {"field": "year", "type": "temporal"}
       }
     }
   ]

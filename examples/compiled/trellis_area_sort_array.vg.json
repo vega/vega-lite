@@ -1,367 +1,221 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Stock prices of four large companies as a small multiples of area charts.",
-    "autosize": "pad",
-    "padding": 5,
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Stock prices of four large companies as a small multiples of area charts.",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol !== 'GOOG'"},
         {
-            "name": "source_0",
-            "url": "data/stocks.csv",
-            "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date",
-                    "price": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum.symbol !== 'GOOG'"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum[\"symbol\"]===\"MSFT\" ? 0 : datum[\"symbol\"]===\"AAPL\" ? 1 : datum[\"symbol\"]===\"IBM\" ? 2 : datum[\"symbol\"]===\"AMZN\" ? 3 : 4",
-                    "as": "row_symbol_sort_index"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum[\"symbol\"]===\"MSFT\" ? 0 : datum[\"symbol\"]===\"AAPL\" ? 1 : datum[\"symbol\"]===\"IBM\" ? 2 : datum[\"symbol\"]===\"AMZN\" ? 3 : 4",
-                    "as": "row_symbol_sort_index"
-                },
-                {
-                    "type": "impute",
-                    "field": "price",
-                    "groupby": [
-                        "symbol"
-                    ],
-                    "key": "date",
-                    "method": "value",
-                    "value": 0
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "date",
-                        "symbol"
-                    ],
-                    "field": "price",
-                    "sort": {
-                        "field": [
-                            "symbol"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "price_start",
-                        "price_end"
-                    ],
-                    "offset": "zero"
-                }
-            ]
+          "type": "formula",
+          "expr": "datum[\"symbol\"]===\"MSFT\" ? 0 : datum[\"symbol\"]===\"AAPL\" ? 1 : datum[\"symbol\"]===\"IBM\" ? 2 : datum[\"symbol\"]===\"AMZN\" ? 3 : 4",
+          "as": "row_symbol_sort_index"
         },
         {
-            "name": "row_domain",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "symbol"
-                    ],
-                    "fields": [
-                        "row_symbol_sort_index"
-                    ],
-                    "ops": [
-                        "max"
-                    ],
-                    "as": [
-                        "row_symbol_sort_index"
-                    ]
-                }
-            ]
+          "type": "formula",
+          "expr": "datum[\"symbol\"]===\"MSFT\" ? 0 : datum[\"symbol\"]===\"AAPL\" ? 1 : datum[\"symbol\"]===\"IBM\" ? 2 : datum[\"symbol\"]===\"AMZN\" ? 3 : 4",
+          "as": "row_symbol_sort_index"
+        },
+        {
+          "type": "impute",
+          "field": "price",
+          "groupby": ["symbol"],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date", "symbol"],
+          "field": "price",
+          "sort": {"field": ["symbol"], "order": ["descending"]},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
         }
-    ],
-    "signals": [
-        {
-            "name": "child_width",
-            "value": 300
-        },
-        {
-            "name": "child_height",
-            "value": 40
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": {
-            "rowTitle": 10
-        },
-        "columns": 1,
-        "bounds": "full",
-        "align": "all"
+      ]
     },
-    "marks": [
+    {
+      "name": "row_domain",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "row-title",
-            "type": "group",
-            "role": "row-title",
-            "title": {
-                "text": "Symbol",
-                "offset": 10,
-                "orient": "left",
-                "style": "guide-title"
-            }
-        },
-        {
-            "name": "row_header",
-            "type": "group",
-            "role": "row-header",
-            "from": {
-                "data": "row_domain"
-            },
-            "sort": {
-                "field": "datum[\"row_symbol_sort_index\"]",
-                "order": "ascending"
-            },
-            "title": {
-                "text": {
-                    "signal": "''+parent[\"symbol\"]"
-                },
-                "offset": 10,
-                "orient": "left",
-                "style": "guide-label"
-            },
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "Price",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(child_height/40)"
-                    },
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "column_footer",
-            "type": "group",
-            "role": "column-footer",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "Time",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(child_width/40)"
-                    },
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%Y')"
-                                }
-                            }
-                        }
-                    },
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "cell",
-            "type": "group",
-            "style": "cell",
-            "from": {
-                "facet": {
-                    "name": "facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "symbol"
-                    ],
-                    "aggregate": {
-                        "fields": [
-                            "row_symbol_sort_index"
-                        ],
-                        "ops": [
-                            "max"
-                        ],
-                        "as": [
-                            "row_symbol_sort_index"
-                        ]
-                    }
-                }
-            },
-            "sort": {
-                "field": [
-                    "datum[\"row_symbol_sort_index\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    },
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_pathgroup",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "faceted_path_child_main",
-                            "data": "facet",
-                            "groupby": [
-                                "symbol"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "child_marks",
-                            "type": "area",
-                            "style": [
-                                "area"
-                            ],
-                            "sort": {
-                                "field": "datum[\"date\"]",
-                                "order": "descending"
-                            },
-                            "from": {
-                                "data": "faceted_path_child_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "orient": {
-                                        "value": "vertical"
-                                    },
-                                    "fill": {
-                                        "scale": "color",
-                                        "field": "symbol"
-                                    },
-                                    "x": {
-                                        "scale": "x",
-                                        "field": "date"
-                                    },
-                                    "y": {
-                                        "scale": "y",
-                                        "field": "price_end"
-                                    },
-                                    "y2": {
-                                        "scale": "y",
-                                        "field": "price_start"
-                                    },
-                                    "defined": {
-                                        "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["symbol"],
+          "fields": ["row_symbol_sort_index"],
+          "ops": ["max"],
+          "as": ["row_symbol_sort_index"]
         }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "date"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "child_width"
-                }
-            ]
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "price_start",
-                    "price_end"
-                ]
-            },
-            "range": [
-                {
-                    "signal": "child_height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "symbol",
-                "sort": true
-            },
-            "range": "category"
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "symbol"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 300},
+    {"name": "child_height", "value": 40}
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "offset": {"rowTitle": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row-title",
+      "type": "group",
+      "role": "row-title",
+      "title": {
+        "text": "Symbol",
+        "offset": 10,
+        "orient": "left",
+        "style": "guide-title"
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {
+        "field": "datum[\"row_symbol_sort_index\"]",
+        "order": "ascending"
+      },
+      "title": {
+        "text": {"signal": "''+parent[\"symbol\"]"},
+        "offset": 10,
+        "orient": "left",
+        "style": "guide-label"
+      },
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Price",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Time",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+            }
+          },
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": ["symbol"],
+          "aggregate": {
+            "fields": ["row_symbol_sort_index"],
+            "ops": ["max"],
+            "as": ["row_symbol_sort_index"]
+          }
+        }
+      },
+      "sort": {
+        "field": ["datum[\"row_symbol_sort_index\"]"],
+        "order": ["ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_child_main",
+              "data": "facet",
+              "groupby": ["symbol"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "child_marks",
+              "type": "area",
+              "style": ["area"],
+              "sort": {"field": "datum[\"date\"]", "order": "descending"},
+              "from": {"data": "faceted_path_child_main"},
+              "encode": {
+                "update": {
+                  "orient": {"value": "vertical"},
+                  "fill": {"scale": "color", "field": "symbol"},
+                  "x": {"scale": "x", "field": "date"},
+                  "y": {"scale": "y", "field": "price_end"},
+                  "y2": {"scale": "y", "field": "price_start"},
+                  "defined": {
+                    "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "child_width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "fields": ["price_start", "price_end"]},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "title": "symbol"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

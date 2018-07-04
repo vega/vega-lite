@@ -1,281 +1,136 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "title": {
-        "text": "World Cup 2018: Group F Rankings"
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "title": {"text": "World Cup 2018: Group F Rankings"},
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"team": "Germany", "matchday": 1, "point": 0, "diff": -1},
+        {"team": "Mexico", "matchday": 1, "point": 3, "diff": 1},
+        {"team": "South Korea", "matchday": 1, "point": 0, "diff": -1},
+        {"team": "Sweden", "matchday": 1, "point": 3, "diff": 1},
+        {"team": "Germany", "matchday": 2, "point": 3, "diff": 0},
+        {"team": "Mexico", "matchday": 2, "point": 6, "diff": 2},
+        {"team": "South Korea", "matchday": 2, "point": 0, "diff": -2},
+        {"team": "Sweden", "matchday": 2, "point": 3, "diff": 0},
+        {"team": "Germany", "matchday": 3, "point": 3, "diff": -2},
+        {"team": "Mexico", "matchday": 3, "point": 6, "diff": -1},
+        {"team": "South Korea", "matchday": 3, "point": 3, "diff": 0},
+        {"team": "Sweden", "matchday": 3, "point": 6, "diff": 3}
+      ]
     },
-    "style": "cell",
-    "data": [
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "team": "Germany",
-                    "matchday": 1,
-                    "point": 0,
-                    "diff": -1
-                },
-                {
-                    "team": "Mexico",
-                    "matchday": 1,
-                    "point": 3,
-                    "diff": 1
-                },
-                {
-                    "team": "South Korea",
-                    "matchday": 1,
-                    "point": 0,
-                    "diff": -1
-                },
-                {
-                    "team": "Sweden",
-                    "matchday": 1,
-                    "point": 3,
-                    "diff": 1
-                },
-                {
-                    "team": "Germany",
-                    "matchday": 2,
-                    "point": 3,
-                    "diff": 0
-                },
-                {
-                    "team": "Mexico",
-                    "matchday": 2,
-                    "point": 6,
-                    "diff": 2
-                },
-                {
-                    "team": "South Korea",
-                    "matchday": 2,
-                    "point": 0,
-                    "diff": -2
-                },
-                {
-                    "team": "Sweden",
-                    "matchday": 2,
-                    "point": 3,
-                    "diff": 0
-                },
-                {
-                    "team": "Germany",
-                    "matchday": 3,
-                    "point": 3,
-                    "diff": -2
-                },
-                {
-                    "team": "Mexico",
-                    "matchday": 3,
-                    "point": 6,
-                    "diff": -1
-                },
-                {
-                    "team": "South Korea",
-                    "matchday": 3,
-                    "point": 3,
-                    "diff": 0
-                },
-                {
-                    "team": "Sweden",
-                    "matchday": 3,
-                    "point": 6,
-                    "diff": 3
-                }
-            ]
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "window",
-                    "params": [
-                        null
-                    ],
-                    "as": [
-                        "rank"
-                    ],
-                    "ops": [
-                        "rank"
-                    ],
-                    "fields": [
-                        null
-                    ],
-                    "sort": {
-                        "field": [
-                            "point",
-                            "diff"
-                        ],
-                        "order": [
-                            "descending",
-                            "descending"
-                        ]
-                    },
-                    "groupby": [
-                        "matchday"
-                    ]
-                }
-            ]
+          "type": "window",
+          "params": [null],
+          "as": ["rank"],
+          "ops": ["rank"],
+          "fields": [null],
+          "sort": {
+            "field": ["point", "diff"],
+            "order": ["descending", "descending"]
+          },
+          "groupby": ["matchday"]
         }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-        },
-        {
-            "name": "y_step",
-            "value": 21
-        },
-        {
-            "name": "height",
-            "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_main",
-                    "data": "data_0",
-                    "groupby": [
-                        "team"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"matchday\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "scale": "color",
-                                "field": "team"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "matchday"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "rank"
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "matchday",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
-            "name": "y",
-            "type": "point",
-            "domain": {
-                "data": "data_0",
-                "field": "rank",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": [
-                "Germany",
-                "Mexico",
-                "South Korea",
-                "Sweden"
-            ],
-            "range": [
-                "black",
-                "#127153",
-                "#C91A3C",
-                "#0C71AB"
-            ]
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "matchday",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "rank",
-            "labelOverlap": true,
-            "zindex": 1
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "team"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "data_0",
+          "groupby": ["team"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"matchday\"]", "order": "descending"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "team"},
+              "x": {"scale": "x", "field": "matchday"},
+              "y": {"scale": "y", "field": "rank"}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "matchday", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "rank", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": ["Germany", "Mexico", "South Korea", "Sweden"],
+      "range": ["black", "#127153", "#C91A3C", "#0C71AB"]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "matchday",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "rank",
+      "labelOverlap": true,
+      "zindex": 1
+    }
+  ],
+  "legends": [{"stroke": "color", "title": "team"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

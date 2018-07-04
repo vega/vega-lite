@@ -3,11 +3,7 @@
   "width": 320,
   "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
   "data": {
-    "format": {
-      "parse": {
-        "date": "date:'%Y-%m-%d'"
-      }
-    },
+    "format": {"parse": {"date": "date:'%Y-%m-%d'"}},
     "values": [
       {
         "date": "2009-06-01",
@@ -213,57 +209,26 @@
     {
       "mark": "rule",
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "title": "Date in 2009"
-        },
+        "x": {"field": "date", "type": "temporal", "title": "Date in 2009"},
         "color": {
-          "condition": {
-            "test": "datum.open < datum.close",
-            "value": "#06982d"
-          },
+          "condition": {"test": "datum.open < datum.close", "value": "#06982d"},
           "value": "#ae1325"
         },
-        "y": {
-          "field": "low",
-          "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
-        },
-        "y2": {
-          "field": "high",
-          "type": "quantitative"
-        }
+        "y": {"field": "low", "type": "quantitative", "scale": {"zero": false}},
+        "y2": {"field": "high", "type": "quantitative"}
       }
     },
     {
       "mark": "bar",
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "title": "Date in 2009"
-        },
+        "x": {"field": "date", "type": "temporal", "title": "Date in 2009"},
         "color": {
-          "condition": {
-            "test": "datum.open < datum.close",
-            "value": "#06982d"
-          },
+          "condition": {"test": "datum.open < datum.close", "value": "#06982d"},
           "value": "#ae1325"
         },
-        "y": {
-          "field": "open",
-          "type": "quantitative"
-        },
-        "y2": {
-          "field": "close",
-          "type": "quantitative"
-        },
-        "size": {
-          "value": 5
-        }
+        "y": {"field": "open", "type": "quantitative"},
+        "y2": {"field": "close", "type": "quantitative"},
+        "size": {"value": 5}
       }
     }
   ]

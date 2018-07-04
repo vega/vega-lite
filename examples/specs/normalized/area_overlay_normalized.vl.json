@@ -1,61 +1,28 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "Google's stock price over time.",
-  "data": {
-    "url": "data/stocks.csv"
-  },
-  "transform": [
-    {
-      "filter": "datum.symbol==='GOOG'"
-    }
-  ],
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "layer": [
     {
-      "mark": {
-        "type": "area",
-        "opacity": 0.7
-      },
+      "mark": {"type": "area", "opacity": 0.7},
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        }
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"}
       }
     },
     {
-      "mark": {
-        "type": "line"
-      },
+      "mark": {"type": "line"},
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        }
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"}
       }
     },
     {
-      "mark": {
-        "type": "point",
-        "opacity": 1,
-        "filled": true
-      },
+      "mark": {"type": "point", "opacity": 1, "filled": true},
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        }
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"}
       }
     }
   ]

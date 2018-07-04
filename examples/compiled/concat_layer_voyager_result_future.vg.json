@@ -1,734 +1,420 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "measure": "Open Exploration",
-                    "mean": 1.813,
-                    "lo": 1.255,
-                    "hi": 2.37,
-                    "study": "PoleStar vs Voyager"
-                },
-                {
-                    "measure": "Focused Question Answering",
-                    "mean": -1.688,
-                    "lo": -2.325,
-                    "hi": -1.05,
-                    "study": "PoleStar vs Voyager"
-                },
-                {
-                    "measure": "Open Exploration",
-                    "mean": 2.1875,
-                    "lo": 1.665,
-                    "hi": 2.71,
-                    "study": "PoleStar vs Voyager 2"
-                },
-                {
-                    "measure": "Focused Question Answering",
-                    "mean": -0.0625,
-                    "lo": -0.474,
-                    "hi": 0.349,
-                    "study": "PoleStar vs Voyager 2"
-                }
-            ]
+          "measure": "Open Exploration",
+          "mean": 1.813,
+          "lo": 1.255,
+          "hi": 2.37,
+          "study": "PoleStar vs Voyager"
         },
         {
-            "name": "source_1",
-            "values": [
-                {
-                    "from": -0.25,
-                    "to": -2.9,
-                    "label": "PoleStar"
-                },
-                {
-                    "from": 0.25,
-                    "to": 2.9,
-                    "label": "Voyager / Voyager 2"
-                }
-            ]
+          "measure": "Focused Question Answering",
+          "mean": -1.688,
+          "lo": -2.325,
+          "hi": -1.05,
+          "study": "PoleStar vs Voyager"
         },
         {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lo\"])",
-                    "as": "lo"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"hi\"])",
-                    "as": "hi"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"lo\"] !== null && !isNaN(datum[\"lo\"])"
-                }
-            ]
+          "measure": "Open Exploration",
+          "mean": 2.1875,
+          "lo": 1.665,
+          "hi": 2.71,
+          "study": "PoleStar vs Voyager 2"
         },
         {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"mean\"])",
-                    "as": "mean"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"mean\"] !== null && !isNaN(datum[\"mean\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_4",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"from\"])",
-                    "as": "from"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"to\"])",
-                    "as": "to"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_5",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"to\"])",
-                    "as": "to"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"to\"] !== null && !isNaN(datum[\"to\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_6",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"from\"])",
-                    "as": "from"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum.label === 'PoleStar'"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_7",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"from\"])",
-                    "as": "from"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum.label !== 'PoleStar'"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_8",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"from\"])",
-                    "as": "from"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum.label === 'PoleStar'"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_9",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"from\"])",
-                    "as": "from"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum.label !== 'PoleStar'"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
-                }
-            ]
+          "measure": "Focused Question Answering",
+          "mean": -0.0625,
+          "lo": -0.474,
+          "hi": 0.349,
+          "study": "PoleStar vs Voyager 2"
         }
-    ],
-    "signals": [
-        {
-            "name": "concat_0_y_step",
-            "value": 21
-        },
-        {
-            "name": "concat_0_height",
-            "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
-        },
-        {
-            "name": "concat_1_height",
-            "value": 21
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "columns": 1,
-        "bounds": "full",
-        "align": "each"
+      ]
     },
-    "marks": [
+    {
+      "name": "source_1",
+      "values": [
+        {"from": -0.25, "to": -2.9, "label": "PoleStar"},
+        {"from": 0.25, "to": 2.9, "label": "Voyager / Voyager 2"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"lo\"])", "as": "lo"},
+        {"type": "formula", "expr": "toNumber(datum[\"hi\"])", "as": "hi"},
         {
-            "type": "group",
-            "name": "concat_0_group",
-            "title": {
-                "text": "Mean of Subject Ratings (95% CIs)"
-            },
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_0_height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "concat_0_layer_0_marks",
-                    "type": "rule",
-                    "style": [
-                        "rule"
-                    ],
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "lo"
-                            },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "study",
-                                "band": 0.5
-                            },
-                            "x2": {
-                                "scale": "concat_0_x",
-                                "field": "hi"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "concat_0_layer_1_marks",
-                    "type": "symbol",
-                    "style": [
-                        "circle"
-                    ],
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "opacity": {
-                                "value": 1
-                            },
-                            "stroke": {
-                                "value": "black"
-                            },
-                            "fill": {
-                                "scale": "color",
-                                "field": "measure"
-                            },
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "mean"
-                            },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "study",
-                                "band": 0.5
-                            },
-                            "shape": {
-                                "value": "circle"
-                            }
-                        }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "encode": {
-                        "grid": {
-                            "update": {
-                                "strokeDash": {
-                                    "value": [
-                                        3,
-                                        3
-                                    ]
-                                },
-                                "stroke": [
-                                    {
-                                        "test": "datum.value === 0",
-                                        "value": "#666"
-                                    },
-                                    {
-                                        "value": "#CCC"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "encode": {
-                        "grid": {
-                            "update": {
-                                "strokeDash": {
-                                    "value": [
-                                        3,
-                                        3
-                                    ]
-                                },
-                                "stroke": [
-                                    {
-                                        "test": "datum.value === 0",
-                                        "value": "#666"
-                                    },
-                                    {
-                                        "value": "#CCC"
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "gridScale": "concat_0_y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "grid": false,
-                    "domain": false,
-                    "labelPadding": 5,
-                    "ticks": false,
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "type": "group",
-            "name": "concat_1_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_1_height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "concat_1_layer_0_marks",
-                    "type": "rule",
-                    "style": [
-                        "rule"
-                    ],
-                    "from": {
-                        "data": "data_4"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "from"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "x2": {
-                                "scale": "concat_1_x",
-                                "field": "to"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "concat_1_layer_1_marks",
-                    "type": "symbol",
-                    "style": [
-                        "point"
-                    ],
-                    "from": {
-                        "data": "data_5"
-                    },
-                    "encode": {
-                        "update": {
-                            "opacity": {
-                                "value": 0.7
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "size": {
-                                "value": 60
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "to"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "shape": [
-                                {
-                                    "test": "datum.to > 0",
-                                    "value": "triangle-right"
-                                },
-                                {
-                                    "value": "triangle-left"
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "concat_1_layer_2_marks",
-                    "type": "text",
-                    "style": [
-                        "text",
-                        "arrow-label"
-                    ],
-                    "from": {
-                        "data": "data_6"
-                    },
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "right"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "from"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "text": {
-                                "signal": "''+datum[\"label\"]"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "concat_1_layer_3_marks",
-                    "type": "text",
-                    "style": [
-                        "text",
-                        "arrow-label"
-                    ],
-                    "from": {
-                        "data": "data_7"
-                    },
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "left"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "from"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "text": {
-                                "signal": "''+datum[\"label\"]"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "concat_1_layer_4_marks",
-                    "type": "text",
-                    "style": [
-                        "text",
-                        "arrow-label2"
-                    ],
-                    "from": {
-                        "data": "data_8"
-                    },
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "right"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "from"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "text": {
-                                "value": "more valuable"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "concat_1_layer_5_marks",
-                    "type": "text",
-                    "style": [
-                        "text",
-                        "arrow-label2"
-                    ],
-                    "from": {
-                        "data": "data_9"
-                    },
-                    "encode": {
-                        "update": {
-                            "align": {
-                                "value": "left"
-                            },
-                            "fill": {
-                                "value": "black"
-                            },
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "from"
-                            },
-                            "y": {
-                                "signal": "concat_1_height",
-                                "mult": 0.5
-                            },
-                            "text": {
-                                "value": "more valuable"
-                            }
-                        }
-                    }
-                }
-            ]
+          "type": "filter",
+          "expr": "datum[\"lo\"] !== null && !isNaN(datum[\"lo\"])"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"mean\"])", "as": "mean"},
         {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_2",
-                "field": "measure",
-                "sort": true
-            },
-            "range": [
-                "black",
-                "white"
-            ]
-        },
-        {
-            "name": "concat_0_x",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    [
-                        -3,
-                        3
-                    ],
-                    {
-                        "data": "data_2",
-                        "field": "mean"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": false
-        },
-        {
-            "name": "concat_0_y",
-            "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "study"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "study"
-                    }
-                ],
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "concat_0_y_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "concat_1_x",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_4",
-                        "field": "from"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "to"
-                    },
-                    {
-                        "data": "data_5",
-                        "field": "to"
-                    },
-                    {
-                        "data": "data_6",
-                        "field": "from"
-                    },
-                    {
-                        "data": "data_7",
-                        "field": "from"
-                    },
-                    {
-                        "data": "data_8",
-                        "field": "from"
-                    },
-                    {
-                        "data": "data_9",
-                        "field": "from"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false,
-            "nice": true
+          "type": "filter",
+          "expr": "datum[\"mean\"] !== null && !isNaN(datum[\"mean\"])"
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        },
-        "style": {
-            "arrow-label": {
-                "dy": 16,
-                "fontSize": 9.5
-            },
-            "arrow-label2": {
-                "dy": 28,
-                "fontSize": 9.5
-            },
-            "cell": {
-                "stroke": "transparent"
-            },
-            "group-title": {
-                "fontSize": 12
-            }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "formula", "expr": "toNumber(datum[\"to\"])", "as": "to"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
         }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"to\"])", "as": "to"},
+        {
+          "type": "filter",
+          "expr": "datum[\"to\"] !== null && !isNaN(datum[\"to\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "filter", "expr": "datum.label === 'PoleStar'"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "filter", "expr": "datum.label !== 'PoleStar'"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_8",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "filter", "expr": "datum.label === 'PoleStar'"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_9",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
+        {"type": "filter", "expr": "datum.label !== 'PoleStar'"},
+        {
+          "type": "filter",
+          "expr": "datum[\"from\"] !== null && !isNaN(datum[\"from\"])"
+        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "concat_0_y_step", "value": 21},
+    {
+      "name": "concat_0_height",
+      "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
+    },
+    {"name": "concat_1_height", "value": 21}
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "title": {"text": "Mean of Subject Ratings (95% CIs)"},
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_0_layer_0_marks",
+          "type": "rule",
+          "style": ["rule"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "stroke": {"value": "black"},
+              "x": {"scale": "concat_0_x", "field": "lo"},
+              "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
+              "x2": {"scale": "concat_0_x", "field": "hi"}
+            }
+          }
+        },
+        {
+          "name": "concat_0_layer_1_marks",
+          "type": "symbol",
+          "style": ["circle"],
+          "from": {"data": "data_2"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 1},
+              "stroke": {"value": "black"},
+              "fill": {"scale": "color", "field": "measure"},
+              "x": {"scale": "concat_0_x", "field": "mean"},
+              "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
+              "shape": {"value": "circle"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "encode": {
+            "grid": {
+              "update": {
+                "strokeDash": {"value": [3, 3]},
+                "stroke": [
+                  {"test": "datum.value === 0", "value": "#666"},
+                  {"value": "#CCC"}
+                ]
+              }
+            }
+          },
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "encode": {
+            "grid": {
+              "update": {
+                "strokeDash": {"value": [3, 3]},
+                "stroke": [
+                  {"test": "datum.value === 0", "value": "#666"},
+                  {"value": "#CCC"}
+                ]
+              }
+            }
+          },
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "gridScale": "concat_0_y",
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "domain": false,
+          "labelPadding": 5,
+          "ticks": false,
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_1_layer_0_marks",
+          "type": "rule",
+          "style": ["rule"],
+          "from": {"data": "data_4"},
+          "encode": {
+            "update": {
+              "stroke": {"value": "black"},
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "x2": {"scale": "concat_1_x", "field": "to"}
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_1_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_5"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "black"},
+              "size": {"value": 60},
+              "x": {"scale": "concat_1_x", "field": "to"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "shape": [
+                {"test": "datum.to > 0", "value": "triangle-right"},
+                {"value": "triangle-left"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_2_marks",
+          "type": "text",
+          "style": ["text", "arrow-label"],
+          "from": {"data": "data_6"},
+          "encode": {
+            "update": {
+              "align": {"value": "right"},
+              "fill": {"value": "black"},
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "text": {"signal": "''+datum[\"label\"]"}
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_3_marks",
+          "type": "text",
+          "style": ["text", "arrow-label"],
+          "from": {"data": "data_7"},
+          "encode": {
+            "update": {
+              "align": {"value": "left"},
+              "fill": {"value": "black"},
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "text": {"signal": "''+datum[\"label\"]"}
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_4_marks",
+          "type": "text",
+          "style": ["text", "arrow-label2"],
+          "from": {"data": "data_8"},
+          "encode": {
+            "update": {
+              "align": {"value": "right"},
+              "fill": {"value": "black"},
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "text": {"value": "more valuable"}
+            }
+          }
+        },
+        {
+          "name": "concat_1_layer_5_marks",
+          "type": "text",
+          "style": ["text", "arrow-label2"],
+          "from": {"data": "data_9"},
+          "encode": {
+            "update": {
+              "align": {"value": "left"},
+              "fill": {"value": "black"},
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "y": {"signal": "concat_1_height", "mult": 0.5},
+              "text": {"value": "more valuable"}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_2", "field": "measure", "sort": true},
+      "range": ["black", "white"]
+    },
+    {
+      "name": "concat_0_x",
+      "type": "linear",
+      "domain": {"fields": [[-3, 3], {"data": "data_2", "field": "mean"}]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "concat_0_y",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "study"},
+          {"data": "data_2", "field": "study"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "concat_0_y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "concat_1_x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_4", "field": "from"},
+          {"data": "data_4", "field": "to"},
+          {"data": "data_5", "field": "to"},
+          {"data": "data_6", "field": "from"},
+          {"data": "data_7", "field": "from"},
+          {"data": "data_8", "field": "from"},
+          {"data": "data_9", "field": "from"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    }
+  ],
+  "config": {
+    "axisY": {"minExtent": 30},
+    "style": {
+      "arrow-label": {"dy": 16, "fontSize": 9.5},
+      "arrow-label2": {"dy": 28, "fontSize": 9.5},
+      "cell": {"stroke": "transparent"},
+      "group-title": {"fontSize": 12}
+    }
+  }
 }

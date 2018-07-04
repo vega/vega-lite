@@ -1,26 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
-  "data": {
-    "url": "data/population.json"
-  },
+  "data": {"url": "data/population.json"},
   "transform": [
-    {
-      "filter": "datum.year == 2000"
-    },
-    {
-      "calculate": "datum.sex == 2 ? 'Female' : 'Male'",
-      "as": "gender"
-    }
+    {"filter": "datum.year == 2000"},
+    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
   "facet": {
     "column": {
       "field": "gender",
       "type": "nominal",
-      "header": {
-        "titleFontSize": 20,
-        "labelFontSize": 15
-      }
+      "header": {"titleFontSize": 20, "labelFontSize": 15}
     }
   },
   "spec": {
@@ -30,26 +20,13 @@
         "aggregate": "sum",
         "field": "people",
         "type": "quantitative",
-        "axis": {
-          "title": "population"
-        }
+        "axis": {"title": "population"}
       },
-      "x": {
-        "field": "age",
-        "type": "ordinal",
-        "scale": {
-          "rangeStep": 17
-        }
-      },
+      "x": {"field": "age", "type": "ordinal", "scale": {"rangeStep": 17}},
       "color": {
         "field": "gender",
         "type": "nominal",
-        "scale": {
-          "range": [
-            "#EA98D2",
-            "#659CCA"
-          ]
-        }
+        "scale": {"range": ["#EA98D2", "#659CCA"]}
       }
     }
   }

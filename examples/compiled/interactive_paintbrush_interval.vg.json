@@ -1,530 +1,416 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Select multiple points by dragging an interval.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Select multiple points by dragging an interval.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "paintbrush_store"},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      },
+      "transform": [
         {
-            "name": "paintbrush_store"
-        },
-        {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-                }
-            ]
+          "type": "filter",
+          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
-    ],
-    "signals": [
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_x",
-            "value": [],
-            "on": [
-                {
-                    "events": {
-                        "source": "scope",
-                        "type": "mousedown",
-                        "filter": [
-                            "!event.item || event.item.mark.name !== \"paintbrush_brush\""
-                        ]
-                    },
-                    "update": "[x(unit), x(unit)]"
-                },
-                {
-                    "events": {
-                        "source": "window",
-                        "type": "mousemove",
-                        "consume": true,
-                        "between": [
-                            {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"paintbrush_brush\""
-                                ]
-                            },
-                            {
-                                "source": "window",
-                                "type": "mouseup"
-                            }
-                        ]
-                    },
-                    "update": "[paintbrush_x[0], clamp(x(unit), 0, width)]"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_scale_trigger"
-                    },
-                    "update": "[scale(\"x\", paintbrush_Horsepower[0]), scale(\"x\", paintbrush_Horsepower[1])]"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_translate_delta"
-                    },
-                    "update": "clampRange(panLinear(paintbrush_translate_anchor.extent_x, paintbrush_translate_delta.x / span(paintbrush_translate_anchor.extent_x)), 0, width)"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_zoom_delta"
-                    },
-                    "update": "clampRange(zoomLinear(paintbrush_x, paintbrush_zoom_anchor.x, paintbrush_zoom_delta), 0, width)"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_Horsepower",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush_x"
-                    },
-                    "update": "paintbrush_x[0] === paintbrush_x[1] ? null : invert(\"x\", paintbrush_x)"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_y",
-            "value": [],
-            "on": [
-                {
-                    "events": {
-                        "source": "scope",
-                        "type": "mousedown",
-                        "filter": [
-                            "!event.item || event.item.mark.name !== \"paintbrush_brush\""
-                        ]
-                    },
-                    "update": "[y(unit), y(unit)]"
-                },
-                {
-                    "events": {
-                        "source": "window",
-                        "type": "mousemove",
-                        "consume": true,
-                        "between": [
-                            {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"paintbrush_brush\""
-                                ]
-                            },
-                            {
-                                "source": "window",
-                                "type": "mouseup"
-                            }
-                        ]
-                    },
-                    "update": "[paintbrush_y[0], clamp(y(unit), 0, height)]"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_scale_trigger"
-                    },
-                    "update": "[scale(\"y\", paintbrush_Miles_per_Gallon[0]), scale(\"y\", paintbrush_Miles_per_Gallon[1])]"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_translate_delta"
-                    },
-                    "update": "clampRange(panLinear(paintbrush_translate_anchor.extent_y, paintbrush_translate_delta.y / span(paintbrush_translate_anchor.extent_y)), 0, height)"
-                },
-                {
-                    "events": {
-                        "signal": "paintbrush_zoom_delta"
-                    },
-                    "update": "clampRange(zoomLinear(paintbrush_y, paintbrush_zoom_anchor.y, paintbrush_zoom_delta), 0, height)"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_Miles_per_Gallon",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush_y"
-                    },
-                    "update": "paintbrush_y[0] === paintbrush_y[1] ? null : invert(\"y\", paintbrush_y)"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_scale_trigger",
-            "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
-        },
-        {
-            "name": "paintbrush_tuple",
-            "on": [
-                {
-                    "events": [
-                        {
-                            "signal": "paintbrush_Horsepower"
-                        },
-                        {
-                            "signal": "paintbrush_Miles_per_Gallon"
-                        }
-                    ],
-                    "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: paintbrush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: paintbrush_Miles_per_Gallon}]} : null"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_translate_anchor",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mousedown",
-                            "markname": "paintbrush_brush"
-                        }
-                    ],
-                    "update": "{x: x(unit), y: y(unit), extent_x: slice(paintbrush_x), extent_y: slice(paintbrush_y)}"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_translate_delta",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "window",
-                            "type": "mousemove",
-                            "consume": true,
-                            "between": [
-                                {
-                                    "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "paintbrush_brush"
-                                },
-                                {
-                                    "source": "window",
-                                    "type": "mouseup"
-                                }
-                            ]
-                        }
-                    ],
-                    "update": "{x: paintbrush_translate_anchor.x - x(unit), y: paintbrush_translate_anchor.y - y(unit)}"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_zoom_anchor",
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "wheel",
-                            "consume": true,
-                            "markname": "paintbrush_brush"
-                        }
-                    ],
-                    "update": "{x: x(unit), y: y(unit)}"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_zoom_delta",
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "wheel",
-                            "consume": true,
-                            "markname": "paintbrush_brush"
-                        }
-                    ],
-                    "force": true,
-                    "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush_tuple"
-                    },
-                    "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "paintbrush_brush_bg",
-            "type": "rect",
-            "clip": true,
-            "encode": {
-                "enter": {
-                    "fill": {
-                        "value": "#333"
-                    },
-                    "fillOpacity": {
-                        "value": 0.125
-                    }
-                },
-                "update": {
-                    "x": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_x[0]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "y": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_y[0]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "x2": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_x[1]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "y2": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_y[1]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "size": [
-                        {
-                            "test": "!(length(data(\"paintbrush_store\"))) || (vlInterval(\"paintbrush_store\", datum))",
-                            "value": 300
-                        },
-                        {
-                            "value": 50
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "name": "paintbrush_brush",
-            "type": "rect",
-            "clip": true,
-            "encode": {
-                "enter": {
-                    "fill": {
-                        "value": "transparent"
-                    }
-                },
-                "update": {
-                    "x": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_x[0]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "y": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_y[0]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "x2": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_x[1]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "y2": [
-                        {
-                            "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
-                            "signal": "paintbrush_y[1]"
-                        },
-                        {
-                            "value": 0
-                        }
-                    ],
-                    "stroke": [
-                        {
-                            "test": "paintbrush_x[0] !== paintbrush_x[1] && paintbrush_y[0] !== paintbrush_y[1]",
-                            "value": "white"
-                        },
-                        {
-                            "value": null
-                        }
-                    ]
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Horsepower",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Miles_per_Gallon",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "paintbrush_x",
+      "value": [],
+      "on": [
+        {
+          "events": {
+            "source": "scope",
+            "type": "mousedown",
+            "filter": [
+              "!event.item || event.item.mark.name !== \"paintbrush_brush\""
+            ]
+          },
+          "update": "[x(unit), x(unit)]"
+        },
+        {
+          "events": {
+            "source": "window",
+            "type": "mousemove",
+            "consume": true,
+            "between": [
+              {
+                "source": "scope",
+                "type": "mousedown",
+                "filter": [
+                  "!event.item || event.item.mark.name !== \"paintbrush_brush\""
+                ]
+              },
+              {"source": "window", "type": "mouseup"}
+            ]
+          },
+          "update": "[paintbrush_x[0], clamp(x(unit), 0, width)]"
+        },
+        {
+          "events": {"signal": "paintbrush_scale_trigger"},
+          "update": "[scale(\"x\", paintbrush_Horsepower[0]), scale(\"x\", paintbrush_Horsepower[1])]"
+        },
+        {
+          "events": {"signal": "paintbrush_translate_delta"},
+          "update": "clampRange(panLinear(paintbrush_translate_anchor.extent_x, paintbrush_translate_delta.x / span(paintbrush_translate_anchor.extent_x)), 0, width)"
+        },
+        {
+          "events": {"signal": "paintbrush_zoom_delta"},
+          "update": "clampRange(zoomLinear(paintbrush_x, paintbrush_zoom_anchor.x, paintbrush_zoom_delta), 0, width)"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_Horsepower",
+      "on": [
+        {
+          "events": {"signal": "paintbrush_x"},
+          "update": "paintbrush_x[0] === paintbrush_x[1] ? null : invert(\"x\", paintbrush_x)"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_y",
+      "value": [],
+      "on": [
+        {
+          "events": {
+            "source": "scope",
+            "type": "mousedown",
+            "filter": [
+              "!event.item || event.item.mark.name !== \"paintbrush_brush\""
+            ]
+          },
+          "update": "[y(unit), y(unit)]"
+        },
+        {
+          "events": {
+            "source": "window",
+            "type": "mousemove",
+            "consume": true,
+            "between": [
+              {
+                "source": "scope",
+                "type": "mousedown",
+                "filter": [
+                  "!event.item || event.item.mark.name !== \"paintbrush_brush\""
+                ]
+              },
+              {"source": "window", "type": "mouseup"}
+            ]
+          },
+          "update": "[paintbrush_y[0], clamp(y(unit), 0, height)]"
+        },
+        {
+          "events": {"signal": "paintbrush_scale_trigger"},
+          "update": "[scale(\"y\", paintbrush_Miles_per_Gallon[0]), scale(\"y\", paintbrush_Miles_per_Gallon[1])]"
+        },
+        {
+          "events": {"signal": "paintbrush_translate_delta"},
+          "update": "clampRange(panLinear(paintbrush_translate_anchor.extent_y, paintbrush_translate_delta.y / span(paintbrush_translate_anchor.extent_y)), 0, height)"
+        },
+        {
+          "events": {"signal": "paintbrush_zoom_delta"},
+          "update": "clampRange(zoomLinear(paintbrush_y, paintbrush_zoom_anchor.y, paintbrush_zoom_delta), 0, height)"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_Miles_per_Gallon",
+      "on": [
+        {
+          "events": {"signal": "paintbrush_y"},
+          "update": "paintbrush_y[0] === paintbrush_y[1] ? null : invert(\"y\", paintbrush_y)"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_scale_trigger",
+      "update": "(!isArray(paintbrush_Horsepower) || (+invert(\"x\", paintbrush_x)[0] === +paintbrush_Horsepower[0] && +invert(\"x\", paintbrush_x)[1] === +paintbrush_Horsepower[1])) && (!isArray(paintbrush_Miles_per_Gallon) || (+invert(\"y\", paintbrush_y)[0] === +paintbrush_Miles_per_Gallon[0] && +invert(\"y\", paintbrush_y)[1] === +paintbrush_Miles_per_Gallon[1])) ? paintbrush_scale_trigger : {}"
+    },
+    {
+      "name": "paintbrush_tuple",
+      "on": [
+        {
+          "events": [
+            {"signal": "paintbrush_Horsepower"},
+            {"signal": "paintbrush_Miles_per_Gallon"}
+          ],
+          "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: paintbrush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: paintbrush_Miles_per_Gallon}]} : null"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_translate_anchor",
+      "value": {},
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mousedown",
+              "markname": "paintbrush_brush"
+            }
+          ],
+          "update": "{x: x(unit), y: y(unit), extent_x: slice(paintbrush_x), extent_y: slice(paintbrush_y)}"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_translate_delta",
+      "value": {},
+      "on": [
+        {
+          "events": [
+            {
+              "source": "window",
+              "type": "mousemove",
+              "consume": true,
+              "between": [
+                {
+                  "source": "scope",
+                  "type": "mousedown",
+                  "markname": "paintbrush_brush"
+                },
+                {"source": "window", "type": "mouseup"}
+              ]
+            }
+          ],
+          "update": "{x: paintbrush_translate_anchor.x - x(unit), y: paintbrush_translate_anchor.y - y(unit)}"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_zoom_anchor",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true,
+              "markname": "paintbrush_brush"
+            }
+          ],
+          "update": "{x: x(unit), y: y(unit)}"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_zoom_delta",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true,
+              "markname": "paintbrush_brush"
+            }
+          ],
+          "force": true,
+          "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_modify",
+      "on": [
+        {
+          "events": {"signal": "paintbrush_tuple"},
+          "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "paintbrush_brush_bg",
+      "type": "rect",
+      "clip": true,
+      "encode": {
+        "enter": {"fill": {"value": "#333"}, "fillOpacity": {"value": 0.125}},
+        "update": {
+          "x": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_x[0]"
+            },
+            {"value": 0}
+          ],
+          "y": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_y[0]"
+            },
+            {"value": 0}
+          ],
+          "x2": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_x[1]"
+            },
+            {"value": 0}
+          ],
+          "y2": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_y[1]"
+            },
+            {"value": 0}
+          ]
+        }
+      }
+    },
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": [
+            {
+              "test": "!(length(data(\"paintbrush_store\"))) || (vlInterval(\"paintbrush_store\", datum))",
+              "value": 300
+            },
+            {"value": 50}
+          ]
+        }
+      }
+    },
+    {
+      "name": "paintbrush_brush",
+      "type": "rect",
+      "clip": true,
+      "encode": {
+        "enter": {"fill": {"value": "transparent"}},
+        "update": {
+          "x": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_x[0]"
+            },
+            {"value": 0}
+          ],
+          "y": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_y[0]"
+            },
+            {"value": 0}
+          ],
+          "x2": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_x[1]"
+            },
+            {"value": 0}
+          ],
+          "y2": [
+            {
+              "test": "data(\"paintbrush_store\").length && data(\"paintbrush_store\")[0].unit === \"\"",
+              "signal": "paintbrush_y[1]"
+            },
+            {"value": 0}
+          ],
+          "stroke": [
+            {
+              "test": "paintbrush_x[0] !== paintbrush_x[1] && paintbrush_y[0] !== paintbrush_y[1]",
+              "value": "white"
+            },
+            {"value": null}
+          ]
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }
