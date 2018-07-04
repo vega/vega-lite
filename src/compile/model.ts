@@ -1,4 +1,4 @@
-import {Legend as VgLegend} from 'vega';
+import {Legend as VgLegend, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -13,7 +13,7 @@ import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
-import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle} from '../vega.schema';
+import {isVgRangeStep, VgAxis, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal, VgTitle} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -205,12 +205,12 @@ export abstract class Model {
     };
   }
 
-  public get width(): VgSignalRef {
+  public get width(): SignalRef {
     return this.getSizeSignalRef('width');
   }
 
 
-  public get height(): VgSignalRef {
+  public get height(): SignalRef {
     return this.getSizeSignalRef('height');
   }
 
@@ -450,7 +450,7 @@ export abstract class Model {
     return fullName;
   }
 
-  public getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef {
+  public getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef {
     if (isFacetModel(this.parent)) {
       const channel = sizeType === 'width' ? 'x' : 'y';
       const scaleComponent = this.component.scales[channel];

@@ -1,7 +1,8 @@
+import {SignalRef} from 'vega';
 import {isFieldDef} from '../../fielddef';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
 import {duplicate} from '../../util';
-import {VgFormulaTransform, VgImputeTransform, VgSignalRef, VgWindowTransform} from '../../vega.schema';
+import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
 import {pathGroupingFields} from '../mark/mark';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -21,7 +22,7 @@ export class ImputeNode extends DataFlowNode {
 
   }
 
-  private processSequence(keyvals: ImputeSequence): VgSignalRef {
+  private processSequence(keyvals: ImputeSequence): SignalRef {
     const {start = 0, stop, step} = keyvals;
     const result = [
       start,

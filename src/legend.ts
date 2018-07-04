@@ -2,6 +2,7 @@ import {BaseLegendConfig, Legend as VgLegend, LegendConfigNoSignals, LegendDirec
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
+import {WithoutSignal} from './vega.schema';
 
 
 export interface LegendConfig extends LegendConfigNoSignals, VlOnlyGuideConfig {}
@@ -9,7 +10,7 @@ export interface LegendConfig extends LegendConfigNoSignals, VlOnlyGuideConfig {
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegendConfig, Guide {
+export interface Legend extends WithoutSignal<BaseLegendConfig>, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *

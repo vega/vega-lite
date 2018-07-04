@@ -8,7 +8,7 @@ import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
-import {AxisOrient, HorizontalAlign, VgSignalRef} from '../../vega.schema';
+import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 

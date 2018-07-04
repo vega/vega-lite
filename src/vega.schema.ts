@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, SampleTransform as VgSampleTransform} from 'vega-typings';
+import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, SampleTransform as VgSampleTransform, SignalRef} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
@@ -9,6 +9,10 @@ import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
 export type Color = string;
+
+export type WithoutSignal<T> = {
+  [P in keyof T]: Exclude<T[P], SignalRef>;
+};
 
 export interface VgData {
   name: string;
@@ -52,11 +56,7 @@ export interface VgDataRef {
   sort?: VgSortField;
 }
 
-export interface VgSignalRef {
-  signal: string;
-}
-
-export function isVgSignalRef(o: any): o is VgSignalRef {
+export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
@@ -79,7 +79,7 @@ export interface VgValueRef {
 
 // TODO: add vg prefix
 export interface DataRefUnionDomain {
-  fields: (any[] | VgDataRef | VgSignalRef)[];
+  fields: (any[] | VgDataRef | SignalRef)[];
   sort?: VgUnionSortField;
 }
 
@@ -90,15 +90,15 @@ export interface VgFieldRefUnionDomain {
 }
 
 export type VgScheme = {scheme: string, extent?: number[], count?: number};
-export type VgRange = string | VgDataRef | (number|string|VgDataRef|VgSignalRef)[] | VgScheme | VgRangeStep;
+export type VgRange = string | VgDataRef | (number|string|VgDataRef|SignalRef)[] | VgScheme | VgRangeStep;
 
-export type VgRangeStep = {step: number | VgSignalRef};
+export type VgRangeStep = {step: number | SignalRef};
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
 // Domains that are not a union of domains
-export type VgNonUnionDomain = any[] | VgDataRef | VgSignalRef;
+export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 
 export type VgMarkGroup = any;
@@ -146,15 +146,15 @@ export type VgProjection = {
   /*
    * GeoJSON data to which the projection should attempt to automatically fit the translate and scale parameters..
    */
-  fit?: VgSignalRef | Object | any[];
+  fit?: SignalRef | Object | any[];
   /*
    * Used in conjunction with fit, provides the pixel area to which the projection should be automatically fit.
    */
-  extent?: VgSignalRef | number[][];
+  extent?: SignalRef | number[][];
   /*
    * Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit.
    */
-  size?: VgSignalRef | (number | VgSignalRef)[];
+  size?: SignalRef | (number | SignalRef)[];
 
   /* The following properties are all supported for specific types of projections. Consult the d3-geo-projection library for more information: https://github.com/d3/d3-geo-projection */
   coefficient?: number;
@@ -172,7 +172,7 @@ export interface VgScale {
   name: string;
   type: ScaleType;
   domain: VgDomain;
-  domainRaw?: VgSignalRef;
+  domainRaw?: SignalRef;
   range: VgRange;
 
   clamp?: boolean;
@@ -241,7 +241,7 @@ export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   return false;
 }
 
-export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
+export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
   if (!isArray(domain)) {
     return 'signal' in domain;
   }
@@ -249,7 +249,7 @@ export function isSignalRefDomain(domain: VgDomain): domain is VgSignalRef {
 }
 
 export interface VgEventHandler {
-  events: string[] | VgSignalRef;
+  events: string[] | SignalRef;
   update?: string;
   encode?: string;
   force?: boolean;
@@ -263,7 +263,7 @@ export interface VgSignal {
   on?: VgEventHandler[];
   update?: string;
   react?: boolean;
-  value?: string | number | boolean | {} | VgSignalRef;
+  value?: string | number | boolean | {} | SignalRef;
   // only for nested signals
   push?: string;
 }
@@ -333,7 +333,7 @@ export interface VgAxis {
   titleLimit?: number;
   titleX?: number;
   titleY?: number;
-  values?: any[] | VgSignalRef;
+  values?: any[] | SignalRef;
   zindex?: number;
 
   encode?: VgAxisEncode;
@@ -453,7 +453,7 @@ export interface VgImputeTransform {
   groupby?: string[];
   field: string;
   key: string;
-  keyvals?: any[] | VgSignalRef;
+  keyvals?: any[] | SignalRef;
   method?: ImputeMethods;
   value?: any;
 }
