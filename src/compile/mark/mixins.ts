@@ -14,7 +14,7 @@ import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
 
-export function color(model: UnitModel, opt: {valueOnly: boolean} = {valueOnly: false}): VgEncodeEntry {
+export function color(model: UnitModel): VgEncodeEntry {
   const {markDef, encoding, config} = model;
   const {filled, type: markType} = markDef;
 
