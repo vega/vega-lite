@@ -1,15 +1,15 @@
-import {BaseLegendConfig, Legend as VgLegend, LegendConfigNoSignals, LegendDirection, LegendOrient} from 'vega';
+import {BaseLegend, BaseLegendConfig, Legend as VgLegend, LegendDirection, LegendOrient} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
 
 
-export interface LegendConfig extends LegendConfigNoSignals, VlOnlyGuideConfig {}
+export interface LegendConfig extends BaseLegendConfig, VlOnlyGuideConfig {}
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegendConfig, Guide {
+export interface Legend extends BaseLegend, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
