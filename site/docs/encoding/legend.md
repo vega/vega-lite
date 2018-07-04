@@ -63,7 +63,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 
 ### General
 
-{% include table.html props="cornerRadius,direction,fillColor,offset,orient,padding,strokeColor,strokeWidth,tickCount,values,zindex" source="Legend" %}
+{% include table.html props="cornerRadius,direction,fillColor,offset,orient,padding,strokeColor,strokeWidth,type,tickCount,values,zindex" source="Legend" %}
 
 ### Gradient
 
@@ -107,7 +107,7 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 }
 ```
 
-To provide themes for all legends, the legends config (`config: {legend: {...}}`) can all [legend properties](#properties) except `direction`, `format`, `orient`, `tickCount`, `title`, `values`, and `zindex`.
+To provide themes for all legends, the legends config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend specific proeprties `gradientDirection` and `symbolDirection`), `format`, `tickCount`, `title`, `values`, and `zindex`.
 
 Legend configs also support the following properties:
 

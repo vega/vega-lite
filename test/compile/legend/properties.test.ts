@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {COLOR, SIZE} from '../../../src/channel';
 import * as properties from '../../../src/compile/legend/properties';
 
 describe('compile/legend', function() {
@@ -19,6 +18,19 @@ describe('compile/legend', function() {
       const values = properties.values({values: [1, 2, 3, 4]}, {field: 'a', type: 'quantitative'});
 
       assert.deepEqual(values, [1,2,3,4]);
+    });
+
+  });
+
+  describe('clipHeight()', () => {
+    it('should return clip height for continuous domain', () => {
+      const height = properties.clipHeight('linear');
+      assert.deepEqual(height, 20);
+    });
+
+    it('should simply return for discrete domain', () => {
+      const height = properties.clipHeight('ordinal');
+      assert.deepEqual(height, undefined);
     });
 
   });

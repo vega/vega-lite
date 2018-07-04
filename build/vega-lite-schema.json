@@ -5139,6 +5139,10 @@
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
         },
+        "orient": {
+          "$ref": "#/definitions/LegendOrient",
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
+        },
         "padding": {
           "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
           "type": "number"

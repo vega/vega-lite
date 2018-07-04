@@ -19,7 +19,7 @@ export function symbols(fieldDef: FieldDef<string>, symbolsSpec: any, model: Uni
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
     ...mixins.color(model)
-  } as SymbolEncodeEntry;
+  } as SymbolEncodeEntry;  // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
   switch (model.mark) {
     case BAR:
