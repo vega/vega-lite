@@ -196,11 +196,8 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange=true
     const lower = predicate.gte;
     return `${fieldExpr}>=${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
-    // "oneOf" was formerly "in" -- so we need to add backward compatibility
-    let oneOf = predicate.oneOf;
-    oneOf = oneOf || predicate['in'];
     return 'indexof([' +
-      predicateValuesExpr(oneOf, timeUnit).join(',') +
+      predicateValuesExpr(predicate.oneOf, timeUnit).join(',') +
     '], ' + fieldExpr + ') !== -1';
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
