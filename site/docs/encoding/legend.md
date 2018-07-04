@@ -107,8 +107,10 @@ To customize legends, a `legend` object in [an encoding channel's definition](en
 }
 ```
 
-To provide themes for all legends, the legends config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend specific proeprties `gradientDirection` and `symbolDirection`), `format`, `tickCount`, `title`, `values`, and `zindex`.
+To provide themes for all legends, the legend config (`config: {legend: {...}}`) supports all [legend properties](#properties) except `direction` (there are legend-specific `gradientDirection` and `symbolDirection` instead), `format`, `tickCount`, `title`, `values`, and `zindex`.
 
-Legend configs also support the following properties:
+The legend config also supports the following properties:
+
+{% include table.html props="gradientDirection,gradientLabelLimit,gradientLabelOffset,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,shortTimeLabels,strokeDash" source="LegendConfig" %}
 
 {% include table.html props="gradientDirection,gradientLabelLimit,gradientLabelOffset,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,shortTimeLabels,strokeDash" source="LegendConfig" %}
