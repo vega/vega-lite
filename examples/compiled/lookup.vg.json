@@ -1,175 +1,113 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_1",
+      "url": "data/lookup_people.csv",
+      "format": {"type": "csv"}
+    },
+    {
+      "name": "source_0",
+      "url": "data/lookup_groups.csv",
+      "format": {"type": "csv"},
+      "transform": [
         {
-            "name": "source_1",
-            "url": "data/lookup_people.csv",
-            "format": {
-                "type": "csv"
-            }
+          "type": "lookup",
+          "from": "source_1",
+          "key": "name",
+          "fields": ["person"],
+          "values": ["age", "height"]
         },
         {
-            "name": "source_0",
-            "url": "data/lookup_groups.csv",
-            "format": {
-                "type": "csv"
-            },
-            "transform": [
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "name",
-                    "fields": [
-                        "person"
-                    ],
-                    "values": [
-                        "age",
-                        "height"
-                    ]
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "group"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "age"
-                    ],
-                    "as": [
-                        "mean_age"
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["group"],
+          "ops": ["mean"],
+          "fields": ["age"],
+          "as": ["mean_age"]
         }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "group"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "mean_age"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "group",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_age"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "group",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Mean of age",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "group"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "mean_age"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "group", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mean_age"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "group",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of age",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

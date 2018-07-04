@@ -1,14 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "data": {
-    "url": "data/cars.json"
-  },
+  "data": {"url": "data/cars.json"},
   "transform": [
-    {
-      "timeUnit": "year",
-      "field": "Year",
-      "as": "year_Year"
-    },
+    {"timeUnit": "year", "field": "Year", "as": "year_Year"},
     {
       "aggregate": [
         {
@@ -22,9 +16,7 @@
           "as": "upper_Miles_per_Gallon"
         }
       ],
-      "groupby": [
-        "year_Year"
-      ]
+      "groupby": ["year_Year"]
     }
   ],
   "layer": [
@@ -39,15 +31,9 @@
           "field": "lower_Miles_per_Gallon",
           "type": "quantitative",
           "title": "Miles per Gallon (95% CIs)",
-          "scale": {
-            "zero": false
-          }
+          "scale": {"zero": false}
         },
-        "x": {
-          "field": "year_Year",
-          "type": "temporal",
-          "title": "Year (year)"
-        }
+        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
       }
     },
     {
@@ -61,40 +47,22 @@
           "field": "upper_Miles_per_Gallon",
           "type": "quantitative",
           "title": "Miles per Gallon (95% CIs)",
-          "scale": {
-            "zero": false
-          }
+          "scale": {"zero": false}
         },
-        "x": {
-          "field": "year_Year",
-          "type": "temporal",
-          "title": "Year (year)"
-        }
+        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
       }
     },
     {
-      "mark": {
-        "type": "rule",
-        "style": "errorbar-rule"
-      },
+      "mark": {"type": "rule", "style": "errorbar-rule"},
       "encoding": {
         "y": {
           "field": "lower_Miles_per_Gallon",
           "type": "quantitative",
           "title": "Miles per Gallon (95% CIs)",
-          "scale": {
-            "zero": false
-          }
+          "scale": {"zero": false}
         },
-        "y2": {
-          "field": "upper_Miles_per_Gallon",
-          "type": "quantitative"
-        },
-        "x": {
-          "field": "year_Year",
-          "type": "temporal",
-          "title": "Year (year)"
-        }
+        "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
+        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
       }
     }
   ]

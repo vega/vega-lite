@@ -9,7 +9,8 @@ var helpText =
 
 // import required libraries
 var fs = require('fs'),
-    vl = require('../build/vega-lite');
+    vl = require('../build/vega-lite'),
+    compactStringify = require('json-stringify-pretty-compact');
 
 // arguments
 var args = require('yargs')
@@ -34,7 +35,7 @@ function compile(vlSpec) {
   // TODO: deal with error
   var vgSpec = result.spec;
   if (args.p) {
-    process.stdout.write(JSON.stringify(vgSpec, null, 4) + '\n');
+    process.stdout.write(compactStringify(vgSpec) + '\n');
   } else {
     process.stdout.write(JSON.stringify(vgSpec) + '\n');
   }

@@ -1,33 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "Stock price mean per quarter broken down by years.",
-  "data": {
-    "url": "data/stocks.csv"
-  },
-  "facet": {
-    "column": {
-      "field": "date",
-      "type": "ordinal",
-      "timeUnit": "year"
-    }
-  },
+  "data": {"url": "data/stocks.csv"},
+  "facet": {"column": {"field": "date", "type": "ordinal", "timeUnit": "year"}},
   "spec": {
     "mark": "point",
     "encoding": {
-      "x": {
-        "timeUnit": "quarter",
-        "field": "date",
-        "type": "ordinal"
-      },
-      "y": {
-        "field": "price",
-        "type": "quantitative",
-        "aggregate": "mean"
-      },
-      "color": {
-        "field": "symbol",
-        "type": "nominal"
-      }
+      "x": {"timeUnit": "quarter", "field": "date", "type": "ordinal"},
+      "y": {"field": "price", "type": "quantitative", "aggregate": "mean"},
+      "color": {"field": "symbol", "type": "nominal"}
     }
   }
 }

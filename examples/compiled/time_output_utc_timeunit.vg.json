@@ -1,192 +1,134 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Google's stock price over time.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Google's stock price over time.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"date": "Sun, 01 Jan 2012 23:00:00", "price": 150},
+        {"date": "Sun, 02 Jan 2012 00:00:00", "price": 100},
+        {"date": "Sun, 02 Jan 2012 01:00:00", "price": 170},
+        {"date": "Sun, 02 Jan 2012 02:00:00", "price": 165},
+        {"date": "Sun, 02 Jan 2012 03:00:00", "price": 200}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "date": "Sun, 01 Jan 2012 23:00:00",
-                    "price": 150
-                },
-                {
-                    "date": "Sun, 02 Jan 2012 00:00:00",
-                    "price": 100
-                },
-                {
-                    "date": "Sun, 02 Jan 2012 01:00:00",
-                    "price": 170
-                },
-                {
-                    "date": "Sun, 02 Jan 2012 02:00:00",
-                    "price": 165
-                },
-                {
-                    "date": "Sun, 02 Jan 2012 03:00:00",
-                    "price": 200
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"price\"])",
+          "as": "price"
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
-                    "type": "formula",
-                    "as": "utcyearmonthdatehoursminutes_date",
-                    "expr": "datetime(utcyear(datum[\"date\"]), utcmonth(datum[\"date\"]), utcdate(datum[\"date\"]), utchours(datum[\"date\"]), utcminutes(datum[\"date\"]), 0, 0)"
-                }
-            ]
+          "type": "formula",
+          "as": "utcyearmonthdatehoursminutes_date",
+          "expr": "datetime(utcyear(datum[\"date\"]), utcmonth(datum[\"date\"]), utcdate(datum[\"date\"]), utchours(datum[\"date\"]), utcminutes(datum[\"date\"]), 0, 0)"
         }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"utcyearmonthdatehoursminutes_date\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "utcyearmonthdatehoursminutes_date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "price"
-                    },
-                    "defined": {
-                        "signal": "datum[\"utcyearmonthdatehoursminutes_date\"] !== null && !isNaN(datum[\"utcyearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "data": "data_0",
-                "field": "utcyearmonthdatehoursminutes_date"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "price"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "date (year-month-date-hours-minutes)",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%b %d, %Y %H:%M')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "price",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {
+        "field": "datum[\"utcyearmonthdatehoursminutes_date\"]",
+        "order": "descending"
+      },
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "utcyearmonthdatehoursminutes_date"},
+          "y": {"scale": "y", "field": "price"},
+          "defined": {
+            "signal": "datum[\"utcyearmonthdatehoursminutes_date\"] !== null && !isNaN(datum[\"utcyearmonthdatehoursminutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "data": "data_0",
+        "field": "utcyearmonthdatehoursminutes_date"
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year-month-date-hours-minutes)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {"signal": "timeFormat(datum.value, '%b %d, %Y %H:%M')"}
+          }
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

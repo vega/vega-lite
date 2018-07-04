@@ -1,373 +1,233 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json"
-            }
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_1",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "min"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "min_Horsepower"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                }
-            ]
-        },
-        {
-            "name": "data_4",
-            "source": "data_3",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "min"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "min_Horsepower"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_5",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "max"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "max_Horsepower"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_6",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "max"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "max_Horsepower"
-                    ]
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"Horsepower\"])",
+          "as": "Horsepower"
         }
-    ],
-    "signals": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["min"],
+          "fields": ["Horsepower"],
+          "as": ["min_Horsepower"]
         }
-    ],
-    "marks": [
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "layer_0_layer_0_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"Cylinders\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_5"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "darkred"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "max_Horsepower"
-                    },
-                    "defined": {
-                        "signal": "datum[\"max_Horsepower\"] !== null && !isNaN(datum[\"max_Horsepower\"])"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_0_layer_1_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_6"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 1
-                    },
-                    "fill": {
-                        "value": "darkred"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "max_Horsepower"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_layer_0_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"Cylinders\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "min_Horsepower"
-                    },
-                    "defined": {
-                        "signal": "datum[\"min_Horsepower\"] !== null && !isNaN(datum[\"min_Horsepower\"])"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_layer_1_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_4"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 1
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "min_Horsepower"
-                    }
-                }
-            }
+          "type": "formula",
+          "expr": "toNumber(datum[\"Horsepower\"])",
+          "as": "Horsepower"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_3",
+      "transform": [
         {
-            "name": "x",
-            "type": "point",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_5",
-                        "field": "Cylinders"
-                    },
-                    {
-                        "data": "data_6",
-                        "field": "Cylinders"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "Cylinders"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "Cylinders"
-                    }
-                ],
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "padding": 0.5
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["min"],
+          "fields": ["Horsepower"],
+          "as": ["min_Horsepower"]
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Horsepower\"])",
+          "as": "Horsepower"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_5",
-                        "field": "max_Horsepower"
-                    },
-                    {
-                        "data": "data_6",
-                        "field": "max_Horsepower"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "min_Horsepower"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "min_Horsepower"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["max"],
+          "fields": ["Horsepower"],
+          "as": ["max_Horsepower"]
         }
-    ],
-    "axes": [
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "source_0",
+      "transform": [
         {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Cylinders",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "zindex": 1
+          "type": "formula",
+          "expr": "toNumber(datum[\"Horsepower\"])",
+          "as": "Horsepower"
         },
         {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Max of Horsepower, Min of Horsepower",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["max"],
+          "fields": ["Horsepower"],
+          "as": ["max_Horsepower"]
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
+      "from": {"data": "data_5"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "darkred"},
+          "x": {"scale": "x", "field": "Cylinders"},
+          "y": {"scale": "y", "field": "max_Horsepower"},
+          "defined": {
+            "signal": "datum[\"max_Horsepower\"] !== null && !isNaN(datum[\"max_Horsepower\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_0_layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_6"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "darkred"},
+          "x": {"scale": "x", "field": "Cylinders"},
+          "y": {"scale": "y", "field": "max_Horsepower"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "Cylinders"},
+          "y": {"scale": "y", "field": "min_Horsepower"},
+          "defined": {
+            "signal": "datum[\"min_Horsepower\"] !== null && !isNaN(datum[\"min_Horsepower\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_4"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "Cylinders"},
+          "y": {"scale": "y", "field": "min_Horsepower"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {
+        "fields": [
+          {"data": "data_5", "field": "Cylinders"},
+          {"data": "data_6", "field": "Cylinders"},
+          {"data": "data_2", "field": "Cylinders"},
+          {"data": "data_4", "field": "Cylinders"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_5", "field": "max_Horsepower"},
+          {"data": "data_6", "field": "max_Horsepower"},
+          {"data": "data_2", "field": "min_Horsepower"},
+          {"data": "data_4", "field": "min_Horsepower"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Cylinders",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Max of Horsepower, Min of Horsepower",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

@@ -6,66 +6,30 @@
     {
       "data": {
         "url": "data/us-10m.json",
-        "format": {
-          "type": "topojson",
-          "feature": "states"
-        }
+        "format": {"type": "topojson", "feature": "states"}
       },
-      "mark": {
-        "type": "geoshape",
-        "fill": "lightgray",
-        "stroke": "white"
-      },
-      "projection": {
-        "type": "albersUsa"
-      }
+      "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"},
+      "projection": {"type": "albersUsa"}
     },
     {
-      "data": {
-        "url": "data/us-state-capitals.json"
-      },
+      "data": {"url": "data/us-state-capitals.json"},
       "layer": [
         {
-          "mark": {
-            "type": "circle",
-            "color": "orange"
-          },
-          "projection": {
-            "type": "albersUsa"
-          },
+          "mark": {"type": "circle", "color": "orange"},
+          "projection": {"type": "albersUsa"},
           "encoding": {
-            "longitude": {
-              "field": "lon",
-              "type": "quantitative"
-            },
-            "latitude": {
-              "field": "lat",
-              "type": "quantitative"
-            }
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"}
           }
         },
         {
-          "mark": {
-            "type": "text",
-            "dy": -6
-          },
+          "mark": {"type": "text", "dy": -6},
           "encoding": {
-            "longitude": {
-              "field": "lon",
-              "type": "quantitative"
-            },
-            "latitude": {
-              "field": "lat",
-              "type": "quantitative"
-            },
-            "text": {
-              "field": "city",
-              "type": "nominal"
-            }
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "text": {"field": "city", "type": "nominal"}
           },
-          "projection": {
-            "type": "albersUsa"
-          }
+          "projection": {"type": "albersUsa"}
         }
       ]
     }

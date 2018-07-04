@@ -1,56 +1,27 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 21,
-    "height": 21,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "values": [
-                {
-                    "a": 2
-                }
-            ]
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 21,
+  "height": 21,
+  "style": "cell",
+  "data": [{"name": "source_0", "values": [{"a": 2}]}],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "purple"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5}
         }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "purple"
-                    },
-                    "x": {
-                        "signal": "width",
-                        "mult": 0.5
-                    },
-                    "y": {
-                        "signal": "height",
-                        "mult": 0.5
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      }
     }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

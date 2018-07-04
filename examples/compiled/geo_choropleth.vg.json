@@ -1,105 +1,63 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 500,
-    "height": 300,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_1",
+      "url": "data/unemployment.tsv",
+      "format": {"type": "tsv"}
+    },
+    {
+      "name": "source_0",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "counties"},
+      "transform": [
         {
-            "name": "source_1",
-            "url": "data/unemployment.tsv",
-            "format": {
-                "type": "tsv"
-            }
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["id"],
+          "values": ["rate"]
         },
         {
-            "name": "source_0",
-            "url": "data/us-10m.json",
-            "format": {
-                "type": "topojson",
-                "feature": "counties"
-            },
-            "transform": [
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "id",
-                    "fields": [
-                        "id"
-                    ],
-                    "values": [
-                        "rate"
-                    ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"rate\"] !== null && !isNaN(datum[\"rate\"])"
-                }
-            ]
+          "type": "filter",
+          "expr": "datum[\"rate\"] !== null && !isNaN(datum[\"rate\"])"
         }
-    ],
-    "projections": [
-        {
-            "name": "projection",
-            "size": {
-                "signal": "[width, height]"
-            },
-            "fit": {
-                "signal": "data('source_0')"
-            },
-            "type": "albersUsa"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "shape",
-            "style": [
-                "geoshape"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "scale": "color",
-                        "field": "rate"
-                    }
-                }
-            },
-            "transform": [
-                {
-                    "type": "geoshape",
-                    "projection": "projection"
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "color",
-            "type": "sequential",
-            "domain": {
-                "data": "source_0",
-                "field": "rate"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "rate",
-            "type": "gradient"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "data('source_0')"},
+      "type": "albersUsa"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {"update": {"fill": {"scale": "color", "field": "rate"}}},
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "sequential",
+      "domain": {"data": "source_0", "field": "rate"},
+      "range": "heatmap",
+      "nice": false,
+      "zero": false
+    }
+  ],
+  "legends": [{"fill": "color", "title": "rate", "type": "gradient"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

@@ -1,27 +1,15 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "data": {
-    "url": "data/barley.json"
-  },
+  "data": {"url": "data/barley.json"},
   "layer": [
     {
       "transform": [
         {
           "aggregate": [
-            {
-              "op": "stderr",
-              "field": "yield",
-              "as": "extent_yield"
-            },
-            {
-              "op": "mean",
-              "field": "yield",
-              "as": "center_yield"
-            }
+            {"op": "stderr", "field": "yield", "as": "extent_yield"},
+            {"op": "mean", "field": "yield", "as": "center_yield"}
           ],
-          "groupby": [
-            "variety"
-          ]
+          "groupby": ["variety"]
         },
         {
           "calculate": "datum.center_yield + datum.extent_yield",
@@ -45,15 +33,9 @@
               "field": "lower_yield",
               "type": "quantitative",
               "title": "yield",
-              "scale": {
-                "zero": false
-              }
+              "scale": {"zero": false}
             },
-            "y": {
-              "field": "variety",
-              "type": "ordinal",
-              "title": "variety"
-            }
+            "y": {"field": "variety", "type": "ordinal", "title": "variety"}
           }
         },
         {
@@ -68,60 +50,31 @@
               "field": "upper_yield",
               "type": "quantitative",
               "title": "yield",
-              "scale": {
-                "zero": false
-              }
+              "scale": {"zero": false}
             },
-            "y": {
-              "field": "variety",
-              "type": "ordinal",
-              "title": "variety"
-            }
+            "y": {"field": "variety", "type": "ordinal", "title": "variety"}
           }
         },
         {
-          "mark": {
-            "type": "rule",
-            "style": "errorbar-rule"
-          },
+          "mark": {"type": "rule", "style": "errorbar-rule"},
           "encoding": {
             "x": {
               "field": "lower_yield",
               "type": "quantitative",
               "title": "yield",
-              "scale": {
-                "zero": false
-              }
+              "scale": {"zero": false}
             },
-            "x2": {
-              "field": "upper_yield",
-              "type": "quantitative"
-            },
-            "y": {
-              "field": "variety",
-              "type": "ordinal",
-              "title": "variety"
-            }
+            "x2": {"field": "upper_yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "ordinal", "title": "variety"}
           }
         }
       ]
     },
     {
-      "mark": {
-        "type": "point",
-        "filled": true,
-        "color": "black"
-      },
+      "mark": {"type": "point", "filled": true, "color": "black"},
       "encoding": {
-        "x": {
-          "field": "yield",
-          "type": "quantitative",
-          "aggregate": "mean"
-        },
-        "y": {
-          "field": "variety",
-          "type": "ordinal"
-        }
+        "x": {"field": "yield", "type": "quantitative", "aggregate": "mean"},
+        "y": {"field": "variety", "type": "ordinal"}
       }
     }
   ]

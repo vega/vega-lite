@@ -1,525 +1,343 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Show a line chart corresponding to selected points.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 300,
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Show a line chart corresponding to selected points.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 300,
+  "data": [
+    {"name": "pts_store"},
+    {
+      "name": "source_0",
+      "values": [
         {
-            "name": "pts_store"
+          "id": "001",
+          "ra": 243.35,
+          "dec": "+54.6",
+          "lc": [{"time": 1, "mag": 18.5}, {"time": 2, "mag": 19}]
         },
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "id": "001",
-                    "ra": 243.35,
-                    "dec": "+54.6",
-                    "lc": [
-                        {
-                            "time": 1,
-                            "mag": 18.5
-                        },
-                        {
-                            "time": 2,
-                            "mag": 19
-                        }
-                    ]
-                },
-                {
-                    "id": "002",
-                    "ra": 210.35,
-                    "dec": "+14.6",
-                    "lc": [
-                        {
-                            "time": 1,
-                            "mag": 19.5
-                        },
-                        {
-                            "time": 2,
-                            "mag": 20
-                        }
-                    ]
-                },
-                {
-                    "id": "003",
-                    "ra": 143.35,
-                    "dec": "+33.6",
-                    "lc": [
-                        {
-                            "time": 1,
-                            "mag": 19
-                        },
-                        {
-                            "time": 2,
-                            "mag": 18
-                        }
-                    ]
-                }
-            ]
+          "id": "002",
+          "ra": 210.35,
+          "dec": "+14.6",
+          "lc": [{"time": 1, "mag": 19.5}, {"time": 2, "mag": 20}]
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "flatten",
-                    "fields": [
-                        "lc"
-                    ],
-                    "as": [
-                        "lc"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"ra\"])",
-                    "as": "ra"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"dec\"])",
-                    "as": "dec"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "ra",
-                        "dec",
-                        "id"
-                    ],
-                    "ops": [],
-                    "fields": [],
-                    "as": []
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"ra\"] !== null && !isNaN(datum[\"ra\"]) && datum[\"dec\"] !== null && !isNaN(datum[\"dec\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"time\"])",
-                    "as": "lc.time"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"mag\"])",
-                    "as": "lc.mag"
-                },
-                {
-                    "type": "filter",
-                    "expr": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))"
-                }
-            ]
+          "id": "003",
+          "ra": 143.35,
+          "dec": "+33.6",
+          "lc": [{"time": 1, "mag": 19}, {"time": 2, "mag": 18}]
         }
-    ],
-    "signals": [
-        {
-            "name": "concat_0_height",
-            "value": 200
-        },
-        {
-            "name": "concat_1_height",
-            "value": 200
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "columns": 1,
-        "bounds": "full",
-        "align": "each"
+      ]
     },
-    "marks": [
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [{"type": "flatten", "fields": ["lc"], "as": ["lc"]}]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"ra\"])", "as": "ra"},
+        {"type": "formula", "expr": "toNumber(datum[\"dec\"])", "as": "dec"},
         {
-            "type": "group",
-            "name": "concat_0_group",
-            "title": {
-                "text": "Sky position"
-            },
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_0_height"
-                    }
-                }
-            },
-            "signals": [
-                {
-                    "name": "pts_tuple",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "click"
-                                }
-                            ],
-                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", encodings: [], fields: [\"id\"], values: [datum[\"id\"]]} : null",
-                            "force": true
-                        }
-                    ]
-                },
-                {
-                    "name": "pts_toggle",
-                    "value": false,
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "click"
-                                }
-                            ],
-                            "update": "event.shiftKey"
-                        }
-                    ]
-                },
-                {
-                    "name": "pts_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "pts_tuple"
-                            },
-                            "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
-                        }
-                    ]
-                }
-            ],
-            "marks": [
-                {
-                    "name": "concat_0_marks",
-                    "type": "symbol",
-                    "style": [
-                        "circle"
-                    ],
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "opacity": {
-                                "value": 0.7
-                            },
-                            "fill": [
-                                {
-                                    "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
-                                    "value": "steelblue"
-                                },
-                                {
-                                    "value": "grey"
-                                }
-                            ],
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "ra"
-                            },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "dec"
-                            },
-                            "size": {
-                                "value": 100
-                            },
-                            "shape": {
-                                "value": "circle"
-                            }
-                        }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "ra",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "gridScale": "concat_0_y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "dec",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_0_height/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_0_height/40)"
-                    },
-                    "gridScale": "concat_0_x",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["ra", "dec", "id"],
+          "ops": [],
+          "fields": [],
+          "as": []
         },
         {
-            "type": "group",
-            "name": "concat_1_group",
-            "title": {
-                "text": "Light curve"
-            },
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_1_height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "concat_1_pathgroup",
-                    "type": "group",
-                    "from": {
-                        "facet": {
-                            "name": "faceted_path_concat_1_main",
-                            "data": "data_2",
-                            "groupby": [
-                                "id"
-                            ]
-                        }
-                    },
-                    "encode": {
-                        "update": {
-                            "width": {
-                                "field": {
-                                    "group": "width"
-                                }
-                            },
-                            "height": {
-                                "field": {
-                                    "group": "height"
-                                }
-                            }
-                        }
-                    },
-                    "marks": [
-                        {
-                            "name": "concat_1_marks",
-                            "type": "line",
-                            "style": [
-                                "line"
-                            ],
-                            "sort": {
-                                "field": "datum[\"lc.time\"]",
-                                "order": "descending"
-                            },
-                            "from": {
-                                "data": "faceted_path_concat_1_main"
-                            },
-                            "encode": {
-                                "update": {
-                                    "stroke": {
-                                        "value": "steelblue"
-                                    },
-                                    "x": {
-                                        "scale": "concat_1_x",
-                                        "field": "lc\\.time"
-                                    },
-                                    "y": {
-                                        "scale": "concat_1_y",
-                                        "field": "lc\\.mag"
-                                    },
-                                    "defined": {
-                                        "signal": "datum[\"lc.time\"] !== null && !isNaN(datum[\"lc.time\"]) && datum[\"lc.mag\"] !== null && !isNaN(datum[\"lc.mag\"])"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "lc.time",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "gridScale": "concat_1_y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "concat_1_y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "lc.mag",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_1_height/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_1_y",
-                    "orient": "left",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_1_height/40)"
-                    },
-                    "gridScale": "concat_1_x",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                }
-            ]
+          "type": "filter",
+          "expr": "datum[\"ra\"] !== null && !isNaN(datum[\"ra\"]) && datum[\"dec\"] !== null && !isNaN(datum[\"dec\"])"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
         {
-            "name": "concat_0_x",
-            "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "ra"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false,
-            "nice": true
+          "type": "formula",
+          "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"time\"])",
+          "as": "lc.time"
         },
         {
-            "name": "concat_0_y",
-            "type": "linear",
-            "domain": {
-                "data": "data_1",
-                "field": "dec"
-            },
-            "range": [
-                {
-                    "signal": "concat_0_height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "formula",
+          "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"mag\"])",
+          "as": "lc.mag"
         },
         {
-            "name": "concat_1_x",
-            "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "lc\\.time"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false,
-            "nice": true
-        },
-        {
-            "name": "concat_1_y",
-            "type": "linear",
-            "domain": {
-                "data": "data_2",
-                "field": "lc\\.mag"
-            },
-            "range": [
-                {
-                    "signal": "concat_1_height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "filter",
+          "expr": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))"
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_1_height", "value": 200},
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    }
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "title": {"text": "Sky position"},
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "pts_tuple",
+          "value": {},
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", encodings: [], fields: [\"id\"], values: [datum[\"id\"]]} : null",
+              "force": true
+            }
+          ]
+        },
+        {
+          "name": "pts_toggle",
+          "value": false,
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "event.shiftKey"
+            }
+          ]
+        },
+        {
+          "name": "pts_modify",
+          "on": [
+            {
+              "events": {"signal": "pts_tuple"},
+              "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "name": "concat_0_marks",
+          "type": "symbol",
+          "style": ["circle"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+                  "value": "steelblue"
+                },
+                {"value": "grey"}
+              ],
+              "x": {"scale": "concat_0_x", "field": "ra"},
+              "y": {"scale": "concat_0_y", "field": "dec"},
+              "size": {"value": 100},
+              "shape": {"value": "circle"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "ra",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "gridScale": "concat_0_y",
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "dec",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "gridScale": "concat_0_x",
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "title": {"text": "Light curve"},
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_1_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_concat_1_main",
+              "data": "data_2",
+              "groupby": ["id"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "concat_1_marks",
+              "type": "line",
+              "style": ["line"],
+              "sort": {"field": "datum[\"lc.time\"]", "order": "descending"},
+              "from": {"data": "faceted_path_concat_1_main"},
+              "encode": {
+                "update": {
+                  "stroke": {"value": "steelblue"},
+                  "x": {"scale": "concat_1_x", "field": "lc\\.time"},
+                  "y": {"scale": "concat_1_y", "field": "lc\\.mag"},
+                  "defined": {
+                    "signal": "datum[\"lc.time\"] !== null && !isNaN(datum[\"lc.time\"]) && datum[\"lc.mag\"] !== null && !isNaN(datum[\"lc.mag\"])"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "lc.time",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "gridScale": "concat_1_y",
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "lc.mag",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "gridScale": "concat_1_x",
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "concat_0_x",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "ra"},
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "dec"},
+      "range": [{"signal": "concat_0_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_x",
+      "type": "linear",
+      "domain": {"data": "data_2", "field": "lc\\.time"},
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "concat_1_y",
+      "type": "linear",
+      "domain": {"data": "data_2", "field": "lc\\.mag"},
+      "range": [{"signal": "concat_1_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

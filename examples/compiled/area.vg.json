@@ -1,185 +1,119 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 300,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 300,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/unemployment-across-industries.json",
+      "format": {"type": "json", "parse": {"date": "date", "count": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/unemployment-across-industries.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "date": "date",
-                    "count": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "yearmonth_date",
-                    "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "yearmonth_date"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "count"
-                    ],
-                    "as": [
-                        "sum_count"
-                    ]
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "area",
-            "style": [
-                "area"
-            ],
-            "sort": {
-                "field": "datum[\"yearmonth_date\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "orient": {
-                        "value": "vertical"
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "yearmonth_date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum_count"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    },
-                    "defined": {
-                        "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "yearmonth_date"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
+          "type": "formula",
+          "as": "yearmonth_date",
+          "expr": "datetime(year(datum[\"date\"]), month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "sum_count"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "aggregate",
+          "groupby": ["yearmonth_date"],
+          "ops": ["sum"],
+          "fields": ["count"],
+          "as": ["sum_count"]
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "date (year-month)",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%Y')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "count",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "area",
+      "style": ["area"],
+      "sort": {"field": "datum[\"yearmonth_date\"]", "order": "descending"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "orient": {"value": "vertical"},
+          "fill": {"value": "#4c78a8"},
+          "x": {"scale": "x", "field": "yearmonth_date"},
+          "y": {"scale": "y", "field": "sum_count"},
+          "y2": {"scale": "y", "value": 0},
+          "defined": {
+            "signal": "datum[\"yearmonth_date\"] !== null && !isNaN(datum[\"yearmonth_date\"]) && datum[\"sum_count\"] !== null && !isNaN(datum[\"sum_count\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "yearmonth_date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "sum_count"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year-month)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "count",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

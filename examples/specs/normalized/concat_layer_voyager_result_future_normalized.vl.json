@@ -33,22 +33,12 @@
     ]
   },
   "config": {
-    "view": {
-      "stroke": "transparent"
-    },
+    "view": {"stroke": "transparent"},
     "style": {
-      "arrow-label": {
-        "dy": 16,
-        "fontSize": 9.5
-      },
-      "arrow-label2": {
-        "dy": 28,
-        "fontSize": 9.5
-      }
+      "arrow-label": {"dy": 16, "fontSize": 9.5},
+      "arrow-label2": {"dy": 28, "fontSize": 9.5}
     },
-    "title": {
-      "fontSize": 12
-    }
+    "title": {"fontSize": 12}
   },
   "vconcat": [
     {
@@ -71,22 +61,12 @@
             "x": {
               "field": "lo",
               "type": "quantitative",
-              "scale": {
-                "domain": [
-                  -3,
-                  3
-                ]
-              },
+              "scale": {"domain": [-3, 3]},
               "axis": {
                 "title": "",
                 "encoding": {
                   "grid": {
-                    "strokeDash": {
-                      "value": [
-                        3,
-                        3
-                      ]
-                    },
+                    "strokeDash": {"value": [3, 3]},
                     "stroke": {
                       "condition": {
                         "test": "datum.value === 0",
@@ -98,18 +78,11 @@
                 }
               }
             },
-            "x2": {
-              "field": "hi",
-              "type": "quantitative"
-            }
+            "x2": {"field": "hi", "type": "quantitative"}
           }
         },
         {
-          "mark": {
-            "type": "circle",
-            "stroke": "black",
-            "opacity": 1
-          },
+          "mark": {"type": "circle", "stroke": "black", "opacity": 1},
           "encoding": {
             "y": {
               "field": "study",
@@ -122,19 +95,11 @@
                 "grid": false
               }
             },
-            "x": {
-              "field": "mean",
-              "type": "quantitative"
-            },
+            "x": {"field": "mean", "type": "quantitative"},
             "color": {
               "field": "measure",
               "type": "nominal",
-              "scale": {
-                "range": [
-                  "black",
-                  "white"
-                ]
-              },
+              "scale": {"range": ["black", "white"]},
               "legend": null
             }
           }
@@ -144,16 +109,8 @@
     {
       "data": {
         "values": [
-          {
-            "from": -0.25,
-            "to": -2.9,
-            "label": "PoleStar"
-          },
-          {
-            "from": 0.25,
-            "to": 2.9,
-            "label": "Voyager / Voyager 2"
-          }
+          {"from": -0.25, "to": -2.9, "label": "PoleStar"},
+          {"from": 0.25, "to": 2.9, "label": "Voyager / Voyager 2"}
         ]
       },
       "layer": [
@@ -163,15 +120,10 @@
             "x": {
               "field": "from",
               "type": "quantitative",
-              "scale": {
-                "zero": false
-              },
+              "scale": {"zero": false},
               "axis": null
             },
-            "x2": {
-              "field": "to",
-              "type": "quantitative"
-            }
+            "x2": {"field": "to", "type": "quantitative"}
           }
         },
         {
@@ -182,108 +134,43 @@
             "fill": "black"
           },
           "encoding": {
-            "x": {
-              "field": "to",
-              "type": "quantitative",
-              "axis": null
-            },
+            "x": {"field": "to", "type": "quantitative", "axis": null},
             "shape": {
-              "condition": {
-                "test": "datum.to > 0",
-                "value": "triangle-right"
-              },
+              "condition": {"test": "datum.to > 0", "value": "triangle-right"},
               "value": "triangle-left"
             }
           }
         },
         {
-          "mark": {
-            "type": "text",
-            "align": "right",
-            "style": "arrow-label"
-          },
-          "transform": [
-            {
-              "filter": "datum.label === 'PoleStar'"
-            }
-          ],
+          "mark": {"type": "text", "align": "right", "style": "arrow-label"},
+          "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {
-              "field": "label",
-              "type": "nominal"
-            }
+            "x": {"field": "from", "type": "quantitative", "axis": null},
+            "text": {"field": "label", "type": "nominal"}
           }
         },
         {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "style": "arrow-label"
-          },
-          "transform": [
-            {
-              "filter": "datum.label !== 'PoleStar'"
-            }
-          ],
+          "mark": {"type": "text", "align": "left", "style": "arrow-label"},
+          "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {
-              "field": "label",
-              "type": "nominal"
-            }
+            "x": {"field": "from", "type": "quantitative", "axis": null},
+            "text": {"field": "label", "type": "nominal"}
           }
         },
         {
-          "mark": {
-            "type": "text",
-            "align": "right",
-            "style": "arrow-label2"
-          },
-          "transform": [
-            {
-              "filter": "datum.label === 'PoleStar'"
-            }
-          ],
+          "mark": {"type": "text", "align": "right", "style": "arrow-label2"},
+          "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {
-              "value": "more valuable"
-            }
+            "x": {"field": "from", "type": "quantitative", "axis": null},
+            "text": {"value": "more valuable"}
           }
         },
         {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "style": "arrow-label2"
-          },
-          "transform": [
-            {
-              "filter": "datum.label !== 'PoleStar'"
-            }
-          ],
+          "mark": {"type": "text", "align": "left", "style": "arrow-label2"},
+          "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            },
-            "text": {
-              "value": "more valuable"
-            }
+            "x": {"field": "from", "type": "quantitative", "axis": null},
+            "text": {"value": "more valuable"}
           }
         }
       ]

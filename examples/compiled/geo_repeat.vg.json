@@ -1,328 +1,251 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "the population per state, engineers per state, and hurricanes per state",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 500,
-    "height": 300,
-    "data": [
-        {
-            "name": "source_0",
-            "url": "data/population_engineers_hurricanes.csv",
-            "format": {
-                "type": "csv"
-            }
-        },
-        {
-            "name": "source_1",
-            "url": "data/us-10m.json",
-            "format": {
-                "type": "topojson",
-                "feature": "states"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"population\"])",
-                    "as": "population"
-                },
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "id",
-                    "fields": [
-                        "id"
-                    ],
-                    "as": [
-                        "geo"
-                    ]
-                },
-                {
-                    "type": "geojson",
-                    "geojson": "geo",
-                    "signal": "child_population_geojson_0"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"engineers\"])",
-                    "as": "engineers"
-                },
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "id",
-                    "fields": [
-                        "id"
-                    ],
-                    "as": [
-                        "geo"
-                    ]
-                },
-                {
-                    "type": "geojson",
-                    "geojson": "geo",
-                    "signal": "child_engineers_geojson_0"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"hurricanes\"])",
-                    "as": "hurricanes"
-                },
-                {
-                    "type": "lookup",
-                    "from": "source_1",
-                    "key": "id",
-                    "fields": [
-                        "id"
-                    ],
-                    "as": [
-                        "geo"
-                    ]
-                },
-                {
-                    "type": "geojson",
-                    "geojson": "geo",
-                    "signal": "child_hurricanes_geojson_0"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
-                }
-            ]
-        }
-    ],
-    "projections": [
-        {
-            "name": "projection",
-            "size": {
-                "signal": "[width, height]"
-            },
-            "fit": {
-                "signal": "[child_population_geojson_0, child_engineers_geojson_0, child_hurricanes_geojson_0]"
-            },
-            "type": "albersUsa"
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "columns": 1,
-        "bounds": "full",
-        "align": "all"
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "the population per state, engineers per state, and hurricanes per state",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/population_engineers_hurricanes.csv",
+      "format": {"type": "csv"}
     },
-    "marks": [
+    {
+      "name": "source_1",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "type": "group",
-            "name": "child_population_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_population_marks",
-                    "type": "shape",
-                    "style": [
-                        "geoshape"
-                    ],
-                    "from": {
-                        "data": "data_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "fill": {
-                                "scale": "child_population_color",
-                                "field": "population"
-                            }
-                        }
-                    },
-                    "transform": [
-                        {
-                            "type": "geoshape",
-                            "projection": "projection",
-                            "field": "datum[\"geo\"]"
-                        }
-                    ]
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "child_population_color",
-                    "title": "population",
-                    "type": "gradient"
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"population\"])",
+          "as": "population"
         },
         {
-            "type": "group",
-            "name": "child_engineers_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_engineers_marks",
-                    "type": "shape",
-                    "style": [
-                        "geoshape"
-                    ],
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "fill": {
-                                "scale": "child_engineers_color",
-                                "field": "engineers"
-                            }
-                        }
-                    },
-                    "transform": [
-                        {
-                            "type": "geoshape",
-                            "projection": "projection",
-                            "field": "datum[\"geo\"]"
-                        }
-                    ]
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "child_engineers_color",
-                    "title": "engineers",
-                    "type": "gradient"
-                }
-            ]
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["id"],
+          "as": ["geo"]
         },
         {
-            "type": "group",
-            "name": "child_hurricanes_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_hurricanes_marks",
-                    "type": "shape",
-                    "style": [
-                        "geoshape"
-                    ],
-                    "from": {
-                        "data": "data_2"
-                    },
-                    "encode": {
-                        "update": {
-                            "fill": {
-                                "scale": "child_hurricanes_color",
-                                "field": "hurricanes"
-                            }
-                        }
-                    },
-                    "transform": [
-                        {
-                            "type": "geoshape",
-                            "projection": "projection",
-                            "field": "datum[\"geo\"]"
-                        }
-                    ]
-                }
-            ],
-            "legends": [
-                {
-                    "fill": "child_hurricanes_color",
-                    "title": "hurricanes",
-                    "type": "gradient"
-                }
-            ]
+          "type": "geojson",
+          "geojson": "geo",
+          "signal": "child_population_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "child_population_color",
-            "type": "sequential",
-            "domain": {
-                "data": "data_0",
-                "field": "population"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
+          "type": "formula",
+          "expr": "toNumber(datum[\"engineers\"])",
+          "as": "engineers"
         },
         {
-            "name": "child_engineers_color",
-            "type": "sequential",
-            "domain": {
-                "data": "data_1",
-                "field": "engineers"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["id"],
+          "as": ["geo"]
         },
         {
-            "name": "child_hurricanes_color",
-            "type": "sequential",
-            "domain": {
-                "data": "data_2",
-                "field": "hurricanes"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
+          "type": "geojson",
+          "geojson": "geo",
+          "signal": "child_engineers_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"hurricanes\"])",
+          "as": "hurricanes"
+        },
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["id"],
+          "as": ["geo"]
+        },
+        {
+          "type": "geojson",
+          "geojson": "geo",
+          "signal": "child_hurricanes_geojson_0"
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
         }
+      ]
     }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {
+        "signal": "[child_population_geojson_0, child_engineers_geojson_0, child_hurricanes_geojson_0]"
+      },
+      "type": "albersUsa"
+    }
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "type": "group",
+      "name": "child_population_group",
+      "style": "cell",
+      "encode": {
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+      },
+      "marks": [
+        {
+          "name": "child_population_marks",
+          "type": "shape",
+          "style": ["geoshape"],
+          "from": {"data": "data_0"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "child_population_color", "field": "population"}
+            }
+          },
+          "transform": [
+            {
+              "type": "geoshape",
+              "projection": "projection",
+              "field": "datum[\"geo\"]"
+            }
+          ]
+        }
+      ],
+      "legends": [
+        {
+          "fill": "child_population_color",
+          "title": "population",
+          "type": "gradient"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "child_engineers_group",
+      "style": "cell",
+      "encode": {
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+      },
+      "marks": [
+        {
+          "name": "child_engineers_marks",
+          "type": "shape",
+          "style": ["geoshape"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "child_engineers_color", "field": "engineers"}
+            }
+          },
+          "transform": [
+            {
+              "type": "geoshape",
+              "projection": "projection",
+              "field": "datum[\"geo\"]"
+            }
+          ]
+        }
+      ],
+      "legends": [
+        {
+          "fill": "child_engineers_color",
+          "title": "engineers",
+          "type": "gradient"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "child_hurricanes_group",
+      "style": "cell",
+      "encode": {
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+      },
+      "marks": [
+        {
+          "name": "child_hurricanes_marks",
+          "type": "shape",
+          "style": ["geoshape"],
+          "from": {"data": "data_2"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "child_hurricanes_color", "field": "hurricanes"}
+            }
+          },
+          "transform": [
+            {
+              "type": "geoshape",
+              "projection": "projection",
+              "field": "datum[\"geo\"]"
+            }
+          ]
+        }
+      ],
+      "legends": [
+        {
+          "fill": "child_hurricanes_color",
+          "title": "hurricanes",
+          "type": "gradient"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "child_population_color",
+      "type": "sequential",
+      "domain": {"data": "data_0", "field": "population"},
+      "range": "heatmap",
+      "nice": false,
+      "zero": false
+    },
+    {
+      "name": "child_engineers_color",
+      "type": "sequential",
+      "domain": {"data": "data_1", "field": "engineers"},
+      "range": "heatmap",
+      "nice": false,
+      "zero": false
+    },
+    {
+      "name": "child_hurricanes_color",
+      "type": "sequential",
+      "domain": {"data": "data_2", "field": "hurricanes"},
+      "range": "heatmap",
+      "nice": false,
+      "zero": false
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

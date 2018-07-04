@@ -1,223 +1,135 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/seattle-weather.csv",
-            "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date"
-                }
-            },
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "month_date",
-                    "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "month_date",
-                        "weather"
-                    ],
-                    "ops": [
-                        "count"
-                    ],
-                    "fields": [
-                        "*"
-                    ],
-                    "as": [
-                        "count_*"
-                    ]
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "month_date"
-                    ],
-                    "field": "count_*",
-                    "sort": {
-                        "field": [
-                            "weather"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "count_*_start",
-                        "count_*_end"
-                    ],
-                    "offset": "zero"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
+          "type": "formula",
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
         {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "scale": "color",
-                        "field": "weather"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "month_date"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "count_*_end"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "count_*_start"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "month_date",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+          "type": "aggregate",
+          "groupby": ["month_date", "weather"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "count_*_start",
-                    "count_*_end"
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "weather",
-                "sort": true
-            },
-            "range": "category"
+          "type": "stack",
+          "groupby": ["month_date"],
+          "field": "count_*",
+          "sort": {"field": ["weather"], "order": ["descending"]},
+          "as": ["count_*_start", "count_*_end"],
+          "offset": "zero"
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "date (month)",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%b')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Number of Records",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "weather",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "shape": {
-                            "value": "square"
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "weather"},
+          "x": {"scale": "x", "field": "month_date"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "count_*_end"},
+          "y2": {"scale": "y", "field": "count_*_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "month_date", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["count_*_start", "count_*_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "weather", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (month)",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Number of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "title": "weather",
+      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

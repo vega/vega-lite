@@ -1,205 +1,129 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "description": "Slope graph showing the change in yield for different barley sites. It shows the error in the year labels for the Morris site.",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json", "parse": {"yield": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/barley.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "yield": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "year",
-                        "site"
-                    ],
-                    "ops": [
-                        "median"
-                    ],
-                    "fields": [
-                        "yield"
-                    ],
-                    "as": [
-                        "median_yield"
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["year", "site"],
+          "ops": ["median"],
+          "fields": ["yield"],
+          "as": ["median_yield"]
         }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 50
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
-                    "groupby": [
-                        "site"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"year\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "scale": "color",
-                                "field": "site"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "year"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "median_yield"
-                            },
-                            "defined": {
-                                "signal": "datum[\"median_yield\"] !== null && !isNaN(datum[\"median_yield\"])"
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "point",
-            "domain": {
-                "data": "source_0",
-                "field": "year",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "padding": 0.5
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "median_yield"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "site",
-                "sort": true
-            },
-            "range": "category"
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "year",
-            "labelBaseline": "middle",
-            "labelAngle": 270,
-            "labelAlign": "right",
-            "labelOverlap": true,
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Median of yield",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "site"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 50},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["site"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"year\"]", "order": "descending"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "site"},
+              "x": {"scale": "x", "field": "year"},
+              "y": {"scale": "y", "field": "median_yield"},
+              "defined": {
+                "signal": "datum[\"median_yield\"] !== null && !isNaN(datum[\"median_yield\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "year", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "median_yield"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "site", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "year",
+      "labelBaseline": "middle",
+      "labelAngle": 270,
+      "labelAlign": "right",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Median of yield",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "color", "title": "site"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

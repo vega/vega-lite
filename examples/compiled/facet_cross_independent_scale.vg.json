@@ -1,344 +1,211 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "data": [
-        {
-            "name": "source_0",
-            "values": [
-                {
-                    "r": "r1",
-                    "c": "c1",
-                    "a": "a1",
-                    "b": "b1"
-                },
-                {
-                    "r": "r1",
-                    "c": "c1",
-                    "a": "a2",
-                    "b": "b2"
-                },
-                {
-                    "r": "r2",
-                    "c": "c2",
-                    "a": "a1",
-                    "b": "b1"
-                },
-                {
-                    "r": "r3",
-                    "c": "c2",
-                    "a": "a3",
-                    "b": "b2"
-                }
-            ]
-        },
-        {
-            "name": "cross_column_domain_row_domain",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "c",
-                        "r"
-                    ],
-                    "fields": [
-                        "a",
-                        "b"
-                    ],
-                    "ops": [
-                        "distinct",
-                        "distinct"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "column_domain",
-            "source": "cross_column_domain_row_domain",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "c"
-                    ],
-                    "fields": [
-                        "distinct_a"
-                    ],
-                    "ops": [
-                        "max"
-                    ],
-                    "as": [
-                        "distinct_a"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "row_domain",
-            "source": "cross_column_domain_row_domain",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "r"
-                    ],
-                    "fields": [
-                        "distinct_b"
-                    ],
-                    "ops": [
-                        "max"
-                    ],
-                    "as": [
-                        "distinct_b"
-                    ]
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "child_x_step",
-            "value": 21
-        },
-        {
-            "name": "child_y_step",
-            "value": 21
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": {
-            "rowTitle": 10,
-            "columnTitle": 10
-        },
-        "columns": {
-            "signal": "length(data('column_domain'))"
-        },
-        "bounds": "full",
-        "align": "all"
+  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"r": "r1", "c": "c1", "a": "a1", "b": "b1"},
+        {"r": "r1", "c": "c1", "a": "a2", "b": "b2"},
+        {"r": "r2", "c": "c2", "a": "a1", "b": "b1"},
+        {"r": "r3", "c": "c2", "a": "a3", "b": "b2"}
+      ]
     },
-    "marks": [
+    {
+      "name": "cross_column_domain_row_domain",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "row-title",
-            "type": "group",
-            "role": "row-title",
-            "title": {
-                "text": "r",
-                "offset": 10,
-                "orient": "left",
-                "style": "guide-title"
-            }
-        },
-        {
-            "name": "column-title",
-            "type": "group",
-            "role": "column-title",
-            "title": {
-                "text": "c",
-                "offset": 10,
-                "style": "guide-title"
-            }
-        },
-        {
-            "name": "row_header",
-            "type": "group",
-            "role": "row-header",
-            "from": {
-                "data": "row_domain"
-            },
-            "sort": {
-                "field": "datum[\"r\"]",
-                "order": "ascending"
-            },
-            "title": {
-                "text": {
-                    "signal": "''+parent[\"r\"]"
-                },
-                "offset": 10,
-                "orient": "left",
-                "style": "guide-label"
-            },
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
-                    }
-                }
-            }
-        },
-        {
-            "name": "column_header",
-            "type": "group",
-            "role": "column-header",
-            "from": {
-                "data": "column_domain"
-            },
-            "sort": {
-                "field": "datum[\"c\"]",
-                "order": "ascending"
-            },
-            "title": {
-                "text": {
-                    "signal": "''+parent[\"c\"]"
-                },
-                "offset": 10,
-                "orient": "top",
-                "style": "guide-label"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
-                    }
-                }
-            }
-        },
-        {
-            "name": "cell",
-            "type": "group",
-            "style": "cell",
-            "from": {
-                "facet": {
-                    "name": "facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "r",
-                        "c"
-                    ],
-                    "aggregate": {
-                        "cross": true,
-                        "fields": [
-                            "a",
-                            "b"
-                        ],
-                        "ops": [
-                            "distinct",
-                            "distinct"
-                        ],
-                        "as": [
-                            "distinct_a",
-                            "distinct_b"
-                        ]
-                    }
-                }
-            },
-            "sort": {
-                "field": [
-                    "datum[\"r\"]",
-                    "datum[\"c\"]"
-                ],
-                "order": [
-                    "ascending",
-                    "ascending"
-                ]
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
-                    },
-                    "height": {
-                        "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_marks",
-                    "type": "rect",
-                    "style": [
-                        "rect"
-                    ],
-                    "from": {
-                        "data": "facet"
-                    },
-                    "encode": {
-                        "update": {
-                            "fill": {
-                                "value": "#4c78a8"
-                            },
-                            "x": {
-                                "scale": "child_x",
-                                "field": "a"
-                            },
-                            "width": {
-                                "scale": "child_x",
-                                "band": true
-                            },
-                            "y": {
-                                "scale": "child_y",
-                                "field": "b"
-                            },
-                            "height": {
-                                "scale": "child_y",
-                                "band": true
-                            }
-                        }
-                    }
-                }
-            ],
-            "scales": [
-                {
-                    "name": "child_x",
-                    "type": "band",
-                    "domain": {
-                        "data": "facet",
-                        "field": "a",
-                        "sort": true
-                    },
-                    "range": {
-                        "step": {
-                            "signal": "child_x_step"
-                        }
-                    },
-                    "paddingInner": 0.1,
-                    "paddingOuter": 0.05
-                },
-                {
-                    "name": "child_y",
-                    "type": "band",
-                    "domain": {
-                        "data": "facet",
-                        "field": "b",
-                        "sort": true
-                    },
-                    "range": {
-                        "step": {
-                            "signal": "child_y_step"
-                        }
-                    },
-                    "paddingInner": 0.1,
-                    "paddingOuter": 0.05
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "child_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "a",
-                    "labelBaseline": "middle",
-                    "labelAngle": 270,
-                    "labelAlign": "right",
-                    "zindex": 1
-                },
-                {
-                    "scale": "child_y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "b",
-                    "zindex": 1
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["c", "r"],
+          "fields": ["a", "b"],
+          "ops": ["distinct", "distinct"]
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "cross_column_domain_row_domain",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["c"],
+          "fields": ["distinct_a"],
+          "ops": ["max"],
+          "as": ["distinct_a"]
         }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "cross_column_domain_row_domain",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["r"],
+          "fields": ["distinct_b"],
+          "ops": ["max"],
+          "as": ["distinct_b"]
+        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "child_x_step", "value": 21},
+    {"name": "child_y_step", "value": 21}
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "offset": {"rowTitle": 10, "columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row-title",
+      "type": "group",
+      "role": "row-title",
+      "title": {
+        "text": "r",
+        "offset": 10,
+        "orient": "left",
+        "style": "guide-title"
+      }
+    },
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "c", "offset": 10, "style": "guide-title"}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {"field": "datum[\"r\"]", "order": "ascending"},
+      "title": {
+        "text": {"signal": "''+parent[\"r\"]"},
+        "offset": 10,
+        "orient": "left",
+        "style": "guide-label"
+      },
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+          }
+        }
+      }
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"c\"]", "order": "ascending"},
+      "title": {
+        "text": {"signal": "''+parent[\"c\"]"},
+        "offset": 10,
+        "orient": "top",
+        "style": "guide-label"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+          }
+        }
+      }
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": ["r", "c"],
+          "aggregate": {
+            "cross": true,
+            "fields": ["a", "b"],
+            "ops": ["distinct", "distinct"],
+            "as": ["distinct_a", "distinct_b"]
+          }
+        }
+      },
+      "sort": {
+        "field": ["datum[\"r\"]", "datum[\"c\"]"],
+        "order": ["ascending", "ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+          },
+          "height": {
+            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+          }
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": ["rect"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"value": "#4c78a8"},
+              "x": {"scale": "child_x", "field": "a"},
+              "width": {"scale": "child_x", "band": true},
+              "y": {"scale": "child_y", "field": "b"},
+              "height": {"scale": "child_y", "band": true}
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "name": "child_x",
+          "type": "band",
+          "domain": {"data": "facet", "field": "a", "sort": true},
+          "range": {"step": {"signal": "child_x_step"}},
+          "paddingInner": 0.1,
+          "paddingOuter": 0.05
+        },
+        {
+          "name": "child_y",
+          "type": "band",
+          "domain": {"data": "facet", "field": "b", "sort": true},
+          "range": {"step": {"signal": "child_y_step"}},
+          "paddingInner": 0.1,
+          "paddingOuter": 0.05
+        }
+      ],
+      "axes": [
+        {
+          "scale": "child_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "a",
+          "labelBaseline": "middle",
+          "labelAngle": 270,
+          "labelAlign": "right",
+          "zindex": 1
+        },
+        {
+          "scale": "child_y",
+          "orient": "left",
+          "grid": false,
+          "title": "b",
+          "zindex": 1
+        }
+      ]
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }
