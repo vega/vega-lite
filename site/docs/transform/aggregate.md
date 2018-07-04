@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-To aggregate data in Vega-Lite, users can either use use an `aggregate` property of an [encoding field definition](#encoding) or an `aggregate` transform inside the [`transform`](#transform) array.
+To aggregate data in Vega-Lite, users can either use an `aggregate` property of an [encoding field definition](#encoding) or an `aggregate` transform inside the [`transform`](#transform) array.
 
 ## Documentation Overview
 {:.no_toc}
