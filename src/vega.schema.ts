@@ -10,10 +10,6 @@ import {Flag, flagKeys} from './util';
 
 export type Color = string;
 
-export type WithoutSignal<T> = {
-  [P in keyof T]: Exclude<T[P], SignalRef>;
-};
-
 export interface VgData {
   name: string;
   source?: string;
