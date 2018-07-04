@@ -8,8 +8,7 @@ import {ChannelDef, Field, FieldDef, FieldDefWithCondition, FieldDefWithoutScale
 import * as log from './log';
 import {Mark} from './mark';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {Type} from './type';
-import {contains, keys, some} from './util';
+import {keys, some} from './util';
 
 
 
@@ -279,24 +278,6 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
           }, []);
       }
     } else {
-
-      const fieldDef = getFieldDef(encoding[channel]);
-      if (fieldDef && contains([Type.LATITUDE, Type.LONGITUDE], fieldDef.type)) {
-        const {[channel]: _, ...newEncoding} = normalizedEncoding;
-        const newChannel = channel === 'x' ? 'longitude' :
-          channel === 'y' ? 'latitude' :
-          channel === 'x2' ? 'longitude2' :
-          channel === 'y2' ? 'latitude2' : undefined;
-        log.warn(log.message.latLongDeprecated(channel, fieldDef.type, newChannel));
-        return {
-          ...newEncoding,
-          [newChannel]: {
-            ...normalize(fieldDef as any, channel),
-            type: 'quantitative'
-          }
-        };
-      }
-
       if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;

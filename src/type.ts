@@ -8,22 +8,16 @@ export namespace Type {
   export const TEMPORAL: 'temporal' = 'temporal';
   export const NOMINAL: 'nominal' = 'nominal';
 
-  export const LATITUDE: 'latitude' = 'latitude';
-  export const LONGITUDE: 'longitude' = 'longitude';
   export const GEOJSON: 'geojson' = 'geojson';
 }
-export type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
-export type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
 
-export type Type = BasicType | GeoType;
+export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL | typeof Type.GEOJSON;
 
 export const TYPE_INDEX: Flag<Type> = {
   quantitative: 1,
   ordinal: 1,
   temporal: 1,
   nominal: 1,
-  latitude: 1,
-  longitude: 1,
   geojson: 1
 };
 
@@ -59,10 +53,6 @@ export function getFullName(type: Type|string): Type {
       case 'n':
       case NOMINAL:
         return 'nominal';
-      case Type.LATITUDE:
-        return 'latitude';
-      case Type.LONGITUDE:
-        return 'longitude';
       case GEOJSON:
         return 'geojson';
     }

@@ -1014,15 +1014,6 @@
       ],
       "type": "string"
     },
-    "BasicType": {
-      "enum": [
-        "quantitative",
-        "ordinal",
-        "temporal",
-        "nominal"
-      ],
-      "type": "string"
-    },
     "BinParams": {
       "additionalProperties": false,
       "description": "Binning properties or boolean flag for determining whether to bin data or not.",
@@ -4267,14 +4258,6 @@
         "vconcat"
       ],
       "type": "object"
-    },
-    "GeoType": {
-      "enum": [
-        "latitude",
-        "longitude",
-        "geojson"
-      ],
-      "type": "string"
     },
     "Header": {
       "additionalProperties": false,
@@ -9265,15 +9248,15 @@
       ]
     },
     "Type": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BasicType"
-        },
-        {
-          "$ref": "#/definitions/GeoType"
-        }
+      "description": "Constants and utilities for data type  \n Data type based on level of measurement ",
+      "enum": [
+        "quantitative",
+        "ordinal",
+        "temporal",
+        "nominal",
+        "geojson"
       ],
-      "description": "Constants and utilities for data type  \n Data type based on level of measurement "
+      "type": "string"
     },
     "UrlData": {
       "additionalProperties": false,
