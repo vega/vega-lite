@@ -7,7 +7,6 @@
     },
     "AggregateOp": {
       "enum": [
-        "argmax",
         "argmin",
         "average",
         "count",
