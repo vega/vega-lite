@@ -17,6 +17,7 @@
   "[typescript]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
-    }
+    },
+    "editor.formatOnSave": true
   }
 }
