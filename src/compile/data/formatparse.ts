@@ -1,6 +1,7 @@
 import {isNumber, isString, toSet} from 'vega-util';
 import {AncestorParse} from '.';
 import {isCountingAggregateOp} from '../../aggregate';
+import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
 import * as log from '../../log';
@@ -8,7 +9,7 @@ import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -44,13 +45,13 @@ function parseExpression(field: string, parse: string): string {
 }
 
 export class ParseNode extends DataFlowNode {
-  private _parse: Dict<string>;
+  private _parse: Parse;
 
   public clone() {
     return new ParseNode(null, duplicate(this._parse));
   }
 
-  constructor(parent: DataFlowNode, parse: Dict<string>) {
+  constructor(parent: DataFlowNode, parse: Parse) {
     super(parent);
 
     this._parse = parse;
@@ -146,7 +147,7 @@ export class ParseNode extends DataFlowNode {
   /**
    * Creates a parse node from "explicit" parse and "implicit" parse and updates ancestorParse.
    */
-  private static makeWithAncestors(parent: DataFlowNode, explicit: Dict<string>, implicit: Dict<string>, ancestorParse: AncestorParse) {
+  private static makeWithAncestors(parent: DataFlowNode, explicit: Parse, implicit: Parse, ancestorParse: AncestorParse) {
     // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived"). We also don't need to flatten a field that has already been parsed.
     for (const field of keys(implicit)) {
       const parsedAs = ancestorParse.getWithExplicit(field);
