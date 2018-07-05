@@ -9,7 +9,6 @@ export interface FacetFieldDef<F> extends SortableFieldDef<F> {
 }
 
 export interface FacetMapping<F> {
-
   /**
    * Vertical facets for trellis plots.
    */

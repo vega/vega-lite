@@ -3,10 +3,10 @@
 import {assert} from 'chai';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 
-describe('compile/data/dataflow', () =>  {
-  describe('DataFlowNode', () =>  {
+describe('compile/data/dataflow', () => {
+  describe('DataFlowNode', () => {
     describe('swap', () => {
-      it('should correctly swap two nodes in a simple chain', () =>  {
+      it('should correctly swap two nodes in a simple chain', () => {
         const a = new DataFlowNode(null, 'a');
         const b = new DataFlowNode(a, 'b');
 
@@ -28,7 +28,7 @@ describe('compile/data/dataflow', () =>  {
         assert.equal(d.numChildren(), 0);
       });
 
-      it('should correctly swap two nodes', () =>  {
+      it('should correctly swap two nodes', () => {
         const root = new DataFlowNode(null, 'root');
         const parent = new DataFlowNode(root, 'parent');
 
@@ -63,8 +63,8 @@ describe('compile/data/dataflow', () =>  {
       });
     });
 
-    describe('remove', () =>  {
-      it('should remove node from dataflow', () =>  {
+    describe('remove', () => {
+      it('should remove node from dataflow', () => {
         const a = new DataFlowNode(null, 'a');
         const b = new DataFlowNode(a, 'b');
 
@@ -81,8 +81,8 @@ describe('compile/data/dataflow', () =>  {
       });
     });
 
-    describe('insertAsParentOf', () =>  {
-      it('should insert node into dataflow', () =>  {
+    describe('insertAsParentOf', () => {
+      it('should insert node into dataflow', () => {
         const a = new DataFlowNode(null, 'a');
         const anotherChild = new DataFlowNode(a, 'a');
         const b = new DataFlowNode(null, 'b');

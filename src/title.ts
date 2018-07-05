@@ -38,13 +38,17 @@ export interface TitleParams extends TitleBase {
   text: string;
 }
 
-export function extractTitleConfig(titleConfig: VgTitleConfig): {
-  mark: VgMarkConfig,
-  nonMark: TitleBase
+export function extractTitleConfig(
+  titleConfig: VgTitleConfig
+): {
+  mark: VgMarkConfig;
+  nonMark: TitleBase;
 } {
   const {
     // These are non-mark title config that need to be hardcoded
-    anchor, offset, orient,
+    anchor,
+    offset,
+    orient,
     // color needs to be redirect to fill
     color,
     // The rest are mark config.
@@ -53,13 +57,13 @@ export function extractTitleConfig(titleConfig: VgTitleConfig): {
 
   const mark: VgMarkConfig = {
     ...titleMarkConfig,
-    ...color ? {fill: color} : {}
+    ...(color ? {fill: color} : {})
   };
 
   const nonMark: TitleBase = {
-    ...anchor ? {anchor} : {},
-    ...offset ? {offset} : {},
-    ...orient ? {orient} : {}
+    ...(anchor ? {anchor} : {}),
+    ...(offset ? {offset} : {}),
+    ...(orient ? {orient} : {})
   };
 
   return {mark, nonMark};

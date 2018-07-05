@@ -2,7 +2,16 @@ import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, ViewConfig} from '../config';
-import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, ValueDef, vgField} from '../fielddef';
+import {
+  FieldDef,
+  FieldDefBase,
+  FieldRefOption,
+  isScaleFieldDef,
+  isTimeFieldDef,
+  OrderFieldDef,
+  ValueDef,
+  vgField
+} from '../fielddef';
 import {GuideEncodingEntry} from '../guide';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
@@ -15,10 +24,11 @@ import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
-
-export function applyConfig(e: VgEncodeEntry,
-    config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
-    propsList: string[]) {
+export function applyConfig(
+  e: VgEncodeEntry,
+  config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
+  propsList: string[]
+) {
   for (const property of propsList) {
     const value = config[property];
     if (value !== undefined) {
@@ -72,7 +82,12 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
   return value;
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
+export function formatSignalRef(
+  fieldDef: FieldDef<string>,
+  specifiedFormat: string,
+  expr: 'datum' | 'parent',
+  config: Config
+) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
   if (isBinning(fieldDef.bin)) {
     const startField = vgField(fieldDef, {expr});
@@ -87,7 +102,15 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
-      signal: timeFormatExpression(vgField(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
+      signal: timeFormatExpression(
+        vgField(fieldDef, {expr}),
+        fieldDef.timeUnit,
+        specifiedFormat,
+        config.text.shortTimeLabels,
+        config.timeFormat,
+        isUTCScale,
+        true
+      )
     };
   } else {
     return {
@@ -131,16 +154,26 @@ export function numberFormatExpr(field: string, specifiedFormat: string, config:
   return formatExpr(field, specifiedFormat || config.numberFormat);
 }
 
-
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(
+    startField,
+    format,
+    config
+  )} + " - " + ${numberFormatExpr(endField, format, config)}`;
 }
-
 
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean, alwaysReturn: boolean = false): string {
+export function timeFormatExpression(
+  field: string,
+  timeUnit: TimeUnit,
+  format: string,
+  shortTimeLabels: boolean,
+  timeFormatConfig: string,
+  isUTCScale: boolean,
+  alwaysReturn: boolean = false
+): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
     format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
@@ -158,12 +191,18 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
-  return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(vgField(orderChannelDef, fieldRefOption));
-    s.order.push(orderChannelDef.sort || 'ascending');
-    return s;
-  }, {field:[], order: []});
+export function sortParams(
+  orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
+  fieldRefOption?: FieldRefOption
+): VgSort {
+  return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
+    (s, orderChannelDef) => {
+      s.field.push(vgField(orderChannelDef, fieldRefOption));
+      s.order.push(orderChannelDef.sort || 'ascending');
+      return s;
+    },
+    {field: [], order: []}
+  );
 }
 
 export type AxisTitleComponent = AxisComponentProps['title'];
@@ -171,7 +210,7 @@ export type AxisTitleComponent = AxisComponentProps['title'];
 export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
   const merged = [...f1];
 
-  f2.forEach((fdToMerge) => {
+  f2.forEach(fdToMerge => {
     for (const fieldDef1 of merged) {
       // If already exists, no need to append to merged array
       if (stringify(fieldDef1) === stringify(fdToMerge)) {
@@ -184,14 +223,12 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
 }
 
 export function mergeTitle(title1: string, title2: string) {
-  return title1 === title2 ?
-    title1 : // if title is the same just use one of them
-    title1 + ', ' + title2; // join title with comma if different
+  return title1 === title2
+    ? title1 // if title is the same just use one of them
+    : title1 + ', ' + title2; // join title with comma if different
 }
 
-export function mergeTitleComponent(
-  v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>
-) {
+export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
   if (isArray(v1.value) && isArray(v2.value)) {
     return {
       explicit: v1.explicit,

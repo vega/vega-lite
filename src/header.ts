@@ -2,9 +2,7 @@ import {TextBaseline} from 'vega';
 import {Guide} from './guide';
 import {FontWeight, VgTitleConfig} from './vega.schema';
 
-export const HEADER_TITLE_PROPERTIES_MAP: {
-  [k in keyof HeaderConfig]: keyof VgTitleConfig
-} = {
+export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
   titleAnchor: 'anchor',
   titleAngle: 'angle',
   titleBaseline: 'baseline',
@@ -15,14 +13,12 @@ export const HEADER_TITLE_PROPERTIES_MAP: {
   titleLimit: 'limit'
 };
 
-export const HEADER_LABEL_PROPERTIES_MAP: {
-  [k in keyof HeaderConfig]: keyof VgTitleConfig
-} = {
+export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
   labelAngle: 'angle',
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
-  labelLimit: 'limit',
+  labelLimit: 'limit'
 };
 
 export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);

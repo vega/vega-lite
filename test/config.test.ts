@@ -1,4 +1,3 @@
-
 import {assert} from 'chai';
 import {Config, defaultConfig, stripAndRedirectConfig} from '../src/config';
 import {PRIMITIVE_MARKS} from '../src/mark';
@@ -10,7 +9,7 @@ describe('config', () => {
       ...defaultConfig,
       mark: {
         ...defaultConfig.mark,
-        opacity: 0.3,
+        opacity: 0.3
       },
       bar: {
         opacity: 0.5,

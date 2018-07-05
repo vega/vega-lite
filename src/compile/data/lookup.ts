@@ -22,7 +22,12 @@ export class LookupNode extends DataFlowNode {
     }
 
     const fromOutputName = model.getName(`lookup_${counter}`);
-    const fromOutputNode = new OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
+    const fromOutputNode = new OutputNode(
+      fromSource,
+      fromOutputName,
+      'lookup',
+      model.component.data.outputNodeRefCounts
+    );
 
     model.component.data.outputNodes[fromOutputName] = fromOutputNode;
 
@@ -30,7 +35,9 @@ export class LookupNode extends DataFlowNode {
   }
 
   public producedFields(): StringSet {
-    return toSet(this.transform.from.fields || ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]));
+    return toSet(
+      this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as])
+    );
   }
 
   public assemble(): VgLookupTransform {
@@ -40,7 +47,7 @@ export class LookupNode extends DataFlowNode {
       // lookup a few fields and add create a flat output
       foreign = {
         values: this.transform.from.fields,
-        ... this.transform.as ? {as: ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as])} : {}
+        ...(this.transform.as ? {as: this.transform.as instanceof Array ? this.transform.as : [this.transform.as]} : {})
       };
     } else {
       // lookup full record and nest it

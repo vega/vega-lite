@@ -5,7 +5,6 @@ import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
-
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
  *
@@ -83,7 +82,7 @@ export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
   return iterateFromLeaves((node: DataFlowNode) => {
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
-      const dupe = keys(pfields).every((k) => !!fields[k]);
+      const dupe = keys(pfields).every(k => !!fields[k]);
 
       if (dupe) {
         node.remove();

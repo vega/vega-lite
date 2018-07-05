@@ -1,4 +1,3 @@
-
 import {VgProjectionType} from './vega.schema';
 
 export type ProjectionType = VgProjectionType;

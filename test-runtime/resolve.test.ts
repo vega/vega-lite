@@ -1,21 +1,36 @@
 import {assert} from 'chai';
-import {brush, compositeTypes, embedFn, hits as hitsMaster, parentSelector, pt, resolutions, selectionTypes, spec, testRenderFn, unitNameRegex} from './util';
+import {
+  brush,
+  compositeTypes,
+  embedFn,
+  hits as hitsMaster,
+  parentSelector,
+  pt,
+  resolutions,
+  selectionTypes,
+  spec,
+  testRenderFn,
+  unitNameRegex
+} from './util';
 
-selectionTypes.forEach((type) => {
+selectionTypes.forEach(type => {
   const embed = embedFn(browser);
   const isInterval = type === 'interval';
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
 
-  describe(`${type} selections at runtime`, () =>  {
-    compositeTypes.forEach((specType) => {
+  describe(`${type} selections at runtime`, () => {
+    compositeTypes.forEach(specType => {
       const testRender = testRenderFn(browser, `${type}/${specType}`);
-      describe(`in ${specType} views`, () =>  {
+      describe(`in ${specType} views`, () => {
         // Loop through the views, click to add a selection instance.
         // Store size should stay constant, but unit names should vary.
-        it('should have one global selection instance', () =>  {
-          const selection = {type, resolve: 'global',
-            ...(specType === 'facet' ? {encodings: ['y']}: {})};
+        it('should have one global selection instance', () => {
+          const selection = {
+            type,
+            resolve: 'global',
+            ...(specType === 'facet' ? {encodings: ['y']} : {})
+          };
 
           for (let i = 0; i < hits[specType].length; i++) {
             embed(spec(specType, i, selection));
@@ -33,14 +48,17 @@ selectionTypes.forEach((type) => {
           }
         });
 
-        resolutions.forEach((resolve) => {
-          const selection = {type, resolve,
-            ...(specType === 'facet' ? {encodings: ['x']}: {})};
+        resolutions.forEach(resolve => {
+          const selection = {
+            type,
+            resolve,
+            ...(specType === 'facet' ? {encodings: ['x']} : {})
+          };
 
           // Loop through the views, click to add selection instance and observe
           // incrementing store size. Then, loop again but click to clear and
           // observe decrementing store size. Check unit names in each case.
-          it(`should have one selection instance per ${resolve} view`, () =>  {
+          it(`should have one selection instance per ${resolve} view`, () => {
             embed(spec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);

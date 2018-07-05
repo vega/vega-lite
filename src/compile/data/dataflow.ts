@@ -1,7 +1,5 @@
-
 import {DataSourceType} from '../../data';
 import {Dict, StringSet} from '../../util';
-
 
 /**
  * A node in the dataflow tree.
@@ -93,10 +91,9 @@ export class DataFlowNode {
     }
 
     // remove old links
-    this._children = [];  // equivalent to removing every child link one by one
+    this._children = []; // equivalent to removing every child link one by one
     parent.removeChild(this);
     parent.parent.removeChild(parent);
-
 
     // swap two nodes
     this.parent = newParent;
@@ -110,7 +107,7 @@ export class OutputNode extends DataFlowNode {
   private _name: string;
 
   public clone(): this {
-    const cloneObj = new (this.constructor as any);
+    const cloneObj = new (this.constructor as any)();
     cloneObj.debugName = 'clone_' + this.debugName;
     cloneObj._source = this._source;
     cloneObj._name = 'clone_' + this._name;
@@ -125,7 +122,12 @@ export class OutputNode extends DataFlowNode {
    * @param type The type of the output node.
    * @param refCounts A global ref counter map.
    */
-  constructor(parent: DataFlowNode, source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
+  constructor(
+    parent: DataFlowNode,
+    source: string,
+    public readonly type: DataSourceType,
+    private readonly refCounts: Dict<number>
+  ) {
     super(parent, source);
 
     this._source = this._name = source;

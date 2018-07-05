@@ -5,7 +5,6 @@ import {VgComparatorOrder} from './vega.schema';
 
 export type SortOrder = VgComparatorOrder | null;
 
-
 /**
  * A sort definition for transform
  */
@@ -20,7 +19,6 @@ export interface SortField {
    */
   order?: VgComparatorOrder;
 }
-
 
 /**
  * A sort definition for sorting a discrete scale in an encoding field definition.

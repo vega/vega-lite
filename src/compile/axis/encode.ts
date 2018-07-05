@@ -7,12 +7,9 @@ import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any, orient: AxisOrient) {
-  const fieldDef = model.fieldDef(channel) ||
-    (
-      channel === 'x' ? model.fieldDef('x2') :
-      channel === 'y' ? model.fieldDef('y2') :
-      undefined
-    );
+  const fieldDef =
+    model.fieldDef(channel) ||
+    (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);
   const axis = model.axis(channel);
   const config = model.config;
 
@@ -22,7 +19,14 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
-    const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, axis.format, config.axis.shortTimeLabels, config.timeFormat, isUTCScale);
+    const expr = timeFormatExpression(
+      'datum.value',
+      fieldDef.timeUnit,
+      axis.format,
+      config.axis.shortTimeLabels,
+      config.timeFormat,
+      isUTCScale
+    );
 
     if (expr) {
       labelsSpec.text = {signal: expr};

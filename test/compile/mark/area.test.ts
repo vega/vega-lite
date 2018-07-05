@@ -1,92 +1,91 @@
 /* tslint:disable quotemark */
 
-import { assert } from 'chai';
-import { COLOR, X, Y } from '../../../src/channel';
-import { area } from '../../../src/compile/mark/area';
-import { Encoding } from '../../../src/encoding';
-import { NormalizedUnitSpec } from '../../../src/spec';
-import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
+import {assert} from 'chai';
+import {COLOR, X, Y} from '../../../src/channel';
+import {area} from '../../../src/compile/mark/area';
+import {Encoding} from '../../../src/encoding';
+import {NormalizedUnitSpec} from '../../../src/spec';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-describe('Mark: Area', () =>  {
+describe('Mark: Area', () => {
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
-      "mark": "area",
-      "encoding":
-        {
-          "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "y": {"aggregate": "count", "type": "quantitative"},
-          ...moreEncoding,
-        },
-      "data": {"url": "data/cars.json"}
+      mark: 'area',
+      encoding: {
+        x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+        y: {aggregate: 'count', type: 'quantitative'},
+        ...moreEncoding
+      },
+      data: {url: 'data/cars.json'}
     };
   }
 
-  describe('vertical area, with log', () =>  {
+  describe('vertical area, with log', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "area",
-      "encoding": {
-        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
-        "y": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      mark: 'area',
+      encoding: {
+        x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
+        y: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
       },
-      "data": {"url": 'data/movies.json'}
+      data: {url: 'data/movies.json'}
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () =>  {
+    it('should end on axis', () => {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', () =>  {
+    it('should has no height', () => {
       assert.isUndefined(props.height);
     });
   });
 
-  describe('stacked vertical area, with binned dimension', () =>  {
+  describe('stacked vertical area, with binned dimension', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "area",
-      "encoding": {
-        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
-        "y": {"type": "quantitative", "field": 'US_Gross', "aggregate": "sum"},
-        "color": {"type": "nominal", "field": 'c'}
+      mark: 'area',
+      encoding: {
+        x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
+        color: {type: 'nominal', field: 'c'}
       },
-      "data": {"url": 'data/movies.json'}
+      data: {url: 'data/movies.json'}
     });
     const props = area.encodeEntry(model);
 
-    it('should use bin_mid for x', () =>  {
+    it('should use bin_mid for x', () => {
       assert.deepEqual(props.x, {field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
     });
   });
 
-  describe('vertical area, with zero=false', () =>  {
+  describe('vertical area, with zero=false', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "area",
-      "encoding": {
-        "x": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
-        "y": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      mark: 'area',
+      encoding: {
+        x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
+        y: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
       },
-      "data": {"url": 'data/movies.json'}
+      data: {url: 'data/movies.json'}
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () =>  {
+    it('should end on axis', () => {
       assert.deepEqual(props.y2, {field: {group: 'height'}});
     });
 
-    it('should has no height', () =>  {
+    it('should has no height', () => {
       assert.isUndefined(props.height);
     });
   });
 
-  describe('vertical area', () =>  {
+  describe('vertical area', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for x', () =>  {
+    it('should have scale for x', () => {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', () =>  {
+    it('should have scale for y', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -95,15 +94,15 @@ describe('Mark: Area', () =>  {
     });
   });
 
-  describe('vertical area with binned dimension', () =>  {
+  describe('vertical area with binned dimension', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(verticalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for x', () =>  {
+    it('should have scale for x', () => {
       assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
     });
 
-    it('should have scale for y', () =>  {
+    it('should have scale for y', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
     });
 
@@ -112,10 +111,12 @@ describe('Mark: Area', () =>  {
     });
   });
 
-  describe('vertical stacked area with color', () =>  {
-    const model = parseUnitModelWithScaleAndLayoutSize(verticalArea({
-      "color": {"field": "Origin", "type": "quantitative"}
-    }));
+  describe('vertical stacked area with color', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(
+      verticalArea({
+        color: {field: 'Origin', type: 'quantitative'}
+      })
+    );
 
     const props = area.encodeEntry(model);
 
@@ -128,86 +129,88 @@ describe('Mark: Area', () =>  {
       assert.deepEqual(props.orient, {value: 'vertical'});
     });
 
-    it('should have scale for color', () =>  {
+    it('should have scale for color', () => {
       assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
     });
   });
 
   function horizontalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
-      "mark": "area",
-      "encoding": {
-          "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "x": {"aggregate": "count", "type": "quantitative"},
-          ...moreEncoding,
-        },
-      "data": {"url": "data/cars.json"}
+      mark: 'area',
+      encoding: {
+        y: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+        x: {aggregate: 'count', type: 'quantitative'},
+        ...moreEncoding
+      },
+      data: {url: 'data/cars.json'}
     };
   }
 
-  describe('horizontal area', () =>  {
+  describe('horizontal area', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(horizontalArea());
     const props = area.encodeEntry(model);
 
-    it('should have scale for y', () =>  {
+    it('should have scale for y', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'year_Year'});
     });
 
-    it('should have scale for x', () =>  {
+    it('should have scale for x', () => {
       assert.deepEqual(props.x, {scale: X, field: 'count_*'});
     });
 
     it('should have the correct value for x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x' , value: 0});
+      assert.deepEqual(props.x2, {scale: 'x', value: 0});
     });
   });
 
-  describe('horizontal area, with log', () =>  {
+  describe('horizontal area, with log', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "area",
-      "encoding": {
-        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
-        "x": {"scale": {"type": 'log'}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      mark: 'area',
+      encoding: {
+        y: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
+        x: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
       },
-      "data": {"url": 'data/movies.json'}
+      data: {url: 'data/movies.json'}
     });
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () =>  {
+    it('should end on axis', () => {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', () =>  {
+    it('should have no width', () => {
       assert.isUndefined(props.width);
     });
   });
 
-  describe('horizontal area, with zero=false', () =>  {
+  describe('horizontal area, with zero=false', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "area",
-      "encoding": {
-        "y": {"bin": true, "type": "quantitative", "field": "IMDB_Rating"},
-        "x": {"scale": {"zero": false}, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean"}
+      mark: 'area',
+      encoding: {
+        y: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
+        x: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
       },
-      "data": {"url": 'data/movies.json'}
+      data: {url: 'data/movies.json'}
     });
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () =>  {
+    it('should end on axis', () => {
       assert.deepEqual(props.x2, {value: 0});
     });
 
-    it('should have no width', () =>  {
+    it('should have no width', () => {
       assert.isUndefined(props.width);
     });
   });
 
-  describe('horizontal stacked area with color', () =>  {
-    const model = parseUnitModelWithScaleAndLayoutSize(horizontalArea({
-      "color": {"field": "Origin", "type": "nominal"}
-    }));
+  describe('horizontal stacked area with color', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(
+      horizontalArea({
+        color: {field: 'Origin', type: 'nominal'}
+      })
+    );
 
     const props = area.encodeEntry(model);
 
@@ -220,20 +223,20 @@ describe('Mark: Area', () =>  {
       assert.deepEqual(props.orient, {value: 'horizontal'});
     });
 
-    it('should have scale for color', () =>  {
+    it('should have scale for color', () => {
       assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
     });
   });
 
-  describe('ranged area', () =>  {
-    it ('vertical area should work with aggregate', () =>  {
+  describe('ranged area', () => {
+    it('vertical area should work with aggregate', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        "data": {"url": "data/cars.json"},
-        "mark": "area",
-        "encoding": {
-          "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "y": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative"},
-          "y2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative"}
+        data: {url: 'data/cars.json'},
+        mark: 'area',
+        encoding: {
+          x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+          y: {aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative'},
+          y2: {aggregate: 'max', field: 'Weight_in_lbs', type: 'quantitative'}
         }
       });
       const props = area.encodeEntry(model);
@@ -242,14 +245,14 @@ describe('Mark: Area', () =>  {
       assert.deepEqual(props.y2, {scale: 'y', field: 'max_Weight_in_lbs'});
     });
 
-    it ('horizontal area should work with aggregate', () =>  {
+    it('horizontal area should work with aggregate', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        "data": {"url": "data/cars.json"},
-        "mark": "area",
-        "encoding": {
-          "y": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-          "x": {"aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative"},
-          "x2": {"aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative"}
+        data: {url: 'data/cars.json'},
+        mark: 'area',
+        encoding: {
+          y: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+          x: {aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative'},
+          x2: {aggregate: 'max', field: 'Weight_in_lbs', type: 'quantitative'}
         }
       });
       const props = area.encodeEntry(model);

@@ -11,12 +11,13 @@ import * as log from './../log';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
-export type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
-  /**
-   * Opacity of the marks.
-   */
-  opacity?: number;
-};
+export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
+  ColorMixins & {
+    /**
+     * Opacity of the marks.
+     */
+    opacity?: number;
+  };
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
   compositeMarkDef: GenericCompositeMarkDef<any> & P,
@@ -27,39 +28,49 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
 ) {
   const {scale, axis} = continuousAxisChannelDef;
 
-  return (partName: keyof P, mark: Mark | MarkDef, positionPrefix: string, endPositionPrefix: string = undefined, extraEncoding: Encoding<string> = {}) => {
-    const title = (axis && axis.title !== undefined) ? undefined :
-      continuousAxisChannelDef.title !== undefined ? continuousAxisChannelDef.title :
-        continuousAxisChannelDef.field;
+  return (
+    partName: keyof P,
+    mark: Mark | MarkDef,
+    positionPrefix: string,
+    endPositionPrefix: string = undefined,
+    extraEncoding: Encoding<string> = {}
+  ) => {
+    const title =
+      axis && axis.title !== undefined
+        ? undefined
+        : continuousAxisChannelDef.title !== undefined
+          ? continuousAxisChannelDef.title
+          : continuousAxisChannelDef.field;
 
-    return partLayerMixins<P>(
-      compositeMarkDef, partName, compositeMarkConfig,
-      {
-        mark, // TODO better remove this method and just have mark as a parameter of the method
-        encoding: {
-          [continuousAxis]: {
-            field: positionPrefix + '_' + continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type,
-            ...(title ? {title} : {}),
-            ...(scale ? {scale} : {}),
-            ...(axis ? {axis} : {})
-          },
-          ...(isString(endPositionPrefix) ? {
-            [continuousAxis + '2']: {
-              field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
-              type: continuousAxisChannelDef.type
+    return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
+      mark, // TODO better remove this method and just have mark as a parameter of the method
+      encoding: {
+        [continuousAxis]: {
+          field: positionPrefix + '_' + continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type,
+          ...(title ? {title} : {}),
+          ...(scale ? {scale} : {}),
+          ...(axis ? {axis} : {})
+        },
+        ...(isString(endPositionPrefix)
+          ? {
+              [continuousAxis + '2']: {
+                field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
+                type: continuousAxisChannelDef.type
+              }
             }
-          } : {}),
-          ...sharedEncoding,
-          ...extraEncoding
-        }
+          : {}),
+        ...sharedEncoding,
+        ...extraEncoding
       }
-    );
+    });
   };
 }
 
 export function partLayerMixins<P extends PartsMixins<any>>(
-  markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P,
+  markDef: GenericCompositeMarkDef<any> & P,
+  part: keyof P,
+  compositeMarkConfig: P,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {color, opacity} = markDef;
@@ -67,17 +78,19 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   const mark = markDef.type;
 
   if (markDef[part] || (markDef[part] === undefined && compositeMarkConfig[part])) {
-    return [{
-      ...partBaseSpec,
-      mark: {
-        ...compositeMarkConfig[part] as MarkConfig,
-        ...(color ? {color} : {}),
-        ...(opacity ? {opacity} : {}),
-        ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
-        style: `${mark}-${part}`,
-        ...(isBoolean(markDef[part]) ? {} : markDef[part] as MarkConfig)
+    return [
+      {
+        ...partBaseSpec,
+        mark: {
+          ...(compositeMarkConfig[part] as MarkConfig),
+          ...(color ? {color} : {}),
+          ...(opacity ? {opacity} : {}),
+          ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
+          style: `${mark}-${part}`,
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig))
+        }
       }
-    }];
+    ];
   }
   return [];
 }
@@ -96,11 +109,11 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   if (orient === 'vertical') {
     continuousAxis = 'y';
     continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
-    continuousAxisChannelDef2 = encoding.y2 ? encoding.y2 as FieldDef<string> : undefined;
+    continuousAxisChannelDef2 = encoding.y2 ? (encoding.y2 as FieldDef<string>) : undefined;
   } else {
     continuousAxis = 'x';
     continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-    continuousAxisChannelDef2 = encoding.x2 ? encoding.x2 as FieldDef<string> : undefined;
+    continuousAxisChannelDef2 = encoding.x2 ? (encoding.x2 as FieldDef<string>) : undefined;
   }
 
   if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
@@ -127,8 +140,7 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
 }
 
 export function compositeMarkOrient<M extends CompositeMark>(
-  spec: GenericUnitSpec<Encoding<Field>,
-  CompositeMark | CompositeMarkDef>,
+  spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>,
   compositeMark: M
 ): Orient {
   const {mark, encoding} = spec;
@@ -171,13 +183,17 @@ export function filterUnsupportedChannels<M extends CompositeMark, MD extends Ge
 ): GenericUnitSpec<Encoding<string>, M | MD> {
   return {
     ...spec,
-    encoding: reduce(spec.encoding, (newEncoding, fieldDef, channel) => {
-      if (supportedChannels.indexOf(channel) > -1) {
-        newEncoding[channel] = fieldDef;
-      } else {
-        log.warn(log.message.incompatibleChannel(channel, compositeMark));
-      }
-      return newEncoding;
-    }, {}),
+    encoding: reduce(
+      spec.encoding,
+      (newEncoding, fieldDef, channel) => {
+        if (supportedChannels.indexOf(channel) > -1) {
+          newEncoding[channel] = fieldDef;
+        } else {
+          log.warn(log.message.incompatibleChannel(channel, compositeMark));
+        }
+        return newEncoding;
+      },
+      {}
+    )
   };
 }

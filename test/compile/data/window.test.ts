@@ -5,7 +5,7 @@ import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 
 describe('compile/data/window', () => {
- it('creates correct window nodes for calculating sort field of crossed facet', () => {
+  it('creates correct window nodes for calculating sort field of crossed facet', () => {
     const window = WindowTransformNode.makeFromFacet(null, {
       row: {field: 'r', type: 'nominal'},
       column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}}
@@ -27,28 +27,29 @@ describe('compile/data/window', () => {
   });
 
   it('does not create any window nodes for crossed facet', () => {
-    assert.deepEqual(WindowTransformNode.makeFromFacet(null, {
-      row: {field: 'a', type: 'nominal'}
-    }), null);
+    assert.deepEqual(
+      WindowTransformNode.makeFromFacet(null, {
+        row: {field: 'a', type: 'nominal'}
+      }),
+      null
+    );
   });
-
 
   it('should return a proper vg transform', () => {
     const transform: Transform = {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number',
-        },
+          as: 'ordered_row_number'
+        }
       ],
       ignorePeers: false,
-      sort:
-        [
-          {
-            field: 'f',
-            order: 'ascending'
-          }
-        ],
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
       groupby: ['f'],
       frame: [null, 0]
     };
@@ -59,8 +60,8 @@ describe('compile/data/window', () => {
       fields: [null],
       params: [null],
       sort: {
-        field: ["f"],
-        order: ["ascending"],
+        field: ['f'],
+        order: ['ascending']
       },
       ignorePeers: false,
       as: ['ordered_row_number'],
@@ -75,16 +76,15 @@ describe('compile/data/window', () => {
         {
           op: 'row_number',
           as: undefined // intentionally omit for testing
-        },
+        }
       ],
       ignorePeers: false,
-      sort:
-        [
-          {
-            field: 'f',
-            order: 'ascending'
-          }
-        ],
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
       groupby: ['f'],
       frame: [null, 0]
     };
@@ -95,8 +95,8 @@ describe('compile/data/window', () => {
       fields: [null],
       params: [null],
       sort: {
-        field: ["f"],
-        order: ["ascending"],
+        field: ['f'],
+        order: ['ascending']
       },
       ignorePeers: false,
       as: ['row_number'],
@@ -110,7 +110,7 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number',
+          as: 'ordered_row_number'
         },
         {
           op: 'count',
@@ -122,18 +122,17 @@ describe('compile/data/window', () => {
         }
       ],
       ignorePeers: false,
-      sort:
-        [
-          {
-            field:'f',
-            order:'ascending'
-          }
-        ],
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
       groupby: ['f'],
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    assert.deepEqual({"count_field": true, "ordered_row_number": true, "sum_field": true}, window.producedFields());
+    assert.deepEqual({count_field: true, ordered_row_number: true, sum_field: true}, window.producedFields());
   });
 
   it('should clone to an equivalent version', () => {
@@ -141,17 +140,16 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number',
-        },
+          as: 'ordered_row_number'
+        }
       ],
       ignorePeers: false,
-      sort:
-        [
-          {
-            field:'f',
-            order:'ascending'
-          }
-        ],
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
       groupby: ['f'],
       frame: [null, 0]
     };

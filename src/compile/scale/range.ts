@@ -12,7 +12,7 @@ import {
   ScaleConfig,
   ScaleType,
   scaleTypeSupportProperty,
-  Scheme,
+  Scheme
 } from '../../scale';
 import {hasContinuousDomain} from '../../scale';
 import {Type} from '../../type';
@@ -24,11 +24,9 @@ import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {parseNonUnitScaleProperty} from './properties';
 
-
 export type RangeMixins = {range: Range} | {rangeStep: number} | {scheme: Scheme};
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
-
 
 export function parseScaleRange(model: Model) {
   if (isUnitModel(model)) {
@@ -49,7 +47,6 @@ function parseUnitScaleRange(model: UnitModel) {
     }
     const mergedScaleCmpt = model.getScaleComponent(channel);
 
-
     const specifiedScale = model.specifiedScales[channel];
     const fieldDef = model.fieldDef(channel);
 
@@ -69,8 +66,16 @@ function parseUnitScaleRange(model: UnitModel) {
     const xyRangeSteps = getXYRangeStep(model);
 
     const rangeWithExplicit = parseRangeForChannel(
-      channel, scaleType, fieldDef.type, specifiedScale, model.config,
-      localScaleCmpt.get('zero'), model.mark, sizeSpecified, model.getName(sizeType), xyRangeSteps
+      channel,
+      scaleType,
+      fieldDef.type,
+      specifiedScale,
+      model.config,
+      localScaleCmpt.get('zero'),
+      model.mark,
+      sizeSpecified,
+      model.getName(sizeType),
+      xyRangeSteps
     );
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
@@ -99,10 +104,17 @@ function getXYRangeStep(model: UnitModel) {
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export function parseRangeForChannel(
-    channel: Channel, scaleType: ScaleType, type: Type, specifiedScale: Scale, config: Config,
-    zero: boolean, mark: Mark, sizeSpecified: boolean, sizeSignal: string, xyRangeSteps: number[]
-  ): Explicit<VgRange> {
-
+  channel: Channel,
+  scaleType: ScaleType,
+  type: Type,
+  specifiedScale: Scale,
+  config: Config,
+  zero: boolean,
+  mark: Mark,
+  sizeSpecified: boolean,
+  sizeSignal: string,
+  xyRangeSteps: number[]
+): Explicit<VgRange> {
   const noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
 
   // Check if any of the range properties is specified.
@@ -113,7 +125,8 @@ export function parseRangeForChannel(
       const channelIncompatability = channelScalePropertyIncompatability(channel, property);
       if (!supportedByScaleType) {
         log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));
-      } else if (channelIncompatability) { // channel
+      } else if (channelIncompatability) {
+        // channel
         log.warn(channelIncompatability);
       } else {
         switch (property) {
@@ -136,10 +149,7 @@ export function parseRangeForChannel(
     }
   }
   return makeImplicit(
-    defaultRange(
-      channel, scaleType, type, config,
-      zero, mark, sizeSignal, xyRangeSteps, noRangeStep
-    )
+    defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep)
   );
 }
 
@@ -158,8 +168,15 @@ function parseScheme(scheme: Scheme) {
 }
 
 export function defaultRange(
-  channel: Channel, scaleType: ScaleType, type: Type, config: Config, zero: boolean, mark: Mark,
-  sizeSignal: string, xyRangeSteps: number[], noRangeStep: boolean
+  channel: Channel,
+  scaleType: ScaleType,
+  type: Type,
+  config: Config,
+  zero: boolean,
+  mark: Mark,
+  sizeSignal: string,
+  xyRangeSteps: number[],
+  noRangeStep: boolean
 ): VgRange {
   switch (channel) {
     case X:

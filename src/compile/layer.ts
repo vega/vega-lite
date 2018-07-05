@@ -14,7 +14,6 @@ import {RepeaterValue} from './repeater';
 import {assembleLayerSelectionMarks} from './selection/selection';
 import {UnitModel} from './unit';
 
-
 export class LayerModel extends Model {
   public readonly type: 'layer' = 'layer';
 
@@ -22,11 +21,15 @@ export class LayerModel extends Model {
   // So I'm just putting generic Model for now.
   public readonly children: Model[];
 
-
-
-  constructor(spec: NormalizedLayerSpec, parent: Model, parentGivenName: string,
-    parentGivenSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean) {
-
+  constructor(
+    spec: NormalizedLayerSpec,
+    parent: Model,
+    parentGivenName: string,
+    parentGivenSize: LayoutSizeMixins,
+    repeater: RepeaterValue,
+    config: Config,
+    fit: boolean
+  ) {
     super(spec, parent, parentGivenName, config, repeater, spec.resolve);
 
     const layoutSize = {
@@ -39,11 +42,11 @@ export class LayerModel extends Model {
 
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config, fit);
+        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
       }
 
       if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_'+i), layoutSize, repeater, config, fit);
+        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config, fit);
       }
 
       throw new Error(log.message.INVALID_SPEC);
@@ -68,7 +71,7 @@ export class LayerModel extends Model {
     this.component.selection = {};
     for (const child of this.children) {
       child.parseSelection();
-      keys(child.component.selection).forEach((key) => {
+      keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
     }
@@ -94,7 +97,6 @@ export class LayerModel extends Model {
       return signals.concat(child.assembleSelectionSignals());
     }, []);
   }
-
 
   public assembleLayoutSignals(): VgSignal[] {
     return this.children.reduce((signals, child) => {
@@ -126,9 +128,14 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    return assembleLayerSelectionMarks(this, flatten(this.children.map((child) => {
-      return child.assembleMarks();
-    })));
+    return assembleLayerSelectionMarks(
+      this,
+      flatten(
+        this.children.map(child => {
+          return child.assembleMarks();
+        })
+      )
+    );
   }
 
   public assembleLegends(): VgLegend[] {

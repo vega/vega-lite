@@ -1,6 +1,14 @@
 import {Config} from '../config';
 import * as log from '../log';
-import {isConcatSpec, isFacetSpec, isLayerSpec, isRepeatSpec, isUnitSpec, LayoutSizeMixins, NormalizedSpec} from '../spec';
+import {
+  isConcatSpec,
+  isFacetSpec,
+  isLayerSpec,
+  isRepeatSpec,
+  isUnitSpec,
+  LayoutSizeMixins,
+  NormalizedSpec
+} from '../spec';
 import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -9,8 +17,15 @@ import {RepeatModel} from './repeat';
 import {RepeaterValue} from './repeater';
 import {UnitModel} from './unit';
 
-export function buildModel(spec: NormalizedSpec, parent: Model, parentGivenName: string,
-  unitSize: LayoutSizeMixins, repeater: RepeaterValue, config: Config, fit: boolean): Model {
+export function buildModel(
+  spec: NormalizedSpec,
+  parent: Model,
+  parentGivenName: string,
+  unitSize: LayoutSizeMixins,
+  repeater: RepeaterValue,
+  config: Config,
+  fit: boolean
+): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, repeater, config);
   }

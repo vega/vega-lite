@@ -27,7 +27,7 @@ function cloneSubtree(facet: FacetNode) {
       } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
         copy.addDimensions(facet.fields);
       }
-      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
+      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
 
       return [copy];
     }
@@ -60,7 +60,7 @@ function moveFacetDown(node: DataFlowNode) {
 
       // replicate the subtree and place it before the facet's main node
       const copy: DataFlowNode[] = flatten(node.children.map(cloneSubtree(node)));
-      copy.forEach(c => c.parent = node.model.component.data.main);
+      copy.forEach(c => (c.parent = node.model.component.data.main));
     }
   } else {
     node.children.forEach(moveFacetDown);
@@ -84,7 +84,6 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Remove nodes that are not required starting from a root.
  */
 function removeUnnecessaryNodes(node: DataFlowNode) {
-
   // remove empty null filter nodes
   if (node instanceof FilterInvalidNode && every(vals(node.filter), f => f === null)) {
     node.remove();

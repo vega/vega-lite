@@ -7,18 +7,21 @@ describe('Concat', () => {
   describe('merge scale domains', () => {
     it('should instantiate all children in vconcat', () => {
       const model = parseConcatModel({
-        vconcat: [{
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'ordinal'}
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'ordinal'}
+            }
+          },
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'b', type: 'ordinal'},
+              y: {field: 'c', type: 'quantitative'}
+            }
           }
-        },{
-          mark: 'bar',
-          encoding: {
-            x: {field: 'b', type: 'ordinal'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }]
+        ]
       });
 
       assert.equal(model.children.length, 2);
@@ -27,18 +30,21 @@ describe('Concat', () => {
 
     it('should instantiate all children in hconcat', () => {
       const model = parseConcatModel({
-        hconcat: [{
-          mark: 'point',
-          encoding: {
-            x: {field: 'a', type: 'ordinal'}
+        hconcat: [
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'ordinal'}
+            }
+          },
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'b', type: 'ordinal'},
+              y: {field: 'c', type: 'quantitative'}
+            }
           }
-        },{
-          mark: 'bar',
-          encoding: {
-            x: {field: 'b', type: 'ordinal'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }]
+        ]
       });
 
       assert.equal(model.children.length, 2);
@@ -47,15 +53,16 @@ describe('Concat', () => {
 
     it('should create correct layout for vconcat', () => {
       const model = parseConcatModel({
-        vconcat: [{
-          mark: 'point',
-          encoding: {
+        vconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          },
+          {
+            mark: 'bar',
+            encoding: {}
           }
-        },{
-          mark: 'bar',
-          encoding: {
-          }
-        }]
+        ]
       });
 
       assert.deepEqual<VgLayout>(model.assembleLayout(), {
@@ -68,15 +75,16 @@ describe('Concat', () => {
 
     it('should create correct layout for hconcat', () => {
       const model = parseConcatModel({
-        hconcat: [{
-          mark: 'point',
-          encoding: {
+        hconcat: [
+          {
+            mark: 'point',
+            encoding: {}
+          },
+          {
+            mark: 'bar',
+            encoding: {}
           }
-        },{
-          mark: 'bar',
-          encoding: {
-          }
-        }]
+        ]
       });
 
       assert.deepEqual<VgLayout>(model.assembleLayout(), {
@@ -88,16 +96,19 @@ describe('Concat', () => {
   });
 
   describe('resolve', () => {
-    it('cannot share axes', log.wrap((localLogger) => {
-      parseConcatModel({
-        hconcat: [],
-        resolve: {
-          axis: {
-            x: 'shared'
+    it(
+      'cannot share axes',
+      log.wrap(localLogger => {
+        parseConcatModel({
+          hconcat: [],
+          resolve: {
+            axis: {
+              x: 'shared'
+            }
           }
-        }
-      });
-      assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
-    }));
+        });
+        assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+      })
+    );
   });
 });

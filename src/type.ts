@@ -11,7 +11,12 @@ export namespace Type {
   export const GEOJSON: 'geojson' = 'geojson';
 }
 
-export type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL | typeof Type.GEOJSON;
+export type Type =
+  | typeof Type.QUANTITATIVE
+  | typeof Type.ORDINAL
+  | typeof Type.TEMPORAL
+  | typeof Type.NOMINAL
+  | typeof Type.GEOJSON;
 
 export const TYPE_INDEX: Flag<Type> = {
   quantitative: 1,
@@ -37,7 +42,7 @@ export const GEOJSON = Type.GEOJSON;
  * @param  type
  * @return Full type name.
  */
-export function getFullName(type: Type|string): Type {
+export function getFullName(type: Type | string): Type {
   if (type) {
     type = type.toLowerCase();
     switch (type) {

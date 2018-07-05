@@ -17,7 +17,7 @@ const project: TransformCompiler = {
     const timeUnits: {[key: string]: TimeUnitComponent} = {};
 
     // TODO: find a possible channel mapping for these fields.
-    (selDef.fields || []).forEach((field) => channels[field] = null);
+    (selDef.fields || []).forEach(field => (channels[field] = null));
 
     (selDef.encodings || []).forEach((channel: SingleDefChannel) => {
       const fieldDef = model.fieldDef(channel);
@@ -51,7 +51,7 @@ const project: TransformCompiler = {
     }
 
     const fields = selCmpt.fields || (selCmpt.fields = {});
-    projection.filter((p) => p.channel).forEach((p) => fields[p.channel] = p.field);
+    projection.filter(p => p.channel).forEach(p => (fields[p.channel] = p.field));
 
     if (keys(timeUnits).length) {
       selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);

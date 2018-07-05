@@ -1,6 +1,13 @@
 import {assert} from 'chai';
 
-import {expression, fieldFilterExpression, isFieldEqualPredicate, isFieldLTEPredicate, isFieldOneOfPredicate, isFieldRangePredicate} from '../src/predicate';
+import {
+  expression,
+  fieldFilterExpression,
+  isFieldEqualPredicate,
+  isFieldLTEPredicate,
+  isFieldOneOfPredicate,
+  isFieldRangePredicate
+} from '../src/predicate';
 import {TimeUnit} from '../src/timeunit';
 
 describe('filter', () => {
@@ -16,7 +23,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [oneOfFilter, rangeFilter, exprFilter].forEach((filter) => {
+      [oneOfFilter, rangeFilter, exprFilter].forEach(filter => {
         assert.isFalse(isFieldEqualPredicate(filter));
       });
     });
@@ -28,7 +35,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [equalFilter, oneOfFilter, rangeFilter, exprFilter].forEach((filter) => {
+      [equalFilter, oneOfFilter, rangeFilter, exprFilter].forEach(filter => {
         assert.isFalse(isFieldLTEPredicate(filter));
       });
     });
@@ -40,7 +47,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [equalFilter, rangeFilter, exprFilter].forEach((filter) => {
+      [equalFilter, rangeFilter, exprFilter].forEach(filter => {
         assert.isFalse(isFieldOneOfPredicate(filter));
       });
     });
@@ -52,7 +59,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [oneOfFilter, equalFilter, exprFilter].forEach((filter) => {
+      [oneOfFilter, equalFilter, exprFilter].forEach(filter => {
         assert.isFalse(isFieldRangePredicate(filter));
       });
     });
@@ -102,7 +109,10 @@ describe('filter', () => {
           month: 'January'
         }
       });
-      assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
+      assert.equal(
+        expr,
+        'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))'
+      );
     });
 
     it('should return a correct expression for an EqualFilter with datetime object', () => {
@@ -111,9 +121,11 @@ describe('filter', () => {
         field: 'date',
         equal: 'January'
       });
-      assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
+      assert.equal(
+        expr,
+        'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))'
+      );
     });
-
 
     it('should return a correct expression for an lessThanFilter with datetime object', () => {
       const expr = expression(null, {
@@ -165,7 +177,6 @@ describe('filter', () => {
       assert.equal(expr, 'datum["x"] >= 0');
     });
 
-
     it('should return true for a RangeFilter with no bound', () => {
       const expr = expression(null, {field: 'x', range: [null, null]});
       assert.equal(expr, 'true');
@@ -181,26 +192,27 @@ describe('filter', () => {
     let expr = expression(null, {not: {field: 'color', equal: 'red'}});
     assert.equal(expr, '!(datum["color"]==="red")');
 
-    expr = expression(null, {and: [
-      {field: 'color', equal: 'red'},
-      {field: 'x', range: [0, 5]}
-    ]});
+    expr = expression(null, {
+      and: [{field: 'color', equal: 'red'}, {field: 'x', range: [0, 5]}]
+    });
 
     assert.equal(expr, '(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
 
-    expr = expression(null, {and: [
-      {field: 'color', oneOf: ['red', 'yellow']},
-      {or: [
-        {field: 'x', range: [0, null]},
-        'datum.price > 10',
-        {not: 'datum["x"]===5'}
-      ]}
-    ]});
+    expr = expression(null, {
+      and: [
+        {field: 'color', oneOf: ['red', 'yellow']},
+        {
+          or: [{field: 'x', range: [0, null]}, 'datum.price > 10', {not: 'datum["x"]===5'}]
+        }
+      ]
+    });
 
-    assert.equal(expr, '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
-      '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))');
+    assert.equal(
+      expr,
+      '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
+        '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))'
+    );
   });
-
 
   describe('fieldFilterExpression', () => {
     it('generates a range predicate using inequalities when useInRange=false', () => {

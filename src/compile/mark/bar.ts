@@ -14,14 +14,13 @@ import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 import * as ref from './valueref';
 
-
 export const bar: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
       ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...x(model),
-      ...y(model),
+      ...y(model)
     };
   }
 };
@@ -38,21 +37,29 @@ function x(model: UnitModel): VgEncodeEntry {
   // x, x2, and width -- we must specify two of these in all conditions
   if (isFieldDef(xDef) && isBinned(xDef.bin)) {
     return mixins.binPosition(
-      xDef, x2Def, X, xScaleName,
+      xDef,
+      x2Def,
+      X,
+      xScaleName,
       markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
       xScale.get('reverse')
     );
   } else if (orient === 'horizontal' || x2Def) {
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', 'x2'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'x2')
     };
-  } else { // vertical
+  } else {
+    // vertical
     if (isFieldDef(xDef)) {
       const xScaleType = xScale.get('type');
       if (isBinning(xDef.bin) && !sizeDef && !hasDiscreteDomain(xScaleType)) {
         return mixins.binPosition(
-          xDef, undefined, X, model.scaleName('x'), markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+          xDef,
+          undefined,
+          X,
+          model.scaleName('x'),
+          markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
           xScale.get('reverse')
         );
       } else {
@@ -63,7 +70,9 @@ function x(model: UnitModel): VgEncodeEntry {
     }
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
 
-    return mixins.centeredBandPosition('x', model,
+    return mixins.centeredBandPosition(
+      'x',
+      model,
       {...ref.mid(width)},
       defaultSizeRef(markDef, xScaleName, xScale, config)
     );
@@ -82,22 +91,28 @@ function y(model: UnitModel) {
 
   // y, y2 & height -- we must specify two of these in all conditions
   if (isFieldDef(yDef) && isBinned(yDef.bin)) {
-      return mixins.binPosition(
-        yDef, y2Def, Y, yScaleName,
-        markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
-        yScale.get('reverse')
-      );
+    return mixins.binPosition(
+      yDef,
+      y2Def,
+      Y,
+      yScaleName,
+      markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+      yScale.get('reverse')
+    );
   } else if (orient === 'vertical' || y2Def) {
     return {
       ...mixins.pointPosition('y', model, 'zeroOrMin'),
-      ...mixins.pointPosition2(model, 'zeroOrMin', 'y2'),
+      ...mixins.pointPosition2(model, 'zeroOrMin', 'y2')
     };
   } else {
     if (isFieldDef(yDef)) {
       const yScaleType = yScale.get('type');
       if (isBinning(yDef.bin) && !sizeDef && !hasDiscreteDomain(yScaleType)) {
         return mixins.binPosition(
-          yDef, undefined, Y, model.scaleName('y'),
+          yDef,
+          undefined,
+          Y,
+          model.scaleName('y'),
           markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
           yScale.get('reverse')
         );
@@ -105,7 +120,10 @@ function y(model: UnitModel) {
         return mixins.bandPosition(yDef, 'y', model);
       }
     }
-    return mixins.centeredBandPosition('y', model, ref.mid(height),
+    return mixins.centeredBandPosition(
+      'y',
+      model,
+      ref.mid(height),
       defaultSizeRef(markDef, yScaleName, yScale, config)
     );
   }
@@ -126,7 +144,8 @@ function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleCompone
       log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
     } else if (scaleType === ScaleType.BAND) {
       return ref.bandRef(scaleName);
-    } else { // non-ordinal scale
+    } else {
+      // non-ordinal scale
       return {value: config.bar.continuousBandSize};
     }
   } else if (config.scale.rangeStep && config.scale.rangeStep !== null) {
@@ -134,4 +153,3 @@ function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleCompone
   }
   return {value: 20};
 }
-

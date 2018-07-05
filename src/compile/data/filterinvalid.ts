@@ -13,30 +13,32 @@ export class FilterInvalidNode extends DataFlowNode {
   }
 
   constructor(parent: DataFlowNode, private fieldDefs: Dict<FieldDef<string>>) {
-   super(parent);
+    super(parent);
   }
 
   public static make(parent: DataFlowNode, model: UnitModel): FilterInvalidNode {
     const {config, mark} = model;
-    if (config.invalidValues !== 'filter' ) {
+    if (config.invalidValues !== 'filter') {
       return null;
     }
 
-    const filter = model.reduceFieldDef((aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
-      const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
-      if (scaleComponent) {
-        const scaleType = scaleComponent.get('type');
+    const filter = model.reduceFieldDef(
+      (aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
+        const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+        if (scaleComponent) {
+          const scaleType = scaleComponent.get('type');
 
-
-        // While discrete domain scales can handle invalid values, continuous scales can't.
-        // Thus, for non-path marks, we have to filter null for scales with continuous domains.
-        // (For path marks, we will use "defined" property and skip these values instead.)
-        if (hasContinuousDomain(scaleType) && !fieldDef.aggregate && !isPathMark(mark)) {
-          aggregator[fieldDef.field] = fieldDef;
+          // While discrete domain scales can handle invalid values, continuous scales can't.
+          // Thus, for non-path marks, we have to filter null for scales with continuous domains.
+          // (For path marks, we will use "defined" property and skip these values instead.)
+          if (hasContinuousDomain(scaleType) && !fieldDef.aggregate && !isPathMark(mark)) {
+            aggregator[fieldDef.field] = fieldDef;
+          }
         }
-      }
-      return aggregator;
-    }, {} as Dict<FieldDef<string>>);
+        return aggregator;
+      },
+      {} as Dict<FieldDef<string>>
+    );
 
     if (!keys(filter).length) {
       return null;
@@ -62,10 +64,11 @@ export class FilterInvalidNode extends DataFlowNode {
       return vegaFilters;
     }, []);
 
-    return filters.length > 0 ?
-    {
-        type: 'filter',
-        expr: filters.join(' && ')
-    } : null;
+    return filters.length > 0
+      ? {
+          type: 'filter',
+          expr: filters.join(' && ')
+        }
+      : null;
   }
 }

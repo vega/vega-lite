@@ -38,29 +38,33 @@ describe('compile/data/parse', () => {
 
     it('should add a parse node for filter transforms with time unit', () => {
       const model = parseUnitModel({
-        "data": {"url": "a.json"},
-        "transform": [{
-          "filter": {
-            "not": {
-              "and": [{
-                "or": [
+        data: {url: 'a.json'},
+        transform: [
+          {
+            filter: {
+              not: {
+                and: [
                   {
-                    "timeUnit": "year",
-                    "field": "date",
-                    "equal": 2005
-                  },
-                  "datum.a > 5"
+                    or: [
+                      {
+                        timeUnit: 'year',
+                        field: 'date',
+                        equal: 2005
+                      },
+                      'datum.a > 5'
+                    ]
+                  }
                 ]
-              }]
+              }
             }
           }
-        }],
-        "mark": "point",
-        "encoding": {
-          "x": {"field": "a", "type": "quantitative"},
-          "y": {"field": "b", "type": "temporal"},
-          "color": {"field": "c", "type": "ordinal"},
-          "shape": {"field": "d", "type": "nominal"}
+        ],
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'temporal'},
+          color: {field: 'c', type: 'ordinal'},
+          shape: {field: 'd', type: 'nominal'}
         }
       });
 
@@ -98,7 +102,10 @@ describe('compile/data/parse', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [{bin: true, field: 'field', as: 'a'}, {aggregate: [{op: 'count', field: 'f', as: 'b'}, {op: 'sum', field: 'f', as: 'c'}], groupby: ['field']}],
+        transform: [
+          {bin: true, field: 'field', as: 'a'},
+          {aggregate: [{op: 'count', field: 'f', as: 'b'}, {op: 'sum', field: 'f', as: 'c'}], groupby: ['field']}
+        ],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
@@ -124,54 +131,49 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof ImputeNode);
       assert.isTrue(result instanceof ImputeNode);
-
     });
-    it ('should return a WindowTransform Node', () => {
+    it('should return a WindowTransform Node', () => {
       const transform: Transform = {
         window: [
           {
             op: 'count',
             field: 'f',
-            as: 'b',
-          }
-        ],
-      };
-      const model = parseUnitModel({
-        data: {values: []},
-        mark: 'point',
-        transform: [
-          transform
-        ],
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
-      });
-      const root = new DataFlowNode(null);
-      parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof WindowTransformNode);
-    });
-    it ('should return a WindowTransform Node with optional properties', () => {
-      const transform: Transform = {
-        window: [
-          {
-            op: 'row_number',
-            as: 'ordered_row_number',
-          },
-        ],
-        ignorePeers: false,
-        sort:  [
-          {
-            field:'f',
-            order:'ascending'
+            as: 'b'
           }
         ]
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
+        transform: [transform],
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+      const root = new DataFlowNode(null);
+      parseTransformArray(root, model, new AncestorParse());
+      assert.isTrue(root.children[0] instanceof WindowTransformNode);
+    });
+    it('should return a WindowTransform Node with optional properties', () => {
+      const transform: Transform = {
+        window: [
+          {
+            op: 'row_number',
+            as: 'ordered_row_number'
+          }
         ],
+        ignorePeers: false,
+        sort: [
+          {
+            field: 'f',
+            order: 'ascending'
+          }
+        ]
+      };
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
@@ -181,22 +183,20 @@ describe('compile/data/parse', () => {
       assert.isTrue(root.children[0] instanceof WindowTransformNode);
     });
 
-    it ('should return a WindowTransform Node', () => {
+    it('should return a WindowTransform Node', () => {
       const transform: Transform = {
         window: [
           {
             op: 'count',
             field: 'f',
-            as: 'b',
+            as: 'b'
           }
-        ],
+        ]
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
@@ -205,28 +205,26 @@ describe('compile/data/parse', () => {
       parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof WindowTransformNode);
     });
-    it ('should return a WindowTransform Node with optional properties', () => {
+    it('should return a WindowTransform Node with optional properties', () => {
       const transform: Transform = {
         window: [
           {
             op: 'row_number',
-            as: 'ordered_row_number',
-          },
+            as: 'ordered_row_number'
+          }
         ],
         ignorePeers: false,
         sort: [
-            {
-              field:'f',
-              order:'ascending'
-            }
-          ]
+          {
+            field: 'f',
+            order: 'ascending'
+          }
+        ]
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
@@ -238,15 +236,13 @@ describe('compile/data/parse', () => {
 
     it('should return a FoldTransformNode', () => {
       const transform: Transform = {
-        fold : ['a','b'],
+        fold: ['a', 'b'],
         as: ['A', 'B']
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'A', type: 'temporal'},
           y: {field: 'B', type: 'quantitative'}
@@ -260,14 +256,12 @@ describe('compile/data/parse', () => {
 
     it('should return a FlattenTransformNode', () => {
       const transform: Transform = {
-        flatten : ['a','b']
+        flatten: ['a', 'b']
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal'},
           y: {field: 'b', type: 'quantitative'}
@@ -281,14 +275,12 @@ describe('compile/data/parse', () => {
 
     it('should return a SampleTransformNode', () => {
       const transform: Transform = {
-        sample : 1000,
+        sample: 1000
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'A', type: 'temporal'},
           y: {field: 'B', type: 'quantitative'}
@@ -301,7 +293,7 @@ describe('compile/data/parse', () => {
     });
 
     it('should return a 3 Transforms from an Impute', () => {
-      const transform: Transform= {
+      const transform: Transform = {
         impute: 'y',
         key: 'x',
         method: 'max',
@@ -312,9 +304,7 @@ describe('compile/data/parse', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
-        transform: [
-          transform
-        ],
+        transform: [transform],
         encoding: {
           x: {field: 'x', type: 'quantitative'},
           y: {field: 'y', type: 'quantitative'},

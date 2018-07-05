@@ -19,22 +19,17 @@ export class ImputeNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: ImputeTransform) {
     super(parent);
-
   }
 
   private processSequence(keyvals: ImputeSequence): SignalRef {
     const {start = 0, stop, step} = keyvals;
-    const result = [
-      start,
-      stop,
-      ...(step ? [step] : [])
-    ].join(',');
+    const result = [start, stop, ...(step ? [step] : [])].join(',');
 
     return {signal: `sequence(${result})`};
   }
 
   public static makeFromTransform(parent: DataFlowNode, imputeTransform: ImputeTransform): ImputeNode {
-    return new ImputeNode (parent, imputeTransform);
+    return new ImputeNode(parent, imputeTransform);
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
@@ -43,37 +38,36 @@ export class ImputeNode extends DataFlowNode {
     const yDef = encoding.y;
 
     if (isFieldDef(xDef) && isFieldDef(yDef)) {
-
-      const imputedChannel = xDef.impute ? xDef : (yDef.impute ? yDef: undefined);
+      const imputedChannel = xDef.impute ? xDef : yDef.impute ? yDef : undefined;
       if (imputedChannel === undefined) {
         return undefined;
       }
-      const keyChannel = xDef.impute ? yDef : (yDef.impute ? xDef: undefined);
+      const keyChannel = xDef.impute ? yDef : yDef.impute ? xDef : undefined;
       const {method, value, frame} = imputedChannel.impute;
       const groupbyFields = pathGroupingFields(model.mark, encoding);
 
       return new ImputeNode(parent, {
         impute: imputedChannel.field,
         key: keyChannel.field,
-        ...(method ? {method}:{}),
+        ...(method ? {method} : {}),
         ...(value !== undefined ? {value} : {}),
         ...(frame ? {frame} : {}),
-        ...(groupbyFields.length ? {groupby: groupbyFields} : {} )
+        ...(groupbyFields.length ? {groupby: groupbyFields} : {})
       });
     }
     return null;
   }
 
   public assemble() {
-    const {impute, key, keyvals, method, groupby, value, frame=[null,null]} = this.transform;
+    const {impute, key, keyvals, method, groupby, value, frame = [null, null]} = this.transform;
 
     const initialImpute: VgImputeTransform = {
       type: 'impute',
       field: impute,
       key,
-      ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals}: {}),
+      ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals} : {}),
       method: 'value',
-      ...(groupby ? {groupby}: {}),
+      ...(groupby ? {groupby} : {}),
       value: null
     };
     let setImputedField;
@@ -85,7 +79,7 @@ export class ImputeNode extends DataFlowNode {
         fields: [impute],
         frame,
         ignorePeers: false,
-        ...(groupby ? {groupby}: {})
+        ...(groupby ? {groupby} : {})
       };
       const replaceOriginal: VgFormulaTransform = {
         type: 'formula',
@@ -103,6 +97,5 @@ export class ImputeNode extends DataFlowNode {
     }
 
     return [initialImpute, ...setImputedField];
-
   }
 }

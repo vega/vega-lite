@@ -8,7 +8,15 @@ import {Encoding, extractTransformsFromEncoding} from './../encoding';
 import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, GenericCompositeMarkDef, makeCompositeAggregatePartFactory, partLayerMixins, PartsMixins} from './common';
+import {
+  compositeMarkContinuousAxis,
+  compositeMarkOrient,
+  filterUnsupportedChannels,
+  GenericCompositeMarkDef,
+  makeCompositeAggregatePartFactory,
+  partLayerMixins,
+  PartsMixins
+} from './common';
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -41,20 +49,21 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
   extent?: 'min-max' | number;
 }
 
-export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> & BoxPlotConfig & {
-  /**
-   * Type of the mark.  For box plots, this should always be `"box-plot"`.
-   * [boxplot](https://vega.github.io/vega-lite/docs/compositemark.html#boxplot)
-   */
-  type: BoxPlot;
+export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
+  BoxPlotConfig & {
+    /**
+     * Type of the mark.  For box plots, this should always be `"box-plot"`.
+     * [boxplot](https://vega.github.io/vega-lite/docs/compositemark.html#boxplot)
+     */
+    type: BoxPlot;
 
-  /**
-   * Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
-   *
-   * __Default value:__ `"vertical"`.
-   */
-  orient?: Orient;
-};
+    /**
+     * Orientation of the box plot.  This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
+     *
+     * __Default value:__ `"vertical"`.
+     */
+    orient?: Orient;
+  };
 
 export interface BoxPlotConfigMixins {
   /**
@@ -65,7 +74,10 @@ export interface BoxPlotConfigMixins {
 
 const boxPlotSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
 
-export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, config: Config): NormalizedLayerSpec {
+export function normalizeBoxPlot(
+  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
+  config: Config
+): NormalizedLayerSpec {
   spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
 
   // TODO: use selection
@@ -81,8 +93,14 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
   const sizeValue = markDef.size || config.boxplot.size;
   const isMinMax = !isNumber(extent);
 
-
-  const {transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis, tickOrient} = boxParams(spec, extent, config);
+  const {
+    transform,
+    continuousAxisChannelDef,
+    continuousAxis,
+    groupby,
+    encodingWithoutContinuousAxis,
+    tickOrient
+  } = boxParams(spec, extent, config);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -117,7 +135,7 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker'),
     ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker'),
     ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box'),
-    ...makeBoxPlotMidTick('median', midTick, 'mid_box'),
+    ...makeBoxPlotMidTick('median', midTick, 'mid_box')
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
@@ -130,28 +148,26 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
     const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
 
-    outliersLayerMixins = partLayerMixins<BoxPlotPartsMixins>(
-      markDef, 'outliers', config.boxplot,
-      {
-        transform: [
-          {
-            window: boxParamsQuartiles(continuousAxisChannelDef.field),
-            frame: [null, null],
-            groupby
-          }, {
-            filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
-          }
-        ],
-        mark: 'point',
-        encoding: {
-          [continuousAxis]: {
-            field: continuousAxisChannelDef.field,
-            type: continuousAxisChannelDef.type
-          },
-          ...encodingWithoutSizeColorAndContinuousAxis
+    outliersLayerMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
+      transform: [
+        {
+          window: boxParamsQuartiles(continuousAxisChannelDef.field),
+          frame: [null, null],
+          groupby
+        },
+        {
+          filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
         }
+      ],
+      mark: 'point',
+      encoding: {
+        [continuousAxis]: {
+          field: continuousAxisChannelDef.field,
+          type: continuousAxisChannelDef.type
+        },
+        ...encodingWithoutSizeColorAndContinuousAxis
       }
-    );
+    });
   }
 
   if (outliersLayerMixins.length > 0) {
@@ -159,7 +175,8 @@ export function normalizeBoxPlot(spec: GenericUnitSpec<Encoding<string>, BoxPlot
     return {
       ...outerSpec,
       layer: [
-        { // boxplot
+        {
+          // boxplot
           transform,
           layer: boxLayer
         },
@@ -189,7 +206,11 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
   ];
 }
 
-function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>, extent: 'min-max' | number, config: Config) {
+function boxParams(
+  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
+  extent: 'min-max' | number,
+  config: Config
+) {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
   const continuousFieldName: string = continuousAxisChannelDef.field;
@@ -214,22 +235,29 @@ function boxParams(spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>
     }
   ];
 
-  const postAggregateCalculates: CalculateTransform[] = isMinMax ? [] : [{
-    calculate: `datum.upper_box_${continuousFieldName} - datum.lower_box_${continuousFieldName}`,
-    as: 'iqr_' + continuousFieldName
-  },
-  {
-    calculate: `min(datum.upper_box_${continuousFieldName} + datum.iqr_${continuousFieldName} * ${extent}, datum.max_${continuousFieldName})`,
-    as: 'upper_whisker_' + continuousFieldName
-  },
-  {
-    calculate: `max(datum.lower_box_${continuousFieldName} - datum.iqr_${continuousFieldName} * ${extent}, datum.min_${continuousFieldName})`,
-    as: 'lower_whisker_' + continuousFieldName
-  }];
+  const postAggregateCalculates: CalculateTransform[] = isMinMax
+    ? []
+    : [
+        {
+          calculate: `datum.upper_box_${continuousFieldName} - datum.lower_box_${continuousFieldName}`,
+          as: 'iqr_' + continuousFieldName
+        },
+        {
+          calculate: `min(datum.upper_box_${continuousFieldName} + datum.iqr_${continuousFieldName} * ${extent}, datum.max_${continuousFieldName})`,
+          as: 'upper_whisker_' + continuousFieldName
+        },
+        {
+          calculate: `max(datum.lower_box_${continuousFieldName} - datum.iqr_${continuousFieldName} * ${extent}, datum.min_${continuousFieldName})`,
+          as: 'lower_whisker_' + continuousFieldName
+        }
+      ];
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
 
-  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
+  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(
+    oldEncodingWithoutContinuousAxis,
+    config
+  );
 
   const tickOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
 

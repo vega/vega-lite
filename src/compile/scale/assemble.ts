@@ -20,7 +20,8 @@ export function assembleScales(model: Model): VgScale[] {
 }
 
 export function assembleScalesForModel(model: Model): VgScale[] {
-    return keys(model.component.scales).reduce((scales: VgScale[], channel: ScaleChannel) => {
+  return keys(model.component.scales).reduce(
+    (scales: VgScale[], channel: ScaleChannel) => {
       const scaleComponent = model.component.scales[channel];
       if (scaleComponent.merged) {
         // Skipped merged scales
@@ -43,7 +44,6 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-
       scales.push({
         name,
         type,
@@ -54,7 +54,9 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       });
 
       return scales;
-    }, [] as VgScale[]);
+    },
+    [] as VgScale[]
+  );
 }
 
 export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model: Model, channel: Channel) {

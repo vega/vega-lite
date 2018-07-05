@@ -14,7 +14,7 @@ import {
   NormalizedRepeatSpec,
   NormalizedUnitSpec,
   TopLevel,
-  TopLevelSpec,
+  TopLevelSpec
 } from '../src/spec';
 import {isLayerSpec, isUnitSpec} from '../src/spec';
 import {normalizeAutoSize} from '../src/toplevelprops';
@@ -33,7 +33,15 @@ export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
 }
 
 export function parseUnitModel(spec: TopLevel<NormalizedUnitSpec>) {
-  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config), normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit');
+  return new UnitModel(
+    spec,
+    null,
+    '',
+    undefined,
+    undefined,
+    initConfig(spec.config),
+    normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit'
+  );
 }
 
 export function parseUnitModelWithScale(spec: TopLevel<NormalizedUnitSpec>) {
@@ -48,9 +56,16 @@ export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevel<NormalizedUn
   return model;
 }
 
-
 export function parseLayerModel(spec: TopLevel<NormalizedLayerSpec>) {
-  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config), normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit');
+  return new LayerModel(
+    spec,
+    null,
+    '',
+    undefined,
+    undefined,
+    initConfig(spec.config),
+    normalizeAutoSize(spec.autosize, spec.config ? spec.config.autosize : undefined, true).type === 'fit'
+  );
 }
 
 export function parseFacetModel(spec: TopLevel<NormalizedFacetSpec>) {

@@ -3,8 +3,6 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
 import {AxisOrient, VgAxis, VgAxisConfig} from './vega.schema';
 
-
-
 export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
 
 export interface Axis extends VgAxisConfig, Guide {
@@ -69,11 +67,8 @@ export interface Axis extends VgAxisConfig, Guide {
   encoding?: AxisEncoding;
 }
 
-
 export type AxisPart = keyof AxisEncoding;
 export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
-
-
 
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
@@ -181,7 +176,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleX: 1,
   titleY: 1,
   values: 1,
-  zindex: 1,
+  zindex: 1
 };
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {

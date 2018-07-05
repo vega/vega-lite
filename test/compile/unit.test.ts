@@ -6,9 +6,11 @@ import {BAR} from '../../src/mark';
 import {QUANTITATIVE} from '../../src/type';
 import {parseUnitModel} from '../util';
 
-describe('UnitModel', () =>  {
+describe('UnitModel', () => {
   describe('initEncoding', () => {
-    it('should drop unsupported channel and throws warning', log.wrap((localLogger) => {
+    it(
+      'should drop unsupported channel and throws warning',
+      log.wrap(localLogger => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -17,9 +19,12 @@ describe('UnitModel', () =>  {
         });
         assert.equal(model.encoding.shape, undefined);
         assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
-      }));
+      })
+    );
 
-    it('should drop invalid channel and throws warning', log.wrap((localLogger) => {
+    it(
+      'should drop invalid channel and throws warning',
+      log.wrap(localLogger => {
         const _model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -27,9 +32,12 @@ describe('UnitModel', () =>  {
           }
         } as any); // To make parseUnitModel accept the model with invalid encoding channel
         assert.equal(localLogger.warns[0], log.message.invalidEncodingChannel('_y'));
-      }));
+      })
+    );
 
-    it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
+    it(
+      'should drop channel without field and value and throws warning',
+      log.wrap(localLogger => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -38,24 +46,22 @@ describe('UnitModel', () =>  {
         });
         assert.equal(model.encoding.x, undefined);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, X));
-      }));
+      })
+    );
 
-    it('should drop a fieldDef without field and value from the channel def list and throws warning', log.wrap((localLogger) => {
+    it(
+      'should drop a fieldDef without field and value from the channel def list and throws warning',
+      log.wrap(localLogger => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
-            detail: [
-              {field: 'a', type: 'ordinal'},
-              {type: 'quantitative'}
-            ]
+            detail: [{field: 'a', type: 'ordinal'}, {type: 'quantitative'}]
           }
         });
-        assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [
-          {field: 'a', type: 'ordinal'}
-        ]);
+        assert.deepEqual<FieldDef<string> | FieldDef<string>[]>(model.encoding.detail, [{field: 'a', type: 'ordinal'}]);
         assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: QUANTITATIVE}, DETAIL));
-      }));
-
+      })
+    );
   });
 
   describe('initAxes', () => {

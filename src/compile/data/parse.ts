@@ -1,6 +1,19 @@
 import {MAIN, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow} from '../../transform';
+import {
+  isAggregate,
+  isBin,
+  isCalculate,
+  isFilter,
+  isFlatten,
+  isFold,
+  isImpute,
+  isLookup,
+  isSample,
+  isStack,
+  isTimeUnit,
+  isWindow
+} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -41,10 +54,11 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
     }
   } else {
     // If we don't have a source defined (overriding parent's data), use the parent's facet root or main.
-    return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
+    return model.parent.component.data.facetRoot
+      ? model.parent.component.data.facetRoot
+      : model.parent.component.data.main;
   }
 }
-
 
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
@@ -61,18 +75,17 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      const bin = head = BinNode.makeFromTransform(head, t, model);
+      const bin = (head = BinNode.makeFromTransform(head, t, model));
 
       for (const field of keys(bin.producedFields())) {
         ancestorParse.set(field, 'number', false);
       }
-
     } else if (isTimeUnit(t)) {
       head = TimeUnitNode.makeFromTransform(head, t);
 
       ancestorParse.set(t.as, 'date', false);
     } else if (isAggregate(t)) {
-      const agg = head = AggregateNode.makeFromTransform(head, t);
+      const agg = (head = AggregateNode.makeFromTransform(head, t));
 
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
@@ -82,40 +95,39 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isLookup(t)) {
-      const lookup = head = LookupNode.make(head, model, t, lookupCounter++);
+      const lookup = (head = LookupNode.make(head, model, t, lookupCounter++));
 
       for (const field of keys(lookup.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isWindow(t)) {
-      const window = head = new WindowTransformNode(head, t);
+      const window = (head = new WindowTransformNode(head, t));
 
       for (const field of keys(window.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isStack(t)) {
-      const stack = head = StackNode.makeFromTransform(head, t);
+      const stack = (head = StackNode.makeFromTransform(head, t));
 
       for (const field of keys(stack.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isFold(t)) {
-      const fold = head = new FoldTransformNode(head, t);
+      const fold = (head = new FoldTransformNode(head, t));
 
       for (const field of keys(fold.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isFlatten(t)) {
-      const flatten = head = new FlattenTransformNode(head, t);
+      const flatten = (head = new FlattenTransformNode(head, t));
 
       for (const field of keys(flatten.producedFields())) {
         ancestorParse.set(field, 'derived', false);
       }
     } else if (isSample(t)) {
       head = new SampleTransformNode(head, t);
-
     } else if (isImpute(t)) {
-      const impute = head = ImputeNode.makeFromTransform(head, t);
+      const impute = (head = ImputeNode.makeFromTransform(head, t));
 
       for (const field of keys(impute.producedFields())) {
         ancestorParse.set(field, 'derived', false);
@@ -228,7 +240,6 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {
-
     if (!parentIsLayer) {
       head = BinNode.makeFromEncoding(head, model) || head;
     }

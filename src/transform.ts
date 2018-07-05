@@ -136,22 +136,20 @@ export interface StackTransform {
    * If a single string(eg."val") is provided, the end field will be "val_end".
    */
   as: string | string[];
-
 }
 
-
 export type WindowOnlyOp =
-  'row_number' |
-   'rank' |
-   'dense_rank' |
-   'percent_rank' |
-   'cume_dist' |
-   'ntile' |
-   'lag' |
-   'lead' |
-   'first_value' |
-   'last_value' |
-   'nth_value';
+  | 'row_number'
+  | 'rank'
+  | 'dense_rank'
+  | 'percent_rank'
+  | 'cume_dist'
+  | 'ntile'
+  | 'lag'
+  | 'lead'
+  | 'first_value'
+  | 'last_value'
+  | 'nth_value';
 
 export interface WindowFieldDef {
   /**
@@ -345,7 +343,7 @@ export function isWindow(t: Transform): t is WindowTransform {
   return t['window'] !== undefined;
 }
 
-export function isFlatten(t:Transform): t is FlattenTransform {
+export function isFlatten(t: Transform): t is FlattenTransform {
   return t['flatten'] !== undefined;
 }
 export function isCalculate(t: Transform): t is CalculateTransform {
@@ -376,7 +374,19 @@ export function isFold(t: Transform): t is FoldTransform {
   return t['fold'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
+export type Transform =
+  | FilterTransform
+  | CalculateTransform
+  | LookupTransform
+  | BinTransform
+  | TimeUnitTransform
+  | ImputeTransform
+  | AggregateTransform
+  | WindowTransform
+  | StackTransform
+  | FlattenTransform
+  | FoldTransform
+  | SampleTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

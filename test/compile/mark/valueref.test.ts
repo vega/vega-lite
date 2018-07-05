@@ -1,23 +1,20 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { getOffset, midPoint } from '../../../src/compile/mark/valueref';
-import { FieldDef } from '../../../src/fielddef';
-import { MarkDef } from '../../../src/mark';
-
-
+import {assert} from 'chai';
+import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
+import {FieldDef} from '../../../src/fielddef';
+import {MarkDef} from '../../../src/mark';
 
 describe('compile/mark/valueref', () => {
-  describe("getOffset", () =>  {
+  describe('getOffset', () => {
     const markDef: MarkDef = {
-      "type": "point",
-      "x2Offset": 100
+      type: 'point',
+      x2Offset: 100
     };
-    it('should correctly get the offset value for the given channel', () =>  {
+    it('should correctly get the offset value for the given channel', () => {
       assert.equal(getOffset('x2', markDef), 100);
     });
-    it('should return undefined when the offset value for the given channel is not defined', () =>  {
+    it('should return undefined when the offset value for the given channel is not defined', () => {
       assert.equal(getOffset('x', markDef), undefined);
-
     });
   });
 

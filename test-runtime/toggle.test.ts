@@ -15,12 +15,12 @@ function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
   return `return ${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }
 
-describe('Toggle multi selections at runtime', () =>  {
+describe('Toggle multi selections at runtime', () => {
   const type = 'multi';
   const embed = embedFn(browser);
   const testRender = testRenderFn(browser, 'multi/toggle');
 
-  it('should toggle values into/out of the store', () =>  {
+  it('should toggle values into/out of the store', () => {
     embed(spec('unit', 0, {type}));
     browser.execute(toggle('qq', 0, false));
     browser.execute(toggle('qq', 1, true));
@@ -37,7 +37,7 @@ describe('Toggle multi selections at runtime', () =>  {
     testRender('click_2');
   });
 
-  it('should clear out the store w/o shiftKey', () =>  {
+  it('should clear out the store w/o shiftKey', () => {
     embed(spec('unit', 1, {type}));
     browser.execute(toggle('qq', 0, false));
     browser.execute(toggle('qq', 1, true));
@@ -54,9 +54,8 @@ describe('Toggle multi selections at runtime', () =>  {
     testRender(`clear_2`);
   });
 
-  it('should toggle binned fields', () =>  {
-    embed(spec('unit', 0, {type, encodings: ['x', 'y']},
-      {x: {bin: true}, y: {bin: true}}));
+  it('should toggle binned fields', () => {
+    embed(spec('unit', 0, {type, encodings: ['x', 'y']}, {x: {bin: true}, y: {bin: true}}));
 
     browser.execute(toggle('bins', 0, false));
     browser.execute(toggle('bins', 1, true));
@@ -73,14 +72,14 @@ describe('Toggle multi selections at runtime', () =>  {
     testRender('bins_2');
   });
 
-  compositeTypes.forEach(function(specType, idx) {
-    it(`should toggle in ${specType} views`, () =>  {
+  compositeTypes.forEach((specType, idx) => {
+    it(`should toggle in ${specType} views`, () => {
       embed(spec(specType, idx, {type, resolve: 'union'}));
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
         const store = browser.execute(toggle('composite', i, true, parent)).value;
-        assert.equal(length = store.length, i + 1);
+        assert.equal((length = store.length), i + 1);
         if (i % 3 === 2) {
           testRender(`${specType}_${i}`);
         }
@@ -90,7 +89,7 @@ describe('Toggle multi selections at runtime', () =>  {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
         const store = browser.execute(toggle('qq_clear', 0, even, parent)).value;
-        assert.lengthOf(store, even ? length : length = length - 2, `iter: ${i}`);
+        assert.lengthOf(store, even ? length : (length = length - 2), `iter: ${i}`);
         if (!even) {
           testRender(`${specType}_clear_${i}`);
         }

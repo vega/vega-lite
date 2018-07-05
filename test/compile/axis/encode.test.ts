@@ -4,26 +4,24 @@ import {assert} from 'chai';
 import * as encode from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';
 
-
-
 describe('compile/axis/encode', () => {
-  describe('encode.labels()', () =>  {
-    it('should not rotate label for temporal field by default', () =>  {
+  describe('encode.labels()', () => {
+    it('should not rotate label for temporal field by default', () => {
       const model = parseUnitModelWithScale({
-        mark: "point",
+        mark: 'point',
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "month"}
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         }
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
       assert.isUndefined(labels.angle);
     });
 
-    it('should do not rotate label for temporal field if labelAngle is specified in axis config', () =>  {
+    it('should do not rotate label for temporal field if labelAngle is specified in axis config', () => {
       const model = parseUnitModelWithScale({
-        mark: "point",
+        mark: 'point',
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "month"}
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
         },
         config: {axisX: {labelAngle: 90}}
       });
@@ -31,11 +29,11 @@ describe('compile/axis/encode', () => {
       assert.isUndefined(labels.angle);
     });
 
-    it('should have correct text.signal for quarter timeUnits', () =>  {
+    it('should have correct text.signal for quarter timeUnits', () => {
       const model = parseUnitModelWithScale({
-        mark: "point",
+        mark: 'point',
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "quarter"}
+          x: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
         }
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
@@ -43,11 +41,11 @@ describe('compile/axis/encode', () => {
       assert.equal(labels.text.signal, expected);
     });
 
-    it('should have correct text.signal for yearquartermonth timeUnits', () =>  {
+    it('should have correct text.signal for yearquartermonth timeUnits', () => {
       const model = parseUnitModelWithScale({
-        mark: "point",
+        mark: 'point',
         encoding: {
-          x: {field: "a", type: "temporal", timeUnit: "yearquartermonth"}
+          x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
         }
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');

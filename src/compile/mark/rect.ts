@@ -15,7 +15,7 @@ export const rect: MarkCompiler = {
     return {
       ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
       ...x(model),
-      ...y(model),
+      ...y(model)
     };
   }
 };
@@ -37,7 +37,8 @@ export function x(model: UnitModel): VgEncodeEntry {
       // We don't support rect mark with point/ordinal scale
       throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScaleType));
     }
-  } else { // continuous scale or no scale
+  } else {
+    // continuous scale or no scale
     return {
       ...mixins.pointPosition('x', model, 'zeroOrMax'),
       ...mixins.pointPosition2(model, 'zeroOrMin', 'x2')
@@ -62,7 +63,8 @@ export function y(model: UnitModel): VgEncodeEntry {
       // We don't support rect mark with point/ordinal scale
       throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScaleType));
     }
-  } else { // continuous scale or no scale
+  } else {
+    // continuous scale or no scale
     return {
       ...mixins.pointPosition('y', model, 'zeroOrMax'),
       ...mixins.pointPosition2(model, 'zeroOrMin', 'y2')

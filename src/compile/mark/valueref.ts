@@ -6,7 +6,16 @@ import {isArray, isFunction, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {ChannelDef, ChannelDefWithCondition, FieldDef, FieldRefOption, isFieldDef, isValueDef, TextFieldDef, vgField} from '../../fielddef';
+import {
+  ChannelDef,
+  ChannelDefWithCondition,
+  FieldDef,
+  FieldRefOption,
+  isFieldDef,
+  isValueDef,
+  TextFieldDef,
+  vgField
+} from '../../fielddef';
 import * as log from '../../log';
 import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -17,16 +26,21 @@ import {VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
-
-
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, channel2Def: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-    stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
+export function position(
+  channel: 'x' | 'y',
+  channelDef: ChannelDef<string>,
+  channel2Def: ChannelDef<string>,
+  scaleName: string,
+  scale: ScaleComponent,
+  stack: StackProperties,
+  defaultRef: VgValueRef | (() => VgValueRef)
+): VgValueRef {
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
@@ -37,18 +51,25 @@ export function position(channel: 'x' | 'y', channelDef: ChannelDef<string>, cha
 /**
  * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function position2(channel: 'x2' | 'y2', aFieldDef: ChannelDef<string>, a2fieldDef: ChannelDef<string>, scaleName: string, scale: ScaleComponent,
-  stack: StackProperties, defaultRef: VgValueRef | (() => VgValueRef)): VgValueRef {
-  if (isFieldDef(aFieldDef) && stack &&
-      // If fieldChannel is X and channel is X2 (or Y and Y2)
-      channel.charAt(0) === stack.fieldChannel.charAt(0)
-      ) {
+export function position2(
+  channel: 'x2' | 'y2',
+  aFieldDef: ChannelDef<string>,
+  a2fieldDef: ChannelDef<string>,
+  scaleName: string,
+  scale: ScaleComponent,
+  stack: StackProperties,
+  defaultRef: VgValueRef | (() => VgValueRef)
+): VgValueRef {
+  if (
+    isFieldDef(aFieldDef) &&
+    stack &&
+    // If fieldChannel is X and channel is X2 (or Y and Y2)
+    channel.charAt(0) === stack.fieldChannel.charAt(0)
+  ) {
     return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
   }
   return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
 }
-
-
 
 export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
   const offsetChannel = channel + 'Offset';
@@ -71,13 +92,14 @@ export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start'
 }
 
 export function fieldRef(
-    fieldDef: FieldDef<string>, scaleName: string, opt: FieldRefOption,
-    mixins?: {offset?: number | VgValueRef, band?: number|boolean}
-  ): VgValueRef {
-
+  fieldDef: FieldDef<string>,
+  scaleName: string,
+  opt: FieldRefOption,
+  mixins?: {offset?: number | VgValueRef; band?: number | boolean}
+): VgValueRef {
   const ref: VgValueRef = {
     ...(scaleName ? {scale: scaleName} : {}),
-    field: vgField(fieldDef, opt),
+    field: vgField(fieldDef, opt)
   };
 
   if (mixins) {
@@ -89,7 +111,7 @@ export function fieldRef(
   return ref;
 }
 
-export function bandRef(scaleName: string, band: number|boolean = true): VgValueRef {
+export function bandRef(scaleName: string, band: number | boolean = true): VgValueRef {
   return {
     scale: scaleName,
     band: band
@@ -101,9 +123,10 @@ export function bandRef(scaleName: string, band: number|boolean = true): VgValue
  */
 function binMidSignal(scaleName: string, fieldDef: FieldDef<string>, fieldDef2?: FieldDef<string>) {
   const start = vgField(fieldDef, {expr: 'datum'});
-  const end = fieldDef2 !== undefined ?
-    vgField(fieldDef2, {expr: 'datum'}) :
-    vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
+  const end =
+    fieldDef2 !== undefined
+      ? vgField(fieldDef2, {expr: 'datum'})
+      : vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
 
   return {
     signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
@@ -203,14 +226,17 @@ function domainDefinitelyIncludeZero(scale: ScaleComponent) {
   }
   const domains = scale.domains;
   if (isArray(domains)) {
-    return some(domains, (d) => isArray(d) && d.length === 2 && d[0] <=0 && d[1] >= 0);
+    return some(domains, d => isArray(d) && d.length === 2 && d[0] <= 0 && d[1] >= 0);
   }
   return false;
 }
 
 export function getDefaultRef(
   defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
-  channel: 'x' | 'y', scaleName: string, scale: ScaleComponent, mark: Mark
+  channel: 'x' | 'y',
+  scaleName: string,
+  scale: ScaleComponent,
+  mark: Mark
 ) {
   return () => {
     if (isString(defaultRef)) {
@@ -232,20 +258,20 @@ export function getDefaultRef(
             };
           }
           if (mark === 'bar' || mark === 'area') {
-            log.warn(log.message.nonZeroScaleUsedWithLengthMark(
-              mark, channel, {zeroFalse: scale.explicit.zero === false}
-            ));
+            log.warn(
+              log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {zeroFalse: scale.explicit.zero === false})
+            );
           }
         }
       }
 
       if (defaultRef === 'zeroOrMin') {
         return channel === 'x' ? {value: 0} : {field: {group: 'height'}};
-      } else { // zeroOrMax
+      } else {
+        // zeroOrMax
         return channel === 'x' ? {field: {group: 'width'}} : {value: 0};
       }
     }
     return defaultRef;
   };
 }
-

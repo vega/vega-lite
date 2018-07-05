@@ -5,42 +5,46 @@ import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel, parseRepeatModel} from '../../util';
 
-describe('Selection + Scales', () =>  {
-  it('assembles domainRaw from selection parameter', () =>  {
+describe('Selection + Scales', () => {
+  it('assembles domainRaw from selection parameter', () => {
     const model = parseConcatModel({
       vconcat: [
         {
-          mark: "area",
+          mark: 'area',
           selection: {
-            brush: {type: "interval", encodings: ["x"]},
-            brush2: {type: "multi", fields: ["price"], resolve: "intersect"}
+            brush: {type: 'interval', encodings: ['x']},
+            brush2: {type: 'multi', fields: ['price'], resolve: 'intersect'}
           },
           encoding: {
-            x: {field: "date", type: "temporal"},
-            y: {field: "price", type: "quantitative"}
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
           }
         },
         {
           selection: {
-            brush3: {type: "interval"}
+            brush3: {type: 'interval'}
           },
-          mark: "area",
+          mark: 'area',
           encoding: {
             x: {
-              field: "date", type: "temporal",
-              scale: {domain: {selection: "brush", encoding: "x"}}
+              field: 'date',
+              type: 'temporal',
+              scale: {domain: {selection: 'brush', encoding: 'x'}}
             },
             y: {
-              field: "price", type: "quantitative",
-              scale: {domain: {selection: "brush2", field: "price"}}
+              field: 'price',
+              type: 'quantitative',
+              scale: {domain: {selection: 'brush2', field: 'price'}}
             },
             color: {
-              field: "symbol", type: "nominal",
-              scale: {domain: {selection: "brush2"} as Domain}
+              field: 'symbol',
+              type: 'nominal',
+              scale: {domain: {selection: 'brush2'} as Domain}
             },
             opacity: {
-              field: "symbol", type: "nominal",
-              scale: {domain: {selection: "brush3"} as Domain}
+              field: 'symbol',
+              type: 'nominal',
+              scale: {domain: {selection: 'brush3'} as Domain}
             }
           }
         }
@@ -64,44 +68,41 @@ describe('Selection + Scales', () =>  {
 
     assert.isObject(xscale.domain);
     assert.property(xscale, 'domainRaw');
-    assert.propertyVal(xscale.domainRaw, 'signal',
-      "vlIntervalDomain(\"brush_store\", \"x\", null)");
+    assert.propertyVal(xscale.domainRaw, 'signal', 'vlIntervalDomain("brush_store", "x", null)');
 
     assert.isObject(yscale.domain);
     assert.property(yscale, 'domainRaw');
-    assert.deepPropertyVal(yscale.domainRaw, 'signal',
-      "vlMultiDomain(\"brush2_store\", null, \"price\", \"intersect\")");
+    assert.deepPropertyVal(yscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
 
     assert.isObject(cscale.domain);
     assert.property(cscale, 'domainRaw');
-    assert.propertyVal(cscale.domainRaw, 'signal',
-      "vlMultiDomain(\"brush2_store\", null, \"price\", \"intersect\")");
+    assert.propertyVal(cscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
 
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');
     assert.propertyVal(oscale.domainRaw, 'signal', 'null');
   });
 
-  it('should bind both scales in diagonal repeated views', () =>  {
+  it('should bind both scales in diagonal repeated views', () => {
     const model = parseRepeatModel({
       repeat: {
-        row: ["Horsepower", "Acceleration"],
-        column: ["Miles_per_Gallon", "Acceleration"]
+        row: ['Horsepower', 'Acceleration'],
+        column: ['Miles_per_Gallon', 'Acceleration']
       },
       spec: {
-        data: {url: "data/cars.json"},
-        mark: "point",
+        data: {url: 'data/cars.json'},
+        mark: 'point',
         selection: {
           grid: {
-            type: "interval",
-            resolve: "global",
-            bind: "scales"
+            type: 'interval',
+            resolve: 'global',
+            bind: 'scales'
           }
         },
         encoding: {
-          x: {field: {repeat: "column"}, type: "quantitative"},
-          y: {field: {repeat: "row"}, type: "quantitative"},
-          color: {field: "Origin", type: "nominal"}
+          x: {field: {repeat: 'column'}, type: 'quantitative'},
+          y: {field: {repeat: 'row'}, type: 'quantitative'},
+          color: {field: 'Origin', type: 'nominal'}
         }
       }
     });
@@ -117,32 +118,33 @@ describe('Selection + Scales', () =>  {
     assert.propertyVal(scales[1].domainRaw, 'signal', 'grid_Acceleration');
   });
 
-  it('should merge domainRaw for layered views', () =>  {
+  it('should merge domainRaw for layered views', () => {
     const model = parseConcatModel({
-      data: {url: "data/sp500.csv"},
+      data: {url: 'data/sp500.csv'},
       vconcat: [
         {
           layer: [
             {
-              mark: "point",
+              mark: 'point',
               encoding: {
                 x: {
-                  field: "date", type: "temporal",
-                  scale: {domain: {selection: "brush"}}
+                  field: 'date',
+                  type: 'temporal',
+                  scale: {domain: {selection: 'brush'}}
                 },
-                y: {field: "price", type: "quantitative"}
+                y: {field: 'price', type: 'quantitative'}
               }
             }
           ]
         },
         {
-          mark: "area",
+          mark: 'area',
           selection: {
-            brush: {type: "interval", encodings: ["x"]}
+            brush: {type: 'interval', encodings: ['x']}
           },
           encoding: {
-            x: {field: "date", type: "temporal"},
-            y: {field: "price", type: "quantitative"}
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
           }
         }
       ]

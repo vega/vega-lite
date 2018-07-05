@@ -6,7 +6,6 @@ import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 import * as ref from './valueref';
 
-
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, width, height} = model;
 
@@ -15,7 +14,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
     ...mixins.nonPosition('size', model),
-    ...shapeMixins(model, config, fixedShape),
+    ...shapeMixins(model, config, fixedShape)
   };
 }
 

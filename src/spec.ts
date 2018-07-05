@@ -8,7 +8,17 @@ import {channelHasField, Encoding, EncodingWithFacet, isRanged} from './encoding
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
-import {AnyMark, AreaConfig, isMarkDef, isPathMark, isPrimitiveMark, LineConfig, Mark, MarkConfig, MarkDef} from './mark';
+import {
+  AnyMark,
+  AreaConfig,
+  isMarkDef,
+  isPathMark,
+  isPrimitiveMark,
+  LineConfig,
+  Mark,
+  MarkConfig,
+  MarkDef
+} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
 import {Resolve} from './resolve';
@@ -19,19 +29,19 @@ import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './topl
 import {Transform} from './transform';
 import {Dict, duplicate, hash, keys, omit, pick, vals} from './util';
 
+export type TopLevel<S extends BaseSpec> = S &
+  TopLevelProperties & {
+    /**
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+     * @format uri
+     */
+    $schema?: string;
 
-export type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
-  /**
-   * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
-   * @format uri
-   */
-  $schema?: string;
-
-  /**
-   * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
-   */
-  config?: Config;
-};
+    /**
+     * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
+     */
+    config?: Config;
+  };
 
 export type BaseSpec = Partial<DataMixins> & {
   /**
@@ -67,7 +77,6 @@ export interface DataMixins {
   data: Data;
 }
 
-
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
 export interface LayoutSizeMixins {
   /**
@@ -101,7 +110,6 @@ export interface LayoutSizeMixins {
 }
 
 export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
-
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
@@ -112,7 +120,6 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
    * A key-value mapping between encoding channels and definition of fields.
    */
   encoding?: E;
-
 
   /**
    * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
@@ -161,7 +168,6 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
    */
   encoding?: Encoding<string | RepeatRef>;
 
-
   /**
    * An object defining properties of the geographic projection shared by underlying layers.
    */
@@ -170,11 +176,9 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
 
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
-
-export interface GenericFacetSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>
-  > extends BaseSpec, GenericCompositionLayout {
+export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+  extends BaseSpec,
+    GenericCompositionLayout {
   /**
    * An object that describes mappings between `row` and `column` channels and their field definitions.
    */
@@ -194,10 +198,9 @@ export interface GenericFacetSpec<
 
 export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export interface GenericRepeatSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>
-> extends BaseSpec, GenericCompositionLayout {
+export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+  extends BaseSpec,
+    GenericCompositionLayout {
   /**
    * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
    */
@@ -213,10 +216,9 @@ export interface GenericRepeatSpec<
 
 export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export interface GenericVConcatSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>
-> extends BaseSpec, ConcatLayout {
+export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+  extends BaseSpec,
+    ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a column.
    */
@@ -228,10 +230,9 @@ export interface GenericVConcatSpec<
   resolve?: Resolve;
 }
 
-export interface GenericHConcatSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>
-> extends BaseSpec, ConcatLayout {
+export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+  extends BaseSpec,
+    ConcatLayout {
   /**
    * A list of views that should be concatenated and put into a row.
    */
@@ -244,24 +245,31 @@ export interface GenericHConcatSpec<
 }
 
 export type NormalizedConcatSpec =
-  GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec> | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
+  | GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>
+  | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type GenericSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>
-> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> |
-  GenericVConcatSpec<U, L> |GenericHConcatSpec<U, L>;
+export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> =
+  | U
+  | L
+  | GenericFacetSpec<U, L>
+  | GenericRepeatSpec<U, L>
+  | GenericVConcatSpec<U, L>
+  | GenericHConcatSpec<U, L>;
 
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
 export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 
-export type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> |
-TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
+export type TopLevelSpec =
+  | TopLevelFacetedUnitSpec
+  | TopLevelFacetSpec
+  | TopLevel<ExtendedLayerSpec>
+  | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
-
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {
   return spec['facet'] !== undefined;
@@ -279,9 +287,7 @@ export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any
   return spec['repeat'] !== undefined;
 }
 
-export function isConcatSpec(spec: BaseSpec):
-  spec is GenericVConcatSpec<any, any> |
-    GenericHConcatSpec<any, any> {
+export function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> | GenericHConcatSpec<any, any> {
   return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
 
@@ -297,7 +303,10 @@ export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, a
  * Decompose extended unit specs into composition of pure unit specs.
  */
 // TODO: consider moving this to another file.  Maybe vl.spec.normalize or vl.normalize
-export function normalize(spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec, config: Config): NormalizedSpec {
+export function normalize(
+  spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec,
+  config: Config
+): NormalizedSpec {
   if (isFacetSpec(spec)) {
     return normalizeFacet(spec, config);
   }
@@ -325,7 +334,10 @@ export function normalize(spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, Ex
   throw new Error(log.message.INVALID_SPEC);
 }
 
-function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>, config: Config): NormalizedFacetSpec {
+function normalizeFacet(
+  spec: GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  config: Config
+): NormalizedFacetSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -334,7 +346,7 @@ function normalizeFacet(spec: GenericFacetSpec<CompositeUnitSpec, ExtendedLayerS
   };
 }
 
-function mergeEncoding(opt: {parentEncoding: Encoding<any>, encoding: Encoding<any>}): Encoding<any> {
+function mergeEncoding(opt: {parentEncoding: Encoding<any>; encoding: Encoding<any>}): Encoding<any> {
   const {parentEncoding, encoding} = opt;
   if (parentEncoding && encoding) {
     const overriden = keys(parentEncoding).reduce((o, key) => {
@@ -356,7 +368,7 @@ function mergeEncoding(opt: {parentEncoding: Encoding<any>, encoding: Encoding<a
   return keys(merged).length > 0 ? merged : undefined;
 }
 
-function mergeProjection(opt: {parentProjection: Projection, projection: Projection}) {
+function mergeProjection(opt: {parentProjection: Projection; projection: Projection}) {
   const {parentProjection, projection} = opt;
   if (parentProjection && projection) {
     log.warn(log.message.projectionOverridden({parentProjection, projection}));
@@ -375,7 +387,7 @@ function normalizeLayer(
   const mergedProjection = mergeProjection({parentProjection, projection});
   return {
     ...rest,
-    layer: layer.map((subspec) => {
+    layer: layer.map(subspec => {
       if (isLayerSpec(subspec)) {
         return normalizeLayer(subspec, config, mergedEncoding, mergedProjection);
       }
@@ -384,7 +396,10 @@ function normalizeLayer(
   };
 }
 
-function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>, config: Config): NormalizedRepeatSpec {
+function normalizeRepeat(
+  spec: GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  config: Config
+): NormalizedRepeatSpec {
   const {spec: subspec, ...rest} = spec;
   return {
     ...rest,
@@ -392,19 +407,25 @@ function normalizeRepeat(spec: GenericRepeatSpec<CompositeUnitSpec, ExtendedLaye
   };
 }
 
-function normalizeVConcat(spec: GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>, config: Config): NormalizedConcatSpec {
+function normalizeVConcat(
+  spec: GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  config: Config
+): NormalizedConcatSpec {
   const {vconcat: vconcat, ...rest} = spec;
   return {
     ...rest,
-    vconcat: vconcat.map((subspec) => normalize(subspec, config))
+    vconcat: vconcat.map(subspec => normalize(subspec, config))
   };
 }
 
-function normalizeHConcat(spec: GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>, config: Config): NormalizedConcatSpec {
+function normalizeHConcat(
+  spec: GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  config: Config
+): NormalizedConcatSpec {
   const {hconcat: hconcat, ...rest} = spec;
   return {
     ...rest,
-    hconcat: hconcat.map((subspec) => normalize(subspec, config))
+    hconcat: hconcat.map(subspec => normalize(subspec, config))
   };
 }
 
@@ -420,32 +441,39 @@ function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): N
     ...outerSpec,
     facet: {
       ...(row ? {row} : {}),
-      ...(column ? {column}: {}),
+      ...(column ? {column} : {})
     },
-    spec: normalizeNonFacetUnit({
-      ...(projection ? {projection} : {}),
-      mark,
-      ...(width ? {width} : {}),
-      ...(height ? {height} : {}),
-      encoding,
-      ...(selection ? {selection} : {})
-    }, config)
+    spec: normalizeNonFacetUnit(
+      {
+        ...(projection ? {projection} : {}),
+        mark,
+        ...(width ? {width} : {}),
+        ...(height ? {height} : {}),
+        encoding,
+        ...(selection ? {selection} : {})
+      },
+      config
+    )
   };
 }
 
-function isNonFacetUnitSpecWithPrimitiveMark(spec: GenericUnitSpec<Encoding<Field>, AnyMark>):
-  spec is GenericUnitSpec<Encoding<Field>, Mark> {
-    return isPrimitiveMark(spec.mark);
+function isNonFacetUnitSpecWithPrimitiveMark(
+  spec: GenericUnitSpec<Encoding<Field>, AnyMark>
+): spec is GenericUnitSpec<Encoding<Field>, Mark> {
+  return isPrimitiveMark(spec.mark);
 }
 
 function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Encoding<Field>): MarkConfig {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
-  } else if (markDef.point) { // truthy : true or object
+  } else if (markDef.point) {
+    // truthy : true or object
     return isObject(markDef.point) ? markDef.point : {};
-  } else if (markDef.point !== undefined) { // false or null
+  } else if (markDef.point !== undefined) {
+    // false or null
     return null;
-  } else { // undefined (not disabled)
+  } else {
+    // undefined (not disabled)
     if (markConfig.point || encoding.shape) {
       // enable point overlay if config[mark].point is truthy or if encoding.shape is provided
       return isObject(markConfig.point) ? markConfig.point : {};
@@ -456,11 +484,14 @@ function getPointOverlay(markDef: MarkDef, markConfig: LineConfig, encoding: Enc
 }
 
 function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkConfig {
-  if (markDef.line) { // true or object
+  if (markDef.line) {
+    // true or object
     return markDef.line === true ? {} : markDef.line;
-  } else if (markDef.line !== undefined) { // false or null
+  } else if (markDef.line !== undefined) {
+    // false or null
     return null;
-  } else { // undefined (not disabled)
+  } else {
+    // undefined (not disabled)
     if (markConfig.line) {
       // enable line overlay if config[mark].line is truthy
       return markConfig.line === true ? {} : markConfig.line;
@@ -471,22 +502,26 @@ function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkConfig {
 }
 
 function normalizeNonFacetUnit(
-  spec: GenericUnitSpec<Encoding<Field>, AnyMark>, config: Config,
-  parentEncoding?: Encoding<string | RepeatRef>, parentProjection?: Projection
+  spec: GenericUnitSpec<Encoding<Field>, AnyMark>,
+  config: Config,
+  parentEncoding?: Encoding<string | RepeatRef>,
+  parentProjection?: Projection
 ): NormalizedUnitSpec | NormalizedLayerSpec {
   const {encoding, projection} = spec;
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-
 
   // merge parent encoding / projection first
   if (parentEncoding || parentProjection) {
     const mergedProjection = mergeProjection({parentProjection, projection});
     const mergedEncoding = mergeEncoding({parentEncoding, encoding});
-    return normalizeNonFacetUnit({
-      ...spec,
-      ...(mergedProjection ? {projection: mergedProjection} : {}),
-      ...(mergedEncoding ? {encoding: mergedEncoding} : {}),
-    }, config);
+    return normalizeNonFacetUnit(
+      {
+        ...spec,
+        ...(mergedProjection ? {projection: mergedProjection} : {}),
+        ...(mergedEncoding ? {encoding: mergedEncoding} : {})
+      },
+      config
+    );
   }
 
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
@@ -498,10 +533,15 @@ function normalizeNonFacetUnit(
     if (mark === 'line' && (encoding.x2 || encoding.y2)) {
       log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
 
-      return normalizeNonFacetUnit({
-        mark: 'rule',
-        ...spec
-      }, config, parentEncoding, parentProjection);
+      return normalizeNonFacetUnit(
+        {
+          mark: 'rule',
+          ...spec
+        },
+        config,
+        parentEncoding,
+        parentProjection
+      );
     }
 
     if (isPathMark(mark)) {
@@ -542,7 +582,6 @@ function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
 }
 
 function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): NormalizedLayerSpec | NormalizedUnitSpec {
-
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
   const {selection, projection, encoding, mark, ...outerSpec} = spec;
@@ -559,18 +598,20 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
     };
   }
 
-  const layer: NormalizedUnitSpec[] = [{
-    ...(selection ? {selection} : {}),
-    // Do not include point / line overlay in the normalize spec
-    mark: dropLineAndPoint({
-      ...markDef,
-      // make area mark translucent by default
-      // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
-      ...(markDef.type === 'area' ? {opacity: 0.7} : {}),
-    }),
-    // drop shape from encoding as this might be used to trigger point overlay
-    encoding: omit(encoding, ['shape'])
-  }];
+  const layer: NormalizedUnitSpec[] = [
+    {
+      ...(selection ? {selection} : {}),
+      // Do not include point / line overlay in the normalize spec
+      mark: dropLineAndPoint({
+        ...markDef,
+        // make area mark translucent by default
+        // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
+        ...(markDef.type === 'area' ? {opacity: 0.7} : {})
+      }),
+      // drop shape from encoding as this might be used to trigger point overlay
+      encoding: omit(encoding, ['shape'])
+    }
+  ];
 
   // FIXME: determine rules for applying selections.
 
@@ -624,7 +665,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
 function accumulate(dict: any, defs: FieldDef<Field>[]): any {
-  defs.forEach((fieldDef) => {
+  defs.forEach(fieldDef => {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
       if (fieldDef[key] !== undefined) {
@@ -657,7 +698,8 @@ function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<FieldDef<T>> =
   } else if (isConcatSpec(spec)) {
     const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
     childSpec.forEach(child => fieldDefIndex(child, dict));
-  } else { // Unit Spec
+  } else {
+    // Unit Spec
     accumulate(dict, vlEncoding.fieldDefs(spec.encoding));
   }
   return dict;
@@ -671,9 +713,7 @@ export function fieldDefs(spec: GenericSpec<any, any>): FieldDef<any>[] {
 export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean {
   config = config || spec.config;
   if (isPrimitiveMark(spec.mark)) {
-    return stack(spec.mark, spec.encoding,
-            config ? config.stack : undefined
-          ) !== null;
+    return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
   }
   return false;
 }

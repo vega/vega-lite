@@ -6,7 +6,6 @@ import {Transform} from '../../../src/transform';
 
 describe('compile/data/sample', () => {
   describe('SampleTransformNode', () => {
-
     it('should return a proper vg transform', () => {
       const transform: Transform = {
         sample: 500

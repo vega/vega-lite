@@ -16,89 +16,94 @@ function getData(model: Model) {
 
 function getModel(unit2: NormalizedUnitSpec) {
   const model = parseModel({
-    "data": {"values": [
-      {"date": "Sun, 01 Jan 2012 23:00:01","price": 150},
-      {"date": "Sun, 02 Jan 2012 00:10:02","price": 100},
-      {"date": "Sun, 02 Jan 2012 01:20:03","price": 170},
-      {"date": "Sun, 02 Jan 2012 02:30:04","price": 165},
-      {"date": "Sun, 02 Jan 2012 03:40:05","price": 200}
-    ]},
-    "hconcat": [{
-      "mark": "point",
-      "selection": {
-        "two": {"type": "single", "encodings": ["x", "y"]}
-      },
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "timeUnit": "seconds"
+    data: {
+      values: [
+        {date: 'Sun, 01 Jan 2012 23:00:01', price: 150},
+        {date: 'Sun, 02 Jan 2012 00:10:02', price: 100},
+        {date: 'Sun, 02 Jan 2012 01:20:03', price: 170},
+        {date: 'Sun, 02 Jan 2012 02:30:04', price: 165},
+        {date: 'Sun, 02 Jan 2012 03:40:05', price: 200}
+      ]
+    },
+    hconcat: [
+      {
+        mark: 'point',
+        selection: {
+          two: {type: 'single', encodings: ['x', 'y']}
         },
-        "y": {"field": "price","type": "quantitative"}
-      }
-    }, unit2]
+        encoding: {
+          x: {
+            field: 'date',
+            type: 'temporal',
+            timeUnit: 'seconds'
+          },
+          y: {field: 'price', type: 'quantitative'}
+        }
+      },
+      unit2
+    ]
   });
   model.parse();
   return model;
 }
 
-describe('Selection time unit', () =>  {
-  it('dataflow nodes are constructed', () =>  {
+describe('Selection time unit', () => {
+  it('dataflow nodes are constructed', () => {
     const model = parseUnitModel({
-      "mark": "point",
-      "encoding": {
-        "x": {"field": "date", "type": "temporal", "timeUnit": "seconds"},
-        "y": {"field": "date", "type": "temporal", "timeUnit": "minutes"}
+      mark: 'point',
+      encoding: {
+        x: {field: 'date', type: 'temporal', timeUnit: 'seconds'},
+        y: {field: 'date', type: 'temporal', timeUnit: 'minutes'}
       }
     });
-    const selCmpts = model.component.selection = selection.parseUnitSelection(model, {
-      "one": {"type": "single"},
-      "two": {"type": "single", "encodings": ["x", "y"]}
-    });
+    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+      one: {type: 'single'},
+      two: {type: 'single', encodings: ['x', 'y']}
+    }));
 
     assert.isUndefined(selCmpts['one'].timeUnit);
     assert.instanceOf(selCmpts['two'].timeUnit, TimeUnitNode);
 
-    const as = selCmpts['two'].timeUnit.assemble().map((tx) => tx.as);
+    const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
     assert.sameDeepMembers(as, ['seconds_date', 'minutes_date']);
   });
 
-  it('is added with conditional encodings', () =>  {
+  it('is added with conditional encodings', () => {
     const model = getModel({
-      "mark": "point",
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "timeUnit": "minutes"
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'date',
+          type: 'temporal',
+          timeUnit: 'minutes'
         },
-        "y": {"field": "price","type": "quantitative"},
-        "color": {
-          "condition": {"selection": "two", "value": "goldenrod"},
-          "value": "steelblue"
+        y: {field: 'price', type: 'quantitative'},
+        color: {
+          condition: {selection: 'two', value: 'goldenrod'},
+          value: 'steelblue'
         }
       }
     });
 
-    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
-    assert.equal(data2.filter((tx) => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
+    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
+    assert.equal(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
   });
 
-  it('is added before selection filters', () =>  {
+  it('is added before selection filters', () => {
     const model = getModel({
-      "transform": [{"filter": {"selection": "two"}}],
-      "mark": "point",
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "timeUnit": "minutes"
+      transform: [{filter: {selection: 'two'}}],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'date',
+          type: 'temporal',
+          timeUnit: 'minutes'
         },
-        "y": {"field": "price","type": "quantitative"}
+        y: {field: 'price', type: 'quantitative'}
       }
     });
 
-    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
+    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
     let tuIdx = -1;
     let selIdx = -1;
 
@@ -115,21 +120,21 @@ describe('Selection time unit', () =>  {
     assert.isAbove(selIdx, tuIdx);
   });
 
-  it('removes duplicate time unit formulae', () =>  {
+  it('removes duplicate time unit formulae', () => {
     const model = getModel({
-      "transform": [{"filter": {"selection": "two"}}],
-      "mark": "point",
-      "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal",
-          "timeUnit": "seconds"
+      transform: [{filter: {selection: 'two'}}],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'date',
+          type: 'temporal',
+          timeUnit: 'seconds'
         },
-        "y": {"field": "price","type": "quantitative"}
+        y: {field: 'price', type: 'quantitative'}
       }
     });
 
-    const data2 = getData(model).filter((d) => d.name === 'data_2')[0].transform;
-    assert.equal(data2.filter((tx) => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
+    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
+    assert.equal(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length, 1);
   });
 });

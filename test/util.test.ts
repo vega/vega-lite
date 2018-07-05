@@ -8,7 +8,7 @@ import {
   hash,
   replacePathInField,
   stringify,
-  varName,
+  varName
 } from '../src/util';
 
 describe('util', () => {

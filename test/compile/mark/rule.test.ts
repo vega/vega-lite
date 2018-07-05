@@ -1,21 +1,20 @@
 /* tslint:disable quotemark */
 
-import { assert } from 'chai';
-import { COLOR, X, Y } from '../../../src/channel';
-import { rule } from '../../../src/compile/mark/rule';
-import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
+import {assert} from 'chai';
+import {COLOR, X, Y} from '../../../src/channel';
+import {rule} from '../../../src/compile/mark/rule';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
-describe('Mark: Rule', () =>  {
-
+describe('Mark: Rule', () => {
   describe('without encoding', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {}
+      mark: 'rule',
+      encoding: {}
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should not show anything', () =>  {
+    it('should not show anything', () => {
       assert.isUndefined(props.x);
       assert.isUndefined(props.y);
     });
@@ -23,13 +22,13 @@ describe('Mark: Rule', () =>  {
 
   describe('with x-only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {"x": {"field": "a", "type": "quantitative"}}
+      mark: 'rule',
+      encoding: {x: {field: 'a', type: 'quantitative'}}
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create vertical rule that fits height', () =>  {
+    it('should create vertical rule that fits height', () => {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.y, {field: {group: 'height'}});
       assert.deepEqual(props.y2, {value: 0});
@@ -38,13 +37,13 @@ describe('Mark: Rule', () =>  {
 
   describe('with y-only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {"y": {"field": "a", "type": "quantitative"}}
+      mark: 'rule',
+      encoding: {y: {field: 'a', type: 'quantitative'}}
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rule that fits height', () =>  {
+    it('should create horizontal rule that fits height', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
       assert.deepEqual(props.x, {value: 0});
       assert.deepEqual(props.x2, {field: {group: 'width'}});
@@ -53,16 +52,16 @@ describe('Mark: Rule', () =>  {
 
   describe('with x and x2 only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "quantitative"},
-        "x2": {"field": "a2", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'quantitative'},
+        x2: {field: 'a2', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rule on the axis', () =>  {
+    it('should create horizontal rule on the axis', () => {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
       assert.deepEqual(props.y, {
@@ -74,16 +73,16 @@ describe('Mark: Rule', () =>  {
 
   describe('with y and y2 only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "y": {"field": "a", "type": "quantitative"},
-        "y2": {"field": "a2", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        y: {field: 'a', type: 'quantitative'},
+        y2: {field: 'a2', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rules on the axis', () =>  {
+    it('should create horizontal rules on the axis', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
       assert.deepEqual(props.y2, {scale: Y, field: 'a2'});
       assert.deepEqual(props.x, {
@@ -95,17 +94,17 @@ describe('Mark: Rule', () =>  {
 
   describe('with x, x2, and y', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "quantitative"},
-        "x2": {"field": "a2", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'quantitative'},
+        x2: {field: 'a2', type: 'quantitative'},
+        y: {field: 'b', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rules', () =>  {
+    it('should create horizontal rules', () => {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
@@ -114,18 +113,18 @@ describe('Mark: Rule', () =>  {
 
   describe('with x, x2, y, and y2', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "quantitative"},
-        "x2": {"field": "a2", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
-        "y2": {"field": "b2", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'quantitative'},
+        x2: {field: 'a2', type: 'quantitative'},
+        y: {field: 'b', type: 'quantitative'},
+        y2: {field: 'b2', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create oblique rules', () =>  {
+    it('should create oblique rules', () => {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.x2, {scale: X, field: 'a2'});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
@@ -135,16 +134,16 @@ describe('Mark: Rule', () =>  {
 
   describe('with x and y', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'quantitative'},
+        y: {field: 'b', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create oblique rules', () =>  {
+    it('should create oblique rules', () => {
       assert.deepEqual(props.x, {scale: X, field: 'a'});
       assert.deepEqual(props.y, {scale: Y, field: 'b'});
     });
@@ -152,17 +151,17 @@ describe('Mark: Rule', () =>  {
 
   describe('with y, y2, and x', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "y": {"field": "a", "type": "quantitative"},
-        "y2": {"field": "a2", "type": "quantitative"},
-        "x": {"field": "b", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        y: {field: 'a', type: 'quantitative'},
+        y2: {field: 'a2', type: 'quantitative'},
+        x: {field: 'b', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create vertical rules', () =>  {
+    it('should create vertical rules', () => {
       assert.deepEqual(props.y, {scale: Y, field: 'a'});
       assert.deepEqual(props.y2, {scale: Y, field: 'a2'});
       assert.deepEqual(props.x, {scale: X, field: 'b'});
@@ -171,16 +170,16 @@ describe('Mark: Rule', () =>  {
 
   describe('with nominal x, quantitative y with no y2', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'ordinal'},
+        y: {field: 'b', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create vertical rule that emulates bar chart', () =>  {
+    it('should create vertical rule that emulates bar chart', () => {
       assert.equal(model.markDef.orient, 'vertical');
 
       assert.deepEqual(props.x, {scale: X, field: 'a', band: 0.5});
@@ -191,16 +190,16 @@ describe('Mark: Rule', () =>  {
 
   describe('with nominal y, quantitative x with no y2', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "y": {"field": "a", "type": "ordinal"},
-        "x": {"field": "b", "type": "quantitative"}
+      mark: 'rule',
+      encoding: {
+        y: {field: 'a', type: 'ordinal'},
+        x: {field: 'b', type: 'quantitative'}
       }
     });
 
     const props = rule.encodeEntry(model);
 
-    it('should create horizontal rule that emulates bar chart', () =>  {
+    it('should create horizontal rule that emulates bar chart', () => {
       assert.equal(model.markDef.orient, 'horizontal');
 
       assert.deepEqual(props.x, {scale: X, field: 'b'});
@@ -209,17 +208,16 @@ describe('Mark: Rule', () =>  {
     });
   });
 
-
-  describe('horizontal stacked rule with color', () =>  {
+  describe('horizontal stacked rule with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "y": {"field": "a", "type": "ordinal"},
-        "x": {"aggregate": "sum", "field": "b", "type": "quantitative"},
-        "color": {"field": "Origin", "type": "nominal"}
+      mark: 'rule',
+      encoding: {
+        y: {field: 'a', type: 'ordinal'},
+        x: {aggregate: 'sum', field: 'b', type: 'quantitative'},
+        color: {field: 'Origin', type: 'nominal'}
       },
-      "config": {
-        "stack": "zero"
+      config: {
+        stack: 'zero'
       }
     });
 
@@ -232,16 +230,16 @@ describe('Mark: Rule', () =>  {
     });
   });
 
-  describe('vertical stacked rule with color', () =>  {
+  describe('vertical stacked rule with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "mark": "rule",
-      "encoding": {
-        "x": {"field": "a", "type": "ordinal"},
-        "y": {"aggregate": "sum", "field": "b", "type": "quantitative"},
-        "color": {"field": "Origin", "type": "nominal"}
+      mark: 'rule',
+      encoding: {
+        x: {field: 'a', type: 'ordinal'},
+        y: {aggregate: 'sum', field: 'b', type: 'quantitative'},
+        color: {field: 'Origin', type: 'nominal'}
       },
-      "config": {
-        "stack": "zero"
+      config: {
+        stack: 'zero'
       }
     });
 

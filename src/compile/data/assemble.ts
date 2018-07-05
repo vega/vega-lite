@@ -28,11 +28,11 @@ import {WindowTransformNode} from './window';
  */
 // tslint:disable-next-line
 function debug(node: DataFlowNode) {
-  console.log(`${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${
-    (node.children.map(c => {
+  console.log(
+    `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
-    }))
-  }`);
+    })}`
+  );
   console.log(node);
   node.children.forEach(debug);
 }
@@ -63,7 +63,7 @@ function makeWalkTree(data: VgData[]) {
       if (node.parent instanceof SourceNode && !dataSource.source) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
-          ...dataSource.format || {},
+          ...(dataSource.format || {}),
           parse: node.assembleFormatParse()
         };
 
@@ -93,7 +93,8 @@ function makeWalkTree(data: VgData[]) {
       return;
     }
 
-    if (node instanceof FilterNode ||
+    if (
+      node instanceof FilterNode ||
       node instanceof CalculateNode ||
       node instanceof GeoPointNode ||
       node instanceof GeoJSONNode ||
@@ -103,15 +104,18 @@ function makeWalkTree(data: VgData[]) {
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
       node instanceof IdentifierNode ||
-      node instanceof SampleTransformNode ) {
+      node instanceof SampleTransformNode
+    ) {
       dataSource.transform.push(node.assemble());
     }
 
-    if (node instanceof FilterInvalidNode ||
+    if (
+      node instanceof FilterInvalidNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof ImputeNode ||
-      node instanceof StackNode) {
+      node instanceof StackNode
+    ) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
     }
 
@@ -195,11 +199,13 @@ export function assembleFacetData(root: FacetNode): VgData[] {
   const data: VgData[] = [];
   const walkTree = makeWalkTree(data);
 
-  root.children.forEach(child => walkTree(child, {
-    source: root.name,
-    name: null,
-    transform: []
-  }));
+  root.children.forEach(child =>
+    walkTree(child, {
+      source: root.name,
+      name: null,
+      transform: []
+    })
+  );
 
   return data;
 }

@@ -9,11 +9,11 @@ import {
   spec,
   testRenderFn,
   tuples,
-  unbound,
+  unbound
 } from './util';
 
-[bound, unbound].forEach(function(bind, idx) {
-  describe(`Translate ${bind} interval selections at runtime`, () =>  {
+[bound, unbound].forEach((bind, idx) => {
+  describe(`Translate ${bind} interval selections at runtime`, () => {
     const type = 'interval';
     const hits = hitsMaster.interval;
     const embed = embedFn(browser);
@@ -31,7 +31,7 @@ import {
       }
     };
 
-    it('should move back-and-forth', () =>  {
+    it('should move back-and-forth', () => {
       for (let i = 0; i < hits.translate.length; i++) {
         embed(spec('unit', i, {type, ...binding}));
         const drag = browser.execute(brush('drag', i)).value[0];
@@ -45,13 +45,20 @@ import {
       }
     });
 
-    it('should work with binned domains', () =>  {
+    it('should work with binned domains', () => {
       for (let i = 0; i < hits.bins.length; i++) {
-        embed(spec('unit', 1, {type, ...binding, encodings: ['y']}, {
-          x: {aggregate: 'count', field: '*', type: 'quantitative'},
-          y: {bin: true},
-          color: {value: 'steelblue', field: null, type: null}
-        }));
+        embed(
+          spec(
+            'unit',
+            1,
+            {type, ...binding, encodings: ['y']},
+            {
+              x: {aggregate: 'count', field: '*', type: 'quantitative'},
+              y: {bin: true},
+              color: {value: 'steelblue', field: null, type: null}
+            }
+          )
+        );
         const drag = browser.execute(brush('bins', i)).value[0];
         testRender(`bins_${i}-0`);
         const translate = browser.execute(brush('bins_translate', i, null, bind === unbound)).value[0];
@@ -61,13 +68,12 @@ import {
       }
     });
 
-    it('should work with temporal domains', () =>  {
-      const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
+    it('should work with temporal domains', () => {
+      const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
       const toNumber = '[0].intervals[0].extent.map((d) => +d)';
 
       for (let i = 0; i < hits.translate.length; i++) {
-        embed(spec('unit', i, {type, ...binding, encodings: ['x']},
-          {values, x: {type: 'temporal'}}));
+        embed(spec('unit', i, {type, ...binding, encodings: ['x']}, {values, x: {type: 'temporal'}}));
         const drag = browser.execute(brush('drag', i) + toNumber).value;
         testRender(`temporal_${i}-0`);
         const translate = browser.execute(brush('translate', i, null, bind === unbound) + toNumber).value;
@@ -75,15 +81,21 @@ import {
         assert[assertExtent[bind].x[i]](translate[1], drag[1]);
         testRender(`temporal_${i}-1`);
       }
-
     });
 
-    it('should work with log/pow scales', () =>  {
+    it('should work with log/pow scales', () => {
       for (let i = 0; i < hits.translate.length; i++) {
-        embed(spec('unit', i, {type, ...binding}, {
-          x: {scale: {type: 'pow', exponent: 1.5}},
-          y: {scale: {type: 'log'}}
-        }));
+        embed(
+          spec(
+            'unit',
+            i,
+            {type, ...binding},
+            {
+              x: {scale: {type: 'pow', exponent: 1.5}},
+              y: {scale: {type: 'log'}}
+            }
+          )
+        );
         const drag = browser.execute(brush('drag', i)).value[0];
         testRender(`logpow_${i}-0`);
         const translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
@@ -96,11 +108,19 @@ import {
     });
 
     if (bind === unbound) {
-      it('should work with ordinal/nominal domains', () =>  {
+      it('should work with ordinal/nominal domains', () => {
         for (let i = 0; i < hits.translate.length; i++) {
-          embed(spec('unit', i, {type, ...binding}, {
-            x: {type: 'ordinal'}, y: {type: 'nominal'}
-          }));
+          embed(
+            spec(
+              'unit',
+              i,
+              {type, ...binding},
+              {
+                x: {type: 'ordinal'},
+                y: {type: 'nominal'}
+              }
+            )
+          );
           const drag = browser.execute(brush('drag', i)).value[0];
           testRender(`ord_${i}-0`);
           const translate = browser.execute(brush('translate', i, null, true)).value[0];
@@ -112,7 +132,7 @@ import {
         }
       });
     } else {
-      compositeTypes.forEach(function(specType) {
+      compositeTypes.forEach(specType => {
         const assertExtents = {
           repeat: {
             x: ['isBelow', 'isBelow', 'isBelow'],
@@ -123,10 +143,9 @@ import {
             y: ['isBelow', 'isAbove', 'isBelow']
           }
         };
-        it(`should work with shared scales in ${specType} views`, () =>  {
+        it(`should work with shared scales in ${specType} views`, () => {
           for (let i = 0; i < hits[specType].length; i++) {
-            embed(spec(specType, 0, {type, ...binding},
-              {resolve: {scale: {x:'shared', y: 'shared'}}}));
+            embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
             const xscale = browser.execute('return view._runtime.scales.x.value.domain()').value;
             const yscale = browser.execute('return view._runtime.scales.y.value.domain()').value;

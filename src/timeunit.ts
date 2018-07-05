@@ -15,7 +15,8 @@ export namespace TimeUnit {
   export const YEARMONTHDATE: 'yearmonthdate' = 'yearmonthdate';
   export const YEARMONTHDATEHOURS: 'yearmonthdatehours' = 'yearmonthdatehours';
   export const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes' = 'yearmonthdatehoursminutes';
-  export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' = 'yearmonthdatehoursminutesseconds';
+  export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' =
+    'yearmonthdatehoursminutesseconds';
 
   // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
   export const MONTHDATE: 'monthdate' = 'monthdate';
@@ -39,7 +40,8 @@ export namespace TimeUnit {
   export const UTCYEARMONTHDATE: 'utcyearmonthdate' = 'utcyearmonthdate';
   export const UTCYEARMONTHDATEHOURS: 'utcyearmonthdatehours' = 'utcyearmonthdatehours';
   export const UTCYEARMONTHDATEHOURSMINUTES: 'utcyearmonthdatehoursminutes' = 'utcyearmonthdatehoursminutes';
-  export const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds' = 'utcyearmonthdatehoursminutesseconds';
+  export const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds' =
+    'utcyearmonthdatehoursminutesseconds';
 
   // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
   export const UTCMONTHDATE: 'utcmonthdate' = 'utcmonthdate';
@@ -54,15 +56,15 @@ export namespace TimeUnit {
 }
 
 export type LocalSingleTimeUnit =
-  typeof TimeUnit.YEAR |
-  typeof TimeUnit.QUARTER |
-  typeof TimeUnit.MONTH |
-  typeof TimeUnit.DAY |
-  typeof TimeUnit.DATE |
-  typeof TimeUnit.HOURS |
-  typeof TimeUnit.MINUTES |
-  typeof TimeUnit.SECONDS |
-  typeof TimeUnit.MILLISECONDS;
+  | typeof TimeUnit.YEAR
+  | typeof TimeUnit.QUARTER
+  | typeof TimeUnit.MONTH
+  | typeof TimeUnit.DAY
+  | typeof TimeUnit.DATE
+  | typeof TimeUnit.HOURS
+  | typeof TimeUnit.MINUTES
+  | typeof TimeUnit.SECONDS
+  | typeof TimeUnit.MILLISECONDS;
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 const LOCAL_SINGLE_TIMEUNIT_INDEX: Flag<LocalSingleTimeUnit> = {
@@ -84,15 +86,15 @@ export function isLocalSingleTimeUnit(timeUnit: string): timeUnit is LocalSingle
 }
 
 export type UtcSingleTimeUnit =
-  typeof TimeUnit.UTCYEAR |
-  typeof TimeUnit.UTCQUARTER |
-  typeof TimeUnit.UTCMONTH |
-  typeof TimeUnit.UTCDAY |
-  typeof TimeUnit.UTCDATE |
-  typeof TimeUnit.UTCHOURS |
-  typeof TimeUnit.UTCMINUTES |
-  typeof TimeUnit.UTCSECONDS |
-  typeof TimeUnit.UTCMILLISECONDS;
+  | typeof TimeUnit.UTCYEAR
+  | typeof TimeUnit.UTCQUARTER
+  | typeof TimeUnit.UTCMONTH
+  | typeof TimeUnit.UTCDAY
+  | typeof TimeUnit.UTCDATE
+  | typeof TimeUnit.UTCHOURS
+  | typeof TimeUnit.UTCMINUTES
+  | typeof TimeUnit.UTCSECONDS
+  | typeof TimeUnit.UTCMILLISECONDS;
 
 const UTC_SINGLE_TIMEUNIT_INDEX: Flag<UtcSingleTimeUnit> = {
   utcyear: 1,
@@ -114,13 +116,19 @@ export type SingleTimeUnit = LocalSingleTimeUnit | UtcSingleTimeUnit;
 
 export type LocalMultiTimeUnit =
   // Local Time
-  typeof TimeUnit.YEARQUARTER | typeof TimeUnit.YEARQUARTERMONTH |
-  typeof TimeUnit.YEARMONTH | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES| typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS |
-  typeof TimeUnit.QUARTERMONTH |
-  typeof TimeUnit.MONTHDATE |
-  typeof TimeUnit.HOURSMINUTES | typeof TimeUnit.HOURSMINUTESSECONDS |
-  typeof TimeUnit.MINUTESSECONDS |
-  typeof TimeUnit.SECONDSMILLISECONDS;
+  | typeof TimeUnit.YEARQUARTER
+  | typeof TimeUnit.YEARQUARTERMONTH
+  | typeof TimeUnit.YEARMONTH
+  | typeof TimeUnit.YEARMONTHDATE
+  | typeof TimeUnit.YEARMONTHDATEHOURS
+  | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES
+  | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS
+  | typeof TimeUnit.QUARTERMONTH
+  | typeof TimeUnit.MONTHDATE
+  | typeof TimeUnit.HOURSMINUTES
+  | typeof TimeUnit.HOURSMINUTESSECONDS
+  | typeof TimeUnit.MINUTESSECONDS
+  | typeof TimeUnit.SECONDSMILLISECONDS;
 
 const LOCAL_MULTI_TIMEUNIT_INDEX: Flag<LocalMultiTimeUnit> = {
   yearquarter: 1,
@@ -145,13 +153,19 @@ const LOCAL_MULTI_TIMEUNIT_INDEX: Flag<LocalMultiTimeUnit> = {
 };
 
 export type UtcMultiTimeUnit =
-  typeof TimeUnit.UTCYEARQUARTER | typeof TimeUnit.UTCYEARQUARTERMONTH |
-  typeof TimeUnit.UTCYEARMONTH | typeof TimeUnit.UTCYEARMONTHDATE | typeof TimeUnit.UTCYEARMONTHDATEHOURS | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTES| typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS |
-  typeof TimeUnit.UTCQUARTERMONTH |
-  typeof TimeUnit.UTCMONTHDATE |
-  typeof TimeUnit.UTCHOURSMINUTES | typeof TimeUnit.UTCHOURSMINUTESSECONDS |
-  typeof TimeUnit.UTCMINUTESSECONDS |
-  typeof TimeUnit.UTCSECONDSMILLISECONDS;
+  | typeof TimeUnit.UTCYEARQUARTER
+  | typeof TimeUnit.UTCYEARQUARTERMONTH
+  | typeof TimeUnit.UTCYEARMONTH
+  | typeof TimeUnit.UTCYEARMONTHDATE
+  | typeof TimeUnit.UTCYEARMONTHDATEHOURS
+  | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTES
+  | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS
+  | typeof TimeUnit.UTCQUARTERMONTH
+  | typeof TimeUnit.UTCMONTHDATE
+  | typeof TimeUnit.UTCHOURSMINUTES
+  | typeof TimeUnit.UTCHOURSMINUTESSECONDS
+  | typeof TimeUnit.UTCMINUTESSECONDS
+  | typeof TimeUnit.UTCSECONDSMILLISECONDS;
 
 const UTC_MULTI_TIMEUNIT_INDEX: Flag<UtcMultiTimeUnit> = {
   utcyearquarter: 1,
@@ -176,7 +190,6 @@ const UTC_MULTI_TIMEUNIT_INDEX: Flag<UtcMultiTimeUnit> = {
 };
 
 export type MultiTimeUnit = LocalMultiTimeUnit | UtcMultiTimeUnit;
-
 
 export type LocalTimeUnit = LocalSingleTimeUnit | LocalMultiTimeUnit;
 export type UtcTimeUnit = UtcSingleTimeUnit | UtcMultiTimeUnit;
@@ -221,7 +234,7 @@ const SET_DATE_METHOD: Record<LocalSingleTimeUnit, DateMethodName> = {
   milliseconds: 'setMilliseconds',
   // Day and quarter have their own special cases
   quarter: null,
-  day: null,
+  day: null
 };
 
 /**
@@ -231,19 +244,19 @@ const SET_DATE_METHOD: Record<LocalSingleTimeUnit, DateMethodName> = {
  */
 export function convert(unit: TimeUnit, date: Date): Date {
   const isUTC = isUTCTimeUnit(unit);
-  const result: Date = isUTC ?
-    // start with uniform date
-    new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0)) :
-    new Date(0, 0, 1, 0, 0, 0, 0);
-    for (const timeUnitPart of TIMEUNIT_PARTS) {
+  const result: Date = isUTC
+    ? // start with uniform date
+      new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+    : new Date(0, 0, 1, 0, 0, 0, 0);
+  for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
       switch (timeUnitPart) {
         case TimeUnit.DAY:
-          throw new Error('Cannot convert to TimeUnits containing \'day\'');
+          throw new Error("Cannot convert to TimeUnits containing 'day'");
         case TimeUnit.QUARTER: {
           const {getDateMethod, setDateMethod} = dateMethods('month', isUTC);
           // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-          result[setDateMethod]((Math.floor(date[getDateMethod]() / 3)) * 3);
+          result[setDateMethod](Math.floor(date[getDateMethod]() / 3) * 3);
           break;
         }
         default:
@@ -274,12 +287,9 @@ export function getTimeUnitParts(timeUnit: TimeUnit) {
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   const index = fullTimeUnit.indexOf(timeUnit);
-  return index > -1 &&
-    (
-      timeUnit !== TimeUnit.SECONDS ||
-      index === 0 ||
-      fullTimeUnit.charAt(index-1) !== 'i' // exclude milliseconds
-    );
+  return (
+    index > -1 && (timeUnit !== TimeUnit.SECONDS || index === 0 || fullTimeUnit.charAt(index - 1) !== 'i') // exclude milliseconds
+  );
 }
 
 /**
@@ -298,12 +308,15 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
     }
   }
 
-  const d = TIMEUNIT_PARTS.reduce((dateExpr: DateTimeExpr, tu: TimeUnit) => {
-    if (containsTimeUnit(fullTimeUnit, tu)) {
-      dateExpr[tu] = func(tu);
-    }
-    return dateExpr;
-  }, {} as {[key in SingleTimeUnit]: string});
+  const d = TIMEUNIT_PARTS.reduce(
+    (dateExpr: DateTimeExpr, tu: TimeUnit) => {
+      if (containsTimeUnit(fullTimeUnit, tu)) {
+        dateExpr[tu] = func(tu);
+      }
+      return dateExpr;
+    },
+    {} as {[key in SingleTimeUnit]: string}
+  );
 
   return dateTimeExpr(d);
 }
@@ -311,7 +324,12 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string): string {
 /**
  * returns the signal expression used for axis labels for a time unit
  */
-export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
+export function formatExpression(
+  timeUnit: TimeUnit,
+  field: string,
+  shortTimeLabels: boolean,
+  isUTCScale: boolean
+): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -321,7 +339,7 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
   const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
 
   if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-   // special expression for quarter as prefix
+    // special expression for quarter as prefix
     expression = `'Q' + quarter(${field})`;
   }
 

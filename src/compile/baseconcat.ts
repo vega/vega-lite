@@ -9,13 +9,20 @@ import {Model} from './model';
 import {RepeaterValue} from './repeater';
 
 export abstract class BaseConcatModel extends Model {
-  constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve) {
+  constructor(
+    spec: BaseSpec,
+    parent: Model,
+    parentGivenName: string,
+    config: Config,
+    repeater: RepeaterValue,
+    resolve: Resolve
+  ) {
     super(spec, parent, parentGivenName, config, repeater, resolve);
   }
 
   public parseData() {
     this.component.data = parseData(this);
-    this.children.forEach((child) => {
+    this.children.forEach(child => {
       child.parseData();
     });
   }
@@ -26,7 +33,7 @@ export abstract class BaseConcatModel extends Model {
     this.component.selection = {};
     for (const child of this.children) {
       child.parseSelection();
-      keys(child.component.selection).forEach((key) => {
+      keys(child.component.selection).forEach(key => {
         this.component.selection[key] = child.component.selection[key];
       });
     }
@@ -51,7 +58,7 @@ export abstract class BaseConcatModel extends Model {
   }
 
   public assembleSelectionSignals(): VgSignal[] {
-    this.children.forEach((child) => child.assembleSelectionSignals());
+    this.children.forEach(child => child.assembleSelectionSignals());
     return [];
   }
 
@@ -76,11 +83,13 @@ export abstract class BaseConcatModel extends Model {
         name: child.getName('group'),
         ...(title ? {title} : {}),
         ...(style ? {style} : {}),
-        ...(layoutSizeEncodeEntry ? {
-          encode: {
-            update: layoutSizeEncodeEntry
-          }
-        } : {}),
+        ...(layoutSizeEncodeEntry
+          ? {
+              encode: {
+                update: layoutSizeEncodeEntry
+              }
+            }
+          : {}),
         ...child.assembleGroup()
       };
     });

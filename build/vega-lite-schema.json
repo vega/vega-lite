@@ -6869,20 +6869,8 @@
           "type": "number"
         },
         "precision": {
-          "additionalProperties": {
-            "type": "string"
-          },
           "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "properties": {
-            "length": {
-              "description": "Returns the length of a String object. ",
-              "type": "number"
-            }
-          },
-          "required": [
-            "length"
-          ],
-          "type": "object"
+          "type": "string"
         },
         "radius": {
           "type": "number"
@@ -6911,86 +6899,8 @@
       "type": "object"
     },
     "ProjectionConfig": {
-      "additionalProperties": false,
-      "description": "Any property of Projection can be in config",
-      "properties": {
-        "center": {
-          "description": "Sets the projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "clipAngle": {
-          "description": "Sets the projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
-          "type": "number"
-        },
-        "clipExtent": {
-          "description": "Sets the projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed.",
-          "items": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array"
-          },
-          "type": "array"
-        },
-        "coefficient": {
-          "type": "number"
-        },
-        "distance": {
-          "type": "number"
-        },
-        "fraction": {
-          "type": "number"
-        },
-        "lobes": {
-          "type": "number"
-        },
-        "parallel": {
-          "type": "number"
-        },
-        "precision": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "Sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "properties": {
-            "length": {
-              "description": "Returns the length of a String object. ",
-              "type": "number"
-            }
-          },
-          "required": [
-            "length"
-          ],
-          "type": "object"
-        },
-        "radius": {
-          "type": "number"
-        },
-        "ratio": {
-          "type": "number"
-        },
-        "rotate": {
-          "description": "Sets the projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "spacing": {
-          "type": "number"
-        },
-        "tilt": {
-          "type": "number"
-        },
-        "type": {
-          "$ref": "#/definitions/ProjectionType",
-          "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `mercator`"
-        }
-      },
-      "type": "object"
+      "$ref": "#/definitions/Projection",
+      "description": "Any property of Projection can be in config"
     },
     "ProjectionType": {
       "$ref": "#/definitions/VgProjectionType"

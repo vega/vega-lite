@@ -6,18 +6,18 @@ import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 describe('compile/projection/assemble', () => {
   describe('assembleProjectionForModel', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      'mark': 'geoshape',
-      'projection': {
-        'type': 'albersUsa'
+      mark: 'geoshape',
+      projection: {
+        type: 'albersUsa'
       },
-      'data': {
-        'url': 'data/us-10m.json',
-        'format': {
-          'type': 'topojson',
-          'feature': 'states'
+      data: {
+        url: 'data/us-10m.json',
+        format: {
+          type: 'topojson',
+          feature: 'states'
         }
       },
-      'encoding': {}
+      encoding: {}
     });
     model.parse();
 

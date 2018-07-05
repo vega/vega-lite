@@ -4,13 +4,11 @@ import {duplicate, Omit} from '../../util';
 import {VgAxis} from '../../vega.schema';
 import {Split} from '../split';
 
-
 function isFalseOrNull(v: boolean | null) {
   return v === false || v === null;
 }
 
 export type AxisComponentProps = Omit<VgAxis, 'title'> & {
-
   title: string | FieldDefBase<string>[];
 };
 
@@ -24,16 +22,14 @@ export class AxisComponent extends Split<AxisComponentProps> {
   }
 
   public clone() {
-    return new AxisComponent(
-      duplicate(this.explicit),
-      duplicate(this.implicit), this.mainExtracted
-    );
+    return new AxisComponent(duplicate(this.explicit), duplicate(this.implicit), this.mainExtracted);
   }
 
   public hasAxisPart(part: AxisPart) {
     // FIXME(https://github.com/vega/vega-lite/issues/2552) this method can be wrong if users use a Vega theme.
 
-    if (part === 'axis') { // always has the axis container part
+    if (part === 'axis') {
+      // always has the axis container part
       return true;
     }
 

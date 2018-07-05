@@ -21,8 +21,19 @@ export namespace Mark {
 /**
  * All types of primitive marks.
  */
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.TRAIL | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
-
+export type Mark =
+  | typeof Mark.AREA
+  | typeof Mark.BAR
+  | typeof Mark.LINE
+  | typeof Mark.TRAIL
+  | typeof Mark.POINT
+  | typeof Mark.TEXT
+  | typeof Mark.TICK
+  | typeof Mark.RECT
+  | typeof Mark.RULE
+  | typeof Mark.CIRCLE
+  | typeof Mark.SQUARE
+  | typeof Mark.GEOSHAPE;
 
 export const AREA = Mark.AREA;
 export const BAR = Mark.BAR;
@@ -64,7 +75,6 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
-
 export interface ColorMixins {
   /**
    * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
@@ -102,13 +112,9 @@ export interface BarBinSpacingMixins {
   binSpacing?: number;
 }
 
+export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
-export type AnyMark =
-  CompositeMark | CompositeMarkDef |
-  Mark |
-  MarkDef;
-
-export function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef) {
+export function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef {
   return mark['type'];
 }
 
@@ -119,8 +125,15 @@ export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | 
   return markType in PRIMITIVE_MARK_INDEX;
 }
 
-export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
+export const STROKE_CONFIG = [
+  'stroke',
+  'strokeWidth',
+  'strokeDash',
+  'strokeDashOffset',
+  'strokeOpacity',
+  'strokeJoin',
+  'strokeMiterLimit'
+];
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
@@ -129,7 +142,7 @@ export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-  [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[]
+  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[]
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
@@ -139,7 +152,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4c78a8',
+  color: '#4c78a8'
 };
 
 export interface MarkConfigMixins {
@@ -184,9 +197,7 @@ export interface MarkConfigMixins {
   geoshape?: MarkConfig;
 }
 
-
 export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
-
   /**
    * The default size of the bars on continuous scales.
    *
@@ -259,7 +270,6 @@ export interface GenericMarkDef<M> {
   type: M;
 }
 
-
 export interface MarkDefMixins {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
@@ -299,9 +309,15 @@ export interface MarkDefMixins {
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
-
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins, MarkDefMixins {
+export interface MarkDef
+  extends GenericMarkDef<Mark>,
+    BarBinSpacingMixins,
+    MarkConfig,
+    PointOverlayMixins,
+    LineOverlayMixins,
+    TickThicknessMixins,
+    MarkDefMixins {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -309,7 +325,6 @@ export interface MarkDef extends GenericMarkDef<Mark>, BarBinSpacingMixins, Mark
    */
   type: Mark;
 }
-
 
 export const defaultBarConfig: BarConfig = {
   binSpacing: 1,

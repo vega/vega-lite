@@ -10,49 +10,58 @@ import {ORDINAL} from '../../src/type';
 import {VgLayout} from '../../src/vega.schema';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
-describe('FacetModel', () =>  {
+describe('FacetModel', () => {
   describe('initFacet', () => {
-    it('should drop unsupported channel and throws warning', log.wrap((localLogger) => {
-      const model = parseFacetModel({
-        facet: ({
-          shape: {field: 'a', type: 'quantitative'}
-        }) as FacetMapping<string>, // Cast to allow invalid facet type for test
-        spec: {
-          mark: 'point',
-          encoding: {}
-        }
-      });
-      assert.equal(model.facet['shape'], undefined);
-      assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
-    }));
+    it(
+      'should drop unsupported channel and throws warning',
+      log.wrap(localLogger => {
+        const model = parseFacetModel({
+          facet: {
+            shape: {field: 'a', type: 'quantitative'}
+          } as FacetMapping<string>, // Cast to allow invalid facet type for test
+          spec: {
+            mark: 'point',
+            encoding: {}
+          }
+        });
+        assert.equal(model.facet['shape'], undefined);
+        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
+      })
+    );
 
-    it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
-      const model = parseFacetModel({
-        facet: {
-          row: {type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {}
-        }
-      });
-      assert.equal(model.facet.row, undefined);
-      assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
-    }));
+    it(
+      'should drop channel without field and value and throws warning',
+      log.wrap(localLogger => {
+        const model = parseFacetModel({
+          facet: {
+            row: {type: 'ordinal'}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {}
+          }
+        });
+        assert.equal(model.facet.row, undefined);
+        assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
+      })
+    );
 
-    it('should drop channel without field and value and throws warning', log.wrap((localLogger) => {
-      const model = parseFacetModel({
-        facet: {
-          row: {field: 'a', type: 'quantitative'}
-        },
-        spec: {
-          mark: 'point',
-          encoding: {}
-        }
-      });
-      assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
-    }));
+    it(
+      'should drop channel without field and value and throws warning',
+      log.wrap(localLogger => {
+        const model = parseFacetModel({
+          facet: {
+            row: {field: 'a', type: 'quantitative'}
+          },
+          spec: {
+            mark: 'point',
+            encoding: {}
+          }
+        });
+        assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
+        assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
+      })
+    );
   });
 
   describe('parseAxisAndHeader', () => {
@@ -60,11 +69,10 @@ describe('FacetModel', () =>  {
     // - correctly join title for nested facet
     // - correctly generate headers with right labels and axes
 
-
     it('applies text format to the fieldref of a temporal field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {timeUnit:'year', field: 'date', type: 'ordinal'}
+          column: {timeUnit: 'year', field: 'date', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
@@ -77,10 +85,10 @@ describe('FacetModel', () =>  {
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
-        return d.name === "column_header";
+        return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, "timeFormat(parent[\"year_date\"], '%Y')");
+      assert(columnHeader.title.text.signal, 'timeFormat(parent["year_date"], \'%Y\')');
     });
 
     it('applies number format for fieldref of a quantitative field', () => {
@@ -99,10 +107,10 @@ describe('FacetModel', () =>  {
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
-        return d.name === "column_header";
+        return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, "format(parent[\"a\"], 'd')");
+      assert(columnHeader.title.text.signal, 'format(parent["a"], \'d\')');
     });
 
     it('ignores number format for fieldref of a binned field', () => {
@@ -121,10 +129,10 @@ describe('FacetModel', () =>  {
       model.parseAxisAndHeader();
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
-        return d.name === "column_header";
+        return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, "parent[\"a\"]");
+      assert(columnHeader.title.text.signal, 'parent["a"]');
     });
   });
 
@@ -141,7 +149,6 @@ describe('FacetModel', () =>  {
           }
         }
       });
-
 
       assert(model.component.scales['x']);
     });
@@ -186,7 +193,7 @@ describe('FacetModel', () =>  {
 
       const headerMarks = model.assembleHeaderMarks();
       const columnHeader = headerMarks.filter(d => {
-        return d.name === "column_header";
+        return d.name === 'column_header';
       })[0];
 
       assert.deepEqual(columnHeader.sort, {field: 'datum["a"]', order: 'ascending'});
@@ -200,7 +207,7 @@ describe('FacetModel', () =>  {
           column: {field: 'a', type: 'quantitative'}
         },
         spec: {
-         facet: {
+          facet: {
             column: {field: 'c', type: 'quantitative'}
           },
           spec: {
@@ -248,7 +255,7 @@ describe('FacetModel', () =>  {
           column: {field: 'a', type: 'quantitative'}
         },
         spec: {
-         facet: {
+          facet: {
             column: {field: 'c', type: 'quantitative'}
           },
           spec: {
@@ -266,16 +273,16 @@ describe('FacetModel', () =>  {
 
     it('returns a layout with header band if child spec is also a facet', () => {
       const model = parseFacetModelWithScale({
-        "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-        "data": {"url": "data/cars.json"},
-        "facet": {"row": {"field": "Origin","type": "ordinal"}},
-        "spec": {
-          "facet": {"row": {"field": "Cylinders","type": "ordinal"}},
-          "spec": {
-            "mark": "point",
-            "encoding": {
-              "x": {"field": "Horsepower","type": "quantitative"},
-              "y": {"field": "Acceleration","type": "quantitative"}
+        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        data: {url: 'data/cars.json'},
+        facet: {row: {field: 'Origin', type: 'ordinal'}},
+        spec: {
+          facet: {row: {field: 'Cylinders', type: 'ordinal'}},
+          spec: {
+            mark: 'point',
+            encoding: {
+              x: {field: 'Horsepower', type: 'quantitative'},
+              y: {field: 'Acceleration', type: 'quantitative'}
             }
           }
         }
@@ -308,17 +315,10 @@ describe('FacetModel', () =>  {
 
       assert(marks[0].from.facet.aggregate.cross);
       assert.deepEqual(marks[0].sort, {
-        field: [
-          'datum["a"]',
-          'datum["b"]'
-        ],
-        order: [
-          'ascending',
-          'ascending'
-        ]
+        field: ['datum["a"]', 'datum["b"]'],
+        order: ['ascending', 'ascending']
       });
     });
-
 
     it('should add cross and sort if we facet by multiple dimensions with sort array', () => {
       const model: FacetModel = parseFacetModelWithScale({
@@ -339,17 +339,10 @@ describe('FacetModel', () =>  {
 
       assert(marks[0].from.facet.aggregate.cross);
       expect(marks[0].sort).toEqual({
-        field: [
-          'datum["row_a_sort_index"]',
-          'datum["column_b_sort_index"]'
-        ],
-        order: [
-          'ascending',
-          'ascending'
-        ]
+        field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
+        order: ['ascending', 'ascending']
       });
     });
-
 
     it('should add cross and sort if we facet by multiple dimensions with sort fields', () => {
       const model: FacetModel = parseFacetModelWithScale({
@@ -376,14 +369,8 @@ describe('FacetModel', () =>  {
       });
 
       expect(marks[0].sort).toEqual({
-        field: [
-          'datum["median_d_by_a"]',
-          'datum["median_e_by_b"]'
-        ],
-        order: [
-          'ascending',
-          'ascending'
-        ]
+        field: ['datum["median_d_by_a"]', 'datum["median_e_by_b"]'],
+        order: ['ascending', 'ascending']
       });
     });
 
@@ -423,7 +410,7 @@ describe('FacetModel', () =>  {
           column: {field: 'a', type: 'quantitative'}
         },
         spec: {
-         facet: {
+          facet: {
             column: {field: 'c', type: 'quantitative'}
           },
           spec: {

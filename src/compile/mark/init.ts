@@ -1,4 +1,3 @@
-
 import {isBinned, isBinning} from '../../bin';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
@@ -10,7 +9,6 @@ import {contains} from '../../util';
 import {getMarkConfig} from '../common';
 import {Orient} from './../../vega.schema';
 
-
 export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
@@ -18,7 +16,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
-    log.warn(log.message.orientOverridden(markDef.orient,specifiedOrient));
+    log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
   }
 
   // set opacity and filled if not specified in mark config
@@ -101,7 +99,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
           return 'vertical';
         }
       }
-      /* tslint:disable */
+    /* tslint:disable */
     case RULE: // intentionally fall through
       // return undefined for line segment rule and bar with both axis ranged
       if (x2 && y2) {
@@ -130,10 +128,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
         }
       }
 
-
     case LINE: // intentional fall through
     case TICK: // Tick is opposite to bar, line, area and never have ranged mark.
-
       /* tslint:enable */
       const xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
       const yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
@@ -179,4 +175,3 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
   }
   return 'vertical';
 }
-

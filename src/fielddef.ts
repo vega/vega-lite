@@ -17,11 +17,17 @@ import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {Sort, SortOrder} from './sort';
 import {StackOffset} from './stack';
-import {getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit, TimeUnit} from './timeunit';
+import {
+  getLocalTimeUnit,
+  getTimeUnitParts,
+  isLocalSingleTimeUnit,
+  isUtcSingleTimeUnit,
+  normalizeTimeUnit,
+  TimeUnit
+} from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {contains, flatAccessWithDatum, replacePathInField, titlecase} from './util';
-
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -114,7 +120,6 @@ export type HiddenCompositeAggregate = CompositeAggregate;
 
 export type Aggregate = AggregateOp | HiddenCompositeAggregate;
 
-
 export interface GenericBinMixins<B> {
   /**
    * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
@@ -132,7 +137,6 @@ export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned'>;
 export type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
 
 export interface FieldDefBase<F> extends BaseBinMixins {
-
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
@@ -223,7 +227,6 @@ export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
 export type FieldDefWithoutScale<F> = FieldDef<F> & BinWithoutBinnedMixins;
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
-
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -261,15 +264,16 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F> = ScaleFieldDef<F> & BinWithoutBinnedMixins & {
-   /**
-    * An object defining properties of the legend.
-    * If `null`, the legend for the encoding channel will be removed.
-    *
-    * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
-    */
-  legend?: Legend | null;
-};
+export type MarkPropFieldDef<F> = ScaleFieldDef<F> &
+  BinWithoutBinnedMixins & {
+    /**
+     * An object defining properties of the legend.
+     * If `null`, the legend for the encoding channel will be removed.
+     *
+     * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
+     */
+    legend?: Legend | null;
+  };
 
 // Detail
 
@@ -298,21 +302,31 @@ export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Ch
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<FieldDef<F>>}) {
+export function hasConditionalFieldDef<F>(
+  channelDef: ChannelDef<F>
+): channelDef is ValueDef & {condition: Conditional<FieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
-export function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {condition: Conditional<ValueDef> | Conditional<ValueDef>[]}) {
-  return !!channelDef && !!channelDef.condition && (
-    isArray(channelDef.condition) || isValueDef(channelDef.condition)
-  );
+export function hasConditionalValueDef<F>(
+  channelDef: ChannelDef<F>
+): channelDef is ValueDef & {condition: Conditional<ValueDef> | Conditional<ValueDef>[]} {
+  return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isValueDef(channelDef.condition));
 }
 
-export function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F> {
+export function isFieldDef<F>(
+  channelDef: ChannelDef<F>
+): channelDef is
+  | FieldDef<F>
+  | PositionFieldDef<F>
+  | ScaleFieldDef<F>
+  | MarkPropFieldDef<F>
+  | OrderFieldDef<F>
+  | TextFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isStringFieldDef(fieldDef: ChannelDef<string|RepeatRef>): fieldDef is FieldDef<string> {
+export function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string> {
   return isFieldDef(fieldDef) && isString(fieldDef.field);
 }
 
@@ -337,11 +351,16 @@ export interface FieldRefOption {
   suffix?: string;
 }
 
-function isOpFieldDef(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef): fieldDef is WindowFieldDef | AggregatedFieldDef {
+function isOpFieldDef(
+  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef
+): fieldDef is WindowFieldDef | AggregatedFieldDef {
   return !!fieldDef['op'];
 }
 
-export function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef, opt: FieldRefOption = {}): string {
+export function vgField(
+  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
+  opt: FieldRefOption = {}
+): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
   let suffix = opt.suffix;
@@ -496,8 +515,7 @@ export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
  */
 export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
-    const primitiveType = isString(channelDef) ? 'string' :
-      isNumber(channelDef) ? 'number' : 'boolean';
+    const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
     return {value: channelDef};
   }
@@ -566,7 +584,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
     const newType = defaultType(fieldDef, channel);
     log.warn(log.message.emptyOrInvalidFieldType(fieldDef.type, channel, newType));
     fieldDef = {
-        ...fieldDef,
+      ...fieldDef,
       type: newType
     };
   }
@@ -578,7 +596,7 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams|boolean, channel: Channel) {
+export function normalizeBin(bin: BinParams | boolean, channel: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
   } else if (!bin.maxbins && !bin.step) {
@@ -589,7 +607,10 @@ export function normalizeBin(bin: BinParams|boolean, channel: Channel) {
 }
 
 const COMPATIBLE = {compatible: true};
-export function channelCompatibility(fieldDef: FieldDef<Field>, channel: Channel): {compatible: boolean; warning?: string;} {
+export function channelCompatibility(
+  fieldDef: FieldDef<Field>,
+  channel: Channel
+): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;
 
   if (type === 'geojson' && channel !== 'shape') {
@@ -675,21 +696,24 @@ export function isTimeFieldDef(fieldDef: FieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }
 
-
 /**
  * Getting a value associated with a fielddef.
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
  */
 export function valueExpr(
   v: number | string | boolean | DateTime,
-  {timeUnit, type, time, undefinedIfExprNotRequired}: {
-    timeUnit: TimeUnit,
-    type?: Type,
-    time?: boolean
-    undefinedIfExprNotRequired?: boolean
+  {
+    timeUnit,
+    type,
+    time,
+    undefinedIfExprNotRequired
+  }: {
+    timeUnit: TimeUnit;
+    type?: Type;
+    time?: boolean;
+    undefinedIfExprNotRequired?: boolean;
   }
 ): string {
-
   let expr;
   if (isDateTime(v)) {
     expr = dateTimeExpr(v, true);
@@ -716,10 +740,7 @@ export function valueExpr(
 /**
  * Standardize value array -- convert each value to Vega expression if applicable
  */
-export function valueArray(
-  fieldDef: FieldDef<string>,
-  values: (number | string | boolean | DateTime)[]
-) {
+export function valueArray(fieldDef: FieldDef<string>, values: (number | string | boolean | DateTime)[]) {
   const {timeUnit, type} = fieldDef;
   return values.map(v => {
     const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});

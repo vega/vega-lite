@@ -3,11 +3,7 @@ import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {Orient} from './../vega.schema';
-import {
-  GenericCompositeMarkDef,
-  makeCompositeAggregatePartFactory,
-  PartsMixins,
-} from './common';
+import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 
 export const ERRORBAND: 'errorband' = 'errorband';
@@ -34,7 +30,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * @hide
    */
 
-   // center is not needed right now but will be added back to the schema if future features require it.
+  // center is not needed right now but will be added back to the schema if future features require it.
   center?: ErrorBarCenter;
 
   /**
@@ -49,12 +45,13 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   extent?: ErrorBarExtent;
 }
 
-export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> & ErrorBandConfig & {
-  /**
-   * Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
-   */
-  orient?: Orient;
-};
+export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> &
+  ErrorBandConfig & {
+    /**
+     * Orientation of the error band. This is normally automatically determined, but can be specified when the orientation is ambiguous and cannot be automatically determined.
+     */
+    orient?: Orient;
+  };
 
 export interface ErrorBandConfigMixins {
   /**
@@ -63,16 +60,25 @@ export interface ErrorBandConfigMixins {
   errorband?: ErrorBandConfig;
 }
 
-export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>, config: Config): NormalizedLayerSpec {
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis, markDef, outerSpec}
-    = errorBarParams(spec, ERRORBAND, config);
+export function normalizeErrorBand(
+  spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>,
+  config: Config
+): NormalizedLayerSpec {
+  const {
+    transform,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis,
+    markDef,
+    outerSpec
+  } = errorBarParams(spec, ERRORBAND, config);
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
-      markDef,
-      continuousAxis,
-      continuousAxisChannelDef,
-      encodingWithoutContinuousAxis,
-      config.errorband
+    markDef,
+    continuousAxis,
+    continuousAxisChannelDef,
+    encodingWithoutContinuousAxis,
+    config.errorband
   );
 
   const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
@@ -85,7 +91,7 @@ export function normalizeErrorBand(spec: GenericUnitSpec<Encoding<string>, Error
     layer: [
       ...makeErrorBandPart('band', bandMark, 'lower', 'upper'),
       ...makeErrorBandPart('borders', bordersMark, 'lower'),
-      ...makeErrorBandPart('borders', bordersMark, 'upper'),
+      ...makeErrorBandPart('borders', bordersMark, 'upper')
     ]
   };
 }

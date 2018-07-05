@@ -25,12 +25,12 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
   return assembleRootData(model.component.data, {});
 }
 
-describe('Identifier transform', () =>  {
-  it('is not unnecessarily added', () =>  {
+describe('Identifier transform', () => {
+  it('is not unnecessarily added', () => {
     function test(selDef?: any) {
       const data = getVgData(selDef);
       for (const d of data) {
-        assert.isNotTrue(d.transform && d.transform.some((t) => t.type === 'identifier'));
+        assert.isNotTrue(d.transform && d.transform.some(t => t.type === 'identifier'));
       }
     }
 
@@ -40,17 +40,17 @@ describe('Identifier transform', () =>  {
     }
   });
 
-  it('is added for default point selections', () =>  {
+  it('is added for default point selections', () => {
     for (const type of ['single', 'multi']) {
       const url = getVgData({pt: {type}});
       assert.equal(url[0].transform[0].type, 'identifier');
     }
   });
 
-  it('is added immediately after aggregate transforms', () =>  {
+  it('is added immediately after aggregate transforms', () => {
     function test(transform: VgTransform[]) {
       let aggr = -1;
-      transform.some((t, i) => (aggr = i, t.type === 'aggregate'));
+      transform.some((t, i) => ((aggr = i), t.type === 'aggregate'));
       assert.isAtLeast(aggr, 0);
       assert.equal(transform[aggr + 1].type, 'identifier');
     }
@@ -60,18 +60,16 @@ describe('Identifier transform', () =>  {
       let data = getVgData(sel, {bin: true}, {aggregate: 'count'});
       test(data[0].transform);
 
-      data = getVgData(sel, {aggregate: 'sum'}, null, 'bar',
-        {column: {field: 'Cylinders', type: 'ordinal'}});
+      data = getVgData(sel, {aggregate: 'sum'}, null, 'bar', {column: {field: 'Cylinders', type: 'ordinal'}});
       test(data[0].transform);
     }
   });
 
-  it('is added before any user-specified transforms', () =>  {
+  it('is added before any user-specified transforms', () => {
     for (const type of ['single', 'multi']) {
-      const data = getVgData({pt: {type}}, null, null, null, null,
-        [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);
+      const data = getVgData({pt: {type}}, null, null, null, null, [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);
       let calc = -1;
-      data[0].transform.some((t, i) => (calc = i, t.type === 'formula' && t.as === 'foo'));
+      data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
       assert.equal(data[0].transform[calc - 1].type, 'identifier');
     }
   });

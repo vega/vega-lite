@@ -20,7 +20,24 @@ describe('channel', () => {
 
   describe('SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
-      assert.deepEqual(SCALE_CHANNELS, without(UNIT_CHANNELS, ['x2', 'y2', 'latitude', 'longitude', 'latitude2', 'longitude2', 'order', 'detail', 'key', 'text', 'label', 'tooltip', 'href']));
+      assert.deepEqual(
+        SCALE_CHANNELS,
+        without(UNIT_CHANNELS, [
+          'x2',
+          'y2',
+          'latitude',
+          'longitude',
+          'latitude2',
+          'longitude2',
+          'order',
+          'detail',
+          'key',
+          'text',
+          'label',
+          'tooltip',
+          'href'
+        ])
+      );
     });
   });
 
@@ -51,21 +68,21 @@ describe('channel', () => {
   describe('supportMark', () => {
     it('should support x2 for circle, point, square and tick mark with binned data', () => {
       const encoding: Encoding<string> = {
-        'x': {
-          'field': 'bin_start',
-          'bin': 'binned',
-          'type': 'quantitative',
-          'axis': {
-            'tickStep': 2
+        x: {
+          field: 'bin_start',
+          bin: 'binned',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
           }
         },
-        'x2': {
-          'field': 'bin_end',
-          'type': 'quantitative'
+        x2: {
+          field: 'bin_end',
+          type: 'quantitative'
         },
-        'y': {
-          'field': 'count',
-          'type': 'quantitative'
+        y: {
+          field: 'count',
+          type: 'quantitative'
         }
       };
       assert.isTrue(supportMark(encoding, X2, CIRCLE));
@@ -76,21 +93,21 @@ describe('channel', () => {
 
     it('should support y2 for circle, point, square and tick mark with binned data', () => {
       const encoding: Encoding<string> = {
-        'y': {
-          'field': 'bin_start',
-          'bin': 'binned',
-          'type': 'quantitative',
-          'axis': {
-            'tickStep': 2
+        y: {
+          field: 'bin_start',
+          bin: 'binned',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
           }
         },
-        'y2': {
-          'field': 'bin_end',
-          'type': 'quantitative'
+        y2: {
+          field: 'bin_end',
+          type: 'quantitative'
         },
-        'x': {
-          'field': 'count',
-          'type': 'quantitative'
+        x: {
+          field: 'count',
+          type: 'quantitative'
         }
       };
       assert.isTrue(supportMark(encoding, Y2, CIRCLE));
@@ -101,20 +118,20 @@ describe('channel', () => {
 
     it('should not support x2 for circle, point, square and tick mark without binned data', () => {
       const encoding: Encoding<string> = {
-        'x': {
-          'field': 'bin_start',
-          'type': 'quantitative',
-          'axis': {
-            'tickStep': 2
+        x: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
           }
         },
-        'x2': {
-          'field': 'bin_end',
-          'type': 'quantitative'
+        x2: {
+          field: 'bin_end',
+          type: 'quantitative'
         },
-        'y': {
-          'field': 'count',
-          'type': 'quantitative'
+        y: {
+          field: 'count',
+          type: 'quantitative'
         }
       };
       assert.isFalse(supportMark(encoding, X2, CIRCLE));
@@ -125,20 +142,20 @@ describe('channel', () => {
 
     it('should not support y2 for circle, point, square and tick mark with binned data', () => {
       const encoding: Encoding<string> = {
-        'y': {
-          'field': 'bin_start',
-          'type': 'quantitative',
-          'axis': {
-            'tickStep': 2
+        y: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
           }
         },
-        'y2': {
-          'field': 'bin_end',
-          'type': 'quantitative'
+        y2: {
+          field: 'bin_end',
+          type: 'quantitative'
         },
-        'x': {
-          'field': 'count',
-          'type': 'quantitative'
+        x: {
+          field: 'count',
+          type: 'quantitative'
         }
       };
       assert.isFalse(supportMark(encoding, Y2, CIRCLE));

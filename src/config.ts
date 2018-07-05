@@ -5,7 +5,13 @@ import {VL_ONLY_GUIDE_CONFIG} from './guide';
 import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
-import {Mark, MarkConfigMixins, PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX} from './mark';
+import {
+  Mark,
+  MarkConfigMixins,
+  PRIMITIVE_MARKS,
+  VL_ONLY_MARK_CONFIG_PROPERTIES,
+  VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
+} from './mark';
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
@@ -14,8 +20,6 @@ import {extractTitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
 import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
-
-
 
 export interface ViewConfig {
   /**
@@ -118,7 +122,7 @@ export const defaultViewConfig: ViewConfig = {
   height: 200
 };
 
-export type RangeConfigValue = (number|string)[] | VgScheme | {step: number};
+export type RangeConfigValue = (number | string)[] | VgScheme | {step: number};
 
 export type RangeConfig = RangeConfigProps & {[name: string]: RangeConfigValue};
 
@@ -192,7 +196,6 @@ export interface VLOnlyConfig {
    */
   timeFormat?: string;
 
-
   /** Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). */
   view?: ViewConfig;
 
@@ -212,9 +215,12 @@ export interface StyleConfigIndex {
   [style: string]: VgMarkConfig;
 }
 
-
-export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
-
+export interface Config
+  extends TopLevelProperties,
+    VLOnlyConfig,
+    MarkConfigMixins,
+    CompositeMarkConfigMixins,
+    AxisConfigMixins {
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
@@ -306,7 +312,7 @@ export const defaultConfig: Config = {
   selection: defaultSelectionConfig,
   style: {},
 
-  title: {},
+  title: {}
 };
 
 export function initConfig(config: Config) {
@@ -316,8 +322,14 @@ export function initConfig(config: Config) {
 const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
-  'padding', 'numberFormat', 'timeFormat', 'countTitle',
-  'stack', 'scale', 'selection', 'invalidValues',
+  'padding',
+  'numberFormat',
+  'timeFormat',
+  'countTitle',
+  'stack',
+  'scale',
+  'selection',
+  'invalidValues',
   'overlay' as keyof Config // FIXME: Redesign and unhide this
 ];
 
@@ -398,9 +410,11 @@ function redirectConfig(
   compositeMarkPart?: string
 ) {
   const propConfig: VgMarkConfig =
-    prop === 'title' ? extractTitleConfig(config.title).mark :
-    compositeMarkPart ? config[prop][compositeMarkPart] :
-    config[prop];
+    prop === 'title'
+      ? extractTitleConfig(config.title).mark
+      : compositeMarkPart
+        ? config[prop][compositeMarkPart]
+        : config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"

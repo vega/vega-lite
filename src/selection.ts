@@ -204,7 +204,7 @@ export interface SelectionConfig {
   interval?: IntervalSelectionConfig;
 }
 
-export const defaultConfig:SelectionConfig = {
+export const defaultConfig: SelectionConfig = {
   single: {
     on: 'click',
     fields: [SELECTION_ID],

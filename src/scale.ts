@@ -31,13 +31,20 @@ export namespace ScaleType {
   export const BAND: 'band' = 'band';
 }
 
-export type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR |
-  typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT |
-  typeof ScaleType.TIME | typeof ScaleType.UTC |
+export type ScaleType =
+  | typeof ScaleType.LINEAR
+  | typeof ScaleType.BIN_LINEAR
+  | typeof ScaleType.LOG
+  | typeof ScaleType.POW
+  | typeof ScaleType.SQRT
+  | typeof ScaleType.TIME
+  | typeof ScaleType.UTC
   // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
-  typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-  typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
-
+  | typeof ScaleType.SEQUENTIAL // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
+  | typeof ScaleType.ORDINAL
+  | typeof ScaleType.BIN_ORDINAL
+  | typeof ScaleType.POINT
+  | typeof ScaleType.BAND;
 
 /**
  * Index for scale categories -- only scale of the same categories can be merged together.
@@ -69,9 +76,11 @@ export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
 export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
   const scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
   const scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
-  return scaleCategory1 === scaleCategory2 ||
+  return (
+    scaleCategory1 === scaleCategory2 ||
     (scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time') ||
-    (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time');
+    (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time')
+  );
 }
 
 /**
@@ -96,7 +105,7 @@ const SCALE_PRECEDENCE_INDEX: {
   'bin-linear': 0,
   sequential: 0,
   ordinal: 0,
-  'bin-ordinal': 0,
+  'bin-ordinal': 0
 };
 
 /**
@@ -106,10 +115,20 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
   return SCALE_PRECEDENCE_INDEX[scaleType];
 }
 
-export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'bin-linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = [
+  'linear',
+  'bin-linear',
+  'log',
+  'pow',
+  'sqrt',
+  'time',
+  'utc'
+];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
-export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
+export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
+  'sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/
+]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
 export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'bin-ordinal', 'point', 'band'];
@@ -127,13 +146,22 @@ export function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal
   return type in BIN_SCALES_INDEX;
 }
 
-export function hasContinuousDomain(type: ScaleType):
-  type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc'|
-          'sequential' /* TODO add | 'quantile' | 'quantize' | 'threshold' */ {
+export function hasContinuousDomain(
+  type: ScaleType
+): type is
+  | 'linear'
+  | 'log'
+  | 'pow'
+  | 'sqrt'
+  | 'time'
+  | 'utc'
+  | 'sequential' /* TODO add | 'quantile' | 'quantize' | 'threshold' */ {
   return type in CONTINUOUS_DOMAIN_INDEX;
 }
 
-export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'bin-linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' {
+export function isContinuousToContinuous(
+  type: ScaleType
+): type is 'linear' | 'bin-linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' {
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
 
@@ -278,7 +306,6 @@ export interface ScaleConfig {
    */
   maxOpacity?: number;
 
-
   /**
    * Default minimum value for point size scale with zero=false.
    *
@@ -356,27 +383,29 @@ export interface SchemeParams {
   count?: number;
 }
 
-export type SelectionDomain = {
-  /**
-   * The name of a selection.
-   */
-  selection: string,
-  /**
-   * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-   * over multiple fields or encodings.
-   */
-  field?: string
-} | {
-  /**
-   * The name of a selection.
-   */
-  selection: string,
-  /**
-   * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-   * over multiple fields or encodings.
-   */
-  encoding?: string
-};
+export type SelectionDomain =
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      field?: string;
+    }
+  | {
+      /**
+       * The name of a selection.
+       */
+      selection: string;
+      /**
+       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
+       * over multiple fields or encodings.
+       */
+      encoding?: string;
+    };
 
 export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | SchemeParams;
@@ -418,7 +447,6 @@ export interface Scale {
    * The `selection` property can be used to [interactively determine](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
   domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
-
 
   // Hide because we might not really need this.
   /**
@@ -531,7 +559,7 @@ export interface Scale {
    * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
    *
    */
-  nice?: boolean | number | NiceTime | {interval: string, step: number};
+  nice?: boolean | number | NiceTime | {interval: string; step: number};
 
   /**
    * The logarithm base of the `log` scale (default `10`).
@@ -585,7 +613,14 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
 
 export const SCALE_PROPERTIES = flagKeys(SCALE_PROPERTY_INDEX);
 
-const {type, domain, range, rangeStep, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX} = SCALE_PROPERTY_INDEX;
+const {
+  type,
+  domain,
+  range,
+  rangeStep,
+  scheme,
+  ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
+} = SCALE_PROPERTY_INDEX;
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = flagKeys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
@@ -614,19 +649,26 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'clamp':
       return isContinuousToContinuous(scaleType) || scaleType === 'sequential';
     case 'nice':
-      return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || scaleType as any === 'quantize';
+      return isContinuousToContinuous(scaleType) || scaleType === 'sequential' || (scaleType as any) === 'quantize';
     case 'exponent':
       return scaleType === 'pow';
     case 'base':
       return scaleType === 'log';
     case 'zero':
-      return hasContinuousDomain(scaleType) && !contains([
-        'log',  // log scale cannot have zero value
-        'time', 'utc', // zero is not meaningful for time
-        'bin-linear', // binning should not automatically add zero
-        'threshold', // threshold requires custom domain so zero does not matter
-        'quantile' // quantile depends on distribution so zero does not matter
-      ], scaleType);
+      return (
+        hasContinuousDomain(scaleType) &&
+        !contains(
+          [
+            'log', // log scale cannot have zero value
+            'time',
+            'utc', // zero is not meaningful for time
+            'bin-linear', // binning should not automatically add zero
+            'threshold', // threshold requires custom domain so zero does not matter
+            'quantile' // quantile depends on distribution so zero does not matter
+          ],
+          scaleType
+        )
+      );
   }
   /* istanbul ignore next: should never reach here*/
   throw new Error(`Invalid scale property ${propName}.`);
@@ -663,7 +705,11 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
   throw new Error(`Invalid scale property "${propName}".`);
 }
 
-export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams | 'binned'): boolean {
+export function scaleTypeSupportDataType(
+  specifiedType: ScaleType,
+  fieldDefType: Type,
+  bin: boolean | BinParams | 'binned'
+): boolean {
   if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (fieldDefType === Type.TEMPORAL) {
@@ -672,7 +718,19 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
     if (bin) {
       return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
     }
-    return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, ScaleType.SEQUENTIAL, undefined], specifiedType);
+    return contains(
+      [
+        ScaleType.LOG,
+        ScaleType.POW,
+        ScaleType.SQRT,
+        ScaleType.QUANTILE,
+        ScaleType.QUANTIZE,
+        ScaleType.LINEAR,
+        ScaleType.SEQUENTIAL,
+        undefined
+      ],
+      specifiedType
+    );
   }
 
   return true;
@@ -691,7 +749,7 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case Channel.COLOR:
     case Channel.FILL:
     case Channel.STROKE:
-      return scaleType !== 'band';    // band does not make sense with color
+      return scaleType !== 'band'; // band does not make sense with color
 
     case Channel.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only

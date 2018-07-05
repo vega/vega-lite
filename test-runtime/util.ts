@@ -17,16 +17,36 @@ export const bound = 'bound';
 export const unbound = 'unbound';
 
 export const tuples = [
-  {a: 0, b: 28, c: 0}, {a: 0, b: 55, c: 1}, {a: 0, b: 23, c: 2},
-  {a: 1, b: 43, c: 0}, {a: 1, b: 91, c: 1}, {a: 1, b: 54, c: 2},
-  {a: 2, b: 81, c: 0}, {a: 2, b: 53, c: 1}, {a: 2, b: 76, c: 2},
-  {a: 3, b: 19, c: 0}, {a: 3, b: 87, c: 1}, {a: 3, b: 12, c: 2},
-  {a: 4, b: 52, c: 0}, {a: 4, b: 48, c: 1}, {a: 4, b: 35, c: 2},
-  {a: 5, b: 24, c: 0}, {a: 5, b: 49, c: 1}, {a: 5, b: 48, c: 2},
-  {a: 6, b: 87, c: 0}, {a: 6, b: 66, c: 1}, {a: 6, b: 23, c: 2},
-  {a: 7, b: 17, c: 0}, {a: 7, b: 27, c: 1}, {a: 7, b: 39, c: 2},
-  {a: 8, b: 68, c: 0}, {a: 8, b: 16, c: 1}, {a: 8, b: 67, c: 2},
-  {a: 9, b: 49, c: 0}, {a: 9, b: 15, c: 1}, {a: 9, b: 48, 'c': 2}
+  {a: 0, b: 28, c: 0},
+  {a: 0, b: 55, c: 1},
+  {a: 0, b: 23, c: 2},
+  {a: 1, b: 43, c: 0},
+  {a: 1, b: 91, c: 1},
+  {a: 1, b: 54, c: 2},
+  {a: 2, b: 81, c: 0},
+  {a: 2, b: 53, c: 1},
+  {a: 2, b: 76, c: 2},
+  {a: 3, b: 19, c: 0},
+  {a: 3, b: 87, c: 1},
+  {a: 3, b: 12, c: 2},
+  {a: 4, b: 52, c: 0},
+  {a: 4, b: 48, c: 1},
+  {a: 4, b: 35, c: 2},
+  {a: 5, b: 24, c: 0},
+  {a: 5, b: 49, c: 1},
+  {a: 5, b: 48, c: 2},
+  {a: 6, b: 87, c: 0},
+  {a: 6, b: 66, c: 1},
+  {a: 6, b: 23, c: 2},
+  {a: 7, b: 17, c: 0},
+  {a: 7, b: 27, c: 1},
+  {a: 7, b: 39, c: 2},
+  {a: 8, b: 68, c: 0},
+  {a: 8, b: 16, c: 1},
+  {a: 8, b: 67, c: 2},
+  {a: 9, b: 49, c: 0},
+  {a: 9, b: 15, c: 1},
+  {a: 9, b: 48, c: 2}
 ];
 
 const unitNames = {
@@ -69,35 +89,48 @@ export const hits = {
 function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
   const data = {values: opts.values || tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
-  const y = {field: 'b',type: 'quantitative', ...opts.y};
+  const y = {field: 'b', type: 'quantitative', ...opts.y};
   const color = {field: 'c', type: 'nominal', ...opts.color};
   const size = {value: 100, ...opts.size};
   const selection = {sel};
   const mark = 'circle';
 
-  return iter % 2 === 0 ? {
-    data, selection, mark,
-    encoding: {
-      x, y, size,
-      color: {
-        condition: {selection: 'sel', ...color},
-        value: 'grey'
+  return iter % 2 === 0
+    ? {
+        data,
+        selection,
+        mark,
+        encoding: {
+          x,
+          y,
+          size,
+          color: {
+            condition: {selection: 'sel', ...color},
+            value: 'grey'
+          }
+        }
       }
-    }
-  } : {
-    data,
-    layer: [{
-      selection, mark,
-      encoding: {
-        x, y, size, color,
-        opacity: {value: 0.25}
-      }
-    }, {
-      transform: [{filter: {selection: 'sel'}}],
-      mark,
-      encoding: {x, y, size, color}
-    }]
-  };
+    : {
+        data,
+        layer: [
+          {
+            selection,
+            mark,
+            encoding: {
+              x,
+              y,
+              size,
+              color,
+              opacity: {value: 0.25}
+            }
+          },
+          {
+            transform: [{filter: {selection: 'sel'}}],
+            mark,
+            encoding: {x, y, size, color}
+          }
+        ]
+      };
 }
 
 export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
@@ -131,8 +164,7 @@ export function unitNameRegex(specType: ComposeType, idx: number) {
 }
 
 export function parentSelector(compositeType: ComposeType, index: number) {
-  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` :
-     unitNames.repeat[index] + '_group';
+  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : unitNames.repeat[index] + '_group';
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
@@ -147,17 +179,17 @@ export function pt(key: string, idx: number, parent?: string) {
 
 export function embedFn(browser: WebdriverIO.Client<void>) {
   return (specification: TopLevelSpec) => {
-    browser.execute((_) => window['embed'](_), specification);
+    browser.execute(_ => window['embed'](_), specification);
   };
 }
 
 export function svg(browser: WebdriverIO.Client<void>, path: string, filename: string) {
-  const xml = browser.executeAsync((done) => {
+  const xml = browser.executeAsync(done => {
     window['view'].runAfter((view: any) => view.toSVG().then((_: string) => done(_)));
   });
 
   if (generate) {
-    mkdirp(path = `${output}/${path}`);
+    mkdirp((path = `${output}/${path}`));
     fs.writeFileSync(`${path}/${filename}.svg`, xml.value);
   }
 
@@ -167,7 +199,7 @@ export function svg(browser: WebdriverIO.Client<void>, path: string, filename: s
 export function testRenderFn(browser: WebdriverIO.Client<void>, path: string) {
   return (filename: string) => {
     // const render =
-      svg(browser, path, filename);
+    svg(browser, path, filename);
     // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
     // assert.equal(render, file);
   };

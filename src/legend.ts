@@ -3,7 +3,6 @@ import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
 
-
 export interface LegendConfig extends BaseLegendConfig, VlOnlyGuideConfig {}
 
 /**

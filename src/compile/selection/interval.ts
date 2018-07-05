@@ -12,14 +12,14 @@ import {
   SelectionComponent,
   STORE,
   TUPLE,
-  unitName,
+  unitName
 } from './selection';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
-const interval:SelectionCompiler = {
+const interval: SelectionCompiler = {
   predicate: 'vlInterval',
   scaleDomain: 'vlIntervalDomain',
 
@@ -57,14 +57,14 @@ const interval:SelectionCompiler = {
 
       signals.push.apply(signals, cs);
       tupleTriggers.push(dname);
-      intervals.push(`{encoding: ${stringValue(channel)}, ` +
-        `field: ${stringValue(p.field)}, extent: ${dname}}`);
+      intervals.push(`{encoding: ${stringValue(channel)}, ` + `field: ${stringValue(p.field)}, extent: ${dname}}`);
 
       scaleTriggers.push({
         scaleName: model.scaleName(channel),
-        expr: `(!isArray(${dname}) || ` +
+        expr:
+          `(!isArray(${dname}) || ` +
           `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
-            `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
+          `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
       });
     }
 
@@ -73,8 +73,7 @@ const interval:SelectionCompiler = {
     if (!hasScales) {
       signals.push({
         name: name + SCALE_TRIGGER,
-        update: scaleTriggers.map((t) => t.expr).join(' && ') +
-          ` ? ${name + SCALE_TRIGGER} : {}`
+        update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
       });
     }
 
@@ -83,18 +82,19 @@ const interval:SelectionCompiler = {
     // ordinal/nominal domains which, when inverted, will still produce a valid datum.
     return signals.concat({
       name: name + TUPLE,
-      on: [{
-        events: tupleTriggers.map((t) => ({signal: t})),
-        update: tupleTriggers.join(' && ') +
-          ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
-      }]
+      on: [
+        {
+          events: tupleTriggers.map(t => ({signal: t})),
+          update:
+            tupleTriggers.join(' && ') + ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
+        }
+      ]
     });
   },
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
-    return tpl + ', ' +
-      (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
+    return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
   },
 
   marks: (model, selCmpt, marks) => {
@@ -120,10 +120,13 @@ const interval:SelectionCompiler = {
     // to a unit different from the one in the store.
     if (selCmpt.resolve === 'global') {
       for (const key of keys(update)) {
-        update[key] = [{
-          test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
-          ...update[key]
-        }, {value: 0}];
+        update[key] = [
+          {
+            test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
+            ...update[key]
+          },
+          {value: 0}
+        ];
       }
     }
 
@@ -132,28 +135,32 @@ const interval:SelectionCompiler = {
     // be interacted with (e.g., dragging it around).
     const {fill, fillOpacity, ...stroke} = selCmpt.mark;
     const vgStroke = keys(stroke).reduce((def, k) => {
-      def[k] = [{
-        test: [
-          xi !== null && `${name}_x[0] !== ${name}_x[1]`,
-          yi != null && `${name}_y[0] !== ${name}_y[1]`,
-        ].filter(x => x).join(' && '),
-        value: stroke[k]
-      }, {value: null}];
+      def[k] = [
+        {
+          test: [xi !== null && `${name}_x[0] !== ${name}_x[1]`, yi != null && `${name}_y[0] !== ${name}_y[1]`]
+            .filter(x => x)
+            .join(' && '),
+          value: stroke[k]
+        },
+        {value: null}
+      ];
       return def;
     }, {});
 
-    return [{
-      name: name + BRUSH + '_bg',
-      type: 'rect',
-      clip: true,
-      encode: {
-        enter: {
-          fill: {value: fill},
-          fillOpacity: {value: fillOpacity}
-        },
-        update: update
-      }
-    } as any].concat(marks, {
+    return [
+      {
+        name: name + BRUSH + '_bg',
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {
+            fill: {value: fill},
+            fillOpacity: {value: fillOpacity}
+          },
+          update: update
+        }
+      } as any
+    ].concat(marks, {
       name: name + BRUSH,
       type: 'rect',
       clip: true,
@@ -171,7 +178,7 @@ export default interval;
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x'|'y'): any {
+function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x' | 'y'): any {
   const vname = channelSignalName(selCmpt, channel, 'visual');
   const dname = channelSignalName(selCmpt, channel, 'data');
   const hasScales = scales.has(selCmpt);
@@ -184,7 +191,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
 
   const on = events(selCmpt, (def: any[], evt: VgEventStream) => {
     return def.concat(
-      {events: evt.between[0], update: `[${coord}, ${coord}]`},           // Brush Start
+      {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
     );
   });
@@ -194,16 +201,25 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   // to their domains (e.g., filtering) should clear the brushes.
   on.push({
     events: {signal: selCmpt.name + SCALE_TRIGGER},
-    update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
-      `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]` : `[0, 0]`
+    update:
+      hasContinuousDomain(scaleType) && !isBinScale(scaleType)
+        ? `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
+        : `[0, 0]`
   });
 
-  return hasScales ? [{name: dname, on: []}] : [{
-    name: vname, value: [], on: on
-  }, {
-    name: dname,
-    on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
-  }];
+  return hasScales
+    ? [{name: dname, on: []}]
+    : [
+        {
+          name: vname,
+          value: [],
+          on: on
+        },
+        {
+          name: dname,
+          on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
+        }
+      ];
 }
 
 function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {

@@ -7,7 +7,6 @@ import {DataFlowNode} from './dataflow';
  * A class for flatten transform nodes
  */
 export class FoldTransformNode extends DataFlowNode {
-
   public clone() {
     return new FoldTransformNode(this.parent, duplicate(this.transform));
   }
@@ -19,7 +18,7 @@ export class FoldTransformNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return this.transform.as.reduce((result,item) => {
+    return this.transform.as.reduce((result, item) => {
       result[item] = true;
       return result;
     }, {});

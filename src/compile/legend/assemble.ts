@@ -19,7 +19,6 @@ export function assembleLegends(model: Model): VgLegend[] {
           legendByDomain[domainHash].push(legendComponentIndex[channel]);
         }
       }
-
     } else {
       legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
     }

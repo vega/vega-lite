@@ -1,10 +1,10 @@
-import { assert } from 'chai';
-import { NameMap } from '../../src/compile/model';
-import { parseFacetModel, parseFacetModelWithScale } from '../util';
+import {assert} from 'chai';
+import {NameMap} from '../../src/compile/model';
+import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('Model', () => {
-  describe('NameMap', () =>  {
-    it('should rename correctly', () =>  {
+  describe('NameMap', () => {
+    it('should rename correctly', () => {
       const map = new NameMap();
       assert.equal(map.get('a'), 'a');
 
@@ -43,17 +43,20 @@ describe('Model', () => {
       const model = parseFacetModel({
         facet: {row: {field: 'a', type: 'nominal'}},
         spec: {
-          layer: [{
-            mark: 'point',
-            encoding: {
-              x: {field: 'x', type: 'quantitative'}
+          layer: [
+            {
+              mark: 'point',
+              encoding: {
+                x: {field: 'x', type: 'quantitative'}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                color: {field: 'x', type: 'quantitative'}
+              }
             }
-          },{
-            mark: 'point',
-            encoding: {
-              color: {field: 'x', type: 'quantitative'}
-            }
-          },]
+          ]
         }
       });
       assert(model.hasDescendantWithFieldOnChannel('x'));
@@ -76,17 +79,20 @@ describe('Model', () => {
       const model = parseFacetModel({
         facet: {row: {field: 'a', type: 'nominal'}},
         spec: {
-          layer: [{
-            mark: 'point',
-            encoding: {
-              color: {field: 'x', type: 'quantitative'}
+          layer: [
+            {
+              mark: 'point',
+              encoding: {
+                color: {field: 'x', type: 'quantitative'}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                color: {field: 'x', type: 'quantitative'}
+              }
             }
-          },{
-            mark: 'point',
-            encoding: {
-              color: {field: 'x', type: 'quantitative'}
-            }
-          },]
+          ]
         }
       });
       assert(!model.hasDescendantWithFieldOnChannel('x'));
@@ -102,9 +108,13 @@ describe('Model', () => {
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'nominal', scale: {
-              padding: 0.345
-            }}
+            x: {
+              field: 'b',
+              type: 'nominal',
+              scale: {
+                padding: 0.345
+              }
+            }
           }
         },
         resolve: {

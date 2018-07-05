@@ -16,15 +16,15 @@ function assembleFromTransform(model: Model, t: BinTransform) {
   return BinNode.makeFromTransform(null, t, model).assemble();
 }
 
-describe('compile/data/bin', () =>  {
-  it('should add bin transform and correctly apply bin with custom extent', () =>  {
+describe('compile/data/bin', () => {
+  it('should add bin transform and correctly apply bin with custom extent', () => {
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
         y: {
           bin: {extent: [0, 100]},
-          'field': 'Acceleration',
-          'type': 'quantitative'
+          field: 'Acceleration',
+          type: 'quantitative'
         }
       }
     });
@@ -35,18 +35,18 @@ describe('compile/data/bin', () =>  {
       as: ['bin_extent_0_100_maxbins_10_Acceleration', 'bin_extent_0_100_maxbins_10_Acceleration_end'],
       maxbins: 10,
       extent: [0, 100],
-      signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
+      signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
     });
   });
 
-  it ('should add bin transform and correctly apply bin for binned field without custom extent', () => {
+  it('should add bin transform and correctly apply bin for binned field without custom extent', () => {
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
         y: {
           bin: true,
-          'field': 'Acceleration',
-          'type': 'quantitative'
+          field: 'Acceleration',
+          type: 'quantitative'
         }
       }
     });
@@ -69,18 +69,18 @@ describe('compile/data/bin', () =>  {
 
   it('should apply the bin transform only once for a binned field encoded in multiple channels', () => {
     const model = parseUnitModelWithScale({
-      data: {url: "data/movies.json"},
-      mark: "circle",
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
       encoding: {
         x: {
           bin: true,
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         },
         color: {
-          bin: {"maxbins": 10},
-          field: "Rotten_Tomatoes_Rating",
-          type: "ordinal"
+          bin: {maxbins: 10},
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'ordinal'
         }
       }
     });
@@ -94,9 +94,7 @@ describe('compile/data/bin', () =>  {
     assert.deepEqual<VgTransform>(transform[1], {
       type: 'bin',
       field: 'Rotten_Tomatoes_Rating',
-      as:
-      [ 'bin_maxbins_10_Rotten_Tomatoes_Rating',
-        'bin_maxbins_10_Rotten_Tomatoes_Rating_end' ],
+      as: ['bin_maxbins_10_Rotten_Tomatoes_Rating', 'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
       signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_bins',
       maxbins: 10,
       extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'}
@@ -108,7 +106,7 @@ describe('compile/data/bin', () =>  {
     });
   });
 
-  it('should add bin transform from transform array and correctly apply bin with custom extent', () =>  {
+  it('should add bin transform from transform array and correctly apply bin with custom extent', () => {
     const t: BinTransform = {
       bin: {extent: [0, 100]},
       field: 'Acceleration',
@@ -116,17 +114,17 @@ describe('compile/data/bin', () =>  {
     };
 
     const model = parseUnitModelWithScale({
-      data: {url: "data/movies.json"},
-      mark: "circle",
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
       transform: [t],
       encoding: {
         x: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         },
         color: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         }
       }
     });
@@ -134,14 +132,14 @@ describe('compile/data/bin', () =>  {
     assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
       type: 'bin',
       field: 'Acceleration',
-      "maxbins": 10,
+      maxbins: 10,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
+      signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
     });
   });
 
-  it('should add bin transform from transform array and correctly apply bin with custom extent', () =>  {
+  it('should add bin transform from transform array and correctly apply bin with custom extent', () => {
     const t: BinTransform = {
       bin: {extent: [0, 100], maxbins: 20},
       field: 'Acceleration',
@@ -149,17 +147,17 @@ describe('compile/data/bin', () =>  {
     };
 
     const model = parseUnitModelWithScale({
-      data: {url: "data/movies.json"},
-      mark: "circle",
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
       transform: [t],
       encoding: {
         x: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         },
         color: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         }
       }
     });
@@ -167,14 +165,14 @@ describe('compile/data/bin', () =>  {
     assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
       type: 'bin',
       field: 'Acceleration',
-      "maxbins": 20,
+      maxbins: 20,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: "bin_extent_0_100_maxbins_20_Acceleration_bins",
+      signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins'
     });
   });
 
-  it('should add bin transform from transform array with anchor property', () =>  {
+  it('should add bin transform from transform array with anchor property', () => {
     const t: BinTransform = {
       bin: {extent: [0, 100], anchor: 6},
       field: 'Acceleration',
@@ -182,17 +180,17 @@ describe('compile/data/bin', () =>  {
     };
 
     const model = parseUnitModelWithScale({
-      data: {url: "data/movies.json"},
-      mark: "circle",
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
       transform: [t],
       encoding: {
         x: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         },
         color: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         }
       }
     });
@@ -204,11 +202,11 @@ describe('compile/data/bin', () =>  {
       maxbins: 10,
       as: ['binned_acceleration', 'binned_acceleration_end'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
+      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
     });
   });
 
-  it('should add bin transform from transform array with array as', () =>  {
+  it('should add bin transform from transform array with array as', () => {
     const t: BinTransform = {
       bin: {extent: [0, 100], anchor: 6},
       field: 'Acceleration',
@@ -216,17 +214,17 @@ describe('compile/data/bin', () =>  {
     };
 
     const model = parseUnitModelWithScale({
-      data: {url: "data/movies.json"},
-      mark: "circle",
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
       transform: [t],
       encoding: {
         x: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         },
         color: {
-          field: "Rotten_Tomatoes_Rating",
-          type: "quantitative"
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
         }
       }
     });
@@ -238,7 +236,7 @@ describe('compile/data/bin', () =>  {
       maxbins: 10,
       as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       extent: [0, 100],
-      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
+      signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
     });
   });
 });

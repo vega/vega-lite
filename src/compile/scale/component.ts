@@ -18,8 +18,8 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
 
   constructor(name: string, typeWithExplicit: Explicit<ScaleType>) {
     super(
-      {},     // no initial explicit property
-      {name}  // name as initial implicit property
+      {}, // no initial explicit property
+      {name} // name as initial implicit property
     );
     this.setWithExplicit('type', typeWithExplicit);
   }

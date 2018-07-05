@@ -1,7 +1,12 @@
 import {assert} from 'chai';
 import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
-import {HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP} from '../../../src/header';
+import {
+  HEADER_LABEL_PROPERTIES,
+  HEADER_LABEL_PROPERTIES_MAP,
+  HEADER_TITLE_PROPERTIES,
+  HEADER_TITLE_PROPERTIES_MAP
+} from '../../../src/header';
 import {parseFacetModel} from '../../util';
 
 describe('compile/header/index', () => {
@@ -145,17 +150,32 @@ describe('compile/header/index', () => {
       const config = titleSpec.config;
       const facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
 
-      const headerTitleProps = getHeaderProperties(undefined, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      const headerTitleProps = getHeaderProperties(
+        undefined,
+        facetFieldDef,
+        HEADER_TITLE_PROPERTIES,
+        HEADER_TITLE_PROPERTIES_MAP
+      );
       it('should return the correct title property from header', () => {
         assert.deepEqual(headerTitleProps, {fontSize: 40});
       });
 
-      const configTitleProps = getHeaderProperties(config, undefined, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      const configTitleProps = getHeaderProperties(
+        config,
+        undefined,
+        HEADER_TITLE_PROPERTIES,
+        HEADER_TITLE_PROPERTIES_MAP
+      );
       it('should return the correct title property from config', () => {
         assert.deepEqual(configTitleProps, {fontSize: 20});
       });
 
-      const bothTitleProps = getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
+      const bothTitleProps = getHeaderProperties(
+        config,
+        facetFieldDef,
+        HEADER_TITLE_PROPERTIES,
+        HEADER_TITLE_PROPERTIES_MAP
+      );
       it('should overwrite the config title property with the header title property', () => {
         assert.deepEqual(bothTitleProps, {fontSize: 40});
       });
@@ -181,17 +201,32 @@ describe('compile/header/index', () => {
       const config = labelSpec.config;
       const facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
 
-      const headerLabelProps = getHeaderProperties(undefined, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      const headerLabelProps = getHeaderProperties(
+        undefined,
+        facetFieldDef,
+        HEADER_LABEL_PROPERTIES,
+        HEADER_LABEL_PROPERTIES_MAP
+      );
       it('should return the correct label property from header', () => {
         assert.deepEqual(headerLabelProps, {fontSize: 40});
       });
 
-      const configLabelProps = getHeaderProperties(config, undefined, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      const configLabelProps = getHeaderProperties(
+        config,
+        undefined,
+        HEADER_LABEL_PROPERTIES,
+        HEADER_LABEL_PROPERTIES_MAP
+      );
       it('should return the correct label property from config', () => {
         assert.deepEqual(configLabelProps, {fontSize: 20});
       });
 
-      const bothLabelProps = getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
+      const bothLabelProps = getHeaderProperties(
+        config,
+        facetFieldDef,
+        HEADER_LABEL_PROPERTIES,
+        HEADER_LABEL_PROPERTIES_MAP
+      );
       it('should overwrite the config label property with the header label property', () => {
         assert.deepEqual(bothLabelProps, {fontSize: 40});
       });

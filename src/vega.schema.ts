@@ -1,5 +1,10 @@
 import {AggregateOp} from 'vega';
-import {FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, SampleTransform as VgSampleTransform, SignalRef} from 'vega-typings';
+import {
+  FlattenTransform as VgFlattenTransform,
+  FoldTransform as VgFoldTransform,
+  SampleTransform as VgSampleTransform,
+  SignalRef
+} from 'vega-typings';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
@@ -25,26 +30,29 @@ export interface VgData {
   transform?: VgTransform[];
 }
 
-
 export interface VgParentRef {
   parent: string;
 }
 
 export type VgFieldRef = string | VgParentRef | VgParentRef[];
 
-export type VgSortField = true | {
-  field?: VgFieldRef,
-  op: AggregateOp,
-  order?: SortOrder
-};
+export type VgSortField =
+  | true
+  | {
+      field?: VgFieldRef;
+      op: AggregateOp;
+      order?: SortOrder;
+    };
 
 /**
  * Unioned domains can only be sorted by count aggregate.
  */
-export type VgUnionSortField = true | {
-  op: 'count'
-  order?: SortOrder
-};
+export type VgUnionSortField =
+  | true
+  | {
+      op: 'count';
+      order?: SortOrder;
+    };
 
 export interface VgDataRef {
   data: string;
@@ -61,11 +69,13 @@ export type VgEventStream = any;
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {
   value?: number | string | boolean;
-  field?: string | {
-    datum?: string,
-    group?: string,
-    parent?: string
-  };
+  field?:
+    | string
+    | {
+        datum?: string;
+        group?: string;
+        parent?: string;
+      };
   signal?: string;
   scale?: string; // TODO: object
   mult?: number;
@@ -85,10 +95,16 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export interface VgScheme {scheme: string, extent?: number[], count?: number}
-export type VgRange = string | VgDataRef | (number|string|VgDataRef|SignalRef)[] | VgScheme | VgRangeStep;
+export interface VgScheme {
+  scheme: string;
+  extent?: number[];
+  count?: number;
+}
+export type VgRange = string | VgDataRef | (number | string | VgDataRef | SignalRef)[] | VgScheme | VgRangeStep;
 
-export interface VgRangeStep {step: number | SignalRef}
+export interface VgRangeStep {
+  step: number | SignalRef;
+}
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
@@ -99,8 +115,20 @@ export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDo
 
 export type VgMarkGroup = any;
 
-export type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
-
+export type VgProjectionType =
+  | 'albers'
+  | 'albersUsa'
+  | 'azimuthalEqualArea'
+  | 'azimuthalEquidistant'
+  | 'conicConformal'
+  | 'conicEqualArea'
+  | 'conicEquidistant'
+  | 'equirectangular'
+  | 'gnomonic'
+  | 'mercator'
+  | 'orthographic'
+  | 'stereographic'
+  | 'transverseMercator';
 
 export interface VgProjection {
   /*
@@ -175,7 +203,7 @@ export interface VgScale {
   base?: number;
   exponent?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
-  nice?: boolean | number | NiceTime | {interval: string, step: number};
+  nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
   paddingInner?: number;
   paddingOuter?: number;
@@ -184,7 +212,7 @@ export interface VgScale {
   zero?: boolean;
 }
 
-export type ScaleInterpolate = 'rgb'| 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
+export type ScaleInterpolate = 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
 
 export interface ScaleInterpolateParams {
   type: 'rgb' | 'cubehelix' | 'cubehelix-long';
@@ -194,8 +222,8 @@ export interface ScaleInterpolateParams {
 export type VgLayoutAlign = 'none' | 'each' | 'all';
 
 export interface RowCol<T> {
-  row?: T,
-  column?: T
+  row?: T;
+  column?: T;
 }
 
 export interface VgLayout {
@@ -203,14 +231,16 @@ export interface VgLayout {
   padding?: number | RowCol<number>;
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
-  offset?: number | {
-    rowHeader?: number,
-    rowFooter?: number,
-    rowTitle?: number,
-    columnHeader?: number,
-    columnFooter?: number,
-    columnTitle?: number
-  };
+  offset?:
+    | number
+    | {
+        rowHeader?: number;
+        rowFooter?: number;
+        rowTitle?: number;
+        columnHeader?: number;
+        columnFooter?: number;
+        columnTitle?: number;
+      };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
   align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
@@ -232,7 +262,7 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUni
 
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
-     return 'field' in domain && 'data' in domain;
+    return 'field' in domain && 'data' in domain;
   }
   return false;
 }
@@ -264,11 +294,60 @@ export interface VgSignal {
   push?: string;
 }
 
-export type VgEncodeChannel = 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'|'opacity'|'fill'|'fillOpacity'|'stroke'|'strokeWidth'|'strokeCap'|'strokeOpacity'|'strokeDash'|'strokeDashOffset'|'strokeMiterLimit'|'strokeJoin'|'cursor'|'clip'|'size'|'shape'|'path'|'innerRadius'|'outerRadius'|'startAngle'|'endAngle'|'interpolate'|'tension'|'orient'|'url'|'align'|'baseline'|'text'|'dir'|'ellipsis'|'limit'|'dx'|'dy'|'radius'|'theta'|'angle'|'font'|'fontSize'|'fontWeight'|'fontStyle'|'tooltip'|'href'|'cursor'|'defined'|'cornerRadius';
-export type VgEncodeEntry = {
-  [k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[];
-};
-
+export type VgEncodeChannel =
+  | 'x'
+  | 'x2'
+  | 'xc'
+  | 'width'
+  | 'y'
+  | 'y2'
+  | 'yc'
+  | 'height'
+  | 'opacity'
+  | 'fill'
+  | 'fillOpacity'
+  | 'stroke'
+  | 'strokeWidth'
+  | 'strokeCap'
+  | 'strokeOpacity'
+  | 'strokeDash'
+  | 'strokeDashOffset'
+  | 'strokeMiterLimit'
+  | 'strokeJoin'
+  | 'cursor'
+  | 'clip'
+  | 'size'
+  | 'shape'
+  | 'path'
+  | 'innerRadius'
+  | 'outerRadius'
+  | 'startAngle'
+  | 'endAngle'
+  | 'interpolate'
+  | 'tension'
+  | 'orient'
+  | 'url'
+  | 'align'
+  | 'baseline'
+  | 'text'
+  | 'dir'
+  | 'ellipsis'
+  | 'limit'
+  | 'dx'
+  | 'dy'
+  | 'radius'
+  | 'theta'
+  | 'angle'
+  | 'font'
+  | 'fontSize'
+  | 'fontWeight'
+  | 'fontStyle'
+  | 'tooltip'
+  | 'href'
+  | 'cursor'
+  | 'defined'
+  | 'cornerRadius';
+export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
 
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>
@@ -399,7 +478,24 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
-export type VgTransform = VgBinTransform | VgExtentTransform | VgFormulaTransform | VgAggregateTransform | VgFilterTransform | VgFlattenTransform | VgImputeTransform | VgStackTransform | VgCollectTransform | VgLookupTransform | VgIdentifierTransform | VgGeoPointTransform | VgGeoJSONTransform | VgGeoJSONTransform | VgWindowTransform | VgFoldTransform | VgSampleTransform;
+export type VgTransform =
+  | VgBinTransform
+  | VgExtentTransform
+  | VgFormulaTransform
+  | VgAggregateTransform
+  | VgFilterTransform
+  | VgFlattenTransform
+  | VgImputeTransform
+  | VgStackTransform
+  | VgCollectTransform
+  | VgLookupTransform
+  | VgIdentifierTransform
+  | VgGeoPointTransform
+  | VgGeoJSONTransform
+  | VgGeoJSONTransform
+  | VgWindowTransform
+  | VgFoldTransform
+  | VgSampleTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -434,13 +530,15 @@ export interface VgAxisEncode {
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
-export type VgSort = {
-  field: string;
-  order?: VgComparatorOrder;
-} | {
-  field: string[];
-  order?: (VgComparatorOrder)[];
-};
+export type VgSort =
+  | {
+      field: string;
+      order?: VgComparatorOrder;
+    }
+  | {
+      field: string[];
+      order?: (VgComparatorOrder)[];
+    };
 
 export type ImputeMethods = 'value' | 'median' | 'max' | 'min' | 'mean';
 
@@ -484,9 +582,7 @@ export interface VgGenericBinding {
   element?: string;
 }
 
-export type VgBinding = VgCheckboxBinding | VgRadioBinding |
-  VgSelectBinding | VgRangeBinding | VgGenericBinding;
-
+export type VgBinding = VgCheckboxBinding | VgRadioBinding | VgSelectBinding | VgRangeBinding | VgGenericBinding;
 
 /**
  * Base object for Vega's Axis and Axis Config.
@@ -769,31 +865,64 @@ export type FontWeightString = 'normal' | 'bold';
 export type FontWeightNumber = number;
 export type FontWeight = FontWeightString | FontWeightNumber;
 export type HorizontalAlign = 'left' | 'right' | 'center';
-export type Interpolate = 'linear' | 'linear-closed' |
-  'step' | 'step-before' | 'step-after' |
-  'basis' | 'basis-open' | 'basis-closed' |
-  'cardinal' | 'cardinal-open' | 'cardinal-closed' |
-  'bundle' | 'monotone';
+export type Interpolate =
+  | 'linear'
+  | 'linear-closed'
+  | 'step'
+  | 'step-before'
+  | 'step-after'
+  | 'basis'
+  | 'basis-open'
+  | 'basis-closed'
+  | 'cardinal'
+  | 'cardinal-open'
+  | 'cardinal-closed'
+  | 'bundle'
+  | 'monotone';
 export type Orient = 'horizontal' | 'vertical';
 export type VerticalAlign = 'top' | 'middle' | 'bottom';
-export type Cursor = 'auto' | 'default' | 'none' |
-  'context-menu' | 'help' | 'pointer' |
-  'progress' | 'wait' | 'cell' |
-  'crosshair' | 'text' | 'vertical-text' |
-  'alias' | 'copy' | 'move' |
-  'no-drop' | 'not-allowed' | 'e-resize' |
-  'n-resize' | 'ne-resize' | 'nw-resize' |
-  's-resize' | 'se-resize' | 'sw-resize' |
-  'w-resize' | 'ew-resize' | 'ns-resize' |
-  'nesw-resize' | 'nwse-resize' | 'col-resize' |
-  'row-resize' | 'all-scroll' | 'zoom-in' |
-  'zoom-out' | 'grab' | 'grabbing';
+export type Cursor =
+  | 'auto'
+  | 'default'
+  | 'none'
+  | 'context-menu'
+  | 'help'
+  | 'pointer'
+  | 'progress'
+  | 'wait'
+  | 'cell'
+  | 'crosshair'
+  | 'text'
+  | 'vertical-text'
+  | 'alias'
+  | 'copy'
+  | 'move'
+  | 'no-drop'
+  | 'not-allowed'
+  | 'e-resize'
+  | 'n-resize'
+  | 'ne-resize'
+  | 'nw-resize'
+  | 's-resize'
+  | 'se-resize'
+  | 'sw-resize'
+  | 'w-resize'
+  | 'ew-resize'
+  | 'ns-resize'
+  | 'nesw-resize'
+  | 'nwse-resize'
+  | 'col-resize'
+  | 'row-resize'
+  | 'all-scroll'
+  | 'zoom-in'
+  | 'zoom-out'
+  | 'grab'
+  | 'grabbing';
 export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
 export interface VgMarkConfig {
-
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
@@ -820,7 +949,6 @@ export interface VgMarkConfig {
    * @maximum 1
    */
   opacity?: number;
-
 
   /**
    * The fill opacity (value between [0,1]).
@@ -1088,7 +1216,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   cursor: 1,
   href: 1,
   tooltip: 1,
-  cornerRadius: 1,
+  cornerRadius: 1
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,
@@ -1145,7 +1273,7 @@ export interface VgTitleConfig {
   /**
    * Angle in degrees of title text.
    */
-  angle?:	number;
+  angle?: number;
   /**
    * Vertical text baseline for title text.
    */
@@ -1153,11 +1281,11 @@ export interface VgTitleConfig {
   /**
    * Text color for title text.
    */
-  color?:	string;
+  color?: string;
   /**
    * Font name for title text.
    */
-  font?:	string;
+  font?: string;
   /**
    * Font size in pixels for title text.
    *
@@ -1165,7 +1293,7 @@ export interface VgTitleConfig {
    *
    * @minimum 0
    */
-  fontSize?:	number;
+  fontSize?: number;
   /**
    * Font weight for title text.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
@@ -1176,11 +1304,11 @@ export interface VgTitleConfig {
    *
    * @minimum 0
    */
-  limit?:	number;
+  limit?: number;
   /**
    * Offset in pixels of the title from the chart body and axes.
    */
-  offset?:	number;
+  offset?: number;
   /**
    * Default title orientation ("top", "bottom", "left", or "right")
    */

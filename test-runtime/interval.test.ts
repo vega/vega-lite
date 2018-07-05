@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 
-describe('interval selections at runtime in unit views', () =>  {
+describe('interval selections at runtime in unit views', () => {
   const type = 'interval';
   const hits = hitsMaster.interval;
   const embed = embedFn(browser);
   const testRender = testRenderFn(browser, `${type}/unit`);
 
-  it('should add extents to the store', () =>  {
+  it('should add extents to the store', () => {
     for (let i = 0; i < hits.drag.length; i++) {
       embed(spec('unit', i, {type}));
       const store = browser.execute(brush('drag', i)).value;
@@ -23,7 +23,7 @@ describe('interval selections at runtime in unit views', () =>  {
     }
   });
 
-  it('should respect projections', () =>  {
+  it('should respect projections', () => {
     embed(spec('unit', 0, {type, encodings: ['x']}));
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
@@ -47,7 +47,7 @@ describe('interval selections at runtime in unit views', () =>  {
     }
   });
 
-  it('should clear out stored extents', () =>  {
+  it('should clear out stored extents', () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
       embed(spec('unit', i, {type}));
       let store = browser.execute(brush('drag', i)).value;
@@ -59,12 +59,19 @@ describe('interval selections at runtime in unit views', () =>  {
     }
   });
 
-  it('should brush over binned domains', () =>  {
-    embed(spec('unit', 1, {type, encodings: ['y']}, {
-      x: {aggregate: 'count', field: '*', type: 'quantitative'},
-      y: {bin: true},
-      color: {value: 'steelblue', field: null, type: null}
-    }));
+  it('should brush over binned domains', () => {
+    embed(
+      spec(
+        'unit',
+        1,
+        {type, encodings: ['y']},
+        {
+          x: {aggregate: 'count', field: '*', type: 'quantitative'},
+          y: {bin: true},
+          color: {value: 'steelblue', field: null, type: null}
+        }
+      )
+    );
     for (let i = 0; i < hits.bins.length; i++) {
       const store = browser.execute(brush('bins', i)).value;
       assert.lengthOf(store, 1);
@@ -78,14 +85,15 @@ describe('interval selections at runtime in unit views', () =>  {
     assert.lengthOf(store, 0);
   });
 
-  it('should brush over ordinal/nominal domains', () =>  {
+  it('should brush over ordinal/nominal domains', () => {
     const xextents = [[2, 3, 4], [6, 7, 8]];
-    const yextents = [[48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
-      [16, 17, 19, 23, 24, 27, 28, 35, 39, 43, 48]];
+    const yextents = [
+      [48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
+      [16, 17, 19, 23, 24, 27, 28, 35, 39, 43, 48]
+    ];
 
     for (let i = 0; i < hits.drag.length; i++) {
-      embed(spec('unit', i, {type},
-        {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
+      embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].intervals, 2);
@@ -98,8 +106,8 @@ describe('interval selections at runtime in unit views', () =>  {
     assert.lengthOf(store, 0);
   });
 
-  it('should brush over temporal domains', () =>  {
-    const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
+  it('should brush over temporal domains', () => {
+    const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
     const toNumber = '[0].intervals[0].extent.map((d) => +d)';
 
     embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
@@ -126,12 +134,19 @@ describe('interval selections at runtime in unit views', () =>  {
     assert.lengthOf(cleared, 0);
   });
 
-  it('should brush over log/pow scales', () =>  {
+  it('should brush over log/pow scales', () => {
     for (let i = 0; i < hits.drag.length; i++) {
-      embed(spec('unit', i, {type}, {
-        x: {scale: {type: 'pow', exponent: 1.5}},
-        y: {scale: {type: 'log'}}
-      }));
+      embed(
+        spec(
+          'unit',
+          i,
+          {type},
+          {
+            x: {scale: {type: 'pow', exponent: 1.5}},
+            y: {scale: {type: 'log'}}
+          }
+        )
+      );
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].intervals, 2);

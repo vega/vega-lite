@@ -6,7 +6,7 @@ import {
   Scale,
   scaleCompatible,
   ScaleType,
-  scaleTypePrecedence,
+  scaleTypePrecedence
 } from '../../scale';
 import {GEOJSON} from '../../type';
 import {keys} from '../../util';
@@ -52,10 +52,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     const channelDef = encoding[channel];
 
     // Don't generate scale for shape of geoshape
-    if (
-      isFieldDef(channelDef) && mark === GEOSHAPE &&
-      channel === SHAPE && channelDef.type === GEOJSON
-    ) {
+    if (isFieldDef(channelDef) && mark === GEOSHAPE && channel === SHAPE && channelDef.type === GEOJSON) {
       return scaleComponents;
     }
 
@@ -75,22 +72,21 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       specifiedScale = specifiedScale || {};
       const specifiedScaleType = specifiedScale.type;
       const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
-      scaleComponents[channel] = new ScaleComponent(
-        model.scaleName(channel + '', true),
-        {value: sType, explicit: specifiedScaleType === sType}
-      );
+      scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
+        value: sType,
+        explicit: specifiedScaleType === sType
+      });
     }
     return scaleComponents;
   }, {});
 }
 
 const scaleTypeTieBreaker = tieBreakByComparing(
-  (st1: ScaleType, st2: ScaleType) => (scaleTypePrecedence(st1) - scaleTypePrecedence(st2))
+  (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2)
 );
 
-
 function parseNonUnitScaleCore(model: Model) {
-  const scaleComponents: ScaleComponentIndex = model.component.scales = {};
+  const scaleComponents: ScaleComponentIndex = (model.component.scales = {});
 
   const scaleTypeWithExplicitIndex: {
     // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
@@ -115,7 +111,11 @@ function parseNonUnitScaleCore(model: Model) {
           if (scaleCompatible(explicitScaleType.value, childScaleType.value)) {
             // merge scale component if type are compatible
             scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit<VgScale, ScaleType>(
-              explicitScaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker
+              explicitScaleType,
+              childScaleType,
+              'type',
+              'scale',
+              scaleTypeTieBreaker
             );
           } else {
             // Otherwise, update conflicting channel to be independent

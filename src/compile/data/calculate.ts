@@ -31,9 +31,12 @@ export class CalculateNode extends DataFlowNode {
         const {field, timeUnit} = fieldDef;
         const sort: (number | string | boolean | DateTime)[] = fieldDef.sort;
         // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
-        const calculate = sort.map((sortValue, i) => {
-          return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
-        }).join('') + sort.length;
+        const calculate =
+          sort
+            .map((sortValue, i) => {
+              return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+            })
+            .join('') + sort.length;
 
         parent = new CalculateNode(parent, {
           calculate,

@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
-   describe('parseUnitLayoutSize', () => {
+  describe('parseUnitLayoutSize', () => {
     it('should have width, height = provided top-level width, height', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         width: 123,
@@ -37,30 +37,30 @@ describe('compile/layout', () => {
       assert.deepEqual(model.component.layoutSize.implicit.height, 23);
     });
 
-     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
-       const model = parseUnitModelWithScaleAndLayoutSize({
-         mark: 'point',
-         encoding: {
-           x: {field: 'a', type: 'quantitative'},
-           y: {field: 'b', type: 'quantitative'}
-         },
-         config: {view: {width: 123, height: 456}}
-       });
+    it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'}
+        },
+        config: {view: {width: 123, height: 456}}
+      });
 
-       assert.deepEqual(model.component.layoutSize.implicit.width, 123);
-       assert.deepEqual(model.component.layoutSize.implicit.height, 456);
-     });
+      assert.deepEqual(model.component.layoutSize.implicit.width, 123);
+      assert.deepEqual(model.component.layoutSize.implicit.height, 456);
+    });
 
-     it('should have width/height = config.view.width/height for geoshape', () => {
-       const model = parseUnitModelWithScaleAndLayoutSize({
-         mark: 'geoshape',
-         encoding: {},
-         config: {view: {width: 123, height: 456}}
-       });
+    it('should have width/height = config.view.width/height for geoshape', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'geoshape',
+        encoding: {},
+        config: {view: {width: 123, height: 456}}
+      });
 
-       assert.deepEqual(model.component.layoutSize.implicit.width, 123);
-       assert.deepEqual(model.component.layoutSize.implicit.height, 456);
-     });
+      assert.deepEqual(model.component.layoutSize.implicit.width, 123);
+      assert.deepEqual(model.component.layoutSize.implicit.height, 456);
+    });
 
     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({

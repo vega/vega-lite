@@ -1,12 +1,10 @@
-
 import {TUPLE, unitName} from '../selection';
 import {TransformCompiler} from './transforms';
-
 
 const TOGGLE = '_toggle';
 
 const toggle: TransformCompiler = {
-  has: (selCmpt) => {
+  has: selCmpt => {
     return selCmpt.type === 'multi' && selCmpt.toggle;
   },
 
@@ -14,7 +12,7 @@ const toggle: TransformCompiler = {
     return signals.concat({
       name: selCmpt.name + TOGGLE,
       value: false,
-      on: [{ events: selCmpt.events, update: selCmpt.toggle }],
+      on: [{events: selCmpt.events, update: selCmpt.toggle}]
     });
   },
 
@@ -22,11 +20,11 @@ const toggle: TransformCompiler = {
     const tpl = selCmpt.name + TUPLE;
     const signal = selCmpt.name + TOGGLE;
 
-    return `${signal} ? null : ${tpl}, ` +
-      (selCmpt.resolve === 'global' ?
-        `${signal} ? null : true, ` :
-        `${signal} ? null : {unit: ${unitName(model)}}, `) +
-      `${signal} ? ${tpl} : null`;
+    return (
+      `${signal} ? null : ${tpl}, ` +
+      (selCmpt.resolve === 'global' ? `${signal} ? null : true, ` : `${signal} ? null : {unit: ${unitName(model)}}, `) +
+      `${signal} ? ${tpl} : null`
+    );
   }
 };
 

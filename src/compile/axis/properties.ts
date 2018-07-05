@@ -13,7 +13,6 @@ import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 
-
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
@@ -31,14 +30,25 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
   return undefined;
 }
 
-export function labelAngle(model: UnitModel, specifiedAxis: Axis, channel: PositionScaleChannel, fieldDef: FieldDef<string>) {
+export function labelAngle(
+  model: UnitModel,
+  specifiedAxis: Axis,
+  channel: PositionScaleChannel,
+  fieldDef: FieldDef<string>
+) {
   // try axis value
   if (specifiedAxis.labelAngle !== undefined) {
     // Make angle within [0,360)
     return ((specifiedAxis.labelAngle % 360) + 360) % 360;
   } else {
     // try axis config value
-    const angle = getAxisConfig('labelAngle', model.config, channel, orient(channel), model.getScaleComponent(channel).get('type'));
+    const angle = getAxisConfig(
+      'labelAngle',
+      model.config,
+      channel,
+      orient(channel),
+      model.getScaleComponent(channel).get('type')
+    );
     if (angle !== undefined) {
       return ((angle % 360) + 360) % 360;
     } else {
@@ -63,7 +73,7 @@ export function labelBaseline(angle: number, axisOrient: AxisOrient) {
         return 'middle';
       }
     } else {
-      if ((angle <= 45 || 315 <= angle) || (135 <= angle && angle <= 225)) {
+      if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
         return 'middle';
       } else if (45 <= angle && angle <= 135) {
         return axisOrient === 'left' ? 'top' : 'bottom';
@@ -109,7 +119,12 @@ export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleCha
   return undefined;
 }
 
-export function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType) {
+export function labelOverlap(
+  fieldDef: FieldDef<string>,
+  specifiedAxis: Axis,
+  channel: PositionScaleChannel,
+  scaleType: ScaleType
+) {
   if (specifiedAxis.labelOverlap !== undefined) {
     return specifiedAxis.labelOverlap;
   }
@@ -136,8 +151,19 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: SignalRef, scaleName: string, specifiedAxis: Axis) {
-  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log' && !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
+export function tickCount(
+  channel: PositionScaleChannel,
+  fieldDef: FieldDef<string>,
+  scaleType: ScaleType,
+  size: SignalRef,
+  scaleName: string,
+  specifiedAxis: Axis
+) {
+  if (
+    !hasDiscreteDomain(scaleType) &&
+    scaleType !== 'log' &&
+    !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)
+  ) {
     if (specifiedAxis.tickStep) {
       return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
     } else if (isBinning(fieldDef.bin)) {
@@ -156,7 +182,12 @@ export function title(maxLength: number, fieldDef: FieldDef<string>, config: Con
   return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
-export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
+export function values(
+  specifiedAxis: Axis,
+  model: UnitModel,
+  fieldDef: FieldDef<string>,
+  channel: PositionScaleChannel
+) {
   const vals = specifiedAxis.values;
 
   if (vals) {
@@ -166,7 +197,8 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef
   if (fieldDef.type === QUANTITATIVE) {
     if (isBinning(fieldDef.bin)) {
       const domain = model.scaleDomain(channel);
-      if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
+      if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
+        // explicit value
         return vals;
       }
       const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
