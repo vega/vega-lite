@@ -16,5 +16,6 @@
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "[typescript]": {
     "editor.formatOnSave": true
-  }
+  },
+  "typescript.referencesCodeLens.enabled": true
 }
