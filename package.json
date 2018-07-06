@@ -35,8 +35,6 @@
     "build:toc": "bundle exec jekyll build -q && scripts/generate-toc",
     "build:site": "tsc -p site && webpack --config site/webpack.config.js",
     "build:versions": "scripts/update-version.sh",
-    "check:examples": "scripts/check-examples.sh",
-    "check:schema": "scripts/check-schema.sh",
     "clean": "rm -rf build && rm -f examples/compiled/*.png && find site/examples ! -name 'index.md' -type f -delete",
     "data": "rsync -r node_modules/vega-datasets/data/* data",
     "deploy": "scripts/deploy.sh",
