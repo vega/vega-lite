@@ -12,7 +12,7 @@ export namespace Type {
 }
 
 export type Type =
-  typeof Type.QUANTITATIVE
+  | typeof Type.QUANTITATIVE
   | typeof Type.ORDINAL
   | typeof Type.TEMPORAL
   | typeof Type.NOMINAL
