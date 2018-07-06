@@ -17,6 +17,5 @@
   "[typescript]": {
     "editor.formatOnSave": true
   },
-  "typescript.referencesCodeLens.enabled": true,
-  "typescript.implementationsCodeLens.enabled": true
+  "typescript.referencesCodeLens.enabled": true
 }
