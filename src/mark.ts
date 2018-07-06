@@ -86,6 +86,10 @@ export interface ColorMixins {
   color?: string;
 }
 
+export interface TooltipFields {
+  fields: 'encodings' | 'data';
+}
+
 export interface MarkConfig extends ColorMixins, VgMarkConfig {
   // ---------- Color ----------
   /**
@@ -99,6 +103,14 @@ export interface MarkConfig extends ColorMixins, VgMarkConfig {
    *
    */
   filled?: boolean;
+
+  /**
+   * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
+   *
+   * - If `tooltip` is `{"fields": "encodings"}`, then all fields in encodings will be used.
+   * - If `tooltip` is `{"fields": "data"}`, then all fields in the underlying data will be used.
+   */
+  tooltip?: string | TooltipFields;
 }
 
 export interface BarBinSpacingMixins {
@@ -139,7 +151,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color'];
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[]
@@ -152,7 +164,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 };
 
 export const defaultMarkConfig: MarkConfig = {
-  color: '#4c78a8'
+  color: '#4c78a8',
+  tooltip: {fields: 'encodings'}
 };
 
 export interface MarkConfigMixins {

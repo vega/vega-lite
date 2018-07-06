@@ -238,6 +238,60 @@ describe('compile/mark/mixins', () => {
         signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
+
+    it('generates tooltip object signal for all encoding fields', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
+      });
+      const props = tooltip(model);
+      assert.deepEqual(props.tooltip, {
+        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
+      });
+    });
+
+    it('generates tooltip object signal for all data if specified', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: {fields: 'data'}},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
+      });
+      const props = tooltip(model);
+      assert.deepEqual(props.tooltip, {signal: 'datum'});
+    });
+
+    it('priorizes tooltip field def', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: {fields: 'data'}},
+        encoding: {
+          x: {field: 'Cylinders', type: 'quantitative'},
+          y: {field: 'Displacement', type: 'quantitative'},
+          tooltip: [{field: 'Horsepower', type: 'quantitative'}, {field: 'Acceleration', type: 'quantitative'}]
+        }
+      });
+      const props = tooltip(model);
+      assert.deepEqual(props.tooltip, {
+        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
+      });
+    });
+
+    it('priorizes tooltip value def', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: {fields: 'data'}},
+        encoding: {
+          x: {field: 'Cylinders', type: 'quantitative'},
+          y: {field: 'Displacement', type: 'quantitative'},
+          tooltip: {value: 'haha'}
+        }
+      });
+      const props = tooltip(model);
+      assert.deepEqual(props.tooltip, {value: 'haha'});
+    });
   });
 
   describe('midPoint()', () => {

@@ -26,7 +26,8 @@ describe('Mark: Geoshape', () => {
           opacity: {
             value: 0.8
           }
-        }
+        },
+        config: {mark: {tooltip: null}}
       });
       const props = geoshape.encodeEntry(model);
       assert.deepEqual(

@@ -14,6 +14,7 @@ import {
   isFieldDef,
   isValueDef,
   TextFieldDef,
+  title,
   vgField
 } from '../../fielddef';
 import * as log from '../../log';
@@ -199,6 +200,20 @@ export function midPoint(
   }
 
   return isFunction(defaultRef) ? defaultRef() : defaultRef;
+}
+
+export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: Config) {
+  const keyValues: string[] = [];
+  const usedKey = {};
+  for (const fieldDef of channelDefs) {
+    const key = fieldDef.title !== undefined ? fieldDef.title : title(fieldDef, config);
+    const value = text(fieldDef, config).signal;
+    if (!usedKey[key]) {
+      keyValues.push(`"${key}": ${value}`);
+    }
+    usedKey[key] = true;
+  }
+  return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
 export function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {

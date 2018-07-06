@@ -30,7 +30,8 @@ describe('Layered Selections', () => {
           color: {field: 'Origin', type: 'nominal'}
         }
       }
-    ]
+    ],
+    config: {mark: {tooltip: null}}
   });
 
   layers.parse();
