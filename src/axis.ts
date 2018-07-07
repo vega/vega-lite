@@ -23,8 +23,8 @@ type BaseAxisNoSignals = BaseAxis<
 // Vega axis config is the same as vega axis base. If this is not the case, add specific type.
 type VgAxisConfigNoSignals = BaseAxisNoSignals;
 
-// override comments specific for Vega-Lite
-export interface AxisConfig extends VgAxisConfigNoSignals, VlOnlyGuideConfig {
+// Change comments to be Vega-Lite specific
+interface AxisMixins {
   /**
    * A boolean flag indicating if grid lines should be included as part of the axis
    *
@@ -44,10 +44,12 @@ export interface AxisConfig extends VgAxisConfigNoSignals, VlOnlyGuideConfig {
    *
    * __Default value:__ `true` for non-nominal fields with non-log scales; `"greedy"` for log scales; otherwise `false`.
    */
-  labelOverlap?: boolean | 'parity' | 'greedy';
+  labelOverlap?: LabelOverlap;
 }
 
-export interface Axis extends BaseAxisNoSignals, Guide {
+export interface AxisConfig extends AxisMixins, VgAxisConfigNoSignals, VlOnlyGuideConfig {}
+
+export interface Axis extends AxisMixins, BaseAxisNoSignals, Guide {
   /**
    * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
