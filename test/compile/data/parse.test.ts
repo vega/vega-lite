@@ -93,9 +93,9 @@ describe('compile/data/parse', () => {
       const root = new DataFlowNode(null);
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
-      assert.isTrue(root.children[0] instanceof BinNode);
-      assert.isTrue(result instanceof TimeUnitNode);
-      assert.deepEqual(parse.combine(), {a: 'number', a_end: 'number', b: 'date'});
+      expect(root.children[0] instanceof BinNode);
+      expect(result instanceof TimeUnitNode);
+      expect(parse.combine()).toEqual({a: 'number', a_end: 'number', b: 'date'});
     });
 
     it('should return a BinNode and a AggregateNode', () => {

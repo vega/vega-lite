@@ -1,4 +1,4 @@
-import {MAIN, RAW} from '../../data';
+import {MAIN, Parse, ParseValue, RAW} from '../../data';
 import * as log from '../../log';
 import {
   isAggregate,
@@ -67,74 +67,58 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   let lookupCounter = 0;
 
   model.transforms.forEach(t => {
+    let derivedType: ParseValue = undefined;
+    let transformNode: DataFlowNode;
+
     if (isCalculate(t)) {
-      head = new CalculateNode(head, t);
-      ancestorParse.set(t.as, 'derived', false);
+      transformNode = head = new CalculateNode(head, t);
+      derivedType = 'derived';
     } else if (isFilter(t)) {
-      head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
+      transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      const bin = (head = BinNode.makeFromTransform(head, t, model));
-
-      for (const field of keys(bin.producedFields())) {
-        ancestorParse.set(field, 'number', false);
-      }
+      transformNode = head = BinNode.makeFromTransform(head, t, model);
+      derivedType = 'number';
     } else if (isTimeUnit(t)) {
-      head = TimeUnitNode.makeFromTransform(head, t);
-
-      ancestorParse.set(t.as, 'date', false);
+      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
+      derivedType = 'date';
     } else if (isAggregate(t)) {
-      const agg = (head = AggregateNode.makeFromTransform(head, t));
+      transformNode = head = AggregateNode.makeFromTransform(head, t);
+      derivedType = 'number';
 
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
       }
-
-      for (const field of keys(agg.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
     } else if (isLookup(t)) {
-      const lookup = (head = LookupNode.make(head, model, t, lookupCounter++));
-
-      for (const field of keys(lookup.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = LookupNode.make(head, model, t, lookupCounter++);
+      derivedType = 'derived';
     } else if (isWindow(t)) {
-      const window = (head = new WindowTransformNode(head, t));
-
-      for (const field of keys(window.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = new WindowTransformNode(head, t);
+      derivedType = 'number';
     } else if (isStack(t)) {
-      const stack = (head = StackNode.makeFromTransform(head, t));
-
-      for (const field of keys(stack.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = StackNode.makeFromTransform(head, t);
+      derivedType = 'derived';
     } else if (isFold(t)) {
-      const fold = (head = new FoldTransformNode(head, t));
-
-      for (const field of keys(fold.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = new FoldTransformNode(head, t);
+      derivedType = 'derived';
     } else if (isFlatten(t)) {
-      const flatten = (head = new FlattenTransformNode(head, t));
-
-      for (const field of keys(flatten.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = new FlattenTransformNode(head, t);
+      derivedType = 'derived';
     } else if (isSample(t)) {
       head = new SampleTransformNode(head, t);
     } else if (isImpute(t)) {
-      const impute = (head = ImputeNode.makeFromTransform(head, t));
-
-      for (const field of keys(impute.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = ImputeNode.makeFromTransform(head, t);
+      derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
+    }
+
+    if (transformNode && derivedType !== undefined) {
+      for (const field of keys(transformNode.producedFields())) {
+        ancestorParse.set(field, derivedType, false);
+      }
     }
   });
 

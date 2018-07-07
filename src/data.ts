@@ -3,8 +3,10 @@
  */
 import {VgData} from './vega.schema';
 
+export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
+
 export interface Parse {
-  [field: string]: null | string | 'string' | 'boolean' | 'date' | 'number';
+  [field: string]: ParseValue;
 }
 
 export interface DataFormatBase {
