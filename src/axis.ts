@@ -155,14 +155,12 @@ export const AXIS_PROPERTY_TYPE: {
   offset: 'main',
   position: 'main',
   tickColor: 'main',
-  tickCount: 'main',
   tickExtra: 'main',
   tickOffset: 'main',
   tickOpacity: 'main',
   tickRound: 'main',
   ticks: 'main',
   tickSize: 'main',
-  tickWidth: 'main',
   title: 'main',
   titleAlign: 'main',
   titleAngle: 'main',
@@ -177,6 +175,8 @@ export const AXIS_PROPERTY_TYPE: {
   titleX: 'main',
   titleY: 'main',
 
+  tickWidth: 'both',
+  tickCount: 'both',
   values: 'both',
   scale: 'both',
   zindex: 'both' // this is actually set afterward, so it doesn't matter
