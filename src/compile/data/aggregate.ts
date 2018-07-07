@@ -157,11 +157,11 @@ export class AggregateNode extends DataFlowNode {
   public producedFields() {
     const out = {};
 
-    keys(this.measures).forEach(field => {
-      keys(this.measures[field]).forEach(op => {
-        out[`${op}_${field}`] = true;
-      });
-    });
+    for (const field of keys(this.measures)) {
+      for (const op of keys(this.measures[field])) {
+        out[this.measures[field][op] || `${op}_${field}`] = true;
+      }
+    }
 
     return out;
   }

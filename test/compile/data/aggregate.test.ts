@@ -177,4 +177,22 @@ describe('compile/data/summary', () => {
       });
     });
   });
+
+  describe('producedFields', () => {
+    it('should produce the correct fields', () => {
+      const t: AggregateTransform = {
+        aggregate: [
+          {op: 'mean', field: 'Displacement', as: 'AvgDisplacement'},
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+        ],
+        groupby: ['AvgDisplacement', 'Acceleration_sum']
+      };
+
+      const agg = AggregateNode.makeFromTransform(null, t);
+      expect(agg.producedFields()).toEqual({
+        AvgDisplacement: true,
+        Acceleration_sum: true
+      });
+    });
+  });
 });
