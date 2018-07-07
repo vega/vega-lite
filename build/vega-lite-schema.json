@@ -6555,40 +6555,43 @@
     },
     "Parse": {
       "additionalProperties": {
-        "anyOf": [
-          {
-            "type": "null"
-          },
-          {
-            "type": "string"
-          },
-          {
-            "enum": [
-              "string"
-            ],
-            "type": "string"
-          },
-          {
-            "enum": [
-              "boolean"
-            ],
-            "type": "string"
-          },
-          {
-            "enum": [
-              "date"
-            ],
-            "type": "string"
-          },
-          {
-            "enum": [
-              "number"
-            ],
-            "type": "string"
-          }
-        ]
+        "$ref": "#/definitions/ParseValue"
       },
       "type": "object"
+    },
+    "ParseValue": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "enum": [
+            "string"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "boolean"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "date"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "number"
+          ],
+          "type": "string"
+        }
+      ]
     },
     "PartsMixins<BoxPlotPart>": {
       "additionalProperties": false,
