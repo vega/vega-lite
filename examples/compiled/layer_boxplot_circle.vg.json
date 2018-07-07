@@ -50,11 +50,6 @@
       "source": "data_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"lower_box_people\"])",
-          "as": "lower_box_people"
-        },
-        {
           "type": "filter",
           "expr": "datum[\"lower_whisker_people\"] !== null && !isNaN(datum[\"lower_whisker_people\"])"
         }
@@ -64,11 +59,6 @@
       "name": "data_2",
       "source": "data_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"upper_box_people\"])",
-          "as": "upper_box_people"
-        },
         {
           "type": "filter",
           "expr": "datum[\"upper_box_people\"] !== null && !isNaN(datum[\"upper_box_people\"])"
@@ -80,16 +70,6 @@
       "source": "data_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"lower_box_people\"])",
-          "as": "lower_box_people"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"upper_box_people\"])",
-          "as": "upper_box_people"
-        },
-        {
           "type": "filter",
           "expr": "datum[\"lower_box_people\"] !== null && !isNaN(datum[\"lower_box_people\"])"
         }
@@ -99,11 +79,6 @@
       "name": "data_4",
       "source": "data_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"mid_box_people\"])",
-          "as": "mid_box_people"
-        },
         {
           "type": "filter",
           "expr": "datum[\"mid_box_people\"] !== null && !isNaN(datum[\"mid_box_people\"])"
