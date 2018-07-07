@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/movies.json"},
+  "transform": [{
+    "bin": true,
+    "field": "IMDB_Rating",
+    "as": "bin_IMDB_Rating"
+  }],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "bin_IMDB_Rating",
+      "title": "IMDB_Rating (binned)",
+      "bin": "binned",
+      "type": "quantitative",
+      "axis": {
+        "tickStep": 1
+      }
+    },
+    "x2": {
+      "field": "bin_IMDB_Rating_end",
+      "type": "quantitative"
+    },
+    "y": {
+      "aggregate": "count",
+      "type": "quantitative"
+    }
+  }
+}
