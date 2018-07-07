@@ -29,16 +29,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"lower_yield\"])",
-          "as": "lower_yield"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"upper_yield\"])",
-          "as": "upper_yield"
-        },
-        {
           "type": "aggregate",
           "groupby": ["variety"],
           "ops": ["ci0", "ci1"],

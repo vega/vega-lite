@@ -48,13 +48,8 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"count\"])",
-          "as": "count"
-        },
-        {
           "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
+          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
         }
       ]
     },
@@ -64,7 +59,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"cumulative_count\"] !== null && !isNaN(datum[\"cumulative_count\"])"
+          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
         }
       ]
     }
@@ -74,7 +69,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -89,7 +84,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.5},
@@ -108,10 +103,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "bin_IMDB_Rating"},
-          {"data": "data_1", "field": "bin_IMDB_Rating_end"},
           {"data": "data_0", "field": "bin_IMDB_Rating"},
-          {"data": "data_0", "field": "bin_IMDB_Rating_end"}
+          {"data": "data_0", "field": "bin_IMDB_Rating_end"},
+          {"data": "data_1", "field": "bin_IMDB_Rating"},
+          {"data": "data_1", "field": "bin_IMDB_Rating_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -124,8 +119,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "cumulative_count"},
-          {"data": "data_0", "field": "count"}
+          {"data": "data_0", "field": "cumulative_count"},
+          {"data": "data_1", "field": "count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
