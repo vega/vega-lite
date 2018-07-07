@@ -96,9 +96,9 @@ The `bin` transform in the `transform` array has the following properties:
 ### Example: Histogram with Bin Transform
 
 Instead of using the `bin` property of a field definition, you can also use a bin transform
-to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field instead.
+to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field with bin property of a field definition set to `binned` instead.
 
-<div class="vl-example" data-name="histogram_bin_transform"></div>
+<div class="vl-example" data-name="histogram_binned_transform"></div>
 
 While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional
 calculation before encoding the data.
