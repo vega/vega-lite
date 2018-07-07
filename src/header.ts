@@ -1,6 +1,6 @@
-import {TextBaseline} from 'vega';
+import {FontWeight, TextBaseline} from 'vega';
 import {Guide} from './guide';
-import {FontWeight, VgTitleConfig} from './vega.schema';
+import {VgTitleConfig} from './vega.schema';
 
 export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
   titleAnchor: 'anchor',

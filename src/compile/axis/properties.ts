@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {Align, AxisOrient, SignalRef} from 'vega';
 import {truncate} from 'vega-util';
 import {Axis} from '../../axis';
 import {binToString, isBinning} from '../../bin';
@@ -9,7 +9,6 @@ import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
 import {contains} from '../../util';
-import {AxisOrient, HorizontalAlign} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {getAxisConfig} from './config';
 
@@ -85,7 +84,7 @@ export function labelBaseline(angle: number, axisOrient: AxisOrient) {
   return undefined;
 }
 
-export function labelAlign(angle: number, axisOrient: AxisOrient): HorizontalAlign {
+export function labelAlign(angle: number, axisOrient: AxisOrient): Align {
   if (angle !== undefined) {
     angle = ((angle % 360) + 360) % 360;
     if (axisOrient === 'top' || axisOrient === 'bottom') {

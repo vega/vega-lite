@@ -1,14 +1,41 @@
-import {BaseLegend, BaseLegendConfig, Legend as VgLegend, LegendDirection, LegendOrient} from 'vega';
+import {
+  Align,
+  BaseLegend,
+  FontWeight,
+  LabelOverlap,
+  Legend as VgLegend,
+  LegendConfig as VgLegendConfig,
+  LegendOrient,
+  Orientation,
+  SymbolShape,
+  TextBaseline
+} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
+import {Color, VgLayoutAlign} from './vega.schema';
 
-export interface LegendConfig extends BaseLegendConfig, VlOnlyGuideConfig {}
+export interface LegendConfig
+  extends VgLegendConfig<number, number, string, Color, FontWeight, Align, TextBaseline, VgLayoutAlign, SymbolShape>,
+    VlOnlyGuideConfig {}
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegend, Guide {
+export interface Legend
+  extends BaseLegend<
+      number,
+      number,
+      string,
+      Color,
+      FontWeight,
+      Align,
+      TextBaseline,
+      VgLayoutAlign,
+      LabelOverlap,
+      SymbolShape
+    >,
+    Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
@@ -46,7 +73,7 @@ export interface Legend extends BaseLegend, Guide {
   /**
    * The direction of the legend, one of `"vertical"` (default) or `"horizontal"`.
    */
-  direction?: LegendDirection;
+  direction?: Orientation;
 
   /**
    * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
@@ -95,6 +122,7 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   fillColor: 1,
   format: 1,
   gradientLength: 1,
+  gradientOpacity: 1,
   gradientStrokeColor: 1,
   gradientStrokeWidth: 1,
   gradientThickness: 1,
@@ -107,7 +135,9 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   labelFontWeight: 1,
   labelLimit: 1,
   labelOffset: 1,
+  labelOpacity: 1,
   labelOverlap: 1,
+  labelPadding: 1,
   offset: 1,
   orient: 1,
   padding: 1,
@@ -115,6 +145,8 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   strokeColor: 1,
   strokeWidth: 1,
   symbolFillColor: 1,
+  symbolOffset: 1,
+  symbolOpacity: 1,
   symbolSize: 1,
   symbolStrokeColor: 1,
   symbolStrokeWidth: 1,
@@ -128,6 +160,7 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   titleFontSize: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleOpacity: 1,
   titlePadding: 1,
   type: 1,
   values: 1,

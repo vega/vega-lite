@@ -1,10 +1,9 @@
+import {Axis as VgAxis} from 'vega';
 import {isArray} from 'vega-util';
-
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
 import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
 import {keys} from '../../util';
-import {VgAxis} from '../../vega.schema';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {

@@ -1,9 +1,9 @@
+import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {keys} from '../../util';
-import {AxisOrient, VgAxis, VgAxisEncode} from '../../vega.schema';
 import {
   getSpecifiedOrDefaultValue,
   guideEncodeEntry,
