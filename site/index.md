@@ -6,7 +6,7 @@ title: A High-Level Grammar of Interactive Graphics
 images:
  - spec: stacked_area_stream
  - spec: selection_translate_scatterplot_drag
- - spec: layer_error_bars
+ - spec: layer_point_errorbar_stdev
  - spec: tick_strip
  - spec: layer_line_color_rule
  - spec: trellis_barley
@@ -17,7 +17,7 @@ images:
  - spec: layer_line_co2_concentration
  - spec: circle_natural_disasters
  - spec: trellis_area
- - spec: layer_area_ci
+ - spec: layer_line_errorband_ci
  - spec: line_slope
  - spec: layer_ranged_dot
  - spec: layer_bar_annotations
