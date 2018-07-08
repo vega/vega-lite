@@ -29,12 +29,24 @@ Reference documentation for common parameter **types** expected by Vega-Lite spe
 
 Accepts any literal value, including a string, number, boolean, or `null`.
 
+<a name="align" href="#align">#</a>
+**Align**
+
+Possible values: `"left"`, `"center"`, or `"right"`.
+
 <br/><a name="array" href="#array">#</a>
 **Array** or **Type[]**
 
 Accepts array values. For example: `[]`, `[1, 2, 3]`, `["foo", "bar"]`. If individual array items must adhere to a specific type, bracket notation &ndash; such as `Number[]` or `String[]` &ndash; is used to indicate the item type.
 
 In most cases, arrays may also have [signal references](#Signal) as items. For example: `[{"signal": "width"}, {"signal": "height"}]`.
+
+<a name="baseline" href="#baseline">#</a>
+**Baseline**
+
+How text such as legends, labels, or titles should be aligned vertically.
+
+Possible values: `"top"`, `"middle"`, `"bottom"`, or `"alphabetic"`.
 
 <br/><a name="boolean" href="#boolean">#</a>
 **Boolean**
@@ -62,7 +74,6 @@ To enable custom calculations, Vega-Lite uses Vega's expression language for wri
 
 Please read the [Vega documentation for expressions](https://vega.github.io/vega/docs/expressions/) for details.
 
-
 <br/><a name="number" href="#number">#</a>
 **Number**
 
@@ -73,6 +84,12 @@ Accepts number values. For example: `1`, `3.14`, `1e5`.
 
 Accepts object literals. For example: `{"left":5, "right":30, "top":5, "bottom":50}`. The valid object property names and types will vary across parameters; read the individual parameter descriptions for more information.
 
+<br/><a name="overlap" href="#overlap">#</a>
+**Overlap**
+
+The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
+
+Possible values: `false`, `true`, `"parity"`, or `"greedy"`.
 
 <br/><a name="string" href="#string">#</a>
 **String**

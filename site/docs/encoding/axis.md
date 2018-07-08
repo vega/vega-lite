@@ -20,8 +20,6 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 {:toc}
 
 
-<!--TODO: add default behavior for each property -->
-
 ## Axis Properties
 
 
@@ -46,33 +44,38 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 }
 ```
 
-To customize axis, an `axis` object in [an encoding channel's definition](encoding.html) can contain the following groups of properties:
+{:#properties}
+
+To customize axis, an `axis` object in [an encoding channel's definition](encoding.html) can contain the following properties:
 
 {:#general}
 ### General
 
-{% include table.html props="bandPosition,domain,domainColor,domainWidth,grid,gridColor,gridDash,gridOpacity,gridWidth,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
+{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,zindex" source="Axis" %}
 
 __See also:__ [General Axis Config](#general-config).
 
 {:#labels}
 ### Labels
 
-{% include table.html props="format,labels,labelAlign,labelAngle,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOverlap,labelPadding" source= "Axis" %}
+{% include table.html props="format,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding" source= "Axis" %}
 
-__See also:__ [Axis Labels Config](#labels-config) and [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
+__See also:__  [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
 
 {:#ticks}
 ### Ticks
 
-{% include table.html props="ticks,tickColor,tickCount,tickRound,tickSize,tickStep,tickWidth,values" source="Axis" %}
+{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickStep,tickWidth,values" source="Axis" %}
 
-__See also:__ [Axis Ticks Config](#ticks-config).
+{:#domain}
+### Domain
+
+{% include table.html props="domain,domainColor,domainOpacity,domainWidth" source="Axis" %}
 
 {:#title}
 ### Title
 
-{% include table.html props="title,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleMaxLength,titleLimit,titlePadding,titleX,titleY" source="Axis" %}
+{% include table.html props="title,titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontWeight,titleLimit,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
 
 For example, the following plot has a customized x-axis title.
 
@@ -80,6 +83,10 @@ For example, the following plot has a customized x-axis title.
 
 
 __See also:__ [Axis Title Config](#title-config) and [`guide-title` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) titles).
+
+### Grid
+
+{% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="Axis" %}
 
 <!--
 ### Custom Axis Encodings
@@ -113,42 +120,13 @@ Axis configuration defines default settings for axes. Properties defined under t
 
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.) or band scale type (`"axisBand"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
-{:#general-config}
-### General
-
-{% include table.html props="bandPosition,domain,domainColor,domainWidth,maxExtent,minExtent" source="AxisConfig" %}
-
-__See also:__ [General Axis Properties](#general).
-
-{:#grid-config}
-### Grid
-
-{% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="AxisConfig" %}
-
-{:#labels-config}
-### Labels
-
-{% include table.html props="labels,labelAlign,labelAngle,labelBaseline,labelColor,labelFont,labelFontSize,labelLimit,labelOverlap,labelPadding" source="AxisConfig" %}
+An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `title`, `values`, and `zindex`.
 
 The `shortTimeLabels` property is also available for the general axis config (`config.axis`), but not for specific axis config (e.g., `config.axisX`).
 
 {% include table.html props="shortTimeLabels" source="AxisConfig" %}
 
 __See also:__ [Axis Labels Properties](#labels) and [`guide-label` style config](mark.html#style-config) (common styles for by axis, [legend](legend.html), and [header](facet.html#header) labels).
-
-{:#ticks-config}
-### Ticks
-
-{% include table.html props="ticks,tickColor,tickRound,tickSize,tickWidth" source="AxisConfig" %}
-
-__See also:__ [Axis Tick Properties](#ticks).
-
-{:#title-config}
-### Title
-
-{% include table.html props="titleAlign,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleMaxLength,titlePadding,titleX,titleY" source="AxisConfig" %}
-
-__See also:__ [Axis Title Properties](#title) and [`guide-title` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) titles).
 
 
 <!-- hide as `grid` in axis config does not work yet.

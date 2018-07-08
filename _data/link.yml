@@ -245,6 +245,16 @@ SelectionResolution:
 # Types
 DateTime:
   link: "types.html#datetime"
+Color:
+  link: "types.html#color"
+LabelOverlap:
+  name: "Overlap"
+  link: "types.html#overlap"
+Align:
+  link: "types.html#align"
+TextBaseline:
+  name: "Baseline"
+  link: "types.html#baseline"
 
 # Others
 HorizontalAlign:
