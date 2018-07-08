@@ -98,12 +98,10 @@ The `bin` transform in the `transform` array has the following properties:
 Instead of using the `bin` property of a field definition, you can also use a bin transform
 to derive a new field (e.g., `bin_IMDB_Rating`), and encode the new field with bin property of a field definition set to `binned` instead.
 
-<div class="vl-example" data-name="histogram_binned_transform"></div>
+<div class="vl-example" data-name="histogram_bin_transform"></div>
 
 While binning in `transform` is more verbose than in `encoding`, it can be useful if you want to perform additional
 calculation before encoding the data.
-
-__Note:__  Vega-Lite currently [does not track which fields are binned](https://github.com/vega/vega-lite/issues/2862) and thus cannot optimize how axes and legends are formatted. For this reason we have to [set the type to ordinal](#ordinal-bin) in the example above.
 
 ## Bin Parameters
 
