@@ -252,7 +252,8 @@
       {
         "name": "window_top_k",
         "title": "Filtering top-K items",
-        "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score."
+        "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.",
+        "style": "background-size: 110%"
       },
       {
         "name": "lookup",
