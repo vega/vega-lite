@@ -17,6 +17,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"people\"])",
+          "as": "people"
+        },
+        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["q1", "q3", "median", "min", "max"],

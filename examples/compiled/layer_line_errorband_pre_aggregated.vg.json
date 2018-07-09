@@ -39,6 +39,7 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "formula",
           "as": "year_Year",

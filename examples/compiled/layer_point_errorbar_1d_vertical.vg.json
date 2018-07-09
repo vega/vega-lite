@@ -12,6 +12,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"yield\"])",
+          "as": "yield"
+        },
+        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["stderr", "mean"],
