@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "autosize": "pad",
   "padding": 5,
+  "width": 200,
   "height": 200,
   "style": "cell",
   "data": [
@@ -25,19 +26,16 @@
         },
         {
           "type": "aggregate",
-          "groupby": ["bin_IMDB_Rating"],
+          "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"],
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
+        },
+        {
+          "type": "filter",
+          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"])"
         }
       ]
-    }
-  ],
-  "signals": [
-    {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     }
   ],
   "marks": [
@@ -49,8 +47,8 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
-          "width": {"scale": "x", "band": true},
+          "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
+          "x": {"scale": "x", "field": "bin_IMDB_Rating_end", "offset": 0},
           "y": {"scale": "y", "field": "count_*"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -60,11 +58,13 @@
   "scales": [
     {
       "name": "x",
-      "type": "band",
-      "domain": {"data": "source_0", "field": "bin_IMDB_Rating", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false
     },
     {
       "name": "y",
@@ -80,11 +80,11 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "bin_IMDB_Rating",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
-      "labelAlign": "right",
+      "title": "IMDB_Rating (binned)",
+      "labelFlush": true,
       "labelOverlap": true,
+      "tickCount": {"signal": "(domain('x')[1] - domain('x')[0]) / 1 + 1"},
+      "values": {"signal": "sequence(domain('x')[0], domain('x')[1] + 1, 1)"},
       "zindex": 1
     },
     {
