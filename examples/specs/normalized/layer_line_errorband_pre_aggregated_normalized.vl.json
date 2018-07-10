@@ -27,9 +27,10 @@
             },
             "y2": {"field": "upper_ci1", "type": "quantitative"},
             "x": {
-              "field": "year_Year",
+              "title": "Year (year)",
               "type": "temporal",
-              "title": "Year (year)"
+              "field": "year_Year",
+              "axis": {"format": "%Y"}
             }
           }
         }
