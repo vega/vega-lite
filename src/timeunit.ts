@@ -246,7 +246,7 @@ export function convert(unit: TimeUnit, date: Date): Date {
   const isUTC = isUTCTimeUnit(unit);
   const result: Date = isUTC
     ? // start with uniform date
-    new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+      new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
     : new Date(0, 0, 1, 0, 0, 0, 0);
   for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
@@ -373,7 +373,12 @@ export function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabels: boole
 /**
  * returns the signal expression used for axis labels for a time unit
  */
-export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLabels: boolean, isUTCScale: boolean): string {
+export function formatExpression(
+  timeUnit: TimeUnit,
+  field: string,
+  shortTimeLabels: boolean,
+  isUTCScale: boolean
+): string {
   if (!timeUnit) {
     return undefined;
   }
@@ -385,7 +390,6 @@ export function formatExpression(timeUnit: TimeUnit, field: string, shortTimeLab
     // special expression for quarter as prefix
     expression = `'Q' + quarter(${field})`;
   }
-
 
   if (dateTimeComponents.length > 0) {
     if (expression) {
