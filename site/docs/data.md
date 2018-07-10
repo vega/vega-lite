@@ -71,11 +71,10 @@ For example, to create a data source named `myData`, use the following data
 }
 ```
 
-Then you can load it with vegaEmbed modying the [Vega View](https://vega.github.io/vega/docs/api/view/#data) using the insert or change methods.
+You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data) to load data at runtime and update the chart. Here is an example using Vega-Embed:
 
 ```js 
-const embed_opt = {"mode": "vega-lite"};
-const view = vegaEmbed("#vis", spec, embed_opt)
+const view = vegaEmbed("#vis", spec)
       ...
 			.then((res) => res.view
         .insert("myData", [ /* some data array */])
@@ -83,21 +82,7 @@ const view = vegaEmbed("#vis", spec, embed_opt)
       );
 ```
 
-Or if you prefer avoiding vegaEmbed
-
-```js 
-
-
-// First compile vega-lite to vega
-var vgSpec = vl.compile(spec).spec;
-
-view = new vega.View(vega.parse(vgSpec))
-  .logLevel(vega.Warn)
-  .renderer("canvas")  // set renderer (canvas or svg)
-  .initialize(document.querySelector("#vis")) // initialize view within parent DOM container
-  .insert("myData", [/* your data array */ ]) // Insert the named data source
-  .run();
-```
+You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html) 
 
 ## Format
 
