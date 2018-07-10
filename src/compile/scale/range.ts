@@ -6,6 +6,7 @@ import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
   channelScalePropertyIncompatability,
+  isContinuousToDiscrete,
   isExtendedScheme,
   Range,
   Scale,
@@ -219,6 +220,8 @@ export function defaultRange(
       if (scaleType === 'ordinal') {
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
+      } else if (isContinuousToDiscrete(scaleType)) {
+        return 'ordinal';
       }
       return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
     case OPACITY:
