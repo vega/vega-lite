@@ -71,6 +71,34 @@ For example, to create a data source named `myData`, use the following data
 }
 ```
 
+Then you can load it with vegaEmbed modying the [Vega View](https://vega.github.io/vega/docs/api/view/#data) using the insert or change methods.
+
+```js 
+const embed_opt = {"mode": "vega-lite"};
+const view = vegaEmbed("#vis", spec, embed_opt)
+      ...
+			.then((res) => res.view
+        .insert("myData", [ /* some data array */])
+        .run()
+      );
+```
+
+Or if you prefer avoiding vegaEmbed
+
+```js 
+
+
+// First compile vega-lite to vega
+var vgSpec = vl.compile(spec).spec;
+
+view = new vega.View(vega.parse(vgSpec))
+  .logLevel(vega.Warn)
+  .renderer("canvas")  // set renderer (canvas or svg)
+  .initialize(document.querySelector("#vis")) // initialize view within parent DOM container
+  .insert("myData", [/* your data array */ ]) // Insert the named data source
+  .run();
+```
+
 ## Format
 
 The format object describes the data format and additional parsing instructions.
@@ -109,7 +137,6 @@ Vega-Lite supports a top-level `datasets` property. This can be useful when the 
 
 {: .suppress-error}
 ```json
-```
     "datasets": {
       "somedata": [1,2,3]
     },
