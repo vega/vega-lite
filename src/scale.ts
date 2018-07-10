@@ -162,17 +162,7 @@ export function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal
 
 export function hasContinuousDomain(
   type: ScaleType
-): type is
-  | 'linear'
-  | 'log'
-  | 'pow'
-  | 'sqrt'
-  | 'time'
-  | 'utc'
-  | 'sequential'
-  | 'quantile'
-  | 'quantize'
-  | 'threshold' {
+): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' | 'sequential' | 'quantile' | 'quantize' | 'threshold' {
   return type in CONTINUOUS_DOMAIN_INDEX;
 }
 
