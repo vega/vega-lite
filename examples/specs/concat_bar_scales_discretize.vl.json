@@ -35,6 +35,9 @@
           "type": "quantitative",
           "scale": {
             "type": "quantize"
+          },
+          "legend": {
+            "title": "Quantize"
           }
         }
       }
@@ -67,7 +70,8 @@
             "type": "quantile"
           },
           "legend": {
-            "format": "d"
+            "format": "d",
+            "title": "Quantile"
           }
         }
       }
@@ -103,7 +107,7 @@
             "scheme": "viridis"
           },
           "legend": {
-            "format": "d"
+            "title": "Threshold"
           }
         }
       }
