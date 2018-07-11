@@ -222,8 +222,9 @@ export function defaultRange(
         return type === 'nominal' ? 'category' : 'ordinal';
       } else if (isContinuousToDiscrete(scaleType)) {
         return 'ordinal';
+      } else {
+        return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
-      return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
