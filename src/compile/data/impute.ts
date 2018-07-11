@@ -43,7 +43,7 @@ export class ImputeNode extends DataFlowNode {
         return undefined;
       }
       const keyChannel = xDef.impute ? yDef : yDef.impute ? xDef : undefined;
-      const {method, value, frame} = imputedChannel.impute;
+      const {method, value, frame, keyvals} = imputedChannel.impute;
       const groupbyFields = pathGroupingFields(model.mark, encoding);
 
       return new ImputeNode(parent, {
@@ -52,6 +52,7 @@ export class ImputeNode extends DataFlowNode {
         ...(method ? {method} : {}),
         ...(value !== undefined ? {value} : {}),
         ...(frame ? {frame} : {}),
+        ...(keyvals !== undefined ? {keyvals} : {}),
         ...(groupbyFields.length ? {groupby: groupbyFields} : {})
       });
     }

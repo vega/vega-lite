@@ -1,3 +1,4 @@
+import {ImputeSequence} from './transform';
 import {ImputeMethods} from './vega.schema';
 
 export interface ImputeParams {
@@ -13,6 +14,12 @@ export interface ImputeParams {
    * The field value to use when the imputation `method` is `"value"`.
    */
   value?: any;
+
+  /**
+   * An optional array of key values that should be considered for imputation.
+   * If provided, this array will be used in addition to the key values observed within the input data.
+   */
+  keyvals?: any[] | ImputeSequence;
 
   /**
    * The frame over which the `method` will be applied.
