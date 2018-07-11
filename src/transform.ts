@@ -232,16 +232,12 @@ export interface ImputeTransform extends ImputeParams {
    * The data field for which the missing values should be imputed.
    */
   impute: string;
+
   /**
    * A key field that uniquely identifies data objects within a group.
    * Missing key values (those occurring in the data but not in the current group) will be imputed.
    */
   key: string;
-  /**
-   * An optional array of key values that should be considered for imputation.
-   * If provided, this array will be used in addition to the key values observed within the input data.
-   */
-  keyvals?: any[] | ImputeSequence;
 
   /**
    * An optional array of fields by which to group the values.

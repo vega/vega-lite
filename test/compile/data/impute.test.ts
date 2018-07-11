@@ -265,6 +265,43 @@ describe('compile/data/impute', () => {
       ]);
     });
 
+    it('should handle sequence keyvals in encoding', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
+          y: {field: 'variety', type: 'quantitative', impute: {method: 'max', keyvals: {start: 3, stop: 5}}},
+          color: {field: 'site', type: 'nominal'}
+        }
+      });
+      const result = ImputeNode.makeFromEncoding(null, model);
+      assert.deepEqual(result.assemble(), [
+        {
+          type: 'impute',
+          field: 'variety',
+          key: 'yield',
+          keyvals: {signal: 'sequence(3,5)'},
+          method: 'value',
+          groupby: ['site'],
+          value: null
+        },
+        {
+          type: 'window',
+          as: ['imputed_variety_value'],
+          ops: ['max'],
+          fields: ['variety'],
+          frame: [null, null],
+          ignorePeers: false,
+          groupby: ['site']
+        },
+        {
+          type: 'formula',
+          expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
+          as: 'variety'
+        }
+      ]);
+    });
+
     it('should work when method and frame are specified', () => {
       const model = parseUnitModelWithScale({
         mark: 'bar',

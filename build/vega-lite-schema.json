@@ -4430,6 +4430,19 @@
           },
           "type": "array"
         },
+        "keyvals": {
+          "anyOf": [
+            {
+              "items": {
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ImputeSequence"
+            }
+          ],
+          "description": "An optional array of key values that should be considered for imputation.\nIf provided, this array will be used in addition to the key values observed within the input data."
+        },
         "method": {
           "$ref": "#/definitions/ImputeMethods",
           "description": "The imputation method to use for the field value of imputed data objects.\nOne of `value`, `mean`, `median`, `max` or `min`.\n\n__Default value:__  `\"value\"`"
