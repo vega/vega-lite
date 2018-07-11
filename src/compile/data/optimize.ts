@@ -3,6 +3,8 @@ import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {FilterInvalidNode} from './filterinvalid';
+import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
@@ -108,6 +110,33 @@ function getLeaves(roots: DataFlowNode[]) {
   return leaves;
 }
 
+export function isParseMergeable(x: ParseNode, y: ParseNode) {
+  const xParse = x.parse;
+  const yParse = y.parse;
+  for (const i of keys(xParse)) {
+    if (i in yParse && yParse[i] !== xParse[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function mergeParse(node: DataFlowNode) {
+  const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
+
+  if (parseChildren.length > 1) {
+    const mergedParse = parseChildren.pop();
+    const mergeableParseChildren = parseChildren.filter(x => isParseMergeable(x, mergedParse));
+    mergeableParseChildren.forEach(x => {
+      node.removeChild(x);
+      x.parent = mergedParse;
+      mergedParse.merge(x);
+    });
+  } else {
+    node.children.forEach(mergeParse);
+  }
+}
+
 /**
  * Optimizes the dataflow of the passed in data component.
  */
@@ -125,6 +154,7 @@ export function optimizeDataflow(dataComponent: DataComponent) {
   getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
 
   roots.forEach(moveFacetDown);
+  roots.forEach(mergeParse);
 
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
