@@ -118,8 +118,8 @@
       ],
       "legends": [
         {
+          "title": "Quantize",
           "fill": "concat_0_color",
-          "title": "b",
           "encode": {
             "symbols": {
               "update": {
@@ -173,8 +173,8 @@
       "legends": [
         {
           "format": "d",
+          "title": "Quantile",
           "fill": "concat_1_color",
-          "title": "b",
           "encode": {
             "symbols": {
               "update": {
@@ -227,9 +227,8 @@
       ],
       "legends": [
         {
-          "format": "d",
+          "title": "Threshold",
           "fill": "concat_2_color",
-          "title": "b",
           "encode": {
             "symbols": {
               "update": {
