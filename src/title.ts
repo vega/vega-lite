@@ -24,11 +24,6 @@ export interface TitleBase extends BaseTitleNoSignals {
   style?: string | string[];
 
   /**
-   * A boolean flag indicating if the title element should respond to input events such as mouse hover.
-   */
-  interactive?: boolean;
-
-  /**
    * 	The integer z-index indicating the layering of the title group relative to other axis, mark and legend groups.
    *
    * __Default value:__ `0`.

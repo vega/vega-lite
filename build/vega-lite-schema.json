@@ -8540,10 +8540,6 @@
           "$ref": "#/definitions/TitleFrame",
           "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
         },
-        "interactive": {
-          "description": "A boolean flag indicating if the title element should respond to input events such as mouse hover.",
-          "type": "boolean"
-        },
         "limit": {
           "description": "The maximum allowed length in pixels of legend labels.",
           "minimum": 0,
