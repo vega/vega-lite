@@ -104,9 +104,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "time (hours)",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
       "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "labelOverlap": true,
       "encode": {
         "labels": {

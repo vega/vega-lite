@@ -128,10 +128,9 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "tickSize": 0,
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "gridScale": "y",
+      "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

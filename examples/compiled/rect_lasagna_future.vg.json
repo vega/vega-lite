@@ -107,8 +107,8 @@
           }
         }
       },
-      "labelBaseline": "top",
       "labelAlign": "center",
+      "labelBaseline": "top",
       "zindex": 1
     },
     {"scale": "y", "orient": "left", "grid": false, "zindex": 1}

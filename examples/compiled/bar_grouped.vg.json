@@ -94,9 +94,9 @@
           "scale": "x",
           "orient": "bottom",
           "grid": false,
-          "labelBaseline": "middle",
-          "labelAngle": 270,
           "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
           "zindex": 1
         }
       ]

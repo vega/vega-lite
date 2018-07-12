@@ -127,9 +127,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "Cylinders",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
       "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "labelOverlap": true,
       "zindex": 1
     },

@@ -91,9 +91,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (month)",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
       "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "labelOverlap": true,
       "encode": {
         "labels": {
@@ -115,8 +115,8 @@
       "scale": "y",
       "orient": "left",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
       "gridScale": "x",
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

@@ -346,9 +346,9 @@
           "orient": "bottom",
           "grid": false,
           "title": "Major_Genre",
-          "labelBaseline": "top",
-          "labelAngle": 320,
           "labelAlign": "right",
+          "labelAngle": 320,
+          "labelBaseline": "top",
           "zindex": 1
         },
         {
@@ -364,8 +364,8 @@
           "scale": "concat_1_y",
           "orient": "left",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "gridScale": "concat_1_x",
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

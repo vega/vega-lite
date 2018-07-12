@@ -59,9 +59,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "a",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
       "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "zindex": 1
     }
   ],

@@ -76,8 +76,8 @@
       "grid": false,
       "title": "Year",
       "labelAngle": 0,
-      "labelBaseline": "top",
       "labelAlign": "center",
+      "labelBaseline": "top",
       "labelOverlap": true,
       "zindex": 1
     },
