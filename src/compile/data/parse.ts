@@ -69,14 +69,12 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   model.transforms.forEach(t => {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
-
+    head = ParseNode.makeImplicitFromTransform(head, t, ancestorParse) || head;
     if (isCalculate(t)) {
       transformNode = head = new CalculateNode(head, t);
       derivedType = 'derived';
     } else if (isFilter(t)) {
-      transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
-
-      head = new FilterNode(head, model, t.filter);
+      transformNode = head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
       transformNode = head = BinNode.makeFromTransform(head, t, model);
       derivedType = 'number';

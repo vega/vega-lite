@@ -8,8 +8,8 @@ import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
-import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, keys, removePathFromField, StringSet} from '../../util';
+import {isAggregate, isFilter, isTimeUnit, Transform} from '../../transform';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -70,43 +70,48 @@ export class ParseNode extends DataFlowNode {
     return this.makeWithAncestors(parent, explicit, {}, ancestorParse);
   }
 
-  public static makeImplicitFromFilterTransform(
-    parent: DataFlowNode,
-    transform: FilterTransform,
-    ancestorParse: AncestorParse
-  ) {
+  public static makeImplicitFromTransform(parent: DataFlowNode, transform: Transform, ancestorParse: AncestorParse) {
     const parse = {};
-    forEachLeaf(transform.filter, filter => {
-      if (isFieldPredicate(filter)) {
-        // Automatically add a parse node for filters with filter objects
-        let val: string | number | boolean | DateTime = null;
+    if (isFilter(transform)) {
+      forEachLeaf(transform.filter, filter => {
+        if (isFieldPredicate(filter)) {
+          // Automatically add a parse node for filters with filter objects
+          let val: string | number | boolean | DateTime = null;
 
-        // For EqualFilter, just use the equal property.
-        // For RangeFilter and OneOfFilter, all array members should have
-        // the same type, so we only use the first one.
-        if (isFieldEqualPredicate(filter)) {
-          val = filter.equal;
-        } else if (isFieldRangePredicate(filter)) {
-          val = filter.range[0];
-        } else if (isFieldOneOfPredicate(filter)) {
-          val = (filter.oneOf || filter['in'])[0];
-        } // else -- for filter expression, we can't infer anything
-        if (val) {
-          if (isDateTime(val)) {
+          // For EqualFilter, just use the equal property.
+          // For RangeFilter and OneOfFilter, all array members should have
+          // the same type, so we only use the first one.
+          if (isFieldEqualPredicate(filter)) {
+            val = filter.equal;
+          } else if (isFieldRangePredicate(filter)) {
+            val = filter.range[0];
+          } else if (isFieldOneOfPredicate(filter)) {
+            val = (filter.oneOf || filter['in'])[0];
+          } // else -- for filter expression, we can't infer anything
+          if (val) {
+            if (isDateTime(val)) {
+              parse[filter.field] = 'date';
+            } else if (isNumber(val)) {
+              parse[filter.field] = 'number';
+            } else if (isString(val)) {
+              parse[filter.field] = 'string';
+            }
+          }
+
+          if (filter.timeUnit) {
             parse[filter.field] = 'date';
-          } else if (isNumber(val)) {
-            parse[filter.field] = 'number';
-          } else if (isString(val)) {
-            parse[filter.field] = 'string';
           }
         }
-
-        if (filter.timeUnit) {
-          parse[filter.field] = 'date';
+      });
+    } else if (isAggregate(transform)) {
+      transform.aggregate.forEach(aggregate => {
+        if (!isCountingAggregateOp(aggregate.op)) {
+          parse[aggregate.field] = 'number';
         }
-      }
-    });
-
+      });
+    } else if (isTimeUnit(transform)) {
+      parse[transform.field] = 'date';
+    }
     if (keys(parse).length === 0) {
       return null;
     }

@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {"type": "filter", "expr": "datum.Miles_per_Gallon !== null"},
         {
@@ -34,7 +34,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
@@ -55,7 +54,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "formula",
           "as": "year_Year",
