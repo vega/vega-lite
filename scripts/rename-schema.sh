@@ -28,3 +28,5 @@ perl -pi -e s,'LogicalOr<string>','SelectionOr',g build/vega-lite-schema.json
 perl -pi -e s,'LogicalNot<string>','SelectionNot',g build/vega-lite-schema.json
 
 perl -pi -e s,'TopLevel<(.*)>','TopLevel\1',g build/vega-lite-schema.json
+
+perl -pi -e s,'BaseAxis<(.*)>','VgAxisConfig',g build/vega-lite-schema.json

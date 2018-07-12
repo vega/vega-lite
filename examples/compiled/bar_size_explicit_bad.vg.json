@@ -63,9 +63,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "Name",
-      "labelBaseline": "middle",
-      "labelAngle": 270,
       "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "zindex": 1
     },
     {
@@ -81,8 +81,8 @@
       "scale": "y",
       "orient": "left",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
       "gridScale": "x",
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

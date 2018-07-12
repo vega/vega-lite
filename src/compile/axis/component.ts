@@ -1,10 +1,10 @@
+import {Axis as VgAxis} from 'vega';
 import {Axis, AxisPart} from '../../axis';
 import {FieldDefBase} from '../../fielddef';
 import {duplicate, Omit} from '../../util';
-import {VgAxis} from '../../vega.schema';
 import {Split} from '../split';
 
-function isFalseOrNull(v: boolean | null) {
+function isFalseOrNull(v: any) {
   return v === false || v === null;
 }
 

@@ -1353,11 +1353,11 @@ commander@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-1.0.0.tgz#5e6a88e7070ff5908836ead19169548c30f90bcd"
 
-commander@2, commander@^2.12.1:
+commander@2, commander@^2.12.1, commander@~2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
 
-commander@2.15.1, commander@~2.15.0, commander@~2.15.1:
+commander@2.15.1, commander@~2.15.0:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
 
@@ -5894,28 +5894,15 @@ ts-jest@^23.0.0:
     pkg-dir "^3.0.0"
     yargs "^12.0.1"
 
-ts-json-schema-generator@^0.28.1:
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.28.1.tgz#dbe6fe09e1dd1c2680264ef70832af102b92b76d"
+ts-json-schema-generator@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.29.0.tgz#c70c5f9791241a1a4e6ba0d1d0ae62fa2bea1e77"
   dependencies:
-    commander "~2.15.1"
+    commander "~2.16.0"
     glob "~7.1.2"
     json-stable-stringify "^1.0.1"
-    ts-node "^6.1.1"
+    ts-node "^7.0.0"
     typescript "~2.9.2"
-
-ts-node@^6.1.1:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-6.2.0.tgz#65a0ae2acce319ea4fd7ac8d7c9f1f90c5da6baf"
-  dependencies:
-    arrify "^1.0.0"
-    buffer-from "^1.1.0"
-    diff "^3.1.0"
-    make-error "^1.1.1"
-    minimist "^1.2.0"
-    mkdirp "^0.5.1"
-    source-map-support "^0.5.6"
-    yn "^2.0.0"
 
 ts-node@^7.0.0:
   version "7.0.0"
@@ -6455,9 +6442,9 @@ vega-transforms@^2.0.0, vega-transforms@^2.1.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*, vega-typings@^0.3.17, vega-typings@^0.3.20, vega-typings@^0.3.3:
-  version "0.3.20"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.20.tgz#7497f0148c79943e1066feed86319be9128af23c"
+vega-typings@*, vega-typings@^0.3.17, vega-typings@^0.3.3, vega-typings@^0.3.23:
+  version "0.3.23"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.23.tgz#b7343bd0ea91c3043e59591579d5624ca3cba752"
   dependencies:
     vega-util "^1.7.0"
 

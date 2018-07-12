@@ -15,7 +15,7 @@ Reference documentation for common parameter **types** expected by Vega-Lite spe
 - [Boolean](#boolean)
 - [Color](#color)
 - [DateTime](#datetime)
-- [Expressions](#expression)
+- [Expression](#expression)
 - [Number](#number)
 - [Object](#object)
 - [String](#string)
@@ -62,7 +62,6 @@ To enable custom calculations, Vega-Lite uses Vega's expression language for wri
 
 Please read the [Vega documentation for expressions](https://vega.github.io/vega/docs/expressions/) for details.
 
-
 <br/><a name="number" href="#number">#</a>
 **Number**
 
@@ -73,12 +72,10 @@ Accepts number values. For example: `1`, `3.14`, `1e5`.
 
 Accepts object literals. For example: `{"left":5, "right":30, "top":5, "bottom":50}`. The valid object property names and types will vary across parameters; read the individual parameter descriptions for more information.
 
-
 <br/><a name="string" href="#string">#</a>
 **String**
 
 Accepts string values. For example: `"bold"`, `"step-before"`, `""`.
-
 
 <br/><a name="url" href="#url">#</a>
 **URL**

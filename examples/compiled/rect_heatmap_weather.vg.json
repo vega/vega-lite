@@ -97,8 +97,8 @@
           "update": {"text": {"signal": "timeFormat(datum.value, '%e')"}}
         }
       },
-      "labelBaseline": "top",
       "labelAlign": "center",
+      "labelBaseline": "top",
       "labelOverlap": true,
       "zindex": 1
     },

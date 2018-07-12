@@ -1,4 +1,4 @@
-import {Legend as VgLegend, SignalRef} from 'vega';
+import {Axis as VgAxis, Legend as VgLegend, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -15,7 +15,6 @@ import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
 import {
   isVgRangeStep,
-  VgAxis,
   VgData,
   VgEncodeEntry,
   VgLayout,

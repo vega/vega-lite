@@ -1,11 +1,56 @@
+import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, SymbolShape, TextBaseline} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {AxisOrient, VgAxis, VgAxisConfig} from './vega.schema';
+import {Color, VgLayoutAlign} from './vega.schema';
 
-export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {}
+type BaseAxisNoSignals = AxisMixins &
+  BaseAxis<
+    number,
+    number,
+    boolean,
+    number | boolean,
+    string,
+    Color,
+    FontWeight,
+    Align,
+    TextBaseline,
+    VgLayoutAlign,
+    SymbolShape,
+    LabelOverlap,
+    number[]
+  >;
 
-export interface Axis extends VgAxisConfig, Guide {
+// Vega axis config is the same as vega axis base. If this is not the case, add specific type.
+type VgAxisConfigNoSignals = BaseAxisNoSignals;
+
+// Change comments to be Vega-Lite specific
+interface AxisMixins {
+  /**
+   * A boolean flag indicating if grid lines should be included as part of the axis
+   *
+   * __Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.
+   */
+  grid?: boolean;
+
+  /**
+   * Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.
+   *
+   * __Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.
+   */
+  labelFlush?: boolean | number;
+
+  /**
+   * The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
+   *
+   * __Default value:__ `true` for non-nominal fields with non-log scales; `"greedy"` for log scales; otherwise `false`.
+   */
+  labelOverlap?: LabelOverlap;
+}
+
+export interface AxisConfig extends VgAxisConfigNoSignals, VlOnlyGuideConfig {}
+
+export interface Axis extends BaseAxisNoSignals, Guide {
   /**
    * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
@@ -21,7 +66,7 @@ export interface Axis extends VgAxisConfig, Guide {
   offset?: number;
 
   /**
-   * The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.
+   * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
    *
    * __Default value__: `0`
    */
@@ -80,18 +125,62 @@ export const AXIS_PROPERTY_TYPE: {
 } = {
   grid: 'grid',
   gridScale: 'grid',
+  gridColor: 'grid',
+  gridDash: 'grid',
+  gridOpacity: 'grid',
+  gridWidth: 'grid',
 
+  orient: 'main',
+
+  bandPosition: 'main',
   domain: 'main',
-  labels: 'main',
+  domainColor: 'main',
+  domainOpacity: 'main',
+  domainWidth: 'main',
+  format: 'main',
+  labelAlign: 'main',
+  labelAngle: 'main',
+  labelBaseline: 'main',
+  labelBound: 'main',
+  labelColor: 'main',
   labelFlush: 'main',
+  labelFlushOffset: 'main',
+  labelFont: 'main',
+  labelFontSize: 'main',
+  labelFontWeight: 'main',
+  labelLimit: 'main',
+  labelOpacity: 'main',
   labelOverlap: 'main',
-  minExtent: 'main',
+  labelPadding: 'main',
+  labels: 'main',
   maxExtent: 'main',
+  minExtent: 'main',
   offset: 'main',
+  position: 'main',
+  tickColor: 'main',
+  tickExtra: 'main',
+  tickOffset: 'main',
+  tickOpacity: 'main',
+  tickRound: 'main',
   ticks: 'main',
+  tickSize: 'main',
   title: 'main',
-  values: 'both',
+  titleAlign: 'main',
+  titleAngle: 'main',
+  titleBaseline: 'main',
+  titleColor: 'main',
+  titleFont: 'main',
+  titleFontSize: 'main',
+  titleFontWeight: 'main',
+  titleLimit: 'main',
+  titleOpacity: 'main',
+  titlePadding: 'main',
+  titleX: 'main',
+  titleY: 'main',
 
+  tickWidth: 'both',
+  tickCount: 'both',
+  values: 'both',
   scale: 'both',
   zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
@@ -134,37 +223,44 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   bandPosition: 1,
   domain: 1,
   domainColor: 1,
+  domainOpacity: 1,
   domainWidth: 1,
   format: 1,
   grid: 1,
   gridColor: 1,
   gridDash: 1,
   gridOpacity: 1,
+  gridScale: 1,
   gridWidth: 1,
-  labelBound: 1,
+  labelAlign: 1,
+  labelAngle: 1,
   labelBaseline: 1,
+  labelBound: 1,
+  labelColor: 1,
   labelFlush: 1,
+  labelFlushOffset: 1,
+  labelFont: 1,
+  labelFontSize: 1,
+  labelFontWeight: 1,
+  labelLimit: 1,
+  labelOpacity: 1,
+  labelOverlap: 1,
   labelPadding: 1,
   labels: 1,
-  labelAngle: 1,
-  labelAlign: 1,
-  labelColor: 1,
-  labelFontSize: 1,
-  labelFont: 1,
-  labelLimit: 1,
-  labelOverlap: 1,
   maxExtent: 1,
   minExtent: 1,
   offset: 1,
   position: 1,
+  tickColor: 1,
   tickCount: 1,
+  tickExtra: 1,
+  tickOffset: 1,
+  tickOpacity: 1,
+  tickRound: 1,
   ticks: 1,
   tickSize: 1,
-  tickRound: 1,
   tickWidth: 1,
-  tickColor: 1,
   title: 1,
-  titlePadding: 1,
   titleAlign: 1,
   titleAngle: 1,
   titleBaseline: 1,
@@ -173,6 +269,8 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleFontSize: 1,
   titleFontWeight: 1,
   titleLimit: 1,
+  titleOpacity: 1,
+  titlePadding: 1,
   titleX: 1,
   titleY: 1,
   values: 1,
@@ -183,14 +281,12 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   encoding: 1,
   labelAngle: 1,
-  titleMaxLength: 1,
   tickStep: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
-  gridScale: 1,
   encode: 1
 };
 
@@ -212,35 +308,35 @@ export interface AxisConfigMixins {
   /**
    * X-axis specific config.
    */
-  axisX?: VgAxisConfig;
+  axisX?: AxisConfig;
 
   /**
    * Y-axis specific config.
    */
-  axisY?: VgAxisConfig;
+  axisY?: AxisConfig;
 
   /**
    * Specific axis config for y-axis along the left edge of the chart.
    */
-  axisLeft?: VgAxisConfig;
+  axisLeft?: AxisConfig;
 
   /**
    * Specific axis config for y-axis along the right edge of the chart.
    */
-  axisRight?: VgAxisConfig;
+  axisRight?: AxisConfig;
 
   /**
    * Specific axis config for x-axis along the top edge of the chart.
    */
-  axisTop?: VgAxisConfig;
+  axisTop?: AxisConfig;
 
   /**
    * Specific axis config for x-axis along the bottom edge of the chart.
    */
-  axisBottom?: VgAxisConfig;
+  axisBottom?: AxisConfig;
 
   /**
    * Specific axis config for axes with "band" scales.
    */
-  axisBand?: VgAxisConfig;
+  axisBand?: AxisConfig;
 }

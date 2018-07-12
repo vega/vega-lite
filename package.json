@@ -41,7 +41,7 @@
     "deploy:gh": "scripts/deploy-gh.sh",
     "deploy:schema": "scripts/deploy-schema.sh",
     "preschema": "npm run prebuild",
-    "schema": "node --stack-size=1200 ./node_modules/.bin/ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "node --stack-size=1400 ./node_modules/.bin/ts-json-schema-generator --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
@@ -93,7 +93,7 @@
     "source-map-support": "^0.5.6",
     "svg2png-many": "^0.0.7",
     "ts-jest": "^23.0.0",
-    "ts-json-schema-generator": "^0.28.1",
+    "ts-json-schema-generator": "^0.29.0",
     "ts-node": "^7.0.0",
     "tslint": "5.10.0",
     "tslint-config-prettier": "^1.12.0",
@@ -116,7 +116,7 @@
   "dependencies": {
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
-    "vega-typings": "^0.3.20",
+    "vega-typings": "^0.3.23",
     "vega-util": "^1.7.0",
     "yargs": "^12.0.1"
   },

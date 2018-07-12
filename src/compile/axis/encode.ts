@@ -1,8 +1,8 @@
+import {AxisOrient} from 'vega';
 import {PositionScaleChannel} from '../../channel';
 import {isTimeFieldDef} from '../../fielddef';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
-import {AxisOrient} from '../../vega.schema';
 import {timeFormatExpression} from '../common';
 import {UnitModel} from '../unit';
 
