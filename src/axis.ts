@@ -4,21 +4,22 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
 import {Color, VgLayoutAlign} from './vega.schema';
 
-type BaseAxisNoSignals = BaseAxis<
-  number,
-  number,
-  boolean,
-  number | boolean,
-  string,
-  Color,
-  FontWeight,
-  Align,
-  TextBaseline,
-  VgLayoutAlign,
-  SymbolShape,
-  LabelOverlap,
-  number[]
->;
+type BaseAxisNoSignals = AxisMixins &
+  BaseAxis<
+    number,
+    number,
+    boolean,
+    number | boolean,
+    string,
+    Color,
+    FontWeight,
+    Align,
+    TextBaseline,
+    VgLayoutAlign,
+    SymbolShape,
+    LabelOverlap,
+    number[]
+  >;
 
 // Vega axis config is the same as vega axis base. If this is not the case, add specific type.
 type VgAxisConfigNoSignals = BaseAxisNoSignals;
@@ -47,9 +48,9 @@ interface AxisMixins {
   labelOverlap?: LabelOverlap;
 }
 
-export interface AxisConfig extends AxisMixins, VgAxisConfigNoSignals, VlOnlyGuideConfig {}
+export interface AxisConfig extends VgAxisConfigNoSignals, VlOnlyGuideConfig {}
 
-export interface Axis extends AxisMixins, BaseAxisNoSignals, Guide {
+export interface Axis extends BaseAxisNoSignals, Guide {
   /**
    * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
    *
