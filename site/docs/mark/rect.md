@@ -48,9 +48,15 @@ A rect mark definition can contain any [standard mark properties](mark.html#mark
 
 ### Heatmap
 
-Use the `rect` marks with discrete fields on `x` and `y` channels creates a heatmap.
+Using the `rect` marks with discrete fields on `x` and `y` channels creates a heatmap.
 
 <span class="vl-example" data-name="rect_heatmap"></span>
+
+We can similarly use rect with binned fields and discretized temporal fields.
+
+<span class="vl-example" data-name="rect_binned_heatmap"></span>
+
+<span class="vl-example" data-name="rect_heatmap_weather"></span>
 
 {:#ranged}
 ### Ranged Rectangles
