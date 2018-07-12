@@ -60,7 +60,8 @@
         "text": {"signal": "''+parent[\"Origin\"]"},
         "offset": 10,
         "orient": "top",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       }
     },
     {
@@ -120,7 +121,8 @@
             "text": {"signal": "''+parent[\"Cylinders\"]"},
             "offset": 10,
             "orient": "top",
-            "style": "guide-label"
+            "style": "guide-label",
+            "baseline": "middle"
           },
           "encode": {"update": {"width": {"signal": "child_child_width"}}}
         },

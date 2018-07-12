@@ -78,7 +78,8 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
-        "angle": -90
+        "angle": -90,
+        "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [

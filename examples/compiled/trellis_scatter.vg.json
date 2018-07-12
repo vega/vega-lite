@@ -68,7 +68,8 @@
         "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
         "offset": 10,
         "orient": "top",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },

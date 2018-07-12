@@ -168,7 +168,8 @@
         "text": {"signal": "''+parent[\"b\"]"},
         "offset": 10,
         "orient": "left",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [
@@ -193,7 +194,8 @@
         "text": {"signal": "''+parent[\"a\"]"},
         "offset": 10,
         "orient": "top",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
     },
