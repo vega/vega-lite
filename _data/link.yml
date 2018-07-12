@@ -5,7 +5,7 @@ CompositeUnitSpec:
   name: SingleViewSpec
   link: "spec.html#single"
 LayerSpec:
-  link: layer.html
+  link: "layer.html"
 AutosizeType:
   name: String
 AutoSizeParams:
@@ -19,7 +19,7 @@ Header:
 
 # Data
 Data:
-  link: data.html
+  link: "data.html"
 DataFormat:
   link: "data.html#format"
 DataFormatType:
@@ -34,12 +34,12 @@ TitleOrient:
 
 # Transform
 Transform:
-  link: transform.html
+  link: "transform.html"
 
 AggregateOp:
   link: "aggregate.html#ops"
 Bin:
-  link: bin.html
+  link: "bin.html"
 BinParams:
   link: "bin.html#bin-parameters"
 "LogicalOperand<Predicate>":
@@ -47,11 +47,11 @@ BinParams:
 AggregateOpDef:
   link: "transform.html#aggregate-op-def"
 TimeUnit:
-  link: timeunit.html
+  link: "timeunit.html"
 LookupData:
   link: "lookup.html#lookup-data"
 Window:
-  link: window.html
+  link: "window.html"
 
 # Transform - Time Unit
 Month:
@@ -61,11 +61,11 @@ Day:
 
 # Transform - Window
 WindowFieldDef:
-  link: window.html#field-def
+  link: "window.html#field-def"
 SortField:
-  link: window.html#sort-field-def
+  link: "window.html#sort-field-def"
 WindowOnlyOp:
-  link: window.html#ops
+  link: "window.html#ops"
 
 # Mark
 AnyMark:
@@ -81,7 +81,7 @@ Mark:
 # Config
 
 Config:
-  link: config.html
+  link: "config.html"
 AxisConfig:
   link: "axis.html#config"
 VgAxisConfig:
@@ -117,12 +117,12 @@ ViewConfig:
 # Encoding
 EncodingWithFacet:
   name: Encoding
-  link: encoding.html
+  link: "encoding.html"
 Type:
   link: type.html
 SingleDefChannel:
   name: Encoding
-  link: encoding.html
+  link: "encoding.html"
 
 # Channel Definitions
 MarkPropFieldDefWithCondition:
@@ -170,7 +170,7 @@ ValueDef:
 Aggregate:
   link: "aggregate.html"
 Axis:
-  link: axis.html
+  link: "axis.html"
 Bin:
   link: "bin.html"
 RepeatRef:
@@ -180,9 +180,9 @@ Legend:
 LegendType:
   name: String
 Scale:
-  link: scale.html
+  link: "scale.html"
 Sort:
-  link: sort.html
+  link: "sort.html"
 SortOrder:
   name: String
 EncodingSortField:
@@ -216,12 +216,12 @@ LegendOrient:
   name: String
 Resolve:
   name: Resolve
-  link: resolve.html
+  link: "resolve.html"
 
 # Selections
 SelectionDef:
   name: Selection
-  link: selection.html
+  link: "selection.html"
 SelectionOperand:
   name: "String | Object"
 SingleSelectionConfig:
