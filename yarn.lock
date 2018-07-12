@@ -6442,9 +6442,9 @@ vega-transforms@^2.0.0, vega-transforms@^2.1.0:
     vega-statistics "^1.2.1"
     vega-util "^1.7.0"
 
-vega-typings@*, vega-typings@^0.3.17, vega-typings@^0.3.3, vega-typings@^0.3.23:
-  version "0.3.23"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.23.tgz#b7343bd0ea91c3043e59591579d5624ca3cba752"
+vega-typings@*, vega-typings@^0.3.17, vega-typings@^0.3.3, vega-typings@^0.3.29:
+  version "0.3.29"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.3.29.tgz#569f98cc07143ea5fbd488dfbb7a1bb2609d88df"
   dependencies:
     vega-util "^1.7.0"
 

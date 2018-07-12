@@ -1,9 +1,10 @@
 import {Legend as VgLegend} from 'vega';
+import {Title as VgTitle} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {flatten, keys} from '../util';
-import {VgData, VgLayout, VgSignal, VgTitle} from '../vega.schema';
+import {VgData, VgLayout, VgSignal} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';

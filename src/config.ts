@@ -16,10 +16,10 @@ import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
 import {StackOffset} from './stack';
-import {extractTitleConfig} from './title';
+import {extractTitleConfig, TitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig} from './vega.schema';
+import {StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
 
 export interface ViewConfig {
   /**
@@ -240,7 +240,7 @@ export interface Config
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
    */
-  title?: VgTitleConfig;
+  title?: TitleConfig;
 
   /**
    * Projection configuration, which determines default properties for all [projections](https://vega.github.io/vega-lite/docs/projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](https://vega.github.io/vega-lite/docs/projection.html#config).

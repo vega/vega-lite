@@ -85,14 +85,6 @@
       ],
       "type": "string"
     },
-    "Anchor": {
-      "enum": [
-        "start",
-        "middle",
-        "end"
-      ],
-      "type": "string"
-    },
     "AnyMark": {
       "anyOf": [
         {
@@ -351,14 +343,14 @@
         },
         "domainColor": {
           "$ref": "#/definitions/Color",
-          "description": "Color of axis domain line.\n\n__Default value:__  `\"gray\"`."
+          "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
         "domainOpacity": {
           "description": "Opacity of the axis domain line.",
           "type": "number"
         },
         "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__  `1`",
+          "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
           "type": "number"
         },
         "format": {
@@ -371,7 +363,7 @@
         },
         "gridColor": {
           "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__  `\"lightGray\"`."
+          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gridDash": {
           "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
@@ -407,7 +399,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation."
+          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -461,7 +453,7 @@
           "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -633,14 +625,14 @@
         },
         "domainColor": {
           "$ref": "#/definitions/Color",
-          "description": "Color of axis domain line.\n\n__Default value:__  `\"gray\"`."
+          "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
         },
         "domainOpacity": {
           "description": "Opacity of the axis domain line.",
           "type": "number"
         },
         "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__  `1`",
+          "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
           "type": "number"
         },
         "grid": {
@@ -649,7 +641,7 @@
         },
         "gridColor": {
           "$ref": "#/definitions/Color",
-          "description": "Color of gridlines.\n\n__Default value:__  `\"lightGray\"`."
+          "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gridDash": {
           "description": "The offset (in pixels) into which to begin drawing with the grid dash array.",
@@ -685,7 +677,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation."
+          "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "labelBound": {
           "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
@@ -739,7 +731,7 @@
           "type": "number"
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__  `true`.",
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
           "type": "boolean"
         },
         "maxExtent": {
@@ -1044,6 +1036,58 @@
         },
         "tooltip": {
           "description": "The tooltip text to show upon mouse hover."
+        }
+      },
+      "type": "object"
+    },
+    "VgTitleConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+        },
+        "angle": {
+          "description": "Angle in degrees of title text.",
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for title text."
+        },
+        "color": {
+          "$ref": "#/definitions/Color",
+          "description": "Text color for title text."
+        },
+        "font": {
+          "description": "Font name for title text.",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "frame": {
+          "$ref": "#/definitions/TitleFrame",
+          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
+        },
+        "limit": {
+          "description": "The maximum allowed length in pixels of legend labels.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
         }
       },
       "type": "object"
@@ -2103,7 +2147,7 @@
           "type": "string"
         },
         "title": {
-          "$ref": "#/definitions/VgTitleConfig",
+          "$ref": "#/definitions/TitleConfig",
           "description": "Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config)."
         },
         "trail": {
@@ -4894,7 +4938,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be top, middle, bottom, or alphabetic.\n\n__Default value:__ `\"middle\"`."
+          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
         },
         "labelColor": {
           "$ref": "#/definitions/Color",
@@ -5148,7 +5192,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be top, middle, bottom, or alphabetic.\n\n__Default value:__ `\"middle\"`."
+          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
         },
         "labelColor": {
           "$ref": "#/definitions/Color",
@@ -8432,12 +8476,31 @@
       ],
       "type": "object"
     },
+    "TitleAnchor": {
+      "enum": [
+        "start",
+        "middle",
+        "end"
+      ],
+      "type": "string"
+    },
+    "TitleConfig": {
+      "$ref": "#/definitions/VgTitleConfig"
+    },
+    "TitleFrame": {
+      "enum": [
+        "bounds",
+        "group"
+      ],
+      "type": "string"
+    },
     "TitleOrient": {
       "enum": [
-        "top",
-        "bottom",
+        "none",
         "left",
-        "right"
+        "right",
+        "top",
+        "bottom"
       ],
       "type": "string"
     },
@@ -8445,8 +8508,46 @@
       "additionalProperties": false,
       "properties": {
         "anchor": {
-          "$ref": "#/definitions/Anchor",
+          "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
+        },
+        "angle": {
+          "description": "Angle in degrees of title text.",
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for title text."
+        },
+        "color": {
+          "$ref": "#/definitions/Color",
+          "description": "Text color for title text."
+        },
+        "font": {
+          "description": "Font name for title text.",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "frame": {
+          "$ref": "#/definitions/TitleFrame",
+          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
+        },
+        "interactive": {
+          "description": "A boolean flag indicating if the title element should respond to input events such as mouse hover.",
+          "type": "boolean"
+        },
+        "limit": {
+          "description": "The maximum allowed length in pixels of legend labels.",
+          "minimum": 0,
+          "type": "number"
         },
         "offset": {
           "description": "The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.",
@@ -8454,7 +8555,7 @@
         },
         "orient": {
           "$ref": "#/definitions/TitleOrient",
-          "description": "The orientation of the title relative to the chart. One of `\"top\"` (the default), `\"bottom\"`, `\"left\"`, or `\"right\"`."
+          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
         },
         "style": {
           "anyOf": [
@@ -8473,6 +8574,11 @@
         "text": {
           "description": "The title text.",
           "type": "string"
+        },
+        "zindex": {
+          "description": "The integer z-index indicating the layering of the title group relative to other axis, mark and legend groups.\n\n__Default value:__ `0`.",
+          "minimum": 0,
+          "type": "number"
         }
       },
       "required": [
@@ -9761,54 +9867,6 @@
         "input",
         "options"
       ],
-      "type": "object"
-    },
-    "VgTitleConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "$ref": "#/definitions/Anchor",
-          "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
-        },
-        "angle": {
-          "description": "Angle in degrees of title text.",
-          "type": "number"
-        },
-        "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title text."
-        },
-        "color": {
-          "description": "Text color for title text.",
-          "type": "string"
-        },
-        "font": {
-          "description": "Font name for title text.",
-          "type": "string"
-        },
-        "fontSize": {
-          "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "fontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "limit": {
-          "description": "The maximum allowed length in pixels of legend labels.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "offset": {
-          "description": "Offset in pixels of the title from the chart body and axes.",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/TitleOrient",
-          "description": "Default title orientation (\"top\", \"bottom\", \"left\", or \"right\")"
-        }
-      },
       "type": "object"
     },
     "ViewConfig": {
