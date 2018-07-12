@@ -1,4 +1,5 @@
 import {Axis as VgAxis, Legend as VgLegend, SignalRef} from 'vega';
+import {Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -13,16 +14,7 @@ import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
-import {
-  isVgRangeStep,
-  VgData,
-  VgEncodeEntry,
-  VgLayout,
-  VgMarkGroup,
-  VgProjection,
-  VgSignal,
-  VgTitle
-} from '../vega.schema';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -371,9 +363,12 @@ export abstract class Model {
   }
 
   public assembleTitle(): VgTitle {
+    const {encoding, ...titleNoEncoding} = this.title || ({} as TitleParams);
+
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMark,
-      ...this.title
+      ...titleNoEncoding,
+      ...(encoding ? {encode: {update: encoding}} : {})
     };
 
     if (title.text) {

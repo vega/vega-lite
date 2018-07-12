@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis, AxisOrient} from 'vega';
+import {Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {Config} from '../../config';
 import {FacetFieldDef} from '../../facet';
@@ -15,7 +15,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {keys} from '../../util';
-import {VgComparator, VgMarkGroup, VgTitleConfig} from '../../vega.schema';
+import {VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {Model} from '../model';

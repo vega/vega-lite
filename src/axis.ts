@@ -124,7 +124,6 @@ export const AXIS_PROPERTY_TYPE: {
   [k in keyof VgAxis]: 'main' | 'grid' | 'both'
 } = {
   grid: 'grid',
-  gridScale: 'grid',
   gridColor: 'grid',
   gridDash: 'grid',
   gridOpacity: 'grid',

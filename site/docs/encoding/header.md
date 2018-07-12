@@ -10,7 +10,7 @@ Headers provide a title and labels for [faceted plots](facet.html). A header's t
 By default, Vega-Lite automatically creates headers with default properties for `row` and `column` channels of a faceted view.
 User can set the `header` property of row- or column-[field definition](facet.html#field-def) to an object to customize [header properties](#header-properties).
 
-In addition to the `header` property of a row- or column-field definition, users can also set default header properties for all headers with the configuration object's ([`config`](config.html)) [header config](#config) (`config: {header: {...}}`).
+In addition to the `header` property of a row- or column-field definition, users can also set default header properties for all headers with the configuration object's ([`config`](config.html)) [header configuration](#config) (`config: {header: {...}}`).
 
 ## Documentation Overview
 {:.no_toc}
@@ -84,6 +84,6 @@ This example uses header properties to change the font size of this faceted plot
 }
 ```
 
-The `header` property of the top-level `config` object sets the default properties for all headers. If header properties are set in row- or column-[field definitions](facet.html#mapping), these config values will be overridden.
+The `header` property of the top-level `config` object sets the default properties for all headers. If header properties are set in row- or column-[field definitions](facet.html#mapping), these configuration values will be overridden.
 
-The header config can contain any [header properties](#general).
+The header configuration can contain any [header properties](#general).
