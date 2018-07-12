@@ -248,13 +248,11 @@ DateTime:
 Color:
   link: "types.html#color"
 LabelOverlap:
-  name: "Overlap"
-  link: "types.html#overlap"
+  name: String
 Align:
-  link: "types.html#align"
+  name: String
 TextBaseline:
-  name: "Baseline"
-  link: "types.html#baseline"
+  name: String
 
 # Others
 HorizontalAlign:

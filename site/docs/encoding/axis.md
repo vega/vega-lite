@@ -55,6 +55,11 @@ To customize axis, an `axis` object in [an encoding channel's definition](encodi
 
 __See also:__ [General Axis Config](#general-config).
 
+{:#domain}
+### Domain
+
+{% include table.html props="domain,domainColor,domainOpacity,domainWidth" source="Axis" %}
+
 {:#labels}
 ### Labels
 
@@ -66,11 +71,6 @@ __See also:__  [`guide-label` style config](mark.html#style-config) (common styl
 ### Ticks
 
 {% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickStep,tickWidth,values" source="Axis" %}
-
-{:#domain}
-### Domain
-
-{% include table.html props="domain,domainColor,domainOpacity,domainWidth" source="Axis" %}
 
 {:#title}
 ### Title

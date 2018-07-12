@@ -16,7 +16,18 @@ import {Flag, flagKeys} from './util';
 import {Color, VgLayoutAlign} from './vega.schema';
 
 export interface LegendConfig
-  extends VgLegendConfig<number, number, string, Color, FontWeight, Align, TextBaseline, VgLayoutAlign, SymbolShape>,
+  extends VgLegendConfig<
+      number,
+      number,
+      string,
+      Color,
+      FontWeight,
+      Align,
+      TextBaseline,
+      VgLayoutAlign,
+      LabelOverlap,
+      SymbolShape
+    >,
     VlOnlyGuideConfig {}
 
 /**

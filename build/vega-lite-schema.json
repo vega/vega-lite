@@ -1048,7 +1048,7 @@
       },
       "type": "object"
     },
-    "BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>": {
+    "VgAxisConfig": {
       "additionalProperties": false,
       "properties": {
         "bandPosition": {
@@ -1264,59 +1264,6 @@
         }
       },
       "type": "object"
-    },
-    "BaseValueRef<SymbolShape>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "value": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SymbolShape"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
-          },
-          "required": [
-            "value"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/FieldValue"
-            }
-          },
-          "required": [
-            "field"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "range": {
-              "type": [
-                "number",
-                "boolean"
-              ]
-            }
-          },
-          "required": [
-            "range"
-          ],
-          "type": "object"
-        }
-      ]
     },
     "Baseline": {
       "enum": [
@@ -2213,31 +2160,31 @@
           "description": "Axis configuration, which determines default properties for all `x` and `y` [axes](https://vega.github.io/vega-lite/docs/axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](https://vega.github.io/vega-lite/docs/axis.html#config)."
         },
         "axisBand": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Specific axis config for axes with \"band\" scales."
         },
         "axisBottom": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Specific axis config for x-axis along the bottom edge of the chart."
         },
         "axisLeft": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Specific axis config for y-axis along the left edge of the chart."
         },
         "axisRight": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Specific axis config for y-axis along the right edge of the chart."
         },
         "axisTop": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Specific axis config for x-axis along the top edge of the chart."
         },
         "axisX": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "X-axis specific config."
         },
         "axisY": {
-          "$ref": "#/definitions/BaseAxis<number,number,boolean,(number|boolean),string,Color,FontWeight,Align,TextBaseline,VgLayoutAlign,SymbolShape,LabelOverlap,number[]>",
+          "$ref": "#/definitions/VgAxisConfig",
           "description": "Y-axis specific config."
         },
         "background": {
@@ -2562,18 +2509,6 @@
           "type": "number"
         }
       },
-      "type": "object"
-    },
-    "DatumFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "datum": {
-          "$ref": "#/definitions/FieldValue"
-        }
-      },
-      "required": [
-        "datum"
-      ],
       "type": "object"
     },
     "Day": {
@@ -3964,25 +3899,6 @@
       ],
       "type": "object"
     },
-    "FieldValue": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "$ref": "#/definitions/DatumFieldRef"
-        },
-        {
-          "$ref": "#/definitions/GroupFieldRef"
-        },
-        {
-          "$ref": "#/definitions/ParentFieldRef"
-        }
-      ]
-    },
     "FilterTransform": {
       "additionalProperties": false,
       "properties": {
@@ -4608,21 +4524,6 @@
       },
       "required": [
         "vconcat"
-      ],
-      "type": "object"
-    },
-    "GroupFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "group": {
-          "$ref": "#/definitions/FieldValue"
-        },
-        "level": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "group"
       ],
       "type": "object"
     },
@@ -5496,7 +5397,7 @@
           "type": "number"
         },
         "labelOverlap": {
-          "$ref": "#/definitions/SymbolShape",
+          "$ref": "#/definitions/LabelOverlap",
           "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
         },
         "labelPadding": {
@@ -5577,7 +5478,7 @@
           "type": "number"
         },
         "symbolType": {
-          "$ref": "#/definitions/SymbolShapeValue",
+          "$ref": "#/definitions/SymbolShape",
           "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
         },
         "titleAlign": {
@@ -6946,21 +6847,6 @@
       ],
       "minimum": 0
     },
-    "ParentFieldRef": {
-      "additionalProperties": false,
-      "properties": {
-        "level": {
-          "type": "number"
-        },
-        "parent": {
-          "$ref": "#/definitions/FieldValue"
-        }
-      },
-      "required": [
-        "parent"
-      ],
-      "type": "object"
-    },
     "Parse": {
       "additionalProperties": {
         "$ref": "#/definitions/ParseValue"
@@ -7889,44 +7775,6 @@
       ],
       "type": "string"
     },
-    "ScaledValueRef<SymbolShape>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/BaseValueRef<SymbolShape>"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "scale": {
-              "$ref": "#/definitions/FieldValue"
-            }
-          },
-          "required": [
-            "scale"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "type": [
-                "boolean",
-                "number"
-              ]
-            },
-            "scale": {
-              "$ref": "#/definitions/FieldValue"
-            }
-          },
-          "required": [
-            "scale",
-            "band"
-          ],
-          "type": "object"
-        }
-      ]
-    },
     "SchemeParams": {
       "additionalProperties": false,
       "properties": {
@@ -8036,18 +7884,6 @@
         "intersect"
       ],
       "type": "string"
-    },
-    "SignalRef": {
-      "additionalProperties": false,
-      "properties": {
-        "signal": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "signal"
-      ],
-      "type": "object"
     },
     "SingleDefChannel": {
       "enum": [
@@ -8350,19 +8186,6 @@
     },
     "SymbolShape": {
       "type": "string"
-    },
-    "SymbolShapeValue": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SymbolShape"
-        },
-        {
-          "$ref": "#/definitions/SymbolShapeValueRef"
-        }
-      ]
-    },
-    "SymbolShapeValueRef": {
-      "$ref": "#/definitions/ScaledValueRef<SymbolShape>"
     },
     "TextBaseline": {
       "anyOf": [
