@@ -77,6 +77,15 @@ Orient:
   name: String
 Mark:
   name: String
+# CompositeMark
+BoxPlot:
+  name: String
+ErrorBand:
+  name: String
+ErrorBar:
+  name: String
+ErrorBarExtent:
+  name: String
 
 # Config
 
