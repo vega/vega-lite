@@ -308,35 +308,35 @@ export interface AxisConfigMixins {
   /**
    * X-axis specific config.
    */
-  axisX?: VgAxisConfigNoSignals;
+  axisX?: AxisConfig;
 
   /**
    * Y-axis specific config.
    */
-  axisY?: VgAxisConfigNoSignals;
+  axisY?: AxisConfig;
 
   /**
    * Specific axis config for y-axis along the left edge of the chart.
    */
-  axisLeft?: VgAxisConfigNoSignals;
+  axisLeft?: AxisConfig;
 
   /**
    * Specific axis config for y-axis along the right edge of the chart.
    */
-  axisRight?: VgAxisConfigNoSignals;
+  axisRight?: AxisConfig;
 
   /**
    * Specific axis config for x-axis along the top edge of the chart.
    */
-  axisTop?: VgAxisConfigNoSignals;
+  axisTop?: AxisConfig;
 
   /**
    * Specific axis config for x-axis along the bottom edge of the chart.
    */
-  axisBottom?: VgAxisConfigNoSignals;
+  axisBottom?: AxisConfig;
 
   /**
    * Specific axis config for axes with "band" scales.
    */
-  axisBand?: VgAxisConfigNoSignals;
+  axisBand?: AxisConfig;
 }
