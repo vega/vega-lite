@@ -247,7 +247,7 @@ export function tooltip(model: UnitModel) {
         return {value: markTooltip};
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
-        if (markTooltip.fields === 'encodings') {
+        if (markTooltip.content === 'encoding') {
           return ref.tooltipForChannelDefs(fieldDefs(encoding), config);
         } else {
           return {signal: 'datum'};

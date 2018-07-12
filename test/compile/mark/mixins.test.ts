@@ -255,7 +255,7 @@ describe('compile/mark/mixins', () => {
 
     it('generates tooltip object signal for all data if specified', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point', tooltip: {fields: 'data'}},
+        mark: {type: 'point', tooltip: {content: 'data'}},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Acceleration', type: 'quantitative'}
@@ -267,7 +267,7 @@ describe('compile/mark/mixins', () => {
 
     it('priorizes tooltip field def', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point', tooltip: {fields: 'data'}},
+        mark: {type: 'point', tooltip: {content: 'data'}},
         encoding: {
           x: {field: 'Cylinders', type: 'quantitative'},
           y: {field: 'Displacement', type: 'quantitative'},
@@ -282,7 +282,7 @@ describe('compile/mark/mixins', () => {
 
     it('priorizes tooltip value def', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'point', tooltip: {fields: 'data'}},
+        mark: {type: 'point', tooltip: {content: 'data'}},
         encoding: {
           x: {field: 'Cylinders', type: 'quantitative'},
           y: {field: 'Displacement', type: 'quantitative'},
