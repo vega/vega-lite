@@ -21,7 +21,6 @@ script:
   - yarn codecov
   - yarn jest examples/
   - yarn test:runtime
-  - yarn build:examples
   - ./scripts/check-schema.sh
   - ./scripts/check-and-fix.sh
   - yarn lint
