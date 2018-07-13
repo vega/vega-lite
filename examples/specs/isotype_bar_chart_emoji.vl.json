@@ -49,10 +49,6 @@
       "calculate": "datum.animal==='cattle' ? '🐄' : datum.animal==='pigs' ? '🐖' : '🐏'",
       "as": "emoji"
     },
-    {
-      "calculate": "datum.animal==='pigs' ? 0 : datum.animal==='cattle' ? 1 : 2",
-      "as": "order"
-    },
     {"window": [{"op": "rank", "as": "rank"}], "groupby": ["country", "animal"]}
   ],
   "mark": {"type": "text", "baseline": "middle"},
