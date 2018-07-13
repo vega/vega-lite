@@ -73,6 +73,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB Rating\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"cumulative_count\": format(datum[\"cumulative_count\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "bin_IMDB_Rating"},
           "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
           "y": {"scale": "y", "field": "cumulative_count"},
@@ -89,6 +92,9 @@
         "update": {
           "opacity": {"value": 0.5},
           "fill": {"value": "yellow"},
+          "tooltip": {
+            "signal": "{\"IMDB Rating\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"count\": format(datum[\"count\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "bin_IMDB_Rating"},
           "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
           "y": {"scale": "y", "field": "count"},

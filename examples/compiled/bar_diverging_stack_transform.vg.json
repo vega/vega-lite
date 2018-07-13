@@ -308,6 +308,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "type"},
+          "tooltip": {
+            "signal": "{\"nx\": format(datum[\"nx\"], \"\"), \"question\": ''+datum[\"question\"], \"nx2\": format(datum[\"nx2\"], \"\"), \"type\": ''+datum[\"type\"]}"
+          },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},
           "y": {"scale": "y", "field": "question"},

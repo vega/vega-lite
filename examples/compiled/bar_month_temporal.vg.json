@@ -42,6 +42,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "month_date"},
           "width": {"value": 5},
           "y": {"scale": "y", "field": "mean_precipitation"},

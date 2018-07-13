@@ -54,6 +54,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"count\": format(datum[\"count\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\")}"
+          },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
           "x": {"scale": "x", "field": "bin_end", "offset": 0},
           "y": {"scale": "y", "field": "count"},

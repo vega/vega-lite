@@ -44,6 +44,9 @@
         "update": {
           "fill": {"scale": "color", "field": "gender"},
           "opacity": {"value": 0.7},
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+          },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "sum_people"},

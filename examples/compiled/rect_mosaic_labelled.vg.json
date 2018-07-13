@@ -117,6 +117,9 @@
               "align": {"value": "center"},
               "baseline": {"value": "middle"},
               "fill": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Origin\": format(datum[\"min_xc\"], \"\")}"
+              },
               "x": {"scale": "x", "field": "min_xc"},
               "y": {"signal": "concat_0_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"Origin\"]"}
@@ -176,6 +179,9 @@
             "update": {
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"yc\": format(datum[\"yc\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+              },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},
               "text": {"signal": "''+datum[\"Cylinders\"]"},

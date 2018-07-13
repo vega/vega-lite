@@ -532,6 +532,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "count_*"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Origin"},

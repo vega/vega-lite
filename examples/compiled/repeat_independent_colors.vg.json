@@ -72,6 +72,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "child_Origin_color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {"scale": "child_Origin_x", "field": "Horsepower"},
               "y": {"scale": "child_Origin_y", "field": "Miles_per_Gallon"}
             }
@@ -160,6 +163,9 @@
               "stroke": {
                 "scale": "child_Cylinders_color",
                 "field": "Cylinders"
+              },
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
               },
               "x": {"scale": "child_Cylinders_x", "field": "Horsepower"},
               "y": {"scale": "child_Cylinders_y", "field": "Miles_per_Gallon"}

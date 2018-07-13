@@ -35,6 +35,9 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Mean of Displacement\": format(datum[\"mean_Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+          },
           "x": {"scale": "x", "field": "mean_Horsepower"},
           "y": {"scale": "y", "field": "mean_Displacement"}
         }

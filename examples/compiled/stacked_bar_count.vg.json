@@ -49,6 +49,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "weather"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "count_*_end"},

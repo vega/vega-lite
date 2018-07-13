@@ -48,6 +48,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (year-month-date-hours-minutes)\": utcFormat(datum[\"yearmonthdatehoursminutes_date\"], '%b %d, %Y %H:%M'), \"price\": format(datum[\"price\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "yearmonthdatehoursminutes_date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {

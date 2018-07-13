@@ -37,6 +37,9 @@
         "update": {
           "interpolate": {"value": "monotone"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp"},
           "defined": {

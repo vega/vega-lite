@@ -162,6 +162,9 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"a\": ''+datum[\"a\"], \"b\": ''+datum[\"b\"]}"
+              },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"scale": "child_x", "band": true},
               "y": {"scale": "child_y", "field": "b"},

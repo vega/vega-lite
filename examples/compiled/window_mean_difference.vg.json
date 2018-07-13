@@ -71,6 +71,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Title"},
@@ -86,6 +89,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"Average of AverageRating\": format(datum[\"average_AverageRating\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "average_AverageRating"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}

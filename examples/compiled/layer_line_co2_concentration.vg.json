@@ -107,6 +107,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
+              "tooltip": {
+                "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
+              },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
               "defined": {
@@ -129,6 +132,9 @@
           "dx": {"value": 3},
           "dy": {"value": 1},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"scaled_date_start\": format(datum[\"scaled_date_start\"], \"\"), \"CO2_start\": format(datum[\"CO2_start\"], \"\"), \"year_start\": ''+datum[\"year_start\"]}"
+          },
           "x": {"scale": "x", "field": "scaled_date_start"},
           "y": {"scale": "y", "field": "CO2_start"},
           "text": {"signal": "''+datum[\"year_start\"]"}
@@ -147,6 +153,9 @@
           "dx": {"value": 3},
           "dy": {"value": 1},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"scaled_date_end\": format(datum[\"scaled_date_end\"], \"\"), \"CO2_end\": format(datum[\"CO2_end\"], \"\"), \"year_end\": ''+datum[\"year_end\"]}"
+          },
           "x": {"scale": "x", "field": "scaled_date_end"},
           "y": {"scale": "y", "field": "CO2_end"},
           "text": {"signal": "''+datum[\"year_end\"]"}

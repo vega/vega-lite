@@ -31,6 +31,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},
           "yc": {"signal": "height", "mult": 0.5},

@@ -83,6 +83,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"lower_whisker_people\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
           "y2": {"scale": "y", "field": "lower_box_people"}
@@ -97,6 +100,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"upper_box_people\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
           "y2": {"scale": "y", "field": "upper_whisker_people"}
@@ -111,6 +117,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"lower_box_people\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 14},
           "y": {"scale": "y", "field": "lower_box_people"},
@@ -127,6 +136,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"mid_box_people\": format(datum[\"mid_box_people\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},
           "width": {"value": 14},

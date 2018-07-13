@@ -30,6 +30,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Name\": ''+datum[\"Name\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Name"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "count_*"},

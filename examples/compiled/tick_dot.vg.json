@@ -28,6 +28,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"precipitation\": format(datum[\"precipitation\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "precipitation"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 14},

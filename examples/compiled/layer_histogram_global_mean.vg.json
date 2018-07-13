@@ -76,6 +76,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x2": {
             "scale": "x",
             "field": "bin_maxbins_10_IMDB_Rating",
@@ -95,6 +98,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"Mean of IMDB_Rating\": format(datum[\"mean_IMDB_Rating\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "mean_IMDB_Rating"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0},

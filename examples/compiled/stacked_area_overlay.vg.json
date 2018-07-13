@@ -123,6 +123,9 @@
               "opacity": {"value": 0.7},
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "gender"},
+              "tooltip": {
+                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
               "y2": {"scale": "y", "field": "sum_people_start"},
@@ -161,6 +164,9 @@
             "update": {
               "stroke": {"scale": "color", "field": "gender"},
               "opacity": {"value": 0.7},
+              "tooltip": {
+                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
               "defined": {

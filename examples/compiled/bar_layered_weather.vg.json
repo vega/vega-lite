@@ -143,6 +143,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#ccc"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"record.low\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
           "y": {"scale": "y", "field": "record\\.low"},
@@ -158,6 +161,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#999"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
           "y": {"scale": "y", "field": "normal\\.low"},
@@ -173,6 +179,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": {"scale": "y", "field": "actual\\.low"},
@@ -188,6 +197,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": {"scale": "y", "field": "forecast\\.low\\.low"},
@@ -203,6 +215,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
           "y": {"scale": "y", "field": "forecast\\.low\\.high"},
@@ -218,6 +233,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": {"scale": "y", "field": "forecast\\.high\\.low"},
@@ -235,6 +253,9 @@
           "align": {"value": "center"},
           "dy": {"value": -105},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"id\": ''+datum[\"id\"], \"day\": ''+datum[\"day\"]}"
+          },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "text": {"signal": "''+datum[\"day\"]"}

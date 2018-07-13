@@ -37,6 +37,9 @@
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Sum of count\": format(datum[\"sum_count\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "sum_count"},
           "y2": {"scale": "y", "value": 0},

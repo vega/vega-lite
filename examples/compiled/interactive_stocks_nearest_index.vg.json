@@ -123,6 +123,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
+              "tooltip": {
+                "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -143,6 +146,9 @@
           "opacity": {"value": 0},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -177,6 +183,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -191,6 +198,7 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
           "text": {"signal": "timeFormat(datum[\"date\"], '')"}

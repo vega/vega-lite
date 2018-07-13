@@ -608,6 +608,9 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "tooltip": {
+                "signal": "{\"Population_ages_15_64_of_total\": format(datum[\"Population_ages_15_64_of_total\"], \"\"), \"Country\": ''+datum[\"Country\"]}"
+              },
               "x": {
                 "scale": "concat_0_x",
                 "field": "Population_ages_15_64_of_total"
@@ -910,6 +913,9 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "tooltip": {
+                "signal": "{\"Population_ages_65_and_above_of_total\": format(datum[\"Population_ages_65_and_above_of_total\"], \"\"), \"Country\": ''+datum[\"Country\"]}"
+              },
               "x": {
                 "scale": "concat_1_x",
                 "field": "Population_ages_65_and_above_of_total"
@@ -1275,6 +1281,9 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "tooltip": {
+                "signal": "{\"Population_ages_65_and_above_of_total\": format(datum[\"Population_ages_65_and_above_of_total\"], \"\"), \"Population_ages_15_64_of_total\": format(datum[\"Population_ages_15_64_of_total\"], \"\")}"
+              },
               "x": {
                 "scale": "concat_2_x",
                 "field": "Population_ages_65_and_above_of_total"

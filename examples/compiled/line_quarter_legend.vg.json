@@ -59,6 +59,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "quarter_date"},
+              "tooltip": {
+                "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"date (quarter)\": 'Q' + quarter(datum[\"quarter_date\"])}"
+              },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {

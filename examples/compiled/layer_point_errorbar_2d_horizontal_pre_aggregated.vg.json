@@ -86,6 +86,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_upper_yield\": format(datum[\"upper_upper_yield\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "lower_upper_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},
           "x2": {"scale": "x", "field": "upper_upper_yield"}
@@ -101,6 +104,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
           "x": {"scale": "x", "field": "center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }

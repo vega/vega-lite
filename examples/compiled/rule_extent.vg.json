@@ -37,6 +37,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Min of Horsepower\": format(datum[\"min_Horsepower\"], \"\"), \"Max of Horsepower\": format(datum[\"max_Horsepower\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Origin", "band": 0.5},
           "y": {"scale": "y", "field": "min_Horsepower"},
           "y2": {"scale": "y", "field": "max_Horsepower"}

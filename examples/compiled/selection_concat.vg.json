@@ -340,6 +340,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\")}"
+              },
               "x": {"scale": "concat_0_x", "field": "Miles_per_Gallon"},
               "y": {"scale": "concat_0_y", "field": "Horsepower"}
             }
@@ -567,6 +570,9 @@
                 },
                 {"value": "red"}
               ],
+              "tooltip": {
+                "signal": "{\"Displacement\": format(datum[\"Displacement\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
+              },
               "x": {"scale": "concat_1_x", "field": "Displacement"},
               "y": {"scale": "concat_1_y", "field": "Acceleration"}
             }

@@ -447,6 +447,9 @@
                 },
                 {"value": "steelblue"}
               ],
+              "tooltip": {
+                "signal": "{\"X\": format(datum[\"X\"], \"\"), \"Y\": format(datum[\"Y\"], \"\")}"
+              },
               "x": {"scale": "x", "field": "X"},
               "y": {"scale": "y", "field": "Y"},
               "size": [

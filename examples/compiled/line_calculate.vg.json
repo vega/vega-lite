@@ -41,6 +41,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_range\": format(datum[\"mean_temp_range\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp_range"},
           "defined": {

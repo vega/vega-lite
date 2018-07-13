@@ -274,6 +274,9 @@
             },
             {"value": 0.7}
           ],
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "mean_precipitation"},
@@ -289,6 +292,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
+          "tooltip": {
+            "signal": "{\"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
+          },
           "x": {"value": 0},
           "y": {"scale": "y", "field": "mean_precipitation"},
           "x2": {"field": {"group": "width"}},

@@ -47,6 +47,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "count_*"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Origin"},
@@ -65,6 +68,9 @@
             {"test": "datum['count_*'] > 100", "value": "black"},
             {"value": "white"}
           ],
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
           "text": {"signal": "format(datum[\"count_*\"], \"\")"},

@@ -32,6 +32,9 @@
             },
             {"value": "#4c78a8"}
           ],
+          "tooltip": {
+            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Rotten_Tomatoes_Rating\": format(datum[\"Rotten_Tomatoes_Rating\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "y": {"scale": "y", "field": "Rotten_Tomatoes_Rating"}
         }

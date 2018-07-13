@@ -31,6 +31,9 @@
           "stroke": {"value": "black"},
           "strokeWidth": {"value": 1},
           "fill": {"scale": "color", "field": "Entity"},
+          "tooltip": {
+            "signal": "{\"Year\": ''+datum[\"Year\"], \"Entity\": ''+datum[\"Entity\"], \"Deaths\": format(datum[\"Deaths\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Year"},
           "y": {"scale": "y", "field": "Entity"},
           "size": {"scale": "size", "field": "Deaths"},

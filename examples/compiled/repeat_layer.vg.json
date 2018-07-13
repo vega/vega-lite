@@ -220,6 +220,9 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_max\": format(datum[\"mean_temp_max\"], \"\"), \"location\": ''+datum[\"location\"], \"date (year)\": timeFormat(datum[\"year_date\"], '%Y')}"
+                  },
                   "x": {"scale": "child_temp_max_x", "field": "month_date"},
                   "y": {"scale": "child_temp_max_y", "field": "mean_temp_max"},
                   "defined": {
@@ -256,6 +259,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_max\": format(datum[\"mean_temp_max\"], \"\"), \"location\": ''+datum[\"location\"]}"
+                  },
                   "x": {"scale": "child_temp_max_x", "field": "month_date"},
                   "y": {"scale": "child_temp_max_y", "field": "mean_temp_max"},
                   "defined": {
@@ -346,6 +352,9 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\"), \"location\": ''+datum[\"location\"], \"date (year)\": timeFormat(datum[\"year_date\"], '%Y')}"
+                  },
                   "x": {
                     "scale": "child_precipitation_x",
                     "field": "month_date"
@@ -388,6 +397,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\"), \"location\": ''+datum[\"location\"]}"
+                  },
                   "x": {
                     "scale": "child_precipitation_x",
                     "field": "month_date"
@@ -484,6 +496,9 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of wind\": format(datum[\"mean_wind\"], \"\"), \"location\": ''+datum[\"location\"], \"date (year)\": timeFormat(datum[\"year_date\"], '%Y')}"
+                  },
                   "x": {"scale": "child_wind_x", "field": "month_date"},
                   "y": {"scale": "child_wind_y", "field": "mean_wind"},
                   "defined": {
@@ -520,6 +535,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "tooltip": {
+                    "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of wind\": format(datum[\"mean_wind\"], \"\"), \"location\": ''+datum[\"location\"]}"
+                  },
                   "x": {"scale": "child_wind_x", "field": "month_date"},
                   "y": {"scale": "child_wind_y", "field": "mean_wind"},
                   "defined": {

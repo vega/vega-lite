@@ -50,6 +50,9 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.5},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+          },
           "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"scale": "size", "field": "weather"},
           "y": {"scale": "y", "field": "count_*_end"},

@@ -40,6 +40,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+          },
           "x": {"scale": "x", "field": "mean_Horsepower"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Origin"},

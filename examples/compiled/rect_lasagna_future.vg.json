@@ -36,6 +36,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "sum_price"},
+          "tooltip": {
+            "signal": "{\"Time\": timeFormat(datum[\"yearmonthdate_date\"], '%b %d, %Y'), \"\": ''+datum[\"symbol\"], \"Price\": format(datum[\"sum_price\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "symbol"},

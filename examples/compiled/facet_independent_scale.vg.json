@@ -136,6 +136,9 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "tooltip": {
+                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "child_x", "field": "age"},
               "width": {"scale": "child_x", "band": true},
               "y": {"scale": "y", "field": "sum_people_end"},

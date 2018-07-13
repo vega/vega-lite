@@ -145,6 +145,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"lower_whisker_people\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "lower_whisker_people"},
           "y": {"signal": "height", "mult": 0.5},
           "x2": {"scale": "x", "field": "lower_box_people"}
@@ -159,6 +162,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"upper_box_people\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "upper_box_people"},
           "y": {"signal": "height", "mult": 0.5},
           "x2": {"scale": "x", "field": "upper_whisker_people"}
@@ -174,6 +180,9 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"lower_whisker_people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "lower_whisker_people"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 14},
@@ -190,6 +199,9 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "upper_whisker_people"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 14},
@@ -205,6 +217,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"lower_box_people\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "lower_box_people"},
           "x2": {"scale": "x", "field": "upper_box_people"},
           "yc": {"signal": "height", "mult": 0.5},
@@ -221,6 +236,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"mid_box_people\": format(datum[\"mid_box_people\"], \"\")}"
+          },
           "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 14},
@@ -238,6 +256,9 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"people\": format(datum[\"people\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "people"},
           "y": {"signal": "height", "mult": 0.5}
         }

@@ -42,6 +42,9 @@
           "interpolate": {"value": "monotone"},
           "orient": {"value": "horizontal"},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Sum of Weight_in_lbs\": format(datum[\"sum_Weight_in_lbs\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
+          },
           "x": {"scale": "x", "field": "sum_Weight_in_lbs"},
           "y": {"scale": "y", "field": "year_Year"},
           "x2": {"scale": "x", "value": 0},
