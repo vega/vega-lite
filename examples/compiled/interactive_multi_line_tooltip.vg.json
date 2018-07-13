@@ -127,6 +127,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
+              "tooltip": {
+                "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -150,6 +153,9 @@
           ],
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -184,6 +190,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "gray"},
+          "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -201,6 +208,9 @@
           "dx": {"value": 5},
           "dy": {"value": -5},
           "fill": {"scale": "color", "field": "symbol"},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"}

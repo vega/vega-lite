@@ -49,6 +49,9 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Release_Date\": timeFormat(datum[\"Release_Date\"], ''), \"RatingDelta\": format(datum[\"RatingDelta\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Release_Date"},
           "y": {"scale": "y", "field": "RatingDelta"}
         }

@@ -68,6 +68,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"variety\": ''+datum[\"variety\"], \"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "lower_yield"},
           "y2": {"scale": "y", "field": "upper_yield"}
@@ -82,6 +85,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"variety\": ''+datum[\"variety\"], \"Mean of yield\": format(datum[\"mean_yield\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "mean_yield"}
         }

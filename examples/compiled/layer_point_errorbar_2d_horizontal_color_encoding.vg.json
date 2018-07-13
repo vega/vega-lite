@@ -95,6 +95,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4682b4"},
+          "tooltip": {
+            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
           "xc": {"scale": "x", "field": "lower_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
           "height": {"value": 14},
@@ -111,6 +114,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4682b4"},
+          "tooltip": {
+            "signal": "{\"yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
           "xc": {"scale": "x", "field": "upper_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
           "height": {"value": 14},
@@ -126,6 +132,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4682b4"},
+          "tooltip": {
+            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},
           "x2": {"scale": "x", "field": "upper_yield"}
@@ -140,6 +149,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+          },
           "x": {"scale": "x", "field": "mean_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }

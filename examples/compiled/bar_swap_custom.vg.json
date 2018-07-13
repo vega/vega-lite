@@ -50,6 +50,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Average of b\": format(datum[\"average_b\"], \"\"), \"a\": ''+datum[\"a\"]}"
+          },
           "x": {"scale": "x", "field": "average_b"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "a"},

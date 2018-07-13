@@ -311,6 +311,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Horsepower_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -490,6 +493,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Horsepower_Acceleration_x",
                 "field": "Acceleration"
@@ -652,6 +658,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Horsepower_Horsepower_x",
                 "field": "Horsepower"
@@ -831,6 +840,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Acceleration_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -993,6 +1005,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Acceleration_Acceleration_x",
                 "field": "Acceleration"
@@ -1172,6 +1187,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Acceleration_Horsepower_x",
                 "field": "Horsepower"
@@ -1334,6 +1352,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -1513,6 +1534,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Miles_per_Gallon_Acceleration_x",
                 "field": "Acceleration"
@@ -1692,6 +1716,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Miles_per_Gallon_Horsepower_x",
                 "field": "Horsepower"

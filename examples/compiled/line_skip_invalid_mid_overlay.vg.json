@@ -50,6 +50,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"},
           "defined": {
@@ -67,6 +70,9 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"}
         }

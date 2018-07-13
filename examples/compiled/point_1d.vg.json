@@ -29,6 +29,9 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "y": {"signal": "height", "mult": 0.5}
         }

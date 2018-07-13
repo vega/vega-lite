@@ -125,6 +125,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "gray"},
+          "tooltip": {
+            "signal": "{\"longitude\": format(datum[\"longitude\"], \"\"), \"latitude\": format(datum[\"latitude\"], \"\")}"
+          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "size": {"value": 5},
@@ -140,6 +143,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"origin_longitude\": format(datum[\"origin_longitude\"], \"\"), \"dest_longitude\": format(datum[\"dest_longitude\"], \"\"), \"origin_latitude\": format(datum[\"origin_latitude\"], \"\"), \"dest_latitude\": format(datum[\"dest_latitude\"], \"\")}"
+          },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},
           "x2": {"field": "layer_2_x2"},

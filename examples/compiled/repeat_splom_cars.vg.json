@@ -107,6 +107,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Displacement_Horsepower_x",
                 "field": "Horsepower"
@@ -185,6 +188,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Displacement_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -263,6 +269,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Miles_per_Gallon_Horsepower_x",
                 "field": "Horsepower"
@@ -341,6 +350,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
+              "tooltip": {
+                "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+              },
               "x": {
                 "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"

@@ -174,6 +174,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"lo\": format(datum[\"lo\"], \"\"), \"study\": ''+datum[\"study\"], \"hi\": format(datum[\"hi\"], \"\")}"
+              },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
               "x2": {"scale": "concat_0_x", "field": "hi"}
@@ -190,6 +193,9 @@
               "opacity": {"value": 1},
               "stroke": {"value": "black"},
               "fill": {"scale": "color", "field": "measure"},
+              "tooltip": {
+                "signal": "{\"mean\": format(datum[\"mean\"], \"\"), \"study\": ''+datum[\"study\"], \"measure\": ''+datum[\"measure\"]}"
+              },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
               "shape": {"value": "circle"}
@@ -272,6 +278,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"to\": format(datum[\"to\"], \"\")}"
+              },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "x2": {"scale": "concat_1_x", "field": "to"}
@@ -288,6 +297,7 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "black"},
               "size": {"value": 60},
+              "tooltip": {"signal": "{\"to\": format(datum[\"to\"], \"\")}"},
               "x": {"scale": "concat_1_x", "field": "to"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "shape": [
@@ -306,6 +316,9 @@
             "update": {
               "align": {"value": "right"},
               "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+              },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"label\"]"}
@@ -321,6 +334,9 @@
             "update": {
               "align": {"value": "left"},
               "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"from\": format(datum[\"from\"], \"\"), \"label\": ''+datum[\"label\"]}"
+              },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"signal": "''+datum[\"label\"]"}
@@ -336,6 +352,9 @@
             "update": {
               "align": {"value": "right"},
               "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"from\": format(datum[\"from\"], \"\")}"
+              },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"value": "more valuable"}
@@ -351,6 +370,9 @@
             "update": {
               "align": {"value": "left"},
               "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"from\": format(datum[\"from\"], \"\")}"
+              },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "text": {"value": "more valuable"}

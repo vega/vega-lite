@@ -332,6 +332,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalWidth_sepalLength_x",
                 "field": "sepalLength"
@@ -410,6 +413,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalWidth_sepalWidth_x",
                 "field": "sepalWidth"
@@ -488,6 +494,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalWidth_petalLength_x",
                 "field": "petalLength"
@@ -566,6 +575,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalWidth_petalWidth_x",
                 "field": "petalWidth"
@@ -644,6 +656,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalLength_sepalLength_x",
                 "field": "sepalLength"
@@ -722,6 +737,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalLength_sepalWidth_x",
                 "field": "sepalWidth"
@@ -800,6 +818,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalLength_petalLength_x",
                 "field": "petalLength"
@@ -878,6 +899,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_petalLength_petalWidth_x",
                 "field": "petalWidth"
@@ -956,6 +980,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalWidth_sepalLength_x",
                 "field": "sepalLength"
@@ -1034,6 +1061,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalWidth_sepalWidth_x",
                 "field": "sepalWidth"
@@ -1112,6 +1142,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalWidth_petalLength_x",
                 "field": "petalLength"
@@ -1190,6 +1223,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalWidth_petalWidth_x",
                 "field": "petalWidth"
@@ -1268,6 +1304,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalLength_sepalLength_x",
                 "field": "sepalLength"
@@ -1346,6 +1385,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalLength_sepalWidth_x",
                 "field": "sepalWidth"
@@ -1424,6 +1466,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalLength_petalLength_x",
                 "field": "petalLength"
@@ -1502,6 +1547,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "tooltip": {
+                "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
+              },
               "x": {
                 "scale": "child_sepalLength_petalWidth_x",
                 "field": "petalWidth"

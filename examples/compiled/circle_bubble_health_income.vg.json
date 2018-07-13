@@ -140,6 +140,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#000"},
+          "tooltip": {
+            "signal": "{\"income\": format(datum[\"income\"], \"\"), \"health\": format(datum[\"health\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "income"},
           "y": {"scale": "y", "field": "health"},
           "size": {"scale": "size", "field": "population"},

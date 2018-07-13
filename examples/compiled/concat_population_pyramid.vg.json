@@ -125,6 +125,9 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "tooltip": {
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
               "y": {"scale": "concat_0_y", "field": "age"},
@@ -179,6 +182,7 @@
             "update": {
               "align": {"value": "center"},
               "fill": {"value": "black"},
+              "tooltip": {"signal": "{\"age\": ''+datum[\"age\"]}"},
               "x": {"signal": "concat_1_width", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "age"},
               "text": {"signal": "format(datum[\"age\"], \"\")"}
@@ -207,6 +211,9 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "tooltip": {
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"null\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
               "y": {"scale": "concat_2_y", "field": "age"},

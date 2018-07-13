@@ -49,6 +49,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"a\": ''+datum[\"a\"], \"b2\": format(datum[\"b2\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "b2"},

@@ -85,6 +85,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "orange"},
+          "tooltip": {
+            "signal": "{\"lon\": format(datum[\"lon\"], \"\"), \"lat\": format(datum[\"lat\"], \"\")}"
+          },
           "x": {"field": "layer_1_layer_0_x"},
           "y": {"field": "layer_1_layer_0_y"},
           "shape": {"value": "circle"}
@@ -100,6 +103,9 @@
         "update": {
           "dy": {"value": -6},
           "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"lon\": format(datum[\"lon\"], \"\"), \"lat\": format(datum[\"lat\"], \"\"), \"city\": ''+datum[\"city\"]}"
+          },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},
           "text": {"signal": "''+datum[\"city\"]"},

@@ -40,6 +40,9 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "yearmonth_date"},
+          "tooltip": {
+            "signal": "{\"Mean of temp\": format(datum[\"mean_temp\"], \"\"), \"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y')}"
+          },
           "x": {"scale": "x", "field": "mean_temp"},
           "y": {"signal": "height", "mult": 0.5}
         }

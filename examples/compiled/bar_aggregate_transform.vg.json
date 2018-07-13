@@ -40,6 +40,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"mean_acc\": format(datum[\"mean_acc\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "mean_acc"},

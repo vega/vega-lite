@@ -51,6 +51,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "max_temp"},
+          "tooltip": {
+            "signal": "{\"Day\": timeFormat(datum[\"date_date\"], '%d'), \"Month\": timeFormat(datum[\"month_date\"], '%b'), \"Max of temp\": format(datum[\"max_temp\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "date_date"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "month_date"},

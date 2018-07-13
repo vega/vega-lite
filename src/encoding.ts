@@ -167,7 +167,7 @@ export interface Encoding<F> {
 
 export interface EncodingWithFacet<F> extends Encoding<F>, FacetMapping<F> {}
 
-export function channelHasField(encoding: EncodingWithFacet<Field>, channel: Channel): boolean {
+export function channelHasField<T>(encoding: EncodingWithFacet<T>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -309,8 +309,8 @@ export function isRanged(encoding: EncodingWithFacet<any>) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs(encoding: EncodingWithFacet<Field>): FieldDef<Field>[] {
-  const arr: FieldDef<Field>[] = [];
+export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
+  const arr: FieldDef<T>[] = [];
   CHANNELS.forEach(channel => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];

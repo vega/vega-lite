@@ -124,6 +124,9 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "country"},
+              "tooltip": {
+                "signal": "{\"country\": ''+datum[\"country\"], \"value\": format(datum[\"value\"], \"\")}"
+              },
               "x": {"scale": "x", "field": "country"},
               "width": {"scale": "x", "band": true},
               "y": {"scale": "y", "field": "value"},

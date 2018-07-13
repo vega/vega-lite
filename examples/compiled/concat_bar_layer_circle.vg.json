@@ -204,6 +204,9 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "opacity": {"value": 0.4},
+              "tooltip": {
+                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+              },
               "x": {
                 "signal": "scale(\"concat_0_x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
               },
@@ -223,6 +226,9 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+              },
               "x": {
                 "signal": "scale(\"concat_0_x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
               },
@@ -339,6 +345,9 @@
                 },
                 {"value": "grey"}
               ],
+              "tooltip": {
+                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+              },
               "x": {"scale": "concat_1_x", "field": "Major_Genre"},
               "width": {"scale": "concat_1_x", "band": true},
               "y": {"scale": "concat_1_y", "field": "count_*"},

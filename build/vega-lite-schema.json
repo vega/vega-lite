@@ -295,7 +295,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -1035,7 +1043,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -5569,7 +5585,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -5967,7 +5991,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -6194,7 +6226,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         },
         "type": {
           "$ref": "#/definitions/Mark",
@@ -6627,7 +6667,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
@@ -8197,7 +8245,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -8438,7 +8494,15 @@
           "type": "number"
         },
         "tooltip": {
-          "description": "The tooltip text to show upon mouse hover."
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TooltipContent"
+            }
+          ],
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
         }
       },
       "type": "object"
@@ -8579,6 +8643,22 @@
       },
       "required": [
         "text"
+      ],
+      "type": "object"
+    },
+    "TooltipContent": {
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "enum": [
+            "encoding",
+            "data"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "content"
       ],
       "type": "object"
     },

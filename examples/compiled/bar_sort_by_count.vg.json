@@ -37,6 +37,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "count_*"},

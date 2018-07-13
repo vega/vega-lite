@@ -213,6 +213,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "gender"},
+                  "tooltip": {
+                    "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                  },
                   "x": {"scale": "child_x", "field": "age"},
                   "y": {"scale": "y", "field": "sum_people"},
                   "defined": {
@@ -232,6 +235,9 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "gender"},
+              "tooltip": {
+                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+              },
               "x": {"scale": "child_x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people"}
             }

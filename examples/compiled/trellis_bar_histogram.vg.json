@@ -137,6 +137,9 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+              },
               "x2": {
                 "scale": "x",
                 "field": "bin_maxbins_15_Horsepower",

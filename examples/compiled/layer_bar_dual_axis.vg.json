@@ -75,6 +75,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "layer_0_y", "field": "mean_precipitation"},
@@ -91,6 +94,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
+          "tooltip": {
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of temp_max\": format(datum[\"mean_temp_max\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "month_date", "band": 0.5},
           "y": {"scale": "layer_1_y", "field": "mean_temp_max"},
           "defined": {

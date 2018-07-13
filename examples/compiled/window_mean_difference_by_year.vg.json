@@ -76,6 +76,9 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Title"},
@@ -92,6 +95,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"AverageYearRating\": format(datum[\"AverageYearRating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
+          },
           "xc": {"scale": "x", "field": "AverageYearRating"},
           "yc": {"scale": "y", "field": "Title", "band": 0.5},
           "height": {"value": 14},

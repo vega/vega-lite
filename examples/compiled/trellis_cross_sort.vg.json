@@ -297,6 +297,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
+              },
               "x": {"scale": "x", "field": "x"},
               "y": {"scale": "y", "field": "y"}
             }
@@ -310,6 +313,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"Median of median_x_by_a\": format(datum[\"median_median_x_by_a\"], \"\")}"
+              },
               "x": {"scale": "x", "field": "median_median_x_by_a"},
               "y": {"field": {"group": "height"}},
               "y2": {"value": 0}
@@ -324,6 +330,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"Median of median_y_by_b\": format(datum[\"median_median_y_by_b\"], \"\")}"
+              },
               "x": {"value": 0},
               "y": {"scale": "y", "field": "median_median_y_by_b"},
               "x2": {"field": {"group": "width"}}

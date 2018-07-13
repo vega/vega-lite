@@ -130,7 +130,13 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": {"scale": "child_population_color", "field": "population"}
+              "fill": {
+                "scale": "child_population_color",
+                "field": "population"
+              },
+              "tooltip": {
+                "signal": "{\"population\": format(datum[\"population\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+              }
             }
           },
           "transform": [
@@ -159,7 +165,10 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"scale": "child_engineers_color", "field": "engineers"}
+              "fill": {"scale": "child_engineers_color", "field": "engineers"},
+              "tooltip": {
+                "signal": "{\"engineers\": format(datum[\"engineers\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+              }
             }
           },
           "transform": [
@@ -188,7 +197,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {"scale": "child_hurricanes_color", "field": "hurricanes"}
+              "fill": {
+                "scale": "child_hurricanes_color",
+                "field": "hurricanes"
+              },
+              "tooltip": {
+                "signal": "{\"hurricanes\": format(datum[\"hurricanes\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+              }
             }
           },
           "transform": [

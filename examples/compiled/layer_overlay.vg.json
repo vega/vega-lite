@@ -108,6 +108,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Max of Horsepower\": format(datum[\"max_Horsepower\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "max_Horsepower"},
           "defined": {
@@ -125,6 +128,9 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "darkred"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Max of Horsepower\": format(datum[\"max_Horsepower\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "max_Horsepower"}
         }
@@ -139,6 +145,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Min of Horsepower\": format(datum[\"min_Horsepower\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "min_Horsepower"},
           "defined": {
@@ -156,6 +165,9 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Min of Horsepower\": format(datum[\"min_Horsepower\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "min_Horsepower"}
         }

@@ -39,6 +39,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"wavelength\": format(datum[\"wavelength\"], \"\"), \"power\": format(datum[\"power\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "wavelength"},
           "y": {"scale": "y", "field": "power"},
           "defined": {

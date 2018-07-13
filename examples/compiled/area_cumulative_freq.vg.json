@@ -34,6 +34,9 @@
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"cumulative_count\": format(datum[\"cumulative_count\"], \"\")}"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "y": {"scale": "y", "field": "cumulative_count"},
           "y2": {"scale": "y", "value": 0},

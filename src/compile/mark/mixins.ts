@@ -1,18 +1,15 @@
-import {isArray} from 'vega-util';
+import {isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
+import {fieldDefs} from '../../encoding';
 import {
   ChannelDef,
   FieldDef,
-  FieldDefWithCondition,
   getFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
-  TextFieldDef,
-  ValueDef,
-  ValueDefWithCondition,
-  vgField
+  ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
@@ -232,31 +229,38 @@ export function wrapCondition(
 }
 
 export function tooltip(model: UnitModel) {
-  const channel = 'tooltip';
-  const channelDef = model.encoding[channel];
+  const {encoding, markDef, config} = model;
+  const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    const keyValues = channelDef.map(fieldDef => {
-      const key = fieldDef.title !== undefined ? fieldDef.title : vgField(fieldDef, {binSuffix: 'range'});
-      const value = ref.text(fieldDef, model.config).signal;
-      return `"${key}": ${value}`;
-    });
-    return {tooltip: {signal: `{${keyValues.join(', ')}}`}};
+    return {tooltip: ref.tooltipForChannelDefs(channelDef, config)};
   } else {
-    // if not an array, behave just like text
-    return textCommon(model, channel, channelDef);
+    return wrapCondition(model, channelDef, 'tooltip', cDef => {
+      // use valueRef based on channelDef first
+      const tooltipRefFromChannelDef = ref.text(cDef, model.config);
+      if (tooltipRefFromChannelDef) {
+        return tooltipRefFromChannelDef;
+      }
+
+      // If tooltipDef does not exist, then use value from markDef or config
+      const markTooltip = markDef.tooltip !== undefined ? markDef.tooltip : getMarkConfig('tooltip', markDef, config);
+      if (isString(markTooltip)) {
+        return {value: markTooltip};
+      } else if (isObject(markTooltip)) {
+        // `tooltip` is `{fields: 'encodings' | 'fields'}`
+        if (markTooltip.content === 'encoding') {
+          return ref.tooltipForChannelDefs(fieldDefs(encoding), config);
+        } else {
+          return {signal: 'datum'};
+        }
+      }
+
+      return undefined;
+    });
   }
 }
 
 export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
   const channelDef = model.encoding[channel];
-  return textCommon(model, channel, channelDef);
-}
-
-function textCommon(
-  model: UnitModel,
-  channel: 'text' | 'href' | 'tooltip',
-  channelDef: FieldDefWithCondition<TextFieldDef<string>> | ValueDefWithCondition<TextFieldDef<string>>
-) {
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
 
