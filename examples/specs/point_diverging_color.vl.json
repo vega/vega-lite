@@ -10,8 +10,8 @@
       "field": "Weight_in_lbs",
       "type": "quantitative",
       "scale": {
-        "domain": [1000,2750,4500],
-        "range": ["#ff7f0e","#e7ba52","#17becf"]
+        "domain": [1000,3250,4500],
+        "range": ["#70001E","#ffffff","#00335E"]
       }
     }
   }
