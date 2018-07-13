@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "config": {"view": {"stroke": ""}},
+  "width": 800,
+  "height": 200,
+  "data": {
+    "values": [
+      {"country": "Great Britain", "animal": "🐖"},
+      {"country": "Great Britain", "animal": "🐖"},
+      {"country": "Great Britain", "animal": "🐄"},
+      {"country": "Great Britain", "animal": "🐄"},
+      {"country": "Great Britain", "animal": "🐄"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "Great Britain", "animal": "🐏"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐖"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐄"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"},
+      {"country": "United States", "animal": "🐏"}
+    ]
+  },
+  "transform": [
+    {"window": [{"op": "rank", "as": "rank"}], "groupby": ["country", "animal"]}
+  ],
+  "mark": {"type": "text", "baseline": "middle"},
+  "encoding": {
+    "x": {"field": "rank", "type": "ordinal", "axis": null},
+    "y": {"field": "animal", "type": "nominal", "axis": null, "sort": null},
+    "row": {"field": "country", "type": "nominal", "header": {"title": ""}},
+    "text": {"field": "animal", "type": "nominal"},
+    "size": {"value": 65}
+  }
+}
