@@ -1,4 +1,4 @@
-import {MAIN, Parse, ParseValue, RAW} from '../../data';
+import {MAIN, ParseValue, RAW} from '../../data';
 import * as log from '../../log';
 import {
   isAggregate,

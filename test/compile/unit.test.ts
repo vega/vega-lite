@@ -25,7 +25,7 @@ describe('UnitModel', () => {
     it(
       'should drop invalid channel and throws warning',
       log.wrap(localLogger => {
-        const _model = parseUnitModel({
+        parseUnitModel({
           mark: 'bar',
           encoding: {
             _y: {type: 'quantitative'}

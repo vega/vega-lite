@@ -27,7 +27,7 @@ import {WindowTransformNode} from './window';
  * Print debug information for dataflow tree.
  */
 // tslint:disable-next-line
-function debug(node: DataFlowNode) {
+export function debug(node: DataFlowNode) {
   console.log(
     `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;

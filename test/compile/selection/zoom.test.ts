@@ -51,7 +51,7 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 
 describe('Zoom Selection Transform', () => {
   it('identifies transform invocation', () => {
-    const {model: _model, selCmpts} = getModel();
+    const {selCmpts} = getModel();
     assert.isNotTrue(zoom.has(selCmpts['one']));
     assert.isNotTrue(zoom.has(selCmpts['two']));
     assert.isNotTrue(zoom.has(selCmpts['three']));
