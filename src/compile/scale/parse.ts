@@ -70,11 +70,11 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale = specifiedScale || {};
-      const specifiedScaleType = specifiedScale.type;
-      const sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
+
+      const sType = scaleType(specifiedScale, channel, fieldDef, mark, config.scale);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
         value: sType,
-        explicit: specifiedScaleType === sType
+        explicit: specifiedScale.type === sType
       });
     }
     return scaleComponents;

@@ -65,9 +65,9 @@
     },
     {
       "name": "color",
-      "type": "sequential",
-      "domain": [1000, 2750, 4500],
-      "range": ["#ff7f0e", "#e7ba52", "#17becf"],
+      "type": "linear",
+      "domain": [1000, 3250, 4500],
+      "range": ["#70001E", "#ffffff", "#00335E"],
       "nice": false,
       "zero": false
     }

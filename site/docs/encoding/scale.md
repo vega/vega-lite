@@ -59,7 +59,7 @@ By default, Vega-Lite use the following scale types for the following [data type
 |---------------------:|:------------------------------:|:-------------------------:|:------------------------:|:-------------------------:|
 | __X, Y__ | [Band](#band) / [Point](#point)<sup>2</sup>| [Linear](#linear)         | [Linear](#linear) <sup>3</sup>       | [Time](#time)             |
 | __Size, Opacity__    | [Point](#point)                | [Linear](#linear)         | [Bin-Linear](#bin-linear)| [Time](#time)             |
-| __Color__            | [Ordinal](#ordinal)            | [Sequential](#sequential) | [Bin-Ordinal](#ordinal)  | [Sequential](#sequential) |
+| __Color__            | [Ordinal](#ordinal)            | [Sequential](#sequential) <sup>4</sup> | [Bin-Ordinal](#ordinal)  | [Sequential](#sequential) <sup>4</sup> |
 | __Shape__            | [Ordinal](#ordinal)            | N/A                       | N/A                      | N/A                       |
 
 <span class="note-line">
@@ -71,6 +71,9 @@ bar and rect marks, which use `"band"` scales.
 </span>
 <span class="note-line">
 <sup>3</sup> For static plots, both `"linear"` and `"bin-linear"` work with binned fields on x and y.  However, [panning](translate.html) and [zooming](zoom.html) do not work with discretized scales such as `"bin-linear"`, thus we use `"linear"` as the default scale type for binned fields on x and y.
+</span>
+<span class="note-line">
+<sup>4</sup> For continuous color scales with [piecewise](#piecewise) domain and range, `"linear"` scale will be used by default as `"sequential"` scale does not support piecewise domain and range.
 </span>
 
 {:#domain}
