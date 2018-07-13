@@ -110,11 +110,14 @@ function getLeaves(roots: DataFlowNode[]) {
   return leaves;
 }
 
+/**
+ * ParseNodes are not mergeable only if their `this._parse`s have a common key but different values for that key.
+ */
 export function isParseMergeable(x: ParseNode, y: ParseNode) {
   const xParse = x.parse;
   const yParse = y.parse;
-  for (const i of keys(xParse)) {
-    if (i in yParse && yParse[i] !== xParse[i]) {
+  for (const k of keys(xParse)) {
+    if (k in yParse && yParse[k] !== xParse[k]) {
       return false;
     }
   }
