@@ -168,7 +168,6 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'x':
       case 'y':
       case 'order':
-      case 'tooltip':
       case 'href':
       case 'x2':
       case 'y2':
@@ -184,10 +183,11 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'shape':
         return details;
 
+      case 'tooltip':
       case 'detail':
       case 'key':
         const channelDef = encoding[channel];
-        if (channelDef) {
+        if (isArray(channelDef) || isFieldDef(channelDef)) {
           (isArray(channelDef) ? channelDef : [channelDef]).forEach(fieldDef => {
             if (!fieldDef.aggregate) {
               details.push(vgField(fieldDef, {}));
