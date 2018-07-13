@@ -127,6 +127,7 @@ export const AXIS_PROPERTY_TYPE: {
   gridColor: 'grid',
   gridDash: 'grid',
   gridOpacity: 'grid',
+  gridScale: 'grid',
   gridWidth: 'grid',
 
   orient: 'main',
