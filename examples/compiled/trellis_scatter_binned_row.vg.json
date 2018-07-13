@@ -90,7 +90,8 @@
         },
         "offset": 10,
         "orient": "left",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {"update": {"height": {"signal": "child_height"}}},
       "axes": [

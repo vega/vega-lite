@@ -90,7 +90,8 @@
         "text": {"signal": "''+parent[\"r\"]"},
         "offset": 10,
         "orient": "left",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {
         "update": {
@@ -110,7 +111,8 @@
         "text": {"signal": "''+parent[\"c\"]"},
         "offset": 10,
         "orient": "top",
-        "style": "guide-label"
+        "style": "guide-label",
+        "baseline": "middle"
       },
       "encode": {
         "update": {

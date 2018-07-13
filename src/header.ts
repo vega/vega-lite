@@ -86,7 +86,7 @@ export interface HeaderConfig {
   /**
    * The rotation angle of the header labels.
    *
-   * __Default value:__ `0`.
+   * __Default value:__ `0` for column header, `-90` for row header.
    *
    * @minimum -360
    * @maximum 360
