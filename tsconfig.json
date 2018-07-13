@@ -16,6 +16,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "strictFunctionTypes": false,

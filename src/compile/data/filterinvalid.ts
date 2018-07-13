@@ -1,7 +1,7 @@
 import {isScaleChannel} from '../../channel';
 import {FieldDef, vgField as fieldRef} from '../../fielddef';
 import {isPathMark} from '../../mark';
-import {hasContinuousDomain, ScaleType} from '../../scale';
+import {hasContinuousDomain} from '../../scale';
 import {Dict, keys} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
