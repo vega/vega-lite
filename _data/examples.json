@@ -58,6 +58,11 @@
         "name": "isotype_bar_chart",
         "title": "Isotype Bar Chart",
         "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
+      },
+      {
+        "name": "emoji_bar_chart",
+        "title": "Emoji Bar Chart",
+        "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)"
       }
     ],
     "Scatter & Strip Plots": [

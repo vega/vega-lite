@@ -1,0 +1,155 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"country": "Great Britain", "animal": "cattle", "col": 3},
+        {"country": "Great Britain", "animal": "cattle", "col": 2},
+        {"country": "Great Britain", "animal": "cattle", "col": 1},
+        {"country": "Great Britain", "animal": "pigs", "col": 2},
+        {"country": "Great Britain", "animal": "pigs", "col": 1},
+        {"country": "Great Britain", "animal": "sheep", "col": 10},
+        {"country": "Great Britain", "animal": "sheep", "col": 9},
+        {"country": "Great Britain", "animal": "sheep", "col": 8},
+        {"country": "Great Britain", "animal": "sheep", "col": 7},
+        {"country": "Great Britain", "animal": "sheep", "col": 6},
+        {"country": "Great Britain", "animal": "sheep", "col": 5},
+        {"country": "Great Britain", "animal": "sheep", "col": 4},
+        {"country": "Great Britain", "animal": "sheep", "col": 3},
+        {"country": "Great Britain", "animal": "sheep", "col": 2},
+        {"country": "Great Britain", "animal": "sheep", "col": 1},
+        {"country": "United States", "animal": "cattle", "col": 9},
+        {"country": "United States", "animal": "cattle", "col": 8},
+        {"country": "United States", "animal": "cattle", "col": 7},
+        {"country": "United States", "animal": "cattle", "col": 6},
+        {"country": "United States", "animal": "cattle", "col": 5},
+        {"country": "United States", "animal": "cattle", "col": 4},
+        {"country": "United States", "animal": "cattle", "col": 3},
+        {"country": "United States", "animal": "cattle", "col": 2},
+        {"country": "United States", "animal": "cattle", "col": 1},
+        {"country": "United States", "animal": "pigs", "col": 6},
+        {"country": "United States", "animal": "pigs", "col": 5},
+        {"country": "United States", "animal": "pigs", "col": 4},
+        {"country": "United States", "animal": "pigs", "col": 3},
+        {"country": "United States", "animal": "pigs", "col": 2},
+        {"country": "United States", "animal": "pigs", "col": 1},
+        {"country": "United States", "animal": "sheep", "col": 7},
+        {"country": "United States", "animal": "sheep", "col": 6},
+        {"country": "United States", "animal": "sheep", "col": 5},
+        {"country": "United States", "animal": "sheep", "col": 4},
+        {"country": "United States", "animal": "sheep", "col": 3},
+        {"country": "United States", "animal": "sheep", "col": 2},
+        {"country": "United States", "animal": "sheep", "col": 1}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.animal==='cattle' ? '🐄' : datum.animal==='pigs' ? '🐖' : '🐏'",
+          "as": "emoji"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.animal==='pigs' ? 0 : datum.animal==='cattle' ? 1 : 2",
+          "as": "order"
+        }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "data_0",
+      "transform": [{"type": "aggregate", "groupby": ["country"]}]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 800},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {"field": "datum[\"country\"]", "order": "ascending"},
+      "title": {
+        "text": {"signal": "''+parent[\"country\"]"},
+        "offset": 10,
+        "orient": "left",
+        "style": "guide-label",
+        "baseline": "middle"
+      },
+      "encode": {"update": {"height": {"signal": "child_height"}}}
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {"name": "facet", "data": "data_0", "groupby": ["country"]}
+      },
+      "sort": {"field": ["datum[\"country\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "text",
+          "style": ["text"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "baseline": {"value": "middle"},
+              "fill": {"value": "black"},
+              "tooltip": {
+                "signal": "{\"col\": ''+datum[\"col\"], \"animal\": ''+datum[\"animal\"], \"emoji\": ''+datum[\"emoji\"]}"
+              },
+              "x": {"scale": "x", "field": "col"},
+              "y": {"scale": "y", "field": "animal"},
+              "text": {"signal": "''+datum[\"emoji\"]"},
+              "fontSize": {"value": 65},
+              "align": {"value": "center"}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "col", "sort": true},
+      "range": [0, {"signal": "child_width"}],
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "data": "data_0",
+        "field": "animal",
+        "sort": {"field": "order", "op": "mean"}
+      },
+      "range": [0, {"signal": "child_height"}],
+      "padding": 0.5
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"stroke": ""}}}
+}
