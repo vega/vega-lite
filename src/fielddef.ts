@@ -339,15 +339,15 @@ export function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is Sca
 }
 
 export interface FieldRefOption {
-  /** exclude bin, aggregate, timeUnit */
+  /** Exclude bin, aggregate, timeUnit */
   nofn?: boolean;
   /** Wrap the field with datum or parent (e.g., datum['...'] for Vega Expression */
   expr?: 'datum' | 'parent';
-  /** prepend fn with custom function prefix */
+  /** Prepend fn with custom function prefix */
   prefix?: string;
-  /** append suffix to the field ref for bin (default='start') */
+  /** Append suffix to the field ref for bin (default='start') */
   binSuffix?: 'end' | 'range' | 'mid';
-  /** append suffix to the field ref (general) */
+  /** Append suffix to the field ref (general) */
   suffix?: string;
 }
 
@@ -357,7 +357,10 @@ function isOpFieldDef(
   return !!fieldDef['op'];
 }
 
-export function vgField(
+/**
+ * Use when Vega expects a field name for example as the output of a transform.
+ */
+export function vgFieldName(
   fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
   opt: FieldRefOption = {}
 ): string {
@@ -396,6 +399,17 @@ export function vgField(
     field = `${prefix}_${field}`;
   }
 
+  return field;
+}
+
+/**
+ * Get a vega field reference from a Vega-Lite field def. Use when Vega expects a field that can be nested.
+ */
+export function vgField(
+  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
+  opt: FieldRefOption = {}
+): string {
+  const field = vgFieldName(fieldDef, opt);
   if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
     return flatAccessWithDatum(field, opt.expr);

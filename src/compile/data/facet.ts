@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
-import {vgField} from '../../fielddef';
+import {vgField, vgFieldName} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
 import {EncodingSortField, isSortField} from '../../sort';
@@ -133,7 +133,7 @@ export class FacetNode extends DataFlowNode {
       const {op, field} = sortField;
       fields.push(field);
       ops.push(op);
-      as.push(vgField(sortField));
+      as.push(vgFieldName(sortField));
     } else if (sortIndexField) {
       fields.push(sortIndexField);
       ops.push('max');

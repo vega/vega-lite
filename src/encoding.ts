@@ -24,7 +24,8 @@ import {
   title,
   ValueDef,
   ValueDefWithCondition,
-  vgField
+  vgField,
+  vgFieldName
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
@@ -203,7 +204,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
 
   forEach(oldEncoding, (channelDef, channel) => {
     if (isFieldDef(channelDef)) {
-      const transformedField = vgField(channelDef);
+      const transformedField = vgFieldName(channelDef);
       if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
         aggregate.push({
           op: channelDef.aggregate,

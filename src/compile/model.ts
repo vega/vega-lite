@@ -5,7 +5,7 @@ import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField, vgFieldName} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -631,6 +631,16 @@ export abstract class ModelWithField extends Model {
     }
 
     return vgField(fieldDef, opt);
+  }
+
+  public vgFieldName(channel: SingleDefChannel, opt: FieldRefOption = {}) {
+    const fieldDef = this.fieldDef(channel);
+
+    if (!fieldDef) {
+      return undefined;
+    }
+
+    return vgFieldName(fieldDef, opt);
   }
 
   protected abstract getMapping(): {[key in Channel]?: any};
