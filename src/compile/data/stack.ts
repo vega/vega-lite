@@ -217,9 +217,6 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}) : undefined;
-      const dimensionAs = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true}) : undefined;
-
       if (dimensionFieldDef.bin) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
@@ -231,7 +228,7 @@ export class StackNode extends DataFlowNode {
             '+' +
             vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
             ')/2',
-          as: dimensionAs
+          as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }
 
@@ -239,7 +236,7 @@ export class StackNode extends DataFlowNode {
         type: 'impute',
         field,
         groupby: stackby,
-        key: dimensionField,
+        key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
         method: 'value',
         value: 0
       });

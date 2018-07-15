@@ -11,6 +11,7 @@ import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {FieldRefOption} from './../fielddef';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -26,10 +27,9 @@ import {assembleDomain, getFieldFromDomain} from './scale/domain';
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
   sort: EncodingSortField<string>,
-  expr?: 'datum',
-  forAs = false
+  opt?: FieldRefOption
 ) {
-  return vgField(sort, {expr, suffix: `by_${vgField(fieldDef)}`, forAs});
+  return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...(opt || {})});
 }
 
 export class FacetModel extends ModelWithField {
@@ -374,9 +374,9 @@ export class FacetModel extends ModelWithField {
 
     if (fieldDef) {
       if (isSortField(fieldDef.sort)) {
-        return [facetSortFieldName(fieldDef, fieldDef.sort, 'datum')];
+        return [facetSortFieldName(fieldDef, fieldDef.sort, {expr: 'datum'})];
       } else if (isArray(fieldDef.sort)) {
-        return [sortArrayIndexField(fieldDef, channel, 'datum')];
+        return [sortArrayIndexField(fieldDef, channel, {expr: 'datum'})];
       }
       return [vgField(fieldDef, {expr: 'datum'})];
     }

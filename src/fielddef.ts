@@ -349,7 +349,10 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** Append suffix to the field ref (general) */
   suffix?: string;
-  /** Use the field name for `as` in a transform. */
+  /**
+   * Use the field name for `as` in a transform.
+   * We will not escape nested acceses because Vega transform outputs cannot be nested.
+   */
   forAs?: boolean;
 }
 
@@ -402,11 +405,8 @@ export function vgField(
   }
 
   if (opt.forAs) {
-    // Don't need to mess with nested field names because Vega transform outputs are never nested.
     return field;
-  }
-
-  if (opt.expr) {
+  } else if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
     return flatAccessWithDatum(field, opt.expr);
   } else {

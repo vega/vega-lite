@@ -25,7 +25,7 @@ export class WindowTransformNode extends DataFlowNode {
               {
                 op,
                 field,
-                as: facetSortFieldName(fieldDef, fieldDef.sort, undefined, true)
+                as: facetSortFieldName(fieldDef, fieldDef.sort, {forAs: true})
               }
             ],
             groupby: [vgField(fieldDef)],

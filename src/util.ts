@@ -302,7 +302,7 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function flatAccessWithDatum(path: string, datum = 'datum') {
+export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' = 'datum') {
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 
