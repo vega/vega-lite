@@ -1,0 +1,153 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": 0, "b": 28, "c": 0},
+        {"a": 0, "b": 91, "c": 1},
+        {"a": 1, "b": 43, "c": 0},
+        {"a": 1, "b": 55, "c": 1},
+        {"a": 2, "b": 81, "c": 0},
+        {"a": 2, "b": 53, "c": 1},
+        {"a": 3, "b": 19, "c": 0}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"},
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"},
+        {
+          "type": "impute",
+          "field": "b",
+          "key": "a",
+          "method": "value",
+          "groupby": ["c"],
+          "value": null
+        },
+        {"type": "formula", "expr": "datum.b === null ? 0 : datum.b", "as": "b"}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "data_0",
+          "groupby": ["c"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"a\"]", "order": "descending"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "c"},
+              "tooltip": {
+                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
+              },
+              "x": {"scale": "x", "field": "a"},
+              "y": {"scale": "y", "field": "b"},
+              "defined": {
+                "signal": "datum[\"a\"] !== null && !isNaN(datum[\"a\"]) && datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "a"},
+      "range": [0, {"signal": "width"}],
+      "nice": 1,
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "b"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "c", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "gridScale": "y",
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "gridScale": "x",
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "color", "title": "c"}],
+  "config": {"axisY": {"minExtent": 30}}
+}
