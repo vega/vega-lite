@@ -30,17 +30,14 @@ describe('Mark: Geoshape', () => {
         config: {mark: {tooltip: null}}
       });
       const props = geoshape.encodeEntry(model);
-      assert.deepEqual(
-        {
-          fill: {
-            value: 'black'
-          },
-          opacity: {
-            value: 0.8
-          }
+      expect({
+        fill: {
+          value: 'black'
         },
-        props
-      );
+        opacity: {
+          value: 0.8
+        }
+      }).toEqual(props);
     });
   });
 });
