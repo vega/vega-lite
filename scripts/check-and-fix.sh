@@ -27,7 +27,7 @@ echo "------- Checking Examples -------"
 echo ""
 
 
-if git log -1 | grep "[SVG]" && [[ $TRAVIS_BRANCH != 'master' ]]
+if [[git log -1 | grep "\[SVG\]"]] && [[ $TRAVIS_BRANCH != 'master' ]]
 then
   echo "As the latest commit includes [SVG], let's force rebuilding all SVGs"
   yarn build:examples-full
