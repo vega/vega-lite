@@ -1,10 +1,10 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
-import {FieldDef, vgField} from '../../fielddef';
+import {FieldDef, vgField, vgFieldName} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, keys, StringSet} from '../../util';
+import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from './../unit';
@@ -81,15 +81,15 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgField(fieldDef);
+          meas['*']['count'] = vgFieldName(fieldDef);
         } else {
           meas[field] = meas[field] || {};
-          meas[field][aggregate] = vgField(fieldDef);
+          meas[field][aggregate] = vgFieldName(fieldDef);
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[field]['min'] = vgField({field, aggregate: 'min'});
-            meas[field]['max'] = vgField({field, aggregate: 'max'});
+            meas[field]['min'] = vgFieldName({field, aggregate: 'min'});
+            meas[field]['max'] = vgFieldName({field, aggregate: 'max'});
           }
         }
       } else {
@@ -113,10 +113,10 @@ export class AggregateNode extends DataFlowNode {
       if (op) {
         if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = as || vgField(s);
+          meas['*']['count'] = as || vgFieldName(s);
         } else {
           meas[field] = meas[field] || {};
-          meas[field][op] = as || vgField(s);
+          meas[field][op] = as || vgFieldName(s);
         }
       }
     }
@@ -175,7 +175,7 @@ export class AggregateNode extends DataFlowNode {
       for (const op of keys(this.measures[field])) {
         as.push(this.measures[field][op]);
         ops.push(op);
-        fields.push(field);
+        fields.push(replacePathInField(field));
       }
     }
 

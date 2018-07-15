@@ -1,5 +1,5 @@
 import {DateTime} from '../../datetime';
-import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
+import {FieldDef, isScaleFieldDef, vgField, vgFieldName} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
@@ -40,7 +40,7 @@ export class CalculateNode extends DataFlowNode {
 
         parent = new CalculateNode(parent, {
           calculate,
-          as: sortArrayIndexField(fieldDef, channel)
+          as: sortArrayIndexField(fieldDef, channel, undefined, true)
         });
       }
     });
@@ -62,6 +62,11 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum') {
-  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
+export function sortArrayIndexField(
+  fieldDef: FieldDef<string>,
+  channel: SingleDefChannel,
+  expr?: 'datum',
+  forAs = false
+) {
+  return (forAs ? vgFieldName : vgField)(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
 }
