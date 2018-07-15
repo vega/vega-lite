@@ -203,7 +203,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
 
   forEach(oldEncoding, (channelDef, channel) => {
     if (isFieldDef(channelDef)) {
-      const transformedField = vgField(channelDef);
+      const transformedField = vgField(channelDef, {forAs: true});
       if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
         aggregate.push({
           op: channelDef.aggregate,

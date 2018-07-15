@@ -147,19 +147,19 @@ export class StackNode extends DataFlowNode {
         {field: [], order: []}
       );
     }
-    // Refactored to add "as" in the make phase so that we can get producedFields
-    // from the as property
-    const field = model.vgField(stackProperties.fieldChannel);
 
     return new StackNode(parent, {
       dimensionFieldDef,
-      stackField: field,
+      stackField: model.vgField(stackProperties.fieldChannel),
       facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
       impute: stackProperties.impute,
-      as: [field + '_start', field + '_end']
+      as: [
+        model.vgField(stackProperties.fieldChannel, {suffix: 'start', forAs: true}),
+        model.vgField(stackProperties.fieldChannel, {suffix: 'end', forAs: true})
+      ]
     });
   }
 
@@ -217,8 +217,6 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}) : undefined;
-
       if (dimensionFieldDef.bin) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
@@ -230,7 +228,7 @@ export class StackNode extends DataFlowNode {
             '+' +
             vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
             ')/2',
-          as: dimensionField
+          as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }
 
@@ -238,7 +236,7 @@ export class StackNode extends DataFlowNode {
         type: 'impute',
         field,
         groupby: stackby,
-        key: dimensionField,
+        key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
         method: 'value',
         value: 0
       });

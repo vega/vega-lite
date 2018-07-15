@@ -133,7 +133,7 @@ export class FacetNode extends DataFlowNode {
       const {op, field} = sortField;
       fields.push(field);
       ops.push(op);
-      as.push(vgField(sortField));
+      as.push(vgField(sortField, {forAs: true}));
     } else if (sortIndexField) {
       fields.push(sortIndexField);
       ops.push('max');

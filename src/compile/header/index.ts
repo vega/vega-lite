@@ -139,7 +139,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'
     };
   } else if (isArray(sort)) {
     return {
-      field: sortArrayIndexField(facetFieldDef, channel, 'datum'),
+      field: sortArrayIndexField(facetFieldDef, channel, {expr: 'datum'}),
       order: 'ascending'
     };
   } else {

@@ -622,7 +622,7 @@ export abstract class Model {
 export abstract class ModelWithField extends Model {
   public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
 
-  /** Get "field" reference for vega */
+  /** Get "field" reference for Vega */
   public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
     const fieldDef = this.fieldDef(channel);
 
