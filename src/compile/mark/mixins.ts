@@ -1,6 +1,6 @@
-import {isArray, isObject, isString} from 'vega-util';
+import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
+import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
 import {fieldDefs} from '../../encoding';
 import {
   ChannelDef,
@@ -12,10 +12,10 @@ import {
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
-import {MarkDef} from '../../mark';
+import {isPathMark, MarkDef} from '../../mark';
 import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
-import {contains} from '../../util';
+import {contains, Dict, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
@@ -115,13 +115,36 @@ export function color(model: UnitModel): VgEncodeEntry {
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
+  const {fill, stroke} = color(model);
   return {
     ...markDefProperties(model.markDef, ignore),
-    ...color(model),
+    ...wrapInvalid(model, 'fill', fill),
+    ...wrapInvalid(model, 'stroke', stroke),
     ...nonPosition('opacity', model),
     ...tooltip(model),
     ...text(model, 'href')
   };
+}
+
+function wrapInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
+  const {config, mark} = model;
+
+  if (config.invalidValues && valueRef && !isPathMark(mark)) {
+    // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
+    // For path marks, we will use "defined" property and skip these values instead.
+    const test = validPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
+    if (test) {
+      return {
+        [channel]: [
+          // prepend the invalid case
+          // TODO: support custom value
+          {test, value: null},
+          ...array(valueRef)
+        ]
+      };
+    }
+  }
+  return valueRef ? {[channel]: valueRef} : {};
 }
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
@@ -140,35 +163,41 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
   return undefined;
 }
 
-function validPredicate(vgRef: string) {
-  return `${vgRef} !== null && !isNaN(${vgRef})`;
-}
+function validPredicate(model: UnitModel, {invalid = false, channels}: {invalid?: boolean; channels: ScaleChannel[]}) {
+  const filterIndex = channels.reduce((aggregator: Dict<true>, channel) => {
+    const scaleComponent = model.getScaleComponent(channel);
+    if (scaleComponent) {
+      const scaleType = scaleComponent.get('type');
+      const field = model.vgField(channel, {expr: 'datum'});
 
+      // While discrete domain scales can handle invalid values, continuous scales can't.
+      if (field && hasContinuousDomain(scaleType)) {
+        aggregator[field] = true;
+      }
+    }
+    return aggregator;
+  }, {});
+
+  const fields = keys(filterIndex);
+  if (fields.length > 0) {
+    const op = invalid ? '||' : '&&';
+    return fields
+      .map(field => {
+        const eq = invalid ? '===' : '!==';
+        return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
+      })
+      .join(` ${op} `);
+  }
+  return undefined;
+}
 export function defined(model: UnitModel): VgEncodeEntry {
   if (model.config.invalidValues === 'filter') {
-    const fields = ['x', 'y']
-      .map((channel: PositionScaleChannel) => {
-        const scaleComponent = model.getScaleComponent(channel);
-        if (scaleComponent) {
-          const scaleType = scaleComponent.get('type');
+    const signal = validPredicate(model, {channels: ['x', 'y']});
 
-          // Discrete domain scales can handle invalid values, but continuous scales can't.
-          if (hasContinuousDomain(scaleType)) {
-            return model.vgField(channel, {expr: 'datum'});
-          }
-        }
-        return undefined;
-      })
-      .filter(field => !!field)
-      .map(validPredicate);
-
-    if (fields.length > 0) {
-      return {
-        defined: {signal: fields.join(' && ')}
-      };
+    if (signal) {
+      return {defined: {signal}};
     }
   }
-
   return {};
 }
 
@@ -176,7 +205,7 @@ export function defined(model: UnitModel): VgEncodeEntry {
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
 export function nonPosition(
-  channel: typeof NONPOSITION_SCALE_CHANNELS[0],
+  channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
 ): VgEncodeEntry {

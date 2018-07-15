@@ -46,7 +46,7 @@ describe('Layered Selections', () => {
   // (i.e., that the brush mark appears above all layers and thus can be
   // moved around).
   it('should pass through unit mark assembly', () => {
-    assert.sameDeepMembers(layers.children[0].assembleMarks(), [
+    expect(layers.children[0].assembleMarks()).toEqual([
       {
         name: 'layer_0_marks',
         type: 'symbol',
@@ -65,10 +65,17 @@ describe('Layered Selections', () => {
               scale: 'y',
               field: 'Miles_per_Gallon'
             },
-            fill: {
-              scale: 'color',
-              field: 'Origin'
-            },
+            fill: [
+              {
+                test:
+                  'datum["Horsepower"] === null || isNaN(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || isNaN(datum["Miles_per_Gallon"])',
+                value: null
+              },
+              {
+                scale: 'color',
+                field: 'Origin'
+              }
+            ],
             shape: {
               value: 'circle'
             },
@@ -80,7 +87,7 @@ describe('Layered Selections', () => {
       }
     ]);
 
-    assert.sameDeepMembers(layers.children[1].assembleMarks(), [
+    expect(layers.children[1].assembleMarks()).toEqual([
       {
         name: 'layer_1_marks',
         type: 'symbol',
@@ -99,10 +106,17 @@ describe('Layered Selections', () => {
               scale: 'y',
               field: 'Miles_per_Gallon'
             },
-            fill: {
-              scale: 'color',
-              field: 'Origin'
-            },
+            fill: [
+              {
+                test:
+                  'datum["Horsepower"] === null || isNaN(datum["Horsepower"]) || datum["Miles_per_Gallon"] === null || isNaN(datum["Miles_per_Gallon"])',
+                value: null
+              },
+              {
+                scale: 'color',
+                field: 'Origin'
+              }
+            ],
             shape: {
               value: 'square'
             },
