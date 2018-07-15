@@ -2,7 +2,7 @@ import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef, normalizeBin, vgField, vgFieldName} from '../../fielddef';
+import {FieldDef, normalizeBin, vgField} from '../../fielddef';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, flatten, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
@@ -20,7 +20,7 @@ function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel
     const endField = vgField(fieldDef, {expr: 'datum', binSuffix: 'end'});
 
     return {
-      formulaAs: vgFieldName(fieldDef, {binSuffix: 'range'}),
+      formulaAs: vgField(fieldDef, {binSuffix: 'range', forAs: true}),
       formula: binFormatExpression(startField, endField, guide.format, config)
     };
   }
@@ -48,7 +48,7 @@ function createBinComponent(t: FieldDef<string> | BinTransform, bin: boolean | B
   if (isBinTransform(t)) {
     as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
   } else {
-    as = [vgFieldName(t, {}), vgFieldName(t, {binSuffix: 'end'})];
+    as = [vgField(t, {forAs: true}), vgField(t, {binSuffix: 'end', forAs: true})];
   }
 
   const normalizedBin = normalizeBin(bin, undefined) || {};

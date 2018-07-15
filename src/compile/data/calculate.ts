@@ -1,5 +1,5 @@
 import {DateTime} from '../../datetime';
-import {FieldDef, isScaleFieldDef, vgField, vgFieldName} from '../../fielddef';
+import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
@@ -68,5 +68,5 @@ export function sortArrayIndexField(
   expr?: 'datum',
   forAs = false
 ) {
-  return (forAs ? vgFieldName : vgField)(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
+  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', expr, forAs});
 }

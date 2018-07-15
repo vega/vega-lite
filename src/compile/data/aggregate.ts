@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
-import {FieldDef, vgField, vgFieldName} from '../../fielddef';
+import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
@@ -81,15 +81,15 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgFieldName(fieldDef);
+          meas['*']['count'] = vgField(fieldDef, {forAs: true});
         } else {
           meas[field] = meas[field] || {};
-          meas[field][aggregate] = vgFieldName(fieldDef);
+          meas[field][aggregate] = vgField(fieldDef, {forAs: true});
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[field]['min'] = vgFieldName({field, aggregate: 'min'});
-            meas[field]['max'] = vgFieldName({field, aggregate: 'max'});
+            meas[field]['min'] = vgField({field, aggregate: 'min'}, {forAs: true});
+            meas[field]['max'] = vgField({field, aggregate: 'max'}, {forAs: true});
           }
         }
       } else {
@@ -113,10 +113,10 @@ export class AggregateNode extends DataFlowNode {
       if (op) {
         if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = as || vgFieldName(s);
+          meas['*']['count'] = as || vgField(s, {forAs: true});
         } else {
           meas[field] = meas[field] || {};
-          meas[field][op] = as || vgFieldName(s);
+          meas[field][op] = as || vgField(s, {forAs: true});
         }
       }
     }

@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {FieldDef, isFieldDef, vgField, vgFieldName} from '../../fielddef';
+import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate} from '../../util';
@@ -157,8 +157,8 @@ export class StackNode extends DataFlowNode {
       offset: stackProperties.offset,
       impute: stackProperties.impute,
       as: [
-        model.vgFieldName(stackProperties.fieldChannel, {suffix: 'start'}),
-        model.vgFieldName(stackProperties.fieldChannel, {suffix: 'end'})
+        model.vgField(stackProperties.fieldChannel, {suffix: 'start', forAs: true}),
+        model.vgField(stackProperties.fieldChannel, {suffix: 'end', forAs: true})
       ]
     });
   }
@@ -218,7 +218,7 @@ export class StackNode extends DataFlowNode {
     // Impute
     if (impute && dimensionFieldDef) {
       const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}) : undefined;
-      const dimensionAs = dimensionFieldDef ? vgFieldName(dimensionFieldDef, {binSuffix: 'mid'}) : undefined;
+      const dimensionAs = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true}) : undefined;
 
       if (dimensionFieldDef.bin) {
         // As we can only impute one field at a time, we need to calculate

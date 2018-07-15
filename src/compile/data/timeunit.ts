@@ -1,4 +1,4 @@
-import {vgFieldName} from '../../fielddef';
+import {vgField} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, keys, vals} from '../../util';
@@ -25,7 +25,7 @@ export class TimeUnitNode extends DataFlowNode {
     const formula = model.reduceFieldDef(
       (timeUnitComponent: TimeUnitComponent, fieldDef) => {
         if (fieldDef.timeUnit) {
-          const f = vgFieldName(fieldDef);
+          const f = vgField(fieldDef, {forAs: true});
           timeUnitComponent[f] = {
             as: f,
             timeUnit: fieldDef.timeUnit,

@@ -349,6 +349,8 @@ export interface FieldRefOption {
   binSuffix?: 'end' | 'range' | 'mid';
   /** Append suffix to the field ref (general) */
   suffix?: string;
+  /** Use the field name for `as` in a transform. */
+  forAs?: boolean;
 }
 
 function isOpFieldDef(
@@ -358,9 +360,9 @@ function isOpFieldDef(
 }
 
 /**
- * Use when Vega expects a field name for example as the output of a transform.
+ * Get a Vega field reference from a Vega-Lite field def.
  */
-export function vgFieldName(
+export function vgField(
   fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
   opt: FieldRefOption = {}
 ): string {
@@ -399,17 +401,11 @@ export function vgFieldName(
     field = `${prefix}_${field}`;
   }
 
-  return field;
-}
+  if (opt.forAs) {
+    // Don't need to mess with nested field names because Vega transform outputs are never nested.
+    return field;
+  }
 
-/**
- * Get a vega field reference from a Vega-Lite field def. Use when Vega expects a field that can be nested.
- */
-export function vgField(
-  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
-  opt: FieldRefOption = {}
-): string {
-  const field = vgFieldName(fieldDef, opt);
   if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
     return flatAccessWithDatum(field, opt.expr);

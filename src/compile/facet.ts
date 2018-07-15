@@ -4,7 +4,7 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetFieldDef, FacetMapping} from '../facet';
-import {FieldDef, normalize, title as fieldDefTitle, vgField, vgFieldName} from '../fielddef';
+import {FieldDef, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -29,7 +29,7 @@ export function facetSortFieldName(
   expr?: 'datum',
   forAs = false
 ) {
-  return (forAs ? vgFieldName : vgField)(sort, {expr, suffix: `by_${vgField(fieldDef)}`});
+  return vgField(sort, {expr, suffix: `by_${vgField(fieldDef)}`, forAs});
 }
 
 export class FacetModel extends ModelWithField {
