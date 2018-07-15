@@ -217,7 +217,8 @@ describe('Mark: Rule', () => {
         color: {field: 'Origin', type: 'nominal'}
       },
       config: {
-        stack: 'zero'
+        stack: 'zero',
+        invalidValues: null
       }
     });
 
@@ -239,7 +240,8 @@ describe('Mark: Rule', () => {
         color: {field: 'Origin', type: 'nominal'}
       },
       config: {
-        stack: 'zero'
+        stack: 'zero',
+        invalidValues: null
       }
     });
 

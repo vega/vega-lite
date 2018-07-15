@@ -1,9 +1,8 @@
 import {MAIN} from '../../data';
-import {every, flatten, keys, vals} from '../../util';
+import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
-import {FilterInvalidNode} from './filterinvalid';
 import {DataComponent} from './index';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
@@ -84,11 +83,6 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Remove nodes that are not required starting from a root.
  */
 function removeUnnecessaryNodes(node: DataFlowNode) {
-  // remove empty null filter nodes
-  if (node instanceof FilterInvalidNode && every(vals(node.filter), f => f === null)) {
-    node.remove();
-  }
-
   // remove output nodes that are not required
   if (node instanceof OutputNode && !node.isRequired()) {
     node.remove();

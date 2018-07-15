@@ -8,7 +8,6 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
 import {FlattenTransformNode} from './flatten';
 import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
@@ -110,7 +109,6 @@ function makeWalkTree(data: VgData[]) {
     }
 
     if (
-      node instanceof FilterInvalidNode ||
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof ImputeNode ||

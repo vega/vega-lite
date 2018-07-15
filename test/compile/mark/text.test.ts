@@ -175,10 +175,16 @@ describe('Mark: Text', () => {
     });
 
     it('should map color to fill', () => {
-      assert.deepEqual(props.fill, {
-        scale: 'color',
-        field: 'mean_Acceleration'
-      });
+      expect(props.fill).toEqual([
+        {
+          test: 'datum["mean_Acceleration"] === null || isNaN(datum["mean_Acceleration"])',
+          value: null
+        },
+        {
+          scale: 'color',
+          field: 'mean_Acceleration'
+        }
+      ]);
     });
 
     it('should map size to fontSize', () => {
