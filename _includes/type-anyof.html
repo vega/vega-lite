@@ -2,8 +2,8 @@
 {% for type in include.types %}
   {% if type.type == "array" %}
     {% if type.items["$ref"] %}
-      {% assign element = type.items["$ref"] | split: "/" | last | split: "<" | first | append: "[]" %}
-      {{element | strip | append: include.suffix }}
+      {% assign ref = type.items["$ref"] %}
+      {% include type-ref.html ref=ref suffix="[]" %}
     {% elsif type.items.anyOf %}
       {% capture element %}
       {% assign para = type.items.anyOf %}
@@ -36,9 +36,8 @@
       {{element | strip | append: include.suffix }}
     {% endif%}
   {% elsif type["$ref"] %}
-    {% assign element = type["$ref"] | split: "/" | last %}
-    {% assign element = element | split: "<" | first %}
-    {{element | strip | append: include.suffix }}
+    {% assign ref = type["$ref"] %}
+   {% include type-ref.html ref=ref suffix=include.suffix %}
   {% endif %}
 
   {% assign splitstring = " | " %}

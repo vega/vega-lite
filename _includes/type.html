@@ -2,7 +2,8 @@
 {% assign type = src.type %}
 {% if type == nil %}
   {% if src["$ref"] %}
-    {{ src["$ref"]] | split: "/" | last | split: "<" | first }}
+    {% assign ref = src["$ref"] %}
+    {% include type-ref.html ref=ref %}
   {% elsif src.anyOf %}
     {% assign para = src.anyOf %}
     {% include type-anyof.html types=para %}
