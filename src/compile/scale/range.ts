@@ -1,6 +1,5 @@
-import {isNumber} from 'vega-util';
-
 import {isArray} from 'util';
+import {isNumber} from 'vega-util';
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
 import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
@@ -8,6 +7,8 @@ import {Mark} from '../../mark';
 import {
   channelScalePropertyIncompatability,
   Domain,
+  hasContinuousDomain,
+  isContinuousToContinuous,
   isContinuousToDiscrete,
   isExtendedScheme,
   Range,
@@ -17,7 +18,6 @@ import {
   scaleTypeSupportProperty,
   Scheme
 } from '../../scale';
-import {hasContinuousDomain} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
@@ -252,9 +252,12 @@ export function defaultRange(
         } else {
           return {scheme: 'blues', count};
         }
+      } else if (isContinuousToContinuous(scaleType)) {
+        return ['#f7fbff', '#0e427f']; // also update interpolation if you change this
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
+
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
