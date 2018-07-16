@@ -67,7 +67,6 @@
       "title": {
         "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

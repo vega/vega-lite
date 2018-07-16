@@ -90,7 +90,6 @@
       "title": {
         "text": {"signal": "''+parent[\"gender\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

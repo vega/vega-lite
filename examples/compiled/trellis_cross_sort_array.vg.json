@@ -193,7 +193,6 @@
       "title": {
         "text": {"signal": "''+parent[\"a\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

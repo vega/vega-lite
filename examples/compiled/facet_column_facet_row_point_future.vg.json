@@ -55,7 +55,6 @@
       "title": {
         "text": {"signal": "''+parent[\"Origin\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       }

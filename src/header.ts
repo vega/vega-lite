@@ -10,7 +10,8 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   titleFont: 'font',
   titleFontSize: 'fontSize',
   titleFontWeight: 'fontWeight',
-  titleLimit: 'limit'
+  titleLimit: 'limit',
+  titlePadding: 'offset'
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
@@ -18,7 +19,8 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
-  labelLimit: 'limit'
+  labelLimit: 'limit',
+  labelPadding: 'offset'
 };
 
 export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
@@ -82,6 +84,13 @@ export interface HeaderConfig {
    */
   titleLimit?: number;
 
+  /**
+   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   *
+   * __Default value:__ `10`
+   */
+  titlePadding?: number;
+
   // ---------- Label ----------
   /**
    * The rotation angle of the header labels.
@@ -116,6 +125,13 @@ export interface HeaderConfig {
    * __Default value:__ `0`, indicating no limit
    */
   labelLimit?: number;
+
+  /**
+   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   *
+   * __Default value:__ `10`
+   */
+  labelPadding?: number;
 }
 
 /**
