@@ -36,7 +36,7 @@ export interface ValueDef {
   /**
    * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
    */
-  value: number | string | boolean;
+  value: number | string | boolean | null;
 }
 
 /**
