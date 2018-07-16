@@ -19,7 +19,7 @@ import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
 import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
-import {StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
+import {Color, StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
 
 export interface ViewConfig {
   /**
@@ -173,7 +173,8 @@ export interface VLOnlyConfig {
    * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
-  invalidValues?: 'filter' | null;
+  // FIXME update this
+  invalidValues?: 'filter' | null | {fill?: Color; stroke?: Color};
 
   /**
    * Defines how Vega-Lite generates title for fields.  There are three possible styles:
@@ -256,7 +257,7 @@ export const defaultConfig: Config = {
   timeFormat: '',
   countTitle: 'Number of Records',
 
-  invalidValues: 'filter',
+  invalidValues: {fill: null, stroke: null},
 
   view: defaultViewConfig,
 
