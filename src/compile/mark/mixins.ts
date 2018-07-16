@@ -1,7 +1,9 @@
-import {isArray, isObject, isString} from 'vega-util';
+import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {NONPOSITION_SCALE_CHANNELS, PositionScaleChannel, X, X2, Y2} from '../../channel';
+import {Channel, isScaleChannel, PositionScaleChannel, X, X2, Y2} from '../../channel';
+import {NonPositionScaleChannel} from '../../channel';
 import {fieldDefs} from '../../encoding';
+import {vgField} from '../../fielddef';
 import {
   ChannelDef,
   FieldDef,
@@ -12,10 +14,10 @@ import {
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
-import {MarkDef} from '../../mark';
+import {isPathMark, MarkDef} from '../../mark';
 import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
-import {contains} from '../../util';
+import {contains, Dict, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
@@ -114,10 +116,71 @@ export function color(model: UnitModel): VgEncodeEntry {
 
 export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
 
+function invalidPredicate(model: UnitModel) {
+  const {mark} = model;
+  const filterIndex = model.reduceFieldDef(
+    (aggregator: Dict<FieldDef<string>>, fieldDef, channel) => {
+      const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+      if (scaleComponent) {
+        const scaleType = scaleComponent.get('type');
+
+        // While discrete domain scales can handle invalid values, continuous scales can't.
+        // Thus, for non-path marks, we have to filter null for scales with continuous domains.
+        // (For path marks, we will use "defined" property and skip these values instead.)
+        if (hasContinuousDomain(scaleType) && !fieldDef.aggregate && !isPathMark(mark)) {
+          aggregator[fieldDef.field] = fieldDef;
+        }
+      }
+      return aggregator;
+    },
+    {} as Dict<FieldDef<string>>
+  );
+
+  const fields = keys(filterIndex);
+  if (fields.length > 0) {
+    return fields
+      .map(field => {
+        const fieldDef = filterIndex[field];
+        const f = vgField(fieldDef, {expr: 'datum'});
+        return `${f} === null || isNaN(${f})`;
+      })
+      .join(' || ');
+  }
+  return undefined;
+}
+
+function wrapInvalid(
+  model: UnitModel,
+  channel: Channel,
+  valueRef: VgValueRef | VgValueRef[],
+  valueForInvalid: string = null
+) {
+  const {config} = model;
+  if (config.invalidValues) {
+    // FIXME deal with filter
+
+    const value = config.invalidValues[channel];
+    const test = invalidPredicate(model);
+    if (value !== undefined && test) {
+      return {
+        [channel]: [
+          // prepend the invalid case
+          {test, value},
+          // array
+          ...(valueRef ? array(valueRef) : [])
+        ]
+      };
+    }
+  }
+  return {[channel]: valueRef};
+}
+
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
+  const {fill, stroke} = color(model);
   return {
     ...markDefProperties(model.markDef, ignore),
-    ...color(model),
+    ...wrapInvalid(model, 'fill', fill),
+    ...wrapInvalid(model, 'stroke', stroke),
     ...nonPosition('opacity', model),
     ...tooltip(model),
     ...text(model, 'href')
@@ -175,11 +238,11 @@ export function defined(model: UnitModel): VgEncodeEntry {
 /**
  * Return mixins for non-positional channels with scales.  (Text doesn't have scale.)
  */
-export function nonPosition(
-  channel: typeof NONPOSITION_SCALE_CHANNELS[0],
+export function nonPosition<C extends NonPositionScaleChannel>(
+  channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
-): VgEncodeEntry {
+): {[k in string]: VgValueRef | VgValueRef[]} {
   const {defaultValue, vgChannel} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 

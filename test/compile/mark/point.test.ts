@@ -5,11 +5,11 @@ import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
 import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
-import {NormalizedUnitSpec} from '../../../src/spec';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Point', () => {
-  function pointXY(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
+  function pointXY(moreEncoding: Encoding<string> = {}): TopLevel<NormalizedUnitSpec> {
     return {
       mark: 'point',
       encoding: {
@@ -17,7 +17,8 @@ describe('Mark: Point', () => {
         y: {field: 'yield', type: 'quantitative'},
         ...moreEncoding
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
+      config: {invalidValues: null}
     };
   }
 
