@@ -142,9 +142,9 @@ function invalidPredicate(model: UnitModel) {
       .map(field => {
         const fieldDef = filterIndex[field];
         const f = vgField(fieldDef, {expr: 'datum'});
-        return `${f} !== null && !isNaN(${f})`;
+        return `${f} === null || isNaN(${f})`;
       })
-      .join(' && ');
+      .join(' || ');
   }
   return undefined;
 }
@@ -153,14 +153,17 @@ function wrapInvalid(
   model: UnitModel,
   channel: Channel,
   valueRef: VgValueRef | VgValueRef[],
-  valueForInvalid = 'none'
+  valueForInvalid: string = null
 ) {
   const {config} = model;
   if (config.invalidValues) {
+    // FIXME deal with filter
+
+    const value = config.invalidValues[channel];
     const test = invalidPredicate(model);
-    if (test) {
+    if (value !== undefined && test) {
       return {
-        [channel]: [{test, value: valueForInvalid}, ...(isArray(valueRef) ? valueRef : valueRef ? [valueRef] : [])]
+        [channel]: [{test, value}, ...(isArray(valueRef) ? valueRef : valueRef ? [valueRef] : [])]
       };
     }
   }
