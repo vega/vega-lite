@@ -21,6 +21,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Plug-ins for Vega-Lite
 
 -   <span class="octicon octicon-star"></span> [Tooltips for Vega and Vega-Lite](https://github.com/vega/vega-lite-tooltip)
+-   <span class="octicon octicon-star"></span> [Leaflet Tile Map integration for Vega and Vega-Lite](https://github.com/nyurik/leaflet-vega)
 
 ## Bindings for Programming Languages
 
