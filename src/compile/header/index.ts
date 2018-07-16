@@ -72,7 +72,6 @@ export function getHeaderType(orient: AxisOrient) {
 
 export function getTitleGroup(model: Model, channel: HeaderChannel) {
   const title = model.component.layoutHeaders[channel].title;
-  const textOrient = channel === 'row' ? 'left' : undefined;
   const config = model.config ? model.config : undefined;
   const facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef
     ? model.component.layoutHeaders[channel].facetFieldDef
@@ -85,7 +84,7 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
     title: {
       text: title,
       offset: 10,
-      orient: textOrient,
+      ...(channel === 'row' ? {orient: 'left'} : {}),
       style: 'guide-title',
       ...getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP)
     }
@@ -172,7 +171,7 @@ export function getHeaderGroup(
       title = {
         text: formatSignalRef(facetFieldDef, format, 'parent', model.config),
         offset: 10,
-        orient: channel === 'row' ? 'left' : 'top',
+        ...(channel === 'row' ? {orient: 'left'} : {}),
         style: 'guide-label',
         ...(labelAngle !== undefined ? {angle: labelAngle} : {}),
         ...labelBaseline(labelAngle),

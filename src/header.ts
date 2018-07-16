@@ -1,4 +1,4 @@
-import {FontWeight, TextBaseline} from 'vega';
+import {FontWeight, TextBaseline, TitleOrient} from 'vega';
 import {TitleConfig as VgTitleConfig} from 'vega';
 import {Guide} from './guide';
 
@@ -10,7 +10,8 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   titleFont: 'font',
   titleFontSize: 'fontSize',
   titleFontWeight: 'fontWeight',
-  titleLimit: 'limit'
+  titleLimit: 'limit',
+  titleOffset: 'offset'
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
@@ -18,7 +19,9 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
-  labelLimit: 'limit'
+  labelLimit: 'limit',
+  labelOffset: 'offset',
+  labelOrient: 'orient'
 };
 
 export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
@@ -82,6 +85,20 @@ export interface HeaderConfig {
    */
   titleLimit?: number;
 
+  /**
+   * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
+   *
+   * __Default value:__ `10`, indicating no limit
+   */
+  titleOffset?: number;
+
+  /**
+   * Title orientation (`"top"`, `"bottom"`, `"left"`, or `"right"`).
+   *
+   * __Default value:__ `"left"` for rows and `"top"` for columns.
+   */
+  titleOrient?: TitleOrient;
+
   // ---------- Label ----------
   /**
    * The rotation angle of the header labels.
@@ -116,6 +133,20 @@ export interface HeaderConfig {
    * __Default value:__ `0`, indicating no limit
    */
   labelLimit?: number;
+
+  /**
+   * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
+   *
+   * __Default value:__ `10`, indicating no limit
+   */
+  labelOffset?: number;
+
+  /**
+   * Label orientation (`"top"`, `"bottom"`, `"left"`, or `"right"`).
+   *
+   * __Default value:__ `"left"` for rows and `"top"` for columns.
+   */
+  labelOrient?: TitleOrient;
 }
 
 /**
