@@ -70,14 +70,40 @@ describe('compile/data/dataflow', () => {
 
         const c = new DataFlowNode(b, 'c');
 
-        assert.deepEqual(a.children, [b]);
+        expect(a.children).toEqual([b]);
         assert.equal(b.parent, a);
         assert.equal(c.parent, b);
 
         b.remove();
 
-        assert.deepEqual(a.children, [c]);
+        expect(a.children).toEqual([c]);
         assert.equal(c.parent, a);
+      });
+
+      it('should maintain order', () => {
+        const root = new DataFlowNode(null, 'root');
+
+        const rootChild1 = new DataFlowNode(root, 'rootChild1');
+        const node = new DataFlowNode(root, 'node');
+        const rootChild2 = new DataFlowNode(root, 'rootChild2');
+
+        const child1 = new DataFlowNode(node, 'child1');
+        const child2 = new DataFlowNode(node, 'child2');
+
+        expect(root.children).toEqual([rootChild1, node, rootChild2]);
+        assert.equal(rootChild1.parent, root);
+        assert.equal(rootChild2.parent, root);
+        assert.equal(node.parent, root);
+        assert.equal(child1.parent, node);
+        assert.equal(child2.parent, node);
+
+        node.remove();
+
+        expect(root.children).toEqual([rootChild1, child1, child2, rootChild2]);
+        assert.equal(rootChild1.parent, root);
+        assert.equal(rootChild2.parent, root);
+        assert.equal(child1.parent, root);
+        assert.equal(child2.parent, root);
       });
     });
 
