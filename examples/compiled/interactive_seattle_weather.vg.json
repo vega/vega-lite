@@ -528,7 +528,7 @@
       "type": "linear",
       "domain": [-1, 50],
       "range": [9, 361],
-      "nice": false,
+      "nice": true,
       "zero": false
     },
     {

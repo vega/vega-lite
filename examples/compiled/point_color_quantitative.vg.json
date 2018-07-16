@@ -67,7 +67,7 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "Displacement"},
       "range": "ramp",
-      "nice": false,
+      "nice": true,
       "zero": false
     }
   ],

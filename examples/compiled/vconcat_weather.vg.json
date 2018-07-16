@@ -250,7 +250,7 @@
       "type": "linear",
       "domain": {"data": "data_1", "field": "count_*"},
       "range": [0, 361],
-      "nice": false,
+      "nice": true,
       "zero": true
     },
     {

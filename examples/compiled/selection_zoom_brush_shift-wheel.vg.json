@@ -381,7 +381,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Cylinders"},
       "range": [0, 361],
-      "nice": false,
+      "nice": true,
       "zero": true
     }
   ],

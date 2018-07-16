@@ -391,7 +391,7 @@
       "type": "sequential",
       "domain": {"data": "data_1", "field": "count_*"},
       "range": "heatmap",
-      "nice": false,
+      "nice": true,
       "zero": false
     },
     {
@@ -399,7 +399,7 @@
       "type": "linear",
       "domain": {"data": "data_2", "field": "count_*"},
       "range": [0, 361],
-      "nice": false,
+      "nice": true,
       "zero": true
     },
     {

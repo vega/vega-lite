@@ -68,7 +68,7 @@
       "type": "linear",
       "domain": [1000, 3250, 4500],
       "range": ["#70001E", "#ffffff", "#00335E"],
-      "nice": false,
+      "nice": true,
       "zero": false
     }
   ],
