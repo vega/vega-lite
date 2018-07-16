@@ -157,10 +157,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 }
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
-  if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
-    return undefined;
-  }
-  return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
+  return fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType) ? undefined : true;
 }
 
 export function padding(
