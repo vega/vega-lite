@@ -1,4 +1,4 @@
-import {FontWeight, TextBaseline, TitleOrient} from 'vega';
+import {FontWeight, TextBaseline} from 'vega';
 import {TitleConfig as VgTitleConfig} from 'vega';
 import {Guide} from './guide';
 
@@ -11,7 +11,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   titleFontSize: 'fontSize',
   titleFontWeight: 'fontWeight',
   titleLimit: 'limit',
-  titleOffset: 'offset'
+  titlePadding: 'offset'
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
@@ -20,8 +20,7 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   labelFont: 'font',
   labelFontSize: 'fontSize',
   labelLimit: 'limit',
-  labelOffset: 'offset',
-  labelOrient: 'orient'
+  labelPadding: 'offset'
 };
 
 export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
@@ -86,18 +85,11 @@ export interface HeaderConfig {
   titleLimit?: number;
 
   /**
-   * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
+   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
    *
-   * __Default value:__ `10`, indicating no limit
+   * __Default value:__ `10`
    */
-  titleOffset?: number;
-
-  /**
-   * Title orientation (`"top"`, `"bottom"`, `"left"`, or `"right"`).
-   *
-   * __Default value:__ `"left"` for rows and `"top"` for columns.
-   */
-  titleOrient?: TitleOrient;
+  titlePadding?: number;
 
   // ---------- Label ----------
   /**
@@ -135,18 +127,11 @@ export interface HeaderConfig {
   labelLimit?: number;
 
   /**
-   * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
+   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
    *
-   * __Default value:__ `10`, indicating no limit
+   * __Default value:__ `10`
    */
-  labelOffset?: number;
-
-  /**
-   * Label orientation (`"top"`, `"bottom"`, `"left"`, or `"right"`).
-   *
-   * __Default value:__ `"left"` for rows and `"top"` for columns.
-   */
-  labelOrient?: TitleOrient;
+  labelPadding?: number;
 }
 
 /**

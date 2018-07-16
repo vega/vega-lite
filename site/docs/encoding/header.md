@@ -54,12 +54,12 @@ __See also:__ You may also use `guide-title` and `guide-label` [style configs](m
 {:#labels}
 ### Labels
 
-{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOffset,labelOrient" source= "Header" %}
+{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOffset" source= "Header" %}
 
 {:#title}
 ### Title
 
-{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleOffset,titleOrient" source="Header" %}
+{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleOffset" source="Header" %}
 
 ### Example
 
