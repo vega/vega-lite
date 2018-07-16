@@ -135,9 +135,8 @@ export function mergeParse(node: DataFlowNode) {
       x.parent = mergedParse;
       mergedParse.merge(x);
     });
-  } else {
-    node.children.forEach(mergeParse);
   }
+  node.children.forEach(mergeParse);
 }
 
 /**
