@@ -59,7 +59,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "rate"},
       "range": "heatmap",
-      "nice": false,
       "zero": false
     }
   ],

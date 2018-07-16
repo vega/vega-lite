@@ -655,7 +655,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "count_*"},
       "range": "heatmap",
-      "nice": false,
       "zero": false
     }
   ],

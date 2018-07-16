@@ -81,7 +81,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "price"},
       "range": [0, 4],
-      "nice": false,
       "zero": true
     }
   ],

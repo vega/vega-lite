@@ -93,7 +93,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "quarter_date"},
       "range": "ramp",
-      "nice": false,
       "zero": false
     }
   ],

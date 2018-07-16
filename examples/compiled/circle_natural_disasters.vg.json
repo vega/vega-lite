@@ -68,7 +68,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Deaths"},
       "range": [0, 5000],
-      "nice": false,
       "zero": true
     }
   ],

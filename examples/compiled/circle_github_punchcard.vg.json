@@ -97,7 +97,6 @@
       "type": "linear",
       "domain": {"data": "data_0", "field": "sum_count"},
       "range": [0, 361],
-      "nice": false,
       "zero": true
     }
   ],

@@ -84,7 +84,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "max_temp"},
       "range": "heatmap",
-      "nice": false,
       "zero": false
     }
   ],

@@ -68,7 +68,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": "ramp",
-      "nice": false,
       "zero": false
     },
     {
@@ -76,7 +75,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [0, 361],
-      "nice": false,
       "zero": true
     }
   ],
