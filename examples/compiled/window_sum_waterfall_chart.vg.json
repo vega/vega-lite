@@ -186,7 +186,6 @@
       "encode": {
         "update": {
           "dy": {"value": -8},
-          "fontWeight": {"value": "bold"},
           "fill": {"value": "#404040"},
           "tooltip": {
             "signal": "{\"Months\": ''+datum[\"label\"], \"sum_inc\": format(datum[\"sum_inc\"], \"\")}"
@@ -207,7 +206,6 @@
         "update": {
           "baseline": {"value": "top"},
           "dy": {"value": 8},
-          "fontWeight": {"value": "bold"},
           "fill": {"value": "#404040"},
           "tooltip": {
             "signal": "{\"Months\": ''+datum[\"label\"], \"sum_dec\": format(datum[\"sum_dec\"], \"\")}"
@@ -317,5 +315,8 @@
       "zindex": 0
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "style": {"text": {"fontWeight": "bold"}}
+  }
 }

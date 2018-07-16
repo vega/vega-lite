@@ -12,16 +12,29 @@
       "format": {"type": "csv", "parse": {"Date": "utc:'%Y-%m-%d'"}},
       "transform": [
         {"type": "formula", "expr": "year(datum.Date)", "as": "year"},
-        {"type": "formula", "expr": "month(datum.Date)", "as": "month"},
+        {"type": "formula", "expr": "floor(datum.year / 10)", "as": "decade"},
         {
           "type": "formula",
-          "expr": "floor(datum.year / 10) + 'x'",
-          "as": "decade"
+          "expr": "(datum.year % 10) + (month(datum.Date)/12)",
+          "as": "scaled_date"
+        },
+        {
+          "type": "window",
+          "params": [null, null],
+          "as": ["first_date", "last_date"],
+          "ops": ["first_value", "last_value"],
+          "fields": ["scaled_date", "scaled_date"],
+          "sort": {
+            "field": ["scaled_date", "scaled_date"],
+            "order": ["ascending", "ascending"]
+          },
+          "groupby": ["decade"],
+          "frame": [null, null]
         },
         {
           "type": "formula",
-          "expr": "(datum.year % 10) + (datum.month/12)",
-          "as": "scaled_date"
+          "expr": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+          "as": "end"
         }
       ]
     },
@@ -36,46 +49,23 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["decade"],
-          "ops": ["argmin", "argmax"],
-          "fields": ["scaled_date", "scaled_date"],
-          "as": ["start", "end"]
-        },
-        {
-          "type": "formula",
-          "expr": "datum.start.scaled_date",
-          "as": "scaled_date_start"
-        },
-        {"type": "formula", "expr": "datum.start.CO2", "as": "CO2_start"},
-        {"type": "formula", "expr": "datum.start.year", "as": "year_start"},
-        {
-          "type": "formula",
-          "expr": "datum.end.scaled_date",
-          "as": "scaled_date_end"
-        },
-        {"type": "formula", "expr": "datum.end.CO2", "as": "CO2_end"},
-        {"type": "formula", "expr": "datum.end.year", "as": "year_end"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
+        {"type": "filter", "expr": "datum[\"end\"]===\"first\""},
         {
           "type": "filter",
-          "expr": "datum[\"scaled_date_start\"] !== null && !isNaN(datum[\"scaled_date_start\"]) && datum[\"CO2_start\"] !== null && !isNaN(datum[\"CO2_start\"])"
+          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
         }
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_2",
+      "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
+        {"type": "filter", "expr": "datum[\"end\"]===\"last\""},
         {
           "type": "filter",
-          "expr": "datum[\"scaled_date_end\"] !== null && !isNaN(datum[\"scaled_date_end\"]) && datum[\"CO2_end\"] !== null && !isNaN(datum[\"CO2_end\"])"
+          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
         }
       ]
     }
@@ -88,7 +78,7 @@
         "facet": {
           "name": "faceted_path_layer_0_main",
           "data": "data_0",
-          "groupby": ["decade", "decade"]
+          "groupby": ["decade"]
         }
       },
       "encode": {
@@ -108,7 +98,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
               "tooltip": {
-                "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
+                "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"decade\": ''+datum[\"decade\"]}"
               },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
@@ -121,44 +111,38 @@
       ]
     },
     {
-      "name": "layer_1_layer_0_marks",
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "top"},
+          "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
+          },
+          "x": {"scale": "x", "field": "scaled_date"},
+          "y": {"scale": "y", "field": "CO2"},
+          "text": {"signal": "''+datum[\"year\"]"}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "align": {"value": "left"},
-          "baseline": {"value": "top"},
-          "dx": {"value": 3},
-          "dy": {"value": 1},
-          "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"scaled_date_start\": format(datum[\"scaled_date_start\"], \"\"), \"CO2_start\": format(datum[\"CO2_start\"], \"\"), \"year_start\": ''+datum[\"year_start\"]}"
-          },
-          "x": {"scale": "x", "field": "scaled_date_start"},
-          "y": {"scale": "y", "field": "CO2_start"},
-          "text": {"signal": "''+datum[\"year_start\"]"}
-        }
-      }
-    },
-    {
-      "name": "layer_1_layer_1_marks",
-      "type": "text",
-      "style": ["text"],
-      "from": {"data": "data_3"},
-      "encode": {
-        "update": {
-          "align": {"value": "left"},
           "baseline": {"value": "bottom"},
-          "dx": {"value": 3},
-          "dy": {"value": 1},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"scaled_date_end\": format(datum[\"scaled_date_end\"], \"\"), \"CO2_end\": format(datum[\"CO2_end\"], \"\"), \"year_end\": ''+datum[\"year_end\"]}"
+            "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
           },
-          "x": {"scale": "x", "field": "scaled_date_end"},
-          "y": {"scale": "y", "field": "CO2_end"},
-          "text": {"signal": "''+datum[\"year_end\"]"}
+          "x": {"scale": "x", "field": "scaled_date"},
+          "y": {"scale": "y", "field": "CO2"},
+          "text": {"signal": "''+datum[\"year\"]"}
         }
       }
     }
@@ -170,8 +154,8 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "scaled_date"},
-          {"data": "data_2", "field": "scaled_date_start"},
-          {"data": "data_3", "field": "scaled_date_end"}
+          {"data": "data_1", "field": "scaled_date"},
+          {"data": "data_2", "field": "scaled_date"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -184,8 +168,8 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "CO2"},
-          {"data": "data_2", "field": "CO2_start"},
-          {"data": "data_3", "field": "CO2_end"}
+          {"data": "data_1", "field": "CO2"},
+          {"data": "data_2", "field": "CO2"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -196,7 +180,7 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "decade", "sort": true},
-      "range": "category"
+      "range": {"scheme": "magma"}
     }
   ],
   "axes": [
@@ -246,6 +230,8 @@
       "zindex": 0
     }
   ],
-  "legends": [{"offset": 40, "stroke": "color", "title": "decade"}],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
+  }
 }

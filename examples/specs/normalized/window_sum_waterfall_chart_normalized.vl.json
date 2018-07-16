@@ -49,6 +49,7 @@
       "as": "sum_inc"
     }
   ],
+  "config": {"text": {"fontWeight": "bold", "color": "#404040"}},
   "layer": [
     {
       "mark": {"type": "bar", "size": 45},
@@ -98,12 +99,7 @@
       }
     },
     {
-      "mark": {
-        "type": "text",
-        "dy": -8,
-        "fontWeight": "bold",
-        "color": "#404040"
-      },
+      "mark": {"type": "text", "dy": -8},
       "encoding": {
         "x": {
           "field": "label",
@@ -116,13 +112,7 @@
       }
     },
     {
-      "mark": {
-        "type": "text",
-        "dy": 8,
-        "baseline": "top",
-        "fontWeight": "bold",
-        "color": "#404040"
-      },
+      "mark": {"type": "text", "dy": 8, "baseline": "top"},
       "encoding": {
         "x": {
           "field": "label",
