@@ -75,7 +75,6 @@
       "title": {
         "text": {"signal": "''+parent[\"key\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

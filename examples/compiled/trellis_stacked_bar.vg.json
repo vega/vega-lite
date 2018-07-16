@@ -77,7 +77,6 @@
       "title": {
         "text": {"signal": "''+parent[\"year\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

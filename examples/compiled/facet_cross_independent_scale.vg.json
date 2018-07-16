@@ -110,7 +110,6 @@
       "title": {
         "text": {"signal": "''+parent[\"c\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },

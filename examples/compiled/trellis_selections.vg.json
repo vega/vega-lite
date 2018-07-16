@@ -92,7 +92,6 @@
       "title": {
         "text": {"signal": "''+parent[\"Series\"]"},
         "offset": 10,
-        "orient": "top",
         "style": "guide-label",
         "baseline": "middle"
       },
