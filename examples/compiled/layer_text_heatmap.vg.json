@@ -113,7 +113,7 @@
       "type": "sequential",
       "domain": {"data": "data_0", "field": "count_*"},
       "range": "heatmap",
-      "nice": false,
+      "nice": true,
       "zero": false
     }
   ],

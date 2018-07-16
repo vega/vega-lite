@@ -224,7 +224,7 @@
       "type": "sequential",
       "domain": {"data": "data_0", "field": "population"},
       "range": "heatmap",
-      "nice": false,
+      "nice": true,
       "zero": false
     },
     {
@@ -232,7 +232,7 @@
       "type": "sequential",
       "domain": {"data": "data_1", "field": "engineers"},
       "range": "heatmap",
-      "nice": false,
+      "nice": true,
       "zero": false
     },
     {
@@ -240,7 +240,7 @@
       "type": "sequential",
       "domain": {"data": "data_2", "field": "hurricanes"},
       "range": "heatmap",
-      "nice": false,
+      "nice": true,
       "zero": false
     }
   ],

@@ -92,7 +92,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "people"},
       "range": [0.3, 0.8],
-      "nice": false,
+      "nice": true,
       "zero": false
     }
   ],

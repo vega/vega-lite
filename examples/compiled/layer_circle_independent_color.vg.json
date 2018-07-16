@@ -217,7 +217,7 @@
         ]
       },
       "range": [0, 361],
-      "nice": false,
+      "nice": true,
       "zero": true
     }
   ],
