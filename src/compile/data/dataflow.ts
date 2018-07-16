@@ -53,22 +53,30 @@ export class DataFlowNode {
     return this._children.length;
   }
 
-  public addChild(child: DataFlowNode) {
-    this._children.push(child);
+  public addChild(child: DataFlowNode, loc?: number) {
+    if (loc !== undefined) {
+      this._children.splice(loc, 0, child);
+    } else {
+      this._children.push(child);
+    }
   }
 
   public removeChild(oldChild: DataFlowNode) {
-    this._children.splice(this._children.indexOf(oldChild), 1);
+    const loc = this._children.indexOf(oldChild);
+    this._children.splice(loc, 1);
+    return loc;
   }
 
   /**
    * Remove node from the dataflow.
    */
   public remove() {
+    let loc = this._parent.removeChild(this);
     for (const child of this._children) {
-      child.parent = this._parent;
+      // do not use the set method because we want to insert at a particular location
+      child._parent = this._parent;
+      this._parent.addChild(child, loc++);
     }
-    this._parent.removeChild(this);
   }
 
   /**
