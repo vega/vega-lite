@@ -63,7 +63,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "yearmonth_date"},
       "range": "ramp",
-      "nice": false,
       "zero": false
     }
   ],

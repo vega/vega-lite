@@ -174,7 +174,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "population"},
       "range": [0, 361],
-      "nice": false,
       "zero": true
     }
   ],

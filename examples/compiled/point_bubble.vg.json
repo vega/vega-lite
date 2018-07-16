@@ -69,7 +69,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Acceleration"},
       "range": [0, 361],
-      "nice": false,
       "zero": true
     }
   ],

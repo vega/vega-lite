@@ -73,7 +73,6 @@
       "type": "sequential",
       "domain": {"data": "source_0", "field": "mean_Horsepower"},
       "range": "heatmap",
-      "nice": false,
       "zero": false
     }
   ],
