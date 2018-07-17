@@ -46,7 +46,7 @@ git add ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./example
 
 if [[ $TRAVIS_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
-  if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/specs/normalized/*.vl.json
+  if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/*.vg.json ./examples/specs/normalized/*.vl.json
   then
     echo "Outdated examples."
     exit 1
