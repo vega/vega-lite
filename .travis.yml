@@ -2,33 +2,20 @@ dist: trusty
 
 language: node_js
 node_js:
-  - "6"
-  - "8"
+  - "10"
 
 env:
   global:
     secure: I9sReagJiE7B0154AnU3t8WcdPtmZm86vMp+6umKegvzYr46jbypPAmlWW50A09fw4AmTaGOtwpYtvglf0JikkR6saXY0rRquDnO70DRmbdrO2o2WMjjCzkYID58SkGvqsqVJ4HXcu0HdJp6o5L7v7JMdzji6abYKxtsnw2ouk0=
 
-  matrix:
-    - TEST_SCRIPT=build
-    - TEST_SCRIPT=cover
-    - TEST_SCRIPT=fix
-
 matrix:
-  exclude:
-    - node_js: "6"
-      env: TEST_SCRIPT=cover
-    - node_js: "6"
-      env: TEST_SCRIPT=fix
   include:
-    - node_js: "6"
+    - env: TEST_SCRIPT=build
+    - env: TEST_SCRIPT=cover
+    - env: TEST_SCRIPT=test
       addons:
         chrome: stable
-      env: TEST_SCRIPT=test
-    - node_js: "8"
-      addons:
-        chrome: stable
-      env: TEST_SCRIPT=test
+    - env: TEST_SCRIPT=fix
 
 script: ./scripts/ci.sh $TEST_SCRIPT
 

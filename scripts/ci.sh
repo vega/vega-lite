@@ -14,6 +14,7 @@ case "$1" in
     bash <(curl -s https://codecov.io/bash)
     ;;
   "test")
+    yarn build:only
     yarn jest examples/
     yarn test:runtime
     ;;
