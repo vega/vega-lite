@@ -18,7 +18,7 @@ case "$1" in
     yarn jest examples/
     yarn test:runtime
     ;;
-  "fix")
+  "update")
     # Minimal installation as described in https://github.com/martinda/gnu-parallel
     wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
     chmod +x parallel
@@ -27,6 +27,7 @@ case "$1" in
     mv parallel sem $HOME/bin
     export PATH="$PATH:$HOME/bin"
 
+    yarn data
     ./scripts/check-and-fix.sh
     ;;
 esac

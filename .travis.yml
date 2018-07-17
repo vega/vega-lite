@@ -15,7 +15,7 @@ matrix:
     - env: TEST_SCRIPT=test
       addons:
         chrome: stable
-    - env: TEST_SCRIPT=fix
+    - env: TEST_SCRIPT=update
 
 script: ./scripts/ci.sh $TEST_SCRIPT
 
