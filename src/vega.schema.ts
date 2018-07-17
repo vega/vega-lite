@@ -1,6 +1,7 @@
 import {AggregateOp} from 'vega';
 import {
   Align,
+  FieldValue,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
   FontStyle,
@@ -34,16 +35,10 @@ export interface VgData {
   transform?: VgTransform[];
 }
 
-export interface VgParentRef {
-  parent: string;
-}
-
-export type VgFieldRef = string | VgParentRef | VgParentRef[];
-
 export type VgSortField =
   | true
   | {
-      field?: VgFieldRef;
+      field?: FieldValue;
       op: AggregateOp;
       order?: SortOrder;
     };
@@ -60,7 +55,7 @@ export type VgUnionSortField =
 
 export interface VgDataRef {
   data: string;
-  field: VgFieldRef;
+  field: FieldValue;
   sort?: VgSortField;
 }
 
@@ -95,7 +90,7 @@ export interface DataRefUnionDomain {
 
 export interface VgFieldRefUnionDomain {
   data: string;
-  fields: VgFieldRef[];
+  fields: FieldValue[];
   sort?: VgUnionSortField;
 }
 
@@ -388,8 +383,8 @@ export interface VgFilterTransform {
 
 export interface VgAggregateTransform {
   type: 'aggregate';
-  groupby?: VgFieldRef[];
-  fields?: VgFieldRef[];
+  groupby?: FieldValue[];
+  fields?: FieldValue[];
   ops?: AggregateOp[];
   as?: string[];
   cross?: boolean;
@@ -439,7 +434,6 @@ export type VgTransform =
   | VgIdentifierTransform
   | VgGeoPointTransform
   | VgGeoJSONTransform
-  | VgGeoJSONTransform
   | VgWindowTransform
   | VgFoldTransform
   | VgSampleTransform;
@@ -447,21 +441,21 @@ export type VgTransform =
 export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
-  fields: VgFieldRef[];
+  fields: FieldValue[];
   as?: string[];
 }
 
 export interface VgGeoShapeTransform {
   type: 'geoshape';
   projection: string; // projection name
-  field?: VgFieldRef;
+  field?: FieldValue;
   as?: string;
 }
 
 export interface VgGeoJSONTransform {
   type: 'geojson';
-  fields?: VgFieldRef[];
-  geojson?: VgFieldRef;
+  fields?: FieldValue[];
+  geojson?: FieldValue;
   signal: string;
 }
 
