@@ -67,18 +67,20 @@ echo ""
 echo "------- Checking Code Formatting -------"
 echo ""
 
-## For non-master branch, commit tslint fix and prettier changes if outdated
 if [[ $TRAVIS_BRANCH != 'master' ]]; then
   yarn format
+
+  ## For non-master branch, commit tslint fix and prettier changes if outdated
   if ! git diff --word-diff=color --exit-code HEAD -- src test test-runtime
   then
     git add src test test-runtime
     git commit -m "[Travis] Auto-formatting (build: $TRAVIS_BUILD_NUMBER)"
   fi
-fi
 
-git remote add origin-pushable https://${GH_TOKEN}@github.com/vega/vega-lite.git > /dev/null 2>&1
-git push --set-upstream origin-pushable
+  # Then push all the changes (schema, examples, prettier)
+  git remote add origin-pushable https://${GH_TOKEN}@github.com/vega/vega-lite.git > /dev/null 2>&1
+  git push --set-upstream origin-pushable
+fi
 
 exit 0
 
