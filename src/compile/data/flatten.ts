@@ -1,4 +1,4 @@
-import {FlattenTransform as VgFlattenTransform} from 'vega-typings';
+import {FlattenTransform as VgFlattenTransform} from 'vega';
 import {FlattenTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {DataFlowNode} from './dataflow';

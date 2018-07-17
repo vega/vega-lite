@@ -10,7 +10,7 @@ import {PositionFieldDef} from '../../../src/fielddef';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {EncodingSortField} from '../../../src/sort';
-import {VgDomain, VgSortField} from '../../../src/vega.schema';
+import {VgDomain} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/scale', () => {
@@ -903,7 +903,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual<VgSortField>(sort, {op: 'sum', field: 'y'});
+      assert.deepEqual(sort, {op: 'sum', field: 'y'});
     });
 
     it('should return normal sort spec if aggregration is count and field not specified', () => {
@@ -915,7 +915,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      assert.deepEqual<VgSortField>(sort, {op: 'count'});
+      assert.deepEqual(sort, {op: 'count'});
     });
 
     it('should return true if sort is not specified', () => {
@@ -938,7 +938,7 @@ describe('compile/scale', () => {
           y: {field: 'b', aggregate: 'sum', type: 'quantitative'}
         }
       });
-      assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {
+      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
         op: 'min',
         field: 'a',
         order: 'descending'
@@ -953,7 +953,7 @@ describe('compile/scale', () => {
           y: {field: 'b', type: 'quantitative'}
         }
       });
-      assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {
+      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
         op: 'min',
         field: 'x_a_sort_index',
         order: 'ascending'
@@ -967,7 +967,7 @@ describe('compile/scale', () => {
           x: {field: 'a', type: 'ordinal', sort: {field: 'foo.bar', op: 'mean'}}
         }
       });
-      assert.deepEqual<VgSortField>(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'mean', field: 'foo\\.bar'});
+      assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {op: 'mean', field: 'foo\\.bar'});
     });
   });
 });

@@ -2,7 +2,7 @@
  * Vega-Lite's singleton logger utility.
  */
 
-import {AggregateOp} from 'vega';
+import {AggregateOp, SortField} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
 import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
@@ -14,7 +14,6 @@ import {Projection} from './projection';
 import {ScaleType} from './scale';
 import {Type} from './type';
 import {stringify} from './util';
-import {VgSortField} from './vega.schema';
 
 export {LoggerInterface} from 'vega-util';
 
@@ -310,7 +309,7 @@ export namespace message {
     return `Setting the scale to be independent for "${channel}" means we also have to set the guide (axis or legend) to be independent.`;
   }
 
-  export function domainSortDropped(sort: VgSortField) {
+  export function domainSortDropped(sort: SortField) {
     return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op 'count'.`;
   }
 

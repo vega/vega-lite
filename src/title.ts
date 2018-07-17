@@ -1,7 +1,7 @@
-import {BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame} from 'vega';
+import {Align, BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame} from 'vega';
 import {Color, VgMarkConfig} from './vega.schema';
 
-type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, TextBaseline, TitleFrame, TitleAnchor>;
+type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, Align, TextBaseline, TitleFrame, TitleAnchor>;
 
 export type TitleConfig = BaseTitleNoSignals;
 

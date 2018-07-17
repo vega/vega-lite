@@ -1,4 +1,4 @@
-import {FoldTransform as VgFoldTransform} from 'vega-typings';
+import {FoldTransform as VgFoldTransform} from 'vega';
 import {FoldTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {DataFlowNode} from './dataflow';

@@ -1,4 +1,4 @@
-import {SampleTransform as VgSampleTransform} from 'vega-typings';
+import {SampleTransform as VgSampleTransform} from 'vega';
 import {SampleTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {DataFlowNode} from './dataflow';

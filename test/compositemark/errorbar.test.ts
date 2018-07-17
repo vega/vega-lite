@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
-import {AggregateOp} from 'vega-typings/types/spec/transform';
+import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
