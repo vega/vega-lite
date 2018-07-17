@@ -1,6 +1,4 @@
 dist: trusty
-addons:
-  chrome: stable
 
 language: node_js
 node_js:
@@ -14,7 +12,6 @@ env:
   matrix:
     - TEST_SCRIPT=build
     - TEST_SCRIPT=cover
-    - TEST_SCRIPT=test
     - TEST_SCRIPT=fix
 
 matrix:
@@ -23,6 +20,15 @@ matrix:
       env: TEST_SCRIPT=cover
     - node_js: "6"
       env: TEST_SCRIPT=fix
+  include:
+    - node_js: "6"
+      addons:
+        chrome: stable
+      env: TEST_SCRIPT=test
+    - node_js: "8"
+      addons:
+        chrome: stable
+      env: TEST_SCRIPT=test
 
 script: ./scripts/ci.sh $TEST_SCRIPT
 
