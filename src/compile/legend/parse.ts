@@ -134,6 +134,11 @@ function getProperty(
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+    case 'labelOverlap':
+      return getFirstDefined(
+        specifiedLegend.labelOverlap,
+        properties.labelOverlap(model.getScaleComponent(channel).get('type'))
+      );
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
     case 'labelOverlap':

@@ -1,3 +1,4 @@
+import {LabelOverlap} from 'vega';
 import {FieldDef, valueArray} from '../../fielddef';
 import {Legend} from '../../legend';
 import {hasContinuousDomain, ScaleType} from '../../scale';
@@ -14,6 +15,13 @@ export function values(legend: Legend, fieldDef: FieldDef<string>) {
 export function clipHeight(scaleType: ScaleType) {
   if (hasContinuousDomain(scaleType)) {
     return 20;
+  }
+  return undefined;
+}
+
+export function labelOverlap(scaleType: ScaleType): LabelOverlap {
+  if (scaleType === 'log') {
+    return 'greedy';
   }
   return undefined;
 }
