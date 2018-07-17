@@ -386,10 +386,6 @@
           "minimum": 0,
           "type": "number"
         },
-        "gridScale": {
-          "description": "The name of the scale to use for including grid lines. By default grid lines are driven by the same scale as the ticks and labels.",
-          "type": "string"
-        },
         "gridWidth": {
           "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
           "minimum": 0,
@@ -663,10 +659,6 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
-        },
-        "gridScale": {
-          "description": "The name of the scale to use for including grid lines. By default grid lines are driven by the same scale as the ticks and labels.",
-          "type": "string"
         },
         "gridWidth": {
           "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
@@ -1059,6 +1051,9 @@
     "VgTitleConfig": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "$ref": "#/definitions/Align"
+        },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
@@ -1069,7 +1064,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title text."
+          "description": "Vertical text baseline for title text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "color": {
           "$ref": "#/definitions/Color",
@@ -3818,15 +3813,8 @@
       "enum": [
         "normal",
         "bold",
-        "100",
-        "200",
-        "300",
-        "400",
-        "500",
-        "600",
-        "700",
-        "800",
-        "900",
+        "lighter",
+        "bolder",
         100,
         200,
         300,
@@ -8571,6 +8559,9 @@
     "TitleParams": {
       "additionalProperties": false,
       "properties": {
+        "align": {
+          "$ref": "#/definitions/Align"
+        },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
           "description": "The anchor position for placing the title. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.\n\n__Default value:__ `\"middle\"` for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.\n`\"start\"` for other composite views.\n\n__Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `\"start\"`."
@@ -8581,7 +8572,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title text."
+          "description": "Vertical text baseline for title text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
         },
         "color": {
           "$ref": "#/definitions/Color",

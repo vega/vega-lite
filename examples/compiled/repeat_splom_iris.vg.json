@@ -309,8 +309,8 @@
         {
           "scale": "child_petalWidth_sepalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalWidth_sepalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -331,8 +331,8 @@
         {
           "scale": "child_petalWidth_sepalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalWidth_sepalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -402,8 +402,8 @@
         {
           "scale": "child_petalWidth_sepalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalWidth_sepalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -424,8 +424,8 @@
         {
           "scale": "child_petalWidth_sepalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalWidth_sepalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -495,8 +495,8 @@
         {
           "scale": "child_petalWidth_petalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalWidth_petalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -517,8 +517,8 @@
         {
           "scale": "child_petalWidth_petalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalWidth_petalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -588,8 +588,8 @@
         {
           "scale": "child_petalWidth_petalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalWidth_petalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -610,8 +610,8 @@
         {
           "scale": "child_petalWidth_petalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalWidth_petalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -681,8 +681,8 @@
         {
           "scale": "child_petalLength_sepalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalLength_sepalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -703,8 +703,8 @@
         {
           "scale": "child_petalLength_sepalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalLength_sepalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -774,8 +774,8 @@
         {
           "scale": "child_petalLength_sepalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalLength_sepalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -796,8 +796,8 @@
         {
           "scale": "child_petalLength_sepalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalLength_sepalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -867,8 +867,8 @@
         {
           "scale": "child_petalLength_petalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalLength_petalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -889,8 +889,8 @@
         {
           "scale": "child_petalLength_petalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalLength_petalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -960,8 +960,8 @@
         {
           "scale": "child_petalLength_petalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_petalLength_petalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -982,8 +982,8 @@
         {
           "scale": "child_petalLength_petalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_petalLength_petalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1053,8 +1053,8 @@
         {
           "scale": "child_sepalWidth_sepalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalWidth_sepalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1075,8 +1075,8 @@
         {
           "scale": "child_sepalWidth_sepalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalWidth_sepalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1146,8 +1146,8 @@
         {
           "scale": "child_sepalWidth_sepalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalWidth_sepalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1168,8 +1168,8 @@
         {
           "scale": "child_sepalWidth_sepalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalWidth_sepalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1239,8 +1239,8 @@
         {
           "scale": "child_sepalWidth_petalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalWidth_petalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1261,8 +1261,8 @@
         {
           "scale": "child_sepalWidth_petalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalWidth_petalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1332,8 +1332,8 @@
         {
           "scale": "child_sepalWidth_petalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalWidth_petalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1354,8 +1354,8 @@
         {
           "scale": "child_sepalWidth_petalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalWidth_petalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1425,8 +1425,8 @@
         {
           "scale": "child_sepalLength_sepalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalLength_sepalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1447,8 +1447,8 @@
         {
           "scale": "child_sepalLength_sepalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalLength_sepalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1518,8 +1518,8 @@
         {
           "scale": "child_sepalLength_sepalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalLength_sepalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1540,8 +1540,8 @@
         {
           "scale": "child_sepalLength_sepalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalLength_sepalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1611,8 +1611,8 @@
         {
           "scale": "child_sepalLength_petalLength_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalLength_petalLength_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1633,8 +1633,8 @@
         {
           "scale": "child_sepalLength_petalLength_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalLength_petalLength_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1704,8 +1704,8 @@
         {
           "scale": "child_sepalLength_petalWidth_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_sepalLength_petalWidth_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1726,8 +1726,8 @@
         {
           "scale": "child_sepalLength_petalWidth_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_sepalLength_petalWidth_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,

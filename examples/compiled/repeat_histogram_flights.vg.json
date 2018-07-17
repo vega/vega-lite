@@ -175,8 +175,8 @@
         {
           "scale": "child_distance_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_distance_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -253,8 +253,8 @@
         {
           "scale": "child_delay_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_delay_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -331,8 +331,8 @@
         {
           "scale": "child_time_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_time_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,

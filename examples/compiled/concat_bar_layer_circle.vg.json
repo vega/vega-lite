@@ -387,8 +387,8 @@
         {
           "scale": "concat_1_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "concat_1_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "domain": false,
           "labels": false,

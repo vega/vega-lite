@@ -1,21 +1,25 @@
-import {AggregateOp} from 'vega';
 import {
+  AggregateOp,
   Align,
+  Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
   FontStyle,
   FontWeight,
   SampleTransform as VgSampleTransform,
   SignalRef,
-  TextBaseline
-} from 'vega-typings';
+  SortField,
+  TextBaseline,
+  UnionSortField
+} from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
-import {SortOrder} from './sort';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
+
+export {SortField as VgSortField, UnionSortField as VgUnionSortField} from 'vega';
 
 export type Color = string;
 
@@ -34,34 +38,10 @@ export interface VgData {
   transform?: VgTransform[];
 }
 
-export interface VgParentRef {
-  parent: string;
-}
-
-export type VgFieldRef = string | VgParentRef | VgParentRef[];
-
-export type VgSortField =
-  | true
-  | {
-      field?: VgFieldRef;
-      op: AggregateOp;
-      order?: SortOrder;
-    };
-
-/**
- * Unioned domains can only be sorted by count aggregate.
- */
-export type VgUnionSortField =
-  | true
-  | {
-      op: 'count';
-      order?: SortOrder;
-    };
-
 export interface VgDataRef {
   data: string;
-  field: VgFieldRef;
-  sort?: VgSortField;
+  field: VgField;
+  sort?: SortField;
 }
 
 export function isSignalRef(o: any): o is SignalRef {
@@ -90,13 +70,13 @@ export interface VgValueRef {
 // TODO: add vg prefix
 export interface DataRefUnionDomain {
   fields: (any[] | VgDataRef | SignalRef)[];
-  sort?: VgUnionSortField;
+  sort?: UnionSortField;
 }
 
 export interface VgFieldRefUnionDomain {
   data: string;
-  fields: VgFieldRef[];
-  sort?: VgUnionSortField;
+  fields: VgField[];
+  sort?: UnionSortField;
 }
 
 export interface VgScheme {
@@ -388,8 +368,8 @@ export interface VgFilterTransform {
 
 export interface VgAggregateTransform {
   type: 'aggregate';
-  groupby?: VgFieldRef[];
-  fields?: VgFieldRef[];
+  groupby?: VgField[];
+  fields?: VgField[];
   ops?: AggregateOp[];
   as?: string[];
   cross?: boolean;
@@ -439,7 +419,6 @@ export type VgTransform =
   | VgIdentifierTransform
   | VgGeoPointTransform
   | VgGeoJSONTransform
-  | VgGeoJSONTransform
   | VgWindowTransform
   | VgFoldTransform
   | VgSampleTransform;
@@ -447,21 +426,21 @@ export type VgTransform =
 export interface VgGeoPointTransform {
   type: 'geopoint';
   projection: string; // projection name
-  fields: VgFieldRef[];
+  fields: VgField[];
   as?: string[];
 }
 
 export interface VgGeoShapeTransform {
   type: 'geoshape';
   projection: string; // projection name
-  field?: VgFieldRef;
+  field?: VgField;
   as?: string;
 }
 
 export interface VgGeoJSONTransform {
   type: 'geojson';
-  fields?: VgFieldRef[];
-  geojson?: VgFieldRef;
+  fields?: VgField[];
+  geojson?: VgField;
   signal: string;
 }
 

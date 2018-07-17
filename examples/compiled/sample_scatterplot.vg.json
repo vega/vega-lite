@@ -105,8 +105,8 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "concat_0_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
           "labels": false,
@@ -127,8 +127,8 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "concat_0_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -195,8 +195,8 @@
         {
           "scale": "concat_1_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "concat_1_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(concat_1_width/40)"},
           "domain": false,
           "labels": false,
@@ -217,8 +217,8 @@
         {
           "scale": "concat_1_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "concat_1_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,

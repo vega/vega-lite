@@ -463,7 +463,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep simple sort properties that work with unioned domains
   const simpleSorts = util.unique(
     sorts.map(s => {
-      if (s === true) {
+      if (util.isBoolean(s)) {
         return s;
       }
       if (s.op === 'count') {

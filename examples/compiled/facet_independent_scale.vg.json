@@ -177,8 +177,8 @@
         {
           "scale": "y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,
           "labels": false,

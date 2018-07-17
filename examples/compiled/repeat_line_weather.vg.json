@@ -148,8 +148,8 @@
         {
           "scale": "child_temp_max_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_temp_max_y",
+          "grid": true,
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -169,8 +169,8 @@
         {
           "scale": "child_temp_max_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_temp_max_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -253,8 +253,8 @@
         {
           "scale": "child_precipitation_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_precipitation_y",
+          "grid": true,
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -274,8 +274,8 @@
         {
           "scale": "child_precipitation_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_precipitation_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -352,8 +352,8 @@
         {
           "scale": "child_wind_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_wind_y",
+          "grid": true,
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -373,8 +373,8 @@
         {
           "scale": "child_wind_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_wind_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
