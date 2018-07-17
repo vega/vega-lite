@@ -284,8 +284,10 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
-  gridScale: 1,
+  // We want scale and orient to come first
   scale: 1,
+  orient: 1,
+  gridScale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
   encode: 1
 };
