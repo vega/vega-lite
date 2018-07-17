@@ -284,8 +284,8 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
-  scale: 1,
   gridScale: 1,
+  scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
   encode: 1
 };
