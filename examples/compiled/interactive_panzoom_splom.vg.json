@@ -20,10 +20,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Horsepower\"])",
           "as": "Horsepower"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
         }
       ]
     },
@@ -40,10 +36,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Horsepower\"])",
           "as": "Horsepower"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
         }
       ]
     },
@@ -55,10 +47,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Horsepower\"])",
           "as": "Horsepower"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
         }
       ]
     },
@@ -75,10 +63,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Acceleration\"])",
           "as": "Acceleration"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
         }
       ]
     },
@@ -90,10 +74,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Acceleration\"])",
           "as": "Acceleration"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
         }
       ]
     },
@@ -110,10 +90,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Acceleration\"])",
           "as": "Acceleration"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
         }
       ]
     },
@@ -125,10 +101,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -145,10 +117,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -165,10 +133,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     }
@@ -309,8 +273,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -491,8 +467,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -656,8 +644,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -838,8 +838,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -1003,8 +1015,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -1185,8 +1209,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -1350,8 +1386,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -1532,8 +1580,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Acceleration\": format(datum[\"Acceleration\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
@@ -1714,8 +1774,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },

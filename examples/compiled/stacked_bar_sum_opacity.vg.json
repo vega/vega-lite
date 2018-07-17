@@ -31,10 +31,6 @@
           "sort": {"field": ["people"], "order": ["descending"]},
           "as": ["sum_people_start", "sum_people_end"],
           "offset": "zero"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"people\"] !== null && !isNaN(datum[\"people\"])"
         }
       ]
     }
@@ -54,7 +50,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"]) || datum[\"people\"] === null || isNaN(datum[\"people\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "opacity": {"scale": "opacity", "field": "people"},
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"people\": format(datum[\"people\"], \"\")}"

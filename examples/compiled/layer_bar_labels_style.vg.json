@@ -14,22 +14,14 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"},
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
       ]
     },
     {
       "name": "data_2",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"},
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
       ]
     }
   ],
@@ -48,7 +40,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"b\": format(datum[\"b\"], \"\"), \"a\": ''+datum[\"a\"]}"
           },
@@ -66,7 +64,13 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"b\": format(datum[\"b\"], \"\"), \"a\": ''+datum[\"a\"]}"
           },

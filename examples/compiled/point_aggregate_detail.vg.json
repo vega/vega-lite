@@ -33,8 +33,20 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"]) || datum[\"mean_Displacement\"] === null || isNaN(datum[\"mean_Displacement\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"]) || datum[\"mean_Displacement\"] === null || isNaN(datum[\"mean_Displacement\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Mean of Displacement\": format(datum[\"mean_Displacement\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
           },

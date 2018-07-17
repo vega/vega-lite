@@ -33,15 +33,7 @@
           "expr": "toNumber(datum[\"bin_end\"])",
           "as": "bin_end"
         },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"count\"])",
-          "as": "count"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_start\"] !== null && !isNaN(datum[\"bin_start\"]) && datum[\"count\"] !== null && !isNaN(datum[\"count\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"count\"])", "as": "count"}
       ]
     }
   ],
@@ -53,7 +45,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"bin_start\"] === null || isNaN(datum[\"bin_start\"]) || datum[\"count\"] === null || isNaN(datum[\"count\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"bin_start\": format(datum[\"bin_start\"], \"\"), \"count\": format(datum[\"count\"], \"\"), \"bin_end\": format(datum[\"bin_end\"], \"\")}"
           },

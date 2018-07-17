@@ -19,10 +19,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -39,10 +35,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Acceleration\"])",
           "as": "Acceleration"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
         }
       ]
     }
@@ -187,8 +179,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
               },
@@ -266,8 +270,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
               },

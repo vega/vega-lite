@@ -36,10 +36,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_precipitation\"] !== null && !isNaN(datum[\"bin_maxbins_10_precipitation\"])"
         }
       ]
     }
@@ -52,7 +48,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"precipitation (binned)\": datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
           },

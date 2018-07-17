@@ -47,10 +47,6 @@
           "type": "formula",
           "expr": "datum.lower_yield",
           "as": "upper_upper_yield"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_upper_yield\"] !== null && !isNaN(datum[\"lower_upper_yield\"])"
         }
       ]
     },
@@ -62,10 +58,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"center\"])",
           "as": "center"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
         }
       ]
     }
@@ -85,7 +77,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"lower_upper_yield\"] === null || isNaN(datum[\"lower_upper_yield\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_upper_yield\": format(datum[\"upper_upper_yield\"], \"\")}"
           },
@@ -103,7 +101,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"center\": format(datum[\"center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },

@@ -30,10 +30,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_IMDB_Rating\"])"
         }
       ]
     }
@@ -46,7 +42,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\")}"
           },

@@ -34,11 +34,7 @@
           "as": "miles"
         },
         {"type": "formula", "expr": "toNumber(datum[\"gas\"])", "as": "gas"},
-        {"type": "formula", "expr": "toDate(datum[\"year\"])", "as": "year"},
-        {
-          "type": "filter",
-          "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
-        }
+        {"type": "formula", "expr": "toDate(datum[\"year\"])", "as": "year"}
       ]
     }
   ],
@@ -72,7 +68,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"]) || datum[\"gas\"] === null || isNaN(datum[\"gas\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '')}"
           },

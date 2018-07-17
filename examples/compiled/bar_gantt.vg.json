@@ -23,11 +23,7 @@
           "expr": "toNumber(datum[\"start\"])",
           "as": "start"
         },
-        {"type": "formula", "expr": "toNumber(datum[\"end\"])", "as": "end"},
-        {
-          "type": "filter",
-          "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"end\"])", "as": "end"}
       ]
     }
   ],
@@ -46,7 +42,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"start\": format(datum[\"start\"], \"\"), \"task\": ''+datum[\"task\"], \"end\": format(datum[\"end\"], \"\")}"
           },

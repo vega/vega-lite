@@ -52,16 +52,6 @@
         },
         {"type": "filter", "expr": "datum.rank <= 5"}
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"score\"] !== null && !isNaN(datum[\"score\"])"
-        }
-      ]
     }
   ],
   "signals": [
@@ -76,10 +66,16 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"score\"] === null || isNaN(datum[\"score\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"score\": format(datum[\"score\"], \"\"), \"student\": ''+datum[\"student\"]}"
           },
@@ -95,7 +91,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "score"},
+      "domain": {"data": "data_0", "field": "score"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true

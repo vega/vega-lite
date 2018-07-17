@@ -39,10 +39,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"source\"] && datum[\"source\"][\"yes\"])",
           "as": "source.yes"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"source.reco\"] !== null && !isNaN(datum[\"source.reco\"]) && datum[\"source.yes\"] !== null && !isNaN(datum[\"source.yes\"])"
         }
       ]
     }
@@ -56,8 +52,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"source.reco\"] === null || isNaN(datum[\"source.reco\"]) || datum[\"source.yes\"] === null || isNaN(datum[\"source.yes\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"source.reco\"] === null || isNaN(datum[\"source.reco\"]) || datum[\"source.yes\"] === null || isNaN(datum[\"source.yes\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"source.reco\": format(datum[\"source.reco\"], \"\"), \"source.yes\": format(datum[\"source.yes\"], \"\")}"
           },

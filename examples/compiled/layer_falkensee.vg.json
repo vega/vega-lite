@@ -82,10 +82,6 @@
           "type": "formula",
           "as": "year_end",
           "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"year_start\"] !== null && !isNaN(datum[\"year_start\"])"
         }
       ]
     },
@@ -129,10 +125,6 @@
           "type": "formula",
           "as": "year_year",
           "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
         }
       ]
     }
@@ -145,7 +137,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "event"},
+          "fill": [
+            {
+              "test": "datum[\"year_start\"] === null || isNaN(datum[\"year_start\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "event"}
+          ],
           "tooltip": {
             "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": ''+datum[\"event\"]}"
           },
@@ -184,8 +182,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#333"},
+          "fill": [
+            {
+              "test": "datum[\"year_year\"] === null || isNaN(datum[\"year_year\"]) || datum[\"population\"] === null || isNaN(datum[\"population\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"year_year\"] === null || isNaN(datum[\"year_year\"]) || datum[\"population\"] === null || isNaN(datum[\"population\"])",
+              "value": null
+            },
+            {"value": "#333"}
+          ],
           "tooltip": {
             "signal": "{\"year (year)\": timeFormat(datum[\"year_year\"], '%Y'), \"population\": format(datum[\"population\"], \"\")}"
           },

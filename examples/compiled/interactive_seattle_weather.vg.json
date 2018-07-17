@@ -57,10 +57,6 @@
           "type": "formula",
           "as": "monthdate_date",
           "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"]) && datum[\"monthdate_date\"] !== null && !isNaN(datum[\"monthdate_date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
         }
       ]
     }
@@ -299,8 +295,18 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
+              "fill": [
+                {
+                  "test": "datum[\"monthdate_date\"] === null || isNaN(datum[\"monthdate_date\"]) || datum[\"temp_max\"] === null || isNaN(datum[\"temp_max\"]) || datum[\"precipitation\"] === null || isNaN(datum[\"precipitation\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
               "stroke": [
+                {
+                  "test": "datum[\"monthdate_date\"] === null || isNaN(datum[\"monthdate_date\"]) || datum[\"temp_max\"] === null || isNaN(datum[\"temp_max\"]) || datum[\"precipitation\"] === null || isNaN(datum[\"precipitation\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                   "scale": "color",
@@ -464,6 +470,10 @@
           "encode": {
             "update": {
               "fill": [
+                {
+                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))",
                   "scale": "color",

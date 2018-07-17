@@ -34,15 +34,7 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Value\"])",
-          "as": "Value"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Value\"] !== null && !isNaN(datum[\"Value\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"Value\"])", "as": "Value"}
       ]
     },
     {
@@ -55,11 +47,7 @@
           "as": "Value"
         },
         {"type": "filter", "expr": "datum.Value >= 300"},
-        {"type": "formula", "expr": "300", "as": "baseline"},
-        {
-          "type": "filter",
-          "expr": "datum[\"baseline\"] !== null && !isNaN(datum[\"baseline\"])"
-        }
+        {"type": "formula", "expr": "300", "as": "baseline"}
       ]
     },
     {
@@ -70,10 +58,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"ThresholdValue\"])",
           "as": "ThresholdValue"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
         }
       ]
     },
@@ -85,10 +69,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"ThresholdValue\"])",
           "as": "ThresholdValue"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ThresholdValue\"] !== null && !isNaN(datum[\"ThresholdValue\"])"
         }
       ]
     }
@@ -108,7 +88,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"Value\"] === null || isNaN(datum[\"Value\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Day\": ''+datum[\"Day\"], \"Value\": format(datum[\"Value\"], \"\")}"
           },
@@ -126,7 +112,13 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "fill": {"value": "#e45755"},
+          "fill": [
+            {
+              "test": "datum[\"baseline\"] === null || isNaN(datum[\"baseline\"])",
+              "value": null
+            },
+            {"value": "#e45755"}
+          ],
           "tooltip": {
             "signal": "{\"Day\": ''+datum[\"Day\"], \"baseline\": format(datum[\"baseline\"], \"\"), \"Value\": format(datum[\"Value\"], \"\")}"
           },
@@ -144,7 +136,13 @@
       "from": {"data": "data_4"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"ThresholdValue\"] === null || isNaN(datum[\"ThresholdValue\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"ThresholdValue\": format(datum[\"ThresholdValue\"], \"\")}"
           },
@@ -164,7 +162,13 @@
           "align": {"value": "right"},
           "dx": {"value": -2},
           "dy": {"value": -4},
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"ThresholdValue\"] === null || isNaN(datum[\"ThresholdValue\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"ThresholdValue\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"
           },

@@ -14,13 +14,7 @@
         "type": "json",
         "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
       },
-      "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-        }
-      ]
+      "transform": [{"type": "identifier", "as": "_vgsid_"}]
     }
   ],
   "signals": [
@@ -72,6 +66,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
             {
               "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
               "scale": "color",

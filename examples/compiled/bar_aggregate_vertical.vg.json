@@ -35,7 +35,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"mean_Acceleration\"] === null || isNaN(datum[\"mean_Acceleration\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Mean of Acceleration\": format(datum[\"mean_Acceleration\"], \"\")}"
           },

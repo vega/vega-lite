@@ -15,16 +15,6 @@
       "name": "column_domain",
       "source": "source_0",
       "transform": [{"type": "aggregate", "groupby": ["Origin"]}]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-        }
-      ]
     }
   ],
   "signals": [
@@ -148,18 +138,6 @@
             }
           },
           "sort": {"field": ["datum[\"Cylinders\"]"], "order": ["ascending"]},
-          "data": [
-            {
-              "source": "child_facet",
-              "name": "data_0",
-              "transform": [
-                {
-                  "type": "filter",
-                  "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
-                }
-              ]
-            }
-          ],
           "encode": {
             "update": {
               "width": {"signal": "child_child_width"},
@@ -171,12 +149,24 @@
               "name": "child_child_marks",
               "type": "symbol",
               "style": ["point"],
-              "from": {"data": "data_0"},
+              "from": {"data": "child_facet"},
               "encode": {
                 "update": {
                   "opacity": {"value": 0.7},
-                  "fill": {"value": "transparent"},
-                  "stroke": {"value": "#4c78a8"},
+                  "fill": [
+                    {
+                      "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                      "value": null
+                    },
+                    {"value": "transparent"}
+                  ],
+                  "stroke": [
+                    {
+                      "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                      "value": null
+                    },
+                    {"value": "#4c78a8"}
+                  ],
                   "tooltip": {
                     "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Acceleration\": format(datum[\"Acceleration\"], \"\")}"
                   },
@@ -222,7 +212,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Horsepower"},
+      "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "child_child_width"}],
       "nice": true,
       "zero": true
@@ -230,7 +220,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Acceleration"},
+      "domain": {"data": "source_0", "field": "Acceleration"},
       "range": [{"signal": "child_child_height"}, 0],
       "nice": true,
       "zero": true

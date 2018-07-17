@@ -20,10 +20,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Horsepower\"])",
           "as": "Horsepower"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
         }
       ]
     },
@@ -40,10 +36,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Acceleration\"])",
           "as": "Acceleration"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"]) && datum[\"Acceleration\"] !== null && !isNaN(datum[\"Acceleration\"])"
         }
       ]
     }
@@ -338,8 +330,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Horsepower\": format(datum[\"Horsepower\"], \"\")}"
               },
@@ -562,8 +566,18 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
+              "fill": [
+                {
+                  "test": "datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
               "stroke": [
+                {
+                  "test": "datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"]) || datum[\"Acceleration\"] === null || isNaN(datum[\"Acceleration\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                   "value": "steelblue"

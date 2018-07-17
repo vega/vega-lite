@@ -57,10 +57,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
           "as": "ranges.2"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
         }
       ]
     },
@@ -72,10 +68,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
           "as": "ranges.1"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
         }
       ]
     },
@@ -87,10 +79,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
           "as": "ranges.0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
         }
       ]
     },
@@ -102,10 +90,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
           "as": "measures.1"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
         }
       ]
     },
@@ -117,10 +101,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
           "as": "measures.0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
         }
       ]
     },
@@ -132,10 +112,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
           "as": "markers.0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
         }
       ]
     }
@@ -185,10 +161,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
               "as": "ranges.2"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"ranges.2\"] !== null && !isNaN(datum[\"ranges.2\"])"
             }
           ]
         },
@@ -200,10 +172,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
               "as": "ranges.1"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"ranges.1\"] !== null && !isNaN(datum[\"ranges.1\"])"
             }
           ]
         },
@@ -215,10 +183,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
               "as": "ranges.0"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"ranges.0\"] !== null && !isNaN(datum[\"ranges.0\"])"
             }
           ]
         },
@@ -230,10 +194,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
               "as": "measures.1"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"measures.1\"] !== null && !isNaN(datum[\"measures.1\"])"
             }
           ]
         },
@@ -245,10 +205,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
               "as": "measures.0"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"measures.0\"] !== null && !isNaN(datum[\"measures.0\"])"
             }
           ]
         },
@@ -260,10 +216,6 @@
               "type": "formula",
               "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
               "as": "markers.0"
-            },
-            {
-              "type": "filter",
-              "expr": "datum[\"markers.0\"] !== null && !isNaN(datum[\"markers.0\"])"
             }
           ]
         }
@@ -282,7 +234,13 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": {"value": "#eee"},
+              "fill": [
+                {
+                  "test": "datum[\"ranges.2\"] === null || isNaN(datum[\"ranges.2\"])",
+                  "value": null
+                },
+                {"value": "#eee"}
+              ],
               "tooltip": {
                 "signal": "{\"null\": format(datum[\"ranges.2\"], \"\")}"
               },
@@ -300,7 +258,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"value": "#ddd"},
+              "fill": [
+                {
+                  "test": "datum[\"ranges.1\"] === null || isNaN(datum[\"ranges.1\"])",
+                  "value": null
+                },
+                {"value": "#ddd"}
+              ],
               "tooltip": {
                 "signal": "{\"ranges[1]\": format(datum[\"ranges.1\"], \"\")}"
               },
@@ -318,7 +282,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {"value": "#ccc"},
+              "fill": [
+                {
+                  "test": "datum[\"ranges.0\"] === null || isNaN(datum[\"ranges.0\"])",
+                  "value": null
+                },
+                {"value": "#ccc"}
+              ],
               "tooltip": {
                 "signal": "{\"ranges[0]\": format(datum[\"ranges.0\"], \"\")}"
               },
@@ -336,7 +306,13 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
-              "fill": {"value": "lightsteelblue"},
+              "fill": [
+                {
+                  "test": "datum[\"measures.1\"] === null || isNaN(datum[\"measures.1\"])",
+                  "value": null
+                },
+                {"value": "lightsteelblue"}
+              ],
               "tooltip": {
                 "signal": "{\"measures[1]\": format(datum[\"measures.1\"], \"\")}"
               },
@@ -354,7 +330,13 @@
           "from": {"data": "data_4"},
           "encode": {
             "update": {
-              "fill": {"value": "steelblue"},
+              "fill": [
+                {
+                  "test": "datum[\"measures.0\"] === null || isNaN(datum[\"measures.0\"])",
+                  "value": null
+                },
+                {"value": "steelblue"}
+              ],
               "tooltip": {
                 "signal": "{\"measures[0]\": format(datum[\"measures.0\"], \"\")}"
               },
@@ -373,7 +355,13 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "black"},
+              "fill": [
+                {
+                  "test": "datum[\"markers.0\"] === null || isNaN(datum[\"markers.0\"])",
+                  "value": null
+                },
+                {"value": "black"}
+              ],
               "tooltip": {
                 "signal": "{\"markers[0]\": format(datum[\"markers.0\"], \"\")}"
               },

@@ -17,13 +17,7 @@
           "Miles_per_Gallon": "number",
           "Weight_in_lbs": "number"
         }
-      },
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Weight_in_lbs\"] !== null && !isNaN(datum[\"Weight_in_lbs\"])"
-        }
-      ]
+      }
     }
   ],
   "marks": [
@@ -35,8 +29,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "Cylinders"},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Weight_in_lbs\"] === null || isNaN(datum[\"Weight_in_lbs\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Weight_in_lbs\"] === null || isNaN(datum[\"Weight_in_lbs\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "Cylinders"}
+          ],
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"], \"Weight_in_lbs\": format(datum[\"Weight_in_lbs\"], \"\")}"
           },

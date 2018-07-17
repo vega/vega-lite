@@ -9,13 +9,7 @@
       "format": {
         "type": "json",
         "parse": {"Worldwide_Gross": "number", "US_DVD_Sales": "number"}
-      },
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
-        }
-      ]
+      }
     },
     {
       "name": "column_domain",
@@ -119,8 +113,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"Worldwide_Gross\"] === null || isNaN(datum[\"Worldwide_Gross\"]) || datum[\"US_DVD_Sales\"] === null || isNaN(datum[\"US_DVD_Sales\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Worldwide_Gross\"] === null || isNaN(datum[\"Worldwide_Gross\"]) || datum[\"US_DVD_Sales\"] === null || isNaN(datum[\"US_DVD_Sales\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"Worldwide_Gross\": format(datum[\"Worldwide_Gross\"], \"\"), \"US_DVD_Sales\": format(datum[\"US_DVD_Sales\"], \"\")}"
               },

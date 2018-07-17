@@ -80,10 +80,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     },
@@ -152,10 +148,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) && datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"])"
         }
       ]
     }
@@ -202,7 +194,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "opacity": {"value": 0.4},
               "tooltip": {
                 "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
@@ -225,7 +223,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -339,6 +343,10 @@
           "encode": {
             "update": {
               "fill": [
+                {
+                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
                   "value": "steelblue"

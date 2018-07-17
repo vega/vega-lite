@@ -25,10 +25,6 @@
           "ops": ["mean"],
           "fields": ["precipitation"],
           "as": ["mean_precipitation"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"month_date\"] !== null && !isNaN(datum[\"month_date\"])"
         }
       ]
     }
@@ -41,7 +37,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"month_date\"] === null || isNaN(datum[\"month_date\"]) || datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
           },

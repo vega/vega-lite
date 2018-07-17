@@ -43,10 +43,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"life_expect\"])",
           "as": "life_expect"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"life_expect\"] !== null && !isNaN(datum[\"life_expect\"])"
         }
       ]
     }
@@ -106,7 +102,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": {"scale": "color", "field": "year"},
+          "fill": [
+            {
+              "test": "datum[\"life_expect\"] === null || isNaN(datum[\"life_expect\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "year"}
+          ],
           "tooltip": {
             "signal": "{\"life_expect\": format(datum[\"life_expect\"], \"\"), \"country\": ''+datum[\"country\"], \"year\": ''+datum[\"year\"]}"
           },

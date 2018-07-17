@@ -21,10 +21,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -92,8 +88,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
           },
@@ -109,7 +117,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"min_Miles_per_Gallon\"] === null || isNaN(datum[\"min_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"
           },
@@ -126,7 +140,13 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"max_Miles_per_Gallon\"] === null || isNaN(datum[\"max_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\")}"
           },
@@ -143,7 +163,13 @@
       "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"max_Miles_per_Gallon\"] === null || isNaN(datum[\"max_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "opacity": {"value": 0.2},
           "tooltip": {
             "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\"), \"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"

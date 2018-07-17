@@ -31,36 +31,6 @@
     },
     {
       "name": "data_1",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"upper_yield\"] !== null && !isNaN(datum[\"upper_yield\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_4",
       "source": "source_0",
       "transform": [
         {
@@ -90,11 +60,17 @@
       "name": "layer_0_layer_0_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "#4682b4"},
+          "fill": [
+            {
+              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "value": null
+            },
+            {"value": "#4682b4"}
+          ],
           "tooltip": {
             "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -109,11 +85,17 @@
       "name": "layer_0_layer_1_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "#4682b4"},
+          "fill": [
+            {
+              "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
+              "value": null
+            },
+            {"value": "#4682b4"}
+          ],
           "tooltip": {
             "signal": "{\"yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -128,10 +110,16 @@
       "name": "layer_0_layer_2_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#4682b4"},
+          "stroke": [
+            {
+              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "value": null
+            },
+            {"value": "#4682b4"}
+          ],
           "tooltip": {
             "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
           },
@@ -145,10 +133,16 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
@@ -164,11 +158,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "lower_yield"},
-          {"data": "data_2", "field": "upper_yield"},
-          {"data": "data_3", "field": "lower_yield"},
-          {"data": "data_3", "field": "upper_yield"},
-          {"data": "data_4", "field": "mean_yield"}
+          {"data": "data_0", "field": "lower_yield"},
+          {"data": "data_0", "field": "upper_yield"},
+          {"data": "data_1", "field": "mean_yield"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -180,10 +172,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "variety"},
-          {"data": "data_2", "field": "variety"},
-          {"data": "data_3", "field": "variety"},
-          {"data": "data_4", "field": "variety"}
+          {"data": "data_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"}
         ],
         "sort": true
       },

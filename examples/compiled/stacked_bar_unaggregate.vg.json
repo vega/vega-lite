@@ -27,10 +27,6 @@
           "sort": {"field": ["c"], "order": ["descending"]},
           "as": ["b_start", "b_end"],
           "offset": "zero"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
         }
       ]
     }
@@ -50,7 +46,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "c"},
+          "fill": [
+            {
+              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "c"}
+          ],
           "tooltip": {
             "signal": "{\"a\": ''+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": ''+datum[\"c\"]}"
           },

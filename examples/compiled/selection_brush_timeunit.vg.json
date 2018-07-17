@@ -29,10 +29,6 @@
           "type": "formula",
           "as": "seconds_date",
           "expr": "datetime(0, 0, 1, 0, 0, seconds(datum[\"date\"]), 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"seconds_date\"] !== null && !isNaN(datum[\"seconds_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
         }
       ]
     },
@@ -59,10 +55,6 @@
           "type": "formula",
           "as": "minutes_date",
           "expr": "datetime(0, 0, 1, 0, minutes(datum[\"date\"]), 0, 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"minutes_date\"] !== null && !isNaN(datum[\"minutes_date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
         }
       ]
     }
@@ -296,8 +288,18 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
+              "fill": [
+                {
+                  "test": "datum[\"seconds_date\"] === null || isNaN(datum[\"seconds_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
               "stroke": [
+                {
+                  "test": "datum[\"seconds_date\"] === null || isNaN(datum[\"seconds_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
                   "value": "goldenrod"
@@ -427,8 +429,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "goldenrod"},
+              "fill": [
+                {
+                  "test": "datum[\"minutes_date\"] === null || isNaN(datum[\"minutes_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"minutes_date\"] === null || isNaN(datum[\"minutes_date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+                  "value": null
+                },
+                {"value": "goldenrod"}
+              ],
               "tooltip": {
                 "signal": "{\"date (minutes)\": timeFormat(datum[\"minutes_date\"], '%M'), \"price\": format(datum[\"price\"], \"\")}"
               },

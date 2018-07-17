@@ -43,10 +43,6 @@
           "sort": {"field": ["Cylinders"], "order": ["ascending"]},
           "as": ["y", "y2"],
           "offset": "normalize"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
         }
       ]
     }
@@ -59,7 +55,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "Origin"},
+          "fill": [
+            {
+              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"]) || datum[\"Cylinders\"] === null || isNaN(datum[\"Cylinders\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "Origin"}
+          ],
           "opacity": {"scale": "opacity", "field": "Cylinders"},
           "tooltip": {
             "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"

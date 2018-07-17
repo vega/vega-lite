@@ -9,13 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}},
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"])"
-        }
-      ]
+      "format": {"type": "json", "parse": {"Horsepower": "number"}}
     }
   ],
   "signals": [
@@ -34,7 +28,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
           },

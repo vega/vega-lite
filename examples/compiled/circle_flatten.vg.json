@@ -16,11 +16,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "flatten", "fields": ["foo", "bar"], "as": ["foo", "bar"]},
-        {
-          "type": "filter",
-          "expr": "datum[\"foo\"] !== null && !isNaN(datum[\"foo\"])"
-        }
+        {"type": "flatten", "fields": ["foo", "bar"], "as": ["foo", "bar"]}
       ]
     }
   ],
@@ -40,7 +36,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"scale": "color", "field": "key"},
+          "fill": [
+            {
+              "test": "datum[\"foo\"] === null || isNaN(datum[\"foo\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "key"}
+          ],
           "tooltip": {
             "signal": "{\"foo\": format(datum[\"foo\"], \"\"), \"bar\": ''+datum[\"bar\"], \"key\": ''+datum[\"key\"]}"
           },

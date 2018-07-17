@@ -59,10 +59,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_IMDB_Rating\"] !== null && !isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"])"
         }
       ]
     }
@@ -75,7 +71,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
           },
@@ -97,7 +99,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "red"},
+          "stroke": [
+            {
+              "test": "datum[\"mean_IMDB_Rating\"] === null || isNaN(datum[\"mean_IMDB_Rating\"])",
+              "value": null
+            },
+            {"value": "red"}
+          ],
           "tooltip": {
             "signal": "{\"Mean of IMDB_Rating\": format(datum[\"mean_IMDB_Rating\"], \"\")}"
           },

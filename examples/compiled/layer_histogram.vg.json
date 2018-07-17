@@ -39,10 +39,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_distance\"] !== null && !isNaN(datum[\"bin_maxbins_10_distance\"])"
         }
       ]
     },
@@ -75,10 +71,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_10_distance\"] !== null && !isNaN(datum[\"bin_maxbins_10_distance\"])"
         }
       ]
     }
@@ -91,7 +83,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
           },
@@ -109,7 +107,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "goldenrod"},
+          "fill": [
+            {
+              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "goldenrod"}
+          ],
           "tooltip": {
             "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
           },
