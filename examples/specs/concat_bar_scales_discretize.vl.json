@@ -26,15 +26,15 @@
           "field": "b",
           "type": "quantitative",
           "scale": {
-            "type": "quantize",
-            "range": [1, 80, 160, 240, 320, 400]
+            "type": "quantize"
           }
         },
         "color": {
           "field": "b",
           "type": "quantitative",
           "scale": {
-            "type": "quantize"
+            "type": "quantize",
+            "zero": true
           },
           "legend": {
             "title": "Quantize"
@@ -67,7 +67,8 @@
           "field": "b",
           "type": "quantitative",
           "scale": {
-            "type": "quantile"
+            "type": "quantile",
+            "scheme": "magma"
           },
           "legend": {
             "format": "d",

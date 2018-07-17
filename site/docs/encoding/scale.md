@@ -155,7 +155,7 @@ For example, the following plot use the `"category20b"` scheme.
 
 The `scheme` property can also be a __scheme parameter object__, which contain the following properties:
 
-{% include table.html props="name,extent" source="SchemeParams" %}
+{% include table.html props="name,extent,count" source="SchemeParams" %}
 
 2) Setting the `range` property to an array of valid CSS color strings.
 
@@ -333,10 +333,10 @@ Quantile scales are particularly useful for creating color or size encodings wit
 For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts.
 Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.
 
-
+<span class="vl-example" data-name="bar_scale_quantile"></span>
 
 {:#quantize}
-### Quantile Scales
+### Quantize Scales
 
 Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The continuous input domain is divided into uniform segments based on the number of values in (i.e., the cardinality of) the output range.
 Each range value y can be expressed as a quantized linear function of the domain value x: _y_ = _m round(x) + b_.
@@ -344,13 +344,15 @@ Each range value y can be expressed as a quantized linear function of the domain
 Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
 For related functionality see [quantile scales](https://vega.github.io/vega-lite/docs/scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
 
+<span class="vl-example" data-name="bar_scale_quantize"></span>
+
 {:#threshold}
 ### Threshold Scales
 
 Threshold scales (`"threshold"`) are similar to [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range.
 The input domain is still continuous, and divided into slices based on a set of threshold values provided to the domain property. The range property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
 
-<span class="vl-example" data-name="concat_bar_scales_discretize"></span>
+<span class="vl-example" data-name="bar_scale_threshold"></span>
 
 {:#disable}
 ## Disabling Scale

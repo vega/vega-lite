@@ -54,7 +54,7 @@ export type ScaleType =
  */
 const SCALE_CATEGORY_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position'
+  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'
 } = {
   linear: 'numeric',
   log: 'numeric',
@@ -68,9 +68,9 @@ const SCALE_CATEGORY_INDEX: {
   'bin-ordinal': 'bin-ordinal', // TODO: should bin-ordinal support merging with other
   point: 'ordinal-position',
   band: 'ordinal-position',
-  quantile: 'numeric',
-  quantize: 'numeric',
-  threshold: 'numeric'
+  quantile: 'discretizing',
+  quantize: 'discretizing',
+  threshold: 'discretizing'
 };
 
 export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
@@ -386,8 +386,6 @@ export interface SchemeParams {
 
   /**
    * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
-   *
-   * @hide
    */
   count?: number;
 }

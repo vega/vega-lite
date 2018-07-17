@@ -430,6 +430,11 @@
         "name": "concat_marginal_histograms",
         "title": "Marginal Histograms",
         "description": "Marginal histograms show the counts along the x and y dimension."
+      },
+      {
+        "name": "concat_bar_scales_discretize",
+        "title": "Discretizing scales",
+        "description": "Horizontally concatenated charts that show different types of discretizing scales"
       }
     ]
   },

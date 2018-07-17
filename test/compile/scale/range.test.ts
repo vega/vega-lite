@@ -392,6 +392,27 @@ describe('compile/scale', () => {
           makeExplicit({scheme: 'viridis', count: 3})
         );
       });
+
+      it('should use default ordinal range for discretizing scales', () => {
+        const scales: ScaleType[] = ['quantile', 'quantize', 'threshold'];
+        scales.forEach(discretizingScale => {
+          assert.deepEqual(
+            parseRangeForChannel(
+              'color',
+              discretizingScale,
+              QUANTITATIVE,
+              {},
+              defaultConfig,
+              undefined,
+              'circle',
+              false,
+              'plot_width',
+              []
+            ),
+            makeImplicit('ordinal')
+          );
+        });
+      });
     });
 
     describe('opacity', () => {

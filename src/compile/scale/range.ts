@@ -211,7 +211,12 @@ export function defaultRange(
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
-      return [rangeMin, rangeMax];
+      if (isContinuousToDiscrete(scaleType)) {
+        // for now 4 is the default value for range cardinality. we might change it later
+        return interpolateRange(rangeMin, rangeMax, 4);
+      } else {
+        return [rangeMin, rangeMax];
+      }
     case SHAPE:
       return 'symbol';
     case COLOR:
@@ -221,7 +226,12 @@ export function defaultRange(
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       } else if (isContinuousToDiscrete(scaleType)) {
-        return 'ordinal';
+        if (config.range && config.range.ordinal) {
+          return 'ordinal';
+        } else {
+          // for now 4 is the default value for range cardinality. we might change it later
+          return {scheme: 'blues', count: 4};
+        }
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
@@ -231,6 +241,21 @@ export function defaultRange(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+/**
+ * Returns the linear interpolation of the range according to the cardinality
+ *
+ * @param rangeMin start of the range
+ * @param rangeMax end of the range
+ * @param cardinality number of values in the output range
+ */
+function interpolateRange(rangeMin: number, rangeMax: number, cardinality: number) {
+  const ranges: number[] = [];
+  for (let i = 1; i <= cardinality; i++) {
+    ranges.push(rangeMin + (i * (rangeMax - rangeMin)) / cardinality);
+  }
+  return ranges;
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
