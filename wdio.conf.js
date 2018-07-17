@@ -57,7 +57,7 @@ exports.config = {
         // 5 instances get started at a time.
         browserName: 'chrome',
         chromeOptions: {
-          args: ['--headless']
+          args: ['--headless', '--no-sandbox']
         }
     }],
     //
