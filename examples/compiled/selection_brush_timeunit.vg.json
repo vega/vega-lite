@@ -16,15 +16,17 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"price\"])",
-          "as": "price"
-        },
+        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "type": "formula",
           "as": "seconds_date",
@@ -34,14 +36,8 @@
     },
     {
       "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"price\"])",
-          "as": "price"
-        },
         {
           "type": "formula",
           "as": "seconds_date",

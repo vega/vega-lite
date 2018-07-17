@@ -15,6 +15,11 @@
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"people\"])",
+          "as": "people"
         }
       ]
     },
@@ -22,11 +27,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],
@@ -56,11 +56,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],

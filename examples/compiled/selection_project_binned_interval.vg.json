@@ -7,16 +7,15 @@
   "style": "cell",
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"Acceleration": "number"}}
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Acceleration\"])",
-          "as": "Acceleration"
-        },
         {
           "type": "extent",
           "field": "Acceleration",
@@ -49,11 +48,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Acceleration\"])",
-          "as": "Acceleration"
-        },
         {
           "type": "extent",
           "field": "Acceleration",

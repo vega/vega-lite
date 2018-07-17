@@ -219,21 +219,9 @@
           "type": "formula",
           "expr": "timeParse(datum[\"date\"],'%Y-%m-%d')",
           "as": "date"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
+        },
         {"type": "formula", "expr": "toNumber(datum[\"low\"])", "as": "low"},
-        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
-      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"},
         {"type": "formula", "expr": "toNumber(datum[\"open\"])", "as": "open"},
         {"type": "formula", "expr": "toNumber(datum[\"close\"])", "as": "close"}
       ]
@@ -244,7 +232,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -268,7 +256,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -294,26 +282,14 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "date"},
-          {"data": "data_2", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "date"},
       "range": [0, {"signal": "width"}],
       "padding": 5
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "low"},
-          {"data": "data_1", "field": "high"},
-          {"data": "data_2", "field": "open"},
-          {"data": "data_2", "field": "close"}
-        ]
-      },
+      "domain": {"data": "data_0", "fields": ["low", "high", "open", "close"]},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

@@ -9,7 +9,14 @@
     {
       "name": "source_0",
       "url": "data/population_engineers_hurricanes.csv",
-      "format": {"type": "csv"}
+      "format": {
+        "type": "csv",
+        "parse": {
+          "population": "number",
+          "engineers": "number",
+          "hurricanes": "number"
+        }
+      }
     },
     {
       "name": "source_1",
@@ -20,11 +27,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
-        },
         {
           "type": "lookup",
           "from": "source_1",
@@ -44,11 +46,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"engineers\"])",
-          "as": "engineers"
-        },
-        {
           "type": "lookup",
           "from": "source_1",
           "key": "id",
@@ -66,11 +63,6 @@
       "name": "data_2",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"hurricanes\"])",
-          "as": "hurricanes"
-        },
         {
           "type": "lookup",
           "from": "source_1",

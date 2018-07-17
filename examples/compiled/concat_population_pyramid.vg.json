@@ -14,6 +14,12 @@
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
+        },
+        {"type": "formula", "expr": "toNumber(datum[\"age\"])", "as": "age"},
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"people\"])",
+          "as": "people"
         }
       ]
     },
@@ -21,18 +27,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"age\"])", "as": "age"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
         {"type": "filter", "expr": "datum[\"gender\"]===\"Female\""},
         {
           "type": "aggregate",
@@ -52,14 +46,9 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
         {"type": "filter", "expr": "datum[\"gender\"]===\"Male\""},
         {
           "type": "aggregate",
@@ -121,7 +110,7 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -183,7 +172,7 @@
           "name": "concat_1_marks",
           "type": "text",
           "style": ["text"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "align": {"value": "center"},
@@ -213,7 +202,7 @@
           "name": "concat_2_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -267,8 +256,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "gender"},
-          {"data": "data_2", "field": "gender"}
+          {"data": "data_0", "field": "gender"},
+          {"data": "data_1", "field": "gender"}
         ],
         "sort": true
       },
@@ -278,7 +267,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
+        "data": "data_0",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -289,7 +278,7 @@
     {
       "name": "concat_0_y",
       "type": "band",
-      "domain": {"data": "data_1", "field": "age", "sort": true},
+      "domain": {"data": "data_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -297,7 +286,7 @@
     {
       "name": "concat_1_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "age", "sort": true},
+      "domain": {"data": "source_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "concat_1_y_step"}},
       "padding": 0.5
     },
@@ -305,7 +294,7 @@
       "name": "concat_2_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
+        "data": "data_1",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [0, {"signal": "concat_2_width"}],
@@ -315,7 +304,7 @@
     {
       "name": "concat_2_y",
       "type": "band",
-      "domain": {"data": "data_2", "field": "age", "sort": true},
+      "domain": {"data": "data_1", "field": "age", "sort": true},
       "range": {"step": {"signal": "concat_2_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

@@ -93,6 +93,11 @@
           "type": "formula",
           "expr": "timeParse(datum[\"year\"],'%Y')",
           "as": "year"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"population\"])",
+          "as": "population"
         }
       ]
     },
@@ -100,11 +105,6 @@
       "name": "data_2",
       "source": "data_1",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
-        },
         {
           "type": "formula",
           "as": "year_year",
@@ -116,11 +116,6 @@
       "name": "data_3",
       "source": "data_1",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
-        },
         {
           "type": "formula",
           "as": "year_year",

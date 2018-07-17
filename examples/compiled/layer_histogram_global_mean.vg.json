@@ -6,16 +6,15 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json", "parse": {"IMDB_Rating": "number"}}
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
-        },
         {
           "type": "aggregate",
           "groupby": [],
@@ -29,11 +28,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
-        },
         {
           "type": "extent",
           "field": "IMDB_Rating",

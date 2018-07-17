@@ -5,17 +5,23 @@
   "padding": 5,
   "height": 200,
   "data": [
-    {"name": "source_0", "url": "data/weather.csv", "format": {"type": "csv"}},
+    {
+      "name": "source_0",
+      "url": "data/weather.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "temp_max": "number",
+          "date": "date",
+          "precipitation": "number",
+          "wind": "number"
+        }
+      }
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",
@@ -41,12 +47,6 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
@@ -63,12 +63,6 @@
       "name": "data_2",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"precipitation\"])",
-          "as": "precipitation"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",
@@ -94,12 +88,6 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"precipitation\"])",
-          "as": "precipitation"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
         },
@@ -116,8 +104,6 @@
       "name": "data_4",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"wind\"])", "as": "wind"},
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",
@@ -141,8 +127,6 @@
       "name": "data_5",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"wind\"])", "as": "wind"},
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
           "as": "month_date",

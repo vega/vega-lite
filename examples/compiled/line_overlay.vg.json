@@ -11,20 +11,8 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv"},
-      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
       ]
@@ -36,7 +24,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"date\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "green"},
@@ -55,7 +43,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -79,23 +67,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "date"},
-          {"data": "data_1", "field": "date"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "price"},
-          {"data": "data_1", "field": "price"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -13,13 +13,7 @@
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"}
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
         {
           "type": "formula",
           "expr": "toNumber(datum[\"Horsepower\"])",
@@ -33,19 +27,9 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        },
         {
           "type": "filter",
           "expr": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))"
@@ -106,7 +90,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -135,7 +119,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -163,8 +147,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_1", "field": "Horsepower"}
+          {"data": "source_0", "field": "Horsepower"},
+          {"data": "data_0", "field": "Horsepower"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -176,8 +160,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_1", "field": "Miles_per_Gallon"}
+          {"data": "source_0", "field": "Miles_per_Gallon"},
+          {"data": "data_0", "field": "Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -189,8 +173,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
+          {"data": "source_0", "field": "Origin"},
+          {"data": "data_0", "field": "Origin"}
         ],
         "sort": true
       },
