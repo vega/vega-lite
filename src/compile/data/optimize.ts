@@ -3,7 +3,6 @@ import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
-import {FilterInvalidNode} from './filterinvalid';
 import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import * as optimizers from './optimizers';
@@ -111,30 +110,35 @@ function getLeaves(roots: DataFlowNode[]) {
 }
 
 /**
- * ParseNodes are not mergeable only if their `this._parse`s have a common key but different values for that key.
+ * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export function isParseMergeable(x: ParseNode, y: ParseNode) {
-  const xParse = x.parse;
-  const yParse = y.parse;
-  for (const k of keys(xParse)) {
-    if (k in yParse && yParse[k] !== xParse[k]) {
-      return false;
-    }
-  }
-  return true;
-}
-
 export function mergeParse(node: DataFlowNode) {
   const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
-
   if (parseChildren.length > 1) {
-    const mergedParse = parseChildren.pop();
-    const mergeableParseChildren = parseChildren.filter(x => isParseMergeable(x, mergedParse));
-    mergeableParseChildren.forEach(x => {
-      node.removeChild(x);
-      x.parent = mergedParse;
-      mergedParse.merge(x);
-    });
+    const commonParse = {};
+    for (const parseNode of parseChildren) {
+      const parse = parseNode.parse;
+      for (const k of keys(parse)) {
+        if (commonParse[k] === undefined) {
+          commonParse[k] = parse[k];
+        } else if (commonParse[k] !== parse[k]) {
+          delete commonParse[k];
+        }
+      }
+    }
+    if (keys(commonParse).length !== 0) {
+      const mergedParseNode = new ParseNode(node, commonParse);
+      for (const parseNode of parseChildren) {
+        for (const key of keys(commonParse)) {
+          delete parseNode.parse[key];
+        }
+        node.removeChild(parseNode);
+        parseNode.parent = mergedParseNode;
+        if (keys(parseNode.parse).length === 0) {
+          parseNode.remove();
+        }
+      }
+    }
   }
   node.children.forEach(mergeParse);
 }

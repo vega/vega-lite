@@ -22,12 +22,17 @@ describe('compile/data/optimize', () => {
 
     it('should not merge conflicting ParseNodes', () => {
       const root = new DataFlowNode(null, 'root');
+      // @ts-ignore
       const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
+      // @ts-ignore
       const parse2 = new ParseNode(root, {a: 'boolean', d: 'date'});
       mergeParse(root);
-      assert.deepEqual(root.children.length, 2);
-      assert.deepEqual(root.children[0], parse1);
-      assert.deepEqual(root.children[1], parse2);
+      assert.deepEqual(root.children.length, 1);
+      const mergedParseNode = root.children[0] as ParseNode;
+      assert.deepEqual(mergedParseNode.parse, {b: 'string', d: 'date'});
+      const children = mergedParseNode.children as [ParseNode];
+      assert.deepEqual(children[0].parse, {a: 'number'});
+      assert.deepEqual(children[1].parse, {a: 'boolean'});
     });
   });
 });

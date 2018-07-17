@@ -102,12 +102,11 @@ describe('Selection time unit', () => {
         y: {field: 'price', type: 'quantitative'}
       }
     });
-
-    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
     let tuIdx = -1;
     let selIdx = -1;
 
-    data1.forEach((tx, idx) => {
+    data2.forEach((tx, idx) => {
       if (tx.type === 'formula' && tx.as === 'seconds_date') {
         tuIdx = idx;
       } else if (tx.type === 'filter' && tx.expr.indexOf('vlSingle') >= 0) {
