@@ -1,6 +1,6 @@
 import {isNumber, isString, toSet} from 'vega-util';
 import {AncestorParse} from '.';
-import {isCountingAggregateOp} from '../../aggregate';
+import {isMinMaxAggregateOp} from '../../aggregate';
 import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
@@ -125,10 +125,8 @@ export class ParseNode extends DataFlowNode {
       model.forEachFieldDef(fieldDef => {
         if (isTimeFieldDef(fieldDef)) {
           implicit[fieldDef.field] = 'date';
-        } else if (isNumberFieldDef(fieldDef)) {
-          if (!isCountingAggregateOp(fieldDef.aggregate)) {
-            implicit[fieldDef.field] = 'number';
-          }
+        } else if (isNumberFieldDef(fieldDef) && isMinMaxAggregateOp(fieldDef.aggregate)) {
+          implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
           // (Parsing numbers / dates already flattens numeric and temporal fields.)
