@@ -278,6 +278,10 @@
         "update": {
           "fill": [
             {
+              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {
               "test": "!(length(data(\"pts_store\"))) || (vlInterval(\"pts_store\", datum))",
               "scale": "color",
               "field": "count_*"

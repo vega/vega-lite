@@ -266,7 +266,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "opacity": [
             {
               "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
@@ -291,7 +297,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": {"value": "firebrick"},
+          "stroke": [
+            {
+              "test": "datum[\"mean_precipitation\"] === null || isNaN(datum[\"mean_precipitation\"])",
+              "value": null
+            },
+            {"value": "firebrick"}
+          ],
           "tooltip": {
             "signal": "{\"Mean of precipitation\": format(datum[\"mean_precipitation\"], \"\")}"
           },

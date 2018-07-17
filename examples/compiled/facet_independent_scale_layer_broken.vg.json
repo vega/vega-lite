@@ -232,8 +232,20 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "gender"},
+              "fill": [
+                {
+                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "gender"}
+              ],
               "tooltip": {
                 "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
               },

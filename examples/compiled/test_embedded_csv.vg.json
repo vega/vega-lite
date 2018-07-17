@@ -11,11 +11,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"},
-        {
-          "type": "filter",
-          "expr": "datum[\"a\"] !== null && !isNaN(datum[\"a\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"}
       ]
     }
   ],
@@ -28,8 +24,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"a\"] === null || isNaN(datum[\"a\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"a\"] === null || isNaN(datum[\"a\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {"signal": "{\"a\": format(datum[\"a\"], \"\")}"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "a"}

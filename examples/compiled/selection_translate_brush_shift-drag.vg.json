@@ -17,13 +17,7 @@
           "Miles_per_Gallon": "number",
           "Cylinders": "number"
         }
-      },
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
-        }
-      ]
+      }
     }
   ],
   "signals": [
@@ -294,6 +288,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Cylinders\"] === null || isNaN(datum[\"Cylinders\"])",
+              "value": null
+            },
             {
               "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
               "scale": "color",

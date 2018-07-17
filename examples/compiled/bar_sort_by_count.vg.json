@@ -36,7 +36,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
           },

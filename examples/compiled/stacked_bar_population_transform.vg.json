@@ -24,10 +24,6 @@
           "sort": {"field": ["gender"], "order": ["descending"]},
           "as": ["v1", "v2"],
           "offset": "normalize"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"v1\"] !== null && !isNaN(datum[\"v1\"])"
         }
       ]
     }
@@ -47,7 +43,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "gender"},
+          "fill": [
+            {
+              "test": "datum[\"v1\"] === null || isNaN(datum[\"v1\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "gender"}
+          ],
           "tooltip": {
             "signal": "{\"age\": ''+datum[\"age\"], \"v1\": format(datum[\"v1\"], \"\"), \"v2\": format(datum[\"v2\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
           },

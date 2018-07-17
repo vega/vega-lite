@@ -10,13 +10,7 @@
     {
       "name": "source_0",
       "url": "data/anscombe.json",
-      "format": {"type": "json", "parse": {"X": "number", "Y": "number"}},
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"X\"] !== null && !isNaN(datum[\"X\"]) && datum[\"Y\"] !== null && !isNaN(datum[\"Y\"])"
-        }
-      ]
+      "format": {"type": "json", "parse": {"X": "number", "Y": "number"}}
     },
     {
       "name": "column_domain",
@@ -440,6 +434,10 @@
             "update": {
               "opacity": {"value": 1},
               "fill": [
+                {
+                  "test": "datum[\"X\"] === null || isNaN(datum[\"X\"]) || datum[\"Y\"] === null || isNaN(datum[\"Y\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"xenc_store\"))) || (vlSingle(\"xenc_store\", datum))",
                   "value": "red"

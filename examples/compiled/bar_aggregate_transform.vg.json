@@ -16,10 +16,6 @@
           "ops": ["mean"],
           "fields": ["Acceleration"],
           "as": ["mean_acc"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"mean_acc\"] !== null && !isNaN(datum[\"mean_acc\"])"
         }
       ]
     }
@@ -39,7 +35,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"mean_acc\"] === null || isNaN(datum[\"mean_acc\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"mean_acc\": format(datum[\"mean_acc\"], \"\")}"
           },

@@ -12,13 +12,7 @@
       "format": {
         "type": "json",
         "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      },
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-        }
-      ]
+      }
     }
   ],
   "marks": [
@@ -30,7 +24,13 @@
       "encode": {
         "update": {
           "opacity": {"scale": "opacity", "field": "Miles_per_Gallon"},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
           },

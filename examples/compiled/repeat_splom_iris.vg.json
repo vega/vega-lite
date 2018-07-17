@@ -19,10 +19,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalWidth\"])",
           "as": "petalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
         }
       ]
     },
@@ -39,10 +35,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalWidth\"])",
           "as": "petalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
         }
       ]
     },
@@ -59,10 +51,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalWidth\"])",
           "as": "petalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
         }
       ]
     },
@@ -74,10 +62,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalWidth\"])",
           "as": "petalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"])"
         }
       ]
     },
@@ -94,10 +78,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalLength\"])",
           "as": "petalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
         }
       ]
     },
@@ -114,10 +94,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalLength\"])",
           "as": "petalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
         }
       ]
     },
@@ -129,10 +105,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalLength\"])",
           "as": "petalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
         }
       ]
     },
@@ -149,10 +121,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"petalLength\"])",
           "as": "petalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"])"
         }
       ]
     },
@@ -169,10 +137,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalWidth\"])",
           "as": "sepalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -184,10 +148,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalWidth\"])",
           "as": "sepalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -204,10 +164,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalWidth\"])",
           "as": "sepalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -224,10 +180,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalWidth\"])",
           "as": "sepalWidth"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"])"
         }
       ]
     },
@@ -239,10 +191,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalLength\"])",
           "as": "sepalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
         }
       ]
     },
@@ -259,10 +207,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalLength\"])",
           "as": "sepalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"sepalWidth\"] !== null && !isNaN(datum[\"sepalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
         }
       ]
     },
@@ -279,10 +223,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalLength\"])",
           "as": "sepalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalLength\"] !== null && !isNaN(datum[\"petalLength\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
         }
       ]
     },
@@ -299,10 +239,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"sepalLength\"])",
           "as": "sepalLength"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"petalWidth\"] !== null && !isNaN(datum[\"petalWidth\"]) && datum[\"sepalLength\"] !== null && !isNaN(datum[\"sepalLength\"])"
         }
       ]
     }
@@ -330,8 +266,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -411,8 +359,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -492,8 +452,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -573,8 +545,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -654,8 +638,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -735,8 +731,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -816,8 +824,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -897,8 +917,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"petalLength\": format(datum[\"petalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -978,8 +1010,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1059,8 +1103,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1140,8 +1196,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1221,8 +1289,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1302,8 +1382,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1383,8 +1475,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"sepalWidth\"] === null || isNaN(datum[\"sepalWidth\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"sepalWidth\": format(datum[\"sepalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1464,8 +1568,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalLength\"] === null || isNaN(datum[\"petalLength\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },
@@ -1545,8 +1661,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"scale": "color", "field": "species"},
+              "fill": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"petalWidth\"] === null || isNaN(datum[\"petalWidth\"]) || datum[\"sepalLength\"] === null || isNaN(datum[\"sepalLength\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "species"}
+              ],
               "tooltip": {
                 "signal": "{\"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"species\": ''+datum[\"species\"]}"
               },

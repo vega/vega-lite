@@ -46,10 +46,6 @@
           "ops": [],
           "fields": [],
           "as": []
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"ra\"] !== null && !isNaN(datum[\"ra\"]) && datum[\"dec\"] !== null && !isNaN(datum[\"dec\"])"
         }
       ]
     },
@@ -145,6 +141,10 @@
             "update": {
               "opacity": {"value": 0.7},
               "fill": [
+                {
+                  "test": "datum[\"ra\"] === null || isNaN(datum[\"ra\"]) || datum[\"dec\"] === null || isNaN(datum[\"dec\"])",
+                  "value": null
+                },
                 {
                   "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
                   "value": "steelblue"

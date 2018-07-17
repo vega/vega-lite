@@ -50,11 +50,7 @@
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
-        {"type": "filter", "expr": "datum[\"end\"]===\"first\""},
-        {
-          "type": "filter",
-          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
-        }
+        {"type": "filter", "expr": "datum[\"end\"]===\"first\""}
       ]
     },
     {
@@ -62,11 +58,7 @@
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
-        {"type": "filter", "expr": "datum[\"end\"]===\"last\""},
-        {
-          "type": "filter",
-          "expr": "datum[\"scaled_date\"] !== null && !isNaN(datum[\"scaled_date\"]) && datum[\"CO2\"] !== null && !isNaN(datum[\"CO2\"])"
-        }
+        {"type": "filter", "expr": "datum[\"end\"]===\"last\""}
       ]
     }
   ],
@@ -118,7 +110,13 @@
       "encode": {
         "update": {
           "baseline": {"value": "top"},
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"]) || datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
           },
@@ -136,7 +134,13 @@
       "encode": {
         "update": {
           "baseline": {"value": "bottom"},
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"scaled_date\"] === null || isNaN(datum[\"scaled_date\"]) || datum[\"CO2\"] === null || isNaN(datum[\"CO2\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"scaled_date\": format(datum[\"scaled_date\"], \"\"), \"CO2 concentration in ppm\": format(datum[\"CO2\"], \"\"), \"year\": ''+datum[\"year\"]}"
           },

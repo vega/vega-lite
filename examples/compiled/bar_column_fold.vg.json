@@ -14,11 +14,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "fold", "fields": ["gold", "silver"], "as": ["key", "value"]},
-        {
-          "type": "filter",
-          "expr": "datum[\"value\"] !== null && !isNaN(datum[\"value\"])"
-        }
+        {"type": "fold", "fields": ["gold", "silver"], "as": ["key", "value"]}
       ]
     },
     {
@@ -122,7 +118,13 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": {"scale": "color", "field": "country"},
+              "fill": [
+                {
+                  "test": "datum[\"value\"] === null || isNaN(datum[\"value\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "country"}
+              ],
               "tooltip": {
                 "signal": "{\"country\": ''+datum[\"country\"], \"value\": format(datum[\"value\"], \"\")}"
               },

@@ -22,10 +22,6 @@
           "key": "id",
           "fields": ["id"],
           "values": ["rate"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"rate\"] !== null && !isNaN(datum[\"rate\"])"
         }
       ]
     }
@@ -46,7 +42,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "rate"},
+          "fill": [
+            {
+              "test": "datum[\"rate\"] === null || isNaN(datum[\"rate\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "rate"}
+          ],
           "tooltip": {"signal": "{\"rate\": format(datum[\"rate\"], \"\")}"}
         }
       },

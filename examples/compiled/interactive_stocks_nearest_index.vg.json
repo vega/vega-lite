@@ -21,15 +21,7 @@
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"price\"])",
-          "as": "price"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
       ]
     },
     {
@@ -40,10 +32,6 @@
         {
           "type": "filter",
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
         }
       ]
     },
@@ -55,10 +43,6 @@
         {
           "type": "filter",
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
         }
       ]
     }
@@ -144,8 +128,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0},
-          "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "symbol"},
+          "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "symbol"}
+          ],
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
@@ -182,7 +178,13 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
@@ -197,7 +199,13 @@
       "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},

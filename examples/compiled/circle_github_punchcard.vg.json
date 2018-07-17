@@ -61,7 +61,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"sum_count\"] === null || isNaN(datum[\"sum_count\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"time (hours)\": timeFormat(datum[\"hours_time\"], '%H'), \"time (day)\": timeFormat(datum[\"day_time\"], '%A'), \"Sum of count\": format(datum[\"sum_count\"], \"\")}"
           },

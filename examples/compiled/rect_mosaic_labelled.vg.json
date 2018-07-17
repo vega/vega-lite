@@ -67,20 +67,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Cylinders\"])",
           "as": "Cylinders"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"]) && datum[\"Cylinders\"] !== null && !isNaN(datum[\"Cylinders\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"xc\"] !== null && !isNaN(datum[\"xc\"]) && datum[\"yc\"] !== null && !isNaN(datum[\"yc\"])"
         }
       ]
     }
@@ -116,7 +102,13 @@
             "update": {
               "align": {"value": "center"},
               "baseline": {"value": "middle"},
-              "fill": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"min_xc\"] === null || isNaN(datum[\"min_xc\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "tooltip": {
                 "signal": "{\"Origin\": format(datum[\"min_xc\"], \"\")}"
               },
@@ -158,7 +150,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"scale": "color", "field": "Origin"},
+              "fill": [
+                {
+                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"]) || datum[\"Cylinders\"] === null || isNaN(datum[\"Cylinders\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "Origin"}
+              ],
               "opacity": {"scale": "opacity", "field": "Cylinders"},
               "tooltip": {
                 "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
@@ -174,11 +172,17 @@
           "name": "concat_1_layer_1_marks",
           "type": "text",
           "style": ["text"],
-          "from": {"data": "data_2"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "baseline": {"value": "middle"},
-              "fill": {"value": "black"},
+              "fill": [
+                {
+                  "test": "datum[\"xc\"] === null || isNaN(datum[\"xc\"]) || datum[\"yc\"] === null || isNaN(datum[\"yc\"])",
+                  "value": null
+                },
+                {"value": "black"}
+              ],
               "tooltip": {
                 "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"yc\": format(datum[\"yc\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
               },
@@ -212,7 +216,7 @@
           {"data": "data_0", "field": "min_xc"},
           {"data": "data_1", "field": "x"},
           {"data": "data_1", "field": "x2"},
-          {"data": "data_2", "field": "xc"}
+          {"data": "source_0", "field": "xc"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -245,7 +249,7 @@
         "fields": [
           {"data": "data_1", "field": "y"},
           {"data": "data_1", "field": "y2"},
-          {"data": "data_2", "field": "yc"}
+          {"data": "source_0", "field": "yc"}
         ]
       },
       "range": [{"signal": "concat_1_height"}, 0],

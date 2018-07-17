@@ -26,15 +26,7 @@
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"price\"])",
-          "as": "price"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
       ]
     }
   ],
@@ -67,7 +59,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\")}"
           },

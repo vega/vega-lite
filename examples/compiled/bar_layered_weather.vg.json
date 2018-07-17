@@ -26,10 +26,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"record\"] && datum[\"record\"][\"high\"])",
           "as": "record.high"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"record.low\"] !== null && !isNaN(datum[\"record.low\"])"
         }
       ]
     },
@@ -46,10 +42,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"normal\"] && datum[\"normal\"][\"high\"])",
           "as": "normal.high"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"normal.low\"] !== null && !isNaN(datum[\"normal.low\"])"
         }
       ]
     },
@@ -66,10 +58,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"actual\"] && datum[\"actual\"][\"high\"])",
           "as": "actual.high"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"actual.low\"] !== null && !isNaN(datum[\"actual.low\"])"
         }
       ]
     },
@@ -86,10 +74,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"low\"] && datum[\"forecast\"][\"low\"][\"high\"])",
           "as": "forecast.low.high"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"forecast.low.low\"] !== null && !isNaN(datum[\"forecast.low.low\"])"
         }
       ]
     },
@@ -106,10 +90,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"low\"])",
           "as": "forecast.high.low"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"forecast.low.high\"] !== null && !isNaN(datum[\"forecast.low.high\"])"
         }
       ]
     },
@@ -126,10 +106,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"forecast\"] && datum[\"forecast\"][\"high\"] && datum[\"forecast\"][\"high\"][\"high\"])",
           "as": "forecast.high.high"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"forecast.high.low\"] !== null && !isNaN(datum[\"forecast.high.low\"])"
         }
       ]
     }
@@ -142,7 +118,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#ccc"},
+          "fill": [
+            {
+              "test": "datum[\"record.low\"] === null || isNaN(datum[\"record.low\"])",
+              "value": null
+            },
+            {"value": "#ccc"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"record.low\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
           },
@@ -160,7 +142,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "#999"},
+          "fill": [
+            {
+              "test": "datum[\"normal.low\"] === null || isNaN(datum[\"normal.low\"])",
+              "value": null
+            },
+            {"value": "#999"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\")}"
           },
@@ -178,7 +166,13 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "fill": {"value": "#000"},
+          "fill": [
+            {
+              "test": "datum[\"actual.low\"] === null || isNaN(datum[\"actual.low\"])",
+              "value": null
+            },
+            {"value": "#000"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\")}"
           },
@@ -196,7 +190,13 @@
       "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "fill": {"value": "#000"},
+          "fill": [
+            {
+              "test": "datum[\"forecast.low.low\"] === null || isNaN(datum[\"forecast.low.low\"])",
+              "value": null
+            },
+            {"value": "#000"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\")}"
           },
@@ -214,7 +214,13 @@
       "from": {"data": "data_4"},
       "encode": {
         "update": {
-          "fill": {"value": "#000"},
+          "fill": [
+            {
+              "test": "datum[\"forecast.low.high\"] === null || isNaN(datum[\"forecast.low.high\"])",
+              "value": null
+            },
+            {"value": "#000"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\")}"
           },
@@ -232,7 +238,13 @@
       "from": {"data": "data_5"},
       "encode": {
         "update": {
-          "fill": {"value": "#000"},
+          "fill": [
+            {
+              "test": "datum[\"forecast.high.low\"] === null || isNaN(datum[\"forecast.high.low\"])",
+              "value": null
+            },
+            {"value": "#000"}
+          ],
           "tooltip": {
             "signal": "{\"id\": ''+datum[\"id\"], \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\")}"
           },

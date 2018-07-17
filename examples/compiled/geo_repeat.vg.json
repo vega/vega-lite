@@ -36,10 +36,6 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child_population_geojson_0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
         }
       ]
     },
@@ -63,10 +59,6 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child_engineers_geojson_0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"engineers\"] !== null && !isNaN(datum[\"engineers\"])"
         }
       ]
     },
@@ -90,10 +82,6 @@
           "type": "geojson",
           "geojson": "geo",
           "signal": "child_hurricanes_geojson_0"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"hurricanes\"] !== null && !isNaN(datum[\"hurricanes\"])"
         }
       ]
     }
@@ -130,10 +118,13 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": {
-                "scale": "child_population_color",
-                "field": "population"
-              },
+              "fill": [
+                {
+                  "test": "datum[\"population\"] === null || isNaN(datum[\"population\"])",
+                  "value": null
+                },
+                {"scale": "child_population_color", "field": "population"}
+              ],
               "tooltip": {
                 "signal": "{\"population\": format(datum[\"population\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
               }
@@ -165,7 +156,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"scale": "child_engineers_color", "field": "engineers"},
+              "fill": [
+                {
+                  "test": "datum[\"engineers\"] === null || isNaN(datum[\"engineers\"])",
+                  "value": null
+                },
+                {"scale": "child_engineers_color", "field": "engineers"}
+              ],
               "tooltip": {
                 "signal": "{\"engineers\": format(datum[\"engineers\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
               }
@@ -197,10 +194,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {
-                "scale": "child_hurricanes_color",
-                "field": "hurricanes"
-              },
+              "fill": [
+                {
+                  "test": "datum[\"hurricanes\"] === null || isNaN(datum[\"hurricanes\"])",
+                  "value": null
+                },
+                {"scale": "child_hurricanes_color", "field": "hurricanes"}
+              ],
               "tooltip": {
                 "signal": "{\"hurricanes\": format(datum[\"hurricanes\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
               }

@@ -18,11 +18,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"},
-        {
-          "type": "filter",
-          "expr": "datum[\"b\"] !== null && !isNaN(datum[\"b\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
       ]
     }
   ],
@@ -41,7 +37,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"field": "color"},
+          "fill": [
+            {
+              "test": "datum[\"b\"] === null || isNaN(datum[\"b\"])",
+              "value": null
+            },
+            {"field": "color"}
+          ],
           "tooltip": {
             "signal": "{\"color\": ''+datum[\"color\"], \"b\": format(datum[\"b\"], \"\")}"
           },

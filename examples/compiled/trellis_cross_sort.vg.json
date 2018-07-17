@@ -95,11 +95,7 @@
       "source": "data_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"},
-        {
-          "type": "filter",
-          "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
       ]
     },
     {
@@ -245,11 +241,7 @@
           "name": "data_0",
           "transform": [
             {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-            {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"},
-            {
-              "type": "filter",
-              "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-            }
+            {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
           ]
         },
         {
@@ -294,8 +286,20 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\")}"
               },
@@ -311,7 +315,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "stroke": {"value": "black"},
+              "stroke": [
+                {
+                  "test": "datum[\"median_median_x_by_a\"] === null || isNaN(datum[\"median_median_x_by_a\"])",
+                  "value": null
+                },
+                {"value": "black"}
+              ],
               "tooltip": {
                 "signal": "{\"Median of median_x_by_a\": format(datum[\"median_median_x_by_a\"], \"\")}"
               },
@@ -328,7 +338,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "stroke": {"value": "black"},
+              "stroke": [
+                {
+                  "test": "datum[\"median_median_y_by_b\"] === null || isNaN(datum[\"median_median_y_by_b\"])",
+                  "value": null
+                },
+                {"value": "black"}
+              ],
               "tooltip": {
                 "signal": "{\"Median of median_y_by_b\": format(datum[\"median_median_y_by_b\"], \"\")}"
               },

@@ -37,10 +37,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -71,10 +67,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_time\"] !== null && !isNaN(datum[\"bin_maxbins_20_time\"])"
         }
       ]
     },
@@ -108,10 +100,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
@@ -149,10 +137,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_distance\"] !== null && !isNaN(datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
@@ -186,10 +170,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     },
@@ -227,10 +207,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_20_delay\"] !== null && !isNaN(datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     }
@@ -459,7 +435,13 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -484,7 +466,13 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
-              "fill": {"value": "goldenrod"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "goldenrod"}
+              ],
               "tooltip": {
                 "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -791,7 +779,13 @@
           "from": {"data": "data_4"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -816,7 +810,13 @@
           "from": {"data": "data_5"},
           "encode": {
             "update": {
-              "fill": {"value": "goldenrod"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "goldenrod"}
+              ],
               "tooltip": {
                 "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -1123,7 +1123,13 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },
@@ -1148,7 +1154,13 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {"value": "goldenrod"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "goldenrod"}
+              ],
               "tooltip": {
                 "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },

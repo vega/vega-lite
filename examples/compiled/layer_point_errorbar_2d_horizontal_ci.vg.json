@@ -16,10 +16,6 @@
           "ops": ["ci0", "ci1"],
           "fields": ["yield", "yield"],
           "as": ["lower_yield", "upper_yield"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"lower_yield\"] !== null && !isNaN(datum[\"lower_yield\"])"
         }
       ]
     },
@@ -57,7 +53,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
           },
@@ -74,7 +76,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
+          "fill": [
+            {
+              "test": "datum[\"mean_yield\"] === null || isNaN(datum[\"mean_yield\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },

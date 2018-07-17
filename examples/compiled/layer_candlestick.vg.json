@@ -227,11 +227,7 @@
       "source": "data_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"low\"])", "as": "low"},
-        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"},
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"low\"] !== null && !isNaN(datum[\"low\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"}
       ]
     },
     {
@@ -239,15 +235,7 @@
       "source": "data_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"open\"])", "as": "open"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"close\"])",
-          "as": "close"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"open\"] !== null && !isNaN(datum[\"open\"])"
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"close\"])", "as": "close"}
       ]
     }
   ],
@@ -260,6 +248,10 @@
       "encode": {
         "update": {
           "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"low\"] === null || isNaN(datum[\"low\"])",
+              "value": null
+            },
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],
@@ -280,6 +272,10 @@
       "encode": {
         "update": {
           "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"open\"] === null || isNaN(datum[\"open\"])",
+              "value": null
+            },
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],

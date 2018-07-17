@@ -11,11 +11,7 @@
       "url": "data/disasters.csv",
       "format": {"type": "csv", "parse": {"Deaths": "number"}},
       "transform": [
-        {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"},
-        {
-          "type": "filter",
-          "expr": "datum[\"Deaths\"] !== null && !isNaN(datum[\"Deaths\"])"
-        }
+        {"type": "filter", "expr": "datum.Entity !== 'All natural disasters'"}
       ]
     }
   ],
@@ -28,9 +24,21 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.8},
-          "stroke": {"value": "black"},
+          "stroke": [
+            {
+              "test": "datum[\"Deaths\"] === null || isNaN(datum[\"Deaths\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
           "strokeWidth": {"value": 1},
-          "fill": {"scale": "color", "field": "Entity"},
+          "fill": [
+            {
+              "test": "datum[\"Deaths\"] === null || isNaN(datum[\"Deaths\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "Entity"}
+          ],
           "tooltip": {
             "signal": "{\"Year\": ''+datum[\"Year\"], \"Entity\": ''+datum[\"Entity\"], \"Deaths\": format(datum[\"Deaths\"], \"\")}"
           },

@@ -284,11 +284,7 @@
           "frame": [null, null]
         },
         {"type": "formula", "expr": "datum.v1 - datum.offset", "as": "nx"},
-        {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"},
-        {
-          "type": "filter",
-          "expr": "datum[\"nx\"] !== null && !isNaN(datum[\"nx\"])"
-        }
+        {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"}
       ]
     }
   ],
@@ -307,7 +303,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "type"},
+          "fill": [
+            {
+              "test": "datum[\"nx\"] === null || isNaN(datum[\"nx\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "type"}
+          ],
           "tooltip": {
             "signal": "{\"nx\": format(datum[\"nx\"], \"\"), \"question\": ''+datum[\"question\"], \"nx2\": format(datum[\"nx2\"], \"\"), \"type\": ''+datum[\"type\"]}"
           },

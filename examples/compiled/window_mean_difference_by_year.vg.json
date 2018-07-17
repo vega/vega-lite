@@ -41,20 +41,6 @@
           "type": "formula",
           "expr": "toNumber(datum[\"IMDB_Rating\"])",
           "as": "IMDB_Rating"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"AverageYearRating\"] !== null && !isNaN(datum[\"AverageYearRating\"])"
         }
       ]
     }
@@ -75,7 +61,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"IMDB_Rating\"] === null || isNaN(datum[\"IMDB_Rating\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"IMDB_Rating\": format(datum[\"IMDB_Rating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
           },
@@ -90,11 +82,17 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "red"},
+          "fill": [
+            {
+              "test": "datum[\"AverageYearRating\"] === null || isNaN(datum[\"AverageYearRating\"])",
+              "value": null
+            },
+            {"value": "red"}
+          ],
           "tooltip": {
             "signal": "{\"AverageYearRating\": format(datum[\"AverageYearRating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
           },
@@ -113,7 +111,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "IMDB_Rating"},
-          {"data": "data_1", "field": "AverageYearRating"}
+          {"data": "source_0", "field": "AverageYearRating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -126,7 +124,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Title"},
-          {"data": "data_1", "field": "Title"}
+          {"data": "source_0", "field": "Title"}
         ],
         "sort": true
       },

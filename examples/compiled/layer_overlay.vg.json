@@ -127,7 +127,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": {"value": "darkred"},
+          "fill": [
+            {
+              "test": "datum[\"max_Horsepower\"] === null || isNaN(datum[\"max_Horsepower\"])",
+              "value": null
+            },
+            {"value": "darkred"}
+          ],
           "tooltip": {
             "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Max of Horsepower\": format(datum[\"max_Horsepower\"], \"\")}"
           },
@@ -164,7 +170,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"min_Horsepower\"] === null || isNaN(datum[\"min_Horsepower\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Min of Horsepower\": format(datum[\"min_Horsepower\"], \"\")}"
           },

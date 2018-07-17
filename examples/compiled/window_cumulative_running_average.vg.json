@@ -44,10 +44,6 @@
           "type": "formula",
           "as": "year_Year",
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"year_Year\"] !== null && !isNaN(datum[\"year_Year\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
         }
       ]
     },
@@ -73,7 +69,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "#4c78a8"},
+          "fill": [
+            {
+              "test": "datum[\"year_Year\"] === null || isNaN(datum[\"year_Year\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
           "tooltip": {
             "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
           },

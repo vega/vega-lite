@@ -123,7 +123,13 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": {"scale": "color", "field": "gender"},
+              "fill": [
+                {
+                  "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
+                  "value": null
+                },
+                {"scale": "color", "field": "gender"}
+              ],
               "tooltip": {
                 "signal": "{\"gender\": ''+datum[\"gender\"], \"Sum of people\": format(datum[\"sum_people\"], \"\")}"
               },

@@ -31,10 +31,6 @@
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
-        },
-        {
-          "type": "filter",
-          "expr": "datum[\"bin_maxbins_15_Horsepower\"] !== null && !isNaN(datum[\"bin_maxbins_15_Horsepower\"])"
         }
       ]
     },
@@ -136,7 +132,13 @@
           "from": {"data": "facet"},
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
+              "fill": [
+                {
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
               "tooltip": {
                 "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
               },

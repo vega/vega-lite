@@ -16,13 +16,7 @@
           "Miles_per_Gallon": "number",
           "Displacement": "number"
         }
-      },
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"Displacement\"] !== null && !isNaN(datum[\"Displacement\"])"
-        }
-      ]
+      }
     }
   ],
   "marks": [
@@ -34,8 +28,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "Displacement"},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"Displacement\"] === null || isNaN(datum[\"Displacement\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "Displacement"}
+          ],
           "tooltip": {
             "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Displacement\": format(datum[\"Displacement\"], \"\")}"
           },
