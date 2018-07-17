@@ -257,8 +257,8 @@
         {
           "scale": "trellis_barley_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "trellis_barley_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
           "domain": false,
           "labels": false,

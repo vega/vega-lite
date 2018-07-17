@@ -513,8 +513,8 @@
         {
           "scale": "child_Horsepower_Miles_per_Gallon_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Horsepower_Miles_per_Gallon_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -535,8 +535,8 @@
         {
           "scale": "child_Horsepower_Miles_per_Gallon_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Horsepower_Miles_per_Gallon_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -907,8 +907,8 @@
         {
           "scale": "child_Horsepower_Acceleration_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Horsepower_Acceleration_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -929,8 +929,8 @@
         {
           "scale": "child_Horsepower_Acceleration_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Horsepower_Acceleration_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1240,8 +1240,8 @@
         {
           "scale": "child_Horsepower_Horsepower_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Horsepower_Horsepower_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1262,8 +1262,8 @@
         {
           "scale": "child_Horsepower_Horsepower_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Horsepower_Horsepower_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1634,8 +1634,8 @@
         {
           "scale": "child_Acceleration_Miles_per_Gallon_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Acceleration_Miles_per_Gallon_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1656,8 +1656,8 @@
         {
           "scale": "child_Acceleration_Miles_per_Gallon_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Acceleration_Miles_per_Gallon_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -1967,8 +1967,8 @@
         {
           "scale": "child_Acceleration_Acceleration_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Acceleration_Acceleration_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -1989,8 +1989,8 @@
         {
           "scale": "child_Acceleration_Acceleration_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Acceleration_Acceleration_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -2361,8 +2361,8 @@
         {
           "scale": "child_Acceleration_Horsepower_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Acceleration_Horsepower_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -2383,8 +2383,8 @@
         {
           "scale": "child_Acceleration_Horsepower_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Acceleration_Horsepower_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -2694,8 +2694,8 @@
         {
           "scale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -2716,8 +2716,8 @@
         {
           "scale": "child_Miles_per_Gallon_Miles_per_Gallon_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Miles_per_Gallon_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -3088,8 +3088,8 @@
         {
           "scale": "child_Miles_per_Gallon_Acceleration_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Acceleration_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -3110,8 +3110,8 @@
         {
           "scale": "child_Miles_per_Gallon_Acceleration_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Acceleration_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -3482,8 +3482,8 @@
         {
           "scale": "child_Miles_per_Gallon_Horsepower_x",
           "orient": "bottom",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Horsepower_y",
+          "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
@@ -3504,8 +3504,8 @@
         {
           "scale": "child_Miles_per_Gallon_Horsepower_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_Horsepower_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,

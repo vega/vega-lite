@@ -97,8 +97,8 @@
     {
       "scale": "y",
       "orient": "left",
-      "grid": true,
       "gridScale": "x",
+      "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,

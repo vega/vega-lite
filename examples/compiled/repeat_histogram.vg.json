@@ -230,8 +230,8 @@
         {
           "scale": "child_Horsepower_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Horsepower_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -314,8 +314,8 @@
         {
           "scale": "child_Miles_per_Gallon_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Miles_per_Gallon_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
@@ -392,8 +392,8 @@
         {
           "scale": "child_Acceleration_y",
           "orient": "left",
-          "grid": true,
           "gridScale": "child_Acceleration_x",
+          "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
