@@ -1,4 +1,3 @@
-import {SortField, UnionSortField} from 'vega';
 import {isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString, isBinning, isBinParams} from '../../bin';
@@ -19,7 +18,9 @@ import {
   VgDataRef,
   VgDomain,
   VgFieldRefUnionDomain,
-  VgNonUnionDomain
+  VgNonUnionDomain,
+  VgSortField,
+  VgUnionSortField
 } from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
@@ -420,7 +421,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     util.hash
   );
 
-  const sorts: SortField[] = util.unique(
+  const sorts: VgSortField[] = util.unique(
     domains
       .map(d => {
         if (isDataRefDomain(d)) {
@@ -472,9 +473,9 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
       return true;
     }),
     util.hash
-  ) as UnionSortField[];
+  ) as VgUnionSortField[];
 
-  let sort: UnionSortField;
+  let sort: VgUnionSortField;
 
   if (simpleSorts.length === 1) {
     sort = simpleSorts[0];
