@@ -301,12 +301,6 @@ export const defaultConfig: Config = {
     borders: false
   },
 
-  range: {
-    ramp: {
-      scheme: 'blues',
-      extent: [0, 1]
-    }
-  },
   scale: defaultScaleConfig,
 
   projection: {},

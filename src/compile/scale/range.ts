@@ -253,11 +253,11 @@ export function defaultRange(
           return {scheme: 'blues', count};
         }
       } else if (isContinuousToContinuous(scaleType)) {
-        return ['#f7fbff', '#0e427f']; // also update interpolation if you change this
+        // Manually set colors for now. We will revise this after https://github.com/vega/vega/issues/1369
+        return ['#f7fbff', '#0e427f'];
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
-
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
