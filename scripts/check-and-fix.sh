@@ -31,6 +31,10 @@ if git log -1 | grep "\[SVG\]" && [[ $TRAVIS_BRANCH != 'master' ]]
 then
   echo "As the latest commit includes [SVG], let's force rebuilding all SVGs"
   yarn build:examples-full
+elif git diff --word-diff=color --exit-code HEAD -- ./examples/compiled/vega_version
+then
+  echo "Different Vega version, let's force rebuilding all SVGs"
+  yarn build:examples-full
 else
   yarn build:examples
 fi
