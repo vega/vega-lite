@@ -7,17 +7,21 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      }
-    },
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+          "as": "Miles_per_Gallon"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -29,8 +33,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "data_2",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -42,8 +46,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_0",
+      "name": "data_3",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -90,7 +94,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -113,7 +117,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": [
@@ -136,7 +140,7 @@
       "name": "layer_3_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "fill": [
@@ -173,10 +177,10 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "Miles_per_Gallon"},
-          {"data": "data_0", "field": "min_Miles_per_Gallon"},
-          {"data": "data_1", "field": "max_Miles_per_Gallon"},
+          {"data": "data_1", "field": "min_Miles_per_Gallon"},
           {"data": "data_2", "field": "max_Miles_per_Gallon"},
-          {"data": "data_2", "field": "min_Miles_per_Gallon"}
+          {"data": "data_3", "field": "max_Miles_per_Gallon"},
+          {"data": "data_3", "field": "min_Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],

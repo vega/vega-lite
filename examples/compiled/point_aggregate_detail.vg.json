@@ -10,10 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Displacement": "number"}
-      },
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",

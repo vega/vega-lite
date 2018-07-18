@@ -21,11 +21,6 @@
         {
           "type": "filter",
           "expr": "indexof([1955,2000], datum[\"year\"]) !== -1"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"life_expect\"])",
-          "as": "life_expect"
         }
       ]
     }

@@ -10,8 +10,25 @@
       "name": "source_0",
       "url": "data/population.json",
       "format": {"type": "json"},
+      "transform": [{"type": "filter", "expr": "datum.year == 2000"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "datum.year == 2000"},
+        {
+          "type": "aggregate",
+          "groupby": ["age"],
+          "ops": ["mean"],
+          "fields": ["people"],
+          "as": ["mean_people"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
           "type": "formula",
           "expr": "toNumber(datum[\"people\"])",
@@ -20,8 +37,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -33,8 +50,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -46,8 +63,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_0",
+      "name": "data_4",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -55,19 +72,6 @@
           "ops": ["max"],
           "fields": ["people"],
           "as": ["max_people"]
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["mean"],
-          "fields": ["people"],
-          "as": ["mean_people"]
         }
       ]
     }
@@ -84,7 +88,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": [
@@ -107,7 +111,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "fill": [
@@ -131,7 +135,7 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "fill": [
@@ -155,7 +159,7 @@
       "name": "layer_3_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -188,10 +192,10 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "age"},
-          {"data": "data_1", "field": "age"},
           {"data": "data_2", "field": "age"},
-          {"data": "data_3", "field": "age"}
+          {"data": "data_3", "field": "age"},
+          {"data": "data_4", "field": "age"},
+          {"data": "data_0", "field": "age"}
         ],
         "sort": true
       },
@@ -204,11 +208,11 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "min_people"},
-          {"data": "data_0", "field": "max_people"},
-          {"data": "data_1", "field": "min_people"},
+          {"data": "data_2", "field": "min_people"},
           {"data": "data_2", "field": "max_people"},
-          {"data": "data_3", "field": "mean_people"}
+          {"data": "data_3", "field": "min_people"},
+          {"data": "data_4", "field": "max_people"},
+          {"data": "data_0", "field": "mean_people"}
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -14,12 +14,6 @@
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"age\"])", "as": "age"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
         }
       ]
     },

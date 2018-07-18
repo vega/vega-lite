@@ -22,13 +22,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"yield\"])", "as": "yield"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
         {
           "type": "aggregate",
           "groupby": ["variety", "year", "site"],
@@ -39,8 +32,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_2",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -150,17 +143,6 @@
           "name": "data_0",
           "transform": [
             {
-              "type": "formula",
-              "expr": "toNumber(datum[\"yield\"])",
-              "as": "yield"
-            }
-          ]
-        },
-        {
-          "name": "data_1",
-          "source": "data_0",
-          "transform": [
-            {
               "type": "aggregate",
               "groupby": ["variety", "year"],
               "ops": ["median"],
@@ -170,8 +152,8 @@
           ]
         },
         {
-          "name": "data_2",
-          "source": "data_0",
+          "source": "trellis_barley_facet",
+          "name": "data_1",
           "transform": [
             {
               "type": "aggregate",
@@ -194,7 +176,7 @@
           "name": "trellis_barley_child_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -223,7 +205,7 @@
           "name": "trellis_barley_child_layer_1_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "stroke": [
@@ -266,8 +248,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "median_yield"},
-          {"data": "data_3", "field": "median_yield"}
+          {"data": "data_1", "field": "median_yield"},
+          {"data": "data_2", "field": "median_yield"}
         ]
       },
       "range": [0, {"signal": "trellis_barley_child_width"}],
@@ -278,7 +260,7 @@
       "name": "trellis_barley_y",
       "type": "point",
       "domain": {
-        "data": "data_1",
+        "data": "source_0",
         "field": "variety",
         "sort": {"field": "yield", "op": "median", "order": "descending"}
       },
@@ -288,7 +270,7 @@
     {
       "name": "trellis_barley_color",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "year", "sort": true},
+      "domain": {"data": "data_1", "field": "year", "sort": true},
       "range": "category"
     }
   ],

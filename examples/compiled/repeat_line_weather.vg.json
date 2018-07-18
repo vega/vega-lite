@@ -8,15 +8,7 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "date": "date",
-          "temp_max": "number",
-          "precipitation": "number",
-          "wind": "number"
-        }
-      }
+      "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
       "name": "data_0",

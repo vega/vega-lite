@@ -5,18 +5,7 @@
   "width": 200,
   "data": [
     {"name": "region_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Miles_per_Gallon": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},

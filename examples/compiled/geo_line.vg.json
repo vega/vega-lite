@@ -55,16 +55,6 @@
       "source": "source_2",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"longitude\"])",
-          "as": "longitude"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"latitude\"])",
-          "as": "latitude"
-        },
-        {
           "type": "geojson",
           "fields": ["longitude", "latitude"],
           "signal": "layer_1_geojson_0"

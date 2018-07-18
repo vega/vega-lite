@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/flights-2k.json",
-      "format": {"type": "json", "parse": {"distance": "number"}}
+      "format": {"type": "json"}
     },
     {
       "name": "data_0",

@@ -6,11 +6,7 @@
   "width": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}}
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "y_step", "value": 21},

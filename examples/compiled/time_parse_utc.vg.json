@@ -10,10 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Year": "date", "Horsepower": "number"}
-      },
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
           "type": "formula",

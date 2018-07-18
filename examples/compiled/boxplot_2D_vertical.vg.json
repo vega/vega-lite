@@ -50,11 +50,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
-        {
           "type": "window",
           "params": [null, null],
           "as": ["lower_box_people", "upper_box_people"],

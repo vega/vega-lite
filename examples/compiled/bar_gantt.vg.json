@@ -13,18 +13,6 @@
         {"task": "B", "start": 3, "end": 8},
         {"task": "C", "start": 8, "end": 10}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"start\"])",
-          "as": "start"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"end\"])", "as": "end"}
-      ]
     }
   ],
   "signals": [
@@ -39,7 +27,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -64,7 +52,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["start", "end"]},
+      "domain": {"data": "source_0", "fields": ["start", "end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -72,7 +60,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "task", "sort": true},
+      "domain": {"data": "source_0", "field": "task", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

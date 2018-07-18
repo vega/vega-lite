@@ -13,17 +13,7 @@
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        }
+        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"}
       ]
     },
     {

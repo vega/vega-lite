@@ -38,17 +38,7 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"precipitation\"])",
-          "as": "precipitation"
-        },
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
-        },
         {
           "type": "filter",
           "expr": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))"

@@ -93,11 +93,6 @@
           "type": "formula",
           "expr": "timeParse(datum[\"year\"],'%Y')",
           "as": "year"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
         }
       ]
     },

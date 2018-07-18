@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {"type": "csv", "parse": {"price": "number"}},
+      "format": {"type": "csv"},
       "transform": [
         {
           "type": "aggregate",

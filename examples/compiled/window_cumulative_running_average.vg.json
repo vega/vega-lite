@@ -28,12 +28,7 @@
           "ignorePeers": false,
           "frame": [null, 0]
         },
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        }
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"}
       ]
     },
     {

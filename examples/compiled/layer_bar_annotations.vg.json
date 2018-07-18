@@ -31,29 +31,11 @@
       "values": [{"ThresholdValue": 300, "Threshold": "hazardous"}]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"Value\"])", "as": "Value"}
-      ]
-    },
-    {
       "name": "data_1",
-      "source": "data_0",
+      "source": "source_0",
       "transform": [
         {"type": "filter", "expr": "datum.Value >= 300"},
         {"type": "formula", "expr": "300", "as": "baseline"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_1",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"ThresholdValue\"])",
-          "as": "ThresholdValue"
-        }
       ]
     }
   ],
@@ -69,7 +51,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -117,7 +99,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -140,7 +122,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "align": {"value": "right"},
@@ -169,7 +151,7 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Day"},
+          {"data": "source_0", "field": "Day"},
           {"data": "data_1", "field": "Day"}
         ],
         "sort": true
@@ -183,10 +165,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Value"},
+          {"data": "source_0", "field": "Value"},
           {"data": "data_1", "field": "baseline"},
           {"data": "data_1", "field": "Value"},
-          {"data": "data_2", "field": "ThresholdValue"}
+          {"data": "source_1", "field": "ThresholdValue"}
         ]
       },
       "range": [{"signal": "height"}, 0],

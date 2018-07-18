@@ -5,18 +5,7 @@
   "width": 200,
   "height": 200,
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Displacement": "number",
-          "Miles_per_Gallon": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},

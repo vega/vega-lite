@@ -13,8 +13,7 @@
       "format": {"type": "csv"},
       "transform": [
         {"type": "filter", "expr": "datum.symbol==='GOOG'"},
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"}
       ]
     }
   ],

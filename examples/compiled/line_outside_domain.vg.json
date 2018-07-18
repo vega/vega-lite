@@ -15,18 +15,6 @@
         {"wavelength": 450, "power": 1.8},
         {"wavelength": 500, "power": 1.1}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"wavelength\"])",
-          "as": "wavelength"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"power\"])", "as": "power"}
-      ]
     }
   ],
   "marks": [
@@ -35,7 +23,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"wavelength\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -63,7 +51,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "power"},
+      "domain": {"data": "source_0", "field": "power"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
