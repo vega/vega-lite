@@ -1,7 +1,7 @@
 import {SignalRef} from 'vega';
 import {isFieldDef} from '../../fielddef';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
 import {pathGroupingFields} from '../mark/mark';
 import {UnitModel} from '../unit';
@@ -57,6 +57,10 @@ export class ImputeNode extends DataFlowNode {
       });
     }
     return null;
+  }
+
+  public hash() {
+    return hash(this.transform);
   }
 
   public assemble() {

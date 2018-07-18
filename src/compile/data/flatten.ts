@@ -1,6 +1,6 @@
 import {FlattenTransform as VgFlattenTransform} from 'vega';
 import {FlattenTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -22,6 +22,10 @@ export class FlattenTransformNode extends DataFlowNode {
       out[this.transform.as[i]] = true;
       return out;
     }, {});
+  }
+
+  public hash() {
+    return hash(this.transform);
   }
 
   public assemble(): VgFlattenTransform {

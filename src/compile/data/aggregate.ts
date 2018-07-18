@@ -4,7 +4,7 @@ import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
+import {Dict, differ, duplicate, hash, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from '../unit';
@@ -164,6 +164,10 @@ export class AggregateNode extends DataFlowNode {
     }
 
     return out;
+  }
+
+  public hash() {
+    return hash({dimensions: this.dimensions, measures: this.measures});
   }
 
   public assemble(): VgAggregateTransform {

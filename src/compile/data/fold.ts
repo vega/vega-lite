@@ -1,6 +1,6 @@
 import {FoldTransform as VgFoldTransform} from 'vega';
 import {FoldTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -22,6 +22,10 @@ export class FoldTransformNode extends DataFlowNode {
       result[item] = true;
       return result;
     }, {});
+  }
+
+  public hash() {
+    return hash(this.transform);
   }
 
   public assemble(): VgFoldTransform {

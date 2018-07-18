@@ -161,6 +161,7 @@ export function optimizeDataflow(dataComponent: DataComponent) {
 
   roots.forEach(moveFacetDown);
   roots.forEach(mergeParse);
+  roots.forEach(optimizers.mergeIdenticalTransforms);
 
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {

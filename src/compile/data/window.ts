@@ -3,7 +3,7 @@ import {FacetMapping} from '../../facet';
 import {vgField} from '../../fielddef';
 import {isSortField} from '../../sort';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
 import {facetSortFieldName} from '../facet';
 import {DataFlowNode} from './dataflow';
@@ -57,6 +57,10 @@ export class WindowTransformNode extends DataFlowNode {
 
   private getDefaultName(windowFieldDef: WindowFieldDef): string {
     return windowFieldDef.as || vgField(windowFieldDef);
+  }
+
+  public hash() {
+    return hash(this.transform);
   }
 
   public assemble(): VgWindowTransform {

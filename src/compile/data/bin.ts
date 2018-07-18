@@ -4,7 +4,7 @@ import {Channel} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, normalizeBin, vgField} from '../../fielddef';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, flatten, keys, vals} from '../../util';
+import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression, binRequiresRange} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
@@ -144,6 +144,9 @@ export class BinNode extends DataFlowNode {
     return out;
   }
 
+  public hash() {
+    return hash(this.bins);
+  }
   public assemble(): VgTransform[] {
     return flatten(
       vals(this.bins).map(bin => {

@@ -2,7 +2,7 @@ import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
-import {duplicate, getFirstDefined} from '../../util';
+import {duplicate, getFirstDefined, hash} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
@@ -117,6 +117,7 @@ export class StackNode extends DataFlowNode {
       as: normalizedAs
     });
   }
+
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
 
@@ -189,6 +190,10 @@ export class StackNode extends DataFlowNode {
       result[item] = true;
       return result;
     }, {});
+  }
+
+  public hash() {
+    return hash(this._stack);
   }
 
   private getGroupbyFields() {

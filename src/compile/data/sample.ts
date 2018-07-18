@@ -1,6 +1,6 @@
 import {SampleTransform as VgSampleTransform} from 'vega';
 import {SampleTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -15,6 +15,9 @@ export class SampleTransformNode extends DataFlowNode {
     super(parent);
   }
 
+  public hash() {
+    return hash(this.transform);
+  }
   public assemble(): VgSampleTransform {
     return {
       type: 'sample',

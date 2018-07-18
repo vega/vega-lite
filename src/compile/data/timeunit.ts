@@ -1,7 +1,7 @@
 import {vgField} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, keys, vals} from '../../util';
+import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -77,6 +77,10 @@ export class TimeUnitNode extends DataFlowNode {
     });
 
     return out;
+  }
+
+  public hash() {
+    return hash(this.formula);
   }
 
   public assemble() {

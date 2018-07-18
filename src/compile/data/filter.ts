@@ -1,6 +1,6 @@
 import {LogicalOperand} from '../../logical';
 import {expression, Predicate} from '../../predicate';
-import {duplicate} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {StringSet} from './../../util';
@@ -30,5 +30,10 @@ export class FilterNode extends DataFlowNode {
       type: 'filter',
       expr: this.expr
     };
+  }
+
+  public hash() {
+    // FIX include something from model in hash
+    return hash(this.filter);
   }
 }
