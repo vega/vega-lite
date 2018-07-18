@@ -10,7 +10,7 @@ import {parseFacetModel, parseUnitModel} from '../../util';
 
 describe('compile/data/formatparse', () => {
   describe('parseUnit', () => {
-    it('should parse binned fields as numbers', () => {
+    it('should not parse binned fields', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -19,9 +19,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
-        a: 'number'
-      });
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
     });
 
     it('should flatten nested fields that are used to sort domains', () => {
@@ -50,12 +48,11 @@ describe('compile/data/formatparse', () => {
       });
 
       const ancestorParese = new AncestorParse();
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse, {
-        a: 'number',
+      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse).toEqual({
         b: 'date'
       });
 
-      assert.deepEqual(ParseNode.makeExplicit(null, model, ancestorParese).parse, {
+      expect(ParseNode.makeExplicit(null, model, ancestorParese).parse).toEqual({
         c: 'number',
         d: 'date'
       });
@@ -76,11 +73,9 @@ describe('compile/data/formatparse', () => {
       const ancestorParse = new AncestorParse();
       const parent = new DataFlowNode(null);
       parseTransformArray(parent, model, ancestorParse);
-      assert.deepEqual(ancestorParse.combine(), {b2: 'derived'});
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
-        a: 'date',
-        b: 'number'
-      });
+
+      expect(ancestorParse.combine()).toEqual({b2: 'derived'});
+      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({a: 'date'});
     });
 
     it('should not parse fields with aggregate=missing/valid/distinct', () => {
@@ -171,7 +166,7 @@ describe('compile/data/formatparse', () => {
       assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
     });
 
-    it('should not parse counts', () => {
+    it('should not parse counts or sums', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -180,9 +175,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
-        foo: 'number'
-      });
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
     });
 
     it('should add flatten for nested fields', () => {
@@ -195,7 +188,7 @@ describe('compile/data/formatparse', () => {
       });
 
       expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
-        'foo.bar': 'number',
+        'foo.bar': 'flatten',
         'foo.baz': 'flatten'
       });
     });
@@ -212,17 +205,15 @@ describe('compile/data/formatparse', () => {
           }
         },
         encoding: {
-          x: {field: 'a', type: 'quantitative'},
-          y: {field: 'b', type: 'quantitative'}
+          x: {field: 'a', type: 'quantitative', aggregate: 'max'},
+          y: {field: 'b', type: 'quantitative', aggregate: 'min'}
         }
       });
 
       const ancestorParse = new AncestorParse();
-      assert.isNull(ParseNode.makeExplicit(null, model, ancestorParse), null);
-      assert.deepEqual(ancestorParse.combine(), {
-        b: null
-      });
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
+      expect(ParseNode.makeExplicit(null, model, ancestorParse)).toBeNull();
+      expect(ancestorParse.combine()).toEqual({b: null});
+      expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({
         a: 'number'
       });
     });

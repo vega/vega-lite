@@ -1,6 +1,5 @@
 import {isNumber, isString, toSet} from 'vega-util';
 import {AncestorParse} from '.';
-import {isMinMaxAggregateOp} from '../../aggregate';
 import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
@@ -9,7 +8,15 @@ import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, keys, removePathFromField, StringSet} from '../../util';
+import {
+  accessPathDepth,
+  accessPathWithDatum,
+  contains,
+  duplicate,
+  keys,
+  removePathFromField,
+  StringSet
+} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -125,7 +132,7 @@ export class ParseNode extends DataFlowNode {
       model.forEachFieldDef(fieldDef => {
         if (isTimeFieldDef(fieldDef)) {
           implicit[fieldDef.field] = 'date';
-        } else if (isNumberFieldDef(fieldDef) && isMinMaxAggregateOp(fieldDef.aggregate)) {
+        } else if (isNumberFieldDef(fieldDef) && fieldDef.aggregate && contains(['min', 'max'], fieldDef.aggregate)) {
           implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
