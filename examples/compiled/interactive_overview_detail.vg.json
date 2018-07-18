@@ -5,22 +5,10 @@
   "width": 480,
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/sp500.csv", "format": {"type": "csv"}},
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
+      "name": "source_0",
+      "url": "data/sp500.csv",
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}}
     }
   ],
   "signals": [
@@ -58,7 +46,7 @@
           "clip": true,
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]", "order": "descending"},
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
@@ -332,7 +320,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]", "order": "descending"},
-          "from": {"data": "data_1"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
@@ -437,7 +425,7 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "date"},
+      "domain": {"data": "source_0", "field": "date"},
       "domainRaw": {
         "signal": "vlIntervalDomain(\"brush_store\", null, \"date\")"
       },
@@ -446,7 +434,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "price"},
+      "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
@@ -454,13 +442,13 @@
     {
       "name": "concat_1_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "date"},
+      "domain": {"data": "source_0", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "price"},
+      "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

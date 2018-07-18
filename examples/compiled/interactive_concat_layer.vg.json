@@ -32,7 +32,13 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Rotten_Tomatoes_Rating\"])",
           "as": "Rotten_Tomatoes_Rating"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
           "type": "extent",
           "field": "IMDB_Rating",
@@ -84,19 +90,9 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_0",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Rotten_Tomatoes_Rating\"])",
-          "as": "Rotten_Tomatoes_Rating"
-        },
         {
           "type": "extent",
           "field": "IMDB_Rating",
@@ -191,7 +187,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -227,7 +223,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -403,14 +399,14 @@
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "data_1", "field": "count_*"},
+      "domain": {"data": "data_2", "field": "count_*"},
       "range": "heatmap",
       "zero": false
     },
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "count_*"},
+      "domain": {"data": "data_3", "field": "count_*"},
       "range": [0, 361],
       "zero": true
     },
@@ -419,10 +415,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating_end"},
           {"data": "data_2", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_2", "field": "bin_maxbins_10_IMDB_Rating_end"}
+          {"data": "data_2", "field": "bin_maxbins_10_IMDB_Rating_end"},
+          {"data": "data_3", "field": "bin_maxbins_10_IMDB_Rating"},
+          {"data": "data_3", "field": "bin_maxbins_10_IMDB_Rating_end"}
         ]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -433,14 +429,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
-          {
-            "data": "data_1",
-            "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
-          },
           {"data": "data_2", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
           {
             "data": "data_2",
+            "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
+          },
+          {"data": "data_3", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
+          {
+            "data": "data_3",
             "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           }
         ]

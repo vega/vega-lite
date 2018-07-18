@@ -40,13 +40,8 @@
     },
     {
       "name": "data_3",
-      "source": "source_0",
+      "source": "data_1",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"yield\"])",
-          "as": "yield"
-        },
         {
           "type": "aggregate",
           "groupby": ["site"],
@@ -175,14 +170,9 @@
           ]
         },
         {
-          "source": "trellis_barley_facet",
           "name": "data_2",
+          "source": "data_0",
           "transform": [
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"yield\"])",
-              "as": "yield"
-            },
             {
               "type": "aggregate",
               "groupby": [],

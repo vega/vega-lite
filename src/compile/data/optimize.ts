@@ -3,6 +3,7 @@ import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
@@ -109,6 +110,40 @@ function getLeaves(roots: DataFlowNode[]) {
 }
 
 /**
+ * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ */
+export function mergeParse(node: DataFlowNode) {
+  const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
+  if (parseChildren.length > 1) {
+    const commonParse = {};
+    for (const parseNode of parseChildren) {
+      const parse = parseNode.parse;
+      for (const k of keys(parse)) {
+        if (commonParse[k] === undefined) {
+          commonParse[k] = parse[k];
+        } else if (commonParse[k] !== parse[k]) {
+          delete commonParse[k];
+        }
+      }
+    }
+    if (keys(commonParse).length !== 0) {
+      const mergedParseNode = new ParseNode(node, commonParse);
+      for (const parseNode of parseChildren) {
+        for (const key of keys(commonParse)) {
+          delete parseNode.parse[key];
+        }
+        node.removeChild(parseNode);
+        parseNode.parent = mergedParseNode;
+        if (keys(parseNode.parse).length === 0) {
+          parseNode.remove();
+        }
+      }
+    }
+  }
+  node.children.forEach(mergeParse);
+}
+
+/**
  * Optimizes the dataflow of the passed in data component.
  */
 export function optimizeDataflow(dataComponent: DataComponent) {
@@ -125,6 +160,7 @@ export function optimizeDataflow(dataComponent: DataComponent) {
   getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
 
   roots.forEach(moveFacetDown);
+  roots.forEach(mergeParse);
 
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {

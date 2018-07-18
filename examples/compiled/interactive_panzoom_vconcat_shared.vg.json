@@ -5,38 +5,17 @@
   "width": 200,
   "data": [
     {"name": "region_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {
+          "Horsepower": "number",
+          "Miles_per_Gallon": "number",
+          "Acceleration": "number"
         }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Acceleration\"])",
-          "as": "Acceleration"
-        }
-      ]
+      }
     }
   ],
   "signals": [
@@ -175,7 +154,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -266,7 +245,7 @@
           "type": "symbol",
           "clip": true,
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -346,12 +325,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_1", "field": "Horsepower"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "Horsepower"},
       "domainRaw": {"signal": "region_Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -360,7 +334,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "domainRaw": {"signal": "region_Miles_per_Gallon"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
@@ -369,7 +343,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Acceleration"},
+      "domain": {"data": "source_0", "field": "Acceleration"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

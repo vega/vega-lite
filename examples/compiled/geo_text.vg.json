@@ -14,14 +14,12 @@
     {
       "name": "source_1",
       "url": "data/us-state-capitals.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"lon": "number", "lat": "number"}}
     },
     {
       "name": "data_0",
       "source": "source_1",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"lon\"])", "as": "lon"},
-        {"type": "formula", "expr": "toNumber(datum[\"lat\"])", "as": "lat"},
         {
           "type": "geojson",
           "fields": ["lon", "lat"],
@@ -39,8 +37,6 @@
       "name": "data_1",
       "source": "source_1",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"lon\"])", "as": "lon"},
-        {"type": "formula", "expr": "toNumber(datum[\"lat\"])", "as": "lat"},
         {
           "type": "geojson",
           "fields": ["lon", "lat"],

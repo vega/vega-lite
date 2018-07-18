@@ -16,12 +16,12 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
+        {"type": "filter", "expr": "(vlSingle(\"tooltip_store\", datum))"}
       ]
     },
     {
       "name": "data_1",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
       ]
@@ -29,13 +29,6 @@
     {
       "name": "data_2",
       "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "(vlSingle(\"tooltip_store\", datum))"}
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_2",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
       ]
@@ -81,7 +74,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_layer_0_main",
-          "data": "data_0",
+          "data": "data_2",
           "groupby": ["symbol"]
         }
       },
@@ -118,7 +111,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": [
@@ -172,7 +165,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -193,7 +186,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -222,10 +215,9 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "date"},
-          {"data": "data_1", "field": "date"},
           {"data": "data_2", "field": "date"},
-          {"data": "data_3", "field": "date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "data_1", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -235,9 +227,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "price"},
-          {"data": "data_1", "field": "price"},
-          {"data": "data_3", "field": "price"}
+          {"data": "data_2", "field": "price"},
+          {"data": "data_1", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -249,9 +240,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "symbol"},
-          {"data": "data_1", "field": "symbol"},
-          {"data": "data_3", "field": "symbol"}
+          {"data": "data_2", "field": "symbol"},
+          {"data": "data_1", "field": "symbol"}
         ],
         "sort": true
       },

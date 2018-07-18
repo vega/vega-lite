@@ -9,33 +9,10 @@
     {
       "name": "source_0",
       "url": "data/driving.json",
-      "format": {"type": "json"}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"miles\"])",
-          "as": "miles"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"gas\"])", "as": "gas"},
-        {"type": "formula", "expr": "toDate(datum[\"year\"])", "as": "year"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"miles\"])",
-          "as": "miles"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"gas\"])", "as": "gas"},
-        {"type": "formula", "expr": "toDate(datum[\"year\"])", "as": "year"}
-      ]
+      "format": {
+        "type": "json",
+        "parse": {"miles": "number", "gas": "number", "year": "date"}
+      }
     }
   ],
   "marks": [
@@ -44,7 +21,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -64,7 +41,7 @@
       "type": "symbol",
       "style": ["point"],
       "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -88,12 +65,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "miles"},
-          {"data": "data_1", "field": "miles"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "miles"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -101,12 +73,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "gas"},
-          {"data": "data_1", "field": "gas"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "gas"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

@@ -27,6 +27,12 @@
           "sort": {"field": ["year"], "order": ["ascending"]},
           "ignorePeers": false,
           "frame": [null, 0]
+        },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+          "as": "Miles_per_Gallon"
         }
       ]
     },
@@ -34,12 +40,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        },
         {
           "type": "formula",
           "as": "year_Year",
@@ -51,7 +51,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "formula",
           "as": "year_Year",

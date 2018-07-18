@@ -5,37 +5,23 @@
   "width": 200,
   "data": [
     {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {
+          "Horsepower": "number",
+          "Miles_per_Gallon": "number",
+          "Acceleration": "number",
+          "Displacement": "number"
+        }
+      }
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Acceleration\"])",
-          "as": "Acceleration"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Displacement\"])",
-          "as": "Displacement"
-        },
         {
           "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
@@ -327,7 +313,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -462,7 +448,7 @@
           "name": "concat_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -542,7 +528,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
+      "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -550,7 +536,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true

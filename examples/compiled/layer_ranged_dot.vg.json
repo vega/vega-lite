@@ -21,24 +21,7 @@
         {
           "type": "filter",
           "expr": "indexof([1955,2000], datum[\"year\"]) !== -1"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"life_expect\"])",
-          "as": "life_expect"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "formula",
           "expr": "toNumber(datum[\"life_expect\"])",
@@ -61,7 +44,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_main",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["country"]
         }
       },
@@ -98,7 +81,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -123,12 +106,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "life_expect"},
-          {"data": "data_1", "field": "life_expect"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "life_expect"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -136,13 +114,7 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "country"},
-          {"data": "data_1", "field": "country"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "country", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     },

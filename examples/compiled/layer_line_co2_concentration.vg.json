@@ -35,31 +35,19 @@
           "type": "formula",
           "expr": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
           "as": "end"
-        }
+        },
+        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"}
       ]
     },
     {
       "name": "data_0",
       "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"}
-      ]
+      "transform": [{"type": "filter", "expr": "datum[\"end\"]===\"first\""}]
     },
     {
       "name": "data_1",
       "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
-        {"type": "filter", "expr": "datum[\"end\"]===\"first\""}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"},
-        {"type": "filter", "expr": "datum[\"end\"]===\"last\""}
-      ]
+      "transform": [{"type": "filter", "expr": "datum[\"end\"]===\"last\""}]
     }
   ],
   "marks": [
@@ -69,7 +57,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_main",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["decade"]
         }
       },
@@ -106,7 +94,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "baseline": {"value": "top"},
@@ -130,7 +118,7 @@
       "name": "layer_2_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "baseline": {"value": "bottom"},
@@ -157,9 +145,9 @@
       "type": "linear",
       "domain": {
         "fields": [
+          {"data": "source_0", "field": "scaled_date"},
           {"data": "data_0", "field": "scaled_date"},
-          {"data": "data_1", "field": "scaled_date"},
-          {"data": "data_2", "field": "scaled_date"}
+          {"data": "data_1", "field": "scaled_date"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -171,9 +159,9 @@
       "type": "linear",
       "domain": {
         "fields": [
+          {"data": "source_0", "field": "CO2"},
           {"data": "data_0", "field": "CO2"},
-          {"data": "data_1", "field": "CO2"},
-          {"data": "data_2", "field": "CO2"}
+          {"data": "data_1", "field": "CO2"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -183,7 +171,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "decade", "sort": true},
+      "domain": {"data": "source_0", "field": "decade", "sort": true},
       "range": {"scheme": "magma"}
     }
   ],

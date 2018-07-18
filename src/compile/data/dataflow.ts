@@ -61,7 +61,7 @@ export class DataFlowNode {
     }
   }
 
-  private removeChild(oldChild: DataFlowNode) {
+  public removeChild(oldChild: DataFlowNode) {
     const loc = this._children.indexOf(oldChild);
     this._children.splice(loc, 1);
     return loc;

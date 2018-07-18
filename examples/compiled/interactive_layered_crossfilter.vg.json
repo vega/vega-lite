@@ -79,6 +79,13 @@
           "expr": "toNumber(datum[\"distance\"])",
           "as": "distance"
         },
+        {"type": "formula", "expr": "toNumber(datum[\"delay\"])", "as": "delay"}
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_2",
+      "transform": [
         {
           "type": "extent",
           "field": "distance",
@@ -104,14 +111,9 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "source_0",
+      "name": "data_4",
+      "source": "data_2",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"distance\"])",
-          "as": "distance"
-        },
         {
           "type": "extent",
           "field": "distance",
@@ -141,14 +143,9 @@
       ]
     },
     {
-      "name": "data_4",
-      "source": "source_0",
+      "name": "data_5",
+      "source": "data_2",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"delay\"])",
-          "as": "delay"
-        },
         {
           "type": "extent",
           "field": "delay",
@@ -174,14 +171,9 @@
       ]
     },
     {
-      "name": "data_5",
-      "source": "source_0",
+      "name": "data_6",
+      "source": "data_2",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"delay\"])",
-          "as": "delay"
-        },
         {
           "type": "extent",
           "field": "delay",
@@ -432,7 +424,7 @@
           "name": "child_distance_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -463,7 +455,7 @@
           "name": "child_distance_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": [
@@ -776,7 +768,7 @@
           "name": "child_delay_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "fill": [
@@ -807,7 +799,7 @@
           "name": "child_delay_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_6"},
           "encode": {
             "update": {
               "fill": [
@@ -1266,10 +1258,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "bin_maxbins_20_distance"},
-          {"data": "data_2", "field": "bin_maxbins_20_distance_end"},
           {"data": "data_3", "field": "bin_maxbins_20_distance"},
-          {"data": "data_3", "field": "bin_maxbins_20_distance_end"}
+          {"data": "data_3", "field": "bin_maxbins_20_distance_end"},
+          {"data": "data_4", "field": "bin_maxbins_20_distance"},
+          {"data": "data_4", "field": "bin_maxbins_20_distance_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -1280,8 +1272,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "count_*"},
-          {"data": "data_3", "field": "count_*"}
+          {"data": "data_3", "field": "count_*"},
+          {"data": "data_4", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -1293,10 +1285,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "bin_maxbins_20_delay"},
-          {"data": "data_4", "field": "bin_maxbins_20_delay_end"},
           {"data": "data_5", "field": "bin_maxbins_20_delay"},
-          {"data": "data_5", "field": "bin_maxbins_20_delay_end"}
+          {"data": "data_5", "field": "bin_maxbins_20_delay_end"},
+          {"data": "data_6", "field": "bin_maxbins_20_delay"},
+          {"data": "data_6", "field": "bin_maxbins_20_delay_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -1307,8 +1299,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "count_*"},
-          {"data": "data_5", "field": "count_*"}
+          {"data": "data_5", "field": "count_*"},
+          {"data": "data_6", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -10,18 +10,12 @@
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"date": "date", "count": "number"}}
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"count\"])",
-          "as": "count"
-        },
         {
           "type": "formula",
           "as": "yearmonth_date",
@@ -40,12 +34,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"count\"])",
-          "as": "count"
-        },
         {
           "type": "filter",
           "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"

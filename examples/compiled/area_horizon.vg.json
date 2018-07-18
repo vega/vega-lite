@@ -33,7 +33,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
@@ -41,12 +41,9 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-        {"type": "formula", "expr": "datum.y - 50", "as": "ny"}
-      ]
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [{"type": "formula", "expr": "datum.y - 50", "as": "ny"}]
     }
   ],
   "marks": [
@@ -56,7 +53,7 @@
       "clip": true,
       "style": ["area"],
       "sort": {"field": "datum[\"x\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -80,7 +77,7 @@
       "clip": true,
       "style": ["area"],
       "sort": {"field": "datum[\"x\"]", "order": "descending"},
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -105,8 +102,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "x"},
-          {"data": "data_2", "field": "x"}
+          {"data": "data_0", "field": "x"},
+          {"data": "data_1", "field": "x"}
         ]
       },
       "range": [0, {"signal": "width"}],

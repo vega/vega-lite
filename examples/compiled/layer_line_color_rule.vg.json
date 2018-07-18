@@ -7,24 +7,15 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/stocks.csv", "format": {"type": "csv"}},
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}}
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"price\"])",
-          "as": "price"
-        },
         {
           "type": "aggregate",
           "groupby": ["symbol"],
@@ -42,7 +33,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_main",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["symbol"]
         }
       },
@@ -79,7 +70,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -104,7 +95,7 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "date"},
+      "domain": {"data": "source_0", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
@@ -112,8 +103,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "price"},
-          {"data": "data_1", "field": "mean_price"}
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "mean_price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -125,8 +116,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "symbol"},
-          {"data": "data_1", "field": "symbol"}
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
         ],
         "sort": true
       },
