@@ -347,6 +347,15 @@ export interface ScaleConfig {
    * @minimum 0
    */
   maxStrokeWidth?: number;
+
+  /**
+   * Default range cardinality for discretizing scales, e.g. [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize), [`threshold`](https://vega.github.io/vega-lite/docs/scale.html#threshold)
+   *
+   * __Default value:__ `4`
+   *
+   * @minimum 0
+   */
+  quantileCount?: number;
 }
 
 export const defaultScaleConfig = {
@@ -368,7 +377,8 @@ export const defaultScaleConfig = {
   minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
 
   minStrokeWidth: 1,
-  maxStrokeWidth: 4
+  maxStrokeWidth: 4,
+  quantileCount: 4
 };
 
 export interface SchemeParams {

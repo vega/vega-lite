@@ -409,7 +409,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             ),
-            makeImplicit('ordinal')
+            makeImplicit({scheme: 'blues', count: 4})
           );
         });
       });

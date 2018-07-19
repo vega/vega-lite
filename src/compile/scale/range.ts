@@ -1,7 +1,7 @@
 import {isNumber} from 'vega-util';
 
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
-import {Config} from '../../config';
+import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -213,7 +213,7 @@ export function defaultRange(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       if (isContinuousToDiscrete(scaleType)) {
         // for now 4 is the default value for range cardinality. we might change it later
-        return interpolateRange(rangeMin, rangeMax, 4);
+        return interpolateRange(rangeMin, rangeMax, config.scale.quantileCount);
       } else {
         return [rangeMin, rangeMax];
       }
@@ -226,11 +226,10 @@ export function defaultRange(
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       } else if (isContinuousToDiscrete(scaleType)) {
-        if (config.range && config.range.ordinal) {
-          return 'ordinal';
+        if (config.range && isVgScheme(config.range.ordinal)) {
+          return config.range.ordinal;
         } else {
-          // for now 4 is the default value for range cardinality. we might change it later
-          return {scheme: 'blues', count: 4};
+          return {scheme: 'blues', count: config.scale.quantileCount};
         }
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
@@ -252,8 +251,9 @@ export function defaultRange(
  */
 function interpolateRange(rangeMin: number, rangeMax: number, cardinality: number) {
   const ranges: number[] = [];
-  for (let i = 1; i <= cardinality; i++) {
-    ranges.push(rangeMin + (i * (rangeMax - rangeMin)) / cardinality);
+  const step = (rangeMax - rangeMin) / (cardinality - 1);
+  for (let i = 0; i < cardinality; i++) {
+    ranges.push(rangeMin + i * step);
   }
   return ranges;
 }
