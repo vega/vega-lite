@@ -1,11 +1,13 @@
 import {isNumber} from 'vega-util';
 
+import {isArray} from 'util';
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
 import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
   channelScalePropertyIncompatability,
+  Domain,
   isContinuousToDiscrete,
   isExtendedScheme,
   Range,
@@ -150,7 +152,18 @@ export function parseRangeForChannel(
     }
   }
   return makeImplicit(
-    defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep)
+    defaultRange(
+      channel,
+      scaleType,
+      type,
+      config,
+      zero,
+      mark,
+      sizeSignal,
+      xyRangeSteps,
+      noRangeStep,
+      specifiedScale.domain
+    )
   );
 }
 
@@ -177,7 +190,8 @@ export function defaultRange(
   mark: Mark,
   sizeSignal: string,
   xyRangeSteps: number[],
-  noRangeStep: boolean
+  noRangeStep: boolean,
+  domain: Domain
 ): VgRange {
   switch (channel) {
     case X:
@@ -213,7 +227,7 @@ export function defaultRange(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       if (isContinuousToDiscrete(scaleType)) {
         // for now 4 is the default value for range cardinality. we might change it later
-        return interpolateRange(rangeMin, rangeMax, config.scale.quantileCount);
+        return interpolateRange(rangeMin, rangeMax, defaultContinuousToDiscreteCount(scaleType, config, domain));
       } else {
         return [rangeMin, rangeMax];
       }
@@ -229,7 +243,7 @@ export function defaultRange(
         if (config.range && isVgScheme(config.range.ordinal)) {
           return config.range.ordinal;
         } else {
-          return {scheme: 'blues', count: config.scale.quantileCount};
+          return {scheme: 'blues', count: defaultContinuousToDiscreteCount(scaleType, config, domain)};
         }
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
@@ -240,6 +254,23 @@ export function defaultRange(
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, domain: Domain) {
+  switch (scaleType) {
+    case 'quantile':
+      return config.scale.quantileCount;
+    case 'quantize':
+      return config.scale.quantizeCount;
+    case 'threshold':
+      if (domain !== undefined && isArray(domain)) {
+        return domain.length + 1;
+      } else {
+        return 4;
+      }
+    default:
+      return 4;
+  }
 }
 
 /**

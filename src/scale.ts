@@ -349,13 +349,22 @@ export interface ScaleConfig {
   maxStrokeWidth?: number;
 
   /**
-   * Default range cardinality for discretizing scales, e.g. [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize), [`threshold`](https://vega.github.io/vega-lite/docs/scale.html#threshold)
+   * Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.
    *
    * __Default value:__ `4`
    *
    * @minimum 0
    */
   quantileCount?: number;
+
+  /**
+   * Default range cardinality for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.
+   *
+   * __Default value:__ `4`
+   *
+   * @minimum 0
+   */
+  quantizeCount?: number;
 }
 
 export const defaultScaleConfig = {
@@ -378,7 +387,8 @@ export const defaultScaleConfig = {
 
   minStrokeWidth: 1,
   maxStrokeWidth: 4,
-  quantileCount: 4
+  quantileCount: 4,
+  quantizeCount: 4
 };
 
 export interface SchemeParams {
