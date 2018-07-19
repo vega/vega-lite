@@ -27798,7 +27798,12 @@
           "type": "number"
         },
         "quantileCount": {
-          "description": "Default range cardinality for discretizing scales, e.g. [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize), [`threshold`](https://vega.github.io/vega-lite/docs/scale.html#threshold)\n\n__Default value:__ `4`",
+          "description": "Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.\n\n__Default value:__ `4`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "quantizeCount": {
+          "description": "Default range cardinality for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.\n\n__Default value:__ `4`",
           "minimum": 0,
           "type": "number"
         },
