@@ -78,7 +78,7 @@
       "name": "size",
       "type": "quantile",
       "domain": {"data": "data_0", "field": "b"},
-      "range": [97, 185, 273, 361]
+      "range": [9, 126.33333333333333, 243.66666666666666, 361]
     }
   ],
   "axes": [
@@ -95,6 +95,7 @@
     {
       "title": "Quantile",
       "fill": "color",
+      "labelOverlap": "greedy",
       "encode": {
         "symbols": {
           "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}

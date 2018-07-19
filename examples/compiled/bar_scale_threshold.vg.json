@@ -95,6 +95,7 @@
     {
       "title": "Threshold",
       "fill": "color",
+      "labelOverlap": "greedy",
       "encode": {
         "symbols": {
           "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}

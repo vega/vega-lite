@@ -177,6 +177,7 @@
           "format": "d",
           "title": "Quantile",
           "fill": "concat_1_color",
+          "labelOverlap": "greedy",
           "encode": {
             "symbols": {
               "update": {
@@ -238,6 +239,7 @@
         {
           "title": "Threshold",
           "fill": "concat_2_color",
+          "labelOverlap": "greedy",
           "encode": {
             "symbols": {
               "update": {
@@ -270,7 +272,7 @@
       "name": "concat_0_size",
       "type": "quantize",
       "domain": {"data": "data_1", "field": "b"},
-      "range": [90.25, 180.5, 270.75, 361],
+      "range": [0, 120.33333333333333, 240.66666666666666, 361],
       "zero": true
     },
     {

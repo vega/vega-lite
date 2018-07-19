@@ -79,7 +79,7 @@
       "name": "size",
       "type": "quantize",
       "domain": {"data": "data_0", "field": "b"},
-      "range": [90.25, 180.5, 270.75, 361],
+      "range": [0, 120.33333333333333, 240.66666666666666, 361],
       "zero": true
     }
   ],
