@@ -1,8 +1,10 @@
 import {Config} from '../config';
+import {MarkDef} from '../mark';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
+import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {Orient} from './../vega.schema';
+import {Interpolate, Orient} from './../vega.schema';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 
@@ -43,6 +45,11 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * __Default value:__ `"stderr"`.
    */
   extent?: ErrorBarExtent;
+
+  /**
+   * The interpolate options for error band parts.
+   */
+  interpolate?: Interpolate;
 }
 
 export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> &
@@ -82,8 +89,18 @@ export function normalizeErrorBand(
   );
 
   const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
-  const bandMark = is2D ? 'area' : 'rect';
-  const bordersMark = is2D ? 'line' : 'rule';
+
+  const bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
+  const bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
+
+  if (markDef.interpolate) {
+    if (is2D) {
+      bandMark.interpolate = markDef.interpolate;
+      bordersMark.interpolate = markDef.interpolate;
+    } else {
+      log.warn(log.message.ERROR_BAND_DOES_NOT_SUPPORT_INTERPOLATE_IN_1D);
+    }
+  }
 
   return {
     ...outerSpec,
