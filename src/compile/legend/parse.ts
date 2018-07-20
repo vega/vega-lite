@@ -1,6 +1,6 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
 import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from '../../channel';
-import {isFieldDef, title as fieldDefTitle} from '../../fielddef';
+import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, keys} from '../../util';
@@ -51,6 +51,26 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
   }
 }
 
+function isExplicit<T extends string | number | object | boolean>(
+  value: T,
+  property: keyof VgLegend,
+  legend: Legend,
+  fieldDef: FieldDef<string>
+) {
+  switch (property) {
+    case 'values':
+      // specified legend.values is already respected, but may get transformed.
+      return !!legend.values;
+    case 'title':
+      // title can be explicit if fieldDef.title is set
+      if (property === 'title' && value === fieldDef.title) {
+        return true;
+      }
+  }
+  // Otherwise, things are explicit if the returned value matches the specified property
+  return value === legend[property];
+}
+
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
@@ -60,15 +80,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   for (const property of LEGEND_PROPERTIES) {
     const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
-      const explicit =
-        // specified legend.values is already respected, but may get transformed.
-        property === 'values'
-          ? !!legend.values
-          : // title can be explicit if fieldDef.title is set
-            property === 'title' && value === model.fieldDef(channel).title
-            ? true
-            : // Otherwise, things are explicit if the returned value matches the specified property
-              value === legend[property];
+      const explicit = isExplicit(value, property, legend, fieldDef);
       if (explicit || model.config.legend[property] === undefined) {
         legendCmpt.set(property, value, explicit);
       }

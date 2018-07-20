@@ -1,10 +1,8 @@
 import {Align, AxisOrient, SignalRef} from 'vega';
-import {truncate} from 'vega-util';
 import {Axis} from '../../axis';
 import {binToString, isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {Config} from '../../config';
-import {FieldDef, title as fieldDefTitle, valueArray} from '../../fielddef';
+import {FieldDef, valueArray} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
@@ -173,12 +171,6 @@ export function tickCount(
   }
 
   return undefined;
-}
-
-export function title(maxLength: number, fieldDef: FieldDef<string>, config: Config) {
-  // if not defined, automatically determine axis title from field def
-  const fieldTitle = fieldDefTitle(fieldDef, config);
-  return maxLength ? truncate(fieldTitle, maxLength) : fieldTitle;
 }
 
 export function values(
