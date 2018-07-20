@@ -2,9 +2,13 @@
 
 import {assert} from 'chai';
 
-import {parseRangeForChannel} from '../../../src/compile/scale/range';
+import {
+  defaultContinuousToDiscreteCount,
+  interpolateRange,
+  parseRangeForChannel
+} from '../../../src/compile/scale/range';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
-import {defaultConfig} from '../../../src/config';
+import {Config, defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from '../../../src/scale';
@@ -664,6 +668,47 @@ describe('compile/scale', () => {
           makeImplicit('symbol')
         );
       });
+    });
+  });
+
+  describe('defaultContinuousToDiscreteCount', () => {
+    it('should use config.scale.quantileCount for quantile scale', () => {
+      const config: Config = {
+        scale: {
+          quantileCount: 4
+        }
+      };
+      assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined), 4);
+    });
+
+    it('should use config.scale.quantizeCount for quantize scale', () => {
+      const config: Config = {
+        scale: {
+          quantizeCount: 4
+        }
+      };
+      assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined), 4);
+    });
+
+    it('should use domain size for threshold scale', () => {
+      assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10]), 3);
+    });
+
+    it('should throw warning and default to 4 for scale without domain', () => {
+      log.wrap(localLogger => {
+        assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined), 4);
+        assert.equal(localLogger.warns[0], log.message.DOMAIN_REQUIRED_FOR_THRESHOLD_SCALE);
+      });
+    });
+
+    it('should return 4 as a default', () => {
+      assert.equal(defaultContinuousToDiscreteCount('band', {}, undefined), 4);
+    });
+  });
+
+  describe('interpolateRange', () => {
+    it('should return the correct interpolation of 1 - 100 with cardinality of 5', () => {
+      assert.deepEqual(interpolateRange(0, 100, 5), [0, 25, 50, 75, 100]);
     });
   });
 });

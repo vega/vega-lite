@@ -240,10 +240,14 @@ export function defaultRange(
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       } else if (isContinuousToDiscrete(scaleType)) {
+        const count = defaultContinuousToDiscreteCount(scaleType, config, domain);
         if (config.range && isVgScheme(config.range.ordinal)) {
-          return config.range.ordinal;
+          return {
+            ...config.range.ordinal,
+            count
+          };
         } else {
-          return {scheme: 'blues', count: defaultContinuousToDiscreteCount(scaleType, config, domain)};
+          return {scheme: 'blues', count};
         }
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
@@ -256,7 +260,7 @@ export function defaultRange(
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
-function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, domain: Domain) {
+export function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, domain: Domain) {
   switch (scaleType) {
     case 'quantile':
       return config.scale.quantileCount;
@@ -266,6 +270,7 @@ function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, 
       if (domain !== undefined && isArray(domain)) {
         return domain.length + 1;
       } else {
+        log.warn(log.message.DOMAIN_REQUIRED_FOR_THRESHOLD_SCALE);
         return 4;
       }
     default:
@@ -280,7 +285,7 @@ function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, 
  * @param rangeMax end of the range
  * @param cardinality number of values in the output range
  */
-function interpolateRange(rangeMin: number, rangeMax: number, cardinality: number) {
+export function interpolateRange(rangeMin: number, rangeMax: number, cardinality: number) {
   const ranges: number[] = [];
   const step = (rangeMax - rangeMin) / (cardinality - 1);
   for (let i = 0; i < cardinality; i++) {
