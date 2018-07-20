@@ -300,7 +300,8 @@
               },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"}
+              "text": {"signal": "''+datum[\"label\"]"},
+              "fontSize": {"value": 9.5}
             }
           }
         },
@@ -324,7 +325,8 @@
               },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"label\"]"}
+              "text": {"signal": "''+datum[\"label\"]"},
+              "fontSize": {"value": 9.5}
             }
           }
         },
@@ -348,7 +350,8 @@
               },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"}
+              "text": {"value": "more valuable"},
+              "fontSize": {"value": 9.5}
             }
           }
         },
@@ -372,7 +375,8 @@
               },
               "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
-              "text": {"value": "more valuable"}
+              "text": {"value": "more valuable"},
+              "fontSize": {"value": 9.5}
             }
           }
         }
