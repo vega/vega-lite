@@ -772,6 +772,8 @@ export interface VgMarkConfig {
   /**
    * The font size, in pixels.
    * @minimum 0
+   *
+   * __Default value:__ `11`
    */
   fontSize?: number;
 

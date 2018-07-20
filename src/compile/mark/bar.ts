@@ -6,8 +6,9 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-import {isVgRangeStep, VgEncodeEntry} from '../../vega.schema';
-import {VgValueRef} from '../../vega.schema';
+import {getFirstDefined} from '../../util';
+import {isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -132,24 +133,44 @@ function y(model: UnitModel) {
 function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleComponent, config: Config): VgValueRef {
   if (markDef.size !== undefined) {
     return {value: markDef.size};
-  } else if (config.bar.discreteBandSize) {
-    return {value: config.bar.discreteBandSize};
-  } else if (scale) {
+  }
+  const sizeConfig = getMarkConfig('size', markDef, config, {
+    // config.mark.size shouldn't affect bar size
+    skipGeneralMarkConfig: true
+  });
+
+  if (sizeConfig !== undefined) {
+    return {value: sizeConfig};
+  }
+
+  if (scale) {
     const scaleType = scale.get('type');
-    if (scaleType === ScaleType.POINT) {
-      const scaleRange = scale.get('range');
-      if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-        return {value: scaleRange.step - 1};
+    if (scaleType === 'point' || scaleType === 'band') {
+      if (config.bar.discreteBandSize !== undefined) {
+        return {value: config.bar.discreteBandSize};
       }
-      log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
-    } else if (scaleType === ScaleType.BAND) {
-      return ref.bandRef(scaleName);
+      if (scaleType === ScaleType.POINT) {
+        const scaleRange = scale.get('range');
+        if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
+          return {value: scaleRange.step - 1};
+        }
+        log.warn(log.message.BAR_WITH_POINT_SCALE_AND_RANGESTEP_NULL);
+      } else {
+        // BAND
+        return ref.bandRef(scaleName);
+      }
     } else {
-      // non-ordinal scale
+      // continuous scale
       return {value: config.bar.continuousBandSize};
     }
-  } else if (config.scale.rangeStep && config.scale.rangeStep !== null) {
-    return {value: config.scale.rangeStep - 1};
   }
-  return {value: 20};
+  // No Scale
+  const value = getFirstDefined(
+    // No scale is like discrete bar (with one item)
+    config.bar.discreteBandSize,
+    config.scale.rangeStep ? config.scale.rangeStep - 1 : undefined,
+    // If somehow default rangeStep is set to null or undefined, use 20 as back up
+    20
+  );
+  return {value};
 }
