@@ -27,8 +27,7 @@ const interval: SelectionCompiler = {
     const name = selCmpt.name;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
-    const intervals: any[] = [];
-    const tupleTriggers: string[] = [];
+    const dataSignals: string[] = [];
     const scaleTriggers: any[] = [];
 
     if (selCmpt.translate && !hasScales) {
@@ -56,8 +55,7 @@ const interval: SelectionCompiler = {
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
       signals.push.apply(signals, cs);
-      tupleTriggers.push(dname);
-      intervals.push(`{encoding: ${stringValue(channel)}, ` + `field: ${stringValue(p.field)}, extent: ${dname}}`);
+      dataSignals.push(dname);
 
       scaleTriggers.push({
         scaleName: model.scaleName(channel),
@@ -84,9 +82,9 @@ const interval: SelectionCompiler = {
       name: name + TUPLE,
       on: [
         {
-          events: tupleTriggers.map(t => ({signal: t})),
-          update:
-            tupleTriggers.join(' && ') + ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
+          events: dataSignals.map(t => ({signal: t})),
+          update: dataSignals.join(' && ') +
+            ` ? {unit: ${unitName(model)}, values: [${dataSignals.join(', ')}]} : null`
         }
       ]
     });
