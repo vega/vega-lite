@@ -15,7 +15,7 @@ import * as log from '../../log';
 import {isPathMark, MarkDef} from '../../mark';
 import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
-import {contains, Dict, keys} from '../../util';
+import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
@@ -271,7 +271,7 @@ export function tooltip(model: UnitModel) {
       }
 
       // If tooltipDef does not exist, then use value from markDef or config
-      const markTooltip = markDef.tooltip !== undefined ? markDef.tooltip : getMarkConfig('tooltip', markDef, config);
+      const markTooltip = getFirstDefined(markDef.tooltip, getMarkConfig('tooltip', markDef, config));
       if (isString(markTooltip)) {
         return {value: markTooltip};
       } else if (isObject(markTooltip)) {

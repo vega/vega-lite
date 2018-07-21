@@ -42,7 +42,7 @@ function x(model: UnitModel): VgEncodeEntry {
       x2Def,
       X,
       xScaleName,
-      markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+      getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
       xScale.get('reverse')
     );
   } else if (orient === 'horizontal' || x2Def) {
@@ -60,7 +60,7 @@ function x(model: UnitModel): VgEncodeEntry {
           undefined,
           X,
           model.scaleName('x'),
-          markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+          getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
           xScale.get('reverse')
         );
       } else {
@@ -97,7 +97,7 @@ function y(model: UnitModel) {
       y2Def,
       Y,
       yScaleName,
-      markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+      getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
       yScale.get('reverse')
     );
   } else if (orient === 'vertical' || y2Def) {
@@ -114,7 +114,7 @@ function y(model: UnitModel) {
           undefined,
           Y,
           model.scaleName('y'),
-          markDef.binSpacing === undefined ? config.bar.binSpacing : markDef.binSpacing,
+          getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
           yScale.get('reverse')
         );
       } else if (yScaleType === ScaleType.BAND) {

@@ -125,13 +125,6 @@ export function formatSignalRef(
   }
 }
 
-export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {signal: string}) {
-  if (specifiedValue !== undefined) {
-    return specifiedValue;
-  }
-  return defaultValue;
-}
-
 /**
  * Returns number format for a fieldDef
  *

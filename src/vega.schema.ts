@@ -19,7 +19,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SortField as VgSortField, UnionSortField as VgUnionSortField} from 'vega';
+export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
 
 export type Color = string;
 
