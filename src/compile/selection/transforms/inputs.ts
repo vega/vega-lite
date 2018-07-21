@@ -1,7 +1,7 @@
-import {stringValue} from 'vega-util';
 import {accessPathWithDatum, varName} from '../../../util';
 import {TUPLE} from '../selection';
 import nearest from './nearest';
+import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
 
 const inputBindings: TransformCompiler = {
@@ -40,11 +40,11 @@ const inputBindings: TransformCompiler = {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const signal = signals.filter(s => s.name === name + TUPLE)[0];
-    const fields = proj.map(p => stringValue(p.field)).join(', ');
+    const fields = name + TUPLE + TUPLE_FIELDS;
     const values = proj.map(p => varName(`${name}_${p.field}`));
 
     if (values.length) {
-      signal.update = `${values.join(' && ')} ? {fields: [${fields}], values: [${values.join(', ')}]} : null`;
+      signal.update = `${values.join(' && ')} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
     }
 
     delete signal.value;
