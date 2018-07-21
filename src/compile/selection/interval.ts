@@ -14,6 +14,7 @@ import {
   TUPLE,
   unitName
 } from './selection';
+import {TUPLE_FIELDS} from './transforms/project';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush';
@@ -24,6 +25,7 @@ const interval: SelectionCompiler = {
 
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
+    const fieldsSg = name + TUPLE + TUPLE_FIELDS;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
     const dataSignals: string[] = [];
@@ -83,7 +85,8 @@ const interval: SelectionCompiler = {
         {
           events: dataSignals.map(t => ({signal: t})),
           update: dataSignals.join(' && ') +
-            ` ? {unit: ${unitName(model)}, values: [${dataSignals.join(', ')}]} : null`
+            ` ? {unit: ${unitName(model)}, fields: ${fieldsSg}, ` +
+            `values: [${dataSignals.join(', ')}]} : null`
         }
       ]
     });

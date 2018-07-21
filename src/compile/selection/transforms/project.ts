@@ -7,7 +7,7 @@ import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {ProjectSelectionComponent, SelectionComponent, TUPLE, TupleStoreType} from '../selection';
 import {TransformCompiler} from './transforms';
 
-export const TUPLE_DEF = '_def';
+export const TUPLE_FIELDS = '_fields';
 
 const project: TransformCompiler = {
   has: (selDef: SelectionComponent | SelectionDef) => {
@@ -74,8 +74,8 @@ const project: TransformCompiler = {
     }
   },
 
-  topLevelSignals: (model, selCmpt, signals) => {
-    const name = selCmpt.name + TUPLE + TUPLE_DEF;
+  signals: (model, selCmpt, signals) => {
+    const name = selCmpt.name + TUPLE + TUPLE_FIELDS;
     const hasSignal = signals.filter(s => s.name === name);
     return hasSignal.length ? signals : signals.concat({
       name, update: `${JSON.stringify(selCmpt.project)}`

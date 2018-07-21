@@ -2,8 +2,11 @@ import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
+import {TUPLE_FIELDS} from './transforms/project';
 
 export function signals(model: UnitModel, selCmpt: SelectionComponent) {
+  const name = selCmpt.name;
+  const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
   const values = proj.map(p => {
@@ -24,13 +27,13 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   // be cleared on the second click).
   return [
     {
-      name: selCmpt.name + TUPLE,
+      name: name + TUPLE,
       value: {},
       on: [
         {
           events: selCmpt.events,
           update: `datum && item().mark.marktype !== 'group' ? ` +
-            `{unit: ${unitName(model)}, values: [${values}]} : null`,
+            `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
           force: true
         }
       ]

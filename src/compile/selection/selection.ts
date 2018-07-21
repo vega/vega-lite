@@ -17,7 +17,6 @@ import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
-import {TUPLE_DEF} from './transforms/project';
 import {forEachTransform} from './transforms/transforms';
 
 export const STORE = '_store';
@@ -233,7 +232,6 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
-    const tupleDef = vname + TUPLE + TUPLE_DEF;
 
     if (selCmpt.timeUnit) {
       const child = dfnode || model.component.data.raw;
@@ -249,7 +247,7 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
       stores.push(store);
     }
 
-    return (`vlSelectionTest(${store}, ${tupleDef}, datum` +
+    return (`vlSelectionTest(${store}, datum` +
       (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
