@@ -1467,13 +1467,13 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
-    "ConditionalFieldDefWithoutScale": {
+    "ConditionalFieldDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<FieldDefWithoutScale>"
+          "$ref": "#/definitions/ConditionalPredicate<FieldDef>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<FieldDefWithoutScale>"
+          "$ref": "#/definitions/ConditionalSelection<FieldDef>"
         }
       ]
     },
@@ -1507,7 +1507,7 @@
         }
       ]
     },
-    "ConditionalPredicate<FieldDefWithoutScale>": {
+    "ConditionalPredicate<FieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1739,7 +1739,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<FieldDefWithoutScale>": {
+    "ConditionalSelection<FieldDef>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -2411,11 +2411,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDefWithoutScale"
+                "$ref": "#/definitions/FieldDef"
               },
               "type": "array"
             }
@@ -2436,32 +2436,32 @@
         "href": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithCondition<FieldDefWithoutScale>"
+              "$ref": "#/definitions/FieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ValueDefWithCondition<FieldDefWithoutScale>"
+              "$ref": "#/definitions/ValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Latitude position of geographically projected marks."
         },
         "latitude2": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "longitude": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Longitude position of geographically projected marks."
         },
         "longitude2": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "opacity": {
@@ -2567,7 +2567,7 @@
         "x2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "$ref": "#/definitions/ValueDef"
@@ -2589,7 +2589,7 @@
         "y2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "$ref": "#/definitions/ValueDef"
@@ -2650,11 +2650,11 @@
         "detail": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "items": {
-                "$ref": "#/definitions/FieldDefWithoutScale"
+                "$ref": "#/definitions/FieldDef"
               },
               "type": "array"
             }
@@ -2675,32 +2675,32 @@
         "href": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithCondition<FieldDefWithoutScale>"
+              "$ref": "#/definitions/FieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ValueDefWithCondition<FieldDefWithoutScale>"
+              "$ref": "#/definitions/ValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
         },
         "key": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
         },
         "latitude": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Latitude position of geographically projected marks."
         },
         "latitude2": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "longitude": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Longitude position of geographically projected marks."
         },
         "longitude2": {
-          "$ref": "#/definitions/FieldDefWithoutScale",
+          "$ref": "#/definitions/FieldDef",
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
         },
         "opacity": {
@@ -2810,7 +2810,7 @@
         "x2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "$ref": "#/definitions/ValueDef"
@@ -2832,7 +2832,7 @@
         "y2": {
           "anyOf": [
             {
-              "$ref": "#/definitions/FieldDefWithoutScale"
+              "$ref": "#/definitions/FieldDef"
             },
             {
               "$ref": "#/definitions/ValueDef"
@@ -3195,10 +3195,10 @@
       "type": "object"
     },
     "FacetedUnitSpec": {
-      "$ref": "#/definitions/FacetedCompositeUnitSpecAlias",
+      "$ref": "#/definitions/FacetedUnitSpecAlias",
       "description": "Unit spec that can have a composite mark and row or column channels."
     },
-    "FieldDefWithCondition<FieldDefWithoutScale>": {
+    "FieldDefWithCondition": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -3441,7 +3441,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithoutScale": {
+    "FieldDef": {
       "additionalProperties": false,
       "description": "Field Def without scale (and without bin: \"binned\" support).",
       "properties": {
@@ -4234,7 +4234,7 @@
       ],
       "type": "object"
     },
-    "FacetedCompositeUnitSpecAlias": {
+    "FacetedUnitSpecAlias": {
       "additionalProperties": false,
       "properties": {
         "data": {
@@ -9499,14 +9499,14 @@
       ],
       "type": "object"
     },
-    "ValueDefWithCondition<FieldDefWithoutScale>": {
+    "ValueDefWithCondition": {
       "additionalProperties": false,
       "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalFieldDefWithoutScale"
+              "$ref": "#/definitions/ConditionalFieldDef"
             },
             {
               "$ref": "#/definitions/ConditionalValueDef"
