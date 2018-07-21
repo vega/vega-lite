@@ -47,9 +47,29 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   extent?: ErrorBarExtent;
 
   /**
-   * The interpolate options for error band parts.
+   * The line interpolation method to use for line and area marks. One of the following:
+   * - `"linear"`: piecewise linear segments, as in a polyline.
+   * - `"linear-closed"`: close the linear segments to form a polygon.
+   * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
+   * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"basis"`: a B-spline, with control point duplication on the ends.
+   * - `"basis-open"`: an open B-spline; may not intersect the start or end.
+   * - `"basis-closed"`: a closed B-spline, as in a loop.
+   * - `"cardinal"`: a Cardinal spline, with control point duplication on the ends.
+   * - `"cardinal-open"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.
+   * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
+   * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
+   * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
    */
   interpolate?: Interpolate;
+
+  /**
+   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   * @minimum 0
+   * @maximum 1
+   */
+  tension?: number;
 }
 
 export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> &
@@ -90,16 +110,26 @@ export function normalizeErrorBand(
 
   const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
 
-  const bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
-  const bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
+  let bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
+  let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
+  const interpolate = {
+    ...(markDef.interpolate ? {interpolate: markDef.interpolate} : {}),
+    ...(markDef.tension && markDef.interpolate ? {interpolate: markDef.tension} : {})
+  };
 
-  if (markDef.interpolate) {
-    if (is2D) {
-      bandMark.interpolate = markDef.interpolate;
-      bordersMark.interpolate = markDef.interpolate;
-    } else {
-      log.warn(log.message.ERROR_BAND_DOES_NOT_SUPPORT_INTERPOLATE_IN_1D);
-    }
+  if (is2D) {
+    bandMark = {
+      ...bandMark,
+      ...interpolate
+    };
+    bordersMark = {
+      ...bordersMark,
+      ...interpolate
+    };
+  } else if (markDef.interpolate) {
+    log.warn(log.message.errorBand1DNotSupport('interpolate'));
+  } else if (markDef.tension) {
+    log.warn(log.message.errorBand1DNotSupport('tension'));
   }
 
   return {

@@ -173,7 +173,7 @@ describe('normalizeErrorBand', () => {
     const outputSpec = normalize(
       {
         data: {url: 'data/population.json'},
-        mark: {type: 'errorband', interpolate: 'monotone'},
+        mark: {type: 'errorband', interpolate: 'bundle', tension: 1},
         encoding: {
           y: {field: 'people', type: 'quantitative'}
         }
@@ -207,7 +207,25 @@ describe('normalizeErrorBand', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.ERROR_BAND_DOES_NOT_SUPPORT_INTERPOLATE_IN_1D);
+      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+    })
+  );
+
+  it(
+    'should produce a warning 1D error band has tension property',
+    log.wrap(localLogger => {
+      normalize(
+        {
+          data: {url: 'data/population.json'},
+          mark: {type: 'errorband', tension: 1},
+          encoding: {
+            y: {field: 'people', type: 'quantitative'}
+          }
+        },
+        defaultConfig
+      );
+
+      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
     })
   );
 });

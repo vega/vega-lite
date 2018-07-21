@@ -373,7 +373,9 @@ export namespace message {
     return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
 
-  export const ERROR_BAND_DOES_NOT_SUPPORT_INTERPOLATE_IN_1D = `1D error band does not support interpolate`;
+  export function errorBand1DNotSupport(property: 'interpolate' | 'tension') {
+    return `1D error band does not support ${property}`;
+  }
 
   // CHANNEL
   export function channelRequiredForBinned(channel: Channel) {
