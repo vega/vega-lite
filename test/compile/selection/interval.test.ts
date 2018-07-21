@@ -224,6 +224,8 @@ describe('Interval Selections', () => {
         }
       });
 
+      model2.parseScale();
+
       const selCmpts2 = (model2.component.selection = selection.parseUnitSelection(model2, {
         one: {
           type: 'interval',

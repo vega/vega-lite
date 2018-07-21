@@ -47,9 +47,13 @@ export interface SelectionComponent {
   nearest?: any;
 }
 
+// Do the selection tuples hold enumerated or ranged values for a field?
+export type TupleStoreType = 'E' | 'R';
+
 export interface ProjectSelectionComponent {
   field?: string;
   channel?: SingleDefChannel;
+  type: TupleStoreType;
 }
 
 export interface SelectionCompiler {

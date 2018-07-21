@@ -15,6 +15,8 @@ describe('Single Selection', () => {
     }
   });
 
+  model.parseScale();
+
   const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
     one: {type: 'single'},
     two: {
@@ -111,7 +113,7 @@ describe('Single Selection', () => {
     ]);
 
     const signals = selection.assembleTopLevelSignals(model, []);
-    assert.deepEqual(
+    assert.includeDeepMembers(
       signals,
       [
         {
