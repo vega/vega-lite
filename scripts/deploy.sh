@@ -40,7 +40,6 @@ if ! [ -f build/src/index.d.ts ]; then
   exit 1;
 fi
 
-yarn tsc -m commonjs
 npm publish
 
 # exit if npm publish failed
@@ -56,7 +55,6 @@ gitsha=$(git rev-parse HEAD)
 version=$(scripts/version.sh vega-lite)
 
 git checkout head
-yarn build && yarn tsc -m commonjs
 # add the compiled files, commit and tag!
 git add build/** -f
 
