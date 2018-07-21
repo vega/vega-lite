@@ -47,7 +47,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   extent?: ErrorBarExtent;
 
   /**
-   * The line interpolation method to use for line and area marks. One of the following:
+   * The line interpolation method for the error band. One of the following:
    * - `"linear"`: piecewise linear segments, as in a polyline.
    * - `"linear-closed"`: close the linear segments to form a polygon.
    * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
@@ -65,7 +65,7 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
   interpolate?: Interpolate;
 
   /**
-   * Depending on the interpolation type, sets the tension parameter (for line and area marks).
+   * The tension parameter for the interpolation type of the error band.
    * @minimum 0
    * @maximum 1
    */
