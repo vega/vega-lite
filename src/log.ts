@@ -372,6 +372,11 @@ export namespace message {
   export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
     return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
   }
+
+  export function errorBand1DNotSupport(property: 'interpolate' | 'tension') {
+    return `1D error band does not support ${property}`;
+  }
+
   // CHANNEL
   export function channelRequiredForBinned(channel: Channel) {
     return `Channel ${channel} is required for "binned" bin`;

@@ -30,9 +30,9 @@ To create an error band, set `mark` to `"errorband"`.
 {:#properties}
 ## Error Band Mark Properties
 
-An error band's mark definition contain the following properties:
+An error band's mark definition can contain the following properties:
 
-{% include table.html props="type,extent,orient,color,opacity" source="ErrorBandDef" %}
+{% include table.html props="type,extent,orient,color,opacity,interpolate,tension" source="ErrorBandDef" %}
 
 Besides the properties listed above, `band` and `borders` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the error band](#parts) as well.
 

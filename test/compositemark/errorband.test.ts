@@ -1,9 +1,10 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
 
+import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
-import {some} from '../../src/util';
+import {every, some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
 describe('normalizeErrorBand', () => {
@@ -142,4 +143,89 @@ describe('normalizeErrorBand', () => {
       assert.fail(!layer, false, 'layer should be a part of the spec');
     }
   });
+
+  it('should produce correct layered specs with interpolation in 2D error band', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorband', interpolate: 'monotone'},
+        encoding: {
+          y: {field: 'people', type: 'quantitative'},
+          x: {field: 'age', type: 'ordinal'}
+        }
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    if (layer) {
+      assert.isTrue(
+        every(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
+        })
+      );
+    } else {
+      assert.fail(!layer, false, 'layer should be a part of the spec');
+    }
+  });
+
+  it('should produce correct layered specs with out interpolation in 1D error band', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorband', interpolate: 'bundle', tension: 1},
+        encoding: {
+          y: {field: 'people', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    if (layer) {
+      assert.isTrue(
+        every(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
+        })
+      );
+    } else {
+      assert.fail(!layer, false, 'layer should be a part of the spec');
+    }
+  });
+
+  it(
+    'should produce a warning 1D error band has interpolate property',
+    log.wrap(localLogger => {
+      normalize(
+        {
+          data: {url: 'data/population.json'},
+          mark: {type: 'errorband', interpolate: 'monotone'},
+          encoding: {
+            y: {field: 'people', type: 'quantitative'}
+          }
+        },
+        defaultConfig
+      );
+
+      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+    })
+  );
+
+  it(
+    'should produce a warning 1D error band has tension property',
+    log.wrap(localLogger => {
+      normalize(
+        {
+          data: {url: 'data/population.json'},
+          mark: {type: 'errorband', tension: 1},
+          encoding: {
+            y: {field: 'people', type: 'quantitative'}
+          }
+        },
+        defaultConfig
+      );
+
+      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
+    })
+  );
 });

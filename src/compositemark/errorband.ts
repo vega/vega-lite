@@ -1,8 +1,10 @@
 import {Config} from '../config';
+import {MarkDef} from '../mark';
 import {Flag, keys} from '../util';
 import {Encoding} from './../encoding';
+import * as log from './../log';
 import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {Orient} from './../vega.schema';
+import {Interpolate, Orient} from './../vega.schema';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 
@@ -43,6 +45,31 @@ export interface ErrorBandConfig extends ErrorBandPartsMixins {
    * __Default value:__ `"stderr"`.
    */
   extent?: ErrorBarExtent;
+
+  /**
+   * The line interpolation method for the error band. One of the following:
+   * - `"linear"`: piecewise linear segments, as in a polyline.
+   * - `"linear-closed"`: close the linear segments to form a polygon.
+   * - `"step"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"step-before"`: alternate between vertical and horizontal segments, as in a step function.
+   * - `"step-after"`: alternate between horizontal and vertical segments, as in a step function.
+   * - `"basis"`: a B-spline, with control point duplication on the ends.
+   * - `"basis-open"`: an open B-spline; may not intersect the start or end.
+   * - `"basis-closed"`: a closed B-spline, as in a loop.
+   * - `"cardinal"`: a Cardinal spline, with control point duplication on the ends.
+   * - `"cardinal-open"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.
+   * - `"cardinal-closed"`: a closed Cardinal spline, as in a loop.
+   * - `"bundle"`: equivalent to basis, except the tension parameter is used to straighten the spline.
+   * - `"monotone"`: cubic interpolation that preserves monotonicity in y.
+   */
+  interpolate?: Interpolate;
+
+  /**
+   * The tension parameter for the interpolation type of the error band.
+   * @minimum 0
+   * @maximum 1
+   */
+  tension?: number;
 }
 
 export type ErrorBandDef = GenericCompositeMarkDef<ErrorBand> &
@@ -82,8 +109,28 @@ export function normalizeErrorBand(
   );
 
   const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
-  const bandMark = is2D ? 'area' : 'rect';
-  const bordersMark = is2D ? 'line' : 'rule';
+
+  let bandMark: MarkDef = {type: is2D ? 'area' : 'rect'};
+  let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
+  const interpolate = {
+    ...(markDef.interpolate ? {interpolate: markDef.interpolate} : {}),
+    ...(markDef.tension && markDef.interpolate ? {interpolate: markDef.tension} : {})
+  };
+
+  if (is2D) {
+    bandMark = {
+      ...bandMark,
+      ...interpolate
+    };
+    bordersMark = {
+      ...bordersMark,
+      ...interpolate
+    };
+  } else if (markDef.interpolate) {
+    log.warn(log.message.errorBand1DNotSupport('interpolate'));
+  } else if (markDef.tension) {
+    log.warn(log.message.errorBand1DNotSupport('tension'));
+  }
 
   return {
     ...outerSpec,
