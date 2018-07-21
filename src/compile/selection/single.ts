@@ -4,7 +4,6 @@ import {signals as multiSignals} from './multi';
 import {SelectionCompiler, STORE, TUPLE, unitName} from './selection';
 
 const single: SelectionCompiler = {
-  predicate: 'vlSingle',
   scaleDomain: 'vlSingleDomain',
 
   signals: multiSignals,

@@ -20,7 +20,6 @@ export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval: SelectionCompiler = {
-  predicate: 'vlInterval',
   scaleDomain: 'vlIntervalDomain',
 
   signals: (model, selCmpt) => {

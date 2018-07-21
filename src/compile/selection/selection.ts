@@ -17,6 +17,7 @@ import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
+import {TUPLE_DEF} from './transforms/project';
 import {forEachTransform} from './transforms/transforms';
 
 export const STORE = '_store';
@@ -62,7 +63,6 @@ export interface SelectionCompiler {
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
-  predicate: string; // Vega expr string to determine inclusion in selection.
   scaleDomain: string; // Vega expr string to materialize a scale domain.
 }
 
@@ -233,6 +233,7 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
     const vname = varName(name);
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
+    const tupleDef = vname + TUPLE + TUPLE_DEF;
 
     if (selCmpt.timeUnit) {
       const child = dfnode || model.component.data.raw;
@@ -248,9 +249,7 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
       stores.push(store);
     }
 
-    return (
-      compiler(selCmpt.type).predicate +
-      `(${store}, datum` +
+    return (`vlSelectionTest(${store}, ${tupleDef}, datum` +
       (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }

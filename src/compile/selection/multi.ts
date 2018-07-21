@@ -39,7 +39,6 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
 }
 
 const multi: SelectionCompiler = {
-  predicate: 'vlMulti',
   scaleDomain: 'vlMultiDomain',
 
   signals: signals,
