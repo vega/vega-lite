@@ -3,15 +3,9 @@ import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
-import {keys} from '../../util';
-import {
-  getSpecifiedOrDefaultValue,
-  guideEncodeEntry,
-  mergeTitle,
-  mergeTitleComponent,
-  mergeTitleFieldDefs,
-  numberFormat
-} from '../common';
+import {getFirstDefined, keys} from '../../util';
+import {VgSignalRef} from '../../vega.schema';
+import {guideEncodeEntry, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
@@ -283,7 +277,7 @@ function getProperty<K extends keyof AxisComponentProps>(
   const fieldDef = model.fieldDef(channel);
 
   // Some properties depend on labelAngle so we have to declare it here.
-  // Also, we don't use `getSpecifiedOrDefaultValue` for labelAngle
+  // Also, we don't use `getFirstDefined` for labelAngle
   // as we want to normalize specified value to be within [0,360)
   const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
 
@@ -300,18 +294,15 @@ function getProperty<K extends keyof AxisComponentProps>(
         return false;
       } else {
         const scaleType = model.getScaleComponent(channel).get('type');
-        return getSpecifiedOrDefaultValue(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+        return getFirstDefined(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
       }
     }
     case 'labelAlign':
-      return getSpecifiedOrDefaultValue(
-        specifiedAxis.labelAlign,
-        properties.labelAlign(labelAngle, properties.orient(channel))
-      );
+      return getFirstDefined(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
     case 'labelAngle':
       return labelAngle;
     case 'labelBaseline':
-      return getSpecifiedOrDefaultValue(
+      return getFirstDefined(
         specifiedAxis.labelBaseline,
         properties.labelBaseline(labelAngle, properties.orient(channel))
       );
@@ -322,13 +313,13 @@ function getProperty<K extends keyof AxisComponentProps>(
       return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
     case 'orient':
-      return getSpecifiedOrDefaultValue(specifiedAxis.orient, properties.orient(channel));
+      return getFirstDefined(specifiedAxis.orient, properties.orient(channel));
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
       const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getSpecifiedOrDefaultValue(
+      return getFirstDefined<number | VgSignalRef>(
         specifiedAxis.tickCount,
         properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis)
       );
@@ -338,19 +329,12 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      const fieldDefTitle = getFieldDefTitle(model, channel);
-      const specifiedTitle =
-        fieldDefTitle !== undefined
-          ? fieldDefTitle
-          : specifiedAxis.title === undefined
-            ? undefined
-            : specifiedAxis.title;
-
-      return getSpecifiedOrDefaultValue<string | FieldDefBase<string>[]>(
-        specifiedTitle,
-        // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+      return getFirstDefined<string | FieldDefBase<string>[]>(
+        specifiedAxis.title,
+        getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])
       );
+
     case 'values':
       return properties.values(specifiedAxis, model, fieldDef, channel);
   }

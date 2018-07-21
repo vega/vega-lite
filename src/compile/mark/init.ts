@@ -5,7 +5,7 @@ import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains} from '../../util';
+import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
 import {Orient} from './../../vega.schema';
 
@@ -20,7 +20,7 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   }
 
   // set opacity and filled if not specified in mark config
-  const specifiedOpacity = markDef.opacity !== undefined ? markDef.opacity : getMarkConfig('opacity', markDef, config);
+  const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
   if (specifiedOpacity === undefined) {
     markDef.opacity = opacity(markDef.type, encoding);
   }
@@ -59,7 +59,7 @@ function opacity(mark: Mark, encoding: Encoding<string>) {
 function filled(markDef: MarkDef, config: Config) {
   const filledConfig = getMarkConfig('filled', markDef, config);
   const mark = markDef.type;
-  return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
+  return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);
 }
 
 function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient): Orient {

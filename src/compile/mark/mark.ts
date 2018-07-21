@@ -4,7 +4,7 @@ import {Encoding, isAggregate} from '../../encoding';
 import {getFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
-import {contains, keys} from '../../util';
+import {contains, getFirstDefined, keys} from '../../util';
 import {getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {area} from './area';
@@ -127,7 +127,7 @@ function getMarkGroups(
 ) {
   const mark = model.mark;
 
-  const clip = model.markDef.clip !== undefined ? !!model.markDef.clip : scaleClip(model);
+  const clip = getFirstDefined(model.markDef.clip, scaleClip(model));
   const style = getStyles(model.markDef);
   const key = model.encoding.key;
   const sort = getSort(model);

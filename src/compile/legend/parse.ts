@@ -3,8 +3,8 @@ import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, keys} from '../../util';
-import {getSpecifiedOrDefaultValue, guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
+import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
@@ -122,17 +122,17 @@ function getProperty(
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
-      // For falsy value, keep undefined so we use default,
-      // but use null for '', null, and false to hide the title
-      const specifiedTitle =
-        fieldDef.title !== undefined
-          ? fieldDef.title
-          : specifiedLegend.title || (specifiedLegend.title === undefined ? undefined : null);
+      return (
+        getFirstDefined(
+          specifiedLegend.title, // legend title has higher precedence than fieldDef title
+          fieldDef.title,
+          fieldDefTitle(fieldDef, model.config)
+        ) || undefined
+      );
 
-      return getSpecifiedOrDefaultValue(specifiedTitle, fieldDefTitle(fieldDef, model.config)) || undefined; // make falsy value undefined so output Vega spec is shorter
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
-    //   return getSpecifiedOrDefaultValue(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
   }
