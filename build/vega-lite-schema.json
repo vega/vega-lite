@@ -3195,7 +3195,7 @@
       "type": "object"
     },
     "FacetedUnitSpec": {
-      "$ref": "#/definitions/FacetedUnitSpecAlias",
+      "$ref": "#/definitions/FacetedCompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark and row or column channels."
     },
     "FieldDefWithCondition": {
@@ -4234,7 +4234,7 @@
       ],
       "type": "object"
     },
-    "FacetedUnitSpecAlias": {
+    "FacetedCompositeUnitSpecAlias": {
       "additionalProperties": false,
       "properties": {
         "data": {
