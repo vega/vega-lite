@@ -1,25 +1,70 @@
 import {
   AggregateOp,
   Align,
+  Compare,
   Field as VgField,
-  FlattenTransform as VgFlattenTransform,
-  FoldTransform as VgFoldTransform,
   FontStyle,
   FontWeight,
-  SampleTransform as VgSampleTransform,
   SignalRef,
   SortField,
   TextBaseline,
   UnionSortField
 } from 'vega';
+
+// Transform Imports
+import {
+  AggregateTransform,
+  CollectTransform,
+  ExtentTransform,
+  FilterTransform,
+  FlattenTransform,
+  FoldTransform,
+  FormulaTransform,
+  // GeoJSONTransform,
+  // GeoPointTransform,
+  // GeoShapeTransform,
+  IdentifierTransform,
+  ImputeTransform,
+  LookupTransform,
+  SampleTransform
+  // StackTransform,
+  // WindowTransform
+} from 'vega';
+
+// Exporting Transforms with Vg-prefix
+export {
+  AggregateTransform as VgAggregateTransform,
+  CollectTransform as VgCollectTransform,
+  ExtentTransform as VgExtentTransform,
+  FilterTransform as VgFilterTransform,
+  FlattenTransform as VgFlattenTransform,
+  FoldTransform as VgFoldTransform,
+  FormulaTransform as VgFormulaTransform,
+  // GeoJSONTransform as VgGeoJSONTransform,
+  // GeoPointTransform as VgGeoPointTransform,
+  // GeoShapeTransform as VgGeoShapeTransform,
+  // GeoShapeTransform as VgPostEncodingTransform,
+  IdentifierTransform as VgIdentifierTransform,
+  ImputeTransform as VgImputeTransform,
+  LookupTransform as VgLookupTransform,
+  SampleTransform as VgSampleTransform
+  // StackTransform as VgStackTransform,
+  // WindowTransform as VgWindowTransform
+};
+
+export {
+  Compare as VgComparator,
+  SignalRef as VgSignalRef,
+  SortField as VgSortField,
+  UnionSortField as VgUnionSortField
+} from 'vega';
+
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
-
-export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
 
 export type Color = string;
 
@@ -349,48 +394,6 @@ export interface VgBinTransform extends BaseBin {
   signal?: string;
 }
 
-export interface VgExtentTransform {
-  type: 'extent';
-  field: string;
-  signal: string;
-}
-
-export interface VgFormulaTransform {
-  type: 'formula';
-  as: string;
-  expr: string;
-}
-
-export interface VgFilterTransform {
-  type: 'filter';
-  expr: string;
-}
-
-export interface VgAggregateTransform {
-  type: 'aggregate';
-  groupby?: VgField[];
-  fields?: VgField[];
-  ops?: AggregateOp[];
-  as?: string[];
-  cross?: boolean;
-  drop?: boolean;
-}
-
-export interface VgCollectTransform {
-  type: 'collect';
-  sort: VgSort;
-}
-
-export interface VgLookupTransform {
-  type: 'lookup';
-  from: string;
-  key: string;
-  fields: string[];
-  values?: string[];
-  as?: string[];
-  default?: string;
-}
-
 export interface VgStackTransform {
   type: 'stack';
   offset?: StackOffset;
@@ -400,28 +403,23 @@ export interface VgStackTransform {
   as: string[];
 }
 
-export interface VgIdentifierTransform {
-  type: 'identifier';
-  as: string;
-}
-
 export type VgTransform =
-  | VgBinTransform
-  | VgExtentTransform
-  | VgFormulaTransform
-  | VgAggregateTransform
-  | VgFilterTransform
-  | VgFlattenTransform
-  | VgImputeTransform
-  | VgStackTransform
-  | VgCollectTransform
-  | VgLookupTransform
-  | VgIdentifierTransform
-  | VgGeoPointTransform
-  | VgGeoJSONTransform
-  | VgWindowTransform
-  | VgFoldTransform
-  | VgSampleTransform;
+  | VgBinTransform // TODO
+  | ExtentTransform
+  | FormulaTransform
+  | AggregateTransform
+  | FilterTransform
+  | FlattenTransform
+  | ImputeTransform
+  | VgStackTransform // TODO
+  | CollectTransform
+  | LookupTransform
+  | IdentifierTransform
+  | VgGeoPointTransform // TODO
+  | VgGeoJSONTransform // TODO
+  | VgWindowTransform // TODO
+  | FoldTransform
+  | SampleTransform;
 
 export interface VgGeoPointTransform {
   type: 'geopoint';
@@ -457,18 +455,6 @@ export type VgSort =
       field: string[];
       order?: (VgComparatorOrder)[];
     };
-
-export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
-
-export interface VgImputeTransform {
-  type: 'impute';
-  groupby?: string[];
-  field: string;
-  key: string;
-  keyvals?: any[] | SignalRef;
-  method?: ImputeMethod;
-  value?: any;
-}
 
 export interface VgCheckboxBinding {
   input: 'checkbox';
@@ -870,11 +856,6 @@ export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
 export type VgComparatorOrder = 'ascending' | 'descending';
 
-export interface VgComparator {
-  field?: string | string[];
-  order?: VgComparatorOrder | VgComparatorOrder[];
-}
-
 export interface VgWindowTransform {
   type: 'window';
   params?: number[];
@@ -884,5 +865,5 @@ export interface VgWindowTransform {
   frame?: number[];
   ignorePeers?: boolean;
   groupby?: string[];
-  sort?: VgComparator;
+  sort?: Compare;
 }
