@@ -9,6 +9,8 @@ import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import {
   ChannelDef,
+  ChannelDefWithCondition,
+  FieldDef,
   FieldDefBase,
   FieldRefOption,
   format,
@@ -241,7 +243,10 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-export function text(channelDef: ChannelDef, config: Config): VgValueRef {
+export function text(
+  channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
+  config: Config
+): VgValueRef {
   // text
   if (channelDef) {
     if (isValueDef(channelDef)) {

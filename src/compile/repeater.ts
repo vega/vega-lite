@@ -95,7 +95,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<FieldDef<Field>>, re
   return undefined;
 }
 
-type EncodingOrFacet<F> = Encoding<F> | FacetMapping<F>;
+type EncodingOrFacet<F extends Field> = Encoding<F> | FacetMapping<F>;
 
 function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
   const out: EncodingOrFacet<string> = {};
