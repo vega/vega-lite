@@ -91,7 +91,8 @@ export interface TooltipContent {
 }
 
 export interface MarkConfig extends ColorMixins, VgMarkConfig {
-  // ---------- Color ----------
+  // ========== VL-Specific ==========
+
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
@@ -104,6 +105,8 @@ export interface MarkConfig extends ColorMixins, VgMarkConfig {
    */
   filled?: boolean;
 
+  // ========== Overriding Vega ==========
+
   /**
    * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
    *
@@ -111,6 +114,18 @@ export interface MarkConfig extends ColorMixins, VgMarkConfig {
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
    */
   tooltip?: string | TooltipContent;
+
+  /**
+   * Default size for marks.
+   * - For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   * - For `bar`, this represents the band size of the bar, in pixels.
+   * - For `text`, this represents the font size, in pixels.
+   *
+   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   *
+   * @minimum 0
+   */
+  size?: number;
 }
 
 export interface BarBinSpacingMixins {
@@ -221,7 +236,7 @@ export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
   continuousBandSize?: number;
 
   /**
-   * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
+   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,
    * which provides 1 pixel offset between bars.
    * @minimum 0
    */

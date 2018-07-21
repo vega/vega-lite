@@ -7,13 +7,13 @@ import * as mixins from './mixins';
 import * as ref from './valueref';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
-  const {config, width, height} = model;
+  const {config, markDef, width, height} = model;
 
   return {
     ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore'}),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
-    ...mixins.nonPosition('size', model),
+    ...mixins.nonPosition('size', model, {defaultValue: getMarkConfig('size', markDef, config)}),
     ...shapeMixins(model, config, fixedShape)
   };
 }

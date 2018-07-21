@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Channel, isScaleChannel} from '../channel';
-import {Config, ViewConfig} from '../config';
+import {Config, StyleConfigIndex, ViewConfig} from '../config';
 import {
   FieldDef,
   FieldDefBase,
@@ -17,7 +17,7 @@ import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, keys, stringify} from '../util';
+import {contains, getFirstDefined, keys, stringify} from '../util';
 import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
@@ -56,20 +56,27 @@ export function getStyles(mark: MarkDef): string[] {
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P] {
-  // By default, read from mark config first!
-  let value = config.mark[prop];
+export function getMarkConfig<P extends keyof MarkConfig>(
+  prop: P,
+  mark: MarkDef,
+  config: Config,
+  {skipGeneralMarkConfig = false}: {skipGeneralMarkConfig?: boolean} = {}
+): MarkConfig[P] {
+  return getFirstDefined(
+    // style config has highest precedence
+    getStyleConfig(prop, mark, config.style),
+    // then mark-specific config
+    config[mark.type][prop],
+    // then general mark config (if not skipped)
+    skipGeneralMarkConfig ? undefined : config.mark[prop]
+  );
+}
 
-  // Then read mark specific config, which has higher precedence
-  const markSpecificConfig = config[mark.type];
-  if (markSpecificConfig[prop] !== undefined) {
-    value = markSpecificConfig[prop];
-  }
-
-  // Then read style config, which has even higher precedence.
+export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex) {
   const styles = getStyles(mark);
+  let value;
   for (const style of styles) {
-    const styleConfig = config.style[style];
+    const styleConfig = styleConfigIndex[style];
 
     // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
     // However here we also check if it is defined, so it is okay to cast here
@@ -78,7 +85,6 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
       value = styleConfig[p];
     }
   }
-
   return value;
 }
 

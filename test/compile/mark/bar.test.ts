@@ -605,7 +605,25 @@ describe('Mark: Bar', () => {
     });
   });
 
-  describe('1D vertical with barSize config', () => {
+  describe('1D vertical with config.mark.size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+      },
+      data: {url: 'data/movies.json'},
+      config: {
+        mark: {size: 5}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should not use config.mark.size', () => {
+      assert.deepEqual(props.width, {value: 20});
+    });
+  });
+
+  describe('1D vertical with config.bar.discreteBandSize', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/movies.json'},
       mark: 'bar',
@@ -614,6 +632,77 @@ describe('Mark: Bar', () => {
       },
       config: {
         bar: {discreteBandSize: 5}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should have width = 5', () => {
+      assert.deepEqual(props.width, {value: 5});
+    });
+  });
+
+  describe('2D vertical with point scale and config.bar.discreteBandSize', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/movies.json'},
+      mark: 'bar',
+      encoding: {
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
+        x: {type: 'nominal', field: 'Major_Genre', scale: {type: 'point'}}
+      },
+      config: {
+        bar: {discreteBandSize: 5}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should have width = 5', () => {
+      assert.deepEqual(props.width, {value: 5});
+    });
+  });
+
+  describe('2D vertical with config.bar.discreteBandSize', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/movies.json'},
+      mark: 'bar',
+      encoding: {
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
+        x: {type: 'nominal', field: 'Major_Genre'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should have width = 5', () => {
+      expect(props.width).toEqual({scale: 'x', band: true});
+    });
+  });
+
+  describe('1D vertical with config.bar.size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/movies.json'},
+      mark: 'bar',
+      encoding: {
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+      },
+      config: {
+        bar: {size: 5}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should have width = 5', () => {
+      assert.deepEqual(props.width, {value: 5});
+    });
+  });
+
+  describe('1D vertical with config.style.bar.size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/movies.json'},
+      mark: 'bar',
+      encoding: {
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+      },
+      config: {
+        style: {bar: {size: 5}}
       }
     });
     const props = bar.encodeEntry(model);

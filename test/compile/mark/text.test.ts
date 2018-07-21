@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevelSpec} from '../../../src/spec';
+import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Text', () => {
@@ -136,6 +136,40 @@ describe('Mark: Text', () => {
 
     it('should map size to fontSize', () => {
       assert.deepEqual(props.fontSize, {value: 5});
+    });
+  });
+
+  describe('with config.text.size', () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      mark: {type: 'text'},
+      encoding: {
+        text: {field: 'Origin', type: 'ordinal'}
+      },
+      data: {url: 'data/cars.json'},
+      config: {text: {size: 25}}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize(spec);
+    const props = text.encodeEntry(model);
+
+    it('should map size to fontSize', () => {
+      assert.deepEqual(props.fontSize, {value: 25});
+    });
+  });
+
+  describe('with config.text.size', () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      mark: {type: 'text'},
+      encoding: {
+        text: {field: 'Origin', type: 'ordinal'}
+      },
+      data: {url: 'data/cars.json'},
+      config: {text: {fontSize: 25}}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize(spec);
+    const props = text.encodeEntry(model);
+
+    it('should map size to fontSize', () => {
+      assert.deepEqual(props.fontSize, {value: 25});
     });
   });
 

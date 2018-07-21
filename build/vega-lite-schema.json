@@ -166,7 +166,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -238,7 +237,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -898,7 +897,7 @@
           "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
         },
         "discreteBandSize": {
-          "description": "The size of the bars.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
+          "description": "The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,\nwhich provides 1 pixel offset between bars.",
           "minimum": 0,
           "type": "number"
         },
@@ -934,7 +933,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -978,7 +976,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -5455,7 +5453,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -5516,7 +5513,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -5878,7 +5875,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -5922,7 +5918,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -6066,7 +6062,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -6138,7 +6133,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -6540,7 +6535,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -6584,7 +6578,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -8128,7 +8122,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -8176,7 +8169,7 @@
           "type": "boolean"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -8376,7 +8369,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {
@@ -8420,7 +8412,7 @@
           "type": "string"
         },
         "size": {
-          "description": "The pixel area each the point/circle/square.\nFor example: in the case of circles, the radius is determined in part by the square root of the size value.\n\n__Default value:__ `30`",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.",
           "minimum": 0,
           "type": "number"
         },
@@ -9709,7 +9701,6 @@
         },
         "fontSize": {
           "description": "The font size, in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "fontStyle": {

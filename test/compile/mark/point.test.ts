@@ -3,13 +3,14 @@
 import {assert} from 'chai';
 import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
+import {Config} from '../../../src/config';
 import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Point', () => {
-  function pointXY(moreEncoding: Encoding<string> = {}): TopLevel<NormalizedUnitSpec> {
+  function pointXY(moreEncoding: Encoding<string> = {}, moreConfig: Config = {}): TopLevel<NormalizedUnitSpec> {
     return {
       mark: 'point',
       encoding: {
@@ -18,7 +19,7 @@ describe('Mark: Point', () => {
         ...moreEncoding
       },
       data: {url: 'data/barley.json'},
-      config: {invalidValues: null}
+      config: {invalidValues: null, ...moreConfig}
     };
   }
 
@@ -227,17 +228,19 @@ describe('Mark: Point', () => {
     });
   });
 
-  describe('with tooltip', () => {
-    const model = parseUnitModelWithScaleAndLayoutSize({
-      mark: 'point',
-      encoding: {
-        tooltip: {value: 'foo'}
-      }
-    });
+  describe('with config.mark.size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {mark: {size: 23}}));
     const props = point.encodeEntry(model);
+    it('should have correct size', () => {
+      assert.deepEqual(props.size, {value: 23});
+    });
+  });
 
-    it('should pass tooltip value to encoding', () => {
-      assert.deepEqual(props.tooltip, {value: 'foo'});
+  describe('with config.point.size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {point: {size: 23}}));
+    const props = point.encodeEntry(model);
+    it('should have correct size', () => {
+      assert.deepEqual(props.size, {value: 23});
     });
   });
 
