@@ -188,6 +188,30 @@ function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
   return undefined;
 }
 
+function isExplicit<T extends string | number | object | boolean>(
+  value: T,
+  property: keyof VgAxis,
+  axis: Axis,
+  model: UnitModel,
+  channel: PositionScaleChannel
+) {
+  switch (property) {
+    case 'values':
+      return !!axis.values;
+    // specified axis.values is already respected, but may get transformed.
+    case 'encode':
+      // both VL axis.encoding and axis.labelAngle affect VG axis.encode
+      return !!axis.encoding || !!axis.labelAngle;
+    case 'title':
+      // title can be explicit if fieldDef.title is set
+      if (value === getFieldDefTitle(model, channel)) {
+        return true;
+      }
+  }
+  // Otherwise, things are explicit if the returned value matches the specified property
+  return value === axis[property];
+}
+
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
 
@@ -197,18 +221,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   VG_AXIS_PROPERTIES.forEach(property => {
     const value = getProperty(property, axis, channel, model);
     if (value !== undefined) {
-      const explicit =
-        // specified axis.values is already respected, but may get transformed.
-        property === 'values'
-          ? !!axis.values
-          : // both VL axis.encoding and axis.labelAngle affect VG axis.encode
-            property === 'encode'
-            ? !!axis.encoding || !!axis.labelAngle
-            : // title can be explicit if fieldDef.title is set
-              property === 'title' && value === getFieldDefTitle(model, channel)
-              ? true
-              : // Otherwise, things are explicit if the returned value matches the specified property
-                value === axis[property];
+      const explicit = isExplicit(value, property, axis, model, channel);
 
       const configValue = getAxisConfig(
         property,

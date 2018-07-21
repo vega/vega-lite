@@ -100,23 +100,6 @@ describe('compile/axis', () => {
     });
   });
 
-  describe('title()', () => {
-    it('should add return fieldTitle by default', () => {
-      const title = properties.title(3, {field: 'a', type: 'quantitative'}, {});
-      assert.deepEqual(title, 'a');
-    });
-
-    it('should add return fieldTitle by default', () => {
-      const title = properties.title(10, {aggregate: 'sum', field: 'a', type: 'quantitative'}, {});
-      assert.deepEqual(title, 'Sum of a');
-    });
-
-    it('should add return fieldTitle by default and truncate', () => {
-      const title = properties.title(3, {aggregate: 'sum', field: 'a', type: 'quantitative'}, {});
-      assert.deepEqual(title, 'Su…');
-    });
-  });
-
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
       const values = properties.values(
