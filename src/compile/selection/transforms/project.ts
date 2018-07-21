@@ -2,7 +2,7 @@ import {ScaleChannel, SingleDefChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {SelectionDef} from '../../../selection';
-import {keys} from '../../../util';
+import {Dict, keys} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {ProjectSelectionComponent, SelectionComponent, TUPLE, TupleStoreType} from '../selection';
 import {TransformCompiler} from './transforms';
@@ -16,8 +16,8 @@ const project: TransformCompiler = {
   },
 
   parse: (model, selDef, selCmpt) => {
-    const timeUnits: {[field: string]: TimeUnitComponent} = {};
-    const f: {[field: string]: ProjectSelectionComponent} = {};
+    const timeUnits: Dict<TimeUnitComponent> = {};
+    const f: Dict<ProjectSelectionComponent> = {};
     const p = selCmpt.project || (selCmpt.project = []);
     selCmpt.fields = {};
 

@@ -23,7 +23,8 @@ describe('Single Selection', () => {
       type: 'single',
       nearest: true,
       on: 'mouseover',
-      encodings: ['y', 'color']
+      encodings: ['y', 'color'],
+      resolve: "intersect"
     }
   }));
 
@@ -69,7 +70,7 @@ describe('Single Selection', () => {
     assert.equal(oneExpr, 'one_tuple, true');
 
     const twoExpr = single.modifyExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'two_tuple, true');
+    assert.equal(twoExpr, 'two_tuple, {unit: ""}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
@@ -95,34 +96,22 @@ describe('Single Selection', () => {
   });
 
   it('builds top-level signals', () => {
-    const oneSg = single.topLevelSignals(model, selCmpts['one'], []);
-    assert.sameDeepMembers(oneSg, [
+    const signals = selection.assembleTopLevelSignals(model, []);
+    assert.includeDeepMembers(signals, [
       {
         name: 'one',
-        update: 'data("one_store").length && {_vgsid_: data("one_store")[0].values[0]}'
-      }
-    ]);
-
-    const twoSg = single.topLevelSignals(model, selCmpts['two'], []);
-    assert.sameDeepMembers(twoSg, [
+        update: 'vlSelectionResolve("one_store")'
+      },
       {
         name: 'two',
-        update:
-          'data("two_store").length && {Miles_per_Gallon: data("two_store")[0].values[0], Origin: data("two_store")[0].values[1]}'
+        update: 'vlSelectionResolve("two_store", "intersect")'
+      },
+      {
+        name: 'unit',
+        value: {},
+        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
       }
     ]);
-
-    const signals = selection.assembleTopLevelSignals(model, []);
-    assert.includeDeepMembers(
-      signals,
-      [
-        {
-          name: 'unit',
-          value: {},
-          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
-        }
-      ].concat(oneSg, twoSg)
-    );
   });
 
   it('builds unit datasets', () => {

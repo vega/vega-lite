@@ -29,7 +29,7 @@ export interface SelectionComponent {
   type: SelectionType;
   events: VgEventStream;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
+  bind?: 'scales' | VgBinding | Dict<VgBinding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
@@ -163,8 +163,20 @@ export function assembleFacetSignals(model: FacetModel, signals: any[]) {
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
-  let needsUnit = false;
+  let hasSelections = false;
   forEachSelection(model, (selCmpt, selCompiler) => {
+    const name = selCmpt.name;
+    const store = stringValue(name + STORE);
+    const hasSg = signals.filter(s => s.name === name);
+    if (!hasSg.length) {
+      signals.push({
+        name: selCmpt.name,
+        update: `vlSelectionResolve(${store}` +
+          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      });
+    }
+    hasSelections = true;
+
     if (selCompiler.topLevelSignals) {
       signals = selCompiler.topLevelSignals(model, selCmpt, signals);
     }
@@ -174,11 +186,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
         signals = txCompiler.topLevelSignals(model, selCmpt, signals);
       }
     });
-
-    needsUnit = true;
   });
 
-  if (needsUnit) {
+  if (hasSelections) {
     const hasUnit = signals.filter(s => s.name === 'unit');
     if (!hasUnit.length) {
       signals.unshift({
