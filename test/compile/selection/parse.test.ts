@@ -27,20 +27,20 @@ describe('Selection', () => {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: '_vgsid_', channel: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: '_vgsid_'}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.shiftKey');
-    assert.sameDeepMembers(component['two'].project, [{field: '_vgsid_', channel: null}]);
+    assert.sameDeepMembers(component['two'].project, [{field: '_vgsid_'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('click', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert.equal(component.three.translate, '[mousedown, window:mouseup] > window:mousemove!');
     assert.equal(component.three.zoom, 'wheel!');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
       {field: 'Horsepower', channel: 'x'},
       {field: 'Miles_per_Gallon', channel: 'y'}
     ]);
@@ -76,20 +76,20 @@ describe('Selection', () => {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', channel: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders'}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert.equal(component.three.translate, false);
     assert.equal(component.three.zoom, 'wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
       {field: 'Miles_per_Gallon', channel: 'y'}
     ]);
     assert.sameDeepMembers(
@@ -119,20 +119,20 @@ describe('Selection', () => {
 
     assert.equal(component.one.name, 'one');
     assert.equal(component.one.type, 'single');
-    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders', channel: null}]);
+    assert.sameDeepMembers(component['one'].project, [{field: 'Cylinders'}]);
     assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
 
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [{field: 'Origin', channel: 'color'}]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');
     assert.equal(component.three.type, 'interval');
     assert(!component.three.translate);
     assert.equal(component.three.zoom, 'wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectComponent>(component['three'].project, [
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
       {field: 'Miles_per_Gallon', channel: 'y'}
     ]);
     assert.sameDeepMembers(

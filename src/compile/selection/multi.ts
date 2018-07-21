@@ -22,7 +22,7 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
       return fieldDef && fieldDef.bin
         ? (bins.push(p.field),
           `[${accessPathWithDatum(model.vgField(channel, {}), datum)}, ` +
-            `${accessPathWithDatum(model.vgField(channel, {binSuffix: 'end'}), datum)}]`)
+          `${accessPathWithDatum(model.vgField(channel, {binSuffix: 'end'}), datum)}]`)
         : `${accessPathWithDatum(p.field, datum)}`;
     })
     .join(', ');

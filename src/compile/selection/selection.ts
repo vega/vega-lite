@@ -1,7 +1,7 @@
 import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
-import {Channel, ScaleChannel, X, Y} from '../../channel';
+import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
@@ -37,19 +37,19 @@ export interface SelectionComponent {
   _signalNames: {};
 
   // Transforms
-  project?: ProjectComponent[];
-  fields?: any;
+  project?: ProjectSelectionComponent[];
+  fields?: {[c in SingleDefChannel]?: string};
   timeUnit?: TimeUnitNode;
-  scales?: Channel[];
+  scales?: ScaleChannel[];
   toggle?: any;
   translate?: any;
   zoom?: any;
   nearest?: any;
 }
 
-export interface ProjectComponent {
+export interface ProjectSelectionComponent {
   field?: string;
-  channel?: ScaleChannel;
+  channel?: SingleDefChannel;
 }
 
 export interface SelectionCompiler {
@@ -98,7 +98,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       ...selDef,
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
-    } as SelectionComponent);
+    } as any);
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.parse) {
@@ -279,7 +279,7 @@ export function selectionScaleDomain(model: Model, domainRaw: SignalRef): Signal
       if (selCmpt.project.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-            `Using "field": ${stringValue(selDomain.field)}.`
+          `Using "field": ${stringValue(selDomain.field)}.`
         );
       }
     }
@@ -368,9 +368,9 @@ export function channelSignalName(selCmpt: SelectionComponent, channel: Channel,
 }
 
 export function positionalProjections(selCmpt: SelectionComponent) {
-  let x: ProjectComponent = null;
+  let x: ProjectSelectionComponent = null;
   let xi: number = null;
-  let y: ProjectComponent = null;
+  let y: ProjectSelectionComponent = null;
   let yi: number = null;
 
   selCmpt.project.forEach((p, i) => {

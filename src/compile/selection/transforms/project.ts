@@ -3,7 +3,7 @@ import * as log from '../../../log';
 import {SelectionDef} from '../../../selection';
 import {keys} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import {SelectionComponent} from '../selection';
+import {ProjectSelectionComponent, SelectionComponent} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const project: TransformCompiler = {
@@ -13,45 +13,45 @@ const project: TransformCompiler = {
   },
 
   parse: (model, selDef, selCmpt) => {
-    const channels = {};
-    const timeUnits: {[key: string]: TimeUnitComponent} = {};
+    const timeUnits: {[field: string]: TimeUnitComponent} = {};
+    const f: {[field: string]: ProjectSelectionComponent} = {};
+    const p = selCmpt.project || (selCmpt.project = []);
+    selCmpt.fields = {};
 
     // TODO: find a possible channel mapping for these fields.
-    (selDef.fields || []).forEach(field => (channels[field] = null));
+    if (selDef.fields) {
+      p.push.apply(p, selDef.fields.map(field => ({field})));
+    }
 
     (selDef.encodings || []).forEach((channel: SingleDefChannel) => {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
+        let field = fieldDef.field;
         if (fieldDef.timeUnit) {
-          const tuField = model.vgField(channel);
-          channels[tuField] = channel;
+          field = model.vgField(channel);
 
           // Construct TimeUnitComponents which will be combined into a
           // TimeUnitNode. This node may need to be inserted into the
           // dataflow if the selection is used across views that do not
           // have these time units defined.
-          timeUnits[tuField] = {
-            as: tuField,
+          timeUnits[field] = {
+            as: field,
             field: fieldDef.field,
             timeUnit: fieldDef.timeUnit
           };
-        } else {
-          channels[fieldDef.field] = channel;
         }
+
+        // Prevent duplicate projections on the same field.
+        // TODO: what if the same field is bound to multiple channels (e.g., SPLOM diag).
+        if (!f[field]) {
+          p.push(f[field] = {field, channel});
+        }
+
+        selCmpt.fields[channel] = field;
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
     });
-
-    const projection = selCmpt.project || (selCmpt.project = []);
-    for (const field in channels) {
-      if (channels.hasOwnProperty(field)) {
-        projection.push({field: field, channel: channels[field]});
-      }
-    }
-
-    const fields = selCmpt.fields || (selCmpt.fields = {});
-    projection.filter(p => p.channel).forEach(p => (fields[p.channel] = p.field));
 
     if (keys(timeUnits).length) {
       selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);

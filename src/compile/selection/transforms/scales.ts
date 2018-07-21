@@ -1,5 +1,5 @@
 import {stringValue} from 'vega-util';
-import {Channel, X, Y} from '../../../channel';
+import {Channel, ScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {UnitModel} from '../../unit';
@@ -15,7 +15,7 @@ const scaleBindings: TransformCompiler = {
     const bound: Channel[] = (selCmpt.scales = []);
 
     selCmpt.project.forEach(p => {
-      const channel = p.channel;
+      const channel = p.channel as ScaleChannel;
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
