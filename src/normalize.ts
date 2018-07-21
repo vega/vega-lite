@@ -387,7 +387,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
       ...(projection ? {projection} : {}),
       mark: {
         type: 'line',
-        ...pick(markDef, ['clip', 'interpolate']),
+        ...pick(markDef, ['clip', 'interpolate', 'tension']),
         ...lineOverlay
       },
       encoding: overlayEncoding
