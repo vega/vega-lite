@@ -193,7 +193,7 @@ describe('Selection', () => {
         one: {type: 'single', encodings: ['x']}
       });
 
-      assert.sameDeepMembers(c['one'].project, [{field: 'Acceleration', channel: 'x', type: 'R'}]);
+      assert.sameDeepMembers(c['one'].project, [{field: 'Acceleration', channel: 'x', type: 'R-RE'}]);
 
       m = parseUnitModel({
         mark: 'bar',
@@ -209,7 +209,7 @@ describe('Selection', () => {
         one: {type: 'multi', encodings: ['x']}
       });
 
-      assert.sameDeepMembers(c['one'].project, [{field: 'Acceleration', channel: 'x', type: 'R'}]);
+      assert.sameDeepMembers(c['one'].project, [{field: 'Acceleration', channel: 'x', type: 'R-RE'}]);
     });
   });
 });

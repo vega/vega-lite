@@ -57,7 +57,7 @@ const project: TransformCompiler = {
               type = 'R';
             }
           } else if (fieldDef.bin) {
-            type = 'R';
+            type = 'R-RE';
           }
 
           p.push(f[field] = {field, channel, type});
