@@ -42,8 +42,6 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
 }
 
 const multi: SelectionCompiler = {
-  scaleDomain: 'vlMultiDomain',
-
   signals: signals,
 
   modifyExpr: (model, selCmpt) => {

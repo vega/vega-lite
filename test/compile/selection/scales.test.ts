@@ -68,15 +68,15 @@ describe('Selection + Scales', () => {
 
     assert.isObject(xscale.domain);
     assert.property(xscale, 'domainRaw');
-    assert.propertyVal(xscale.domainRaw, 'signal', 'vlIntervalDomain("brush_store", "x", null)');
+    assert.propertyVal(xscale.domainRaw, 'signal', 'brush["date"]');
 
     assert.isObject(yscale.domain);
     assert.property(yscale, 'domainRaw');
-    assert.deepPropertyVal(yscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
+    assert.deepPropertyVal(yscale.domainRaw, 'signal', 'brush2["price"]');
 
     assert.isObject(cscale.domain);
     assert.property(cscale, 'domainRaw');
-    assert.propertyVal(cscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
+    assert.propertyVal(cscale.domainRaw, 'signal', 'brush2["price"]');
 
     assert.isObject(oscale.domain);
     assert.property(oscale, 'domainRaw');
@@ -154,6 +154,6 @@ describe('Selection + Scales', () => {
     model.parseSelection();
     const scales = assembleScalesForModel(model.children[0]);
     assert.property(scales[0], 'domainRaw');
-    assert.propertyVal(scales[0].domainRaw, 'signal', 'vlIntervalDomain("brush_store", null, "date")');
+    assert.propertyVal(scales[0].domainRaw, 'signal', 'brush["date"]');
   });
 });

@@ -21,8 +21,6 @@ export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval: SelectionCompiler = {
-  scaleDomain: 'vlIntervalDomain',
-
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE + TUPLE_FIELDS;
