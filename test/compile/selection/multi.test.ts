@@ -36,7 +36,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: [], fields: ["_vgsid_"], values: [datum["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", values: [datum["_vgsid_"]]} : null',
             force: true
           }
         ]
@@ -52,7 +52,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['two'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: ["y", "color"], fields: ["Miles_per_Gallon", "Origin"], values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]], "bin_Miles_per_Gallon": 1} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
             force: true
           }
         ]
