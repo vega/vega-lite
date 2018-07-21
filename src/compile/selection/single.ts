@@ -2,8 +2,6 @@ import {signals as multiSignals} from './multi';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 
 const single: SelectionCompiler = {
-  scaleDomain: 'vlSingleDomain',
-
   signals: multiSignals,
 
   modifyExpr: (model, selCmpt) => {

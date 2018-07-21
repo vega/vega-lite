@@ -23,6 +23,7 @@ export const STORE = '_store';
 export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
+export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
 export interface SelectionComponent {
   name: string;
@@ -62,7 +63,6 @@ export interface SelectionCompiler {
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
-  scaleDomain: string; // Vega expr string to materialize a scale domain.
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
@@ -171,7 +171,8 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
     if (!hasSg.length) {
       signals.push({
         name: selCmpt.name,
-        update: `vlSelectionResolve(${store}` +
+        update:
+          `${VL_SELECTION_RESOLVE}(${store}` +
           (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
       });
     }
@@ -257,8 +258,8 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
       stores.push(store);
     }
 
-    return (`vlSelectionTest(${store}, datum` +
-      (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+    return (
+      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 
@@ -280,28 +281,37 @@ export function isRawSelectionDomain(domainRaw: SignalRef) {
 export function selectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
   const name = varName(selDomain.selection);
+  const encoding = selDomain.encoding;
+  let field = selDomain.field;
 
   let selCmpt = model.component.selection && model.component.selection[name];
   if (selCmpt) {
     warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
   } else {
     selCmpt = model.getSelectionComponent(name, selDomain.selection);
-    if (!selDomain.encoding && !selDomain.field) {
-      selDomain.field = selCmpt.project[0].field;
+    if (!encoding && !field) {
+      field = selCmpt.project[0].field;
       if (selCmpt.project.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-          `Using "field": ${stringValue(selDomain.field)}.`
+            `Using "field": ${stringValue(field)}.`
         );
       }
+    } else if (encoding && !field) {
+      const encodings = selCmpt.project.filter(p => p.channel === encoding);
+      if (!encodings.length || encodings.length > 1) {
+        field = selCmpt.project[0].field;
+        warn(
+          (!encodings.length ? 'No ' : 'Multiple ') +
+            `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
+            `Using "field": ${stringValue(field)}.`
+        );
+      } else {
+        field = encodings[0].field;
+      }
     }
-    return {
-      signal:
-        compiler(selCmpt.type).scaleDomain +
-        `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
-        stringValue(selDomain.field || null) +
-        (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    };
+
+    return {signal: accessPathWithDatum(field, name)};
   }
 
   return {signal: 'null'};
