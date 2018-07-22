@@ -31,7 +31,8 @@
       "field": "b",
       "type": "quantitative",
       "scale": {
-        "type": "quantize"
+        "type": "quantize",
+        "zero": true
       },
       "legend": {
         "title": "Quantize"

@@ -382,5 +382,7 @@ export namespace message {
     return `Channel ${channel} is required for "binned" bin`;
   }
 
-  export const DOMAIN_REQUIRED_FOR_THRESHOLD_SCALE = 'Domain is required for threshold scale';
+  export function domainRequiredForThresholdScale(channel: Channel) {
+    return `Domain for ${channel} is required for threshold scale`;
+  }
 }

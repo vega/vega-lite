@@ -227,7 +227,11 @@ export function defaultRange(
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       if (isContinuousToDiscrete(scaleType)) {
         // for now 4 is the default value for range cardinality. we might change it later
-        return interpolateRange(rangeMin, rangeMax, defaultContinuousToDiscreteCount(scaleType, config, domain));
+        return interpolateRange(
+          rangeMin,
+          rangeMax,
+          defaultContinuousToDiscreteCount(scaleType, config, domain, channel)
+        );
       } else {
         return [rangeMin, rangeMax];
       }
@@ -240,7 +244,7 @@ export function defaultRange(
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
       } else if (isContinuousToDiscrete(scaleType)) {
-        const count = defaultContinuousToDiscreteCount(scaleType, config, domain);
+        const count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
         if (config.range && isVgScheme(config.range.ordinal)) {
           return {
             ...config.range.ordinal,
@@ -260,7 +264,12 @@ export function defaultRange(
   throw new Error(`Scale range undefined for channel ${channel}`);
 }
 
-export function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: Config, domain: Domain) {
+export function defaultContinuousToDiscreteCount(
+  scaleType: ScaleType,
+  config: Config,
+  domain: Domain,
+  channel: Channel
+) {
   switch (scaleType) {
     case 'quantile':
       return config.scale.quantileCount;
@@ -270,7 +279,7 @@ export function defaultContinuousToDiscreteCount(scaleType: ScaleType, config: C
       if (domain !== undefined && isArray(domain)) {
         return domain.length + 1;
       } else {
-        log.warn(log.message.DOMAIN_REQUIRED_FOR_THRESHOLD_SCALE);
+        log.warn(log.message.domainRequiredForThresholdScale(channel));
         return 4;
       }
     default:

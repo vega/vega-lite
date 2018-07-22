@@ -159,7 +159,7 @@ export interface RangeConfigProps {
 }
 
 export function isVgScheme(rangeConfig: string[] | VgScheme): rangeConfig is VgScheme {
-  return rangeConfig && !!rangeConfig['name'];
+  return rangeConfig && !!rangeConfig['scheme'];
 }
 
 export interface VLOnlyConfig {

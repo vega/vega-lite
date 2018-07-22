@@ -408,7 +408,7 @@ describe('compile/scale', () => {
               {},
               defaultConfig,
               undefined,
-              'circle',
+              'point',
               false,
               'plot_width',
               []
@@ -647,6 +647,27 @@ describe('compile/scale', () => {
             );
           }
         });
+
+        it('should return range interpolation of length 4 for discretizing scale', () => {
+          const scales: ScaleType[] = ['quantile', 'quantize', 'threshold'];
+          scales.forEach(discretizingScale => {
+            assert.deepEqual(
+              parseRangeForChannel(
+                'size',
+                discretizingScale,
+                QUANTITATIVE,
+                {},
+                defaultConfig,
+                undefined,
+                'point',
+                false,
+                'plot_width',
+                []
+              ),
+              makeImplicit([9, 126.33333333333333, 243.66666666666666, 361])
+            );
+          });
+        });
       });
     });
 
@@ -678,7 +699,7 @@ describe('compile/scale', () => {
           quantileCount: 4
         }
       };
-      assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined), 4);
+      assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x'), 4);
     });
 
     it('should use config.scale.quantizeCount for quantize scale', () => {
@@ -687,22 +708,22 @@ describe('compile/scale', () => {
           quantizeCount: 4
         }
       };
-      assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined), 4);
+      assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x'), 4);
     });
 
     it('should use domain size for threshold scale', () => {
-      assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10]), 3);
+      assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x'), 3);
     });
 
     it('should throw warning and default to 4 for scale without domain', () => {
       log.wrap(localLogger => {
-        assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined), 4);
-        assert.equal(localLogger.warns[0], log.message.DOMAIN_REQUIRED_FOR_THRESHOLD_SCALE);
+        assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x'), 4);
+        assert.equal(localLogger.warns[0], log.message.domainRequiredForThresholdScale('x'));
       });
     });
 
     it('should return 4 as a default', () => {
-      assert.equal(defaultContinuousToDiscreteCount('band', {}, undefined), 4);
+      assert.equal(defaultContinuousToDiscreteCount('band', {}, undefined, 'x'), 4);
     });
   });
 
