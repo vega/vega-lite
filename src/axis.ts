@@ -230,6 +230,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   gridColor: 1,
   gridDash: 1,
   gridOpacity: 1,
+  gridScale: 1,
   gridWidth: 1,
   labelAlign: 1,
   labelAngle: 1,
