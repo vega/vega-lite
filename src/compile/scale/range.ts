@@ -280,7 +280,8 @@ export function defaultContinuousToDiscreteCount(
         return domain.length + 1;
       } else {
         log.warn(log.message.domainRequiredForThresholdScale(channel));
-        return 4;
+        // default threshold boundaries for threshold scale since domain has cardinality of 2
+        return 3;
       }
     default:
       return 4;

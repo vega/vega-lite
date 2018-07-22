@@ -397,8 +397,8 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should use default ordinal range for discretizing scales', () => {
-        const scales: ScaleType[] = ['quantile', 'quantize', 'threshold'];
+      it('should use default ordinal range for quantile/quantize scales', () => {
+        const scales: ScaleType[] = ['quantile', 'quantize'];
         scales.forEach(discretizingScale => {
           assert.deepEqual(
             parseRangeForChannel(
@@ -416,6 +416,24 @@ describe('compile/scale', () => {
             makeImplicit({scheme: 'blues', count: 4})
           );
         });
+      });
+
+      it('should use default ordinal range for threshold scale', () => {
+        assert.deepEqual(
+          parseRangeForChannel(
+            'color',
+            'threshold',
+            QUANTITATIVE,
+            {},
+            defaultConfig,
+            undefined,
+            'point',
+            false,
+            'plot_width',
+            []
+          ),
+          makeImplicit({scheme: 'blues', count: 3})
+        );
       });
     });
 
@@ -648,8 +666,8 @@ describe('compile/scale', () => {
           }
         });
 
-        it('should return range interpolation of length 4 for discretizing scale', () => {
-          const scales: ScaleType[] = ['quantile', 'quantize', 'threshold'];
+        it('should return range interpolation of length 4 for quantile/quantize scales', () => {
+          const scales: ScaleType[] = ['quantile', 'quantize'];
           scales.forEach(discretizingScale => {
             assert.deepEqual(
               parseRangeForChannel(
@@ -667,6 +685,24 @@ describe('compile/scale', () => {
               makeImplicit([9, 126.33333333333333, 243.66666666666666, 361])
             );
           });
+        });
+
+        it('should return range interpolation of length 4 for threshold scale', () => {
+          assert.deepEqual(
+            parseRangeForChannel(
+              'size',
+              'threshold',
+              QUANTITATIVE,
+              {},
+              defaultConfig,
+              undefined,
+              'point',
+              false,
+              'plot_width',
+              []
+            ),
+            makeImplicit([9, 185, 361])
+          );
         });
       });
     });
