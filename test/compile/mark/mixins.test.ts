@@ -292,6 +292,33 @@ describe('compile/mark/mixins', () => {
       const props = tooltip(model);
       assert.deepEqual(props.tooltip, {value: 'haha'});
     });
+
+    it('generates correct keys and values for channels with axis', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point'},
+        encoding: {
+          x: {field: 'Date', type: 'quantitative', axis: {title: 'foo', format: '%y'}},
+          y: {field: 'Displacement', type: 'quantitative', axis: {title: 'bar'}}
+        }
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal: '{"foo": format(datum["Date"], "%y"), "bar": format(datum["Displacement"], "")}'
+      });
+    });
+
+    it('generates correct keys and values for channels with legends', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point'},
+        encoding: {
+          color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz', format: 's'}}
+        }
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal: '{"baz": \'\'+datum["Foobar"]}'
+      });
+    });
   });
 
   describe('midPoint()', () => {

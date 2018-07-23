@@ -338,6 +338,14 @@ export function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is Sca
   return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
 
+export function isPositionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is PositionFieldDef<F> {
+  return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
+}
+
+export function isMarkPropFieldDef<F>(channelDef: ChannelDef<F>): channelDef is MarkPropFieldDef<F> {
+  return !!channelDef && !!channelDef['legend'];
+}
+
 export interface FieldRefOption {
   /** Exclude bin, aggregate, timeUnit */
   nofn?: boolean;
