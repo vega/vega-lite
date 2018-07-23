@@ -1,7 +1,15 @@
 import {assert} from 'chai';
 import {COUNTING_OPS} from '../src/aggregate';
 import {Channel, CHANNELS} from '../src/channel';
-import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title, vgField} from '../src/fielddef';
+import {
+  channelCompatibility,
+  ChannelDef,
+  defaultTitle,
+  defaultType,
+  FieldDef,
+  normalize,
+  vgField
+} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -85,8 +93,8 @@ describe('fieldDef', () => {
       'should return fieldDef with default type and throw warning if type is missing.',
       log.wrap(localLogger => {
         const fieldDef = {field: 'a'} as FieldDef<string>;
-        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-        assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
+        expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+        expect(localLogger.warns[0]).toEqual(log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
       })
     );
 
@@ -178,48 +186,48 @@ describe('fieldDef', () => {
     });
   });
 
-  describe('title()', () => {
+  describe('defaultTitle()', () => {
     it('should return correct title for aggregate', () => {
-      assert.equal(title({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
+      assert.equal(defaultTitle({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
     });
 
     it('should return correct title for count', () => {
-      assert.equal(title({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(title(fieldDef, {}), 'f (binned)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (binned)');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(title(fieldDef, {fieldTitle: 'functional'}), 'BIN(f)');
+      assert.equal(defaultTitle(fieldDef, {fieldTitle: 'functional'}), 'BIN(f)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      assert.equal(title(fieldDef, {}), 'f (month)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
-      assert.equal(title(fieldDef, {}), 'f (year-month-date)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
-      assert.equal(title(fieldDef, {}), 'f (day)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
-      assert.equal(title(fieldDef, {}), 'f (year-quarter)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
-      assert.equal(title(fieldDef, {}), 'f');
+      assert.equal(defaultTitle(fieldDef, {}), 'f');
     });
   });
 });

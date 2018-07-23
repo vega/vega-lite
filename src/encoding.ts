@@ -228,7 +228,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
       encoding[channel] = {
         field: vgField(channelDef),
         type: channelDef.type,
-        title: title(channelDef, config)
+        title: title(channelDef, config, {allowDisabling: true})
       };
     } else {
       // For value def, just copy

@@ -122,13 +122,7 @@ function getProperty(
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
-      return (
-        getFirstDefined(
-          specifiedLegend.title, // legend title has higher precedence than fieldDef title
-          fieldDef.title,
-          fieldDefTitle(fieldDef, model.config)
-        ) || undefined
-      );
+      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
