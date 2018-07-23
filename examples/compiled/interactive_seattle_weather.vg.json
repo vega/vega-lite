@@ -315,7 +315,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"date (month-date)\": timeFormat(datum[\"monthdate_date\"], '%b %d'), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
+                "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},

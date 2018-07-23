@@ -84,7 +84,7 @@
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.3},
           "tooltip": {
-            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"ny\": format(datum[\"ny\"], \"\")}"
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"ny\"], \"\")}"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "ny"},

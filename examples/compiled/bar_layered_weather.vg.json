@@ -86,7 +86,7 @@
             {"value": "#ccc"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"record.low\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"Temperature (F)\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -226,7 +226,7 @@
           "dy": {"value": -105},
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"day\": ''+datum[\"day\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"day\": ''+datum[\"day\"]}"
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"signal": "height", "mult": 0.5},

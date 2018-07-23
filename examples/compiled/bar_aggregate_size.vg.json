@@ -45,7 +45,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 10},

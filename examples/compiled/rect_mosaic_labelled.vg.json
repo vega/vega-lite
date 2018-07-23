@@ -184,7 +184,7 @@
                 {"value": "black"}
               ],
               "tooltip": {
-                "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"yc\": format(datum[\"yc\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+                "signal": "{\"xc\": format(datum[\"xc\"], \"\"), \"Cylinders\": format(datum[\"yc\"], \"\")}"
               },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},

@@ -50,7 +50,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"lower_whisker_people\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
@@ -73,7 +73,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"upper_box_people\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
@@ -96,7 +96,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"lower_box_people\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 14},
@@ -121,7 +121,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"mid_box_people\": format(datum[\"mid_box_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mid_box_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},
