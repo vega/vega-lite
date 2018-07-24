@@ -73,14 +73,14 @@
       "type": "quantize",
       "domain": {"data": "data_0", "field": "b"},
       "range": {"scheme": "blues", "count": 4},
-      "zero": false
+      "zero": true
     },
     {
       "name": "size",
       "type": "quantize",
       "domain": {"data": "data_0", "field": "b"},
-      "range": [0, 120.33333333333333, 240.66666666666666, 361],
-      "zero": true
+      "range": [9, 126.33333333333333, 243.66666666666666, 361],
+      "zero": false
     }
   ],
   "axes": [
