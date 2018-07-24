@@ -3,7 +3,7 @@ import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
-import {getFirstDefined, keys} from '../../util';
+import {coalesce, keys} from '../../util';
 import {VgSignalRef} from '../../vega.schema';
 import {guideEncodeEntry, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
@@ -294,15 +294,15 @@ function getProperty<K extends keyof AxisComponentProps>(
         return false;
       } else {
         const scaleType = model.getScaleComponent(channel).get('type');
-        return getFirstDefined(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+        return coalesce(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
       }
     }
     case 'labelAlign':
-      return getFirstDefined(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
+      return coalesce(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
     case 'labelAngle':
       return labelAngle;
     case 'labelBaseline':
-      return getFirstDefined(
+      return coalesce(
         specifiedAxis.labelBaseline,
         properties.labelBaseline(labelAngle, properties.orient(channel))
       );
@@ -313,13 +313,13 @@ function getProperty<K extends keyof AxisComponentProps>(
       return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
     }
     case 'orient':
-      return getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+      return coalesce(specifiedAxis.orient, properties.orient(channel));
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
       const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getFirstDefined<number | VgSignalRef>(
+      return coalesce<number | VgSignalRef>(
         specifiedAxis.tickCount,
         properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis)
       );
@@ -329,7 +329,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
       // Keep undefined so we use default if title is unspecified.
       // For other falsy value, keep them so we will hide the title.
-      return getFirstDefined<string | FieldDefBase<string>[]>(
+      return coalesce<string | FieldDefBase<string>[]>(
         specifiedAxis.title,
         getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
         mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : [])

@@ -6,7 +6,7 @@ import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
-import {getFirstDefined} from '../../util';
+import {coalesce} from '../../util';
 import {isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {ScaleComponent} from '../scale/component';
@@ -42,7 +42,7 @@ function x(model: UnitModel): VgEncodeEntry {
       x2Def,
       X,
       xScaleName,
-      getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
+      coalesce(markDef.binSpacing, config.bar.binSpacing),
       xScale.get('reverse')
     );
   } else if (orient === 'horizontal' || x2Def) {
@@ -60,7 +60,7 @@ function x(model: UnitModel): VgEncodeEntry {
           undefined,
           X,
           model.scaleName('x'),
-          getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
+          coalesce(markDef.binSpacing, config.bar.binSpacing),
           xScale.get('reverse')
         );
       } else {
@@ -97,7 +97,7 @@ function y(model: UnitModel) {
       y2Def,
       Y,
       yScaleName,
-      getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
+      coalesce(markDef.binSpacing, config.bar.binSpacing),
       yScale.get('reverse')
     );
   } else if (orient === 'vertical' || y2Def) {
@@ -114,7 +114,7 @@ function y(model: UnitModel) {
           undefined,
           Y,
           model.scaleName('y'),
-          getFirstDefined(markDef.binSpacing, config.bar.binSpacing),
+          coalesce(markDef.binSpacing, config.bar.binSpacing),
           yScale.get('reverse')
         );
       } else if (yScaleType === ScaleType.BAND) {
@@ -165,7 +165,7 @@ function defaultSizeRef(markDef: MarkDef, scaleName: string, scale: ScaleCompone
     }
   }
   // No Scale
-  const value = getFirstDefined(
+  const value = coalesce(
     // No scale is like discrete bar (with one item)
     config.bar.discreteBandSize,
     config.scale.rangeStep ? config.scale.rangeStep - 1 : undefined,

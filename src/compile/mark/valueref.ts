@@ -22,7 +22,7 @@ import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains, getFirstDefined, some} from '../../util';
+import {contains, coalesce, some} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
@@ -206,7 +206,7 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
   const keyValues: string[] = [];
   const usedKey = {};
   for (const fieldDef of channelDefs) {
-    const key = getFirstDefined(fieldDef.title, title(fieldDef, config));
+    const key = coalesce(fieldDef.title, title(fieldDef, config));
     const value = text(fieldDef, config).signal;
     if (!usedKey[key]) {
       keyValues.push(`"${key}": ${value}`);

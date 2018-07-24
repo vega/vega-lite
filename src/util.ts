@@ -337,7 +337,7 @@ export function accessPathDepth(path: string) {
 /**
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
-export function getFirstDefined<T>(...args: T[]): T {
+export function coalesce<T>(...args: T[]): T {
   for (const arg of args) {
     if (arg !== undefined) {
       return arg;
