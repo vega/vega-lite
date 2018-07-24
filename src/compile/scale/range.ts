@@ -226,7 +226,6 @@ export function defaultRange(
       const rangeMin = sizeRangeMin(mark, zero, config);
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
       if (isContinuousToDiscrete(scaleType)) {
-        // for now 4 is the default value for range cardinality. we might change it later
         return interpolateRange(
           rangeMin,
           rangeMax,
@@ -265,7 +264,7 @@ export function defaultRange(
 }
 
 export function defaultContinuousToDiscreteCount(
-  scaleType: ScaleType,
+  scaleType: 'quantile' | 'quantize' | 'threshold',
   config: Config,
   domain: Domain,
   channel: Channel
@@ -283,8 +282,6 @@ export function defaultContinuousToDiscreteCount(
         // default threshold boundaries for threshold scale since domain has cardinality of 2
         return 3;
       }
-    default:
-      return 4;
   }
 }
 

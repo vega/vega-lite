@@ -757,10 +757,6 @@ describe('compile/scale', () => {
         assert.equal(localLogger.warns[0], log.message.domainRequiredForThresholdScale('x'));
       });
     });
-
-    it('should return 4 as a default', () => {
-      assert.equal(defaultContinuousToDiscreteCount('band', {}, undefined, 'x'), 4);
-    });
   });
 
   describe('interpolateRange', () => {

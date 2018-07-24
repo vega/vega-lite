@@ -264,7 +264,8 @@ export function zero(
 
   // 1) using quantitative field with size
   // While this can be either ratio or interval fields, our assumption is that
-  // ratio are more common. However, if the scaleType is
+  // ratio are more common. However, if the scaleType is discretizing scale, we want to return
+  // false so that range doesn't start at zero
   if (channel === 'size' && fieldDef.type === 'quantitative' && !isContinuousToDiscrete(scaleType)) {
     return true;
   }
