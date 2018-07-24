@@ -327,7 +327,8 @@ Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`sch
 Quantile scales (`"quantile"`) map a sample of input domain values to a discrete range based on computed [quantile](https://en.wikipedia.org/wiki/Quantile) boundaries.
 The domain is considered continuous and thus the scale will accept any reasonable input value; however, the domain is specified as a discrete set of sample values.
 The number of values in (i.e., the cardinality of) the output range determines the number of quantiles that will be computed from the domain. To compute the quantiles, the domain is sorted, and treated as a population of discrete values.
-The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. The `range` property, if not specified, is default to 4 uniform segments between minimum and maximum range value determined by Vega-lite based on mark types.
+The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. 
+If the `range` is not specified, the domain will be segmented into 4 quantiles (quartiles) by default. 
 
 Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
 For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts.
@@ -338,9 +339,8 @@ Quantile scales have the benefit of evenly distributing data points to encoded v
 {:#quantize}
 ### Quantize Scales
 
-Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The continuous input domain is divided into uniform segments based on the number of values in (i.e., the cardinality of) the output range.
-`quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
-The `range` property, if not specified, is default to 4 uniform segments between minimum and maximum range value determined by Vega-lite.
+Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
+If the `range` property is not specified, the domain will be divided into 4 uniform segments by default. 
 
 Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
 For related functionality see [quantile scales](https://vega.github.io/vega-lite/docs/scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
@@ -353,8 +353,8 @@ For related functionality see [quantile scales](https://vega.github.io/vega-lite
 ### Threshold Scales
 
 Threshold scales (`"threshold"`) are similar to [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range.
-The input domain is still continuous, and divided into slices based on a set of threshold values provided to the domain property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
-If the `range` property is not specified, it is default to N+1 uniform segments where N is the number of elements in `domain`.
+The input domain is still continuous, and divided into slices based on a set of threshold values provided to the _required_ `domain` property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
+
 
 <span class="vl-example" data-name="bar_scale_threshold"></span>
 
