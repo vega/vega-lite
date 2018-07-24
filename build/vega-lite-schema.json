@@ -385,10 +385,6 @@
           "minimum": 0,
           "type": "number"
         },
-        "gridScale": {
-          "description": "The name of the scale to use for including grid lines. By default grid lines are driven by the same scale as the ticks and labels.",
-          "type": "string"
-        },
         "gridWidth": {
           "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
           "minimum": 0,
@@ -662,10 +658,6 @@
           "maximum": 1,
           "minimum": 0,
           "type": "number"
-        },
-        "gridScale": {
-          "description": "The name of the scale to use for including grid lines. By default grid lines are driven by the same scale as the ticks and labels.",
-          "type": "string"
         },
         "gridWidth": {
           "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
