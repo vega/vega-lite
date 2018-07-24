@@ -2,7 +2,7 @@ import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
-import {duplicate, coalesce} from '../../util';
+import {coalesce, duplicate} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';

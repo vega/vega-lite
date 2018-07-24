@@ -17,7 +17,7 @@ import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, coalesce, keys, stringify} from '../util';
+import {coalesce, contains, keys, stringify} from '../util';
 import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';

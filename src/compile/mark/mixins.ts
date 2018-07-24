@@ -15,7 +15,7 @@ import * as log from '../../log';
 import {isPathMark, MarkDef} from '../../mark';
 import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
-import {contains, Dict, coalesce, keys} from '../../util';
+import {coalesce, contains, Dict, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';

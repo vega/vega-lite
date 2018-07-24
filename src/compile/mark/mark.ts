@@ -4,7 +4,7 @@ import {Encoding, isAggregate} from '../../encoding';
 import {getFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
-import {contains, coalesce, keys} from '../../util';
+import {coalesce, contains, keys} from '../../util';
 import {getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {area} from './area';

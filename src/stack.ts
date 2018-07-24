@@ -6,7 +6,7 @@ import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFiel
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag, coalesce} from './util';
+import {coalesce, contains, Flag} from './util';
 
 export type StackOffset = 'zero' | 'center' | 'normalize';
 

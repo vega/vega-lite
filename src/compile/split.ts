@@ -1,5 +1,5 @@
 import * as log from '../log';
-import {duplicate, coalesce, keys, stringify} from '../util';
+import {coalesce, duplicate, keys, stringify} from '../util';
 
 /**
  * Generic class for storing properties that are explicitly specified

@@ -302,10 +302,7 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'labelAngle':
       return labelAngle;
     case 'labelBaseline':
-      return coalesce(
-        specifiedAxis.labelBaseline,
-        properties.labelBaseline(labelAngle, properties.orient(channel))
-      );
+      return coalesce(specifiedAxis.labelBaseline, properties.labelBaseline(labelAngle, properties.orient(channel)));
     case 'labelFlush':
       return properties.labelFlush(fieldDef, channel, specifiedAxis);
     case 'labelOverlap': {

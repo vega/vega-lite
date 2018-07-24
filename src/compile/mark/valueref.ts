@@ -22,7 +22,7 @@ import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains, coalesce, some} from '../../util';
+import {coalesce, contains, some} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';

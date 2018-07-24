@@ -5,7 +5,7 @@ import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, coalesce} from '../../util';
+import {coalesce, contains} from '../../util';
 import {getMarkConfig} from '../common';
 import {Orient} from './../../vega.schema';
 
