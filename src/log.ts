@@ -381,4 +381,8 @@ export namespace message {
   export function channelRequiredForBinned(channel: Channel) {
     return `Channel ${channel} is required for "binned" bin`;
   }
+
+  export function domainRequiredForThresholdScale(channel: Channel) {
+    return `Domain for ${channel} is required for threshold scale`;
+  }
 }

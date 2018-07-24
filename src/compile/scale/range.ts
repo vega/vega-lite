@@ -1,11 +1,14 @@
 import {isNumber} from 'vega-util';
 
+import {isArray} from 'util';
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
-import {Config} from '../../config';
+import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
   channelScalePropertyIncompatability,
+  Domain,
+  isContinuousToDiscrete,
   isExtendedScheme,
   Range,
   Scale,
@@ -149,7 +152,18 @@ export function parseRangeForChannel(
     }
   }
   return makeImplicit(
-    defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep)
+    defaultRange(
+      channel,
+      scaleType,
+      type,
+      config,
+      zero,
+      mark,
+      sizeSignal,
+      xyRangeSteps,
+      noRangeStep,
+      specifiedScale.domain
+    )
   );
 }
 
@@ -176,7 +190,8 @@ export function defaultRange(
   mark: Mark,
   sizeSignal: string,
   xyRangeSteps: number[],
-  noRangeStep: boolean
+  noRangeStep: boolean,
+  domain: Domain
 ): VgRange {
   switch (channel) {
     case X:
@@ -210,7 +225,15 @@ export function defaultRange(
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, zero, config);
       const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
-      return [rangeMin, rangeMax];
+      if (isContinuousToDiscrete(scaleType)) {
+        return interpolateRange(
+          rangeMin,
+          rangeMax,
+          defaultContinuousToDiscreteCount(scaleType, config, domain, channel)
+        );
+      } else {
+        return [rangeMin, rangeMax];
+      }
     case SHAPE:
       return 'symbol';
     case COLOR:
@@ -219,14 +242,63 @@ export function defaultRange(
       if (scaleType === 'ordinal') {
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
+      } else if (isContinuousToDiscrete(scaleType)) {
+        const count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
+        if (config.range && isVgScheme(config.range.ordinal)) {
+          return {
+            ...config.range.ordinal,
+            count
+          };
+        } else {
+          return {scheme: 'blues', count};
+        }
+      } else {
+        return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
-      return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
     case OPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }
   /* istanbul ignore next: should never reach here */
   throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+export function defaultContinuousToDiscreteCount(
+  scaleType: 'quantile' | 'quantize' | 'threshold',
+  config: Config,
+  domain: Domain,
+  channel: Channel
+) {
+  switch (scaleType) {
+    case 'quantile':
+      return config.scale.quantileCount;
+    case 'quantize':
+      return config.scale.quantizeCount;
+    case 'threshold':
+      if (domain !== undefined && isArray(domain)) {
+        return domain.length + 1;
+      } else {
+        log.warn(log.message.domainRequiredForThresholdScale(channel));
+        // default threshold boundaries for threshold scale since domain has cardinality of 2
+        return 3;
+      }
+  }
+}
+
+/**
+ * Returns the linear interpolation of the range according to the cardinality
+ *
+ * @param rangeMin start of the range
+ * @param rangeMax end of the range
+ * @param cardinality number of values in the output range
+ */
+export function interpolateRange(rangeMin: number, rangeMax: number, cardinality: number) {
+  const ranges: number[] = [];
+  const step = (rangeMax - rangeMin) / (cardinality - 1);
+  for (let i = 0; i < cardinality; i++) {
+    ranges.push(rangeMin + i * step);
+  }
+  return ranges;
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {

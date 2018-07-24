@@ -2,9 +2,13 @@
 
 import {assert} from 'chai';
 
-import {parseRangeForChannel} from '../../../src/compile/scale/range';
+import {
+  defaultContinuousToDiscreteCount,
+  interpolateRange,
+  parseRangeForChannel
+} from '../../../src/compile/scale/range';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
-import {defaultConfig} from '../../../src/config';
+import {Config, defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from '../../../src/scale';
@@ -392,6 +396,45 @@ describe('compile/scale', () => {
           makeExplicit({scheme: 'viridis', count: 3})
         );
       });
+
+      it('should use default ordinal range for quantile/quantize scales', () => {
+        const scales: ScaleType[] = ['quantile', 'quantize'];
+        scales.forEach(discretizingScale => {
+          assert.deepEqual(
+            parseRangeForChannel(
+              'color',
+              discretizingScale,
+              QUANTITATIVE,
+              {},
+              defaultConfig,
+              undefined,
+              'point',
+              false,
+              'plot_width',
+              []
+            ),
+            makeImplicit({scheme: 'blues', count: 4})
+          );
+        });
+      });
+
+      it('should use default ordinal range for threshold scale', () => {
+        assert.deepEqual(
+          parseRangeForChannel(
+            'color',
+            'threshold',
+            QUANTITATIVE,
+            {},
+            defaultConfig,
+            undefined,
+            'point',
+            false,
+            'plot_width',
+            []
+          ),
+          makeImplicit({scheme: 'blues', count: 3})
+        );
+      });
     });
 
     describe('opacity', () => {
@@ -622,6 +665,45 @@ describe('compile/scale', () => {
             );
           }
         });
+
+        it('should return range interpolation of length 4 for quantile/quantize scales', () => {
+          const scales: ScaleType[] = ['quantile', 'quantize'];
+          scales.forEach(discretizingScale => {
+            assert.deepEqual(
+              parseRangeForChannel(
+                'size',
+                discretizingScale,
+                QUANTITATIVE,
+                {},
+                defaultConfig,
+                undefined,
+                'point',
+                false,
+                'plot_width',
+                []
+              ),
+              makeImplicit([9, 126.33333333333333, 243.66666666666666, 361])
+            );
+          });
+        });
+
+        it('should return range interpolation of length 4 for threshold scale', () => {
+          assert.deepEqual(
+            parseRangeForChannel(
+              'size',
+              'threshold',
+              QUANTITATIVE,
+              {},
+              defaultConfig,
+              undefined,
+              'point',
+              false,
+              'plot_width',
+              []
+            ),
+            makeImplicit([9, 185, 361])
+          );
+        });
       });
     });
 
@@ -643,6 +725,43 @@ describe('compile/scale', () => {
           makeImplicit('symbol')
         );
       });
+    });
+  });
+
+  describe('defaultContinuousToDiscreteCount', () => {
+    it('should use config.scale.quantileCount for quantile scale', () => {
+      const config: Config = {
+        scale: {
+          quantileCount: 4
+        }
+      };
+      assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x'), 4);
+    });
+
+    it('should use config.scale.quantizeCount for quantize scale', () => {
+      const config: Config = {
+        scale: {
+          quantizeCount: 4
+        }
+      };
+      assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x'), 4);
+    });
+
+    it('should use domain size for threshold scale', () => {
+      assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x'), 3);
+    });
+
+    it('should throw warning and default to 4 for scale without domain', () => {
+      log.wrap(localLogger => {
+        assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x'), 4);
+        assert.equal(localLogger.warns[0], log.message.domainRequiredForThresholdScale('x'));
+      });
+    });
+  });
+
+  describe('interpolateRange', () => {
+    it('should return the correct interpolation of 1 - 100 with cardinality of 5', () => {
+      assert.deepEqual(interpolateRange(0, 100, 5), [0, 25, 50, 75, 100]);
     });
   });
 });

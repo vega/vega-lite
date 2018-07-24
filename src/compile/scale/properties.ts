@@ -8,10 +8,10 @@ import {
   Domain,
   hasContinuousDomain,
   isContinuousToContinuous,
+  isContinuousToDiscrete,
   NiceTime,
   Scale,
   ScaleConfig,
-  ScaleType,
   scaleTypeSupportProperty
 } from '../../scale';
 import {Sort} from '../../sort';
@@ -21,6 +21,7 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
+import {ScaleType} from './../../scale';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
@@ -108,7 +109,7 @@ export function getDefaultValue(
     case 'reverse':
       return reverse(scaleType, fieldDef.sort);
     case 'zero':
-      return zero(channel, fieldDef, specifiedDomain, markDef);
+      return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -246,7 +247,13 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>) {
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain, markDef: MarkDef) {
+export function zero(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  specifiedScale: Domain,
+  markDef: MarkDef,
+  scaleType: ScaleType
+) {
   // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (hasCustomDomain) {
@@ -257,8 +264,9 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
 
   // 1) using quantitative field with size
   // While this can be either ratio or interval fields, our assumption is that
-  // ratio are more common.
-  if (channel === 'size' && fieldDef.type === 'quantitative') {
+  // ratio are more common. However, if the scaleType is discretizing scale, we want to return
+  // false so that range doesn't start at zero
+  if (channel === 'size' && fieldDef.type === 'quantitative' && !isContinuousToDiscrete(scaleType)) {
     return true;
   }
 

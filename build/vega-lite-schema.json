@@ -7457,7 +7457,7 @@
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
-          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`\"pow\"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`\"sqrt\"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`\"log\"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`\"time\"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`\"utc\"`](https://vega.github.io/vega-lite/docs/scale.html#utc), [`\"sequential\"`](https://vega.github.io/vega-lite/docs/scale.html#sequential)).\n\n2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`\"band\"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`\"point\"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`\"bin-linear\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear) and [`\"bin-ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal)).\n\n__Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type)."
+          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`\"pow\"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`\"sqrt\"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`\"log\"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`\"time\"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`\"utc\"`](https://vega.github.io/vega-lite/docs/scale.html#utc), [`\"sequential\"`](https://vega.github.io/vega-lite/docs/scale.html#sequential)).\n\n2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`\"band\"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`\"point\"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`\"bin-linear\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear), [`\"bin-ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`\"quantile\"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`\"quantize\"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`\"threshold\"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).\n\n__Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type)."
         },
         "zero": {
           "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
@@ -7545,6 +7545,16 @@
         "pointPadding": {
           "description": "Default outer padding for `x` and `y` point-ordinal scales.\n\n__Default value:__ `0.5`",
           "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "quantileCount": {
+          "description": "Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.\n\n__Default value:__ `4`",
+          "minimum": 0,
+          "type": "number"
+        },
+        "quantizeCount": {
+          "description": "Default range cardinality for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.\n\n__Default value:__ `4`",
           "minimum": 0,
           "type": "number"
         },
@@ -7645,6 +7655,9 @@
         "time",
         "utc",
         "sequential",
+        "quantile",
+        "quantize",
+        "threshold",
         "ordinal",
         "bin-ordinal",
         "point",
@@ -7655,6 +7668,10 @@
     "SchemeParams": {
       "additionalProperties": false,
       "properties": {
+        "count": {
+          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
+          "type": "number"
+        },
         "extent": {
           "description": "For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
           "items": {

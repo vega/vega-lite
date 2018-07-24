@@ -3,7 +3,7 @@ import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {contains, deleteNestedProperty, getFirstDefined, keys} from '../../util';
 import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -110,12 +110,13 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 }
 
 function getProperty(
-  property: keyof (Legend | VgLegend),
+  property: keyof (VgLegend),
   specifiedLegend: Legend,
   channel: NonPositionScaleChannel,
   model: UnitModel
 ) {
   const fieldDef = model.fieldDef(channel);
+  const scale = model.specifiedScales[channel];
 
   switch (property) {
     case 'format':
@@ -135,6 +136,10 @@ function getProperty(
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
+    case 'labelOverlap':
+      if (contains(['quantile', 'threshold'], scale.type)) {
+        return 'greedy';
+      }
   }
 
   // Otherwise, return specified property.

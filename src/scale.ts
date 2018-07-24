@@ -39,8 +39,10 @@ export type ScaleType =
   | typeof ScaleType.SQRT
   | typeof ScaleType.TIME
   | typeof ScaleType.UTC
-  // TODO: add 'quantize', 'quantile', 'threshold' back when we really support them
-  | typeof ScaleType.SEQUENTIAL // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
+  | typeof ScaleType.SEQUENTIAL
+  | typeof ScaleType.QUANTILE
+  | typeof ScaleType.QUANTIZE
+  | typeof ScaleType.THRESHOLD
   | typeof ScaleType.ORDINAL
   | typeof ScaleType.BIN_ORDINAL
   | typeof ScaleType.POINT
@@ -52,7 +54,7 @@ export type ScaleType =
  */
 const SCALE_CATEGORY_INDEX: {
   // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position'
+  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'
 } = {
   linear: 'numeric',
   log: 'numeric',
@@ -65,7 +67,10 @@ const SCALE_CATEGORY_INDEX: {
   ordinal: 'ordinal',
   'bin-ordinal': 'bin-ordinal', // TODO: should bin-ordinal support merging with other
   point: 'ordinal-position',
-  band: 'ordinal-position'
+  band: 'ordinal-position',
+  quantile: 'discretizing',
+  quantize: 'discretizing',
+  threshold: 'discretizing'
 };
 
 export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
@@ -105,7 +110,10 @@ const SCALE_PRECEDENCE_INDEX: {
   'bin-linear': 0,
   sequential: 0,
   ordinal: 0,
-  'bin-ordinal': 0
+  'bin-ordinal': 0,
+  quantile: 0,
+  quantize: 0,
+  threshold: 0
 };
 
 /**
@@ -126,8 +134,14 @@ export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = [
 ];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
+export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
+const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
+
 export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
-  'sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/
+  'sequential',
+  'quantile',
+  'quantize',
+  'threshold'
 ]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
@@ -148,21 +162,16 @@ export function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal
 
 export function hasContinuousDomain(
   type: ScaleType
-): type is
-  | 'linear'
-  | 'log'
-  | 'pow'
-  | 'sqrt'
-  | 'time'
-  | 'utc'
-  | 'sequential' /* TODO add | 'quantile' | 'quantize' | 'threshold' */ {
+): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' | 'sequential' | 'quantile' | 'quantize' | 'threshold' {
   return type in CONTINUOUS_DOMAIN_INDEX;
 }
 
-export function isContinuousToContinuous(
-  type: ScaleType
-): type is 'linear' | 'bin-linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' {
+export function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' {
   return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+}
+
+export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold' {
+  return type in CONTINUOUS_TO_DISCRETE_INDEX;
 }
 
 export type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
@@ -338,6 +347,24 @@ export interface ScaleConfig {
    * @minimum 0
    */
   maxStrokeWidth?: number;
+
+  /**
+   * Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.
+   *
+   * __Default value:__ `4`
+   *
+   * @minimum 0
+   */
+  quantileCount?: number;
+
+  /**
+   * Default range cardinality for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.
+   *
+   * __Default value:__ `4`
+   *
+   * @minimum 0
+   */
+  quantizeCount?: number;
 }
 
 export const defaultScaleConfig = {
@@ -359,7 +386,9 @@ export const defaultScaleConfig = {
   minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
 
   minStrokeWidth: 1,
-  maxStrokeWidth: 4
+  maxStrokeWidth: 4,
+  quantileCount: 4,
+  quantizeCount: 4
 };
 
 export interface SchemeParams {
@@ -377,8 +406,6 @@ export interface SchemeParams {
 
   /**
    * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
-   *
-   * @hide
    */
   count?: number;
 }
@@ -428,7 +455,7 @@ export interface Scale {
    *
    * 2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`"band"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`"point"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.
    *
-   * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear) and [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal)).
+   * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear), [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`"quantile"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`"quantize"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`"threshold"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).
    *
    * __Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type).
    */
@@ -634,7 +661,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'range':
       return true;
     case 'scheme':
-      return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
+      return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize', 'threshold'], scaleType);
     case 'interpolate':
       return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
     case 'round':
@@ -725,6 +752,7 @@ export function scaleTypeSupportDataType(
         ScaleType.SQRT,
         ScaleType.QUANTILE,
         ScaleType.QUANTIZE,
+        ScaleType.THRESHOLD,
         ScaleType.LINEAR,
         ScaleType.SEQUENTIAL,
         undefined
@@ -740,17 +768,20 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
   switch (channel) {
     case Channel.X:
     case Channel.Y:
+      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
     case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
     case Channel.OPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
-      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
-
+      return (
+        isContinuousToContinuous(scaleType) ||
+        isContinuousToDiscrete(scaleType) ||
+        contains(['band', 'point'], scaleType)
+      );
     case Channel.COLOR:
     case Channel.FILL:
     case Channel.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
-
     case Channel.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }

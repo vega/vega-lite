@@ -158,6 +158,10 @@ export interface RangeConfigProps {
   symbol?: string[];
 }
 
+export function isVgScheme(rangeConfig: string[] | VgScheme): rangeConfig is VgScheme {
+  return rangeConfig && !!rangeConfig['scheme'];
+}
+
 export interface VLOnlyConfig {
   /**
    * Default axis and legend title for count fields.
