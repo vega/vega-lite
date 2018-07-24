@@ -2,6 +2,7 @@ import {LabelOverlap} from 'vega';
 import {FieldDef, valueArray} from '../../fielddef';
 import {Legend} from '../../legend';
 import {hasContinuousDomain, ScaleType} from '../../scale';
+import {contains} from '../../util';
 
 export function values(legend: Legend, fieldDef: FieldDef<string>) {
   const vals = legend.values;
@@ -20,7 +21,7 @@ export function clipHeight(scaleType: ScaleType) {
 }
 
 export function labelOverlap(scaleType: ScaleType): LabelOverlap {
-  if (scaleType === 'log') {
+  if (contains(['quantile', 'threshold', 'log'], scaleType)) {
     return 'greedy';
   }
   return undefined;
