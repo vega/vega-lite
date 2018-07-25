@@ -14,7 +14,7 @@ import {
 } from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
-import {getFirstDefined, keys} from '../../util';
+import {coalesce, keys} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
@@ -191,7 +191,7 @@ function getFirstConditionValue(
   channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
 ) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => {
-    return getFirstDefined(v, conditionalDef.value);
+    return coalesce(v, conditionalDef.value);
   });
 }
 

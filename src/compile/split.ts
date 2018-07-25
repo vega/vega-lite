@@ -1,5 +1,5 @@
 import * as log from '../log';
-import {duplicate, getFirstDefined, keys, stringify} from '../util';
+import {coalesce, duplicate, keys, stringify} from '../util';
 
 /**
  * Generic class for storing properties that are explicitly specified
@@ -25,7 +25,7 @@ export class Split<T extends object> {
 
   public get<K extends keyof T>(key: K): T[K] {
     // Explicit has higher precedence
-    return getFirstDefined(this.explicit[key], this.implicit[key]);
+    return coalesce(this.explicit[key], this.implicit[key]);
   }
 
   public getWithExplicit<K extends keyof T>(key: K): Explicit<T[K]> {

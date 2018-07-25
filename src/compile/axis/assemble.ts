@@ -3,7 +3,7 @@ import {isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
 import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
-import {getFirstDefined, keys} from '../../util';
+import {coalesce, keys} from '../../util';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
@@ -61,7 +61,7 @@ export function assembleAxis(
       maxExtent: 0,
       minExtent: 0,
       ticks: false,
-      zindex: getFirstDefined(zindex, 0) // put grid behind marks by default
+      zindex: coalesce(zindex, 0) // put grid behind marks by default
     };
   } else {
     // kind === 'main'
@@ -91,7 +91,7 @@ export function assembleAxis(
       grid: false,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
-      zindex: getFirstDefined(zindex, 1) // put axis line above marks by default
+      zindex: coalesce(zindex, 1) // put axis line above marks by default
     };
   }
 }

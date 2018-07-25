@@ -1,5 +1,5 @@
 import {hasDiscreteDomain} from '../../scale';
-import {getFirstDefined} from '../../util';
+import {coalesce} from '../../util';
 import {isVgRangeStep, VgRangeStep, VgSignal} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
@@ -69,7 +69,7 @@ function stepSignal(scaleName: string, range: VgRangeStep): VgSignal {
 export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, cardinality: string) {
   const type = scaleComponent.get('type');
   const padding = scaleComponent.get('padding');
-  const paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
+  const paddingOuter = coalesce(scaleComponent.get('paddingOuter'), padding);
 
   let paddingInner = scaleComponent.get('paddingInner');
   paddingInner =

@@ -6,7 +6,7 @@ import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFiel
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag, getFirstDefined} from './util';
+import {coalesce, contains, Flag} from './util';
 
 export type StackOffset = 'zero' | 'center' | 'normalize';
 
@@ -131,7 +131,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
     offset = stackedFieldDef.stack;
   } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
     // Bar and Area with sum ops are automatically stacked by default
-    offset = getFirstDefined(stackConfig, 'zero');
+    offset = coalesce(stackConfig, 'zero');
   } else {
     offset = stackConfig;
   }

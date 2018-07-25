@@ -17,7 +17,7 @@ import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, getFirstDefined, keys, stringify} from '../util';
+import {coalesce, contains, keys, stringify} from '../util';
 import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
@@ -62,7 +62,7 @@ export function getMarkConfig<P extends keyof MarkConfig>(
   config: Config,
   {skipGeneralMarkConfig = false}: {skipGeneralMarkConfig?: boolean} = {}
 ): MarkConfig[P] {
-  return getFirstDefined(
+  return coalesce(
     // style config has highest precedence
     getStyleConfig(prop, mark, config.style),
     // then mark-specific config

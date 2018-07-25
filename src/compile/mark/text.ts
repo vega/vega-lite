@@ -1,7 +1,7 @@
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {MarkDef} from '../../mark';
-import {getFirstDefined} from '../../util';
+import {coalesce} from '../../util';
 import {getMarkConfig, getStyleConfig} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -19,7 +19,7 @@ export const text: MarkCompiler = {
     // - fontSize is from Vega and we need support it to make sure that all Vega configs all work correctly in Vega-Lite.
     // Precedence: markDef > style config > mark-specific config
     // For each of them, fontSize is more specific than size, thus has higher precedence
-    const defaultValue = getFirstDefined(
+    const defaultValue = coalesce(
       markDef.fontSize,
       markDef.size,
       getStyleConfig('fontSize', markDef, config.style),
