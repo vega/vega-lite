@@ -6,12 +6,12 @@ import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
 import {facetSortFieldName} from '../facet';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 /**
  * A class for the window transform nodes
  */
-export class WindowTransformNode extends DataFlowNode {
+export class WindowTransformNode extends TransformNode {
   public static makeFromFacet(parent: DataFlowNode, facet: FacetMapping<string>): WindowTransformNode {
     const {row, column} = facet;
     if (row && column) {

@@ -1,18 +1,11 @@
 import {hasIntersection, keys} from '../../util';
-import {AggregateNode} from './aggregate';
-import {BinNode} from './bin';
-import {CalculateNode} from './calculate';
-import {DataFlowNode, OutputNode} from './dataflow';
+import {DataFlowNode, isTransformNode, OutputNode, TransformNode} from './dataflow';
 import {FacetNode} from './facet';
-import {FilterNode} from './filter';
-import {FlattenTransformNode} from './flatten';
-import {FoldTransformNode} from './fold';
+
 import {ParseNode} from './formatparse';
-import {ImputeNode} from './impute';
-import {LookupNode} from './lookup';
-import {SampleTransformNode} from './sample';
+
 import {SourceNode} from './source';
-import {StackNode} from './stack';
+
 import {TimeUnitNode} from './timeunit';
 // import {WindowTransformNode} from './window';
 
@@ -66,36 +59,6 @@ export function moveParseUp(node: DataFlowNode) {
   }
 
   return true;
-}
-export type TransformNode =
-  | FilterNode
-  | CalculateNode
-  | LookupNode
-  | BinNode
-  | TimeUnitNode
-  | ImputeNode
-  | AggregateNode
-  // | WindowTransformNode // Fix
-  | StackNode
-  | FlattenTransformNode
-  | FoldTransformNode
-  | SampleTransformNode;
-
-export function isTransformNode(x: DataFlowNode) {
-  return (
-    x instanceof FilterNode ||
-    x instanceof CalculateNode ||
-    x instanceof LookupNode ||
-    x instanceof BinNode ||
-    x instanceof TimeUnitNode ||
-    x instanceof ImputeNode ||
-    x instanceof AggregateNode ||
-    // x instanceof WindowTransformNode || //  Causes error. Need to Fix
-    x instanceof StackNode ||
-    x instanceof FlattenTransformNode ||
-    x instanceof FoldTransformNode ||
-    x instanceof SampleTransformNode
-  );
 }
 
 function mergeBucket(parent: DataFlowNode, nodes: DataFlowNode[]) {

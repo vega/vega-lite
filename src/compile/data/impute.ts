@@ -5,9 +5,9 @@ import {duplicate, hash} from '../../util';
 import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
 import {pathGroupingFields} from '../mark/mark';
 import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, TransformNode} from './dataflow';
 
-export class ImputeNode extends DataFlowNode {
+export class ImputeNode extends TransformNode {
   public clone() {
     return new ImputeNode(this.parent, duplicate(this.transform));
   }

@@ -8,12 +8,14 @@ import {CalculateTransform} from '../../transform';
 import {duplicate, hash, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
+
+import {DataFlowNode, TransformNode} from './dataflow';
 import {getDependentFields} from './expressions';
 
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
+
 export class CalculateNode extends DataFlowNode {
   private _dependentFields: StringSet;
 

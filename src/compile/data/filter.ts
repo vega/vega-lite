@@ -1,13 +1,12 @@
 import {LogicalOperand} from '../../logical';
 import {expression, Predicate} from '../../predicate';
-import {duplicate, hash} from '../../util';
+import {duplicate, hash, StringSet} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {StringSet} from './../../util';
-import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
+import {DataFlowNode, TransformNode} from './dataflow';
 
-export class FilterNode extends DataFlowNode {
+export class FilterNode extends TransformNode {
   private expr: string;
   private _dependentFields: StringSet;
   public clone() {

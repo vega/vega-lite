@@ -1,12 +1,12 @@
 import {SampleTransform as VgSampleTransform} from 'vega';
 import {SampleTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 /**
  * A class for the sample transform nodes
  */
-export class SampleTransformNode extends DataFlowNode {
+export class SampleTransformNode extends TransformNode {
   public clone() {
     return new SampleTransformNode(this.parent, duplicate(this.transform));
   }

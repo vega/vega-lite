@@ -8,7 +8,7 @@ import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
 import {binFormatExpression, binRequiresRange} from '../common';
 import {isUnitModel, Model, ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 function rangeFormula(model: ModelWithField, fieldDef: FieldDef<string>, channel: Channel, config: Config) {
   if (binRequiresRange(fieldDef, channel)) {
@@ -79,7 +79,7 @@ export interface BinComponent {
   formulaAs?: string;
 }
 
-export class BinNode extends DataFlowNode {
+export class BinNode extends TransformNode {
   public clone() {
     return new BinNode(null, duplicate(this.bins));
   }
