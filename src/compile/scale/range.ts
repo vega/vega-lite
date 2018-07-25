@@ -1,6 +1,5 @@
-import {isNumber} from 'vega-util';
-
 import {isArray} from 'util';
+import {isNumber} from 'vega-util';
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
 import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
@@ -8,6 +7,8 @@ import {Mark} from '../../mark';
 import {
   channelScalePropertyIncompatability,
   Domain,
+  hasContinuousDomain,
+  isContinuousToContinuous,
   isContinuousToDiscrete,
   isExtendedScheme,
   Range,
@@ -17,7 +18,6 @@ import {
   scaleTypeSupportProperty,
   Scheme
 } from '../../scale';
-import {hasContinuousDomain} from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
@@ -252,6 +252,9 @@ export function defaultRange(
         } else {
           return {scheme: 'blues', count};
         }
+      } else if (isContinuousToContinuous(scaleType)) {
+        // Manually set colors for now. We will revise this after https://github.com/vega/vega/issues/1369
+        return ['#f7fbff', '#0e427f'];
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }

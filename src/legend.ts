@@ -15,20 +15,20 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
 import {Color, VgLayoutAlign} from './vega.schema';
 
-export interface LegendConfig
-  extends VgLegendConfig<
-      number,
-      number,
-      string,
-      Color,
-      FontWeight,
-      Align,
-      TextBaseline,
-      VgLayoutAlign,
-      LabelOverlap,
-      SymbolShape
-    >,
-    VlOnlyGuideConfig {}
+export type LegendConfig = LegendMixins &
+  VlOnlyGuideConfig &
+  VgLegendConfig<
+    number,
+    number,
+    string,
+    Color,
+    FontWeight,
+    Align,
+    TextBaseline,
+    VgLayoutAlign,
+    LabelOverlap,
+    SymbolShape
+  >;
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
@@ -46,6 +46,7 @@ export interface Legend
       LabelOverlap,
       SymbolShape
     >,
+    LegendMixins,
     Guide {
   /**
    * Mark definitions for custom legend encoding.
@@ -92,6 +93,16 @@ export interface Legend
    * __Default value:__ `"right"`
    */
   orient?: LegendOrient;
+}
+
+// Change comments to be Vega-Lite specific
+interface LegendMixins {
+  /**
+   * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
+   *
+   * __Default value:__ `"greedy"` for `log scales otherwise `true`.
+   */
+  labelOverlap?: LabelOverlap;
 }
 
 export interface LegendEncoding {

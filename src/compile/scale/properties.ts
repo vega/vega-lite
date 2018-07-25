@@ -21,6 +21,7 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
+import {COLOR, FILL, STROKE} from './../../channel';
 import {ScaleType} from './../../scale';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
@@ -98,6 +99,8 @@ export function getDefaultValue(
 
   // If we have default rule-base, determine default value first
   switch (property) {
+    case 'interpolate':
+      return interpolate(channel, scaleType);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -155,6 +158,13 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
     }
     localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
   });
+}
+
+export function interpolate(channel: Channel, scaleType: ScaleType) {
+  if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+    return 'hcl';
+  }
+  return undefined;
 }
 
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {

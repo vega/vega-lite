@@ -48,7 +48,7 @@ interface AxisMixins {
   labelOverlap?: LabelOverlap;
 }
 
-export interface AxisConfig extends VgAxisConfigNoSignals, VlOnlyGuideConfig {}
+export type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig;
 
 export interface Axis extends BaseAxisNoSignals, Guide {
   /**

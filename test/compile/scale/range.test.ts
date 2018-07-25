@@ -435,6 +435,24 @@ describe('compile/scale', () => {
           makeImplicit({scheme: 'blues', count: 3})
         );
       });
+
+      it('should use default color range for log scale', () => {
+        assert.deepEqual(
+          parseRangeForChannel(
+            'color',
+            'log',
+            QUANTITATIVE,
+            {},
+            defaultConfig,
+            undefined,
+            'point',
+            false,
+            'plot_width',
+            []
+          ),
+          makeImplicit(['#f7fbff', '#0e427f'])
+        );
+      });
     });
 
     describe('opacity', () => {

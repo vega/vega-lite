@@ -24,12 +24,29 @@ describe('compile/legend', () => {
   describe('clipHeight()', () => {
     it('should return clip height for continuous domain', () => {
       const height = properties.clipHeight('linear');
-      assert.deepEqual(height, 20);
+      assert.equal(height, 20);
     });
 
     it('should simply return for discrete domain', () => {
       const height = properties.clipHeight('ordinal');
-      assert.deepEqual(height, undefined);
+      assert.isUndefined(height);
+    });
+  });
+
+  describe('labelOverlap()', () => {
+    it('should return undefined for linear', () => {
+      const overlap = properties.labelOverlap('linear');
+      assert.isUndefined(overlap);
+    });
+
+    it('should return greedy for log', () => {
+      const overlap = properties.labelOverlap('log');
+      assert.equal(overlap, 'greedy');
+    });
+
+    it('should return greedy for threshold', () => {
+      const overlap = properties.labelOverlap('threshold');
+      assert.equal(overlap, 'greedy');
     });
   });
 });

@@ -302,7 +302,9 @@ export const defaultConfig: Config = {
   },
 
   scale: defaultScaleConfig,
+
   projection: {},
+
   axis: {},
   axisX: {},
   axisY: {minExtent: 30},

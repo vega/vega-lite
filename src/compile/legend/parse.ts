@@ -3,7 +3,7 @@ import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
-import {contains, deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
 import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -116,7 +116,6 @@ function getProperty(
   model: UnitModel
 ) {
   const fieldDef = model.fieldDef(channel);
-  const scale = model.specifiedScales[channel];
 
   switch (property) {
     case 'format':
@@ -134,12 +133,13 @@ function getProperty(
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+    case 'labelOverlap':
+      return getFirstDefined(
+        specifiedLegend.labelOverlap,
+        properties.labelOverlap(model.getScaleComponent(channel).get('type'))
+      );
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
-    case 'labelOverlap':
-      if (contains(['quantile', 'threshold'], scale.type)) {
-        return 'greedy';
-      }
   }
 
   // Otherwise, return specified property.

@@ -133,6 +133,16 @@ describe('compile/scale', () => {
     });
   });
 
+  describe('interpolate', () => {
+    it('should return hcl for continuous color scale', () => {
+      assert.equal(rules.interpolate('color', 'linear'), 'hcl');
+    });
+
+    it('should return undefined for discrete color scale', () => {
+      assert.isUndefined(rules.interpolate('color', 'sequential'));
+    });
+  });
+
   describe('zero', () => {
     it('should return true when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
       assert(rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated', {type: 'point'}, 'linear'));
