@@ -120,7 +120,6 @@ describe('Selection time unit', () => {
 
     assert.notEqual(tuIdx, -1);
     assert.notEqual(selIdx, -1);
-    // assert.isAbove(selIdx, tuIdx);
   });
 
   it('removes duplicate time unit formulae', () => {

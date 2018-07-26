@@ -1,13 +1,9 @@
 import {hasIntersection, keys} from '../../util';
 import {DataFlowNode, isTransformNode, OutputNode, TransformNode} from './dataflow';
 import {FacetNode} from './facet';
-
 import {ParseNode} from './formatparse';
-
 import {SourceNode} from './source';
-
 import {TimeUnitNode} from './timeunit';
-// import {WindowTransformNode} from './window';
 
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
@@ -71,7 +67,7 @@ function mergeBucket(parent: DataFlowNode, nodes: DataFlowNode[]) {
 }
 
 /**
- * Merge Identical Transforms at forks.
+ * Merge Identical Transforms at forks by comparing hashes.
  */
 export function mergeIdenticalTransforms(node: DataFlowNode) {
   const transforms = node.children.filter((x): x is TransformNode => isTransformNode(x));
