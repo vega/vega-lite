@@ -9,7 +9,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
 import {isFacetFieldDef} from './facet';
-import {TitleMixins} from './guide';
+import {Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -498,7 +498,8 @@ export function resetTitleFormatter() {
 }
 
 export function title(fieldDef: FieldDef<string>, config: Config, {allowDisabling}: {allowDisabling: boolean}) {
-  const guideTitle = getGuideTitle(fieldDef);
+  const guide = getGuide(fieldDef) || {};
+  const guideTitle = guide.title;
   if (allowDisabling) {
     return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
   } else {
@@ -506,13 +507,13 @@ export function title(fieldDef: FieldDef<string>, config: Config, {allowDisablin
   }
 }
 
-function getGuideTitle(fieldDef: FieldDef<string>) {
+export function getGuide(fieldDef: FieldDef<string>): Guide {
   if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
-    return fieldDef.axis.title;
+    return fieldDef.axis;
   } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {
-    return fieldDef.legend.title;
+    return fieldDef.legend;
   } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
-    return fieldDef.header.title;
+    return fieldDef.header;
   }
   return undefined;
 }
@@ -524,14 +525,10 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
 export function format(fieldDef: FieldDef<string>) {
   if (isTextFieldDef(fieldDef) && fieldDef.format) {
     return fieldDef.format;
-  } else if (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.format) {
-    return fieldDef.axis.format;
-  } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.format) {
-    return fieldDef.legend.format;
-  } else if (isFacetFieldDef(fieldDef) && fieldDef.header && fieldDef.header.format) {
-    return fieldDef.header.format;
+  } else {
+    const guide = getGuide(fieldDef) || {};
+    return guide.format;
   }
-  return undefined;
 }
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
