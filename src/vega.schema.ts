@@ -1,19 +1,9 @@
-import {
-  AggregateOp,
-  Align,
-  Compare,
-  Field as VgField,
-  FontStyle,
-  FontWeight,
-  SignalRef,
-  SortField,
-  TextBaseline,
-  UnionSortField
-} from 'vega';
+import {Align, Field as VgField, FontStyle, FontWeight, SignalRef, SortField, TextBaseline, UnionSortField} from 'vega';
 
 // Transform Imports
 import {
   AggregateTransform,
+  // BinTransform,
   CollectTransform,
   ExtentTransform,
   FilterTransform,
@@ -26,9 +16,9 @@ import {
   IdentifierTransform,
   ImputeTransform,
   LookupTransform,
-  SampleTransform
+  SampleTransform,
   // StackTransform,
-  // WindowTransform
+  WindowTransform
 } from 'vega';
 
 // Exporting Transforms with Vg-prefix
@@ -47,9 +37,9 @@ export {
   IdentifierTransform as VgIdentifierTransform,
   ImputeTransform as VgImputeTransform,
   LookupTransform as VgLookupTransform,
-  SampleTransform as VgSampleTransform
+  SampleTransform as VgSampleTransform,
   // StackTransform as VgStackTransform,
-  // WindowTransform as VgWindowTransform
+  WindowTransform as VgWindowTransform
 };
 
 export {
@@ -63,7 +53,6 @@ import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
 import {StackOffset} from './stack';
-import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
 export type Color = string;
@@ -417,7 +406,7 @@ export type VgTransform =
   | IdentifierTransform
   | VgGeoPointTransform // TODO
   | VgGeoJSONTransform // TODO
-  | VgWindowTransform // TODO
+  | WindowTransform // TODO
   | FoldTransform
   | SampleTransform;
 
@@ -855,15 +844,3 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
 export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
 export type VgComparatorOrder = 'ascending' | 'descending';
-
-export interface VgWindowTransform {
-  type: 'window';
-  params?: number[];
-  as?: string[];
-  ops?: (AggregateOp | WindowOnlyOp)[];
-  fields?: string[];
-  frame?: number[];
-  ignorePeers?: boolean;
-  groupby?: string[];
-  sort?: Compare;
-}
