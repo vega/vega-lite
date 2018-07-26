@@ -51,7 +51,7 @@
             {"scale": "color", "field": "gender"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"v1\": format(datum[\"v1\"], \"\"), \"v2\": format(datum[\"v2\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"v1\"], \"\"), \"v2\": format(datum[\"v2\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},

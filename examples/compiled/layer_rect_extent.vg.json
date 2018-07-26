@@ -79,7 +79,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles per Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}

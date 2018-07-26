@@ -71,7 +71,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "series"},
               "tooltip": {
-                "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Sum of count\": format(datum[\"sum_count\"], \"\"), \"series\": ''+datum[\"series\"]}"
+                "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%Y'), \"Sum of count\": format(datum[\"sum_count\"], \"\"), \"series\": ''+datum[\"series\"]}"
               },
               "x": {"scale": "x", "field": "yearmonth_date"},
               "y": {"scale": "y", "field": "sum_count_end"},

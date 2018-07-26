@@ -51,7 +51,9 @@
             },
             {"scale": "color", "field": "b"}
           ],
-          "tooltip": {"signal": "{\"b\": ''+datum[\"b\"]}"},
+          "tooltip": {
+            "signal": "{\"b\": ''+datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},
           "size": {"scale": "size", "field": "b"},

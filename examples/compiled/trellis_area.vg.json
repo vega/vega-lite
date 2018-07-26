@@ -149,7 +149,7 @@
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
                   "tooltip": {
-                    "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+                    "signal": "{\"Time\": timeFormat(datum[\"date\"], '%Y'), \"Price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
                   },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},

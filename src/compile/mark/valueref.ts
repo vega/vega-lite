@@ -12,6 +12,8 @@ import {
   FieldDef,
   FieldRefOption,
   isFieldDef,
+  isMarkPropFieldDef,
+  isPositionFieldDef,
   isValueDef,
   TextFieldDef,
   title,
@@ -206,7 +208,14 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
   const keyValues: string[] = [];
   const usedKey = {};
   for (const fieldDef of channelDefs) {
-    const key = getFirstDefined(fieldDef.title, title(fieldDef, config));
+    let key;
+    if (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.title) {
+      key = fieldDef.axis.title;
+    } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.title) {
+      key = fieldDef.legend.title;
+    } else {
+      key = getFirstDefined(fieldDef.title, title(fieldDef, config));
+    }
     const value = text(fieldDef, config).signal;
     if (!usedKey[key]) {
       keyValues.push(`"${key}": ${value}`);
@@ -216,13 +225,22 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-export function text(textDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {
+export function text(channelDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {
   // text
-  if (textDef) {
-    if (isFieldDef(textDef)) {
-      return formatSignalRef(textDef, textDef.format, 'datum', config);
-    } else if (isValueDef(textDef)) {
-      return {value: textDef.value};
+  if (channelDef) {
+    if (isValueDef(channelDef)) {
+      return {value: channelDef.value};
+    }
+    let format;
+    if (isFieldDef(channelDef) && channelDef.format) {
+      format = channelDef.format;
+    } else if (isPositionFieldDef(channelDef) && channelDef.axis && channelDef.axis.format) {
+      format = channelDef.axis.format;
+    } else if (isMarkPropFieldDef(channelDef) && channelDef.legend && channelDef.legend.format) {
+      format = channelDef.legend.format;
+    }
+    if (isFieldDef(channelDef)) {
+      return formatSignalRef(channelDef, format, 'datum', config);
     }
   }
   return undefined;

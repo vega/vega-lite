@@ -58,7 +58,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Release_Date\": timeFormat(datum[\"Release_Date\"], ''), \"RatingDelta\": format(datum[\"RatingDelta\"], \"\")}"
+            "signal": "{\"Release_Date\": timeFormat(datum[\"Release_Date\"], ''), \"Rating Delta\": format(datum[\"RatingDelta\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Release_Date"},
           "y": {"scale": "y", "field": "RatingDelta"}

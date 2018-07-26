@@ -154,7 +154,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"ThresholdValue\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"
+            "signal": "{\"PM2.5 Value\": format(datum[\"ThresholdValue\"], \"\"), \"Threshold\": ''+datum[\"Threshold\"]}"
           },
           "x": {"field": {"group": "width"}},
           "y": {"scale": "y", "field": "ThresholdValue"},

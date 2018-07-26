@@ -59,7 +59,7 @@
           ],
           "opacity": {"scale": "opacity", "field": "people"},
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"people\": format(datum[\"people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"people\": format(datum[\"people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": true},

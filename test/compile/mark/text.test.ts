@@ -58,7 +58,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should use number template', () => {
-      assert.deepEqual(props.text, {signal: `format(datum["foo"], "d")`});
+      expect(props.text).toEqual({signal: `format(datum["foo"], "d")`});
     });
   });
 
@@ -73,7 +73,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should output correct bin range', () => {
-      assert.deepEqual(props.text, {
+      expect(props.text).toEqual({
         signal: `datum["bin_maxbins_10_foo"] === null || isNaN(datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
       });
     });
