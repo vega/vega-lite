@@ -78,7 +78,9 @@
                 },
                 {"scale": "concat_0_color", "field": "b"}
               ],
-              "tooltip": {"signal": "{\"b\": ''+datum[\"b\"]}"},
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
+              },
               "x": {"signal": "concat_0_width", "mult": 0.5},
               "y": {"scale": "concat_0_y", "field": "b"},
               "size": {"scale": "concat_0_size", "field": "b"},
@@ -139,7 +141,9 @@
                 },
                 {"scale": "concat_1_color", "field": "b"}
               ],
-              "tooltip": {"signal": "{\"b\": ''+datum[\"b\"]}"},
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Quantile\": format(datum[\"b\"], \"d\")}"
+              },
               "x": {"signal": "concat_1_width", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "b"},
               "size": {"scale": "concat_1_size", "field": "b"},
@@ -202,7 +206,9 @@
                 },
                 {"scale": "concat_2_color", "field": "b"}
               ],
-              "tooltip": {"signal": "{\"b\": ''+datum[\"b\"]}"},
+              "tooltip": {
+                "signal": "{\"b\": ''+datum[\"b\"], \"Threshold\": format(datum[\"b\"], \"\")}"
+              },
               "x": {"signal": "concat_2_width", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},
               "size": {"scale": "concat_2_size", "field": "b"},
