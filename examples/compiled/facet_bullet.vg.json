@@ -182,7 +182,7 @@
                 {"value": "#eee"}
               ],
               "tooltip": {
-                "signal": "{\"null\": format(datum[\"ranges.2\"], \"\")}"
+                "signal": "{\"ranges[2]\": format(datum[\"ranges.2\"], \"\")}"
               },
               "x": {"scale": "child_x", "field": "ranges\\.2"},
               "x2": {"scale": "child_x", "value": 0},
