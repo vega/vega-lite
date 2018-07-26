@@ -8,7 +8,8 @@ import {Channel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {TitleMixins} from './guide';
+import {isFacetFieldDef} from './facet';
+import {Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -27,7 +28,7 @@ import {
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {contains, flatAccessWithDatum, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
 
 /**
  * Definition object for a constant value of an encoding channel.
@@ -326,8 +327,8 @@ export function isFieldDef<F>(
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string> {
-  return isFieldDef(fieldDef) && isString(fieldDef.field);
+export function isStringFieldDef(channelDef: ChannelDef<string | RepeatRef>): channelDef is FieldDef<string> {
+  return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
 export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef {
@@ -344,6 +345,10 @@ export function isPositionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is 
 
 export function isMarkPropFieldDef<F>(channelDef: ChannelDef<F>): channelDef is MarkPropFieldDef<F> {
   return !!channelDef && !!channelDef['legend'];
+}
+
+export function isTextFieldDef<F>(channelDef: ChannelDef<F>): channelDef is TextFieldDef<F> {
+  return !!channelDef && !!channelDef['format'];
 }
 
 export interface FieldRefOption {
@@ -492,8 +497,38 @@ export function resetTitleFormatter() {
   setTitleFormatter(defaultTitleFormatter);
 }
 
-export function title(fieldDef: FieldDefBase<string>, config: Config) {
+export function title(fieldDef: FieldDef<string>, config: Config, {allowDisabling}: {allowDisabling: boolean}) {
+  const guide = getGuide(fieldDef) || {};
+  const guideTitle = guide.title;
+  if (allowDisabling) {
+    return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
+  } else {
+    return guideTitle || fieldDef.title || defaultTitle(fieldDef, config);
+  }
+}
+
+export function getGuide(fieldDef: FieldDef<string>): Guide {
+  if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
+    return fieldDef.axis;
+  } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {
+    return fieldDef.legend;
+  } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
+    return fieldDef.header;
+  }
+  return undefined;
+}
+
+export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
+}
+
+export function format(fieldDef: FieldDef<string>) {
+  if (isTextFieldDef(fieldDef) && fieldDef.format) {
+    return fieldDef.format;
+  } else {
+    const guide = getGuide(fieldDef) || {};
+    return guide.format;
+  }
 }
 
 export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {

@@ -43,7 +43,7 @@
             {"scale": "color", "field": "sum_price"}
           ],
           "tooltip": {
-            "signal": "{\"Time\": timeFormat(datum[\"yearmonthdate_date\"], '%Y'), \"\": ''+datum[\"symbol\"], \"Price\": format(datum[\"sum_price\"], \"\")}"
+            "signal": "{\"Time\": timeFormat(datum[\"yearmonthdate_date\"], '%Y'), \"symbol\": ''+datum[\"symbol\"], \"Price\": format(datum[\"sum_price\"], \"\")}"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "width": {"scale": "x", "band": true},
