@@ -1,11 +1,11 @@
-import {Anchor, TitleOrient, VgMarkConfig, VgTitleConfig} from './vega.schema';
+import {Align, BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame} from 'vega';
+import {Color, VgMarkConfig} from './vega.schema';
 
-export interface TitleBase {
-  /**
-   * The orientation of the title relative to the chart. One of `"top"` (the default), `"bottom"`, `"left"`, or `"right"`.
-   */
-  orient?: TitleOrient;
+type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, Align, TextBaseline, TitleFrame, TitleAnchor>;
 
+export type TitleConfig = BaseTitleNoSignals;
+
+export interface TitleBase extends BaseTitleNoSignals {
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
    *
@@ -14,12 +14,7 @@ export interface TitleBase {
    *
    * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `"start"`.
    */
-  anchor?: Anchor;
-
-  /**
-   * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
-   */
-  offset?: number;
+  anchor?: TitleAnchor;
 
   /**
    * A [mark style property](https://vega.github.io/vega-lite/docs/config.html#style) to apply to the title text mark.
@@ -28,7 +23,22 @@ export interface TitleBase {
    */
   style?: string | string[];
 
-  // TODO: name, encode, interactive, zindex
+  /**
+   * 	The integer z-index indicating the layering of the title group relative to other axis, mark and legend groups.
+   *
+   * __Default value:__ `0`.
+   *
+   * @TJS-type integer
+   * @minimum 0
+   */
+  zindex?: number;
+
+  /**
+   * Mark definitions for custom axis encoding.
+   *
+   * @hide
+   */
+  encoding?: TextEncodeEntry;
 }
 
 export interface TitleParams extends TitleBase {
@@ -38,13 +48,18 @@ export interface TitleParams extends TitleBase {
   text: string;
 }
 
-export function extractTitleConfig(titleConfig: VgTitleConfig): {
-  mark: VgMarkConfig,
-  nonMark: TitleBase
+export function extractTitleConfig(
+  titleConfig: TitleConfig
+): {
+  mark: VgMarkConfig;
+  nonMark: BaseTitleNoSignals;
 } {
   const {
     // These are non-mark title config that need to be hardcoded
-    anchor, offset, orient,
+    anchor,
+    frame,
+    offset,
+    orient,
     // color needs to be redirect to fill
     color,
     // The rest are mark config.
@@ -53,13 +68,13 @@ export function extractTitleConfig(titleConfig: VgTitleConfig): {
 
   const mark: VgMarkConfig = {
     ...titleMarkConfig,
-    ...color ? {fill: color} : {}
+    ...(color ? {fill: color} : {})
   };
 
-  const nonMark: TitleBase = {
-    ...anchor ? {anchor} : {},
-    ...offset ? {offset} : {},
-    ...orient ? {orient} : {}
+  const nonMark: BaseTitleNoSignals = {
+    ...(anchor ? {anchor} : {}),
+    ...(offset ? {offset} : {}),
+    ...(orient ? {orient} : {})
   };
 
   return {mark, nonMark};

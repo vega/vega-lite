@@ -6,24 +6,24 @@ import {VgGeoPointTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
 describe('compile/data/geopoint', () => {
-  describe('geojson', function () {
+  describe('geojson', () => {
     it('should make transform and assemble correctly', () => {
       const model = parseUnitModel({
-        'data': {
-          'url': 'data/zipcodes.csv',
-          'format': {
-            'type': 'csv'
+        data: {
+          url: 'data/zipcodes.csv',
+          format: {
+            type: 'csv'
           }
         },
-        'mark': 'circle',
-        'encoding': {
-          'longitude': {
-            'field': 'longitude',
-            'type': 'quantitative'
+        mark: 'circle',
+        encoding: {
+          longitude: {
+            field: 'longitude',
+            type: 'quantitative'
           },
-          'latitude': {
-            'field': 'latitude',
-            'type': 'quantitative'
+          latitude: {
+            field: 'latitude',
+            type: 'quantitative'
           }
         }
       });
@@ -37,10 +37,10 @@ describe('compile/data/geopoint', () => {
       while (node != null) {
         assert.instanceOf(node, GeoPointNode);
 
-        const transform: VgGeoPointTransform = (<GeoPointNode>node).assemble();
+        const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
         assert.equal(transform.type, 'geopoint');
-        assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
-        assert.isTrue(every([model.getName('x'), model.getName('y')], (a) => contains(transform.as, a)));
+        assert.isTrue(every(['longitude', 'latitude'], field => contains(transform.fields, field)));
+        assert.isTrue(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a)));
         assert.isDefined(transform.projection);
         assert.isAtMost(node.children.length, 1);
         node = node.children[0];

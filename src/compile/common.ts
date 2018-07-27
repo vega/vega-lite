@@ -1,23 +1,34 @@
 import {isArray} from 'vega-util';
+import {isBinning} from '../bin';
 import {Channel, isScaleChannel} from '../channel';
-import {Config, ViewConfig} from '../config';
-import {FieldDef, FieldDefBase, FieldRefOption, isScaleFieldDef, isTimeFieldDef, OrderFieldDef, ValueDef, vgField} from '../fielddef';
+import {Config, StyleConfigIndex, ViewConfig} from '../config';
+import {
+  FieldDef,
+  FieldDefBase,
+  FieldRefOption,
+  isScaleFieldDef,
+  isTimeFieldDef,
+  OrderFieldDef,
+  ValueDef,
+  vgField
+} from '../fielddef';
 import {GuideEncodingEntry} from '../guide';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, keys, stringify} from '../util';
+import {contains, getFirstDefined, keys, stringify} from '../util';
 import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
-
-export function applyConfig(e: VgEncodeEntry,
-    config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
-    propsList: string[]) {
+export function applyConfig(
+  e: VgEncodeEntry,
+  config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
+  propsList: string[]
+) {
   for (const property of propsList) {
     const value = config[property];
     if (value !== undefined) {
@@ -45,20 +56,27 @@ export function getStyles(mark: MarkDef): string[] {
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P] {
-  // By default, read from mark config first!
-  let value = config.mark[prop];
+export function getMarkConfig<P extends keyof MarkConfig>(
+  prop: P,
+  mark: MarkDef,
+  config: Config,
+  {skipGeneralMarkConfig = false}: {skipGeneralMarkConfig?: boolean} = {}
+): MarkConfig[P] {
+  return getFirstDefined(
+    // style config has highest precedence
+    getStyleConfig(prop, mark, config.style),
+    // then mark-specific config
+    config[mark.type][prop],
+    // then general mark config (if not skipped)
+    skipGeneralMarkConfig ? undefined : config.mark[prop]
+  );
+}
 
-  // Then read mark specific config, which has higher precedence
-  const markSpecificConfig = config[mark.type];
-  if (markSpecificConfig[prop] !== undefined) {
-    value = markSpecificConfig[prop];
-  }
-
-  // Then read style config, which has even higher precedence.
+export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex) {
   const styles = getStyles(mark);
+  let value;
   for (const style of styles) {
-    const styleConfig = config.style[style];
+    const styleConfig = styleConfigIndex[style];
 
     // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
     // However here we also check if it is defined, so it is okay to cast here
@@ -67,13 +85,17 @@ export function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef
       value = styleConfig[p];
     }
   }
-
   return value;
 }
 
-export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config) {
+export function formatSignalRef(
+  fieldDef: FieldDef<string>,
+  specifiedFormat: string,
+  expr: 'datum' | 'parent',
+  config: Config
+) {
   const format = numberFormat(fieldDef, specifiedFormat, config);
-  if (fieldDef.bin) {
+  if (isBinning(fieldDef.bin)) {
     const startField = vgField(fieldDef, {expr});
     const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
     return {
@@ -86,20 +108,21 @@ export function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: str
   } else if (isTimeFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
-      signal: timeFormatExpression(vgField(fieldDef, {expr}), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
+      signal: timeFormatExpression(
+        vgField(fieldDef, {expr}),
+        fieldDef.timeUnit,
+        specifiedFormat,
+        config.text.shortTimeLabels,
+        config.timeFormat,
+        isUTCScale,
+        true
+      )
     };
   } else {
     return {
       signal: `''+${vgField(fieldDef, {expr})}`
     };
   }
-}
-
-export function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {signal: string}) {
-  if (specifiedValue !== undefined) {
-    return specifiedValue;
-  }
-  return defaultValue;
 }
 
 /**
@@ -130,19 +153,29 @@ export function numberFormatExpr(field: string, specifiedFormat: string, config:
   return formatExpr(field, specifiedFormat || config.numberFormat);
 }
 
-
 export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(startField, format, config)} + " - " + ${numberFormatExpr(endField, format, config)}`;
+  return `${startField} === null || isNaN(${startField}) ? "null" : ${numberFormatExpr(
+    startField,
+    format,
+    config
+  )} + " - " + ${numberFormatExpr(endField, format, config)}`;
 }
-
 
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean, alwaysReturn: boolean = false): string {
+export function timeFormatExpression(
+  field: string,
+  timeUnit: TimeUnit,
+  format: string,
+  shortTimeLabels: boolean,
+  rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
+  isUTCScale: boolean,
+  alwaysReturn: boolean = false
+): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
+    format = format || rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
 
     if (format || alwaysReturn) {
       return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
@@ -157,12 +190,18 @@ export function timeFormatExpression(field: string, timeUnit: TimeUnit, format: 
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort {
-  return (isArray(orderDef) ? orderDef : [orderDef]).reduce((s, orderChannelDef) => {
-    s.field.push(vgField(orderChannelDef, fieldRefOption));
-    s.order.push(orderChannelDef.sort || 'ascending');
-    return s;
-  }, {field:[], order: []});
+export function sortParams(
+  orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
+  fieldRefOption?: FieldRefOption
+): VgSort {
+  return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
+    (s, orderChannelDef) => {
+      s.field.push(vgField(orderChannelDef, fieldRefOption));
+      s.order.push(orderChannelDef.sort || 'ascending');
+      return s;
+    },
+    {field: [], order: []}
+  );
 }
 
 export type AxisTitleComponent = AxisComponentProps['title'];
@@ -170,7 +209,7 @@ export type AxisTitleComponent = AxisComponentProps['title'];
 export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
   const merged = [...f1];
 
-  f2.forEach((fdToMerge) => {
+  f2.forEach(fdToMerge => {
     for (const fieldDef1 of merged) {
       // If already exists, no need to append to merged array
       if (stringify(fieldDef1) === stringify(fdToMerge)) {
@@ -183,14 +222,12 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
 }
 
 export function mergeTitle(title1: string, title2: string) {
-  return title1 === title2 ?
-    title1 : // if title is the same just use one of them
-    title1 + ', ' + title2; // join title with comma if different
+  return title1 === title2
+    ? title1 // if title is the same just use one of them
+    : title1 + ', ' + title2; // join title with comma if different
 }
 
-export function mergeTitleComponent(
-  v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>
-) {
+export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
   if (isArray(v1.value) && isArray(v2.value)) {
     return {
       explicit: v1.explicit,
@@ -210,7 +247,7 @@ export function mergeTitleComponent(
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
 export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
-  if (!fieldDef.bin) {
+  if (!isBinning(fieldDef.bin)) {
     console.warn('Only use this method with binned field defs');
     return false;
   }

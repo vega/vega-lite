@@ -6,17 +6,15 @@ import {UnitModel} from '../../unit';
 import {channelSignalName} from '../selection';
 import {TransformCompiler} from './transforms';
 
-
-const scaleBindings:TransformCompiler = {
-  has: function(selCmpt) {
-    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
-      selCmpt.bind && selCmpt.bind === 'scales';
+const scaleBindings: TransformCompiler = {
+  has: selCmpt => {
+    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
-  parse: function(model, selDef, selCmpt) {
-    const bound: Channel[] = selCmpt.scales = [];
+  parse: (model, selDef, selCmpt) => {
+    const bound: Channel[] = (selCmpt.scales = []);
 
-    selCmpt.project.forEach(function(p) {
+    selCmpt.project.forEach(p => {
       const channel = p.channel;
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
@@ -37,22 +35,24 @@ const scaleBindings:TransformCompiler = {
     });
   },
 
-  topLevelSignals: function(model, selCmpt, signals) {
+  topLevelSignals: (model, selCmpt, signals) => {
     // Top-level signals are only needed when coordinating composed views.
     if (!model.parent) {
       return signals;
     }
 
-    const channels = selCmpt.scales.filter((channel) => {
-      return !(signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length);
+    const channels = selCmpt.scales.filter(channel => {
+      return !signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length;
     });
 
-    return signals.concat(channels.map((channel) => {
-      return {name: channelSignalName(selCmpt, channel, 'data')};
-    }));
+    return signals.concat(
+      channels.map(channel => {
+        return {name: channelSignalName(selCmpt, channel, 'data')};
+      })
+    );
   },
 
-  signals: function(model, selCmpt, signals) {
+  signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals when within composed views.
     if (model.parent) {
       selCmpt.scales.forEach(channel => {

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"key": "alpha", "foo": [1, 2], "bar": ["A", "B"]},
+        {"key": "beta", "foo": [3, 4, 5], "bar": ["C", "D"]}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "flatten", "fields": ["foo", "bar"], "as": ["foo", "bar"]}
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"foo\"] === null || isNaN(datum[\"foo\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "key"}
+          ],
+          "tooltip": {
+            "signal": "{\"foo\": format(datum[\"foo\"], \"\"), \"bar\": ''+datum[\"bar\"], \"key\": ''+datum[\"key\"]}"
+          },
+          "x": {"scale": "x", "field": "foo"},
+          "y": {"scale": "y", "field": "bar"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "foo"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "bar", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "key", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "foo",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {"scale": "y", "orient": "left", "grid": false, "title": "bar", "zindex": 1}
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "title": "key",
+      "encode": {
+        "symbols": {
+          "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
+}

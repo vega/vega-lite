@@ -1,234 +1,141 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/population.json",
+      "format": {"type": "json", "parse": {"people": "number"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.year == 2000"},
         {
-            "name": "source_0",
-            "url": "data/population.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "people": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum.year == 2000"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.sex == 2 ? 'Female' : 'Male'",
-                    "as": "gender"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "age",
-                        "gender"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "people"
-                    ],
-                    "as": [
-                        "sum_people"
-                    ]
-                },
-                {
-                    "type": "stack",
-                    "groupby": [
-                        "age"
-                    ],
-                    "field": "sum_people",
-                    "sort": {
-                        "field": [
-                            "gender"
-                        ],
-                        "order": [
-                            "descending"
-                        ]
-                    },
-                    "as": [
-                        "sum_people_start",
-                        "sum_people_end"
-                    ],
-                    "offset": "zero"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 17
+          "type": "formula",
+          "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+          "as": "gender"
         },
         {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "scale": "color",
-                        "field": "gender"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "age"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum_people_end"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "sum_people_start"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "age",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
+          "type": "aggregate",
+          "groupby": ["age", "gender"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "sum_people_start",
-                    "sum_people_end"
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "gender",
-                "sort": true
-            },
-            "range": [
-                "#EA98D2",
-                "#659CCA"
-            ]
+          "type": "stack",
+          "groupby": ["age"],
+          "field": "sum_people",
+          "sort": {"field": ["gender"], "order": ["descending"]},
+          "as": ["sum_people_start", "sum_people_end"],
+          "offset": "zero"
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "age",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "population",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "gender",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "shape": {
-                            "value": "square"
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 17},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "gender"}
+          ],
+          "tooltip": {
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+          },
+          "x": {"scale": "x", "field": "age"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "sum_people_end"},
+          "y2": {"scale": "y", "field": "sum_people_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "age", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["sum_people_start", "sum_people_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "gender", "sort": true},
+      "range": ["#EA98D2", "#659CCA"]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "age",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "population",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "title": "gender",
+      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

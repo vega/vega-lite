@@ -1,23 +1,23 @@
 import {assert} from 'chai';
 import {assembleProjectionForModel} from '../../../src/compile/projection/assemble';
-import {isVgSignalRef} from '../../../src/vega.schema';
+import {isSignalRef} from '../../../src/vega.schema';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/projection/assemble', () => {
   describe('assembleProjectionForModel', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      'mark': 'geoshape',
-      'projection': {
-        'type': 'albersUsa'
+      mark: 'geoshape',
+      projection: {
+        type: 'albersUsa'
       },
-      'data': {
-        'url': 'data/us-10m.json',
-        'format': {
-          'type': 'topojson',
-          'feature': 'states'
+      data: {
+        url: 'data/us-10m.json',
+        format: {
+          type: 'topojson',
+          feature: 'states'
         }
       },
-      'encoding': {}
+      encoding: {}
     });
     model.parse();
 
@@ -30,9 +30,9 @@ describe('compile/projection/assemble', () => {
       assert.isDefined(projection.name);
       assert.isString(projection.name);
       assert.isDefined(projection.size);
-      assert.isTrue(isVgSignalRef(projection.size));
+      assert.isTrue(isSignalRef(projection.size));
       assert.isDefined(projection.fit);
-      assert.isTrue(isVgSignalRef(projection.fit));
+      assert.isTrue(isSignalRef(projection.fit));
     });
   });
 });

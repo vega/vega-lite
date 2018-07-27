@@ -1,354 +1,235 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      }
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Horsepower\"])",
-                    "as": "Horsepower"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-                    "as": "Miles_per_Gallon"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-                    "as": "Miles_per_Gallon"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [],
-                    "ops": [
-                        "min"
-                    ],
-                    "fields": [
-                        "Miles_per_Gallon"
-                    ],
-                    "as": [
-                        "min_Miles_per_Gallon"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-                    "as": "Miles_per_Gallon"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [],
-                    "ops": [
-                        "max"
-                    ],
-                    "fields": [
-                        "Miles_per_Gallon"
-                    ],
-                    "as": [
-                        "max_Miles_per_Gallon"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-                    "as": "Miles_per_Gallon"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [],
-                    "ops": [
-                        "max",
-                        "min"
-                    ],
-                    "fields": [
-                        "Miles_per_Gallon",
-                        "Miles_per_Gallon"
-                    ],
-                    "as": [
-                        "max_Miles_per_Gallon",
-                        "min_Miles_per_Gallon"
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["min"],
+          "fields": ["Miles_per_Gallon"],
+          "as": ["min_Miles_per_Gallon"]
         }
-    ],
-    "marks": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "layer_0_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "value": 0
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "min_Miles_per_Gallon"
-                    },
-                    "x2": {
-                        "field": {
-                            "group": "width"
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_2_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "value": 0
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "max_Miles_per_Gallon"
-                    },
-                    "x2": {
-                        "field": {
-                            "group": "width"
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_3_marks",
-            "type": "rect",
-            "style": [
-                "rect"
-            ],
-            "from": {
-                "data": "data_3"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "opacity": {
-                        "value": 0.2
-                    },
-                    "x": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "x2": {
-                        "value": 0
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "max_Miles_per_Gallon"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "min_Miles_per_Gallon"
-                    }
-                }
-            }
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["max"],
+          "fields": ["Miles_per_Gallon"],
+          "as": ["max_Miles_per_Gallon"]
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "Miles_per_Gallon"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "min_Miles_per_Gallon"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "max_Miles_per_Gallon"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "max_Miles_per_Gallon"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "min_Miles_per_Gallon"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["max", "min"],
+          "fields": ["Miles_per_Gallon", "Miles_per_Gallon"],
+          "as": ["max_Miles_per_Gallon", "min_Miles_per_Gallon"]
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Horsepower",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Miles per Gallon",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles per Gallon\": format(datum[\"Miles_per_Gallon\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"min_Miles_per_Gallon\"] === null || isNaN(datum[\"min_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"
+          },
+          "x": {"value": 0},
+          "y": {"scale": "y", "field": "min_Miles_per_Gallon"},
+          "x2": {"field": {"group": "width"}}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"max_Miles_per_Gallon\"] === null || isNaN(datum[\"max_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\")}"
+          },
+          "x": {"value": 0},
+          "y": {"scale": "y", "field": "max_Miles_per_Gallon"},
+          "x2": {"field": {"group": "width"}}
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"max_Miles_per_Gallon\"] === null || isNaN(datum[\"max_Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "opacity": {"value": 0.2},
+          "tooltip": {
+            "signal": "{\"Max of Miles_per_Gallon\": format(datum[\"max_Miles_per_Gallon\"], \"\"), \"Min of Miles_per_Gallon\": format(datum[\"min_Miles_per_Gallon\"], \"\")}"
+          },
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
+          "y": {"scale": "y", "field": "max_Miles_per_Gallon"},
+          "y2": {"scale": "y", "field": "min_Miles_per_Gallon"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "Miles_per_Gallon"},
+          {"data": "data_0", "field": "min_Miles_per_Gallon"},
+          {"data": "data_1", "field": "max_Miles_per_Gallon"},
+          {"data": "data_2", "field": "max_Miles_per_Gallon"},
+          {"data": "data_2", "field": "min_Miles_per_Gallon"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles per Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
-import {isVgRangeStep, isVgSignalRef, VgRange, VgScale} from '../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 import {assembleDomain} from './domain';
@@ -20,7 +20,8 @@ export function assembleScales(model: Model): VgScale[] {
 }
 
 export function assembleScalesForModel(model: Model): VgScale[] {
-    return keys(model.component.scales).reduce((scales: VgScale[], channel: ScaleChannel) => {
+  return keys(model.component.scales).reduce(
+    (scales: VgScale[], channel: ScaleChannel) => {
       const scaleComponent = model.component.scales[channel];
       if (scaleComponent.merged) {
         // Skipped merged scales
@@ -43,7 +44,6 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
-
       scales.push({
         name,
         type,
@@ -54,7 +54,9 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       });
 
       return scales;
-    }, [] as VgScale[]);
+    },
+    [] as VgScale[]
+  );
 }
 
 export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model: Model, channel: Channel) {
@@ -68,10 +70,10 @@ export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model
     } else if (isArray(scaleRange) && scaleRange.length === 2) {
       const r0 = scaleRange[0];
       const r1 = scaleRange[1];
-      if (r0 === 0 && isVgSignalRef(r1)) {
+      if (r0 === 0 && isSignalRef(r1)) {
         // Replace width signal just in case it is renamed.
         return [0, {signal: model.getSizeName(r1.signal)}];
-      } else if (isVgSignalRef(r0) && r1 === 0) {
+      } else if (isSignalRef(r0) && r1 === 0) {
         // Replace height signal just in case it is renamed.
         return [{signal: model.getSizeName(r0.signal)}, 0];
       }

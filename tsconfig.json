@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "./build/",
     "target": "es5",
-    "module": "ES2015",
+    "module": "es2015",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -16,6 +16,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUnusedLocals": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "strictFunctionTypes": false,
@@ -27,6 +28,7 @@
   "include": [
     "typings/*.d.ts",
     "src/**/*.ts",
-    "test/**/*.ts"
+    "test/**/*.ts",
+    "test-runtime/**/*.ts"
   ]
 }

@@ -1,292 +1,210 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "pts_store"
-        },
-        {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "pts",
-            "update": "data(\"pts_store\").length && {Origin: data(\"pts_store\")[0].values[0]}"
-        },
-        {
-            "name": "pts_tuple",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "click"
-                        }
-                    ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Origin\"], values: [datum[\"Origin\"]]} : null",
-                    "force": true
-                }
-            ]
-        },
-        {
-            "name": "pts_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "pts_tuple"
-                    },
-                    "update": "modify(\"pts_store\", pts_tuple, true)"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": [
-                        {
-                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                            "scale": "color",
-                            "field": "Cylinders"
-                        },
-                        {
-                            "value": "grey"
-                        }
-                    ],
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "size": [
-                        {
-                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                            "value": 200
-                        },
-                        {
-                            "value": 50
-                        }
-                    ],
-                    "shape": [
-                        {
-                            "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
-                            "scale": "shape",
-                            "field": "Origin"
-                        },
-                        {
-                            "value": "circle"
-                        }
-                    ]
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": {
-                "scheme": "yelloworangebrown"
-            }
-        },
-        {
-            "name": "shape",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": [
-                "triangle-left",
-                "triangle-right",
-                "triangle-up"
-            ]
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Horsepower",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Miles_per_Gallon",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "Cylinders",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "shape": {
-                            "value": "circle"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        },
-        {
-            "shape": "shape",
-            "title": "Origin",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "stroke": {
-                            "value": "grey"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "pts_store"},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      }
     }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "pts",
+      "update": "data(\"pts_store\").length && {Origin: data(\"pts_store\")[0].values[0]}"
+    },
+    {
+      "name": "pts_tuple",
+      "value": {},
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "click"}],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Origin\"], values: [datum[\"Origin\"]]} : null",
+          "force": true
+        }
+      ]
+    },
+    {
+      "name": "pts_modify",
+      "on": [
+        {
+          "events": {"signal": "pts_tuple"},
+          "update": "modify(\"pts_store\", pts_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {
+              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "scale": "color",
+              "field": "Cylinders"
+            },
+            {"value": "grey"}
+          ],
+          "tooltip": {
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"]}"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": [
+            {
+              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "value": 200
+            },
+            {"value": 50}
+          ],
+          "shape": [
+            {
+              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "scale": "shape",
+              "field": "Origin"
+            },
+            {"value": "circle"}
+          ]
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "range": {"scheme": "yelloworangebrown"}
+    },
+    {
+      "name": "shape",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": ["triangle-left", "triangle-right", "triangle-up"]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "title": "Cylinders",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "shape": {"value": "circle"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    },
+    {
+      "shape": "shape",
+      "title": "Origin",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "stroke": {"value": "grey"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

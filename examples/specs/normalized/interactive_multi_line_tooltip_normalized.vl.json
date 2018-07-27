@@ -2,12 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
     "url": "data/stocks.csv",
-    "format": {
-      "type": "csv",
-      "parse": {
-        "date": "date"
-      }
-    }
+    "format": {"type": "csv", "parse": {"date": "date"}}
   },
   "width": 800,
   "height": 400,
@@ -17,18 +12,9 @@
         {
           "mark": "line",
           "encoding": {
-            "x": {
-              "field": "date",
-              "type": "temporal"
-            },
-            "y": {
-              "field": "price",
-              "type": "quantitative"
-            },
-            "color": {
-              "field": "symbol",
-              "type": "nominal"
-            }
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "color": {"field": "symbol", "type": "nominal"}
           }
         },
         {
@@ -37,31 +23,17 @@
               "type": "single",
               "nearest": true,
               "on": "mouseover",
-              "encodings": [
-                "x"
-              ],
+              "encodings": ["x"],
               "empty": "none"
             }
           },
           "mark": "point",
           "encoding": {
-            "x": {
-              "field": "date",
-              "type": "temporal"
-            },
-            "y": {
-              "field": "price",
-              "type": "quantitative"
-            },
-            "color": {
-              "field": "symbol",
-              "type": "nominal"
-            },
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "color": {"field": "symbol", "type": "nominal"},
             "opacity": {
-              "condition": {
-                "selection": "tooltip",
-                "value": 1
-              },
+              "condition": {"selection": "tooltip", "value": 1},
               "value": 0
             }
           }
@@ -69,50 +41,19 @@
       ]
     },
     {
-      "transform": [
-        {
-          "filter": {
-            "selection": "tooltip"
-          }
-        }
-      ],
+      "transform": [{"filter": {"selection": "tooltip"}}],
       "layer": [
         {
-          "mark": {
-            "type": "rule",
-            "color": "gray"
-          },
-          "encoding": {
-            "x": {
-              "type": "temporal",
-              "field": "date"
-            }
-          }
+          "mark": {"type": "rule", "color": "gray"},
+          "encoding": {"x": {"type": "temporal", "field": "date"}}
         },
         {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "dx": 5,
-            "dy": -5
-          },
+          "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
           "encoding": {
-            "text": {
-              "type": "quantitative",
-              "field": "price"
-            },
-            "color": {
-              "type": "nominal",
-              "field": "symbol"
-            },
-            "x": {
-              "type": "temporal",
-              "field": "date"
-            },
-            "y": {
-              "type": "quantitative",
-              "field": "price"
-            }
+            "text": {"type": "quantitative", "field": "price"},
+            "color": {"type": "nominal", "field": "symbol"},
+            "x": {"type": "temporal", "field": "date"},
+            "y": {"type": "quantitative", "field": "price"}
           }
         }
       ]

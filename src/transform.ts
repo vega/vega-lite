@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
-
 import {BinParams} from './bin';
 import {Data} from './data';
+import {ImputeParams} from './impute';
 import {LogicalOperand, normalizeLogicalOperand} from './logical';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
@@ -111,10 +111,6 @@ export interface AggregatedFieldDef {
   as: string;
 }
 
-
-/**
- * @hide
- */
 export interface StackTransform {
   /**
    * The field which is stacked.
@@ -140,22 +136,20 @@ export interface StackTransform {
    * If a single string(eg."val") is provided, the end field will be "val_end".
    */
   as: string | string[];
-
 }
 
-
 export type WindowOnlyOp =
-  'row_number' |
-   'rank' |
-   'dense_rank' |
-   'percent_rank' |
-   'cume_dist' |
-   'ntile' |
-   'lag' |
-   'lead' |
-   'first_value' |
-   'last_value' |
-   'nth_value';
+  | 'row_number'
+  | 'rank'
+  | 'dense_rank'
+  | 'percent_rank'
+  | 'cume_dist'
+  | 'ntile'
+  | 'lag'
+  | 'lead'
+  | 'first_value'
+  | 'last_value'
+  | 'nth_value';
 
 export interface WindowFieldDef {
   /**
@@ -212,6 +206,72 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
+export interface ImputeSequence {
+  /**
+   * The starting value of the sequence.
+   * __Default value:__ `0`
+   */
+  start?: number;
+  /**
+   * The ending value(exclusive) of the sequence.
+   */
+  stop: number;
+  /**
+   * The step value between sequence entries.
+   * __Default value:__ `1` or `-1` if `stop < start`
+   */
+  step?: number;
+}
+
+export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
+  return t && t['start'] !== undefined && t['stop'] !== undefined;
+}
+
+export interface ImputeTransform extends ImputeParams {
+  /**
+   * The data field for which the missing values should be imputed.
+   */
+  impute: string;
+
+  /**
+   * A key field that uniquely identifies data objects within a group.
+   * Missing key values (those occurring in the data but not in the current group) will be imputed.
+   */
+  key: string;
+
+  /**
+   * An optional array of fields by which to group the values.
+   * Imputation will then be performed on a per-group basis.
+   */
+  groupby?: string[];
+}
+
+export interface FlattenTransform {
+  /**
+   * An array of one or more data fields containing arrays to flatten.
+   * If multiple fields are specified, their array values should have a parallel structure, ideally with the same length.
+   * If the lengths of parallel arrays do not match,
+   * the longest array will be used with `null` values added for missing entries.
+   */
+  flatten: string[];
+
+  /**
+   * The output field names for extracted array values.
+   *
+   * __Default value:__ The field name of the corresponding array field
+   */
+  as?: string[];
+}
+
+export interface SampleTransform {
+  /**
+   * The maximum number of data objects to include in the sample.
+   *
+   * __Default value:__ `1000`
+   */
+  sample: number;
+}
+
 export interface LookupData {
   /**
    * Secondary data source to lookup in.
@@ -254,22 +314,44 @@ export interface LookupTransform {
   default?: string;
 }
 
+export interface FoldTransform {
+  /**
+   * An array of data fields indicating the properties to fold.
+   */
+  fold: string[];
 
+  /**
+   * The output field names for the key and value properties produced by the fold transform.
+   * __Default value:__ `["key", "value"]`
+   */
+  as?: [string, string];
+}
 
 export function isLookup(t: Transform): t is LookupTransform {
   return t['lookup'] !== undefined;
+}
+
+export function isSample(t: Transform): t is SampleTransform {
+  return t['sample'] !== undefined;
 }
 
 export function isWindow(t: Transform): t is WindowTransform {
   return t['window'] !== undefined;
 }
 
+export function isFlatten(t: Transform): t is FlattenTransform {
+  return t['flatten'] !== undefined;
+}
 export function isCalculate(t: Transform): t is CalculateTransform {
   return t['calculate'] !== undefined;
 }
 
 export function isBin(t: Transform): t is BinTransform {
   return !!t['bin'];
+}
+
+export function isImpute(t: Transform): t is ImputeTransform {
+  return t['impute'] !== undefined;
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
@@ -284,7 +366,23 @@ export function isStack(t: Transform): t is StackTransform {
   return t['stack'] !== undefined;
 }
 
-export type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
+export function isFold(t: Transform): t is FoldTransform {
+  return t['fold'] !== undefined;
+}
+
+export type Transform =
+  | FilterTransform
+  | CalculateTransform
+  | LookupTransform
+  | BinTransform
+  | TimeUnitTransform
+  | ImputeTransform
+  | AggregateTransform
+  | WindowTransform
+  | StackTransform
+  | FlattenTransform
+  | FoldTransform
+  | SampleTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map(t => {

@@ -1,175 +1,110 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "mean_acc": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "Acceleration"
-                    ],
-                    "as": [
-                        "mean_acc"
-                    ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"mean_acc\"] !== null && !isNaN(datum[\"mean_acc\"])"
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["mean"],
+          "fields": ["Acceleration"],
+          "as": ["mean_acc"]
         }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "mean_acc"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_acc"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Cylinders",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "mean_acc",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"mean_acc\"] === null || isNaN(datum[\"mean_acc\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"mean_acc\": format(datum[\"mean_acc\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "Cylinders"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "mean_acc"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mean_acc"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Cylinders",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "mean_acc",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

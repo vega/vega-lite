@@ -16,14 +16,11 @@ For example, the following bar chart is titled "A Simple Bar Chart".
 
 A `title` parameter object can contain the following properties:
 
-{% include table.html props="text,anchor,offset,orient,style" source="TitleParams" %}
+{% include table.html props="text,anchor,angle,baseline,color,font,fontSize,fontWeight,frame,limit,offset,orient,style,zindex" source="TitleParams" %}
 
 For example, we can customize the `anchor` of the title of a bar chart.
 
 <span class="vl-example" data-name="bar_title_start"></span>
-
-{:#config}
-## Title Config
 
 {: .suppress-error}
 ```json
@@ -38,6 +35,7 @@ For example, we can customize the `anchor` of the title of a bar chart.
 }
 ```
 
-To provide themes for all titles, the title config `config: {title: {...}}` can contain the following properties:
+{:#config}
+## Title Config
 
-{% include table.html props="anchor,angle,baseline,color,font,fontSize,fontWeight,limit,offset,orient" source="VgTitleConfig" %}
+To provide themes for all titles, the title configuration (`config: {title: {...}}`) supports all [title parameters](#params).

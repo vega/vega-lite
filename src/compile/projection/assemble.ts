@@ -1,5 +1,6 @@
+import {SignalRef} from 'vega';
 import {contains} from '../../util';
-import {isVgSignalRef, VgProjection, VgSignalRef} from '../../vega.schema';
+import {isSignalRef, VgProjection} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 
 export function assembleProjections(model: Model): VgProjection[] {
@@ -23,14 +24,14 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   }
 
   const projection = component.combine();
-  const {name, ...rest} = projection;  // we need to extract name so that it is always present in the output and pass TS type validation
+  const {name, ...rest} = projection; // we need to extract name so that it is always present in the output and pass TS type validation
 
-  const size: VgSignalRef = {
-    signal: `[${component.size.map((ref) => ref.signal).join(', ')}]`
+  const size: SignalRef = {
+    signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
   };
 
   const fit: string[] = component.data.reduce((sources, data) => {
-    const source: string = isVgSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
+    const source: string = isSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
     if (!contains(sources, source)) {
       // build a unique list of sources
       sources.push(source);
@@ -42,12 +43,14 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
     throw new Error("Projection's fit didn't find any data sources");
   }
 
-  return [{
-    name,
-    size,
-    fit: {
-      signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
-    },
-    ...rest
-  }];
+  return [
+    {
+      name,
+      size,
+      fit: {
+        signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
+      },
+      ...rest
+    }
+  ];
 }

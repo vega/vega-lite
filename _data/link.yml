@@ -5,9 +5,7 @@ CompositeUnitSpec:
   name: SingleViewSpec
   link: "spec.html#single"
 LayerSpec:
-  link: layer.html
-AutosizeType:
-  name: String
+  link: "layer.html"
 AutoSizeParams:
   link: "size.html#autosize"
 
@@ -19,27 +17,23 @@ Header:
 
 # Data
 Data:
-  link: data.html
+  link: "data.html"
 DataFormat:
   link: "data.html#format"
-DataFormatType:
-  name: String
 
+
+# Title
 TitleParams:
   link: "title.html#params"
-Anchor:
-  name: String
-TitleOrient:
-  name: String
 
 # Transform
 Transform:
-  link: transform.html
+  link: "transform.html"
 
 AggregateOp:
   link: "aggregate.html#ops"
 Bin:
-  link: bin.html
+  link: "bin.html"
 BinParams:
   link: "bin.html#bin-parameters"
 "LogicalOperand<Predicate>":
@@ -47,11 +41,15 @@ BinParams:
 AggregateOpDef:
   link: "transform.html#aggregate-op-def"
 TimeUnit:
-  link: timeunit.html
+  link: "timeunit.html"
 LookupData:
   link: "lookup.html#lookup-data"
 Window:
-  link: window.html
+  link: "window.html"
+
+# Transform - Impute
+ImputeSequence:
+  link: impute.html#sequence-def
 
 # Transform - Time Unit
 Month:
@@ -61,27 +59,20 @@ Day:
 
 # Transform - Window
 WindowFieldDef:
-  link: window.html#field-def
+  link: "window.html#field-def"
 SortField:
-  link: window.html#sort-field-def
+  link: "window.html#sort-field-def"
 WindowOnlyOp:
-  link: window.html#ops
+  link: "window.html#ops"
 
 # Mark
 AnyMark:
   name: Mark
   link: mark.html
-Interpolate:
-  name: String
-Orient:
-  name: String
-Mark:
-  name: String
 
 # Config
-
 Config:
-  link: config.html
+  link: "config.html"
 AxisConfig:
   link: "axis.html#config"
 VgAxisConfig:
@@ -117,12 +108,12 @@ ViewConfig:
 # Encoding
 EncodingWithFacet:
   name: Encoding
-  link: encoding.html
+  link: "encoding.html"
 Type:
   link: type.html
 SingleDefChannel:
   name: Encoding
-  link: encoding.html
+  link: "encoding.html"
 
 # Channel Definitions
 MarkPropFieldDefWithCondition:
@@ -170,58 +161,42 @@ ValueDef:
 Aggregate:
   link: "aggregate.html"
 Axis:
-  link: axis.html
+  link: "axis.html"
 Bin:
   link: "bin.html"
 RepeatRef:
   link: "field.html#repeat-ref"
 Legend:
   link: legend.html
-LegendType:
-  name: String
 Scale:
-  link: scale.html
+  link: "scale.html"
 Sort:
-  link: sort.html
-SortOrder:
-  name: String
+  link: "sort.html"
 EncodingSortField:
   link: "sort.html#sort-field"
 StackOffset:
-  name: String
   link: "stack.html"
 
 # Scale / Axis / Legend / Projection
-ScaleType:
-  name: String
 ProjectionType:
-  name: String
   link: "projection.html#projection-types"
 SchemeParams:
   link: "scale.html#scheme-params"
 SelectionDomain:
   link: "selection.html#scale-domains"
-Interpolate:
-  name: String
 InterpolateParams:
   name: Object
-NiceTime:
-  name: String
 VgScheme:
   link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
 
-AxisOrient:
-  name: String
-LegendOrient:
-  name: String
 Resolve:
   name: Resolve
-  link: resolve.html
+  link: "resolve.html"
 
 # Selections
 SelectionDef:
   name: Selection
-  link: selection.html
+  link: "selection.html"
 SelectionOperand:
   name: "String | Object"
 SingleSelectionConfig:
@@ -245,19 +220,15 @@ SelectionResolution:
 # Types
 DateTime:
   link: "types.html#datetime"
+Color:
+  link: "types.html#color"
 
 # Others
-HorizontalAlign:
-  name: String
-VerticalAlign:
-  name: String
-FontStyle:
-  name: String
 FontWeight:
-  name: String
-FontWeightNumber:
-  name: Number
+  name: "String | Number"
 Repeat:
   link: "repeat.html#repeat"
 Padding:
   name: "Number | Object"
+TextBaseline:
+  name: String # we need to cast his as TextBaseline unions "alphabetic" with Baseline

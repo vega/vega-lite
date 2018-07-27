@@ -3,7 +3,17 @@ import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, MarkDef} from '../../mark';
-import {channelScalePropertyIncompatability, Domain, hasContinuousDomain, isContinuousToContinuous, NiceTime, Scale, ScaleConfig, ScaleType, scaleTypeSupportProperty} from '../../scale';
+import {
+  channelScalePropertyIncompatability,
+  Domain,
+  hasContinuousDomain,
+  isContinuousToContinuous,
+  isContinuousToDiscrete,
+  NiceTime,
+  Scale,
+  ScaleConfig,
+  scaleTypeSupportProperty
+} from '../../scale';
 import {Sort} from '../../sort';
 import * as util from '../../util';
 import {contains, keys} from '../../util';
@@ -11,6 +21,8 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
+import {COLOR, FILL, STROKE} from './../../channel';
+import {ScaleType} from './../../scale';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 
@@ -42,7 +54,8 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
       // If there is a specified value, check if it is compatible with scale type and channel
       if (!supportedByScaleType) {
         log.warn(log.message.scalePropertyNotWorkWithScaleType(sType, property, channel));
-      } else if (channelIncompatability) { // channel
+      } else if (channelIncompatability) {
+        // channel
         log.warn(channelIncompatability);
       }
     }
@@ -52,12 +65,15 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
         const value = getDefaultValue(
-          property, channel, fieldDef,
+          property,
+          channel,
+          fieldDef,
           mergedScaleCmpt.get('type'),
           mergedScaleCmpt.get('padding'),
           mergedScaleCmpt.get('paddingInner'),
           specifiedScale.domain,
-          model.markDef, config
+          model.markDef,
+          config
         );
         if (value !== undefined) {
           localScaleCmpt.set(property, value, false);
@@ -69,13 +85,22 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 
 // Note: This method is used in Voyager.
 export function getDefaultValue(
-  property: keyof Scale, channel: Channel, fieldDef: ScaleFieldDef<string>,
-  scaleType: ScaleType, scalePadding: number, scalePaddingInner: number,
-  specifiedDomain: Scale['domain'], markDef: MarkDef, config: Config) {
+  property: keyof Scale,
+  channel: Channel,
+  fieldDef: ScaleFieldDef<string>,
+  scaleType: ScaleType,
+  scalePadding: number,
+  scalePaddingInner: number,
+  specifiedDomain: Scale['domain'],
+  markDef: MarkDef,
+  config: Config
+) {
   const scaleConfig = config.scale;
 
   // If we have default rule-base, determine default value first
   switch (property) {
+    case 'interpolate':
+      return interpolate(channel, scaleType);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -87,7 +112,7 @@ export function getDefaultValue(
     case 'reverse':
       return reverse(scaleType, fieldDef.sort);
     case 'zero':
-      return zero(channel, fieldDef, specifiedDomain, markDef);
+      return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -112,7 +137,8 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
       if (childComponent) {
         const childValueWithExplicit = childComponent.getWithExplicit(property);
         valueWithExplicit = mergeValuesWithExplicit<VgScale, any>(
-          valueWithExplicit, childValueWithExplicit,
+          valueWithExplicit,
+          childValueWithExplicit,
           property,
           'scale',
           tieBreakByComparing<VgScale, any>((v1, v2) => {
@@ -134,14 +160,28 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
+export function interpolate(channel: Channel, scaleType: ScaleType) {
+  if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+    return 'hcl';
+  }
+  return undefined;
+}
+
 export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
   if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
-  return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
+  return util.contains([X, Y], channel) ? true : undefined;
 }
 
-export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: ScaleConfig, fieldDef: FieldDef<string>, markDef: MarkDef, barConfig: BarConfig) {
+export function padding(
+  channel: Channel,
+  scaleType: ScaleType,
+  scaleConfig: ScaleConfig,
+  fieldDef: FieldDef<string>,
+  markDef: MarkDef,
+  barConfig: BarConfig
+) {
   if (util.contains([X, Y], channel)) {
     if (isContinuousToContinuous(scaleType)) {
       if (scaleConfig.continuousPadding !== undefined) {
@@ -150,10 +190,7 @@ export function padding(channel: Channel, scaleType: ScaleType, scaleConfig: Sca
 
       const {type, orient} = markDef;
       if (type === 'bar' && !fieldDef.bin) {
-        if (
-          (orient === 'vertical' && channel === 'x') ||
-          (orient === 'horizontal' && channel === 'y')
-        ) {
+        if ((orient === 'vertical' && channel === 'x') || (orient === 'horizontal' && channel === 'y')) {
           return barConfig.continuousBandSize;
         }
       }
@@ -182,7 +219,13 @@ export function paddingInner(paddingValue: number, channel: Channel, scaleConfig
   return undefined;
 }
 
-export function paddingOuter(paddingValue: number, channel: Channel, scaleType: ScaleType, paddingInnerValue: number, scaleConfig: ScaleConfig) {
+export function paddingOuter(
+  paddingValue: number,
+  channel: Channel,
+  scaleType: ScaleType,
+  paddingInnerValue: number,
+  scaleConfig: ScaleConfig
+) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingOuter.
     return undefined;
@@ -214,8 +257,13 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>) {
   return undefined;
 }
 
-export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScale: Domain, markDef: MarkDef) {
-
+export function zero(
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  specifiedScale: Domain,
+  markDef: MarkDef,
+  scaleType: ScaleType
+) {
   // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
   if (hasCustomDomain) {
@@ -226,8 +274,9 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
 
   // 1) using quantitative field with size
   // While this can be either ratio or interval fields, our assumption is that
-  // ratio are more common.
-  if (channel === 'size' && fieldDef.type === 'quantitative') {
+  // ratio are more common. However, if the scaleType is discretizing scale, we want to return
+  // false so that range doesn't start at zero
+  if (channel === 'size' && fieldDef.type === 'quantitative' && !isContinuousToDiscrete(scaleType)) {
     return true;
   }
 
@@ -236,10 +285,7 @@ export function zero(channel: Channel, fieldDef: FieldDef<string>, specifiedScal
   if (!fieldDef.bin && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
-      if (
-        (orient === 'horizontal' && channel === 'y') ||
-        (orient === 'vertical' && channel === 'x')
-      ) {
+      if ((orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x')) {
         return false;
       }
     }

@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {isBinning} from '../../bin';
 import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
@@ -12,10 +13,10 @@ import {assembleDomain, getFieldFromDomain} from '../scale/domain';
 import {sortArrayIndexField} from './calculate';
 import {DataFlowNode} from './dataflow';
 
-type ChildIndependentFieldsWithStep = {
-  x?: string,
-  y?: string
-};
+interface ChildIndependentFieldsWithStep {
+  x?: string;
+  y?: string;
+}
 
 interface FacetChannelInfo {
   name: string;
@@ -40,7 +41,12 @@ export class FacetNode extends DataFlowNode {
    * @param name The name that this facet source will have.
    * @param data The source data for this facet data.
    */
-  public constructor(parent: DataFlowNode, public readonly model: FacetModel, public readonly name: string, public data: string) {
+  public constructor(
+    parent: DataFlowNode,
+    public readonly model: FacetModel,
+    public readonly name: string,
+    public data: string
+  ) {
     super(parent);
 
     for (const channel of [COLUMN, ROW]) {
@@ -49,15 +55,12 @@ export class FacetNode extends DataFlowNode {
         const {bin, sort} = fieldDef;
         this[channel] = {
           name: model.getName(`${channel}_domain`),
-          fields: [
-            vgField(fieldDef),
-            ...(bin ? [vgField(fieldDef, {binSuffix: 'end'})] : [])
-          ],
-          ...(
-            isSortField(sort) ? {sortField: sort} :
-            isArray(sort) ? {sortIndexField: sortArrayIndexField(fieldDef, channel)} :
-            {}
-          )
+          fields: [vgField(fieldDef), ...(isBinning(bin) ? [vgField(fieldDef, {binSuffix: 'end'})] : [])],
+          ...(isSortField(sort)
+            ? {sortField: sort}
+            : isArray(sort)
+              ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
+              : {})
         };
       }
     }
@@ -65,10 +68,7 @@ export class FacetNode extends DataFlowNode {
   }
 
   get fields() {
-    return [
-      ...(this.column && this.column.fields) || [],
-      ...(this.row && this.row.fields) || []
-    ];
+    return [...((this.column && this.column.fields) || []), ...((this.row && this.row.fields) || [])];
   }
 
   /**
@@ -102,7 +102,11 @@ export class FacetNode extends DataFlowNode {
     return childIndependentFieldsWithStep;
   }
 
-  private assembleRowColumnData(channel: 'row' | 'column', crossedDataName: string, childIndependentFieldsWithStep: ChildIndependentFieldsWithStep): VgData {
+  private assembleRowColumnData(
+    channel: 'row' | 'column',
+    crossedDataName: string,
+    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
+  ): VgData {
     const childChannel = channel === 'row' ? 'y' : 'x';
 
     const fields: string[] = [];
@@ -129,7 +133,7 @@ export class FacetNode extends DataFlowNode {
       const {op, field} = sortField;
       fields.push(field);
       ops.push(op);
-      as.push(vgField(sortField));
+      as.push(vgField(sortField, {forAs: true}));
     } else if (sortIndexField) {
       fields.push(sortIndexField);
       ops.push('max');
@@ -140,13 +144,19 @@ export class FacetNode extends DataFlowNode {
       name: this[channel].name,
       // Use data from the crossed one if it exist
       source: crossedDataName || this.data,
-      transform: [{
-        type: 'aggregate',
-        groupby: this[channel].fields,
-        ...(fields.length ? {
-          fields, ops, as
-        } : {})
-      }]
+      transform: [
+        {
+          type: 'aggregate',
+          groupby: this[channel].fields,
+          ...(fields.length
+            ? {
+                fields,
+                ops,
+                as
+              }
+            : {})
+        }
+      ]
     };
   }
 
@@ -161,19 +171,21 @@ export class FacetNode extends DataFlowNode {
 
       const fields = [].concat(
         childIndependentFieldsWithStep.x ? [childIndependentFieldsWithStep.x] : [],
-        childIndependentFieldsWithStep.y ? [childIndependentFieldsWithStep.y] : [],
+        childIndependentFieldsWithStep.y ? [childIndependentFieldsWithStep.y] : []
       );
       const ops = fields.map((): AggregateOp => 'distinct');
 
       data.push({
         name: crossedDataName,
         source: this.data,
-        transform: [{
-          type: 'aggregate',
-          groupby: [...this.column.fields, ...this.row.fields],
-          fields,
-          ops
-        }]
+        transform: [
+          {
+            type: 'aggregate',
+            groupby: [...this.column.fields, ...this.row.fields],
+            fields,
+            ops
+          }
+        ]
       });
     }
 

@@ -1,70 +1,45 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-  "config": {
-    "line": {
-      "point": true
-    }
-  },
+  "config": {"line": {"point": true}},
   "layer": [
     {
-      "data": {
-        "url": "data/cars.json"
-      },
+      "data": {"url": "data/cars.json"},
       "layer": [
         {
           "mark": "line",
           "encoding": {
-            "x": {
-              "field": "Cylinders",
-              "type": "ordinal"
-            },
+            "x": {"field": "Cylinders", "type": "ordinal"},
             "y": {
               "aggregate": "max",
               "bin": false,
               "field": "Horsepower",
               "type": "quantitative"
             },
-            "color": {
-              "value": "darkred"
-            }
+            "color": {"value": "darkred"}
           }
         },
         {
-          "mark": {
-            "type": "point",
-            "opacity": 1,
-            "filled": true
-          },
+          "mark": {"type": "point", "opacity": 1, "filled": true},
           "encoding": {
-            "x": {
-              "field": "Cylinders",
-              "type": "ordinal"
-            },
+            "x": {"field": "Cylinders", "type": "ordinal"},
             "y": {
               "aggregate": "max",
               "bin": false,
               "field": "Horsepower",
               "type": "quantitative"
             },
-            "color": {
-              "value": "darkred"
-            }
+            "color": {"value": "darkred"}
           }
         }
       ]
     },
     {
-      "data": {
-        "url": "data/cars.json"
-      },
+      "data": {"url": "data/cars.json"},
       "layer": [
         {
           "mark": "line",
           "encoding": {
-            "x": {
-              "field": "Cylinders",
-              "type": "ordinal"
-            },
+            "x": {"field": "Cylinders", "type": "ordinal"},
             "y": {
               "aggregate": "min",
               "bin": false,
@@ -74,16 +49,9 @@
           }
         },
         {
-          "mark": {
-            "type": "point",
-            "opacity": 1,
-            "filled": true
-          },
+          "mark": {"type": "point", "opacity": 1, "filled": true},
           "encoding": {
-            "x": {
-              "field": "Cylinders",
-              "type": "ordinal"
-            },
+            "x": {"field": "Cylinders", "type": "ordinal"},
             "y": {
               "aggregate": "min",
               "bin": false,

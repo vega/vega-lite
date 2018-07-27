@@ -1,183 +1,125 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"wavelength": 250, "power": 1},
+        {"wavelength": 300, "power": 2},
+        {"wavelength": 420, "power": 4},
+        {"wavelength": 450, "power": 1.8},
+        {"wavelength": 500, "power": 1.1}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "wavelength": 250,
-                    "power": 1
-                },
-                {
-                    "wavelength": 300,
-                    "power": 2
-                },
-                {
-                    "wavelength": 420,
-                    "power": 4
-                },
-                {
-                    "wavelength": 450,
-                    "power": 1.8
-                },
-                {
-                    "wavelength": 500,
-                    "power": 1.1
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"wavelength\"])",
+          "as": "wavelength"
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"wavelength\"])",
-                    "as": "wavelength"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"power\"])",
-                    "as": "power"
-                },
-                {
-                    "type": "filter",
-                    "expr": "inrange(datum[\"wavelength\"], [300, 450])"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"wavelength\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "wavelength"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "power"
-                    },
-                    "defined": {
-                        "signal": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": [
-                300,
-                450
-            ],
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": false
+          "type": "formula",
+          "expr": "toNumber(datum[\"power\"])",
+          "as": "power"
         },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "power"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "wavelength",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "power",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+        {"type": "filter", "expr": "inrange(datum[\"wavelength\"], [300, 450])"}
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"wavelength\"]", "order": "descending"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"wavelength\": format(datum[\"wavelength\"], \"\"), \"power\": format(datum[\"power\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "wavelength"},
+          "y": {"scale": "y", "field": "power"},
+          "defined": {
+            "signal": "datum[\"wavelength\"] !== null && !isNaN(datum[\"wavelength\"]) && datum[\"power\"] !== null && !isNaN(datum[\"power\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": [300, 450],
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "power"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "wavelength",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "power",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

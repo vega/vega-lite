@@ -193,7 +193,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
 </html>
 ```
 
-In this webpage, we first load the dependencies for Vega-Lite (D3, Vega-Embed, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.
+In this webpage, we first load the dependencies for Vega-Lite (Vega-Embed, Vega, and Vega-Lite) in the `<head/>` tag of the document. We also create an HTML `<div/>` element with id `vis` to serve as a container for the visualization.
 
 In the JavaScript code, we create a variable `vlSpec` that holds the Vega-Lite specification in JSON format. The `vl.embed` method translates a Vega-Lite specification into a Vega specification and then calls the [Vega Runtime](https://vega.github.io/vega/usage/) to display visualization in the container `<div/>` element.
 

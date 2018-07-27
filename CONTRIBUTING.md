@@ -73,11 +73,13 @@ To name the example file:
 - For interactive example, begin with either `interactive_` or `selection_`.
 - For examples that are only for regression test, begin with `test_`.
 
-After building an updated code or add a new example, make sure to run `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) or `yarn build:examples` to recompile all examples so that your pull request includes a new compiled Vega specs and SVG files in `examples/compiled`.
+After you push a new branch to GitHub, Travis will automatically run `yarn build:examples` to recompile all examples and push the changed Vega specs and SVG files in `examples/compiled` , so that your branch includes these changes.
+When you add a new example or update the code, you may run `yarn build:examples` or `yarn build:example <examplename>` (e.g., `yarn build:example bar_1d`) to see the change locally. However, do __not__ include these changes in your commit as different systems produces slightly different SVGs (mainly due to floating point differences).  To avoid unnecessary SVG diffs, we should just let Travis always generate the images.  You're still encouraged to run `yarn build:examples` to make sure that your code does not cause unnecessary changes.
 
 __Notes:__
-1) Our example building scripts only re-compile SVGs if the output Vega file changes (so it runs way faster). However, if you have a bug and accidentally change Vega outputs, please do not commit SVGs after you fix the bugs (as the SVGs are **not** recompiled if Vega output do not change from prior commits).  Instead, please reset your SVG changes.
-2) To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
+1) `yarn build:examples` only re-compile SVGs if the output Vega file changes (so it runs way faster).  If you want to enforce re-compilation of all SVGs, use `yarn build:examples-full`.
+2) To make Travis run `yarn build:examples-full`, include `[SVG]` in your commit message of the last commit in your branch.
+3) To run `yarn build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac,you can simply do `brew install parallel`.)
 
 
 # Development Guide
@@ -135,8 +137,6 @@ __Notes:__
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
 For example, `test/compile/` tests files inside `src/compile/`.
-  - Note that we prepend `/* tslint:disable:quotemark */` to all files under `test/compile`
-  to allow putting JSON specs in tests directly without getting lint errors.
 - `typings/` - TypeScript typing declaration for dependencies.
 
 ## Understanding How Vega-Lite Works
@@ -153,7 +153,11 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 
 ### Basic Lint & Test & Test Coverage
 
-Use `yarn test` (or `yarn test:inspect` to inspect tests) run ts-lint and all unit-tests respectively.
+
+`yarn test` run linting and all unit-tests respectively. `yarn format` automatically fixes linting issues if possible. `yarn test:inspect` to inspect tests
+
+`yarn test` includes test coverage and generates a report inside `coverage/index.html`.
+You can see if specific lines are covered in the unit test by running `open coverage/index.html` and browsing through the report.
 
 A lot of linting errors can be fixed automatically by running `yarn lint --fix`.
 
@@ -179,8 +183,8 @@ If you want to update only github pages, use `yarn deploy:gh`.
 
 We use the [Visual Studio Code](https://code.visualstudio.com/) editor with TSLint plugin.
 - VSCode has nice built-in Typescript support!
-- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the vega-lite folder with VSCode.
-- Make sure to install [TypeScript Importer](https://marketplace.visualstudio.com/items?itemName=pmneo.tsimporter) and [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint) extensions.
+- We already include project settings to hide compiled files  (`*.js`, `*.js.map`).  This should work automatically if you open the `vega-lite` folder with VSCode.
+- Make sure to install [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)  extensions.
 
 ## Manually Testing with Vega-Editor
 

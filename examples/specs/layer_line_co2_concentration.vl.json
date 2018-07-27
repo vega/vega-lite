@@ -2,149 +2,69 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
     "url": "data/co2-concentration.csv",
-    "format": {
-      "parse": {"Date": "utc:'%Y-%m-%d'"}
-    }
+    "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}
   },
   "width": 800,
   "height": 500,
   "transform": [
+    {"calculate": "year(datum.Date)", "as": "year"},
+    {"calculate": "floor(datum.year / 10)", "as": "decade"},
     {
-      "calculate": "year(datum.Date)",
-      "as": "year"
-    },
-    {
-      "calculate": "month(datum.Date)",
-      "as": "month"
-    },
-    {
-      "calculate": "floor(datum.year / 10) + 'x'",
-      "as": "decade"
-    },
-    {
-      "calculate": "(datum.year % 10) + (datum.month/12)",
+      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
       "as": "scaled_date"
+    },
+    {
+      "window": [
+        {"op": "first_value", "field": "scaled_date", "as": "first_date"},
+        {"op": "last_value", "field": "scaled_date", "as": "last_date"}
+      ],
+      "sort": [
+        {"field": "scaled_date", "order": "ascending"},
+        {"field": "scaled_date", "order": "ascending"}
+      ],
+      "groupby": ["decade"],
+      "frame": [null, null]
+    },
+    {
+      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+      "as": "end"
     }
   ],
+  "encoding": {
+    "x": {
+      "field": "scaled_date",
+      "type": "quantitative",
+      "axis": {"title": "Year into Decade", "tickCount": 11}
+    },
+    "y": {
+      "field": "CO2",
+      "title": "CO2 concentration in ppm",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    }
+  },
   "layer": [
     {
       "mark": "line",
       "encoding": {
-        "x": {
-          "field": "scaled_date",
-          "type": "quantitative",
-          "axis": {
-            "title": "Year into Decade",
-            "tickCount": 11
-          }
-        },
-        "y": {
-          "field": "CO2",
-          "axis": {
-            "title": "CO2 concentration in ppm"
-          },
-          "type": "quantitative",
-          "scale": {
-            "zero": false
-          }
-        },
-        "detail": {
-          "field": "decade",
-          "type": "ordinal"
-        },
         "color": {
           "field": "decade",
-          "type": "nominal",
-          "legend": {
-            "offset": 40
-          }
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
         }
       }
     },
     {
-      "transform": [
-        {
-          "aggregate": [{
-            "op": "argmin",
-            "field": "scaled_date",
-            "as": "start"
-          }, {
-            "op": "argmax",
-            "field": "scaled_date",
-            "as": "end"
-          }],
-          "groupby": ["decade"]
-        },
-        {
-          "calculate": "datum.start.scaled_date",
-          "as": "scaled_date_start"
-        },
-        {
-          "calculate": "datum.start.CO2",
-          "as": "CO2_start"
-        },
-        {
-          "calculate": "datum.start.year",
-          "as": "year_start"
-        },
-        {
-          "calculate": "datum.end.scaled_date",
-          "as": "scaled_date_end"
-        },
-        {
-          "calculate": "datum.end.CO2",
-          "as": "CO2_end"
-        },
-        {
-          "calculate": "datum.end.year",
-          "as": "year_end"
-        }
-      ],
-      "layer": [{
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "baseline": "top",
-          "dx": 3,
-          "dy": 1
-        },
-        "encoding": {
-          "x": {
-            "field": "scaled_date_start",
-            "type": "quantitative"
-          },
-          "y": {
-            "field": "CO2_start",
-            "type": "quantitative"
-          },
-          "text": {
-            "field": "year_start",
-            "type": "nominal"
-          }
-        }
-      }, {
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "baseline": "bottom",
-          "dx": 3,
-          "dy": 1
-        },
-        "encoding": {
-          "x": {
-            "field": "scaled_date_end",
-            "type": "quantitative"
-          },
-          "y": {
-            "field": "CO2_end",
-            "type": "quantitative"
-          },
-          "text": {
-            "field": "year_end",
-            "type": "nominal"
-          }
-        }
-      }]
+      "transform": [{"filter": {"field": "end", "equal": "first"}}],
+      "mark": {"type": "text", "baseline": "top"},
+      "encoding": {"text": {"field": "year", "type": "nominal"}}
+    },
+    {
+      "transform": [{"filter": {"field": "end", "equal": "last"}}],
+      "mark": {"type": "text", "baseline": "bottom"},
+      "encoding": {"text": {"field": "year", "type": "nominal"}}
     }
-  ]
+  ],
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}}
 }

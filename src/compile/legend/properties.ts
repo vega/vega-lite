@@ -1,8 +1,7 @@
-import {Channel, isColorChannel} from '../../channel';
+import {LabelOverlap} from 'vega';
 import {FieldDef, valueArray} from '../../fielddef';
 import {Legend} from '../../legend';
-import {isBinScale, ScaleType} from '../../scale';
-import {Type} from '../../type';
+import {hasContinuousDomain, ScaleType} from '../../scale';
 import {contains} from '../../util';
 
 export function values(legend: Legend, fieldDef: FieldDef<string>) {
@@ -14,14 +13,16 @@ export function values(legend: Legend, fieldDef: FieldDef<string>) {
   return undefined;
 }
 
-export function type(t: Type, channel: Channel, scaleType: ScaleType): 'gradient' {
-  if (
-      isColorChannel(channel) && (
-        (t === 'quantitative' && !isBinScale(scaleType)) ||
-        (t === 'temporal' && contains<ScaleType>(['time', 'utc'], scaleType))
-      )
-    ) {
-    return 'gradient';
+export function clipHeight(scaleType: ScaleType) {
+  if (hasContinuousDomain(scaleType)) {
+    return 20;
+  }
+  return undefined;
+}
+
+export function labelOverlap(scaleType: ScaleType): LabelOverlap {
+  if (contains(['quantile', 'threshold', 'log'], scaleType)) {
+    return 'greedy';
   }
   return undefined;
 }

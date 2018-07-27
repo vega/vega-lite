@@ -1,241 +1,161 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Stock price average broken down by quarter.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "Stock price average broken down by quarter.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/stocks.csv",
-            "format": {
-                "type": "csv",
-                "parse": {
-                    "date": "date",
-                    "price": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "year_date",
-                    "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "formula",
-                    "as": "quarter_date",
-                    "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "year_date",
-                        "quarter_date"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "price"
-                    ],
-                    "as": [
-                        "mean_price"
-                    ]
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
-                    "groupby": [
-                        "quarter_date"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"year_date\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "scale": "color",
-                                "field": "quarter_date"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "year_date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_price"
-                            },
-                            "defined": {
-                                "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "year_date"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
+          "type": "formula",
+          "as": "year_date",
+          "expr": "datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_price"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "formula",
+          "as": "quarter_date",
+          "expr": "datetime(0, (quarter(datum[\"date\"])-1)*3, 1, 0, 0, 0, 0)"
         },
         {
-            "name": "color",
-            "type": "sequential",
-            "domain": {
-                "data": "source_0",
-                "field": "quarter_date"
-            },
-            "range": "ramp",
-            "nice": false,
-            "zero": false
+          "type": "aggregate",
+          "groupby": ["year_date", "quarter_date"],
+          "ops": ["mean"],
+          "fields": ["price"],
+          "as": ["mean_price"]
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "date (year)",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%Y')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Mean of price",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "date (quarter)",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "'Q' + quarter(datum.value)"
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["quarter_date"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"year_date\"]", "order": "descending"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "quarter_date"},
+              "tooltip": {
+                "signal": "{\"date (year)\": timeFormat(datum[\"year_date\"], '%Y'), \"Mean of price\": format(datum[\"mean_price\"], \"\"), \"date (quarter)\": 'Q' + quarter(datum[\"quarter_date\"])}"
+              },
+              "x": {"scale": "x", "field": "year_date"},
+              "y": {"scale": "y", "field": "mean_price"},
+              "defined": {
+                "signal": "datum[\"year_date\"] !== null && !isNaN(datum[\"year_date\"]) && datum[\"mean_price\"] !== null && !isNaN(datum[\"mean_price\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "year_date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mean_price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "sequential",
+      "domain": {"data": "source_0", "field": "quarter_date"},
+      "range": "ramp",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "title": "date (quarter)",
+      "encode": {
+        "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

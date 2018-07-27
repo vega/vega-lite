@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {"url": "data/barley.json"},
+  "layer": [
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "q1", "field": "yield", "as": "lower_yield"},
+            {"op": "q3", "field": "yield", "as": "upper_yield"}
+          ],
+          "groupby": ["variety"]
+        }
+      ],
+      "layer": [
+        {
+          "mark": {"type": "rule", "style": "errorbar-rule"},
+          "encoding": {
+            "x": {
+              "field": "lower_yield",
+              "type": "quantitative",
+              "title": "yield",
+              "scale": {"zero": false}
+            },
+            "x2": {"field": "upper_yield", "type": "quantitative"},
+            "y": {"field": "variety", "type": "ordinal", "title": "variety"}
+          }
+        }
+      ]
+    },
+    {
+      "mark": {"type": "point", "filled": true, "color": "black"},
+      "encoding": {
+        "x": {"field": "yield", "type": "quantitative", "aggregate": "median"},
+        "y": {"field": "variety", "type": "ordinal"}
+      }
+    }
+  ]
+}

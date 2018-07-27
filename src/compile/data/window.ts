@@ -21,11 +21,13 @@ export class WindowTransformNode extends DataFlowNode {
         if (isSortField(fieldDef.sort)) {
           const {field, op} = fieldDef.sort;
           parent = newParent = new WindowTransformNode(parent, {
-            window: [{
-              op,
-              field,
-              as: facetSortFieldName(fieldDef, fieldDef.sort)
-            }],
+            window: [
+              {
+                op,
+                field,
+                as: facetSortFieldName(fieldDef, fieldDef.sort, {forAs: true})
+              }
+            ],
             groupby: [vgField(fieldDef)],
             frame: [null, null]
           });
@@ -35,7 +37,6 @@ export class WindowTransformNode extends DataFlowNode {
     }
     return null;
   }
-
 
   public clone() {
     return new WindowTransformNode(this.parent, duplicate(this.transform));
@@ -82,7 +83,7 @@ export class WindowTransformNode extends DataFlowNode {
     }
     const sort: VgComparator = {
       field: sortFields,
-      order: sortOrder,
+      order: sortOrder
     };
     const ignorePeers = this.transform.ignorePeers;
 
@@ -92,7 +93,7 @@ export class WindowTransformNode extends DataFlowNode {
       as,
       ops,
       fields,
-      sort,
+      sort
     };
 
     if (ignorePeers !== undefined) {

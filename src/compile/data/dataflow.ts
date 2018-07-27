@@ -1,7 +1,5 @@
-
 import {DataSourceType} from '../../data';
 import {Dict, StringSet} from '../../util';
-
 
 /**
  * A node in the dataflow tree.
@@ -55,22 +53,30 @@ export class DataFlowNode {
     return this._children.length;
   }
 
-  public addChild(child: DataFlowNode) {
-    this._children.push(child);
+  public addChild(child: DataFlowNode, loc?: number) {
+    if (loc !== undefined) {
+      this._children.splice(loc, 0, child);
+    } else {
+      this._children.push(child);
+    }
   }
 
   public removeChild(oldChild: DataFlowNode) {
-    this._children.splice(this._children.indexOf(oldChild), 1);
+    const loc = this._children.indexOf(oldChild);
+    this._children.splice(loc, 1);
+    return loc;
   }
 
   /**
    * Remove node from the dataflow.
    */
   public remove() {
+    let loc = this._parent.removeChild(this);
     for (const child of this._children) {
-      child.parent = this._parent;
+      // do not use the set method because we want to insert at a particular location
+      child._parent = this._parent;
+      this._parent.addChild(child, loc++);
     }
-    this._parent.removeChild(this);
   }
 
   /**
@@ -93,10 +99,9 @@ export class DataFlowNode {
     }
 
     // remove old links
-    this._children = [];  // equivalent to removing every child link one by one
+    this._children = []; // equivalent to removing every child link one by one
     parent.removeChild(this);
     parent.parent.removeChild(parent);
-
 
     // swap two nodes
     this.parent = newParent;
@@ -110,7 +115,7 @@ export class OutputNode extends DataFlowNode {
   private _name: string;
 
   public clone(): this {
-    const cloneObj = new (<any>this.constructor);
+    const cloneObj = new (this.constructor as any)();
     cloneObj.debugName = 'clone_' + this.debugName;
     cloneObj._source = this._source;
     cloneObj._name = 'clone_' + this._name;
@@ -125,7 +130,12 @@ export class OutputNode extends DataFlowNode {
    * @param type The type of the output node.
    * @param refCounts A global ref counter map.
    */
-  constructor(parent: DataFlowNode, source: string, public readonly type: DataSourceType, private readonly refCounts: Dict<number>) {
+  constructor(
+    parent: DataFlowNode,
+    source: string,
+    public readonly type: DataSourceType,
+    private readonly refCounts: Dict<number>
+  ) {
     super(parent, source);
 
     this._source = this._name = source;

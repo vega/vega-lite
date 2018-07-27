@@ -8,21 +8,21 @@ import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      "data": {
-        "url": "data/zipcodes.csv",
-        "format": {
-          "type": "csv"
+      data: {
+        url: 'data/zipcodes.csv',
+        format: {
+          type: 'csv'
         }
       },
-      "mark": "circle",
-      "encoding": {
-        "longitude": {
-          "field": "longitude",
-          "type": "quantitative"
+      mark: 'circle',
+      encoding: {
+        longitude: {
+          field: 'longitude',
+          type: 'quantitative'
         },
-        "latitude": {
-          "field": "latitude",
-          "type": "quantitative"
+        latitude: {
+          field: 'latitude',
+          type: 'quantitative'
         }
       }
     });
@@ -34,9 +34,9 @@ describe('compile/data/geojson', () => {
 
     while (node != null) {
       assert.instanceOf(node, GeoJSONNode);
-      const transform = (<GeoJSONNode>node).assemble();
+      const transform = (node as GeoJSONNode).assemble();
       assert.equal(transform.type, 'geojson');
-      assert.isTrue(every(['longitude', 'latitude'], (field) => contains(transform.fields, field)));
+      assert.isTrue(every(['longitude', 'latitude'], field => contains(transform.fields, field)));
       assert.isUndefined(transform.geojson);
 
       assert.isAtMost(node.children.length, 1);

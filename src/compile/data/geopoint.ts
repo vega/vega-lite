@@ -4,7 +4,6 @@ import {VgGeoPointTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
-
 export class GeoPointNode extends DataFlowNode {
   public clone() {
     return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
@@ -21,18 +20,16 @@ export class GeoPointNode extends DataFlowNode {
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
       const pair = coordinates.map(
-        channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+        channel => (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined)
       );
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 
       if (pair[0] || pair[1]) {
-        parent = new GeoPointNode(
-          parent,
-          model.projectionName(),
-          pair,
-          [model.getName('x' + suffix), model.getName('y' + suffix)]
-        );
+        parent = new GeoPointNode(parent, model.projectionName(), pair, [
+          model.getName('x' + suffix),
+          model.getName('y' + suffix)
+        ]);
       }
     });
 

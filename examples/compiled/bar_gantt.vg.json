@@ -1,174 +1,115 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A simple bar chart with ranged data (aka Gantt Chart).",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A simple bar chart with ranged data (aka Gantt Chart).",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"task": "A", "start": 1, "end": 3},
+        {"task": "B", "start": 3, "end": 8},
+        {"task": "C", "start": 8, "end": 10}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "task": "A",
-                    "start": 1,
-                    "end": 3
-                },
-                {
-                    "task": "B",
-                    "start": 3,
-                    "end": 8
-                },
-                {
-                    "task": "C",
-                    "start": 8,
-                    "end": 10
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"start\"])",
+          "as": "start"
         },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"start\"])",
-                    "as": "start"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"end\"])",
-                    "as": "end"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"start\"] !== null && !isNaN(datum[\"start\"])"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "y_step",
-            "value": 21
-        },
-        {
-            "name": "height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "start"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "field": "end"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "task"
-                    },
-                    "height": {
-                        "scale": "y",
-                        "band": true
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "fields": [
-                    "start",
-                    "end"
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "band",
-            "domain": {
-                "data": "data_0",
-                "field": "task",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "start, end",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "task",
-            "labelOverlap": true,
-            "zindex": 1
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"end\"])", "as": "end"}
+      ]
     }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"start\"] === null || isNaN(datum[\"start\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"start\": format(datum[\"start\"], \"\"), \"task\": ''+datum[\"task\"], \"end\": format(datum[\"end\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "start"},
+          "x2": {"scale": "x", "field": "end"},
+          "y": {"scale": "y", "field": "task"},
+          "height": {"scale": "y", "band": true}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["start", "end"]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "task", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "start, end",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "task",
+      "labelOverlap": true,
+      "zindex": 1
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

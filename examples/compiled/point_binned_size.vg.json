@@ -1,210 +1,163 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on size.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number",
-                    "Acceleration": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "extent",
-                    "field": "Acceleration",
-                    "signal": "bin_maxbins_6_Acceleration_extent"
-                },
-                {
-                    "type": "bin",
-                    "field": "Acceleration",
-                    "as": [
-                        "bin_maxbins_6_Acceleration",
-                        "bin_maxbins_6_Acceleration_end"
-                    ],
-                    "signal": "bin_maxbins_6_Acceleration_bins",
-                    "maxbins": 6,
-                    "extent": {
-                        "signal": "bin_maxbins_6_Acceleration_extent"
-                    }
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"]) && datum[\"bin_maxbins_6_Acceleration\"] !== null && !isNaN(datum[\"bin_maxbins_6_Acceleration\"])"
-                }
-            ]
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on size.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {
+          "Horsepower": "number",
+          "Miles_per_Gallon": "number",
+          "Acceleration": "number"
         }
-    ],
-    "marks": [
+      },
+      "transform": [
         {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "size": {
-                        "scale": "size",
-                        "field": "bin_maxbins_6_Acceleration"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
+          "type": "extent",
+          "field": "Acceleration",
+          "signal": "bin_maxbins_6_Acceleration_extent"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "size",
-            "type": "bin-linear",
-            "domain": {
-                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
-            },
-            "range": [
-                9,
-                361
-            ]
+          "type": "bin",
+          "field": "Acceleration",
+          "as": [
+            "bin_maxbins_6_Acceleration",
+            "bin_maxbins_6_Acceleration_end"
+          ],
+          "signal": "bin_maxbins_6_Acceleration_bins",
+          "maxbins": 6,
+          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"}
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Horsepower",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Miles_per_Gallon",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "size": "size",
-            "title": "Acceleration (binned)",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "stroke": {
-                            "value": "#4c78a8"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"]) || datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": {"scale": "size", "field": "bin_maxbins_6_Acceleration"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "size",
+      "type": "bin-linear",
+      "domain": {
+        "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+      },
+      "range": [9, 361]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "title": "Acceleration (binned)",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "stroke": {"value": "#4c78a8"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

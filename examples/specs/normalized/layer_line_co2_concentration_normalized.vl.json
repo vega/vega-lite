@@ -1,0 +1,94 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "data": {
+    "url": "data/co2-concentration.csv",
+    "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}
+  },
+  "width": 800,
+  "height": 500,
+  "transform": [
+    {"calculate": "year(datum.Date)", "as": "year"},
+    {"calculate": "floor(datum.year / 10)", "as": "decade"},
+    {
+      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
+      "as": "scaled_date"
+    },
+    {
+      "window": [
+        {"op": "first_value", "field": "scaled_date", "as": "first_date"},
+        {"op": "last_value", "field": "scaled_date", "as": "last_date"}
+      ],
+      "sort": [
+        {"field": "scaled_date", "order": "ascending"},
+        {"field": "scaled_date", "order": "ascending"}
+      ],
+      "groupby": ["decade"],
+      "frame": [null, null]
+    },
+    {
+      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+      "as": "end"
+    }
+  ],
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}},
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "scaled_date",
+          "type": "quantitative",
+          "axis": {"title": "Year into Decade", "tickCount": 11}
+        },
+        "y": {
+          "field": "CO2",
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        }
+      }
+    },
+    {
+      "transform": [{"filter": {"field": "end", "equal": "first"}}],
+      "mark": {"type": "text", "baseline": "top"},
+      "encoding": {
+        "x": {
+          "field": "scaled_date",
+          "type": "quantitative",
+          "axis": {"title": "Year into Decade", "tickCount": 11}
+        },
+        "y": {
+          "field": "CO2",
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "text": {"field": "year", "type": "nominal"}
+      }
+    },
+    {
+      "transform": [{"filter": {"field": "end", "equal": "last"}}],
+      "mark": {"type": "text", "baseline": "bottom"},
+      "encoding": {
+        "x": {
+          "field": "scaled_date",
+          "type": "quantitative",
+          "axis": {"title": "Year into Decade", "tickCount": 11}
+        },
+        "y": {
+          "field": "CO2",
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "text": {"field": "year", "type": "nominal"}
+      }
+    }
+  ]
+}

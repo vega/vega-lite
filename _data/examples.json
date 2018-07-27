@@ -46,13 +46,23 @@
         "title": "Layered Bar Chart"
       },
       {
-        "name": "bar_diverging_stacked",
+        "name": "bar_diverging_stack_transform",
         "title": "Diverging Stacked Bar Chart"
       },
       {
         "name": "layer_bar_labels",
         "title": "Simple Bar Chart with Labels",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "isotype_bar_chart",
+        "title": "Isotype Bar Chart",
+        "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
+      },
+      {
+        "name": "isotype_bar_chart_emoji",
+        "title": "Isotype Bar Chart with Emoji",
+        "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)"
       }
     ],
     "Scatter & Strip Plots": [
@@ -188,6 +198,10 @@
         "name": "area_horizon",
         "title": "Horizon Graph",
         "style": "background-size: auto 70%; background-position-y: center;"
+      },
+      {
+        "name": "rect_mosaic_labelled_with_offset",
+        "title": "Mosaic Chart with Labels"
       }
     ],
     "Table-based Plots": [
@@ -214,29 +228,6 @@
         "style": "background-size: auto 55%; background-position-y: center !important;"
       }
     ],
-    "Distribution Plots": [{
-      "name": "histogram",
-      "title": "Histogram",
-      "style": "background-size: auto 105%; background-position: center center !important;"
-    },
-    {
-      "name": "area_cumulative_freq",
-      "title": "Cumulative Frequency Distribution",
-      "style": "background-size: auto 105%; background-position: center center !important;"
-    },
-    {
-      "name": "layer_cumulative_histogram",
-      "title": "Layered Histogram and Cumulative Histogram",
-      "style": "background-size: auto 105%; background-position: center center !important;"
-    },
-    {
-      "name": "box-plot_minmax_2D_vertical_normalized",
-      "title": "Box Plot with Min/Max Whiskers"
-    },
-    {
-      "name": "box-plot_tukey_2D_vertical_normalized",
-      "title": "Tukey Box Plot (1.5 IQR)"
-    }],
     "Advanced Calculations": [
       {
         "name": "window_percent_of_total",
@@ -264,33 +255,59 @@
         "title": "Waterfall Chart of Monthly Profit and Loss"
       },
       {
+        "name": "window_top_k",
+        "title": "Filtering top-K items",
+        "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.",
+        "style": "background-size: 110%"
+      },
+      {
         "name": "lookup",
         "title": "Using the lookup transform to combine data",
         "style": "background-size: 75%; background-position-x: center;"
+      },
+      {
+        "name": "area_cumulative_freq",
+        "title": "Cumulative Frequency Distribution",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      },
+      {
+        "name": "layer_cumulative_histogram",
+        "title": "Layered Histogram and Cumulative Histogram",
+        "style": "background-size: auto 105%; background-position: center center !important;"
+      }
+    ]
+  },
+  "Composite Mark": {
+    "Error Bars & Error Bands": [
+      {
+        "name": "layer_point_errorbar_ci",
+        "title": "Error Bars showing Confidence Interval"
+      },
+      {
+        "name": "layer_point_errorbar_stdev",
+        "title": "Error Bars showing Standard Deviation"
+      },
+      {
+        "name": "layer_line_errorband_ci",
+        "title": "Line Chart with Confidence Interval Band"
+      },
+      {
+        "name": "layer_scatter_errorband_1D_stdev_global_mean",
+        "title": "Scatterplot with Mean and Standard Deviation Overlay"
+      }
+    ],
+    "Box Plots": [
+      {
+        "name": "boxplot_minmax_2D_vertical",
+        "title": "Box Plot with Min/Max Whiskers"
+      },
+      {
+        "name": "boxplot_2D_vertical",
+        "title": "Tukey Box Plot (1.5 IQR)"
       }
     ]
   },
   "Layered Plots": {
-    "Error Bars & Error Bands": [
-      {
-        "name": "layer_error_bars",
-        "title": "Error Bars showing Confidence Interval"
-      },
-      {
-        "name": "layer_error_bars_dev",
-        "title": "Error Bars showing Standard Deviation"
-      },
-      {
-        "name": "layer_area_ci",
-        "title": "Line Chart with Confidence Interval Band",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "layer_global_mean_dev",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      }
-    ],
     "Labeling & Annotation": [
       {
         "name": "layer_bar_labels",
@@ -413,6 +430,11 @@
         "name": "concat_marginal_histograms",
         "title": "Marginal Histograms",
         "description": "Marginal histograms show the counts along the x and y dimension."
+      },
+      {
+        "name": "concat_bar_scales_discretize",
+        "title": "Discretizing scales",
+        "description": "Horizontally concatenated charts that show different types of discretizing scales"
       }
     ]
   },
@@ -501,6 +523,11 @@
         "name": "interactive_multi_line_tooltip",
         "title": "Multi Series Line Chart with Tooltips",
         "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+      },
+      {
+        "name": "isotype_grid",
+        "title": "Isotype Grid",
+        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
       }
     ],
     "Interactive Multi-View Displays": [

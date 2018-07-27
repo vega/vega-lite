@@ -1,9 +1,9 @@
 import {MAIN} from '../../data';
-import {every, flatten, keys, vals} from '../../util';
+import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
-import {FilterInvalidNode} from './filterinvalid';
+import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
@@ -27,7 +27,7 @@ function cloneSubtree(facet: FacetNode) {
       } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
         copy.addDimensions(facet.fields);
       }
-      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => n.parent = copy);
+      flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
 
       return [copy];
     }
@@ -60,7 +60,7 @@ function moveFacetDown(node: DataFlowNode) {
 
       // replicate the subtree and place it before the facet's main node
       const copy: DataFlowNode[] = flatten(node.children.map(cloneSubtree(node)));
-      copy.forEach(c => c.parent = node.model.component.data.main);
+      copy.forEach(c => (c.parent = node.model.component.data.main));
     }
   } else {
     node.children.forEach(moveFacetDown);
@@ -84,12 +84,6 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Remove nodes that are not required starting from a root.
  */
 function removeUnnecessaryNodes(node: DataFlowNode) {
-
-  // remove empty null filter nodes
-  if (node instanceof FilterInvalidNode && every(vals(node.filter), f => f === null)) {
-    node.remove();
-  }
-
   // remove output nodes that are not required
   if (node instanceof OutputNode && !node.isRequired()) {
     node.remove();
@@ -116,6 +110,40 @@ function getLeaves(roots: DataFlowNode[]) {
 }
 
 /**
+ * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ */
+export function mergeParse(node: DataFlowNode) {
+  const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
+  if (parseChildren.length > 1) {
+    const commonParse = {};
+    for (const parseNode of parseChildren) {
+      const parse = parseNode.parse;
+      for (const k of keys(parse)) {
+        if (commonParse[k] === undefined) {
+          commonParse[k] = parse[k];
+        } else if (commonParse[k] !== parse[k]) {
+          delete commonParse[k];
+        }
+      }
+    }
+    if (keys(commonParse).length !== 0) {
+      const mergedParseNode = new ParseNode(node, commonParse);
+      for (const parseNode of parseChildren) {
+        for (const key of keys(commonParse)) {
+          delete parseNode.parse[key];
+        }
+        node.removeChild(parseNode);
+        parseNode.parent = mergedParseNode;
+        if (keys(parseNode.parse).length === 0) {
+          parseNode.remove();
+        }
+      }
+    }
+  }
+  node.children.forEach(mergeParse);
+}
+
+/**
  * Optimizes the dataflow of the passed in data component.
  */
 export function optimizeDataflow(dataComponent: DataComponent) {
@@ -132,6 +160,7 @@ export function optimizeDataflow(dataComponent: DataComponent) {
   getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
 
   roots.forEach(moveFacetDown);
+  roots.forEach(mergeParse);
 
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {

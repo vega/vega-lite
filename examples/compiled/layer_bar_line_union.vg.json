@@ -1,269 +1,135 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "values": [
-                {
-                    "a": "A",
-                    "b": "B",
-                    "c": 28
-                },
-                {
-                    "a": "B",
-                    "b": "C",
-                    "c": 55
-                },
-                {
-                    "a": "C",
-                    "b": "D",
-                    "c": 43
-                },
-                {
-                    "a": "D",
-                    "b": "E",
-                    "c": 91
-                },
-                {
-                    "a": "E",
-                    "b": "F",
-                    "c": 81
-                },
-                {
-                    "a": "F",
-                    "b": "G",
-                    "c": 53
-                },
-                {
-                    "a": "G",
-                    "b": "H",
-                    "c": 19
-                },
-                {
-                    "a": "H",
-                    "b": "I",
-                    "c": 87
-                },
-                {
-                    "a": "I",
-                    "b": "J",
-                    "c": 52
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"c\"])",
-                    "as": "c"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"c\"])",
-                    "as": "c"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "a"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "c"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"b\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "red"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "b",
-                        "band": 0.5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "c"
-                    },
-                    "defined": {
-                        "signal": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "a"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "b"
-                    }
-                ],
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "c"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "c"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "a, b",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "c",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "A", "b": "B", "c": 28},
+        {"a": "B", "b": "C", "c": 55},
+        {"a": "C", "b": "D", "c": 43},
+        {"a": "D", "b": "E", "c": 91},
+        {"a": "E", "b": "F", "c": 81},
+        {"a": "F", "b": "G", "c": 53},
+        {"a": "G", "b": "H", "c": 19},
+        {"a": "H", "b": "I", "c": 87},
+        {"a": "I", "b": "J", "c": 52}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"c\"])", "as": "c"}
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"c\"] === null || isNaN(datum[\"c\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"a\": ''+datum[\"a\"], \"c\": format(datum[\"c\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "a"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "c"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"b\"]", "order": "descending"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"b\": ''+datum[\"b\"], \"c\": format(datum[\"c\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "b", "band": 0.5},
+          "y": {"scale": "y", "field": "c"},
+          "defined": {"signal": "datum[\"c\"] !== null && !isNaN(datum[\"c\"])"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "fields": ["a", "b"], "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "c"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a, b",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "c",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

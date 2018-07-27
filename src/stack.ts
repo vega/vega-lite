@@ -6,8 +6,7 @@ import {Field, FieldDef, getFieldDef, isFieldDef, isStringFieldDef, PositionFiel
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag} from './util';
-
+import {contains, Flag, getFirstDefined} from './util';
 
 export type StackOffset = 'zero' | 'center' | 'normalize';
 
@@ -30,8 +29,8 @@ export interface StackProperties {
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
-    fieldDef: FieldDef<string>,
-    channel: NonPositionChannel
+    fieldDef: FieldDef<string>;
+    channel: NonPositionChannel;
   }[];
 
   /**
@@ -48,7 +47,6 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-
 function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefined {
   const xDef = encoding.x;
   const yDef = encoding.y;
@@ -61,7 +59,7 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
         return 'y';
       }
       // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
-      if ((!!xDef.aggregate) !== (!!yDef.aggregate)) {
+      if (!!xDef.aggregate !== !!yDef.aggregate) {
         return xDef.aggregate ? 'x' : 'y';
       }
     } else if (xDef.type === 'quantitative') {
@@ -102,7 +100,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      (isArray(channelDef) ? channelDef : [channelDef]).forEach((cDef) => {
+      (isArray(channelDef) ? channelDef : [channelDef]).forEach(cDef => {
         const fieldDef = getFieldDef(cDef);
         if (fieldDef.aggregate) {
           return;
@@ -128,12 +126,12 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
   }
 
   // Automatically determine offset
-  let offset: StackOffset = undefined;
+  let offset: StackOffset;
   if (stackedFieldDef.stack !== undefined) {
     offset = stackedFieldDef.stack;
   } else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
     // Bar and Area with sum ops are automatically stacked by default
-    offset = stackConfig === undefined ? 'zero' : stackConfig;
+    offset = getFirstDefined(stackConfig, 'zero');
   } else {
     offset = stackConfig;
   }

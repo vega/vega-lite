@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
 [![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite)
 [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier)
 
 ![Teaser](site/static/teaser.png)
 
@@ -14,10 +15,6 @@ You can find more details, [documentation](https://vega.github.io/vega-lite/docs
 Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/custom/vega-lite).
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
-
-## Vega-Lite 1
-
-You can find Vega-Lite version 1 in our [`1.x` maintenance branch](https://github.com/vega/vega-lite/tree/1.x) ([website for Vega-Lite 1](https://vega.github.io/vega-lite-v1/)).
 
 ## Team
 

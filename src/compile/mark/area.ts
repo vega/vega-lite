@@ -2,7 +2,6 @@ import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-
 export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {

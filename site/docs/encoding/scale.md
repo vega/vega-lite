@@ -59,7 +59,7 @@ By default, Vega-Lite use the following scale types for the following [data type
 |---------------------:|:------------------------------:|:-------------------------:|:------------------------:|:-------------------------:|
 | __X, Y__ | [Band](#band) / [Point](#point)<sup>2</sup>| [Linear](#linear)         | [Linear](#linear) <sup>3</sup>       | [Time](#time)             |
 | __Size, Opacity__    | [Point](#point)                | [Linear](#linear)         | [Bin-Linear](#bin-linear)| [Time](#time)             |
-| __Color__            | [Ordinal](#ordinal)            | [Sequential](#sequential) | [Bin-Ordinal](#ordinal)  | [Sequential](#sequential) |
+| __Color__            | [Ordinal](#ordinal)            | [Sequential](#sequential) <sup>4</sup> | [Bin-Ordinal](#ordinal)  | [Sequential](#sequential) <sup>4</sup> |
 | __Shape__            | [Ordinal](#ordinal)            | N/A                       | N/A                      | N/A                       |
 
 <span class="note-line">
@@ -71,6 +71,9 @@ bar and rect marks, which use `"band"` scales.
 </span>
 <span class="note-line">
 <sup>3</sup> For static plots, both `"linear"` and `"bin-linear"` work with binned fields on x and y.  However, [panning](translate.html) and [zooming](zoom.html) do not work with discretized scales such as `"bin-linear"`, thus we use `"linear"` as the default scale type for binned fields on x and y.
+</span>
+<span class="note-line">
+<sup>4</sup> For continuous color scales with [piecewise](#piecewise) domain and range, `"linear"` scale will be used by default as `"sequential"` scale does not support piecewise domain and range.
 </span>
 
 {:#domain}
@@ -152,7 +155,7 @@ For example, the following plot use the `"category20b"` scheme.
 
 The `scheme` property can also be a __scheme parameter object__, which contain the following properties:
 
-{% include table.html props="name,extent" source="SchemeParams" %}
+{% include table.html props="name,extent,count" source="SchemeParams" %}
 
 2) Setting the `range` property to an array of valid CSS color strings.
 
@@ -318,6 +321,42 @@ For example, the following plot has a binned field on the `color` channel.
 
 Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
 
+{:#quantile}
+### Quantile Scales
+
+Quantile scales (`"quantile"`) map a sample of input domain values to a discrete range based on computed [quantile](https://en.wikipedia.org/wiki/Quantile) boundaries.
+The domain is considered continuous and thus the scale will accept any reasonable input value; however, the domain is specified as a discrete set of sample values.
+The number of values in (i.e., the cardinality of) the output range determines the number of quantiles that will be computed from the domain. To compute the quantiles, the domain is sorted, and treated as a population of discrete values.
+The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. 
+If the `range` is not specified, the domain will be segmented into 4 quantiles (quartiles) by default. 
+
+Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
+For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts.
+Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.
+
+<span class="vl-example" data-name="bar_scale_quantile"></span>
+
+{:#quantize}
+### Quantize Scales
+
+Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
+If the `range` property is not specified, the domain will be divided into 4 uniform segments by default. 
+
+Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
+For related functionality see [quantile scales](https://vega.github.io/vega-lite/docs/scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
+
+{% include table.html props="nice,zero" source="Scale" %}
+
+<span class="vl-example" data-name="bar_scale_quantize"></span>
+
+{:#threshold}
+### Threshold Scales
+
+Threshold scales (`"threshold"`) are similar to [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range.
+The input domain is still continuous, and divided into slices based on a set of threshold values provided to the _required_ `domain` property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
+
+
+<span class="vl-example" data-name="bar_scale_threshold"></span>
 
 {:#disable}
 ## Disabling Scale

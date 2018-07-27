@@ -21,8 +21,19 @@ export namespace Mark {
 /**
  * All types of primitive marks.
  */
-export type Mark = typeof Mark.AREA | typeof Mark.BAR | typeof Mark.LINE | typeof Mark.TRAIL | typeof Mark.POINT | typeof Mark.TEXT | typeof Mark.TICK | typeof Mark.RECT | typeof Mark.RULE | typeof Mark.CIRCLE | typeof Mark.SQUARE | typeof Mark.GEOSHAPE;
-
+export type Mark =
+  | typeof Mark.AREA
+  | typeof Mark.BAR
+  | typeof Mark.LINE
+  | typeof Mark.TRAIL
+  | typeof Mark.POINT
+  | typeof Mark.TEXT
+  | typeof Mark.TICK
+  | typeof Mark.RECT
+  | typeof Mark.RULE
+  | typeof Mark.CIRCLE
+  | typeof Mark.SQUARE
+  | typeof Mark.GEOSHAPE;
 
 export const AREA = Mark.AREA;
 export const BAR = Mark.BAR;
@@ -64,9 +75,24 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 
 export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 
+export interface ColorMixins {
+  /**
+   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   *
+   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
+   *
+   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   */
+  color?: string;
+}
 
-export interface MarkConfig extends VgMarkConfig {
-  // ---------- Color ----------
+export interface TooltipContent {
+  content: 'encoding' | 'data';
+}
+
+export interface MarkConfig extends ColorMixins, VgMarkConfig {
+  // ========== VL-Specific ==========
+
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
@@ -79,14 +105,27 @@ export interface MarkConfig extends VgMarkConfig {
    */
   filled?: boolean;
 
+  // ========== Overriding Vega ==========
+
   /**
-   * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
+   * The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.
    *
-   * __Default value:__ <span style="color: #4682b4;">&#9632;</span> `"#4682b4"`
-   *
-   * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
+   * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
+   * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
    */
-  color?: string;
+  tooltip?: string | TooltipContent;
+
+  /**
+   * Default size for marks.
+   * - For `point`/`circle`/`square`, this represents the pixel area of the marks. For example: in the case of circles, the radius is determined in part by the square root of the size value.
+   * - For `bar`, this represents the band size of the bar, in pixels.
+   * - For `text`, this represents the font size, in pixels.
+   *
+   * __Default value:__ `30` for point, circle, square marks; `rangeStep` - 1 for bar marks with discrete dimensions; `5` for bar marks with continuous dimensions; `11` for text marks.
+   *
+   * @minimum 0
+   */
+  size?: number;
 }
 
 export interface BarBinSpacingMixins {
@@ -100,16 +139,9 @@ export interface BarBinSpacingMixins {
   binSpacing?: number;
 }
 
+export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
-/** @hide */
-export type HiddenComposite = CompositeMark | CompositeMarkDef;
-
-export type AnyMark =
-  HiddenComposite |
-  Mark |
-  MarkDef;
-
-export function isMarkDef(mark: AnyMark): mark is (MarkDef | CompositeMarkDef) {
+export function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef {
   return mark['type'];
 }
 
@@ -120,17 +152,24 @@ export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | 
   return markType in PRIMITIVE_MARK_INDEX;
 }
 
-export const STROKE_CONFIG = ['stroke', 'strokeWidth',
-  'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
+export const STROKE_CONFIG = [
+  'stroke',
+  'strokeWidth',
+  'strokeDash',
+  'strokeDashOffset',
+  'strokeOpacity',
+  'strokeJoin',
+  'strokeMiterLimit'
+];
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'];
 
 export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color'];
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = ['filled', 'color', 'tooltip'];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-  [k in (typeof PRIMITIVE_MARKS[0])]?: (keyof MarkConfigMixins[k])[]
+  [k in typeof PRIMITIVE_MARKS[0]]?: (keyof MarkConfigMixins[k])[]
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
@@ -141,6 +180,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig = {
   color: '#4c78a8',
+  tooltip: {content: 'encoding'}
 };
 
 export interface MarkConfigMixins {
@@ -185,9 +225,7 @@ export interface MarkConfigMixins {
   geoshape?: MarkConfig;
 }
 
-
 export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
-
   /**
    * The default size of the bars on continuous scales.
    *
@@ -198,7 +236,7 @@ export interface BarConfig extends BarBinSpacingMixins, MarkConfig {
   continuousBandSize?: number;
 
   /**
-   * The size of the bars.  If unspecified, the default size is  `bandSize-1`,
+   * The default size of the bars with discrete dimensions.  If unspecified, the default size is  `bandSize-1`,
    * which provides 1 pixel offset between bars.
    * @minimum 0
    */
@@ -250,6 +288,16 @@ export interface TickThicknessMixins {
   thickness?: number;
 }
 
+export interface GenericMarkDef<M> {
+  /**
+   * The mark type. This could a primitive mark type
+   * (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
+   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`)
+   * or a composite mark type (`"boxplot"`, `"errorband"`, `"errorbar"`).
+   */
+  type: M;
+}
+
 export interface MarkDefMixins {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
@@ -288,7 +336,16 @@ export interface MarkDefMixins {
 }
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef extends BarBinSpacingMixins, MarkConfig, PointOverlayMixins, LineOverlayMixins, TickThicknessMixins, MarkDefMixins {
+
+// Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
+export interface MarkDef
+  extends GenericMarkDef<Mark>,
+    BarBinSpacingMixins,
+    MarkConfig,
+    PointOverlayMixins,
+    LineOverlayMixins,
+    TickThicknessMixins,
+    MarkDefMixins {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,

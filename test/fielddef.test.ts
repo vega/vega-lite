@@ -1,19 +1,26 @@
 import {assert} from 'chai';
-
 import {COUNTING_OPS} from '../src/aggregate';
-import {Channel} from '../src/channel';
-import {channelCompatibility, ChannelDef, defaultType, FieldDef, normalize, title, vgField} from '../src/fielddef';
+import {Channel, CHANNELS} from '../src/channel';
+import {
+  channelCompatibility,
+  ChannelDef,
+  defaultTitle,
+  defaultType,
+  FieldDef,
+  normalize,
+  vgField
+} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
 describe('fieldDef', () => {
   describe('vgField()', () => {
-    it ('should access flattened fields', () => {
+    it('should access flattened fields', () => {
       assert.deepEqual(vgField({field: 'foo.bar\\.baz'}), 'foo\\.bar\\.baz');
     });
 
-    it ('should access flattened fields in expression', () => {
+    it('should access flattened fields in expression', () => {
       assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo.bar.baz"]');
     });
   });
@@ -41,45 +48,64 @@ describe('fieldDef', () => {
   });
 
   describe('normalize()', () => {
-    it('should convert primitive type to value def', log.wrap((localLogger) => {
-      assert.deepEqual<ChannelDef<string>>(normalize(5 as any, 'x'), {value: 5});
-      assert.equal(localLogger.warns.length, 1);
-    }));
+    it(
+      'should convert primitive type to value def',
+      log.wrap(localLogger => {
+        assert.deepEqual<ChannelDef<string>>(normalize(5 as any, 'x'), {value: 5});
+        assert.equal(localLogger.warns.length, 1);
+      })
+    );
 
     it('should return fieldDef with full type name.', () => {
       const fieldDef: FieldDef<string> = {field: 'a', type: 'q' as any};
       assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
     });
 
-    it('normalizes yearmonthday to become yearmonthdate.', log.wrap((localLogger) => {
-      const fieldDef: FieldDef<string> = {
-        timeUnit: 'yearmonthday' as TimeUnit,  // Need to cast here as this is intentionally wrong
-        field: 'a',
-        type: 'temporal'
-      };
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {timeUnit: 'yearmonthdate', field: 'a', type: 'temporal'});
-      assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
-    }));
+    it(
+      'normalizes yearmonthday to become yearmonthdate.',
+      log.wrap(localLogger => {
+        const fieldDef: FieldDef<string> = {
+          timeUnit: 'yearmonthday' as TimeUnit, // Need to cast here as this is intentionally wrong
+          field: 'a',
+          type: 'temporal'
+        };
+        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {
+          timeUnit: 'yearmonthdate',
+          field: 'a',
+          type: 'temporal'
+        });
+        assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
+      })
+    );
 
-    it('should replace other type with quantitative for a field with counting aggregate.', log.wrap((localLogger) => {
-      for (const aggregate of COUNTING_OPS) {
-        const fieldDef: FieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
-        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {aggregate, field: 'a', type: 'quantitative'});
-      }
-      assert.equal(localLogger.warns.length, 4);
-    }));
+    it(
+      'should replace other type with quantitative for a field with counting aggregate.',
+      log.wrap(localLogger => {
+        for (const aggregate of COUNTING_OPS) {
+          const fieldDef: FieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
+          assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {aggregate, field: 'a', type: 'quantitative'});
+        }
+        assert.equal(localLogger.warns.length, 4);
+      })
+    );
 
-    it('should return fieldDef with default type and throw warning if type is missing.', log.wrap((localLogger) => {
-      const fieldDef = {field: 'a'} as FieldDef<string>;
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
-    }));
+    it(
+      'should return fieldDef with default type and throw warning if type is missing.',
+      log.wrap(localLogger => {
+        const fieldDef = {field: 'a'} as FieldDef<string>;
+        expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+        expect(localLogger.warns[0]).toEqual(log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
+      })
+    );
 
-    it('should drop invalid aggregate ops and throw warning.', log.wrap((localLogger) => {
-      const fieldDef: FieldDef<string> = {aggregate: 'box-plot', field: 'a', type: 'quantitative'};
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-      assert.equal(localLogger.warns[0], log.message.invalidAggregate('box-plot'));
-    }));
+    it(
+      'should drop invalid aggregate ops and throw warning.',
+      log.wrap(localLogger => {
+        const fieldDef: FieldDef<string> = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
+        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+        assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
+      })
+    );
   });
 
   describe('channelCompatability', () => {
@@ -139,6 +165,12 @@ describe('fieldDef', () => {
       it('is incompatible with quantitative field', () => {
         assert(!channelCompatibility({field: 'a', type: 'quantitative'}, 'shape').compatible);
       });
+
+      it('is the only channel that is incompatible with geojson field', () => {
+        for (const channel of CHANNELS) {
+          assert(channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape'));
+        }
+      });
     });
 
     describe('order', () => {
@@ -154,48 +186,48 @@ describe('fieldDef', () => {
     });
   });
 
-  describe('title()', () => {
+  describe('defaultTitle()', () => {
     it('should return correct title for aggregate', () => {
-      assert.equal(title({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
+      assert.equal(defaultTitle({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
     });
 
     it('should return correct title for count', () => {
-      assert.equal(title({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
+      assert.equal(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(title(fieldDef,{}), 'f (binned)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (binned)');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(title(fieldDef,{fieldTitle: 'functional'}), 'BIN(f)');
+      assert.equal(defaultTitle(fieldDef, {fieldTitle: 'functional'}), 'BIN(f)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      assert.equal(title(fieldDef,{}), 'f (month)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
-      assert.equal(title(fieldDef,{}), 'f (year-month-date)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
-      assert.equal(title(fieldDef,{}), 'f (day)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
-      assert.equal(title(fieldDef,{}), 'f (year-quarter)');
+      assert.equal(defaultTitle(fieldDef, {}), 'f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
-      assert.equal(title(fieldDef,{}), 'f');
+      assert.equal(defaultTitle(fieldDef, {}), 'f');
     });
   });
 });

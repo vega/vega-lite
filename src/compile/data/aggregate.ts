@@ -1,17 +1,17 @@
 import {AggregateOp} from 'vega';
-
+import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, keys, StringSet} from '../../util';
+import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
-  if (fieldDef.bin) {
+  if (isBinning(fieldDef.bin)) {
     dims[vgField(fieldDef, {})] = true;
     dims[vgField(fieldDef, {binSuffix: 'end'})] = true;
 
@@ -52,7 +52,11 @@ export class AggregateNode extends DataFlowNode {
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict of aggregation functions and names to use
    */
-  constructor(parent: DataFlowNode, private dimensions: StringSet, private measures: Dict<{[key in AggregateOp]?: string}>) {
+  constructor(
+    parent: DataFlowNode,
+    private dimensions: StringSet,
+    private measures: Dict<{[key in AggregateOp]?: string}>
+  ) {
     super(parent);
   }
 
@@ -77,15 +81,15 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgField(fieldDef);
+          meas['*']['count'] = vgField(fieldDef, {forAs: true});
         } else {
           meas[field] = meas[field] || {};
-          meas[field][aggregate] = vgField(fieldDef);
+          meas[field][aggregate] = vgField(fieldDef, {forAs: true});
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[field]['min'] = vgField({field, aggregate: 'min'});
-            meas[field]['max'] = vgField({field, aggregate: 'max'});
+            meas[field]['min'] = vgField({field, aggregate: 'min'}, {forAs: true});
+            meas[field]['max'] = vgField({field, aggregate: 'max'}, {forAs: true});
           }
         }
       } else {
@@ -93,7 +97,7 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    if ((keys(dims).length + keys(meas).length) === 0) {
+    if (keys(dims).length + keys(meas).length === 0) {
       return null;
     }
 
@@ -109,10 +113,10 @@ export class AggregateNode extends DataFlowNode {
       if (op) {
         if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = as || vgField(s);
+          meas['*']['count'] = as || vgField(s, {forAs: true});
         } else {
           meas[field] = meas[field] || {};
-          meas[field][op] = as || vgField(s);
+          meas[field][op] = as || vgField(s, {forAs: true});
         }
       }
     }
@@ -121,7 +125,7 @@ export class AggregateNode extends DataFlowNode {
       dims[s] = true;
     }
 
-    if ((keys(dims).length + keys(meas).length) === 0) {
+    if (keys(dims).length + keys(meas).length === 0) {
       return null;
     }
 
@@ -138,14 +142,14 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public addDimensions(fields: string[]) {
-    fields.forEach(f => this.dimensions[f] = true);
+    fields.forEach(f => (this.dimensions[f] = true));
   }
 
   public dependentFields() {
     const out = {};
 
-    keys(this.dimensions).forEach(f => out[f] = true);
-    keys(this.measures).forEach(m => out[m] = true);
+    keys(this.dimensions).forEach(f => (out[f] = true));
+    keys(this.measures).forEach(m => (out[m] = true));
 
     return out;
   }
@@ -153,11 +157,11 @@ export class AggregateNode extends DataFlowNode {
   public producedFields() {
     const out = {};
 
-    keys(this.measures).forEach(field => {
-      keys(this.measures[field]).forEach(op => {
-        out[`${op}_${field}`] = true;
-      });
-    });
+    for (const field of keys(this.measures)) {
+      for (const op of keys(this.measures[field])) {
+        out[this.measures[field][op] || `${op}_${field}`] = true;
+      }
+    }
 
     return out;
   }
@@ -171,7 +175,7 @@ export class AggregateNode extends DataFlowNode {
       for (const op of keys(this.measures[field])) {
         as.push(this.measures[field][op]);
         ops.push(op);
-        fields.push(field);
+        fields.push(replacePathInField(field));
       }
     }
 

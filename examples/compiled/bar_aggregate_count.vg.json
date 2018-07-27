@@ -1,180 +1,134 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv", "parse": {"precipitation": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/seattle-weather.csv",
-            "format": {
-                "type": "csv",
-                "parse": {
-                    "precipitation": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "extent",
-                    "field": "precipitation",
-                    "signal": "bin_maxbins_10_precipitation_extent"
-                },
-                {
-                    "type": "bin",
-                    "field": "precipitation",
-                    "as": [
-                        "bin_maxbins_10_precipitation",
-                        "bin_maxbins_10_precipitation_end"
-                    ],
-                    "signal": "bin_maxbins_10_precipitation_bins",
-                    "maxbins": 10,
-                    "extent": {
-                        "signal": "bin_maxbins_10_precipitation_extent"
-                    }
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "bin_maxbins_10_precipitation",
-                        "bin_maxbins_10_precipitation_end"
-                    ],
-                    "ops": [
-                        "count"
-                    ],
-                    "fields": [
-                        "*"
-                    ],
-                    "as": [
-                        "count_*"
-                    ]
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"bin_maxbins_10_precipitation\"] !== null && !isNaN(datum[\"bin_maxbins_10_precipitation\"])"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "field": "bin_maxbins_10_precipitation",
-                        "offset": 1
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "bin_maxbins_10_precipitation_end"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "count_*"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "fields": [
-                    "bin_maxbins_10_precipitation",
-                    "bin_maxbins_10_precipitation_end"
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false
+          "type": "extent",
+          "field": "precipitation",
+          "signal": "bin_maxbins_10_precipitation_extent"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "precipitation (binned)",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/20)"
-            },
-            "values": {
-                "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
-            },
-            "zindex": 1
+          "type": "bin",
+          "field": "precipitation",
+          "as": [
+            "bin_maxbins_10_precipitation",
+            "bin_maxbins_10_precipitation_end"
+          ],
+          "signal": "bin_maxbins_10_precipitation_bins",
+          "maxbins": 10,
+          "extent": {"signal": "bin_maxbins_10_precipitation_extent"}
         },
         {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Number of Records",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_precipitation",
+            "bin_maxbins_10_precipitation_end"
+          ],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
         }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"precipitation (binned)\": datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "bin_maxbins_10_precipitation",
+            "offset": 1
+          },
+          "x": {"scale": "x", "field": "bin_maxbins_10_precipitation_end"},
+          "y": {"scale": "y", "field": "count_*"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": [
+          "bin_maxbins_10_precipitation",
+          "bin_maxbins_10_precipitation_end"
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "count_*"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "precipitation (binned)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/20)"},
+      "values": {
+        "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Number of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

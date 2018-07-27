@@ -1,160 +1,104 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 120,
-    "height": 120,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 120,
+  "height": 120,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json"
-            },
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Name"
-                    ],
-                    "ops": [
-                        "count"
-                    ],
-                    "fields": [
-                        "*"
-                    ],
-                    "as": [
-                        "count_*"
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["Name"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
         }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Name"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "count_*"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "value": 0
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "Name",
-                "sort": true
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "round": false,
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "count_*"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Name",
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Number of Records",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"Name\": ''+datum[\"Name\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "Name"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "count_*"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Name", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "round": false,
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "count_*"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Name",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Number of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

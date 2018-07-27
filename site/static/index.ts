@@ -7,7 +7,6 @@ import {Handler} from 'vega-tooltip';
 import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
 
-
 window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;
 
@@ -40,8 +39,12 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   // Decrease visual noise by removing $schema and description from code examples.
   const textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
-  const code = $target.append('pre').attr('class', 'example-code')
-  .append('code').attr('class', 'json').text(textClean);
+  const code = $target
+    .append('pre')
+    .attr('class', 'example-code')
+    .append('code')
+    .attr('class', 'json')
+    .text(textClean);
   hljs.highlightBlock(code.node() as any);
 
   const spec = JSON.parse(specText);
@@ -49,12 +52,10 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
   embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
 }
 
-export function embedExample($target: any, spec: TopLevelSpec, actions=true, tooltip=true) {
+export function embedExample($target: any, spec: TopLevelSpec, actions = true, tooltip = true) {
   const vgSpec = compile(spec).spec;
 
-  const view = new vega.View(vega.parse(vgSpec), {loader: loader})
-    .renderer('svg')
-    .initialize($target);
+  const view = new vega.View(vega.parse(vgSpec), {loader: loader}).renderer('svg').initialize($target);
 
   if (tooltip) {
     const handler = new Handler().call;
@@ -70,7 +71,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions=true, too
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', function () {
+      .on('click', function() {
         post(window, editorURL, {
           mode: 'vega-lite',
           spec: JSON.stringify(spec, null, 2),
@@ -89,11 +90,13 @@ function getSpec(el: d3.BaseType) {
   const name = sel.attr('data-name');
   if (name) {
     const dir = sel.attr('data-dir');
-    const fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
+    const fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
 
-    text(fullUrl).then(spec => {
-      renderExample(sel, spec);
-    }).catch(console.error);
+    text(fullUrl)
+      .then(spec => {
+        renderExample(sel, spec);
+      })
+      .catch(console.error);
   } else {
     console.error('No "data-name" specified to import examples from');
   }
@@ -110,7 +113,11 @@ window['buildSpecOpts'] = function(id: string, baseName: string) {
   const prefixSel = select('select[name=' + id + ']');
   const inputsSel = selectAll('input[name=' + id + ']:checked');
   const prefix = prefixSel.empty() ? id : prefixSel.property('value');
-  const values = inputsSel.nodes().map((n: any) => n.value).sort().join('_');
+  const values = inputsSel
+    .nodes()
+    .map((n: any) => n.value)
+    .sort()
+    .join('_');
   const newName = baseName + prefix + (values ? '_' + values : '');
   if (oldName !== newName) {
     window['changeSpec'](id, newName);
@@ -154,7 +161,12 @@ function carouselShow(slides: NodeListOf<any>, indicators: NodeListOf<any>, link
   }
 }
 
-function setSlide(slides: NodeListOf<Element>, indicators: NodeListOf<Element>, links: NodeListOf<any>, active: number) {
+function setSlide(
+  slides: NodeListOf<Element>,
+  indicators: NodeListOf<Element>,
+  links: NodeListOf<any>,
+  active: number
+) {
   return function() {
     // Reset all slides
     for (let i = 0; i < indicators.length; i++) {
@@ -185,7 +197,10 @@ if (carousel) {
 
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < indicators.length; i++) {
-    indicators[i].addEventListener('click', setSlide(slides, indicators, links, +indicators[i].getAttribute('data-slide')));
+    indicators[i].addEventListener(
+      'click',
+      setSlide(slides, indicators, links, +indicators[i].getAttribute('data-slide'))
+    );
   }
 
   // tslint:disable-next-line:prefer-for-of

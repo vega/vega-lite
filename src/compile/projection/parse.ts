@@ -1,9 +1,9 @@
+import {SignalRef} from 'vega';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {MAIN} from '../../data';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
 import {duplicate, every, stringify} from '../../util';
-import {VgSignalRef} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
@@ -24,9 +24,9 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
   const {specifiedProjection, config, hasProjection} = model;
 
   if (hasProjection) {
-    const data: (VgSignalRef | string)[] = [];
+    const data: (SignalRef | string)[] = [];
 
-    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((posssiblePair) => {
+    [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(posssiblePair => {
       if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
         data.push({
           signal: model.getName(`geojson_${data.length}`)
@@ -45,28 +45,33 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
       data.push(model.requestDataName(MAIN));
     }
 
-    return new ProjectionComponent(model.projectionName(true), {
-      ...(config.projection || {}),
-      ...(specifiedProjection || {}),
-    }, [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data);
+    return new ProjectionComponent(
+      model.projectionName(true),
+      {
+        ...(config.projection || {}),
+        ...(specifiedProjection || {})
+      },
+      [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')],
+      data
+    );
   }
 
   return undefined;
 }
 
-
 function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
-  const allPropertiesShared = every(PROJECTION_PROPERTIES, (prop) => {
+  const allPropertiesShared = every(PROJECTION_PROPERTIES, prop => {
     // neither has the poperty
-    if (!first.explicit.hasOwnProperty(prop) &&
-      !second.explicit.hasOwnProperty(prop)) {
+    if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
       return true;
     }
     // both have property and an equal value for property
-    if (first.explicit.hasOwnProperty(prop) &&
+    if (
+      first.explicit.hasOwnProperty(prop) &&
       second.explicit.hasOwnProperty(prop) &&
       // some properties might be signals or objects and require hashing for comparison
-      stringify(first.get(prop)) === stringify(second.get(prop))) {
+      stringify(first.get(prop)) === stringify(second.get(prop))
+    ) {
       return true;
     }
     return false;
@@ -93,7 +98,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
   }
 
   let nonUnitProjection: ProjectionComponent;
-  const mergable = every(model.children, (child) => {
+  const mergable = every(model.children, child => {
     parseProjection(child);
     const projection = child.component.projection;
     if (!projection) {
@@ -124,7 +129,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
     );
 
     // rename and assign all others as merged
-    model.children.forEach((child) => {
+    model.children.forEach(child => {
       if (child.component.projection) {
         modelProjection.data = modelProjection.data.concat(child.component.projection.data);
         child.renameProjection(child.component.projection.get('name'), name);

@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
-['single', 'multi'].forEach(function(type) {
-  describe(`${type} selections at runtime in unit views`, function() {
+['single', 'multi'].forEach(type => {
+  describe(`${type} selections at runtime in unit views`, () => {
     const hits = hitsMaster.discrete;
     const embed = embedFn(browser);
     const testRender = testRenderFn(browser, `${type}/unit`);
 
-    it('should add values to the store', function() {
+    it('should add values to the store', () => {
       for (let i = 0; i < hits.qq.length; i++) {
         embed(spec('unit', i, {type}));
         const store = browser.execute(pt('qq', i)).value;
@@ -19,11 +19,11 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       }
     });
 
-    it('should respect projections', function() {
-      let values:number[][] = [];
+    it('should respect projections', () => {
+      let values: number[][] = [];
       let encodings: string[] = [];
       let fields: string[] = [];
-      const test = (emb: Function) => {
+      const test = (emb: (i: number) => void) => {
         for (let i = 0; i < hits.qq.length; i++) {
           emb(i);
           const store = browser.execute(pt('qq', i)).value;
@@ -46,7 +46,7 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       test((i: number) => embed(spec('unit', i, {type, fields})));
     });
 
-    it('should clear out the store', function() {
+    it('should clear out the store', () => {
       for (let i = 0; i < hits.qq_clear.length; i++) {
         embed(spec('unit', i, {type}));
         let store = browser.execute(pt('qq', i)).value;
@@ -58,7 +58,7 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       }
     });
 
-    it('should support selecting bins', function() {
+    it('should support selecting bins', () => {
       const encodings = ['x', 'color', 'y'];
       const fields = ['a', 'c', 'b'];
       const values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];

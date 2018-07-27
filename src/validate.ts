@@ -3,11 +3,9 @@ import {isMarkDef} from './mark';
 import {BAR} from './mark';
 import {FacetedCompositeUnitSpec} from './spec';
 
-
-
 // TODO: move to vl.spec.validator?
 export interface RequiredChannelMap {
-  [mark: string]: Array<string>;
+  [mark: string]: string[];
 }
 
 /**
@@ -22,7 +20,7 @@ export const DEFAULT_REQUIRED_CHANNEL_MAP: RequiredChannelMap = {
 
 export interface SupportedChannelMap {
   [mark: string]: {
-    [channel: string]: boolean
+    [channel: string]: boolean;
   };
 }
 
@@ -39,7 +37,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
   square: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'size', 'detail']),
   point: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'size', 'detail', 'shape']),
   geoshape: toSet(['row', 'column', 'color', 'fill', 'stroke', 'detail', 'shape']),
-  text: toSet(['row', 'column', 'size', 'color', 'fill', 'stroke', 'text'])                         // TODO(#724) revise
+  text: toSet(['row', 'column', 'size', 'color', 'fill', 'stroke', 'text']) // TODO(#724) revise
 };
 
 // TODO: consider if we should add validate method and
@@ -58,26 +56,27 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.
  */
-export function getEncodingMappingError(spec: FacetedCompositeUnitSpec,
+export function getEncodingMappingError(
+  spec: FacetedCompositeUnitSpec,
   requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
   supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
-  ) {
+) {
   const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
   const encoding = spec.encoding;
   const requiredChannels = requiredChannelMap[mark];
   const supportedChannels = supportedChannelMap[mark];
 
-  for (const i in requiredChannels) { // all required channels are in encoding`
+  for (const i in requiredChannels) {
+    // all required channels are in encoding`
     if (!(requiredChannels[i] in encoding)) {
-      return 'Missing encoding channel \"' + requiredChannels[i] +
-        '\" for mark \"' + mark + '\"';
+      return 'Missing encoding channel "' + requiredChannels[i] + '" for mark "' + mark + '"';
     }
   }
 
-  for (const channel in encoding) { // all channels in encoding are supported
+  for (const channel in encoding) {
+    // all channels in encoding are supported
     if (!supportedChannels[channel]) {
-      return 'Encoding channel \"' + channel +
-        '\" is not supported by mark type \"' + mark + '\"';
+      return 'Encoding channel "' + channel + '" is not supported by mark type "' + mark + '"';
     }
   }
 

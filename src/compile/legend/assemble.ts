@@ -1,5 +1,5 @@
+import {Legend as VgLegend} from 'vega';
 import {flatten, keys, stringify, vals} from '../../util';
-import {VgLegend} from '../../vega.schema';
 import {Model} from '../model';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
@@ -19,7 +19,6 @@ export function assembleLegends(model: Model): VgLegend[] {
           legendByDomain[domainHash].push(legendComponentIndex[channel]);
         }
       }
-
     } else {
       legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
     }

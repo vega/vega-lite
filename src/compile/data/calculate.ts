@@ -6,6 +6,7 @@ import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {SingleDefChannel} from './../../channel';
+import {FieldRefOption} from './../../fielddef';
 import {CalculateTransform} from './../../transform';
 import {DataFlowNode} from './dataflow';
 
@@ -31,13 +32,16 @@ export class CalculateNode extends DataFlowNode {
         const {field, timeUnit} = fieldDef;
         const sort: (number | string | boolean | DateTime)[] = fieldDef.sort;
         // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
-        const calculate = sort.map((sortValue, i) => {
-          return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
-        }).join('') + sort.length;
+        const calculate =
+          sort
+            .map((sortValue, i) => {
+              return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+            })
+            .join('') + sort.length;
 
         parent = new CalculateNode(parent, {
           calculate,
-          as: sortArrayIndexField(fieldDef, channel)
+          as: sortArrayIndexField(fieldDef, channel, {forAs: true})
         });
       }
     });
@@ -59,6 +63,6 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum') {
-  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', expr});
+export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
+  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...(opt || {})});
 }

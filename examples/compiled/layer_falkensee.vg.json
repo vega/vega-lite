@@ -1,502 +1,291 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "The population of the German city of Falkensee over time",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 500,
-    "height": 200,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "The population of the German city of Falkensee over time",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 500,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"start": "1933", "end": "1945", "event": "Nazi Rule"},
+        {"start": "1948", "end": "1989", "event": "GDR (East Germany)"}
+      ],
+      "format": {}
+    },
+    {
+      "name": "source_1",
+      "values": [
+        {"year": "1875", "population": 1309},
+        {"year": "1890", "population": 1558},
+        {"year": "1910", "population": 4512},
+        {"year": "1925", "population": 8180},
+        {"year": "1933", "population": 15915},
+        {"year": "1939", "population": 24824},
+        {"year": "1946", "population": 28275},
+        {"year": "1950", "population": 29189},
+        {"year": "1964", "population": 29881},
+        {"year": "1971", "population": 26007},
+        {"year": "1981", "population": 24029},
+        {"year": "1985", "population": 23340},
+        {"year": "1989", "population": 22307},
+        {"year": "1990", "population": 22087},
+        {"year": "1991", "population": 22139},
+        {"year": "1992", "population": 22105},
+        {"year": "1993", "population": 22242},
+        {"year": "1994", "population": 22801},
+        {"year": "1995", "population": 24273},
+        {"year": "1996", "population": 25640},
+        {"year": "1997", "population": 27393},
+        {"year": "1998", "population": 29505},
+        {"year": "1999", "population": 32124},
+        {"year": "2000", "population": 33791},
+        {"year": "2001", "population": 35297},
+        {"year": "2002", "population": 36179},
+        {"year": "2003", "population": 36829},
+        {"year": "2004", "population": 37493},
+        {"year": "2005", "population": 38376},
+        {"year": "2006", "population": 39008},
+        {"year": "2007", "population": 39366},
+        {"year": "2008", "population": 39821},
+        {"year": "2009", "population": 40179},
+        {"year": "2010", "population": 40511},
+        {"year": "2011", "population": 40465},
+        {"year": "2012", "population": 40905},
+        {"year": "2013", "population": 41258},
+        {"year": "2014", "population": 41777}
+      ],
+      "format": {}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "start": "1933",
-                    "end": "1945",
-                    "event": "Nazi Rule"
-                },
-                {
-                    "start": "1948",
-                    "end": "1989",
-                    "event": "GDR (East Germany)"
-                }
-            ],
-            "format": {}
+          "type": "formula",
+          "expr": "timeParse(datum[\"start\"],'%Y')",
+          "as": "start"
         },
         {
-            "name": "source_1",
-            "values": [
-                {
-                    "year": "1875",
-                    "population": 1309
-                },
-                {
-                    "year": "1890",
-                    "population": 1558
-                },
-                {
-                    "year": "1910",
-                    "population": 4512
-                },
-                {
-                    "year": "1925",
-                    "population": 8180
-                },
-                {
-                    "year": "1933",
-                    "population": 15915
-                },
-                {
-                    "year": "1939",
-                    "population": 24824
-                },
-                {
-                    "year": "1946",
-                    "population": 28275
-                },
-                {
-                    "year": "1950",
-                    "population": 29189
-                },
-                {
-                    "year": "1964",
-                    "population": 29881
-                },
-                {
-                    "year": "1971",
-                    "population": 26007
-                },
-                {
-                    "year": "1981",
-                    "population": 24029
-                },
-                {
-                    "year": "1985",
-                    "population": 23340
-                },
-                {
-                    "year": "1989",
-                    "population": 22307
-                },
-                {
-                    "year": "1990",
-                    "population": 22087
-                },
-                {
-                    "year": "1991",
-                    "population": 22139
-                },
-                {
-                    "year": "1992",
-                    "population": 22105
-                },
-                {
-                    "year": "1993",
-                    "population": 22242
-                },
-                {
-                    "year": "1994",
-                    "population": 22801
-                },
-                {
-                    "year": "1995",
-                    "population": 24273
-                },
-                {
-                    "year": "1996",
-                    "population": 25640
-                },
-                {
-                    "year": "1997",
-                    "population": 27393
-                },
-                {
-                    "year": "1998",
-                    "population": 29505
-                },
-                {
-                    "year": "1999",
-                    "population": 32124
-                },
-                {
-                    "year": "2000",
-                    "population": 33791
-                },
-                {
-                    "year": "2001",
-                    "population": 35297
-                },
-                {
-                    "year": "2002",
-                    "population": 36179
-                },
-                {
-                    "year": "2003",
-                    "population": 36829
-                },
-                {
-                    "year": "2004",
-                    "population": 37493
-                },
-                {
-                    "year": "2005",
-                    "population": 38376
-                },
-                {
-                    "year": "2006",
-                    "population": 39008
-                },
-                {
-                    "year": "2007",
-                    "population": 39366
-                },
-                {
-                    "year": "2008",
-                    "population": 39821
-                },
-                {
-                    "year": "2009",
-                    "population": 40179
-                },
-                {
-                    "year": "2010",
-                    "population": 40511
-                },
-                {
-                    "year": "2011",
-                    "population": 40465
-                },
-                {
-                    "year": "2012",
-                    "population": 40905
-                },
-                {
-                    "year": "2013",
-                    "population": 41258
-                },
-                {
-                    "year": "2014",
-                    "population": 41777
-                }
-            ],
-            "format": {}
+          "type": "formula",
+          "expr": "timeParse(datum[\"end\"],'%Y')",
+          "as": "end"
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"start\"],'%Y')",
-                    "as": "start"
-                },
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"end\"],'%Y')",
-                    "as": "end"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_start",
-                    "expr": "datetime(year(datum[\"start\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_end",
-                    "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_start\"] !== null && !isNaN(datum[\"year_start\"])"
-                }
-            ]
+          "type": "formula",
+          "as": "year_start",
+          "expr": "datetime(year(datum[\"start\"]), 0, 1, 0, 0, 0, 0)"
         },
         {
-            "name": "data_1",
-            "source": "source_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "timeParse(datum[\"year\"],'%Y')",
-                    "as": "year"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "data_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"population\"])",
-                    "as": "population"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_year",
-                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "data_1",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"population\"])",
-                    "as": "population"
-                },
-                {
-                    "type": "formula",
-                    "as": "year_year",
-                    "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                }
-            ]
+          "type": "formula",
+          "as": "year_end",
+          "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
         }
-    ],
-    "marks": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_1",
+      "transform": [
         {
-            "name": "layer_0_marks",
-            "type": "rect",
-            "style": [
-                "rect"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "scale": "color",
-                        "field": "event"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "year_start"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "field": "year_end"
-                    },
-                    "y": {
-                        "value": 0
-                    },
-                    "y2": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            }
+          "type": "formula",
+          "expr": "timeParse(datum[\"year\"],'%Y')",
+          "as": "year"
         },
         {
-            "name": "layer_1_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": "datum[\"year_year\"]",
-                "order": "descending"
-            },
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#333"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "year_year"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "population"
-                    },
-                    "defined": {
-                        "signal": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_2_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_3"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "value": "#333"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "year_year"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "population"
-                    }
-                }
-            }
+          "type": "formula",
+          "expr": "toNumber(datum[\"population\"])",
+          "as": "population"
         }
-    ],
-    "scales": [
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "year_start"
-                    },
-                    {
-                        "data": "data_0",
-                        "field": "year_end"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "year_year"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "year_year"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_0",
-                "field": "event",
-                "sort": true
-            },
-            "range": "category"
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_2",
-                        "field": "population"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "population"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "formula",
+          "as": "year_year",
+          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
         }
-    ],
-    "axes": [
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_1",
+      "transform": [
         {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "year (year)",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "encode": {
-                "labels": {
-                    "update": {
-                        "text": {
-                            "signal": "timeFormat(datum.value, '%Y')"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "population",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
+          "type": "formula",
+          "as": "year_year",
+          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
         }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "event"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"year_start\"] === null || isNaN(datum[\"year_start\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "event"}
+          ],
+          "tooltip": {
+            "signal": "{\"start (year)\": timeFormat(datum[\"year_start\"], '%Y'), \"end (year)\": timeFormat(datum[\"year_end\"], '%Y'), \"event\": ''+datum[\"event\"]}"
+          },
+          "x": {"scale": "x", "field": "year_start"},
+          "x2": {"scale": "x", "field": "year_end"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year_year\"]", "order": "descending"},
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#333"},
+          "tooltip": {
+            "signal": "{\"year (year)\": timeFormat(datum[\"year_year\"], '%Y'), \"population\": format(datum[\"population\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "year_year"},
+          "y": {"scale": "y", "field": "population"},
+          "defined": {
+            "signal": "datum[\"year_year\"] !== null && !isNaN(datum[\"year_year\"]) && datum[\"population\"] !== null && !isNaN(datum[\"population\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"year_year\"] === null || isNaN(datum[\"year_year\"]) || datum[\"population\"] === null || isNaN(datum[\"population\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"year_year\"] === null || isNaN(datum[\"year_year\"]) || datum[\"population\"] === null || isNaN(datum[\"population\"])",
+              "value": null
+            },
+            {"value": "#333"}
+          ],
+          "tooltip": {
+            "signal": "{\"year (year)\": timeFormat(datum[\"year_year\"], '%Y'), \"population\": format(datum[\"population\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "year_year"},
+          "y": {"scale": "y", "field": "population"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "year_start"},
+          {"data": "data_0", "field": "year_end"},
+          {"data": "data_2", "field": "year_year"},
+          {"data": "data_3", "field": "year_year"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "event", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_2", "field": "population"},
+          {"data": "data_3", "field": "population"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "year (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "population",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [{"fill": "color", "title": "event"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

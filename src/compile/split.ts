@@ -1,6 +1,5 @@
 import * as log from '../log';
-import {duplicate, keys, stringify} from '../util';
-
+import {duplicate, getFirstDefined, keys, stringify} from '../util';
 
 /**
  * Generic class for storing properties that are explicitly specified
@@ -9,10 +8,7 @@ import {duplicate, keys, stringify} from '../util';
  * we want to prioritize properties that users explicitly specified.
  */
 export class Split<T extends object> {
-  constructor(
-    public readonly explicit: Partial<T> = {},
-    public readonly implicit: Partial<T> = {}
-  ) {}
+  constructor(public readonly explicit: Partial<T> = {}, public readonly implicit: Partial<T> = {}) {}
 
   public clone() {
     return new Split(duplicate(this.explicit), duplicate(this.implicit));
@@ -22,14 +18,14 @@ export class Split<T extends object> {
     // FIXME remove "as any".
     // Add "as any" to avoid an error "Spread types may only be created from object types".
     return {
-      ...this.explicit as any, // Explicit properties comes first
-      ...this.implicit as any
+      ...(this.explicit as any), // Explicit properties comes first
+      ...(this.implicit as any)
     };
   }
 
   public get<K extends keyof T>(key: K): T[K] {
     // Explicit has higher precedence
-    return this.explicit[key] !== undefined ? this.explicit[key] : this.implicit[key];
+    return getFirstDefined(this.explicit[key], this.implicit[key]);
   }
 
   public getWithExplicit<K extends keyof T>(key: K): Explicit<T[K]> {
@@ -86,7 +82,6 @@ export interface Explicit<T> {
   value: T;
 }
 
-
 export function makeExplicit<T>(value: T): Explicit<T> {
   return {
     explicit: true,
@@ -102,7 +97,12 @@ export function makeImplicit<T>(value: T): Explicit<T> {
 }
 
 export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
-  return (v1: Explicit<T>, v2: Explicit<T>, property: keyof S | never, propertyOf: string | number | symbol): Explicit<T> => {
+  return (
+    v1: Explicit<T>,
+    v2: Explicit<T>,
+    property: keyof S | never,
+    propertyOf: string | number | symbol
+  ): Explicit<T> => {
     const diff = compare(v1.value, v2.value);
     if (diff > 0) {
       return v1;
@@ -113,7 +113,12 @@ export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
   };
 }
 
-export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string | number | symbol) {
+export function defaultTieBreaker<S, T>(
+  v1: Explicit<T>,
+  v2: Explicit<T>,
+  property: keyof S,
+  propertyOf: string | number | symbol
+) {
   if (v1.explicit && v2.explicit) {
     log.warn(log.message.mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
   }
@@ -122,11 +127,17 @@ export function defaultTieBreaker<S, T>(v1: Explicit<T>, v2: Explicit<T>, proper
 }
 
 export function mergeValuesWithExplicit<S, T>(
-    v1: Explicit<T>, v2: Explicit<T>,
+  v1: Explicit<T>,
+  v2: Explicit<T>,
+  property: keyof S,
+  propertyOf: 'scale' | 'axis' | 'legend' | '',
+  tieBreaker: (
+    v1: Explicit<T>,
+    v2: Explicit<T>,
     property: keyof S,
-    propertyOf: 'scale' | 'axis' | 'legend' | '',
-    tieBreaker: (v1: Explicit<T>, v2: Explicit<T>, property: keyof S, propertyOf: string) => Explicit<T> = defaultTieBreaker
-  ) {
+    propertyOf: string
+  ) => Explicit<T> = defaultTieBreaker
+) {
   if (v1 === undefined || v1.value === undefined) {
     // For first run
     return v2;

@@ -1,6 +1,19 @@
-import {MAIN, RAW} from '../../data';
+import {MAIN, ParseValue, RAW} from '../../data';
 import * as log from '../../log';
-import {isAggregate, isBin, isCalculate, isFilter, isLookup, isStack, isTimeUnit, isWindow} from '../../transform';
+import {
+  isAggregate,
+  isBin,
+  isCalculate,
+  isFilter,
+  isFlatten,
+  isFold,
+  isImpute,
+  isLookup,
+  isSample,
+  isStack,
+  isTimeUnit,
+  isWindow
+} from '../../transform';
 import {Dict, keys} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
@@ -10,13 +23,16 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
+import {FlattenTransformNode} from './flatten';
+import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
+import {ImputeNode} from './impute';
 import {AncestorParse, DataComponent} from './index';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -37,10 +53,11 @@ function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
     }
   } else {
     // If we don't have a source defined (overriding parent's data), use the parent's facet root or main.
-    return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
+    return model.parent.component.data.facetRoot
+      ? model.parent.component.data.facetRoot
+      : model.parent.component.data.main;
   }
 }
-
 
 /**
  * Parses a transforms array into a chain of connected dataflow nodes.
@@ -49,55 +66,58 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   let lookupCounter = 0;
 
   model.transforms.forEach(t => {
+    let derivedType: ParseValue = undefined;
+    let transformNode: DataFlowNode;
+
     if (isCalculate(t)) {
-      head = new CalculateNode(head, t);
-      ancestorParse.set(t.as, 'derived', false);
+      transformNode = head = new CalculateNode(head, t);
+      derivedType = 'derived';
     } else if (isFilter(t)) {
-      head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
+      transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
 
       head = new FilterNode(head, model, t.filter);
     } else if (isBin(t)) {
-      const bin = head = BinNode.makeFromTransform(head, t, model);
-
-      for (const field of keys(bin.producedFields())) {
-        ancestorParse.set(field, 'number', false);
-      }
-
+      transformNode = head = BinNode.makeFromTransform(head, t, model);
+      derivedType = 'number';
     } else if (isTimeUnit(t)) {
-      head = TimeUnitNode.makeFromTransform(head, t);
-
-      ancestorParse.set(t.as, 'date', false);
+      transformNode = head = TimeUnitNode.makeFromTransform(head, t);
+      derivedType = 'date';
     } else if (isAggregate(t)) {
-      const agg = head = AggregateNode.makeFromTransform(head, t);
+      transformNode = head = AggregateNode.makeFromTransform(head, t);
+      derivedType = 'number';
 
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
       }
-
-      for (const field of keys(agg.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
     } else if (isLookup(t)) {
-      const lookup = head = LookupNode.make(head, model, t, lookupCounter++);
-
-      for (const field of keys(lookup.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = LookupNode.make(head, model, t, lookupCounter++);
+      derivedType = 'derived';
     } else if (isWindow(t)) {
-      const window = head = new WindowTransformNode(head, t);
-
-      for (const field of keys(window.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = new WindowTransformNode(head, t);
+      derivedType = 'number';
     } else if (isStack(t)) {
-      const stack = head = StackNode.makeFromTransform(head, t);
-
-      for (const field of keys(stack.producedFields())) {
-        ancestorParse.set(field, 'derived', false);
-      }
+      transformNode = head = StackNode.makeFromTransform(head, t);
+      derivedType = 'derived';
+    } else if (isFold(t)) {
+      transformNode = head = new FoldTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isFlatten(t)) {
+      transformNode = head = new FlattenTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isSample(t)) {
+      head = new SampleTransformNode(head, t);
+    } else if (isImpute(t)) {
+      transformNode = head = ImputeNode.makeFromTransform(head, t);
+      derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
       return;
+    }
+
+    if (transformNode && derivedType !== undefined) {
+      for (const field of keys(transformNode.producedFields())) {
+        ancestorParse.set(field, derivedType, false);
+      }
     }
   });
 
@@ -203,7 +223,6 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {
-
     if (!parentIsLayer) {
       head = BinNode.makeFromEncoding(head, model) || head;
     }
@@ -227,12 +246,8 @@ export function parseData(model: Model): DataComponent {
         head = new IdentifierNode(head);
       }
     }
-
+    head = ImputeNode.makeFromEncoding(head, model) || head;
     head = StackNode.makeFromEncoding(head, model) || head;
-  }
-
-  if (isUnitModel(model)) {
-    head = FilterInvalidNode.make(head, model) || head;
   }
 
   // output node for marks

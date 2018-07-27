@@ -15,7 +15,7 @@ export class GeoJSONNode extends DataFlowNode {
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
       const pair = coordinates.map(
-        channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
+        channel => (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined)
       );
 
       if (pair[0] || pair[1]) {

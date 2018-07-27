@@ -103,7 +103,6 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   }
 }
 
-
 function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, autosize: AutoSizeParams) {
   return {
     autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize,
@@ -148,17 +147,14 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   });
 
   const output = {
-    $schema: 'https://vega.github.io/schema/vega/v3.json',
+    $schema: 'https://vega.github.io/schema/vega/v4.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
-    ...(title? {title} : {}),
-    ...(style? {style} : {}),
+    ...(title ? {title} : {}),
+    ...(style ? {style} : {}),
     data: data,
     ...(projections.length > 0 ? {projections: projections} : {}),
-    ...model.assembleGroup([
-      ...layoutSignals,
-      ...model.assembleSelectionTopLevelSignals([])
-    ]),
+    ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]),
     ...(vgConfig ? {config: vgConfig} : {})
   };
 

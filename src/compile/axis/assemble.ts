@@ -1,15 +1,14 @@
+import {Axis as VgAxis} from 'vega';
 import {isArray} from 'vega-util';
-
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE} from '../../axis';
 import {Config} from '../../config';
-import {FieldDefBase, title as fieldDefTitle} from '../../fielddef';
-import {keys} from '../../util';
-import {VgAxis} from '../../vega.schema';
+import {defaultTitle, FieldDefBase} from '../../fielddef';
+import {getFirstDefined, keys} from '../../util';
 import {AxisComponent, AxisComponentIndex} from './component';
 
 function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
   if (isArray(title)) {
-    return title.map(fieldDef => fieldDefTitle(fieldDef, config)).join(', ');
+    return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;
 }
@@ -19,13 +18,13 @@ export function assembleAxis(
   kind: 'main' | 'grid',
   config: Config,
   opt: {
-    header: boolean // whether this is called via a header
+    header: boolean; // whether this is called via a header
   } = {header: false}
 ): VgAxis {
   const {orient, scale, title, zindex, ...axis} = axisCmpt.combine();
 
   // Remove properties that are not valid for this kind of axis
-  keys(axis).forEach((key) => {
+  keys(axis).forEach(key => {
     const propType = AXIS_PROPERTY_TYPE[key];
     if (propType && propType !== kind && propType !== 'both') {
       delete axis[key];
@@ -62,9 +61,10 @@ export function assembleAxis(
       maxExtent: 0,
       minExtent: 0,
       ticks: false,
-      zindex: zindex !== undefined ? zindex : 0 // put grid behind marks by default
+      zindex: getFirstDefined(zindex, 0) // put grid behind marks by default
     };
-  } else { // kind === 'main'
+  } else {
+    // kind === 'main'
 
     if (!opt.header && axisCmpt.mainExtracted) {
       // if mainExtracted has been extracted to a separate facet
@@ -74,9 +74,7 @@ export function assembleAxis(
     // Remove unnecessary encode block
     if (axis.encode) {
       for (const part of AXIS_PARTS) {
-        if (
-          !axisCmpt.hasAxisPart(part)
-        ) {
+        if (!axisCmpt.hasAxisPart(part)) {
           delete axis.encode[part];
         }
       }
@@ -93,13 +91,13 @@ export function assembleAxis(
       grid: false,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
-      zindex: zindex !== undefined ? zindex : 1 // put axis line above marks by default
+      zindex: getFirstDefined(zindex, 1) // put axis line above marks by default
     };
   }
 }
 
 export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {
-  const {x=[], y=[]} = axisComponents;
+  const {x = [], y = []} = axisComponents;
   return [
     ...x.map(a => assembleAxis(a, 'main', config)),
     ...x.map(a => assembleAxis(a, 'grid', config)),

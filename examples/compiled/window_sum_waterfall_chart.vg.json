@@ -1,545 +1,283 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 800,
-    "height": 450,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 800,
+  "height": 450,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"label": "Begin", "amount": 4000},
+        {"label": "Jan", "amount": 1707},
+        {"label": "Feb", "amount": -1425},
+        {"label": "Mar", "amount": -1030},
+        {"label": "Apr", "amount": 1812},
+        {"label": "May", "amount": -1067},
+        {"label": "Jun", "amount": -1481},
+        {"label": "Jul", "amount": 1228},
+        {"label": "Aug", "amount": 1176},
+        {"label": "Sep", "amount": 1146},
+        {"label": "Oct", "amount": 1205},
+        {"label": "Nov", "amount": -1388},
+        {"label": "Dec", "amount": 1492},
+        {"label": "End", "amount": 0}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "source_0",
-            "values": [
-                {
-                    "label": "Begin",
-                    "amount": 4000
-                },
-                {
-                    "label": "Jan",
-                    "amount": 1707
-                },
-                {
-                    "label": "Feb",
-                    "amount": -1425
-                },
-                {
-                    "label": "Mar",
-                    "amount": -1030
-                },
-                {
-                    "label": "Apr",
-                    "amount": 1812
-                },
-                {
-                    "label": "May",
-                    "amount": -1067
-                },
-                {
-                    "label": "Jun",
-                    "amount": -1481
-                },
-                {
-                    "label": "Jul",
-                    "amount": 1228
-                },
-                {
-                    "label": "Aug",
-                    "amount": 1176
-                },
-                {
-                    "label": "Sep",
-                    "amount": 1146
-                },
-                {
-                    "label": "Oct",
-                    "amount": 1205
-                },
-                {
-                    "label": "Nov",
-                    "amount": -1388
-                },
-                {
-                    "label": "Dec",
-                    "amount": 1492
-                },
-                {
-                    "label": "End",
-                    "amount": 0
-                }
-            ]
+          "type": "window",
+          "params": [null],
+          "as": ["sum"],
+          "ops": ["sum"],
+          "fields": ["amount"],
+          "sort": {"field": [], "order": []}
         },
         {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "window",
-                    "params": [
-                        null
-                    ],
-                    "as": [
-                        "sum"
-                    ],
-                    "ops": [
-                        "sum"
-                    ],
-                    "fields": [
-                        "amount"
-                    ],
-                    "sort": {
-                        "field": [],
-                        "order": []
-                    }
-                },
-                {
-                    "type": "window",
-                    "params": [
-                        null
-                    ],
-                    "as": [
-                        "lead"
-                    ],
-                    "ops": [
-                        "lead"
-                    ],
-                    "fields": [
-                        "label"
-                    ],
-                    "sort": {
-                        "field": [],
-                        "order": []
-                    }
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.lead === null ? datum.label : datum.lead",
-                    "as": "lead"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
-                    "as": "previous_sum"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.label === 'End' ? datum.sum : datum.amount",
-                    "as": "amount"
-                },
-                {
-                    "type": "formula",
-                    "expr": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
-                    "as": "text_amount"
-                },
-                {
-                    "type": "formula",
-                    "expr": "(datum.sum + datum.previous_sum) / 2",
-                    "as": "center"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.sum < datum.previous_sum ? datum.sum : ''",
-                    "as": "sum_dec"
-                },
-                {
-                    "type": "formula",
-                    "expr": "datum.sum > datum.previous_sum ? datum.sum : ''",
-                    "as": "sum_inc"
-                }
-            ]
+          "type": "window",
+          "params": [null],
+          "as": ["lead"],
+          "ops": ["lead"],
+          "fields": ["label"],
+          "sort": {"field": [], "order": []}
         },
         {
-            "name": "data_1",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"previous_sum\"] !== null && !isNaN(datum[\"previous_sum\"])"
-                }
-            ]
+          "type": "formula",
+          "expr": "datum.lead === null ? datum.label : datum.lead",
+          "as": "lead"
         },
         {
-            "name": "data_2",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"sum\"] !== null && !isNaN(datum[\"sum\"])"
-                }
-            ]
+          "type": "formula",
+          "expr": "datum.label === 'End' ? 0 : datum.sum - datum.amount",
+          "as": "previous_sum"
         },
         {
-            "name": "data_3",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"sum_inc\"] !== null && !isNaN(datum[\"sum_inc\"])"
-                }
-            ]
+          "type": "formula",
+          "expr": "datum.label === 'End' ? datum.sum : datum.amount",
+          "as": "amount"
         },
         {
-            "name": "data_4",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"sum_dec\"] !== null && !isNaN(datum[\"sum_dec\"])"
-                }
-            ]
+          "type": "formula",
+          "expr": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
+          "as": "text_amount"
         },
         {
-            "name": "data_5",
-            "source": "data_0",
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"center\"] !== null && !isNaN(datum[\"center\"])"
-                }
-            ]
+          "type": "formula",
+          "expr": "(datum.sum + datum.previous_sum) / 2",
+          "as": "center"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.sum < datum.previous_sum ? datum.sum : ''",
+          "as": "sum_dec"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.sum > datum.previous_sum ? datum.sum : ''",
+          "as": "sum_inc"
         }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_marks",
-            "type": "rect",
-            "style": [
-                "bar"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "fill": [
-                        {
-                            "test": "datum.label === 'Begin' || datum.label === 'End'",
-                            "value": "#f7e0b6"
-                        },
-                        {
-                            "test": "datum.sum < datum.previous_sum",
-                            "value": "#f78a64"
-                        },
-                        {
-                            "value": "#93c4aa"
-                        }
-                    ],
-                    "xc": {
-                        "scale": "x",
-                        "field": "label",
-                        "band": 0.5
-                    },
-                    "width": {
-                        "value": 45
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "previous_sum"
-                    },
-                    "y2": {
-                        "scale": "y",
-                        "field": "sum"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 1
-                    },
-                    "strokeWidth": {
-                        "value": 2
-                    },
-                    "stroke": {
-                        "value": "#404040"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "label",
-                        "band": 0.5,
-                        "offset": -22.5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum"
-                    },
-                    "x2": {
-                        "scale": "x",
-                        "field": "lead",
-                        "band": 0.5,
-                        "offset": 22.5
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_2_marks",
-            "type": "text",
-            "style": [
-                "text"
-            ],
-            "from": {
-                "data": "data_3"
-            },
-            "encode": {
-                "update": {
-                    "dy": {
-                        "value": -8
-                    },
-                    "fontWeight": {
-                        "value": "bold"
-                    },
-                    "fill": {
-                        "value": "#404040"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "label",
-                        "band": 0.5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum_inc"
-                    },
-                    "text": {
-                        "signal": "''+datum[\"sum_inc\"]"
-                    },
-                    "align": {
-                        "value": "center"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_3_marks",
-            "type": "text",
-            "style": [
-                "text"
-            ],
-            "from": {
-                "data": "data_4"
-            },
-            "encode": {
-                "update": {
-                    "baseline": {
-                        "value": "top"
-                    },
-                    "dy": {
-                        "value": 8
-                    },
-                    "fontWeight": {
-                        "value": "bold"
-                    },
-                    "fill": {
-                        "value": "#404040"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "label",
-                        "band": 0.5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "sum_dec"
-                    },
-                    "text": {
-                        "signal": "''+datum[\"sum_dec\"]"
-                    },
-                    "align": {
-                        "value": "center"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_4_marks",
-            "type": "text",
-            "style": [
-                "text"
-            ],
-            "from": {
-                "data": "data_5"
-            },
-            "encode": {
-                "update": {
-                    "baseline": {
-                        "value": "middle"
-                    },
-                    "fontWeight": {
-                        "value": "bold"
-                    },
-                    "fill": [
-                        {
-                            "test": "datum.label === 'Begin' || datum.label === 'End'",
-                            "value": "#725a30"
-                        },
-                        {
-                            "value": "white"
-                        }
-                    ],
-                    "x": {
-                        "scale": "x",
-                        "field": "label",
-                        "band": 0.5
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "center"
-                    },
-                    "text": {
-                        "signal": "''+datum[\"text_amount\"]"
-                    },
-                    "align": {
-                        "value": "center"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "label"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "label"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "lead"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "label"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "label"
-                    },
-                    {
-                        "data": "data_5",
-                        "field": "label"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_1",
-                        "field": "previous_sum"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "sum"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "sum"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "sum_inc"
-                    },
-                    {
-                        "data": "data_4",
-                        "field": "sum_dec"
-                    },
-                    {
-                        "data": "data_5",
-                        "field": "center"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Months",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Amount",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"previous_sum\"] === null || isNaN(datum[\"previous_sum\"])",
+              "value": null
+            },
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#f7e0b6"
+            },
+            {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"},
+            {"value": "#93c4aa"}
+          ],
+          "tooltip": {
+            "signal": "{\"Months\": ''+datum[\"label\"], \"Amount\": format(datum[\"previous_sum\"], \"\"), \"sum\": format(datum[\"sum\"], \"\")}"
+          },
+          "xc": {"scale": "x", "field": "label", "band": 0.5},
+          "width": {"value": 45},
+          "y": {"scale": "y", "field": "previous_sum"},
+          "y2": {"scale": "y", "field": "sum"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "strokeWidth": {"value": 2},
+          "stroke": [
+            {
+              "test": "datum[\"sum\"] === null || isNaN(datum[\"sum\"])",
+              "value": null
+            },
+            {"value": "#404040"}
+          ],
+          "tooltip": {
+            "signal": "{\"Months\": ''+datum[\"label\"], \"sum\": format(datum[\"sum\"], \"\"), \"lead\": ''+datum[\"lead\"]}"
+          },
+          "x": {"scale": "x", "field": "label", "band": 0.5, "offset": -22.5},
+          "y": {"scale": "y", "field": "sum"},
+          "x2": {"scale": "x", "field": "lead", "band": 0.5, "offset": 22.5}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "dy": {"value": -8},
+          "fill": [
+            {
+              "test": "datum[\"sum_inc\"] === null || isNaN(datum[\"sum_inc\"])",
+              "value": null
+            },
+            {"value": "#404040"}
+          ],
+          "tooltip": {
+            "signal": "{\"Months\": ''+datum[\"label\"], \"sum_inc\": format(datum[\"sum_inc\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "label", "band": 0.5},
+          "y": {"scale": "y", "field": "sum_inc"},
+          "text": {"signal": "''+datum[\"sum_inc\"]"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "top"},
+          "dy": {"value": 8},
+          "fill": [
+            {
+              "test": "datum[\"sum_dec\"] === null || isNaN(datum[\"sum_dec\"])",
+              "value": null
+            },
+            {"value": "#404040"}
+          ],
+          "tooltip": {
+            "signal": "{\"Months\": ''+datum[\"label\"], \"sum_dec\": format(datum[\"sum_dec\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "label", "band": 0.5},
+          "y": {"scale": "y", "field": "sum_dec"},
+          "text": {"signal": "''+datum[\"sum_dec\"]"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
+      "name": "layer_4_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "middle"},
+          "fontWeight": {"value": "bold"},
+          "fill": [
+            {
+              "test": "datum[\"center\"] === null || isNaN(datum[\"center\"])",
+              "value": null
+            },
+            {
+              "test": "datum.label === 'Begin' || datum.label === 'End'",
+              "value": "#725a30"
+            },
+            {"value": "white"}
+          ],
+          "tooltip": {
+            "signal": "{\"Months\": ''+datum[\"label\"], \"center\": format(datum[\"center\"], \"\"), \"text_amount\": ''+datum[\"text_amount\"]}"
+          },
+          "x": {"scale": "x", "field": "label", "band": 0.5},
+          "y": {"scale": "y", "field": "center"},
+          "text": {"signal": "''+datum[\"text_amount\"]"},
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "fields": ["label", "lead"]},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["previous_sum", "sum", "sum_inc", "sum_dec", "center"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Months",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Amount",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {
+    "axisY": {"minExtent": 30},
+    "style": {"text": {"fontWeight": "bold"}}
+  }
 }

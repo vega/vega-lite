@@ -24,7 +24,7 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   valid: 1,
   values: 1,
   variance: 1,
-  variancep: 1,
+  variancep: 1
 };
 
 export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
@@ -40,25 +40,11 @@ export function isCountingAggregateOp(aggregate: string): boolean {
 }
 
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export const SUM_OPS: AggregateOp[] = [
-    'count',
-    'sum',
-    'distinct',
-    'valid',
-    'missing'
-];
+export const SUM_OPS: AggregateOp[] = ['count', 'sum', 'distinct', 'valid', 'missing'];
 
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
-export const SHARED_DOMAIN_OPS: AggregateOp[] = [
-    'mean',
-    'average',
-    'median',
-    'q1',
-    'q3',
-    'min',
-    'max',
-];
+export const SHARED_DOMAIN_OPS: AggregateOp[] = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
 
 export const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);

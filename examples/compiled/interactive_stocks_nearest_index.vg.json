@@ -1,463 +1,287 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 600,
-    "height": 300,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 600,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "index_store"},
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "index_store"
-        },
-        {
-            "name": "source_0",
-            "url": "data/stocks.csv",
-            "format": {
-                "type": "csv"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"price\"])",
-                    "as": "price"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_2",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "filter",
-                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                }
-            ]
-        },
-        {
-            "name": "data_3",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "filter",
-                    "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"date\"] !== null && !isNaN(datum[\"date\"])"
-                }
-            ]
+          "type": "filter",
+          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
         }
-    ],
-    "signals": [
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "index",
-            "update": "data(\"index_store\").length && {date: data(\"index_store\")[0].values[0]}"
-        },
-        {
-            "name": "index_tuple",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mousemove"
-                        }
-                    ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
-                    "force": true
-                }
-            ]
-        },
-        {
-            "name": "index_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "index_tuple"
-                    },
-                    "update": "modify(\"index_store\", index_tuple, true)"
-                }
-            ]
+          "type": "filter",
+          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
         }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_layer_0_main",
-                    "data": "data_0",
-                    "groupby": [
-                        "symbol"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "layer_0_marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"date\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_layer_0_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "scale": "color",
-                                "field": "symbol"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "date"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "price"
-                            },
-                            "defined": {
-                                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "symbol"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "price"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_voronoi",
-            "type": "path",
-            "from": {
-                "data": "layer_1_marks"
-            },
-            "encode": {
-                "enter": {
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "strokeWidth": {
-                        "value": 0.35
-                    },
-                    "stroke": {
-                        "value": "transparent"
-                    },
-                    "isVoronoi": {
-                        "value": true
-                    }
-                }
-            },
-            "transform": [
-                {
-                    "type": "voronoi",
-                    "x": {
-                        "expr": "datum.datum.x || 0"
-                    },
-                    "y": {
-                        "expr": "0"
-                    },
-                    "size": [
-                        {
-                            "signal": "width"
-                        },
-                        {
-                            "signal": "height"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "layer_2_marks",
-            "type": "rule",
-            "style": [
-                "rule"
-            ],
-            "from": {
-                "data": "data_2"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "field": {
-                            "group": "height"
-                        }
-                    },
-                    "y2": {
-                        "value": 0
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_3_marks",
-            "type": "text",
-            "style": [
-                "text"
-            ],
-            "from": {
-                "data": "data_3"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "value": "black"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "date"
-                    },
-                    "y": {
-                        "value": 10
-                    },
-                    "text": {
-                        "signal": "timeFormat(datum[\"date\"], '')"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_2",
-                        "field": "date"
-                    },
-                    {
-                        "data": "data_3",
-                        "field": "date"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "price"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "price"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "symbol"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "symbol"
-                    }
-                ],
-                "sort": true
-            },
-            "range": "category"
-        }
-    ],
-    "axes": [
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "price",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "symbol",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        },
-        "style": {
-            "text": {
-                "align": "right",
-                "dx": -5,
-                "dy": 5
-            }
-        }
+      ]
     }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "index",
+      "update": "data(\"index_store\").length && {date: data(\"index_store\")[0].values[0]}"
+    },
+    {
+      "name": "index_tuple",
+      "value": {},
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mousemove"}],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "force": true
+        }
+      ]
+    },
+    {
+      "name": "index_modify",
+      "on": [
+        {
+          "events": {"signal": "index_tuple"},
+          "update": "modify(\"index_store\", index_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_0_main",
+          "data": "source_0",
+          "groupby": ["symbol"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_0_marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"date\"]", "order": "descending"},
+          "from": {"data": "faceted_path_layer_0_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "symbol"},
+              "tooltip": {
+                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+              },
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "price"},
+              "defined": {
+                "signal": "datum[\"date\"] !== null && !isNaN(datum[\"date\"]) && datum[\"price\"] !== null && !isNaN(datum[\"price\"])"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0},
+          "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_voronoi",
+      "type": "path",
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true}
+        }
+      },
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "datum.datum.x || 0"},
+          "y": {"expr": "0"},
+          "size": [{"signal": "width"}, {"signal": "height"}]
+        }
+      ]
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"field": {"group": "height"}},
+          "y2": {"value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"value": 10},
+          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          {"data": "data_0", "field": "date"},
+          {"data": "data_1", "field": "date"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "color", "title": "symbol"}],
+  "config": {
+    "axisY": {"minExtent": 30},
+    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
+  }
 }

@@ -1,293 +1,188 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "data": [
-        {
-            "name": "source_0",
-            "url": "data/movies.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Worldwide_Gross": "number",
-                    "US_DVD_Sales": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Worldwide_Gross\"] !== null && !isNaN(datum[\"Worldwide_Gross\"]) && datum[\"US_DVD_Sales\"] !== null && !isNaN(datum[\"US_DVD_Sales\"])"
-                }
-            ]
-        },
-        {
-            "name": "column_domain",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "MPAA_Rating"
-                    ]
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "child_width",
-            "value": 200
-        },
-        {
-            "name": "child_height",
-            "value": 200
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "offset": {
-            "columnTitle": 10
-        },
-        "columns": {
-            "signal": "length(data('column_domain'))"
-        },
-        "bounds": "full",
-        "align": "all"
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {
+        "type": "json",
+        "parse": {"Worldwide_Gross": "number", "US_DVD_Sales": "number"}
+      }
     },
-    "marks": [
-        {
-            "name": "column-title",
-            "type": "group",
-            "role": "column-title",
-            "title": {
-                "text": "MPAA_Rating",
-                "offset": 10,
-                "style": "guide-title"
-            }
-        },
-        {
-            "name": "row_header",
-            "type": "group",
-            "role": "row-header",
-            "encode": {
-                "update": {
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "US_DVD_Sales",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(child_height/40)"
-                    },
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "column_header",
-            "type": "group",
-            "role": "column-header",
-            "from": {
-                "data": "column_domain"
-            },
-            "sort": {
-                "field": "datum[\"MPAA_Rating\"]",
-                "order": "ascending"
-            },
-            "title": {
-                "text": {
-                    "signal": "''+parent[\"MPAA_Rating\"]"
-                },
-                "offset": 10,
-                "orient": "top",
-                "style": "guide-label"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            }
-        },
-        {
-            "name": "column_footer",
-            "type": "group",
-            "role": "column-footer",
-            "from": {
-                "data": "column_domain"
-            },
-            "sort": {
-                "field": "datum[\"MPAA_Rating\"]",
-                "order": "ascending"
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    }
-                }
-            },
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "Worldwide_Gross",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(child_width/40)"
-                    },
-                    "zindex": 1
-                }
-            ]
-        },
-        {
-            "name": "cell",
-            "type": "group",
-            "style": "cell",
-            "from": {
-                "facet": {
-                    "name": "facet",
-                    "data": "source_0",
-                    "groupby": [
-                        "MPAA_Rating"
-                    ]
-                }
-            },
-            "sort": {
-                "field": [
-                    "datum[\"MPAA_Rating\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "child_width"
-                    },
-                    "height": {
-                        "signal": "child_height"
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "child_marks",
-                    "type": "symbol",
-                    "style": [
-                        "point"
-                    ],
-                    "from": {
-                        "data": "facet"
-                    },
-                    "encode": {
-                        "update": {
-                            "opacity": {
-                                "value": 0.7
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": {
-                                "value": "#4c78a8"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "Worldwide_Gross"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "US_DVD_Sales"
-                            }
-                        }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(child_width/40)"
-                    },
-                    "gridScale": "y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "y",
-                    "orient": "left",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(child_height/40)"
-                    },
-                    "gridScale": "x",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Worldwide_Gross"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "child_width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "US_DVD_Sales"
-            },
-            "range": [
-                {
-                    "signal": "child_height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+    {
+      "name": "column_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["MPAA_Rating"]}]
     }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 200},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "MPAA_Rating", "offset": 10, "style": "guide-title"}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "US_DVD_Sales",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"MPAA_Rating\"]", "order": "ascending"},
+      "title": {
+        "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
+        "offset": 10,
+        "style": "guide-label",
+        "baseline": "middle"
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"MPAA_Rating\"]", "order": "ascending"},
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Worldwide_Gross",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "zindex": 1
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": ["MPAA_Rating"]
+        }
+      },
+      "sort": {"field": ["datum[\"MPAA_Rating\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "datum[\"Worldwide_Gross\"] === null || isNaN(datum[\"Worldwide_Gross\"]) || datum[\"US_DVD_Sales\"] === null || isNaN(datum[\"US_DVD_Sales\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"Worldwide_Gross\"] === null || isNaN(datum[\"Worldwide_Gross\"]) || datum[\"US_DVD_Sales\"] === null || isNaN(datum[\"US_DVD_Sales\"])",
+                  "value": null
+                },
+                {"value": "#4c78a8"}
+              ],
+              "tooltip": {
+                "signal": "{\"Worldwide_Gross\": format(datum[\"Worldwide_Gross\"], \"\"), \"US_DVD_Sales\": format(datum[\"US_DVD_Sales\"], \"\")}"
+              },
+              "x": {"scale": "x", "field": "Worldwide_Gross"},
+              "y": {"scale": "y", "field": "US_DVD_Sales"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "gridScale": "y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Worldwide_Gross"},
+      "range": [0, {"signal": "child_width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "US_DVD_Sales"},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

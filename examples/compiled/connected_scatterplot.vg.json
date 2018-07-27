@@ -1,247 +1,130 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "url": "data/driving.json",
-            "format": {
-                "type": "json"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"miles\"])",
-                    "as": "miles"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"gas\"])",
-                    "as": "gas"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"miles\"])",
-                    "as": "miles"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"gas\"])",
-                    "as": "gas"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"year\"])",
-                    "as": "year"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "layer_0_marks",
-            "type": "line",
-            "style": [
-                "line"
-            ],
-            "sort": {
-                "field": [
-                    "datum[\"year\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "stroke": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "miles"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "gas"
-                    },
-                    "defined": {
-                        "signal": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
-                    }
-                }
-            }
-        },
-        {
-            "name": "layer_1_marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "sort": {
-                "field": [
-                    "datum[\"year\"]"
-                ],
-                "order": [
-                    "ascending"
-                ]
-            },
-            "from": {
-                "data": "data_1"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 1
-                    },
-                    "fill": {
-                        "value": "#4c78a8"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "miles"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "gas"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "miles"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "miles"
-                    }
-                ]
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "zero": false,
-            "nice": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "fields": [
-                    {
-                        "data": "data_0",
-                        "field": "gas"
-                    },
-                    {
-                        "data": "data_1",
-                        "field": "gas"
-                    }
-                ]
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "zero": false,
-            "nice": true
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "miles",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "gas",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/driving.json",
+      "format": {
+        "type": "json",
+        "parse": {"miles": "number", "gas": "number", "year": "date"}
+      }
     }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
+          },
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
+          "defined": {
+            "signal": "datum[\"miles\"] !== null && !isNaN(datum[\"miles\"]) && datum[\"gas\"] !== null && !isNaN(datum[\"gas\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": [
+            {
+              "test": "datum[\"miles\"] === null || isNaN(datum[\"miles\"]) || datum[\"gas\"] === null || isNaN(datum[\"gas\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"miles\": format(datum[\"miles\"], \"\"), \"gas\": format(datum[\"gas\"], \"\"), \"year\": timeFormat(datum[\"year\"], '%b %d, %Y')}"
+          },
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "miles"},
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "gas"},
+      "range": [{"signal": "height"}, 0],
+      "zero": false,
+      "nice": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "miles",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "gas",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

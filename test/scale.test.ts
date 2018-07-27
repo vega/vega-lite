@@ -3,7 +3,8 @@ import {Channel, SCALE_CHANNELS, ScaleChannel} from '../src/channel';
 import * as scale from '../src/scale';
 import {
   channelSupportScaleType,
-  CONTINUOUS_TO_CONTINUOUS_SCALES, getSupportedScaleType,
+  CONTINUOUS_TO_CONTINUOUS_SCALES,
+  getSupportedScaleType,
   SCALE_TYPES,
   ScaleType
 } from '../src/scale';
@@ -15,9 +16,11 @@ describe('scale', () => {
     // Make sure we always edit this when we add new channel
     it('should have at least one supported scale types for all scale properties', () => {
       for (const prop of scale.SCALE_PROPERTIES) {
-        assert(some(scale.SCALE_TYPES, (scaleType) => {
-          return scale.scaleTypeSupportProperty(scaleType, prop);
-        }));
+        assert(
+          some(scale.SCALE_TYPES, scaleType => {
+            return scale.scaleTypeSupportProperty(scaleType, prop);
+          })
+        );
       }
     });
 
@@ -34,23 +37,26 @@ describe('scale', () => {
     });
   });
 
-
   describe('channelSupportScaleType', () => {
     // Make sure we always edit this when we add new channel
     it('should have at least one supported scale types for all channels with scale', () => {
       for (const channel of SCALE_CHANNELS) {
-        assert(some(SCALE_TYPES, (scaleType) => {
-          return channelSupportScaleType(channel, scaleType);
-        }));
+        assert(
+          some(SCALE_TYPES, scaleType => {
+            return channelSupportScaleType(channel, scaleType);
+          })
+        );
       }
     });
 
     // Make sure we always edit this when we add new scale type
     it('should have at least one supported channel for all scale types', () => {
       for (const scaleType of SCALE_TYPES) {
-        assert(some(SCALE_CHANNELS, (channel) => {
-          return channelSupportScaleType(channel, scaleType);
-        }));
+        assert(
+          some(SCALE_CHANNELS, channel => {
+            return channelSupportScaleType(channel, scaleType);
+          })
+        );
       }
     });
 
@@ -67,7 +73,6 @@ describe('scale', () => {
         assert.equal(channelSupportScaleType('color', scaleType), scaleType !== 'band');
       }
     });
-
 
     it('x, y, size, opacity should support all continuous scale type as well as band and point', () => {
       // x,y should use either band or point for ordinal input

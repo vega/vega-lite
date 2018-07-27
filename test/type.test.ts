@@ -1,8 +1,7 @@
 import {assert} from 'chai';
-
 import * as type from '../src/type';
 
-describe('type', function () {
+describe('type', () => {
   describe('getFullName()', () => {
     it('should return correct lowercase, full type names.', () => {
       for (const t of ['q', 'Q', 'quantitative', 'QUANTITATIVE']) {
@@ -16,12 +15,6 @@ describe('type', function () {
       }
       for (const t of ['n', 'N', 'nominal', 'NOMINAL']) {
         assert.equal(type.getFullName(t), 'nominal');
-      }
-      for (const t of ['latitude', 'LATITUDE']) {
-        assert.equal(type.getFullName(t), 'latitude');
-      }
-      for (const t of ['longitude', 'LONGITUDE']) {
-        assert.equal(type.getFullName(t), 'longitude');
       }
       for (const t of ['geojson', 'GEOJSON']) {
         assert.equal(type.getFullName(t), 'geojson');

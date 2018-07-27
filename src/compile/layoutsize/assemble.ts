@@ -1,14 +1,11 @@
-
 import {hasDiscreteDomain} from '../../scale';
+import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep, VgSignal} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 
 export function assembleLayoutSignals(model: Model): VgSignal[] {
-  return [].concat(
-    sizeSignals(model, 'width'),
-    sizeSignals(model, 'height')
-  );
+  return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
 
 export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSignal[] {
@@ -53,34 +50,36 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('layout size is range step although there is no rangeStep.');
   } else {
-    return [{
-      name,
-      value: size
-    }];
+    return [
+      {
+        name,
+        value: size
+      }
+    ];
   }
 }
 
 function stepSignal(scaleName: string, range: VgRangeStep): VgSignal {
   return {
     name: scaleName + '_step',
-    value: range.step,
+    value: range.step
   };
 }
 
 export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, cardinality: string) {
   const type = scaleComponent.get('type');
   const padding = scaleComponent.get('padding');
-  let paddingOuter = scaleComponent.get('paddingOuter');
-  paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+  const paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
 
   let paddingInner = scaleComponent.get('paddingInner');
-  paddingInner = type === 'band' ?
-    // only band has real paddingInner
-    (paddingInner !== undefined ? paddingInner : padding) :
-    // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-    // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-    1;
+  paddingInner =
+    type === 'band'
+      ? // only band has real paddingInner
+        paddingInner !== undefined
+        ? paddingInner
+        : padding
+      : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
   return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`;
 }
-
-

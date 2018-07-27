@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A vertical 1D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {"url": "data/population.json"},
+  "layer": [
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "q1", "field": "people", "as": "lower_box_people"},
+            {"op": "q3", "field": "people", "as": "upper_box_people"},
+            {"op": "median", "field": "people", "as": "mid_box_people"},
+            {"op": "min", "field": "people", "as": "min_people"},
+            {"op": "max", "field": "people", "as": "max_people"}
+          ],
+          "groupby": []
+        },
+        {
+          "calculate": "datum.upper_box_people - datum.lower_box_people",
+          "as": "iqr_people"
+        },
+        {
+          "calculate": "min(datum.upper_box_people + datum.iqr_people * 1.5, datum.max_people)",
+          "as": "upper_whisker_people"
+        },
+        {
+          "calculate": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
+          "as": "lower_whisker_people"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {"type": "rule", "style": "boxplot-rule"},
+          "encoding": {
+            "y": {
+              "field": "lower_whisker_people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
+            "y2": {"field": "lower_box_people", "type": "quantitative"}
+          }
+        },
+        {
+          "mark": {"type": "rule", "style": "boxplot-rule"},
+          "encoding": {
+            "y": {
+              "field": "upper_box_people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
+            "y2": {"field": "upper_whisker_people", "type": "quantitative"}
+          }
+        },
+        {
+          "mark": {"type": "bar", "size": 14, "style": "boxplot-box"},
+          "encoding": {
+            "y": {
+              "field": "lower_box_people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            },
+            "y2": {"field": "upper_box_people", "type": "quantitative"}
+          }
+        },
+        {
+          "mark": {
+            "color": "white",
+            "type": "tick",
+            "size": 14,
+            "orient": "horizontal",
+            "style": "boxplot-median"
+          },
+          "encoding": {
+            "y": {
+              "field": "mid_box_people",
+              "type": "quantitative",
+              "axis": {"title": "population"}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "transform": [
+        {
+          "window": [
+            {"op": "q1", "field": "people", "as": "lower_box_people"},
+            {"op": "q3", "field": "people", "as": "upper_box_people"}
+          ],
+          "frame": [null, null],
+          "groupby": []
+        },
+        {
+          "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+        }
+      ],
+      "mark": {"type": "point", "style": "boxplot-outliers"},
+      "encoding": {"y": {"field": "people", "type": "quantitative"}}
+    }
+  ]
+}

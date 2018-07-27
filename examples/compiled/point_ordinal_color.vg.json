@@ -1,221 +1,147 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "values": [
-                {
-                    "a": "B",
-                    "x": 2,
-                    "y": 2
-                },
-                {
-                    "a": "A",
-                    "x": 1,
-                    "y": 1
-                },
-                {
-                    "a": "A",
-                    "x": 4,
-                    "y": 4
-                },
-                {
-                    "a": "B",
-                    "x": 5,
-                    "y": 5
-                },
-                {
-                    "a": "C",
-                    "x": 3,
-                    "y": 3
-                },
-                {
-                    "a": "C",
-                    "x": 6,
-                    "y": 6
-                }
-            ]
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"x\"])",
-                    "as": "x"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"y\"])",
-                    "as": "y"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"x\"] !== null && !isNaN(datum[\"x\"]) && datum[\"y\"] !== null && !isNaN(datum[\"y\"])"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "point"
-            ],
-            "from": {
-                "data": "data_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "stroke": {
-                        "scale": "color",
-                        "field": "a"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "x"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "y"
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "x"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "y"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "data_0",
-                "field": "a",
-                "sort": true
-            },
-            "range": "ordinal"
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "x",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "y",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "a",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "B", "x": 2, "y": 2},
+        {"a": "A", "x": 1, "y": 1},
+        {"a": "A", "x": 4, "y": 4},
+        {"a": "B", "x": 5, "y": 5},
+        {"a": "C", "x": 3, "y": 3},
+        {"a": "C", "x": 6, "y": 6}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
+              "value": null
+            },
+            {"value": "transparent"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "a"}
+          ],
+          "tooltip": {
+            "signal": "{\"x\": format(datum[\"x\"], \"\"), \"y\": format(datum[\"y\"], \"\"), \"a\": ''+datum[\"a\"]}"
+          },
+          "x": {"scale": "x", "field": "x"},
+          "y": {"scale": "y", "field": "y"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "x"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "y"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "a", "sort": true},
+      "range": "ordinal"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "x",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "y",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "title": "a",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

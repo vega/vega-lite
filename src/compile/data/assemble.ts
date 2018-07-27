@@ -8,12 +8,15 @@ import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
+import {FlattenTransformNode} from './flatten';
+import {FoldTransformNode} from './fold';
 import {ParseNode} from './formatparse';
 import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
+import {ImputeNode} from './impute';
 import {LookupNode} from './lookup';
+import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -23,12 +26,12 @@ import {WindowTransformNode} from './window';
  * Print debug information for dataflow tree.
  */
 // tslint:disable-next-line
-function debug(node: DataFlowNode) {
-  console.log(`${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${
-    (node.children.map(c => {
+export function debug(node: DataFlowNode) {
+  console.log(
+    `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
-    }))
-  }`);
+    })}`
+  );
   console.log(node);
   node.children.forEach(debug);
 }
@@ -59,7 +62,7 @@ function makeWalkTree(data: VgData[]) {
       if (node.parent instanceof SourceNode && !dataSource.source) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
-          ...dataSource.format || {},
+          ...(dataSource.format || {}),
           parse: node.assembleFormatParse()
         };
 
@@ -89,21 +92,28 @@ function makeWalkTree(data: VgData[]) {
       return;
     }
 
-    if (node instanceof FilterNode ||
+    if (
+      node instanceof FilterNode ||
       node instanceof CalculateNode ||
       node instanceof GeoPointNode ||
       node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof WindowTransformNode ||
-      node instanceof IdentifierNode) {
+      node instanceof FoldTransformNode ||
+      node instanceof FlattenTransformNode ||
+      node instanceof IdentifierNode ||
+      node instanceof SampleTransformNode
+    ) {
       dataSource.transform.push(node.assemble());
     }
 
-    if (node instanceof FilterInvalidNode ||
+    if (
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
-      node instanceof StackNode) {
+      node instanceof ImputeNode ||
+      node instanceof StackNode
+    ) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
     }
 
@@ -187,11 +197,13 @@ export function assembleFacetData(root: FacetNode): VgData[] {
   const data: VgData[] = [];
   const walkTree = makeWalkTree(data);
 
-  root.children.forEach(child => walkTree(child, {
-    source: root.name,
-    name: null,
-    transform: []
-  }));
+  root.children.forEach(child =>
+    walkTree(child, {
+      source: root.name,
+      name: null,
+      transform: []
+    })
+  );
 
   return data;
 }

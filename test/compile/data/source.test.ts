@@ -13,11 +13,11 @@ describe('compile/data/source', () => {
   describe('compileUnit', () => {
     describe('with explicit values', () => {
       const source = parse({
-        values: [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]
+        values: [{a: 1, b: 2, c: 3}, {a: 4, b: 5, c: 6}]
       });
 
       it('should have values', () => {
-        assert.deepEqual(source.data.values, [{a: 1, b:2, c:3}, {a: 4, b:5, c:6}]);
+        assert.deepEqual(source.data.values, [{a: 1, b: 2, c: 3}, {a: 4, b: 5, c: 6}]);
       });
 
       it('should have no source.format.type', () => {
@@ -27,12 +27,12 @@ describe('compile/data/source', () => {
 
     describe('with explicit values as CSV', () => {
       const source = parse({
-        values: "a\n1\n2\n3",
+        values: 'a\n1\n2\n3',
         format: {type: 'csv'}
       });
 
       it('should have values', () => {
-        assert.deepEqual(source.data.values, "a\n1\n2\n3");
+        assert.deepEqual(source.data.values, 'a\n1\n2\n3');
       });
 
       it('should have correct type', () => {
@@ -42,7 +42,7 @@ describe('compile/data/source', () => {
 
     describe('with link to url', () => {
       const source = parse({
-        url: 'http://foo.bar/file.csv',
+        url: 'http://foo.bar/file.csv'
       });
 
       it('should have format.type csv', () => {
@@ -55,7 +55,7 @@ describe('compile/data/source', () => {
 
     describe('without file ending', () => {
       const source = parse({
-        url: 'http://foo.bar/file.baz',
+        url: 'http://foo.bar/file.baz'
       });
 
       it('should have format.type json', () => {
@@ -127,4 +127,3 @@ describe('compile/data/source', () => {
     // TODO: write test
   });
 });
-

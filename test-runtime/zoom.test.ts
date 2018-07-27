@@ -1,15 +1,5 @@
 import {assert} from 'chai';
-import {
-  bound,
-  brush,
-  compositeTypes,
-  embedFn,
-  parentSelector,
-  spec,
-  testRenderFn,
-  tuples,
-  unbound,
-} from './util';
+import {bound, brush, compositeTypes, embedFn, parentSelector, spec, testRenderFn, tuples, unbound} from './util';
 
 const hits = {
   zoom: [9, 23],
@@ -25,15 +15,16 @@ function zoom(key: string, idx: number, direction: InOut, parent?: string, targe
 
 const cmp = (a: number, b: number) => a - b;
 
-[bound, unbound].forEach(function(bind) {
-  describe(`Zoom ${bind} interval selections at runtime`, function() {
+[bound, unbound].forEach(bind => {
+  describe(`Zoom ${bind} interval selections at runtime`, () => {
     const type = 'interval';
     const embed = embedFn(browser);
     const testRender = testRenderFn(browser, `interval/zoom/${bind}`);
     const binding = bind === bound ? {bind: 'scales'} : {};
 
     const assertExtent = {
-      in: ['isAtLeast', 'isAtMost'], out: ['isAtMost', 'isAtLeast']
+      in: ['isAtLeast', 'isAtMost'],
+      out: ['isAtMost', 'isAtLeast']
     };
 
     function setup(brushKey: string, idx: number, encodings: string[], parent?: string) {
@@ -53,7 +44,7 @@ const cmp = (a: number, b: number) => a - b;
       return {inOut, xold, yold};
     }
 
-    it('should zoom in and out', function() {
+    it('should zoom in and out', () => {
       for (let i = 0; i < hits.zoom.length; i++) {
         embed(spec('unit', i, {type, ...binding}));
         const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
@@ -67,18 +58,24 @@ const cmp = (a: number, b: number) => a - b;
         assert[assertExtent[inOut][1]](xnew[1], xold[1]);
         assert[assertExtent[inOut][0]](ynew[0], yold[0]);
         assert[assertExtent[inOut][1]](ynew[1], yold[1]);
-
       }
     });
 
-    it('should work with binned domains', function() {
+    it('should work with binned domains', () => {
       for (let i = 0; i < hits.bins.length; i++) {
         const encodings = ['y'];
-        embed(spec('unit', 1, {type, ...binding, encodings}, {
-          x: {aggregate: 'count', field: '*', type: 'quantitative'},
-          y: {bin: true},
-          color: {value: 'steelblue', field: null, type: null}
-        }));
+        embed(
+          spec(
+            'unit',
+            1,
+            {type, ...binding, encodings},
+            {
+              x: {aggregate: 'count', field: '*', type: 'quantitative'},
+              y: {bin: true},
+              color: {value: 'steelblue', field: null, type: null}
+            }
+          )
+        );
 
         const {inOut, yold} = setup('bins', i, encodings);
         testRender(`bins_${inOut}-0`);
@@ -91,31 +88,36 @@ const cmp = (a: number, b: number) => a - b;
       }
     });
 
-    it('should work with temporal domains', function() {
-      const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
+    it('should work with temporal domains', () => {
+      const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
       const encodings = ['x'];
 
       for (let i = 0; i < hits.zoom.length; i++) {
-        embed(spec('unit', i, {type, ...binding, encodings},
-          {values, x: {type: 'temporal'}}));
+        embed(spec('unit', i, {type, ...binding, encodings}, {values, x: {type: 'temporal'}}));
         const {inOut, xold} = setup('drag', i, encodings);
         testRender(`temporal_${inOut}-0`);
 
         const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
         const xnew = zoomed.intervals[0].extent.sort(cmp);
-        assert[assertExtent[inOut][0]](+xnew[0], +(new Date(xold[0])));
-        assert[assertExtent[inOut][1]](+xnew[1], +(new Date(xold[1])));
+        assert[assertExtent[inOut][0]](+xnew[0], +new Date(xold[0]));
+        assert[assertExtent[inOut][1]](+xnew[1], +new Date(xold[1]));
         testRender(`temporal_${inOut}-1`);
       }
-
     });
 
-    it('should work with log/pow scales', function() {
+    it('should work with log/pow scales', () => {
       for (let i = 0; i < hits.zoom.length; i++) {
-        embed(spec('unit', i, {type, ...binding}, {
-          x: {scale: {type: 'pow', exponent: 1.5}},
-          y: {scale: {type: 'log'}}
-        }));
+        embed(
+          spec(
+            'unit',
+            i,
+            {type, ...binding},
+            {
+              x: {scale: {type: 'pow', exponent: 1.5}},
+              y: {scale: {type: 'log'}}
+            }
+          )
+        );
         const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
         testRender(`logpow_${inOut}-0`);
 
@@ -131,11 +133,19 @@ const cmp = (a: number, b: number) => a - b;
     });
 
     if (bind === unbound) {
-      it('should work with ordinal/nominal domains', function() {
+      it('should work with ordinal/nominal domains', () => {
         for (let i = 0; i < hits.zoom.length; i++) {
-          embed(spec('unit', i, {type, ...binding}, {
-            x: {type: 'ordinal'}, y: {type: 'nominal'}
-          }));
+          embed(
+            spec(
+              'unit',
+              i,
+              {type, ...binding},
+              {
+                x: {type: 'ordinal'},
+                y: {type: 'nominal'}
+              }
+            )
+          );
           const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
           testRender(`ord_${inOut}-0`);
 
@@ -155,11 +165,10 @@ const cmp = (a: number, b: number) => a - b;
         }
       });
     } else {
-      compositeTypes.forEach(function(specType) {
-        it(`should work with shared scales in ${specType} views`, function() {
+      compositeTypes.forEach(specType => {
+        it(`should work with shared scales in ${specType} views`, () => {
           for (let i = 0; i < hits.bins.length; i++) {
-            embed(spec(specType, 0, {type, ...binding},
-              {resolve: {scale: {x: 'shared', y: 'shared'}}}));
+            embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
             const {inOut, xold, yold} = setup(specType, i, ['x', 'y'], parent);
             const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];

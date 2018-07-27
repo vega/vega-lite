@@ -5,12 +5,12 @@ import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
 
-const nearest:TransformCompiler = {
-  has: function(selCmpt) {
+const nearest: TransformCompiler = {
+  has: selCmpt => {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 
-  marks: function(model, selCmpt, marks) {
+  marks: (model, selCmpt, marks) => {
     const {x, y} = positionalProjections(selCmpt);
     const markType = model.mark;
     if (isPathMark(markType)) {
@@ -30,12 +30,14 @@ const nearest:TransformCompiler = {
           isVoronoi: {value: true}
         }
       },
-      transform: [{
-        type: 'voronoi',
-        x: {expr: (x || (!x && !y)) ? 'datum.datum.x || 0' : '0'},
-        y: {expr: (y || (!x && !y)) ? 'datum.datum.y || 0' : '0'},
-        size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
-      }]
+      transform: [
+        {
+          type: 'voronoi',
+          x: {expr: x || (!x && !y) ? 'datum.datum.x || 0' : '0'},
+          y: {expr: y || (!x && !y) ? 'datum.datum.y || 0' : '0'},
+          size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
+        }
+      ]
     };
 
     let index = 0;

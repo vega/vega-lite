@@ -1,8 +1,10 @@
+import {isArray} from 'vega-util';
+import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {FieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
-import {channelSupportScaleType, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
+import {channelSupportScaleType, Scale, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import * as util from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
@@ -13,30 +15,33 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
  */
 // NOTE: CompassQL uses this method.
 export function scaleType(
-  specifiedType: ScaleType, channel: Channel, fieldDef: FieldDef<string>,
-  mark: Mark, scaleConfig: ScaleConfig
+  specifiedScale: Scale,
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  mark: Mark,
+  scaleConfig: ScaleConfig
 ): ScaleType {
-
-  const defaultScaleType = defaultType(channel, fieldDef, mark, scaleConfig);
+  const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
+  const {type} = specifiedScale;
 
   if (!isScaleChannel(channel)) {
     // There is no scale for these channels
     return null;
   }
-  if (specifiedType !== undefined) {
+  if (type !== undefined) {
     // Check if explicitly specified scale type is supported by the channel
-    if (!channelSupportScaleType(channel, specifiedType)) {
-      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
+    if (!channelSupportScaleType(channel, type)) {
+      log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type, defaultScaleType));
       return defaultScaleType;
     }
 
     // Check if explicitly specified scale type is supported by the data type
-    if (!scaleTypeSupportDataType(specifiedType, fieldDef.type, fieldDef.bin)) {
-      log.warn(log.message.scaleTypeNotWorkWithFieldDef(specifiedType, defaultScaleType));
+    if (!scaleTypeSupportDataType(type, fieldDef.type, fieldDef.bin)) {
+      log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
       return defaultScaleType;
     }
 
-    return specifiedType;
+    return type;
   }
 
   return defaultScaleType;
@@ -47,12 +52,16 @@ export function scaleType(
  */
 // NOTE: Voyager uses this method.
 function defaultType(
-  channel: Channel, fieldDef: FieldDef<string>, mark: Mark, scaleConfig: ScaleConfig
+  channel: Channel,
+  fieldDef: FieldDef<string>,
+  mark: Mark,
+  specifiedScale: Scale,
+  scaleConfig: ScaleConfig
 ): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
-      if (isColorChannel(channel)|| rangeType(channel) === 'discrete') {
+      if (isColorChannel(channel) || rangeType(channel) === 'discrete') {
         if (channel === 'shape' && fieldDef.type === 'ordinal') {
           log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
         }
@@ -84,9 +93,16 @@ function defaultType(
 
     case 'quantitative':
       if (isColorChannel(channel)) {
-        if (fieldDef.bin) {
+        if (isBinning(fieldDef.bin)) {
           return 'bin-ordinal';
         }
+
+        const {domain = undefined, range = undefined} = specifiedScale || {};
+        if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
+          // If there are piecewise domain and range specified, use lineaer as default color scale as sequential does not support piecewise domain
+          return 'linear';
+        }
+
         // Use `sequential` as the default color scale for continuous data
         // since it supports both array range and scheme range.
         return 'sequential';
@@ -98,13 +114,11 @@ function defaultType(
 
       // x and y use a linear scale because selections don't work with bin scales.
       // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
-      if (fieldDef.bin && channel !== 'x' && channel !== 'y') {
+      if (isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
         return 'bin-linear';
       }
       return 'linear';
 
-    case 'latitude':
-    case 'longitude':
     case 'geojson':
       return undefined;
   }

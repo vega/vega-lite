@@ -4,7 +4,6 @@ import {isNumber} from 'vega-util';
 import * as log from './log';
 import {duplicate, keys} from './util';
 
-
 /*
  * A designated year that starts on Sunday.
  */
@@ -98,7 +97,6 @@ export interface DateTime {
   utc?: boolean;
 }
 
-
 /**
  * Internal Object for defining datetime expressions.
  * This is an expression version of DateTime.
@@ -119,15 +117,38 @@ export interface DateTimeExpr {
 }
 
 export function isDateTime(o: any): o is DateTime {
-  return !!o && (!!o.year || !!o.quarter || !!o.month || !!o.date || !!o.day ||
-    !!o.hours || !!o.minutes || !!o.seconds || !!o.milliseconds);
+  return (
+    !!o &&
+    (!!o.year ||
+      !!o.quarter ||
+      !!o.month ||
+      !!o.date ||
+      !!o.day ||
+      !!o.hours ||
+      !!o.minutes ||
+      !!o.seconds ||
+      !!o.milliseconds)
+  );
 }
 
-export const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-export const SHORT_MONTHS = MONTHS.map((m) => m.substr(0, 3));
+export const MONTHS = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+];
+export const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
 
 export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-export const SHORT_DAYS = DAYS.map((d) => d.substr(0,3));
+export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
 
 function normalizeQuarter(q: number | string) {
   if (isNumber(q)) {
@@ -135,7 +156,7 @@ function normalizeQuarter(q: number | string) {
       log.warn(log.message.invalidTimeUnit('quarter', q));
     }
     // We accept 1-based quarter, so need to readjust to 0-based quarter
-    return (q - 1) + '';
+    return (q - 1).toString();
   } else {
     // Invalid quarter
     throw new Error(log.message.invalidTimeUnit('quarter', q));
@@ -145,7 +166,7 @@ function normalizeQuarter(q: number | string) {
 function normalizeMonth(m: string | number) {
   if (isNumber(m)) {
     // We accept 1-based month, so need to readjust to 0-based month
-    return (m - 1) + '';
+    return (m - 1).toString();
   } else {
     const lowerM = m.toLowerCase();
     const monthIndex = MONTHS.indexOf(lowerM);

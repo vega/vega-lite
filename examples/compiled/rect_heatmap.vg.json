@@ -1,179 +1,107 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "style": "cell",
-    "data": [
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"Horsepower": "number"}},
+      "transform": [
         {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Origin",
-                        "Cylinders"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "mean_Horsepower"
-                    ]
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["Origin", "Cylinders"],
+          "ops": ["mean"],
+          "fields": ["Horsepower"],
+          "as": ["mean_Horsepower"]
         }
-    ],
-    "signals": [
-        {
-            "name": "x_step",
-            "value": 21
-        },
-        {
-            "name": "width",
-            "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-        },
-        {
-            "name": "y_step",
-            "value": 21
-        },
-        {
-            "name": "height",
-            "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "rect",
-            "style": [
-                "rect"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "fill": {
-                        "scale": "color",
-                        "field": "mean_Horsepower"
-                    },
-                    "x": {
-                        "scale": "x",
-                        "field": "Cylinders"
-                    },
-                    "width": {
-                        "scale": "x",
-                        "band": true
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Origin"
-                    },
-                    "height": {
-                        "scale": "y",
-                        "band": true
-                    }
-                }
-            }
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "x_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "y",
-            "type": "band",
-            "domain": {
-                "data": "source_0",
-                "field": "Origin",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "y_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        },
-        {
-            "name": "color",
-            "type": "sequential",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
-            },
-            "range": "heatmap",
-            "nice": false,
-            "zero": false
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Cylinders",
-            "labelOverlap": true,
-            "encode": {
-                "labels": {
-                    "update": {
-                        "angle": {
-                            "value": 270
-                        },
-                        "align": {
-                            "value": "right"
-                        },
-                        "baseline": {
-                            "value": "middle"
-                        }
-                    }
-                }
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Origin",
-            "zindex": 1
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "Mean of Horsepower",
-            "type": "gradient"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {"name": "y_step", "value": 21},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"])",
+              "value": null
+            },
+            {"scale": "color", "field": "mean_Horsepower"}
+          ],
+          "tooltip": {
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "Cylinders"},
+          "width": {"scale": "x", "band": true},
+          "y": {"scale": "y", "field": "Origin"},
+          "height": {"scale": "y", "band": true}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "color",
+      "type": "sequential",
+      "domain": {"data": "source_0", "field": "mean_Horsepower"},
+      "range": "heatmap",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Cylinders",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "labelOverlap": true,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Origin",
+      "zindex": 1
+    }
+  ],
+  "legends": [{"fill": "color", "title": "Mean of Horsepower"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

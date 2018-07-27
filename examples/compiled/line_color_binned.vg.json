@@ -1,230 +1,169 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Year": "date",
-                    "Acceleration": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "extent",
-                    "field": "Acceleration",
-                    "signal": "bin_maxbins_6_Acceleration_extent"
-                },
-                {
-                    "type": "bin",
-                    "field": "Acceleration",
-                    "as": [
-                        "bin_maxbins_6_Acceleration",
-                        "bin_maxbins_6_Acceleration_end"
-                    ],
-                    "signal": "bin_maxbins_6_Acceleration_bins",
-                    "maxbins": 6,
-                    "extent": {
-                        "signal": "bin_maxbins_6_Acceleration_extent"
-                    }
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "Year",
-                        "bin_maxbins_6_Acceleration",
-                        "bin_maxbins_6_Acceleration_end"
-                    ],
-                    "ops": [
-                        "mean"
-                    ],
-                    "fields": [
-                        "Horsepower"
-                    ],
-                    "as": [
-                        "mean_Horsepower"
-                    ]
-                }
-            ]
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {
+          "Horsepower": "number",
+          "Year": "date",
+          "Acceleration": "number"
         }
-    ],
-    "marks": [
+      },
+      "transform": [
         {
-            "name": "pathgroup",
-            "type": "group",
-            "from": {
-                "facet": {
-                    "name": "faceted_path_main",
-                    "data": "source_0",
-                    "groupby": [
-                        "bin_maxbins_6_Acceleration"
-                    ]
-                }
-            },
-            "encode": {
-                "update": {
-                    "width": {
-                        "field": {
-                            "group": "width"
-                        }
-                    },
-                    "height": {
-                        "field": {
-                            "group": "height"
-                        }
-                    }
-                }
-            },
-            "marks": [
-                {
-                    "name": "marks",
-                    "type": "line",
-                    "style": [
-                        "line"
-                    ],
-                    "sort": {
-                        "field": "datum[\"Year\"]",
-                        "order": "descending"
-                    },
-                    "from": {
-                        "data": "faceted_path_main"
-                    },
-                    "encode": {
-                        "update": {
-                            "stroke": {
-                                "scale": "color",
-                                "field": "bin_maxbins_6_Acceleration"
-                            },
-                            "x": {
-                                "scale": "x",
-                                "field": "Year"
-                            },
-                            "y": {
-                                "scale": "y",
-                                "field": "mean_Horsepower"
-                            },
-                            "defined": {
-                                "signal": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"mean_Horsepower\"] !== null && !isNaN(datum[\"mean_Horsepower\"])"
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "time",
-            "domain": {
-                "data": "source_0",
-                "field": "Year"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
+          "type": "extent",
+          "field": "Acceleration",
+          "signal": "bin_maxbins_6_Acceleration_extent"
         },
         {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "mean_Horsepower"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
+          "type": "bin",
+          "field": "Acceleration",
+          "as": [
+            "bin_maxbins_6_Acceleration",
+            "bin_maxbins_6_Acceleration_end"
+          ],
+          "signal": "bin_maxbins_6_Acceleration_bins",
+          "maxbins": 6,
+          "extent": {"signal": "bin_maxbins_6_Acceleration_extent"}
         },
         {
-            "name": "color",
-            "type": "bin-ordinal",
-            "domain": {
-                "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
-            },
-            "range": "ramp"
+          "type": "aggregate",
+          "groupby": [
+            "Year",
+            "bin_maxbins_6_Acceleration",
+            "bin_maxbins_6_Acceleration_end"
+          ],
+          "ops": ["mean"],
+          "fields": ["Horsepower"],
+          "as": ["mean_Horsepower"]
         }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Year",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Mean of Horsepower",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "stroke": "color",
-            "title": "Acceleration (binned)"
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["bin_maxbins_6_Acceleration"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"Year\"]", "order": "descending"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {
+                "scale": "color",
+                "field": "bin_maxbins_6_Acceleration"
+              },
+              "tooltip": {
+                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Acceleration (binned)\": datum[\"bin_maxbins_6_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\")}"
+              },
+              "x": {"scale": "x", "field": "Year"},
+              "y": {"scale": "y", "field": "mean_Horsepower"},
+              "defined": {
+                "signal": "datum[\"Year\"] !== null && !isNaN(datum[\"Year\"]) && datum[\"mean_Horsepower\"] !== null && !isNaN(datum[\"mean_Horsepower\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "Year"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mean_Horsepower"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "bin-ordinal",
+      "domain": {
+        "signal": "sequence(bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop + bin_maxbins_6_Acceleration_bins.step, bin_maxbins_6_Acceleration_bins.step)"
+      },
+      "range": "ramp"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Year",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of Horsepower",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "color", "title": "Acceleration (binned)"}],
+  "config": {"axisY": {"minExtent": 30}}
 }

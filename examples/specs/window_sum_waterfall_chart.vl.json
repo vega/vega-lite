@@ -89,25 +89,14 @@
       }
     },
     {
-      "mark": {
-        "type": "text",
-        "dy": -8,
-        "fontWeight": "bold",
-        "color": "#404040"
-      },
+      "mark": {"type": "text", "dy": -8},
       "encoding": {
         "y": {"field": "sum_inc", "type": "quantitative"},
         "text": {"field": "sum_inc", "type": "nominal"}
       }
     },
     {
-      "mark": {
-        "type": "text",
-        "dy": 8,
-        "baseline": "top",
-        "fontWeight": "bold",
-        "color": "#404040"
-      },
+      "mark": {"type": "text", "dy": 8, "baseline": "top"},
       "encoding": {
         "y": {"field": "sum_dec", "type": "quantitative"},
         "text": {"field": "sum_dec", "type": "nominal"}
@@ -129,5 +118,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"text": {"fontWeight": "bold", "color": "#404040"}}
 }

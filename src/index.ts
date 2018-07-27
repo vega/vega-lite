@@ -28,4 +28,29 @@ import * as validate from './validate';
 import pkg from '../package.json';
 const version = pkg.version;
 
-export {aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, facet, fieldDef, header, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate, version};
+export {
+  aggregate,
+  axis,
+  bin,
+  channel,
+  compositeMark,
+  config,
+  data,
+  datetime,
+  encoding,
+  facet,
+  fieldDef,
+  header,
+  legend,
+  mark,
+  scale,
+  sort,
+  spec,
+  stack,
+  timeUnit,
+  transform,
+  type,
+  util,
+  validate,
+  version
+};

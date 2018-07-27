@@ -1,296 +1,196 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "description": "Select multiple points with the shift key.",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 200,
-    "height": 200,
-    "style": "cell",
-    "data": [
-        {
-            "name": "paintbrush_store"
-        },
-        {
-            "name": "source_0",
-            "url": "data/cars.json",
-            "format": {
-                "type": "json",
-                "parse": {
-                    "Horsepower": "number",
-                    "Miles_per_Gallon": "number"
-                }
-            },
-            "transform": [
-                {
-                    "type": "identifier",
-                    "as": "_vgsid_"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"Horsepower\"] !== null && !isNaN(datum[\"Horsepower\"]) && datum[\"Miles_per_Gallon\"] !== null && !isNaN(datum[\"Miles_per_Gallon\"])"
-                }
-            ]
-        }
-    ],
-    "signals": [
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_tuple",
-            "value": {},
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mouseover"
-                        }
-                    ],
-                    "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
-                    "force": true
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_toggle",
-            "value": false,
-            "on": [
-                {
-                    "events": [
-                        {
-                            "source": "scope",
-                            "type": "mouseover"
-                        }
-                    ],
-                    "update": "event.shiftKey"
-                }
-            ]
-        },
-        {
-            "name": "paintbrush_modify",
-            "on": [
-                {
-                    "events": {
-                        "signal": "paintbrush_tuple"
-                    },
-                    "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
-                }
-            ]
-        }
-    ],
-    "marks": [
-        {
-            "name": "marks",
-            "type": "symbol",
-            "style": [
-                "circle"
-            ],
-            "from": {
-                "data": "source_0"
-            },
-            "encode": {
-                "update": {
-                    "opacity": {
-                        "value": 0.7
-                    },
-                    "fill": [
-                        {
-                            "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
-                            "scale": "color",
-                            "field": "Cylinders"
-                        },
-                        {
-                            "value": "grey"
-                        }
-                    ],
-                    "x": {
-                        "scale": "x",
-                        "field": "Horsepower"
-                    },
-                    "y": {
-                        "scale": "y",
-                        "field": "Miles_per_Gallon"
-                    },
-                    "size": {
-                        "value": 75
-                    },
-                    "shape": {
-                        "value": "circle"
-                    }
-                }
-            }
-        },
-        {
-            "name": "voronoi",
-            "type": "path",
-            "from": {
-                "data": "marks"
-            },
-            "encode": {
-                "enter": {
-                    "fill": {
-                        "value": "transparent"
-                    },
-                    "strokeWidth": {
-                        "value": 0.35
-                    },
-                    "stroke": {
-                        "value": "transparent"
-                    },
-                    "isVoronoi": {
-                        "value": true
-                    }
-                }
-            },
-            "transform": [
-                {
-                    "type": "voronoi",
-                    "x": {
-                        "expr": "datum.datum.x || 0"
-                    },
-                    "y": {
-                        "expr": "datum.datum.y || 0"
-                    },
-                    "size": [
-                        {
-                            "signal": "width"
-                        },
-                        {
-                            "signal": "height"
-                        }
-                    ]
-                }
-            ]
-        }
-    ],
-    "scales": [
-        {
-            "name": "x",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Horsepower"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "y",
-            "type": "linear",
-            "domain": {
-                "data": "source_0",
-                "field": "Miles_per_Gallon"
-            },
-            "range": [
-                {
-                    "signal": "height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": {
-                "data": "source_0",
-                "field": "Cylinders",
-                "sort": true
-            },
-            "range": "ordinal"
-        }
-    ],
-    "axes": [
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": false,
-            "title": "Horsepower",
-            "labelFlush": true,
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "x",
-            "orient": "bottom",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(width/40)"
-            },
-            "gridScale": "y",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": false,
-            "title": "Miles_per_Gallon",
-            "labelOverlap": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "zindex": 1
-        },
-        {
-            "scale": "y",
-            "orient": "left",
-            "grid": true,
-            "tickCount": {
-                "signal": "ceil(height/40)"
-            },
-            "gridScale": "x",
-            "domain": false,
-            "labels": false,
-            "maxExtent": 0,
-            "minExtent": 0,
-            "ticks": false,
-            "zindex": 0
-        }
-    ],
-    "legends": [
-        {
-            "fill": "color",
-            "title": "Cylinders",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "shape": {
-                            "value": "circle"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "Select multiple points with the shift key.",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "paintbrush_store"},
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json",
+        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
+      },
+      "transform": [{"type": "identifier", "as": "_vgsid_"}]
     }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "paintbrush_tuple",
+      "value": {},
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "force": true
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "event.shiftKey"
+        }
+      ]
+    },
+    {
+      "name": "paintbrush_modify",
+      "on": [
+        {
+          "events": {"signal": "paintbrush_tuple"},
+          "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
+              "value": null
+            },
+            {
+              "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
+              "scale": "color",
+              "field": "Cylinders"
+            },
+            {"value": "grey"}
+          ],
+          "tooltip": {
+            "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "size": {"value": 75},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "name": "voronoi",
+      "type": "path",
+      "from": {"data": "marks"},
+      "encode": {
+        "enter": {
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true}
+        }
+      },
+      "transform": [
+        {
+          "type": "voronoi",
+          "x": {"expr": "datum.datum.x || 0"},
+          "y": {"expr": "datum.datum.y || 0"},
+          "size": [{"signal": "width"}, {"signal": "height"}]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "range": "ordinal"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "title": "Cylinders",
+      "encode": {
+        "symbols": {
+          "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

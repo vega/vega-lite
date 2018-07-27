@@ -1,811 +1,603 @@
 {
-    "$schema": "https://vega.github.io/schema/vega/v3.json",
-    "autosize": "pad",
-    "padding": 5,
-    "width": 600,
-    "title": {
-        "text": "Seattle Weather, 2012-2015",
-        "anchor": "start"
+  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "autosize": "pad",
+  "padding": 5,
+  "width": 600,
+  "title": {"text": "Seattle Weather, 2012-2015", "anchor": "start"},
+  "data": [
+    {"name": "brush_store"},
+    {"name": "click_store"},
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv"}
     },
-    "data": [
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
-            "name": "brush_store"
+          "type": "formula",
+          "as": "monthdate_date",
+          "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
         },
         {
-            "name": "click_store"
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
         },
         {
-            "name": "source_0",
-            "url": "data/seattle-weather.csv",
-            "format": {
-                "type": "csv"
-            }
-        },
-        {
-            "name": "data_0",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "as": "monthdate_date",
-                    "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-                },
-                {
-                    "type": "filter",
-                    "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
-                },
-                {
-                    "type": "aggregate",
-                    "groupby": [
-                        "weather"
-                    ],
-                    "ops": [
-                        "count"
-                    ],
-                    "fields": [
-                        "*"
-                    ],
-                    "as": [
-                        "count_*"
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "data_1",
-            "source": "source_0",
-            "transform": [
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"precipitation\"])",
-                    "as": "precipitation"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toDate(datum[\"date\"])",
-                    "as": "date"
-                },
-                {
-                    "type": "formula",
-                    "expr": "toNumber(datum[\"temp_max\"])",
-                    "as": "temp_max"
-                },
-                {
-                    "type": "filter",
-                    "expr": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))"
-                },
-                {
-                    "type": "formula",
-                    "as": "monthdate_date",
-                    "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
-                },
-                {
-                    "type": "filter",
-                    "expr": "datum[\"precipitation\"] !== null && !isNaN(datum[\"precipitation\"]) && datum[\"monthdate_date\"] !== null && !isNaN(datum[\"monthdate_date\"]) && datum[\"temp_max\"] !== null && !isNaN(datum[\"temp_max\"])"
-                }
-            ]
+          "type": "aggregate",
+          "groupby": ["weather"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
         }
-    ],
-    "signals": [
-        {
-            "name": "concat_0_height",
-            "value": 300
-        },
-        {
-            "name": "concat_1_y_step",
-            "value": 21
-        },
-        {
-            "name": "concat_1_height",
-            "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
-        },
-        {
-            "name": "unit",
-            "value": {},
-            "on": [
-                {
-                    "events": "mousemove",
-                    "update": "isTuple(group()) ? group() : unit"
-                }
-            ]
-        }
-    ],
-    "layout": {
-        "padding": {
-            "row": 10,
-            "column": 10
-        },
-        "columns": 1,
-        "bounds": "full",
-        "align": "each"
+      ]
     },
-    "marks": [
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
-            "type": "group",
-            "name": "concat_0_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_0_height"
-                    }
-                }
-            },
-            "signals": [
-                {
-                    "name": "brush_x",
-                    "value": [],
-                    "on": [
-                        {
-                            "events": {
-                                "source": "scope",
-                                "type": "mousedown",
-                                "filter": [
-                                    "!event.item || event.item.mark.name !== \"brush_brush\""
-                                ]
-                            },
-                            "update": "[x(unit), x(unit)]"
-                        },
-                        {
-                            "events": {
-                                "source": "window",
-                                "type": "mousemove",
-                                "consume": true,
-                                "between": [
-                                    {
-                                        "source": "scope",
-                                        "type": "mousedown",
-                                        "filter": [
-                                            "!event.item || event.item.mark.name !== \"brush_brush\""
-                                        ]
-                                    },
-                                    {
-                                        "source": "window",
-                                        "type": "mouseup"
-                                    }
-                                ]
-                            },
-                            "update": "[brush_x[0], clamp(x(unit), 0, width)]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_scale_trigger"
-                            },
-                            "update": "[scale(\"concat_0_x\", brush_monthdate_date[0]), scale(\"concat_0_x\", brush_monthdate_date[1])]"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_translate_delta"
-                            },
-                            "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
-                        },
-                        {
-                            "events": {
-                                "signal": "brush_zoom_delta"
-                            },
-                            "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_monthdate_date",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "brush_x"
-                            },
-                            "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_scale_trigger",
-                    "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
-                },
-                {
-                    "name": "brush_tuple",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "signal": "brush_monthdate_date"
-                                }
-                            ],
-                            "update": "brush_monthdate_date ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"monthdate_date\", extent: brush_monthdate_date}]} : null"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_translate_anchor",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "mousedown",
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_translate_delta",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "window",
-                                    "type": "mousemove",
-                                    "consume": true,
-                                    "between": [
-                                        {
-                                            "source": "scope",
-                                            "type": "mousedown",
-                                            "markname": "brush_brush"
-                                        },
-                                        {
-                                            "source": "window",
-                                            "type": "mouseup"
-                                        }
-                                    ]
-                                }
-                            ],
-                            "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_anchor",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "update": "{x: x(unit), y: y(unit)}"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_zoom_delta",
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "wheel",
-                                    "consume": true,
-                                    "markname": "brush_brush"
-                                }
-                            ],
-                            "force": true,
-                            "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-                        }
-                    ]
-                },
-                {
-                    "name": "brush_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "brush_tuple"
-                            },
-                            "update": "modify(\"brush_store\", brush_tuple, true)"
-                        }
-                    ]
-                }
-            ],
-            "marks": [
-                {
-                    "name": "brush_brush_bg",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "#333"
-                            },
-                            "fillOpacity": {
-                                "value": 0.125
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "concat_0_marks",
-                    "type": "symbol",
-                    "style": [
-                        "point"
-                    ],
-                    "from": {
-                        "data": "data_1"
-                    },
-                    "encode": {
-                        "update": {
-                            "opacity": {
-                                "value": 0.7
-                            },
-                            "fill": {
-                                "value": "transparent"
-                            },
-                            "stroke": [
-                                {
-                                    "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
-                                    "scale": "color",
-                                    "field": "weather"
-                                },
-                                {
-                                    "value": "lightgray"
-                                }
-                            ],
-                            "x": {
-                                "scale": "concat_0_x",
-                                "field": "monthdate_date"
-                            },
-                            "y": {
-                                "scale": "concat_0_y",
-                                "field": "temp_max"
-                            },
-                            "size": {
-                                "scale": "size",
-                                "field": "precipitation"
-                            }
-                        }
-                    }
-                },
-                {
-                    "name": "brush_brush",
-                    "type": "rect",
-                    "clip": true,
-                    "encode": {
-                        "enter": {
-                            "fill": {
-                                "value": "transparent"
-                            }
-                        },
-                        "update": {
-                            "x": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "signal": "brush_x[0]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "value": 0
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "x2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "signal": "brush_x[1]"
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "y2": [
-                                {
-                                    "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                                    "field": {
-                                        "group": "height"
-                                    }
-                                },
-                                {
-                                    "value": 0
-                                }
-                            ],
-                            "stroke": [
-                                {
-                                    "test": "brush_x[0] !== brush_x[1]",
-                                    "value": "white"
-                                },
-                                {
-                                    "value": null
-                                }
-                            ]
-                        }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "Date",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "encode": {
-                        "labels": {
-                            "update": {
-                                "text": {
-                                    "signal": "timeFormat(datum.value, '%b')"
-                                }
-                            }
-                        }
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "gridScale": "concat_0_y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "Maximum Daily Temperature (C)",
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_0_height/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_0_y",
-                    "orient": "left",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(concat_0_height/40)"
-                    },
-                    "gridScale": "concat_0_x",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                }
-            ]
+          "type": "formula",
+          "expr": "toNumber(datum[\"precipitation\"])",
+          "as": "precipitation"
+        },
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"temp_max\"])",
+          "as": "temp_max"
         },
         {
-            "type": "group",
-            "name": "concat_1_group",
-            "style": "cell",
-            "encode": {
-                "update": {
-                    "width": {
-                        "signal": "width"
-                    },
-                    "height": {
-                        "signal": "concat_1_height"
-                    }
-                }
-            },
-            "signals": [
-                {
-                    "name": "click_tuple",
-                    "value": {},
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "click"
-                                }
-                            ],
-                            "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", encodings: [\"color\"], fields: [\"weather\"], values: [datum[\"weather\"]]} : null",
-                            "force": true
-                        }
-                    ]
-                },
-                {
-                    "name": "click_toggle",
-                    "value": false,
-                    "on": [
-                        {
-                            "events": [
-                                {
-                                    "source": "scope",
-                                    "type": "click"
-                                }
-                            ],
-                            "update": "event.shiftKey"
-                        }
-                    ]
-                },
-                {
-                    "name": "click_modify",
-                    "on": [
-                        {
-                            "events": {
-                                "signal": "click_tuple"
-                            },
-                            "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
-                        }
-                    ]
-                }
-            ],
-            "marks": [
-                {
-                    "name": "concat_1_marks",
-                    "type": "rect",
-                    "style": [
-                        "bar"
-                    ],
-                    "from": {
-                        "data": "data_0"
-                    },
-                    "encode": {
-                        "update": {
-                            "fill": [
-                                {
-                                    "test": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))",
-                                    "scale": "color",
-                                    "field": "weather"
-                                },
-                                {
-                                    "value": "lightgray"
-                                }
-                            ],
-                            "x": {
-                                "scale": "concat_1_x",
-                                "field": "count_*"
-                            },
-                            "x2": {
-                                "scale": "concat_1_x",
-                                "value": 0
-                            },
-                            "y": {
-                                "scale": "concat_1_y",
-                                "field": "weather"
-                            },
-                            "height": {
-                                "scale": "concat_1_y",
-                                "band": true
-                            }
-                        }
-                    }
-                }
-            ],
-            "axes": [
-                {
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
-                    "grid": false,
-                    "title": "Number of Records",
-                    "labelFlush": true,
-                    "labelOverlap": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "zindex": 1
-                },
-                {
-                    "scale": "concat_1_x",
-                    "orient": "bottom",
-                    "grid": true,
-                    "tickCount": {
-                        "signal": "ceil(width/40)"
-                    },
-                    "gridScale": "concat_1_y",
-                    "domain": false,
-                    "labels": false,
-                    "maxExtent": 0,
-                    "minExtent": 0,
-                    "ticks": false,
-                    "zindex": 0
-                },
-                {
-                    "scale": "concat_1_y",
-                    "orient": "left",
-                    "grid": false,
-                    "title": "weather",
-                    "zindex": 1
-                }
-            ]
+          "type": "filter",
+          "expr": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))"
+        },
+        {
+          "type": "formula",
+          "as": "monthdate_date",
+          "expr": "datetime(0, month(datum[\"date\"]), date(datum[\"date\"]), 0, 0, 0, 0)"
         }
-    ],
-    "scales": [
-        {
-            "name": "color",
-            "type": "ordinal",
-            "domain": [
-                "sun",
-                "fog",
-                "drizzle",
-                "rain",
-                "snow"
-            ],
-            "range": [
-                "#e7ba52",
-                "#a7a7a7",
-                "#aec7e8",
-                "#1f77b4",
-                "#9467bd"
-            ]
-        },
-        {
-            "name": "size",
-            "type": "linear",
-            "domain": [
-                -1,
-                50
-            ],
-            "range": [
-                9,
-                361
-            ],
-            "nice": false,
-            "zero": false
-        },
-        {
-            "name": "concat_0_x",
-            "type": "time",
-            "domain": {
-                "data": "data_1",
-                "field": "monthdate_date"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ]
-        },
-        {
-            "name": "concat_0_y",
-            "type": "linear",
-            "domain": [
-                -5,
-                40
-            ],
-            "range": [
-                {
-                    "signal": "concat_0_height"
-                },
-                0
-            ],
-            "nice": true,
-            "zero": false
-        },
-        {
-            "name": "concat_1_x",
-            "type": "linear",
-            "domain": {
-                "data": "data_0",
-                "field": "count_*"
-            },
-            "range": [
-                0,
-                {
-                    "signal": "width"
-                }
-            ],
-            "nice": true,
-            "zero": true
-        },
-        {
-            "name": "concat_1_y",
-            "type": "band",
-            "domain": {
-                "data": "data_0",
-                "field": "weather",
-                "sort": true
-            },
-            "range": {
-                "step": {
-                    "signal": "concat_1_y_step"
-                }
-            },
-            "paddingInner": 0.1,
-            "paddingOuter": 0.05
-        }
-    ],
-    "legends": [
-        {
-            "title": "Weather",
-            "stroke": "color",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            },
-            "fill": "color"
-        },
-        {
-            "size": "size",
-            "title": "precipitation",
-            "encode": {
-                "symbols": {
-                    "update": {
-                        "fill": {
-                            "value": "transparent"
-                        },
-                        "stroke": {
-                            "value": "lightgray"
-                        },
-                        "opacity": {
-                            "value": 0.7
-                        }
-                    }
-                }
-            }
-        }
-    ],
-    "config": {
-        "axisY": {
-            "minExtent": 30
-        }
+      ]
     }
+  ],
+  "signals": [
+    {"name": "concat_0_height", "value": 300},
+    {"name": "concat_1_y_step", "value": 21},
+    {
+      "name": "concat_1_height",
+      "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
+    },
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    }
+  ],
+  "layout": {
+    "padding": {"row": 10, "column": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "brush_x",
+          "value": [],
+          "on": [
+            {
+              "events": {
+                "source": "scope",
+                "type": "mousedown",
+                "filter": [
+                  "!event.item || event.item.mark.name !== \"brush_brush\""
+                ]
+              },
+              "update": "[x(unit), x(unit)]"
+            },
+            {
+              "events": {
+                "source": "window",
+                "type": "mousemove",
+                "consume": true,
+                "between": [
+                  {
+                    "source": "scope",
+                    "type": "mousedown",
+                    "filter": [
+                      "!event.item || event.item.mark.name !== \"brush_brush\""
+                    ]
+                  },
+                  {"source": "window", "type": "mouseup"}
+                ]
+              },
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+            },
+            {
+              "events": {"signal": "brush_scale_trigger"},
+              "update": "[scale(\"concat_0_x\", brush_monthdate_date[0]), scale(\"concat_0_x\", brush_monthdate_date[1])]"
+            },
+            {
+              "events": {"signal": "brush_translate_delta"},
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+            },
+            {
+              "events": {"signal": "brush_zoom_delta"},
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+            }
+          ]
+        },
+        {
+          "name": "brush_monthdate_date",
+          "on": [
+            {
+              "events": {"signal": "brush_x"},
+              "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
+            }
+          ]
+        },
+        {
+          "name": "brush_scale_trigger",
+          "update": "(!isArray(brush_monthdate_date) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_monthdate_date[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_monthdate_date[1])) ? brush_scale_trigger : {}"
+        },
+        {
+          "name": "brush_tuple",
+          "on": [
+            {
+              "events": [{"signal": "brush_monthdate_date"}],
+              "update": "brush_monthdate_date ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"monthdate_date\", extent: brush_monthdate_date}]} : null"
+            }
+          ]
+        },
+        {
+          "name": "brush_translate_anchor",
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "mousedown",
+                  "markname": "brush_brush"
+                }
+              ],
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
+            }
+          ]
+        },
+        {
+          "name": "brush_translate_delta",
+          "value": {},
+          "on": [
+            {
+              "events": [
+                {
+                  "source": "window",
+                  "type": "mousemove",
+                  "consume": true,
+                  "between": [
+                    {
+                      "source": "scope",
+                      "type": "mousedown",
+                      "markname": "brush_brush"
+                    },
+                    {"source": "window", "type": "mouseup"}
+                  ]
+                }
+              ],
+              "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
+            }
+          ]
+        },
+        {
+          "name": "brush_zoom_anchor",
+          "on": [
+            {
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "wheel",
+                  "consume": true,
+                  "markname": "brush_brush"
+                }
+              ],
+              "update": "{x: x(unit), y: y(unit)}"
+            }
+          ]
+        },
+        {
+          "name": "brush_zoom_delta",
+          "on": [
+            {
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "wheel",
+                  "consume": true,
+                  "markname": "brush_brush"
+                }
+              ],
+              "force": true,
+              "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+            }
+          ]
+        },
+        {
+          "name": "brush_modify",
+          "on": [
+            {
+              "events": {"signal": "brush_tuple"},
+              "update": "modify(\"brush_store\", brush_tuple, true)"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "name": "brush_brush_bg",
+          "type": "rect",
+          "clip": true,
+          "encode": {
+            "enter": {
+              "fill": {"value": "#333"},
+              "fillOpacity": {"value": 0.125}
+            },
+            "update": {
+              "x": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "signal": "brush_x[0]"
+                },
+                {"value": 0}
+              ],
+              "y": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "value": 0
+                },
+                {"value": 0}
+              ],
+              "x2": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "signal": "brush_x[1]"
+                },
+                {"value": 0}
+              ],
+              "y2": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "field": {"group": "height"}
+                },
+                {"value": 0}
+              ]
+            }
+          }
+        },
+        {
+          "name": "concat_0_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": [
+                {
+                  "test": "datum[\"monthdate_date\"] === null || isNaN(datum[\"monthdate_date\"]) || datum[\"temp_max\"] === null || isNaN(datum[\"temp_max\"]) || datum[\"precipitation\"] === null || isNaN(datum[\"precipitation\"])",
+                  "value": null
+                },
+                {"value": "transparent"}
+              ],
+              "stroke": [
+                {
+                  "test": "datum[\"monthdate_date\"] === null || isNaN(datum[\"monthdate_date\"]) || datum[\"temp_max\"] === null || isNaN(datum[\"temp_max\"]) || datum[\"precipitation\"] === null || isNaN(datum[\"precipitation\"])",
+                  "value": null
+                },
+                {
+                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "scale": "color",
+                  "field": "weather"
+                },
+                {"value": "lightgray"}
+              ],
+              "tooltip": {
+                "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
+              },
+              "x": {"scale": "concat_0_x", "field": "monthdate_date"},
+              "y": {"scale": "concat_0_y", "field": "temp_max"},
+              "size": {"scale": "size", "field": "precipitation"}
+            }
+          }
+        },
+        {
+          "name": "brush_brush",
+          "type": "rect",
+          "clip": true,
+          "encode": {
+            "enter": {"fill": {"value": "transparent"}},
+            "update": {
+              "x": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "signal": "brush_x[0]"
+                },
+                {"value": 0}
+              ],
+              "y": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "value": 0
+                },
+                {"value": 0}
+              ],
+              "x2": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "signal": "brush_x[1]"
+                },
+                {"value": 0}
+              ],
+              "y2": [
+                {
+                  "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
+                  "field": {"group": "height"}
+                },
+                {"value": 0}
+              ],
+              "stroke": [
+                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
+                {"value": null}
+              ]
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Date",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "gridScale": "concat_0_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Maximum Daily Temperature (C)",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "click_tuple",
+          "value": {},
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", encodings: [\"color\"], fields: [\"weather\"], values: [datum[\"weather\"]]} : null",
+              "force": true
+            }
+          ]
+        },
+        {
+          "name": "click_toggle",
+          "value": false,
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "event.shiftKey"
+            }
+          ]
+        },
+        {
+          "name": "click_modify",
+          "on": [
+            {
+              "events": {"signal": "click_tuple"},
+              "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "name": "concat_1_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "data_0"},
+          "encode": {
+            "update": {
+              "fill": [
+                {
+                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "value": null
+                },
+                {
+                  "test": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))",
+                  "scale": "color",
+                  "field": "weather"
+                },
+                {"value": "lightgray"}
+              ],
+              "tooltip": {
+                "signal": "{\"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
+              },
+              "x": {"scale": "concat_1_x", "field": "count_*"},
+              "x2": {"scale": "concat_1_x", "value": 0},
+              "y": {"scale": "concat_1_y", "field": "weather"},
+              "height": {"scale": "concat_1_y", "band": true}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Number of Records",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 1
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "gridScale": "concat_1_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "weather",
+          "zindex": 1
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": ["sun", "fog", "drizzle", "rain", "snow"],
+      "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": [-1, 50],
+      "range": [9, 361],
+      "zero": false
+    },
+    {
+      "name": "concat_0_x",
+      "type": "time",
+      "domain": {"data": "data_1", "field": "monthdate_date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": [-5, 40],
+      "range": [{"signal": "concat_0_height"}, 0],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "concat_1_x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "count_*"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_y",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "weather", "sort": true},
+      "range": {"step": {"signal": "concat_1_y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "legends": [
+    {
+      "title": "Weather",
+      "stroke": "color",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      },
+      "fill": "color"
+    },
+    {
+      "size": "size",
+      "title": "precipitation",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "stroke": {"value": "lightgray"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

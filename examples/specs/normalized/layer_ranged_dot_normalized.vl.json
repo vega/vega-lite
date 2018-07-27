@@ -1,31 +1,15 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
-  "data": {
-    "url": "data/countries.json"
-  },
+  "data": {"url": "data/countries.json"},
   "transform": [
     {
       "filter": {
         "field": "country",
-        "oneOf": [
-          "China",
-          "India",
-          "United States",
-          "Indonesia",
-          "Brazil"
-        ]
+        "oneOf": ["China", "India", "United States", "Indonesia", "Brazil"]
       }
     },
-    {
-      "filter": {
-        "field": "year",
-        "oneOf": [
-          1955,
-          2000
-        ]
-      }
-    }
+    {"filter": {"field": "year", "oneOf": [1955, 2000]}}
   ],
   "layer": [
     {
@@ -34,9 +18,7 @@
         "x": {
           "field": "life_expect",
           "type": "quantitative",
-          "axis": {
-            "title": "Life Expectancy (years)"
-          }
+          "axis": {"title": "Life Expectancy (years)"}
         },
         "y": {
           "field": "country",
@@ -49,27 +31,17 @@
             "domain": false
           }
         },
-        "detail": {
-          "field": "country",
-          "type": "nominal"
-        },
-        "color": {
-          "value": "#db646f"
-        }
+        "detail": {"field": "country", "type": "nominal"},
+        "color": {"value": "#db646f"}
       }
     },
     {
-      "mark": {
-        "type": "point",
-        "filled": true
-      },
+      "mark": {"type": "point", "filled": true},
       "encoding": {
         "x": {
           "field": "life_expect",
           "type": "quantitative",
-          "axis": {
-            "title": "Life Expectancy (years)"
-          }
+          "axis": {"title": "Life Expectancy (years)"}
         },
         "y": {
           "field": "country",
@@ -85,26 +57,11 @@
         "color": {
           "field": "year",
           "type": "ordinal",
-          "scale": {
-            "domain": [
-              1955,
-              2000
-            ],
-            "range": [
-              "#e6959c",
-              "#911a24"
-            ]
-          },
-          "legend": {
-            "title": "Year"
-          }
+          "scale": {"domain": [1955, 2000], "range": ["#e6959c", "#911a24"]},
+          "legend": {"title": "Year"}
         },
-        "size": {
-          "value": 100
-        },
-        "opacity": {
-          "value": 1
-        }
+        "size": {"value": 100},
+        "opacity": {"value": 1}
       }
     }
   ]

@@ -26,8 +26,8 @@ export function pick<T extends object, K extends keyof T>(obj: T, props: K[]): P
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T,K> {
-  const copy = {...obj as any};
+export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T, K> {
+  const copy = {...(obj as any)};
   for (const prop of props) {
     delete copy[prop];
   }
@@ -58,7 +58,7 @@ export function hash(a: any) {
   let h = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    h = ((h<<5)-h)+char;
+    h = (h << 5) - h + char;
     h = h & h; // Convert to 32bit integer
   }
   return h;
@@ -82,7 +82,7 @@ export function union<T>(array: T[], other: T[]) {
  */
 export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
-  for (let k = 0; k<arr.length; k++) {
+  for (let k = 0; k < arr.length; k++) {
     if (f(arr[k], k, i++)) {
       return true;
     }
@@ -93,9 +93,9 @@ export function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
 /**
  * Returns true if all items return true.
  */
- export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
+export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   let i = 0;
-  for (let k = 0; k<arr.length; k++) {
+  for (let k = 0; k < arr.length; k++) {
     if (!f(arr[k], k, i++)) {
       return false;
     }
@@ -221,9 +221,7 @@ export function vals<T>(x: {[key: string]: T}): T[] {
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
-export type Flag<S extends string> = {
-  [K in S]: 1
-};
+export type Flag<S extends string> = {[K in S]: 1};
 
 export function flagKeys<S extends string>(f: Flag<S>): S[] {
   return keys(f) as S[];
@@ -248,7 +246,7 @@ export function varName(s: string): string {
   return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
 
-export function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string {
+export function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => string): string {
   if (isLogicalNot(op)) {
     return '!(' + logicalExpr(op.not, cb) + ')';
   } else if (isLogicalAnd(op)) {
@@ -285,22 +283,26 @@ export function titlecase(s: string) {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function accessPathWithDatum(path: string, datum='datum') {
+export function accessPathWithDatum(path: string, datum = 'datum') {
   const pieces = splitAccessPath(path);
   const prefixes = [];
   for (let i = 1; i <= pieces.length; i++) {
-    const prefix = `[${pieces.slice(0,i).map(stringValue).join('][')}]`;
+    const prefix = `[${pieces
+      .slice(0, i)
+      .map(stringValue)
+      .join('][')}]`;
     prefixes.push(`${datum}${prefix}`);
   }
   return prefixes.join(' && ');
 }
 
 /**
- * Return access with datum to the falttened field.
+ * Return access with datum to the flattened field.
+ *
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function flatAccessWithDatum(path: string, datum='datum') {
+export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' = 'datum') {
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 
@@ -309,7 +311,9 @@ export function flatAccessWithDatum(path: string, datum='datum') {
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
  */
 export function replacePathInField(path: string) {
-  return `${splitAccessPath(path).map(p => p.replace('.', '\\.')).join('\\.')}`;
+  return `${splitAccessPath(path)
+    .map(p => p.replace('.', '\\.'))
+    .join('\\.')}`;
 }
 
 /**
@@ -328,4 +332,16 @@ export function accessPathDepth(path: string) {
     return 0;
   }
   return splitAccessPath(path).length;
+}
+
+/**
+ * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
+ */
+export function getFirstDefined<T>(...args: T[]): T {
+  for (const arg of args) {
+    if (arg !== undefined) {
+      return arg;
+    }
+  }
+  return undefined;
 }

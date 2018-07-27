@@ -10,7 +10,16 @@
   "encoding": {
     "x": {
       "field": "bin_IMDB_Rating",
-      "type": "ordinal"
+      "title": "IMDB_Rating (binned)",
+      "bin": "binned",
+      "type": "quantitative",
+      "axis": {
+        "tickStep": 1
+      }
+    },
+    "x2": {
+      "field": "bin_IMDB_Rating_end",
+      "type": "quantitative"
     },
     "y": {
       "aggregate": "count",

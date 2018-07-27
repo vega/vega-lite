@@ -21,7 +21,9 @@ export const geoshape: MarkCompiler = {
       type: 'geoshape',
       projection: model.projectionName(),
       // as: 'shape',
-      ...(shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON ? {field: vgField(shapeDef, {expr: 'datum'})} : {})
+      ...(shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON
+        ? {field: vgField(shapeDef, {expr: 'datum'})}
+        : {})
     };
     return [transform];
   }

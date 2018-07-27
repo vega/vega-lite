@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {"url": "data/population.json"},
+  "transform": [
+    {
+      "aggregate": [
+        {"op": "q1", "field": "people", "as": "lower_box_people"},
+        {"op": "q3", "field": "people", "as": "upper_box_people"},
+        {"op": "median", "field": "people", "as": "mid_box_people"},
+        {"op": "min", "field": "people", "as": "lower_whisker_people"},
+        {"op": "max", "field": "people", "as": "upper_whisker_people"}
+      ],
+      "groupby": ["age"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "style": "boxplot-rule"},
+      "encoding": {
+        "y": {
+          "field": "lower_whisker_people",
+          "type": "quantitative",
+          "axis": {"title": "population"}
+        },
+        "y2": {"field": "lower_box_people", "type": "quantitative"},
+        "x": {"field": "age", "type": "ordinal", "title": "age"}
+      }
+    },
+    {
+      "mark": {"type": "rule", "style": "boxplot-rule"},
+      "encoding": {
+        "y": {
+          "field": "upper_box_people",
+          "type": "quantitative",
+          "axis": {"title": "population"}
+        },
+        "y2": {"field": "upper_whisker_people", "type": "quantitative"},
+        "x": {"field": "age", "type": "ordinal", "title": "age"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 14, "style": "boxplot-box"},
+      "encoding": {
+        "y": {
+          "field": "lower_box_people",
+          "type": "quantitative",
+          "axis": {"title": "population"}
+        },
+        "y2": {"field": "upper_box_people", "type": "quantitative"},
+        "x": {"field": "age", "type": "ordinal", "title": "age"}
+      }
+    },
+    {
+      "mark": {
+        "color": "white",
+        "type": "tick",
+        "size": 14,
+        "orient": "horizontal",
+        "style": "boxplot-median"
+      },
+      "encoding": {
+        "y": {
+          "field": "mid_box_people",
+          "type": "quantitative",
+          "axis": {"title": "population"}
+        },
+        "x": {"field": "age", "type": "ordinal", "title": "age"}
+      }
+    }
+  ]
+}

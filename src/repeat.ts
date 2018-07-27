@@ -1,5 +1,4 @@
 export interface Repeat {
-
   /**
    * Vertical repeated views.
    */

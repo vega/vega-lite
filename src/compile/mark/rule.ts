@@ -6,7 +6,7 @@ import * as ref from './valueref';
 export const rule: MarkCompiler = {
   vgMark: 'rule',
   encodeEntry: (model: UnitModel) => {
-    const {config: _config, markDef, width, height} = model;
+    const {markDef, width, height} = model;
     const orient = markDef.orient;
 
     if (!model.encoding.x && !model.encoding.y && !model.encoding.latitude && !model.encoding.longitude) {
@@ -26,7 +26,7 @@ export const rule: MarkCompiler = {
       ...(orient !== 'horizontal' ? mixins.pointPosition2(model, 'zeroOrMax', 'y2') : {}),
 
       ...mixins.nonPosition('size', model, {
-        vgChannel: 'strokeWidth',  // VL's rule size is strokeWidth
+        vgChannel: 'strokeWidth', // VL's rule size is strokeWidth
         defaultValue: markDef.size
       })
     };

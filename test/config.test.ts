@@ -1,6 +1,5 @@
-
 import {assert} from 'chai';
-import {Config, defaultConfig, stripAndRedirectConfig} from '../src/config';
+import {Config, defaultConfig, isVgScheme, stripAndRedirectConfig} from '../src/config';
 import {PRIMITIVE_MARKS} from '../src/mark';
 import {duplicate} from '../src/util';
 
@@ -10,7 +9,7 @@ describe('config', () => {
       ...defaultConfig,
       mark: {
         ...defaultConfig.mark,
-        opacity: 0.3,
+        opacity: 0.3
       },
       bar: {
         opacity: 0.5,
@@ -22,6 +21,14 @@ describe('config', () => {
       title: {
         color: 'red',
         fontWeight: 'bold'
+      },
+      boxplot: {
+        rule: {
+          fill: 'red'
+        },
+        median: {
+          color: 'white'
+        }
       }
     };
     const copy = duplicate(config);
@@ -56,6 +63,16 @@ describe('config', () => {
 
     it('should remove empty config object', () => {
       assert.isUndefined(output.axisTop);
+    });
+  });
+
+  describe('isVgScheme', () => {
+    it('should return true for valid scheme object', () => {
+      assert.isTrue(isVgScheme({scheme: 'viridis', count: 2}));
+    });
+
+    it('should return false for non-scheme object', () => {
+      assert.isFalse(isVgScheme(['#EA98D2', '#659CCA']));
     });
   });
 });

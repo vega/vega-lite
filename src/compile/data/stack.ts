@@ -2,26 +2,28 @@ import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, getFirstDefined} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from './../unit';
 import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
-  return model.stack.stackBy.reduce((fields, by) => {
-    const fieldDef = by.fieldDef;
+  return model.stack.stackBy.reduce(
+    (fields, by) => {
+      const fieldDef = by.fieldDef;
 
-    const _field = vgField(fieldDef);
-    if (_field) {
-      fields.push(_field);
-    }
-    return fields;
-  }, [] as string[]);
+      const _field = vgField(fieldDef);
+      if (_field) {
+        fields.push(_field);
+      }
+      return fields;
+    },
+    [] as string[]
+  );
 }
 
 export interface StackComponent {
-
   /**
    * Faceted field.
    */
@@ -63,11 +65,10 @@ export interface StackComponent {
    * Output field names of each stack field.
    */
   as: string[];
-
 }
 
 function isValidAsArray(as: string[] | string): as is string[] {
-  return isArray(as) && as.every(s => isString(s)) && as.length >1;
+  return isArray(as) && as.every(s => isString(s)) && as.length > 1;
 }
 
 export class StackNode extends DataFlowNode {
@@ -84,31 +85,30 @@ export class StackNode extends DataFlowNode {
   }
 
   public static makeFromTransform(parent: DataFlowNode, stackTransform: StackTransform) {
-
-    const {stack, groupby, as, offset='zero'} = stackTransform;
+    const {stack, groupby, as, offset = 'zero'} = stackTransform;
 
     const sortFields: string[] = [];
     const sortOrder: VgComparatorOrder[] = [];
     if (stackTransform.sort !== undefined) {
       for (const sortField of stackTransform.sort) {
         sortFields.push(sortField.field);
-        sortOrder.push(sortField.order === undefined ? 'ascending' : sortField.order as VgComparatorOrder);
+        sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
     const sort: VgSort = {
       field: sortFields,
-      order: sortOrder,
+      order: sortOrder
     };
-    let normalizedAs: Array<string>;
+    let normalizedAs: string[];
     if (isValidAsArray(as)) {
       normalizedAs = as;
-    } else if(isString(as)) {
+    } else if (isString(as)) {
       normalizedAs = [as, as + '_end'];
     } else {
       normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
     }
 
-    return new StackNode (parent, {
+    return new StackNode(parent, {
       stackField: stack,
       groupby,
       offset,
@@ -116,10 +116,8 @@ export class StackNode extends DataFlowNode {
       facetby: [],
       as: normalizedAs
     });
-
   }
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
-
     const stackProperties = model.stack;
 
     if (!stackProperties) {
@@ -140,25 +138,28 @@ export class StackNode extends DataFlowNode {
     } else {
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
-      sort = stackby.reduce((s, field) => {
-        s.field.push(field);
-        s.order.push('descending');
-        return s;
-      }, {field:[], order: []});
+      sort = stackby.reduce(
+        (s, field) => {
+          s.field.push(field);
+          s.order.push('descending');
+          return s;
+        },
+        {field: [], order: []}
+      );
     }
-    // Refactored to add "as" in the make phase so that we can get producedFields
-    // from the as property
-    const field = model.vgField(stackProperties.fieldChannel);
 
     return new StackNode(parent, {
       dimensionFieldDef,
-      stackField:field,
+      stackField: model.vgField(stackProperties.fieldChannel),
       facetby: [],
       stackby,
       sort,
       offset: stackProperties.offset,
       impute: stackProperties.impute,
-      as: [field + '_start', field + '_end']
+      as: [
+        model.vgField(stackProperties.fieldChannel, {suffix: 'start', forAs: true}),
+        model.vgField(stackProperties.fieldChannel, {suffix: 'end', forAs: true})
+      ]
     });
   }
 
@@ -175,10 +176,10 @@ export class StackNode extends DataFlowNode {
 
     out[this._stack.stackField] = true;
 
-    this.getGroupbyFields().forEach(f => out[f] = true);
-    this._stack.facetby.forEach(f => out[f] = true);
+    this.getGroupbyFields().forEach(f => (out[f] = true));
+    this._stack.facetby.forEach(f => (out[f] = true));
     const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => out[f] = true) : out[field] = true;
+    isArray(field) ? field.forEach(f => (out[f] = true)) : (out[field] = true);
 
     return out;
   }
@@ -214,21 +215,20 @@ export class StackNode extends DataFlowNode {
     const transform: VgTransform[] = [];
     const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, as} = this._stack;
 
-      // Impute
+    // Impute
     if (impute && dimensionFieldDef) {
-      const dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, {binSuffix: 'mid'}): undefined;
-
       if (dimensionFieldDef.bin) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
         transform.push({
           type: 'formula',
-          expr: '(' +
+          expr:
+            '(' +
             vgField(dimensionFieldDef, {expr: 'datum'}) +
             '+' +
             vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}) +
             ')/2',
-          as: dimensionField
+          as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });
       }
 
@@ -236,7 +236,7 @@ export class StackNode extends DataFlowNode {
         type: 'impute',
         field,
         groupby: stackby,
-        key: dimensionField,
+        key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
         method: 'value',
         value: 0
       });

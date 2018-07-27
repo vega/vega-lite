@@ -1,3 +1,4 @@
+import {Parse} from '../../data';
 import {Dict} from '../../util';
 import {Split} from '../split';
 import {OutputNode} from './dataflow';
@@ -51,13 +52,13 @@ export interface DataComponent {
 
 /**
  * Class to track interesting properties (see https://15721.courses.cs.cmu.edu/spring2016/papers/graefe-ieee1995.pdf)
- * about how fields have been parsed or whether they have been derived in a transforms. We use this to not parse the
+ * about how fields have been parsed or whether they have been derived in a transform. We use this to not parse the
  * same field again (or differently).
  */
-export class AncestorParse extends Split<Dict<string>> {
+export class AncestorParse extends Split<Parse> {
   constructor(
-    public readonly explicit: Partial<Dict<string>> = {},
-    public readonly implicit: Partial<Dict<string>> = {},
+    public readonly explicit: Partial<Parse> = {},
+    public readonly implicit: Partial<Parse> = {},
     public parseNothing = false
   ) {
     super(explicit, implicit);

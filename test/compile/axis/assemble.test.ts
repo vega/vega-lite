@@ -5,8 +5,6 @@ import {assembleAxis} from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
 import {defaultConfig} from '../../../src/config';
 
-
-
 describe('compile/axis/assemble', () => {
   describe('assembleAxis()', () => {
     it('outputs grid axis with only grid encode blocks', () => {
@@ -53,5 +51,4 @@ describe('compile/axis/assemble', () => {
       assert.equal(axis.title, 'Max of a, Min of b');
     });
   });
-
 });
