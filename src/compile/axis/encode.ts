@@ -24,7 +24,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       fieldDef.timeUnit,
       axis.format,
       config.axis.shortTimeLabels,
-      config.timeFormat,
+      null,
       isUTCScale
     );
 
