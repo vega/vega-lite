@@ -1,3 +1,4 @@
+import { BinParams } from './bin';
 import { Channel } from './channel';
 export interface BaseBin {
     /**
@@ -61,5 +62,7 @@ export interface BinParams extends BaseBin {
     extent?: number[];
 }
 export declare function binToString(bin: BinParams | boolean): string;
-export declare function isBinParams(bin: BinParams | boolean): bin is BinParams;
+export declare function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams | true;
+export declare function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned';
+export declare function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams;
 export declare function autoMaxBins(channel: Channel): number;

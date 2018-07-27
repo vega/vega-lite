@@ -2,7 +2,7 @@ import * as tslib_1 from "tslib";
 import { Split } from '../split';
 /**
  * Class to track interesting properties (see https://15721.courses.cs.cmu.edu/spring2016/papers/graefe-ieee1995.pdf)
- * about how fields have been parsed or whether they have been derived in a transforms. We use this to not parse the
+ * about how fields have been parsed or whether they have been derived in a transform. We use this to not parse the
  * same field again (or differently).
  */
 var AncestorParse = /** @class */ (function (_super) {

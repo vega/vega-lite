@@ -19,16 +19,8 @@ describe('type', function () {
                 var t = _g[_f];
                 assert.equal(type.getFullName(t), 'nominal');
             }
-            for (var _h = 0, _j = ['latitude', 'LATITUDE']; _h < _j.length; _h++) {
+            for (var _h = 0, _j = ['geojson', 'GEOJSON']; _h < _j.length; _h++) {
                 var t = _j[_h];
-                assert.equal(type.getFullName(t), 'latitude');
-            }
-            for (var _k = 0, _l = ['longitude', 'LONGITUDE']; _k < _l.length; _k++) {
-                var t = _l[_k];
-                assert.equal(type.getFullName(t), 'longitude');
-            }
-            for (var _m = 0, _o = ['geojson', 'GEOJSON']; _m < _o.length; _m++) {
-                var t = _o[_m];
                 assert.equal(type.getFullName(t), 'geojson');
             }
         });

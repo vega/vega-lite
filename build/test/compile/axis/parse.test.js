@@ -8,18 +8,18 @@ describe('Axis', function () {
     describe('= true', function () {
         it('should produce default properties for axis', function () {
             var model1 = parseUnitModelWithScale({
-                "mark": "bar",
-                "encoding": {
-                    "y": { "type": "quantitative", "field": 'US_Gross', "aggregate": "sum" }
+                mark: 'bar',
+                encoding: {
+                    y: { type: 'quantitative', field: 'US_Gross', aggregate: 'sum' }
                 },
-                "data": { "url": "data/movies.json" }
+                data: { url: 'data/movies.json' }
             });
             var model2 = parseUnitModelWithScale({
-                "mark": "bar",
-                "encoding": {
-                    "y": { "type": "quantitative", "field": 'US_Gross', "aggregate": "sum" }
+                mark: 'bar',
+                encoding: {
+                    y: { type: 'quantitative', field: 'US_Gross', aggregate: 'sum' }
                 },
-                "data": { "url": "data/movies.json" }
+                data: { url: 'data/movies.json' }
             });
             assert.deepEqual(model1.axis(Y), model2.axis(Y));
         });
@@ -27,12 +27,12 @@ describe('Axis', function () {
     describe('parseUnitAxis', function () {
         it('should produce Vega grid', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative",
-                        axis: { grid: true, gridColor: "blue", gridWidth: 20 }
+                        field: 'a',
+                        type: 'quantitative',
+                        axis: { grid: true, gridColor: 'blue', gridWidth: 20 }
                     }
                 }
             });
@@ -42,14 +42,14 @@ describe('Axis', function () {
         });
         it('should produce Vega grid when axis config is specified.', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative"
+                        field: 'a',
+                        type: 'quantitative'
                     }
                 },
-                "config": { "axisX": { "grid": true } }
+                config: { axisX: { grid: true } }
             });
             var axisComponent = parseUnitAxis(model);
             assert.equal(axisComponent['x'].length, 1);
@@ -57,12 +57,12 @@ describe('Axis', function () {
         });
         it('should produce axis component with grid=false', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative",
-                        axis: { grid: false, gridColor: "blue", gridWidth: 20 }
+                        field: 'a',
+                        type: 'quantitative',
+                        axis: { grid: false, gridColor: 'blue', gridWidth: 20 }
                     }
                 }
             });
@@ -72,15 +72,15 @@ describe('Axis', function () {
         });
         it('should ignore null scales', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     longitude: {
-                        field: "a",
-                        type: "quantitative"
+                        field: 'a',
+                        type: 'quantitative'
                     },
                     latitude: {
-                        field: "b",
-                        type: "quantitative"
+                        field: 'b',
+                        type: 'quantitative'
                     }
                 }
             });
@@ -90,11 +90,11 @@ describe('Axis', function () {
         });
         it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative"
+                        field: 'a',
+                        type: 'quantitative'
                     }
                 },
                 config: { axisX: { grid: false } }
@@ -105,11 +105,11 @@ describe('Axis', function () {
         });
         it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative"
+                        field: 'a',
+                        type: 'quantitative'
                     }
                 },
                 config: { axis: { grid: false } }
@@ -122,11 +122,11 @@ describe('Axis', function () {
             for (var _i = 0, _a = [null, '', false]; _i < _a.length; _i++) {
                 var val = _a[_i];
                 var model = parseUnitModelWithScale({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         x: {
-                            field: "a",
-                            type: "quantitative",
+                            field: 'a',
+                            type: 'quantitative',
                             axis: { title: val } // Need to cast as false is not valid, but we want to fall back gracefully
                         }
                     }
@@ -140,11 +140,11 @@ describe('Axis', function () {
             for (var _i = 0, _a = [null, '', false]; _i < _a.length; _i++) {
                 var val = _a[_i];
                 var model = parseUnitModelWithScale({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         x: {
-                            field: "a",
-                            type: "quantitative",
+                            field: 'a',
+                            type: 'quantitative',
                             title: val // Need to cast as false is not valid, but we want to fall back gracefully
                         }
                     }
@@ -156,11 +156,11 @@ describe('Axis', function () {
         });
         it('should store fieldDef.title as explicit', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative",
+                        field: 'a',
+                        type: 'quantitative',
                         title: 'foo'
                     }
                 }
@@ -171,16 +171,16 @@ describe('Axis', function () {
         });
         it('should merge title of fieldDef and fieldDef2', function () {
             var model = parseUnitModelWithScale({
-                mark: "bar",
+                mark: 'bar',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative",
+                        field: 'a',
+                        type: 'quantitative',
                         title: 'foo'
                     },
                     x2: {
-                        field: "b",
-                        type: "quantitative",
+                        field: 'b',
+                        type: 'quantitative',
                         title: 'bar'
                     }
                 }
@@ -191,15 +191,15 @@ describe('Axis', function () {
         });
         it('should use title of fieldDef2', function () {
             var model = parseUnitModelWithScale({
-                mark: "bar",
+                mark: 'bar',
                 encoding: {
                     x: {
-                        field: "a",
-                        type: "quantitative"
+                        field: 'a',
+                        type: 'quantitative'
                     },
                     x2: {
-                        field: "b",
-                        type: "quantitative",
+                        field: 'b',
+                        type: 'quantitative',
                         title: 'bar'
                     }
                 }
@@ -210,42 +210,42 @@ describe('Axis', function () {
         });
         it('should store both x and x2 for ranged mark', function () {
             var model = parseUnitModelWithScale({
-                mark: "rule",
+                mark: 'rule',
                 encoding: {
-                    x: { field: "a", type: "quantitative" },
-                    x2: { field: "a2", type: "quantitative" }
+                    x: { field: 'a', type: 'quantitative' },
+                    x2: { field: 'a2', type: 'quantitative' }
                 }
             });
             var axisComponent = parseUnitAxis(model);
             assert.equal(axisComponent['x'].length, 1);
-            assert.deepEqual(axisComponent['x'][0].get('title'), [{ field: "a" }, { field: "a2" }]);
+            assert.deepEqual(axisComponent['x'][0].get('title'), [{ field: 'a' }, { field: 'a2' }]);
         });
     });
     describe('parseLayerAxis', function () {
         var globalRuleOverlay = parseLayerModel({
-            "layer": [
+            layer: [
                 {
-                    "mark": "rule",
-                    "encoding": {
-                        "y": {
-                            "aggregate": "mean",
-                            "field": "a",
-                            "type": "quantitative"
+                    mark: 'rule',
+                    encoding: {
+                        y: {
+                            aggregate: 'mean',
+                            field: 'a',
+                            type: 'quantitative'
                         }
                     }
                 },
                 {
-                    "mark": "line",
-                    "encoding": {
-                        "y": {
-                            "aggregate": "mean",
-                            "field": "a",
-                            "type": "quantitative"
+                    mark: 'line',
+                    encoding: {
+                        y: {
+                            aggregate: 'mean',
+                            field: 'a',
+                            type: 'quantitative'
                         },
-                        "x": {
-                            "timeUnit": "month",
-                            "type": "temporal",
-                            "field": "date"
+                        x: {
+                            timeUnit: 'month',
+                            type: 'temporal',
+                            field: 'date'
                         }
                     }
                 }
@@ -265,30 +265,30 @@ describe('Axis', function () {
         });
         it('correctly combines different title', function () {
             var model = parseLayerModel({
-                "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-                "data": { "url": "data/cars.json" },
-                "layer": [
+                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                data: { url: 'data/cars.json' },
+                layer: [
                     {
-                        "mark": "line",
-                        "encoding": {
-                            "x": { "field": "Cylinders", "type": "ordinal" },
-                            "y": {
-                                "aggregate": "max",
-                                "field": "Horsepower",
-                                "type": "quantitative"
+                        mark: 'line',
+                        encoding: {
+                            x: { field: 'Cylinders', type: 'ordinal' },
+                            y: {
+                                aggregate: 'max',
+                                field: 'Horsepower',
+                                type: 'quantitative'
                             },
-                            "color": { "value": "darkred" }
+                            color: { value: 'darkred' }
                         }
                     },
                     {
-                        "data": { "url": "data/cars.json" },
-                        "mark": "line",
-                        "encoding": {
-                            "x": { "field": "Cylinders", "type": "ordinal" },
-                            "y": {
-                                "aggregate": "min",
-                                "field": "Horsepower",
-                                "type": "quantitative"
+                        data: { url: 'data/cars.json' },
+                        mark: 'line',
+                        encoding: {
+                            x: { field: 'Cylinders', type: 'ordinal' },
+                            y: {
+                                aggregate: 'min',
+                                field: 'Horsepower',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -297,7 +297,10 @@ describe('Axis', function () {
             model.parseScale();
             parseLayerAxis(model);
             var axisComponents = model.component.axes;
-            assert.deepEqual(axisComponents.y[0].get('title'), [{ aggregate: 'max', field: 'Horsepower' }, { aggregate: 'min', field: 'Horsepower' }]);
+            assert.deepEqual(axisComponents.y[0].get('title'), [
+                { aggregate: 'max', field: 'Horsepower' },
+                { aggregate: 'min', field: 'Horsepower' }
+            ]);
         });
     });
 });

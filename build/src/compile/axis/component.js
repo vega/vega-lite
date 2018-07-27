@@ -21,7 +21,8 @@ var AxisComponent = /** @class */ (function (_super) {
     };
     AxisComponent.prototype.hasAxisPart = function (part) {
         // FIXME(https://github.com/vega/vega-lite/issues/2552) this method can be wrong if users use a Vega theme.
-        if (part === 'axis') { // always has the axis container part
+        if (part === 'axis') {
+            // always has the axis container part
             return true;
         }
         if (part === 'grid' || part === 'title') {

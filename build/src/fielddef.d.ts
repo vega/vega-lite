@@ -5,7 +5,8 @@ import { Channel } from './channel';
 import { CompositeAggregate } from './compositemark';
 import { Config } from './config';
 import { DateTime } from './datetime';
-import { TitleMixins } from './guide';
+import { Guide, TitleMixins } from './guide';
+import { ImputeParams } from './impute';
 import { Legend } from './legend';
 import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
@@ -22,7 +23,7 @@ export interface ValueDef {
     /**
      * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
      */
-    value: number | string | boolean;
+    value: number | string | boolean | null;
 }
 /**
  * Generic type for conditional channelDef.
@@ -78,15 +79,29 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
 /**
  * Reference to a repeated value.
  */
-export declare type RepeatRef = {
+export interface RepeatRef {
     repeat: 'row' | 'column';
-};
+}
 export declare type Field = string | RepeatRef;
 export declare function isRepeatRef(field: Field): field is RepeatRef;
 /** @hide */
 export declare type HiddenCompositeAggregate = CompositeAggregate;
 export declare type Aggregate = AggregateOp | HiddenCompositeAggregate;
-export interface FieldDefBase<F> {
+export interface GenericBinMixins<B> {
+    /**
+     * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
+     *
+     * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
+     *
+     * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+     *
+     * __Default value:__ `false`
+     */
+    bin?: B;
+}
+export declare type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned'>;
+export declare type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
+export interface FieldDefBase<F> extends BaseBinMixins {
     /**
      * __Required.__ A string defining the name of the field from which to pull a data value
      * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
@@ -105,13 +120,6 @@ export interface FieldDefBase<F> {
      * __Default value:__ `undefined` (None)
      */
     timeUnit?: TimeUnit;
-    /**
-     * A flag for binning a `quantitative` field, or [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params).
-     * If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
-     *
-     * __Default value:__ `false`
-     */
-    bin?: boolean | BinParams;
     /**
      * Aggregation function for the field
      * (e.g., `mean`, `sum`, `median`, `min`, `max`, `count`).
@@ -159,6 +167,10 @@ export interface ScaleFieldDef<F> extends SortableFieldDef<F> {
      */
     scale?: Scale | null;
 }
+/**
+ * Field Def without scale (and without bin: "binned" support).
+ */
+export declare type FieldDefWithoutScale<F> = FieldDef<F> & BinWithoutBinnedMixins;
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
     /**
      * An object defining properties of axis's gridlines, ticks and labels.
@@ -184,11 +196,17 @@ export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
      * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y.  Otherwise, `null` by default.
      */
     stack?: StackOffset | null;
+    /**
+     * An object defining the properties of the Impute Operation to be applied.
+     * The field value of the other positional channel is taken as `key` of the `Impute` Operation.
+     * The field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.
+     */
+    impute?: ImputeParams;
 }
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
+export declare type MarkPropFieldDef<F> = ScaleFieldDef<F> & BinWithoutBinnedMixins & {
     /**
      * An object defining properties of the legend.
      * If `null`, the legend for the encoding channel will be removed.
@@ -196,16 +214,16 @@ export interface MarkPropFieldDef<F> extends ScaleFieldDef<F> {
      * __Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.
      */
     legend?: Legend | null;
-}
-export interface OrderFieldDef<F> extends FieldDef<F> {
+};
+export interface OrderFieldDef<F> extends FieldDefWithoutScale<F> {
     /**
      * The sort order. One of `"ascending"` (default) or `"descending"`.
      */
     sort?: SortOrder;
 }
-export interface TextFieldDef<F> extends FieldDef<F> {
+export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
     /**
-     * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+     * The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
      */
     format?: string;
 }
@@ -214,28 +232,39 @@ export declare function isConditionalDef<F>(channelDef: ChannelDef<F>): channelD
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-export declare function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
+export declare function hasConditionalFieldDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef & {
     condition: Conditional<FieldDef<F>>;
-});
-export declare function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is (ValueDef & {
+};
+export declare function hasConditionalValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef & {
     condition: Conditional<ValueDef> | Conditional<ValueDef>[];
-});
+};
 export declare function isFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FieldDef<F> | PositionFieldDef<F> | ScaleFieldDef<F> | MarkPropFieldDef<F> | OrderFieldDef<F> | TextFieldDef<F>;
-export declare function isStringFieldDef(fieldDef: ChannelDef<string | RepeatRef>): fieldDef is FieldDef<string>;
+export declare function isStringFieldDef(channelDef: ChannelDef<string | RepeatRef>): channelDef is FieldDef<string>;
 export declare function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef;
 export declare function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F>;
+export declare function isPositionFieldDef<F>(channelDef: ChannelDef<F>): channelDef is PositionFieldDef<F>;
+export declare function isMarkPropFieldDef<F>(channelDef: ChannelDef<F>): channelDef is MarkPropFieldDef<F>;
+export declare function isTextFieldDef<F>(channelDef: ChannelDef<F>): channelDef is TextFieldDef<F>;
 export interface FieldRefOption {
-    /** exclude bin, aggregate, timeUnit */
+    /** Exclude bin, aggregate, timeUnit */
     nofn?: boolean;
     /** Wrap the field with datum or parent (e.g., datum['...'] for Vega Expression */
     expr?: 'datum' | 'parent';
-    /** prepend fn with custom function prefix */
+    /** Prepend fn with custom function prefix */
     prefix?: string;
-    /** append suffix to the field ref for bin (default='start') */
+    /** Append suffix to the field ref for bin (default='start') */
     binSuffix?: 'end' | 'range' | 'mid';
-    /** append suffix to the field ref (general) */
+    /** Append suffix to the field ref (general) */
     suffix?: string;
+    /**
+     * Use the field name for `as` in a transform.
+     * We will not escape nested acceses because Vega transform outputs cannot be nested.
+     */
+    forAs?: boolean;
 }
+/**
+ * Get a Vega field reference from a Vega-Lite field def.
+ */
 export declare function vgField(fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef, opt?: FieldRefOption): string;
 export declare function isDiscrete(fieldDef: FieldDef<Field>): boolean;
 export declare function isContinuous(fieldDef: FieldDef<Field>): boolean;
@@ -246,7 +275,12 @@ export declare function functionalTitleFormatter(fieldDef: FieldDefBase<string>,
 export declare const defaultTitleFormatter: FieldTitleFormatter;
 export declare function setTitleFormatter(formatter: FieldTitleFormatter): void;
 export declare function resetTitleFormatter(): void;
-export declare function title(fieldDef: FieldDefBase<string>, config: Config): string;
+export declare function title(fieldDef: FieldDef<string>, config: Config, { allowDisabling }: {
+    allowDisabling: boolean;
+}): string;
+export declare function getGuide(fieldDef: FieldDef<string>): Guide;
+export declare function defaultTitle(fieldDef: FieldDefBase<string>, config: Config): string;
+export declare function format(fieldDef: FieldDef<string>): string;
 export declare function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type;
 /**
  * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.

@@ -5,51 +5,51 @@ describe('src/compile/projection/parse', function () {
     describe('parseUnitProjection', function () {
         it('should create projection from specified projection', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "projection": {
-                    "type": "albersUsa"
+                mark: 'geoshape',
+                projection: {
+                    type: 'albersUsa'
                 },
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {}
+                encoding: {}
             });
             model.parse();
             assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should create projection with no props', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                mark: 'geoshape',
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {}
+                encoding: {}
             });
             model.parse();
             assert.deepEqual(model.component.projection.explicit, {});
         });
         it('should create projection from config', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                mark: 'geoshape',
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {},
-                "config": {
-                    "projection": {
-                        "type": "albersUsa"
+                encoding: {},
+                config: {
+                    projection: {
+                        type: 'albersUsa'
                     }
                 }
             });
@@ -58,24 +58,24 @@ describe('src/compile/projection/parse', function () {
         });
         it('should add data with signal', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "data": {
-                    "url": "data/airports.csv",
-                    "format": {
-                        "type": "csv"
+                data: {
+                    url: 'data/airports.csv',
+                    format: {
+                        type: 'csv'
                     }
                 },
-                "mark": "circle",
-                "projection": {
-                    "type": "albersUsa"
+                mark: 'circle',
+                projection: {
+                    type: 'albersUsa'
                 },
-                "encoding": {
-                    "longitude": {
-                        "field": "longitude",
-                        "type": "quantitative"
+                encoding: {
+                    longitude: {
+                        field: 'longitude',
+                        type: 'quantitative'
                     },
-                    "latitude": {
-                        "field": "latitude",
-                        "type": "quantitative"
+                    latitude: {
+                        field: 'latitude',
+                        type: 'quantitative'
                     }
                 }
             });
@@ -85,15 +85,15 @@ describe('src/compile/projection/parse', function () {
         });
         it('should add data from main', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                mark: 'geoshape',
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {}
+                encoding: {}
             });
             model.parse();
             assert.isString(model.component.projection.data[0]);
@@ -104,37 +104,37 @@ describe('src/compile/projection/parse', function () {
     describe('parseNonUnitProjection', function () {
         it('should merge the same projection', function () {
             var model = parseLayerModel({
-                "layer": [
+                layer: [
                     {
-                        "mark": "geoshape",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'geoshape',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "data": {
-                            "url": "data/us-10m.json",
-                            "format": {
-                                "type": "topojson",
-                                "feature": "states"
+                        data: {
+                            url: 'data/us-10m.json',
+                            format: {
+                                type: 'topojson',
+                                feature: 'states'
                             }
                         },
-                        "encoding": {}
+                        encoding: {}
                     },
                     {
-                        "data": {
-                            "url": "data/airports.csv"
+                        data: {
+                            url: 'data/airports.csv'
                         },
-                        "mark": "circle",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'circle',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "encoding": {
-                            "longitude": {
-                                "field": "longitude",
-                                "type": "quantitative"
+                        encoding: {
+                            longitude: {
+                                field: 'longitude',
+                                type: 'quantitative'
                             },
-                            "latitude": {
-                                "field": "latitude",
-                                "type": "quantitative"
+                            latitude: {
+                                field: 'latitude',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -145,34 +145,34 @@ describe('src/compile/projection/parse', function () {
         });
         it('should merge in empty projection to specified projection', function () {
             var emptyFirst = parseLayerModel({
-                "layer": [
+                layer: [
                     {
-                        "mark": "geoshape",
-                        "data": {
-                            "url": "data/us-10m.json",
-                            "format": {
-                                "type": "topojson",
-                                "feature": "states"
+                        mark: 'geoshape',
+                        data: {
+                            url: 'data/us-10m.json',
+                            format: {
+                                type: 'topojson',
+                                feature: 'states'
                             }
                         },
-                        "encoding": {}
+                        encoding: {}
                     },
                     {
-                        "data": {
-                            "url": "data/airports.csv"
+                        data: {
+                            url: 'data/airports.csv'
                         },
-                        "mark": "circle",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'circle',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "encoding": {
-                            "longitude": {
-                                "field": "longitude",
-                                "type": "quantitative"
+                        encoding: {
+                            longitude: {
+                                field: 'longitude',
+                                type: 'quantitative'
                             },
-                            "latitude": {
-                                "field": "latitude",
-                                "type": "quantitative"
+                            latitude: {
+                                field: 'latitude',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -181,34 +181,34 @@ describe('src/compile/projection/parse', function () {
             emptyFirst.parse();
             assert.deepEqual(emptyFirst.component.projection.explicit, { type: 'albersUsa' });
             var emptyLast = parseLayerModel({
-                "layer": [
+                layer: [
                     {
-                        "mark": "geoshape",
-                        "data": {
-                            "url": "data/us-10m.json",
-                            "format": {
-                                "type": "topojson",
-                                "feature": "states"
+                        mark: 'geoshape',
+                        data: {
+                            url: 'data/us-10m.json',
+                            format: {
+                                type: 'topojson',
+                                feature: 'states'
                             }
                         },
-                        "encoding": {}
+                        encoding: {}
                     },
                     {
-                        "data": {
-                            "url": "data/airports.csv"
+                        data: {
+                            url: 'data/airports.csv'
                         },
-                        "mark": "circle",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'circle',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "encoding": {
-                            "longitude": {
-                                "field": "longitude",
-                                "type": "quantitative"
+                        encoding: {
+                            longitude: {
+                                field: 'longitude',
+                                type: 'quantitative'
                             },
-                            "latitude": {
-                                "field": "latitude",
-                                "type": "quantitative"
+                            latitude: {
+                                field: 'latitude',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -219,37 +219,37 @@ describe('src/compile/projection/parse', function () {
         });
         it('should merge projections with same size, different data', function () {
             var model = parseLayerModel({
-                "layer": [
+                layer: [
                     {
-                        "mark": "geoshape",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'geoshape',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "data": {
-                            "url": "data/us-10m.json",
-                            "format": {
-                                "type": "topojson",
-                                "feature": "states"
+                        data: {
+                            url: 'data/us-10m.json',
+                            format: {
+                                type: 'topojson',
+                                feature: 'states'
                             }
                         },
-                        "encoding": {}
+                        encoding: {}
                     },
                     {
-                        "data": {
-                            "url": "data/airports.csv"
+                        data: {
+                            url: 'data/airports.csv'
                         },
-                        "mark": "circle",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'circle',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "encoding": {
-                            "longitude": {
-                                "field": "longitude",
-                                "type": "quantitative"
+                        encoding: {
+                            longitude: {
+                                field: 'longitude',
+                                type: 'quantitative'
                             },
-                            "latitude": {
-                                "field": "latitude",
-                                "type": "quantitative"
+                            latitude: {
+                                field: 'latitude',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -260,37 +260,37 @@ describe('src/compile/projection/parse', function () {
         });
         it('should not merge different specified projections', function () {
             var model = parseLayerModel({
-                "layer": [
+                layer: [
                     {
-                        "mark": "geoshape",
-                        "projection": {
-                            "type": "mercator"
+                        mark: 'geoshape',
+                        projection: {
+                            type: 'mercator'
                         },
-                        "data": {
-                            "url": "data/us-10m.json",
-                            "format": {
-                                "type": "topojson",
-                                "feature": "states"
+                        data: {
+                            url: 'data/us-10m.json',
+                            format: {
+                                type: 'topojson',
+                                feature: 'states'
                             }
                         },
-                        "encoding": {}
+                        encoding: {}
                     },
                     {
-                        "data": {
-                            "url": "data/airports.csv"
+                        data: {
+                            url: 'data/airports.csv'
                         },
-                        "mark": "circle",
-                        "projection": {
-                            "type": "albersUsa"
+                        mark: 'circle',
+                        projection: {
+                            type: 'albersUsa'
                         },
-                        "encoding": {
-                            "longitude": {
-                                "field": "longitude",
-                                "type": "quantitative"
+                        encoding: {
+                            longitude: {
+                                field: 'longitude',
+                                type: 'quantitative'
                             },
-                            "latitude": {
-                                "field": "latitude",
-                                "type": "quantitative"
+                            latitude: {
+                                field: 'latitude',
+                                type: 'quantitative'
                             }
                         }
                     }

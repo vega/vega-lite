@@ -22,7 +22,7 @@ var AGGREGATE_OP_INDEX = {
     valid: 1,
     values: 1,
     variance: 1,
-    variancep: 1,
+    variancep: 1
 };
 export var AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
 export function isAggregateOp(a) {
@@ -33,24 +33,10 @@ export function isCountingAggregateOp(aggregate) {
     return aggregate && contains(COUNTING_OPS, aggregate);
 }
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export var SUM_OPS = [
-    'count',
-    'sum',
-    'distinct',
-    'valid',
-    'missing'
-];
+export var SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
-export var SHARED_DOMAIN_OPS = [
-    'mean',
-    'average',
-    'median',
-    'q1',
-    'q3',
-    'min',
-    'max',
-];
+export var SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
 export var SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
 //# sourceMappingURL=aggregate.js.map

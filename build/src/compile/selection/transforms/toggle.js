@@ -14,11 +14,9 @@ var toggle = {
     modifyExpr: function (model, selCmpt, expr) {
         var tpl = selCmpt.name + TUPLE;
         var signal = selCmpt.name + TOGGLE;
-        return signal + " ? null : " + tpl + ", " +
-            (selCmpt.resolve === 'global' ?
-                signal + " ? null : true, " :
-                signal + " ? null : {unit: " + unitName(model) + "}, ") +
-            (signal + " ? " + tpl + " : null");
+        return (signal + " ? null : " + tpl + ", " +
+            (selCmpt.resolve === 'global' ? signal + " ? null : true, " : signal + " ? null : {unit: " + unitName(model) + "}, ") +
+            (signal + " ? " + tpl + " : null"));
     }
 };
 export default toggle;

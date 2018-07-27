@@ -52,10 +52,10 @@ export declare const TOOLTIP: "tooltip";
 export declare const HREF: "href";
 export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
-export declare const GEOPOSITION_CHANNELS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/channel").GeoPositionChannel[];
+export declare const GEOPOSITION_CHANNELS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/channel").GeoPositionChannel[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
 export declare function isColorChannel(channel: Channel): channel is ColorChannel;
-export declare const CHANNELS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/channel").Channel[];
+export declare const CHANNELS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/channel").Channel[];
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -87,7 +87,7 @@ export declare type SupportedMark = {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export declare function supportMark(channel: Channel, mark: Mark): boolean;
+export declare function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark): boolean;
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param channel

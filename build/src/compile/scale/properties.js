@@ -1,10 +1,12 @@
 import { X, Y } from '../../channel';
 import * as log from '../../log';
-import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, ScaleType, scaleTypeSupportProperty } from '../../scale';
+import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';
 import { contains, keys } from '../../util';
 import { isUnitModel } from '../model';
 import { mergeValuesWithExplicit, tieBreakByComparing } from '../split';
+import { COLOR, FILL, STROKE } from './../../channel';
+import { ScaleType } from './../../scale';
 import { parseScaleRange } from './range';
 export function parseScaleProperty(model, property) {
     if (isUnitModel(model)) {
@@ -31,7 +33,8 @@ function parseUnitScaleProperty(model, property) {
             if (!supportedByScaleType) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(sType, property, channel));
             }
-            else if (channelIncompatability) { // channel
+            else if (channelIncompatability) {
+                // channel
                 log.warn(channelIncompatability);
             }
         }
@@ -54,6 +57,8 @@ export function getDefaultValue(property, channel, fieldDef, scaleType, scalePad
     var scaleConfig = config.scale;
     // If we have default rule-base, determine default value first
     switch (property) {
+        case 'interpolate':
+            return interpolate(channel, scaleType);
         case 'nice':
             return nice(scaleType, channel, fieldDef);
         case 'padding':
@@ -65,7 +70,7 @@ export function getDefaultValue(property, channel, fieldDef, scaleType, scalePad
         case 'reverse':
             return reverse(scaleType, fieldDef.sort);
         case 'zero':
-            return zero(channel, fieldDef, specifiedDomain, markDef);
+            return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
     }
     // Otherwise, use scale config
     return scaleConfig[property];
@@ -105,11 +110,17 @@ export function parseNonUnitScaleProperty(model, property) {
         localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
     });
 }
+export function interpolate(channel, scaleType) {
+    if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+        return 'hcl';
+    }
+    return undefined;
+}
 export function nice(scaleType, channel, fieldDef) {
     if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
         return undefined;
     }
-    return util.contains([X, Y], channel); // return true for quantitative X/Y unless binned
+    return util.contains([X, Y], channel) ? true : undefined;
 }
 export function padding(channel, scaleType, scaleConfig, fieldDef, markDef, barConfig) {
     if (util.contains([X, Y], channel)) {
@@ -119,8 +130,7 @@ export function padding(channel, scaleType, scaleConfig, fieldDef, markDef, barC
             }
             var type = markDef.type, orient = markDef.orient;
             if (type === 'bar' && !fieldDef.bin) {
-                if ((orient === 'vertical' && channel === 'x') ||
-                    (orient === 'horizontal' && channel === 'y')) {
+                if ((orient === 'vertical' && channel === 'x') || (orient === 'horizontal' && channel === 'y')) {
                     return barConfig.continuousBandSize;
                 }
             }
@@ -173,7 +183,7 @@ export function reverse(scaleType, sort) {
     }
     return undefined;
 }
-export function zero(channel, fieldDef, specifiedScale, markDef) {
+export function zero(channel, fieldDef, specifiedScale, markDef, scaleType) {
     // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
     var hasCustomDomain = !!specifiedScale && specifiedScale !== 'unaggregated';
     if (hasCustomDomain) {
@@ -182,8 +192,9 @@ export function zero(channel, fieldDef, specifiedScale, markDef) {
     // If there is no custom domain, return true only for the following cases:
     // 1) using quantitative field with size
     // While this can be either ratio or interval fields, our assumption is that
-    // ratio are more common.
-    if (channel === 'size' && fieldDef.type === 'quantitative') {
+    // ratio are more common. However, if the scaleType is discretizing scale, we want to return
+    // false so that range doesn't start at zero
+    if (channel === 'size' && fieldDef.type === 'quantitative' && !isContinuousToDiscrete(scaleType)) {
         return true;
     }
     // 2) non-binned, quantitative x-scale or y-scale
@@ -191,8 +202,7 @@ export function zero(channel, fieldDef, specifiedScale, markDef) {
     if (!fieldDef.bin && util.contains([X, Y], channel)) {
         var orient = markDef.orient, type = markDef.type;
         if (contains(['bar', 'area', 'line', 'trail'], type)) {
-            if ((orient === 'horizontal' && channel === 'y') ||
-                (orient === 'vertical' && channel === 'x')) {
+            if ((orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x')) {
                 return false;
             }
         }

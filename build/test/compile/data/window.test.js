@@ -31,8 +31,8 @@ describe('compile/data/window', function () {
             window: [
                 {
                     op: 'row_number',
-                    as: 'ordered_row_number',
-                },
+                    as: 'ordered_row_number'
+                }
             ],
             ignorePeers: false,
             sort: [
@@ -51,8 +51,8 @@ describe('compile/data/window', function () {
             fields: [null],
             params: [null],
             sort: {
-                field: ["f"],
-                order: ["ascending"],
+                field: ['f'],
+                order: ['ascending']
             },
             ignorePeers: false,
             as: ['ordered_row_number'],
@@ -66,7 +66,7 @@ describe('compile/data/window', function () {
                 {
                     op: 'row_number',
                     as: undefined // intentionally omit for testing
-                },
+                }
             ],
             ignorePeers: false,
             sort: [
@@ -85,8 +85,8 @@ describe('compile/data/window', function () {
             fields: [null],
             params: [null],
             sort: {
-                field: ["f"],
-                order: ["ascending"],
+                field: ['f'],
+                order: ['ascending']
             },
             ignorePeers: false,
             as: ['row_number'],
@@ -99,7 +99,7 @@ describe('compile/data/window', function () {
             window: [
                 {
                     op: 'row_number',
-                    as: 'ordered_row_number',
+                    as: 'ordered_row_number'
                 },
                 {
                     op: 'count',
@@ -121,15 +121,15 @@ describe('compile/data/window', function () {
             frame: [null, 0]
         };
         var window = new WindowTransformNode(null, transform);
-        assert.deepEqual({ "count_field": true, "ordered_row_number": true, "sum_field": true }, window.producedFields());
+        assert.deepEqual({ count_field: true, ordered_row_number: true, sum_field: true }, window.producedFields());
     });
     it('should clone to an equivalent version', function () {
         var transform = {
             window: [
                 {
                     op: 'row_number',
-                    as: 'ordered_row_number',
-                },
+                    as: 'ordered_row_number'
+                }
             ],
             ignorePeers: false,
             sort: [

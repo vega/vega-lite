@@ -16,26 +16,35 @@ var translate = {
         var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
         var events = parseSelector(selCmpt.translate, 'scope');
         if (!hasScales) {
-            events = events.map(function (e) { return (e.between[0].markname = name + INTERVAL_BRUSH, e); });
+            events = events.map(function (e) { return ((e.between[0].markname = name + INTERVAL_BRUSH), e); });
         }
         signals.push({
             name: anchor,
             value: {},
-            on: [{
+            on: [
+                {
                     events: events.map(function (e) { return e.between[0]; }),
                     update: '{x: x(unit), y: y(unit)' +
-                        (x !== null ? ', extent_x: ' + (hasScales ? domain(model, X) :
-                            "slice(" + channelSignalName(selCmpt, 'x', 'visual') + ")") : '') +
-                        (y !== null ? ', extent_y: ' + (hasScales ? domain(model, Y) :
-                            "slice(" + channelSignalName(selCmpt, 'y', 'visual') + ")") : '') + '}'
-                }]
+                        (x !== null
+                            ? ', extent_x: ' +
+                                (hasScales ? domain(model, X) : "slice(" + channelSignalName(selCmpt, 'x', 'visual') + ")")
+                            : '') +
+                        (y !== null
+                            ? ', extent_y: ' +
+                                (hasScales ? domain(model, Y) : "slice(" + channelSignalName(selCmpt, 'y', 'visual') + ")")
+                            : '') +
+                        '}'
+                }
+            ]
         }, {
             name: name + DELTA,
             value: {},
-            on: [{
+            on: [
+                {
                     events: events,
                     update: "{x: " + anchor + ".x - x(unit), y: " + anchor + ".y - y(unit)}"
-                }]
+                }
+            ]
         });
         if (x !== null) {
             onDelta(model, selCmpt, X, 'width', signals);
@@ -61,11 +70,16 @@ function onDelta(model, selCmpt, channel, size, signals) {
     var sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
     var extent = anchor + ".extent_" + channel;
     var offset = "" + sign + delta + "." + channel + " / " + (hasScales ? "" + sizeSg : "span(" + extent + ")");
-    var panFn = !hasScales ? 'panLinear' :
-        scaleType === 'log' ? 'panLog' :
-            scaleType === 'pow' ? 'panPow' : 'panLinear';
+    var panFn = !hasScales
+        ? 'panLinear'
+        : scaleType === 'log'
+            ? 'panLog'
+            : scaleType === 'pow'
+                ? 'panPow'
+                : 'panLinear';
     var update = panFn + "(" + extent + ", " + offset +
-        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') + ')';
+        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') +
+        ')';
     signal.on.push({
         events: { signal: delta },
         update: hasScales ? update : "clampRange(" + update + ", 0, " + sizeSg + ")"

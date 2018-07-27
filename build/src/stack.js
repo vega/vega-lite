@@ -6,7 +6,7 @@ import { getFieldDef, isFieldDef, isStringFieldDef, vgField } from './fielddef';
 import * as log from './log';
 import { AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, POINT, RULE, SQUARE, TEXT, TICK } from './mark';
 import { ScaleType } from './scale';
-import { contains } from './util';
+import { contains, getFirstDefined } from './util';
 var STACK_OFFSET_INDEX = {
     zero: 1,
     center: 1,
@@ -29,7 +29,7 @@ function potentialStackedChannel(encoding) {
                 return 'y';
             }
             // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
-            if ((!!xDef.aggregate) !== (!!yDef.aggregate)) {
+            if (!!xDef.aggregate !== !!yDef.aggregate) {
                 return xDef.aggregate ? 'x' : 'y';
             }
         }
@@ -91,13 +91,13 @@ export function stack(m, encoding, stackConfig) {
         return null;
     }
     // Automatically determine offset
-    var offset = undefined;
+    var offset;
     if (stackedFieldDef.stack !== undefined) {
         offset = stackedFieldDef.stack;
     }
     else if (contains(STACK_BY_DEFAULT_MARKS, mark)) {
         // Bar and Area with sum ops are automatically stacked by default
-        offset = stackConfig === undefined ? 'zero' : stackConfig;
+        offset = getFirstDefined(stackConfig, 'zero');
     }
     else {
         offset = stackConfig;

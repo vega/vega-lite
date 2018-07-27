@@ -2,7 +2,7 @@ import { text } from 'd3-fetch';
 import { event, select, selectAll } from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
-import { post } from 'vega-embed/build/post';
+import { post } from 'vega-embed/build/src/post';
 import { Handler } from 'vega-tooltip';
 import { compile } from '../../src';
 import { runStreamingExample } from './streaming';
@@ -29,8 +29,12 @@ function renderExample($target, specText) {
     var vis = $target.append('div').attr('class', 'example-vis');
     // Decrease visual noise by removing $schema and description from code examples.
     var textClean = specText.replace(/(\s)+\"(\$schema|description)\": \".*?\",/g, '');
-    var code = $target.append('pre').attr('class', 'example-code')
-        .append('code').attr('class', 'json').text(textClean);
+    var code = $target
+        .append('pre')
+        .attr('class', 'example-code')
+        .append('code')
+        .attr('class', 'json')
+        .text(textClean);
     hljs.highlightBlock(code.node());
     var spec = JSON.parse(specText);
     embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
@@ -39,9 +43,7 @@ export function embedExample($target, spec, actions, tooltip) {
     if (actions === void 0) { actions = true; }
     if (tooltip === void 0) { tooltip = true; }
     var vgSpec = compile(spec).spec;
-    var view = new vega.View(vega.parse(vgSpec), { loader: loader })
-        .renderer('svg')
-        .initialize($target);
+    var view = new vega.View(vega.parse(vgSpec), { loader: loader }).renderer('svg').initialize($target);
     if (tooltip) {
         var handler = new Handler().call;
         view.tooltip(handler);
@@ -54,6 +56,7 @@ export function embedExample($target, spec, actions, tooltip) {
             .append('a')
             .text('Open in Vega Editor')
             .attr('href', '#')
+            // tslint:disable-next-line
             .on('click', function () {
             post(window, editorURL, {
                 mode: 'vega-lite',
@@ -71,10 +74,12 @@ function getSpec(el) {
     var name = sel.attr('data-name');
     if (name) {
         var dir = sel.attr('data-dir');
-        var fullUrl = BASEURL + '/examples/specs/' + (dir ? (dir + '/') : '') + name + '.vl.json';
-        text(fullUrl).then(function (spec) {
+        var fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
+        text(fullUrl)
+            .then(function (spec) {
             renderExample(sel, spec);
-        }).catch(console.error);
+        })
+            .catch(console.error);
     }
     else {
         console.error('No "data-name" specified to import examples from');
@@ -90,7 +95,11 @@ window['buildSpecOpts'] = function (id, baseName) {
     var prefixSel = select('select[name=' + id + ']');
     var inputsSel = selectAll('input[name=' + id + ']:checked');
     var prefix = prefixSel.empty() ? id : prefixSel.property('value');
-    var values = inputsSel.nodes().map(function (n) { return n.value; }).sort().join('_');
+    var values = inputsSel
+        .nodes()
+        .map(function (n) { return n.value; })
+        .sort()
+        .join('_');
     var newName = baseName + prefix + (values ? '_' + values : '');
     if (oldName !== newName) {
         window['changeSpec'](id, newName);

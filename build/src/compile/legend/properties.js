@@ -1,6 +1,5 @@
-import { isColorChannel } from '../../channel';
 import { valueArray } from '../../fielddef';
-import { isBinScale } from '../../scale';
+import { hasContinuousDomain } from '../../scale';
 import { contains } from '../../util';
 export function values(legend, fieldDef) {
     var vals = legend.values;
@@ -9,10 +8,15 @@ export function values(legend, fieldDef) {
     }
     return undefined;
 }
-export function type(t, channel, scaleType) {
-    if (isColorChannel(channel) && ((t === 'quantitative' && !isBinScale(scaleType)) ||
-        (t === 'temporal' && contains(['time', 'utc'], scaleType)))) {
-        return 'gradient';
+export function clipHeight(scaleType) {
+    if (hasContinuousDomain(scaleType)) {
+        return 20;
+    }
+    return undefined;
+}
+export function labelOverlap(scaleType) {
+    if (contains(['quantile', 'threshold', 'log'], scaleType)) {
+        return 'greedy';
     }
     return undefined;
 }

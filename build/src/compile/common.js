@@ -1,11 +1,12 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
+import { isBinning } from '../bin';
 import { isScaleChannel } from '../channel';
 import { isScaleFieldDef, isTimeFieldDef, vgField } from '../fielddef';
 import { ScaleType } from '../scale';
 import { formatExpression } from '../timeunit';
 import { QUANTITATIVE } from '../type';
-import { contains, keys, stringify } from '../util';
+import { contains, getFirstDefined, keys, stringify } from '../util';
 import { wrapCondition } from './mark/mixins';
 export function applyConfig(e, config, // TODO(#1842): consolidate MarkConfig | TextConfig?
 propsList) {
@@ -35,19 +36,22 @@ export function getStyles(mark) {
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig(prop, mark, config) {
-    // By default, read from mark config first!
-    var value = config.mark[prop];
-    // Then read mark specific config, which has higher precedence
-    var markSpecificConfig = config[mark.type];
-    if (markSpecificConfig[prop] !== undefined) {
-        value = markSpecificConfig[prop];
-    }
-    // Then read style config, which has even higher precedence.
+export function getMarkConfig(prop, mark, config, _a) {
+    var _b = (_a === void 0 ? {} : _a).skipGeneralMarkConfig, skipGeneralMarkConfig = _b === void 0 ? false : _b;
+    return getFirstDefined(
+    // style config has highest precedence
+    getStyleConfig(prop, mark, config.style), 
+    // then mark-specific config
+    config[mark.type][prop], 
+    // then general mark config (if not skipped)
+    skipGeneralMarkConfig ? undefined : config.mark[prop]);
+}
+export function getStyleConfig(prop, mark, styleConfigIndex) {
     var styles = getStyles(mark);
+    var value;
     for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
         var style = styles_1[_i];
-        var styleConfig = config.style[style];
+        var styleConfig = styleConfigIndex[style];
         // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
         // However here we also check if it is defined, so it is okay to cast here
         var p = prop;
@@ -59,7 +63,7 @@ export function getMarkConfig(prop, mark, config) {
 }
 export function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
     var format = numberFormat(fieldDef, specifiedFormat, config);
-    if (fieldDef.bin) {
+    if (isBinning(fieldDef.bin)) {
         var startField = vgField(fieldDef, { expr: expr });
         var endField = vgField(fieldDef, { expr: expr, binSuffix: 'end' });
         return {
@@ -82,12 +86,6 @@ export function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
             signal: "''+" + vgField(fieldDef, { expr: expr })
         };
     }
-}
-export function getSpecifiedOrDefaultValue(specifiedValue, defaultValue) {
-    if (specifiedValue !== undefined) {
-        return specifiedValue;
-    }
-    return defaultValue;
 }
 /**
  * Returns number format for a fieldDef
@@ -118,11 +116,12 @@ export function binFormatExpression(startField, endField, format, config) {
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(field, timeUnit, format, shortTimeLabels, timeFormatConfig, isUTCScale, alwaysReturn) {
+export function timeFormatExpression(field, timeUnit, format, shortTimeLabels, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
+isUTCScale, alwaysReturn) {
     if (alwaysReturn === void 0) { alwaysReturn = false; }
     if (!timeUnit || format) {
         // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-        format = format || timeFormatConfig; // only use config.timeFormat if there is no timeUnit.
+        format = format || rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
         if (format || alwaysReturn) {
             return (isUTCScale ? 'utc' : 'time') + "Format(" + field + ", '" + format + "')";
         }
@@ -159,9 +158,9 @@ export function mergeTitleFieldDefs(f1, f2) {
     return merged;
 }
 export function mergeTitle(title1, title2) {
-    return title1 === title2 ?
-        title1 : // if title is the same just use one of them
-        title1 + ', ' + title2; // join title with comma if different
+    return title1 === title2
+        ? title1 // if title is the same just use one of them
+        : title1 + ', ' + title2; // join title with comma if different
 }
 export function mergeTitleComponent(v1, v2) {
     if (isArray(v1.value) && isArray(v2.value)) {
@@ -183,7 +182,7 @@ export function mergeTitleComponent(v1, v2) {
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
 export function binRequiresRange(fieldDef, channel) {
-    if (!fieldDef.bin) {
+    if (!isBinning(fieldDef.bin)) {
         console.warn('Only use this method with binned field defs');
         return false;
     }

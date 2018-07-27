@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { isString } from 'vega-util';
 import { SHARED_DOMAIN_OP_INDEX } from '../../aggregate';
-import { binToString, isBinParams } from '../../bin';
+import { binToString, isBinning, isBinParams } from '../../bin';
 import { isScaleChannel } from '../../channel';
 import { MAIN, RAW } from '../../data';
 import { valueExpr, vgField } from '../../fielddef';
@@ -148,7 +148,8 @@ function mapDomainToDataSignal(domain, type, timeUnit) {
 }
 function parseSingleChannelDomain(scaleType, domain, model, channel) {
     var fieldDef = model.fieldDef(channel);
-    if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) { // explicit value
+    if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
+        // explicit value
         var type = fieldDef.type, timeUnit = fieldDef.timeUnit;
         if (type === 'temporal' || timeUnit) {
             return mapDomainToDataSignal(domain, type, timeUnit);
@@ -161,27 +162,34 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
             return [[0, 1]];
         }
         var data = model.requestDataName(MAIN);
-        return [{
+        return [
+            {
                 data: data,
                 field: model.vgField(channel, { suffix: 'start' })
-            }, {
+            },
+            {
                 data: data,
                 field: model.vgField(channel, { suffix: 'end' })
-            }];
+            }
+        ];
     }
     var sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
     if (domain === 'unaggregated') {
         var data = model.requestDataName(MAIN);
         var field = fieldDef.field;
-        return [{
+        return [
+            {
                 data: data,
                 field: vgField({ field: field, aggregate: 'min' })
-            }, {
+            },
+            {
                 data: data,
                 field: vgField({ field: field, aggregate: 'max' })
-            }];
+            }
+        ];
     }
-    else if (fieldDef.bin) { // bin
+    else if (isBinning(fieldDef.bin)) {
+        // bin
         if (isBinScale(scaleType)) {
             var signal = model.getName(binToString(fieldDef.bin) + "_" + fieldDef.field + "_bins");
             return [{ signal: "sequence(" + signal + ".start, " + signal + ".stop + " + signal + ".step, " + signal + ".step)" }];
@@ -189,57 +197,71 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
         if (hasDiscreteDomain(scaleType)) {
             // ordinal bin scale takes domain from bin_range, ordered by bin start
             // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
-            return [{
+            return [
+                {
                     // If sort by aggregation of a specified sort field, we need to use RAW table,
                     // so we can aggregate values for the scale independently from the main aggregation.
                     data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
                     // Use range if we added it and the scale does not support computing a range as a signal.
                     field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? { binSuffix: 'range' } : {}),
                     // we have to use a sort object if sort = true to make the sort correct by bin start
-                    sort: sort === true || !isSortField(sort) ? {
-                        field: model.vgField(channel, {}),
-                        op: 'min' // min or max doesn't matter since we sort by the start of the bin range
-                    } : sort
-                }];
+                    sort: sort === true || !isSortField(sort)
+                        ? {
+                            field: model.vgField(channel, {}),
+                            op: 'min' // min or max doesn't matter since we sort by the start of the bin range
+                        }
+                        : sort
+                }
+            ];
         }
-        else { // continuous scales
+        else {
+            // continuous scales
             if (channel === 'x' || channel === 'y') {
                 if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
                     return [fieldDef.bin.extent];
                 }
                 // X/Y position have to include start and end for non-ordinal scale
                 var data = model.requestDataName(MAIN);
-                return [{
+                return [
+                    {
                         data: data,
                         field: model.vgField(channel, {})
-                    }, {
+                    },
+                    {
                         data: data,
                         field: model.vgField(channel, { binSuffix: 'end' })
-                    }];
+                    }
+                ];
             }
             else {
                 // TODO: use bin_mid
-                return [{
+                return [
+                    {
                         data: model.requestDataName(MAIN),
                         field: model.vgField(channel, {})
-                    }];
+                    }
+                ];
             }
         }
     }
     else if (sort) {
-        return [{
+        return [
+            {
                 // If sort by aggregation of a specified sort field, we need to use RAW table,
                 // so we can aggregate values for the scale independently from the main aggregation.
                 data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
                 field: model.vgField(channel),
                 sort: sort
-            }];
+            }
+        ];
     }
     else {
-        return [{
+        return [
+            {
                 data: model.requestDataName(MAIN),
                 field: model.vgField(channel)
-            }];
+            }
+        ];
     }
 }
 export function domainSort(model, channel, scaleType) {
@@ -316,7 +338,8 @@ export function mergeDomains(domains) {
         }
         return domain;
     }), util.hash);
-    var sorts = util.unique(domains.map(function (d) {
+    var sorts = util.unique(domains
+        .map(function (d) {
         if (isDataRefDomain(d)) {
             var s = d.sort;
             if (s !== undefined && !util.isBoolean(s)) {
@@ -332,7 +355,8 @@ export function mergeDomains(domains) {
             return s;
         }
         return undefined;
-    }).filter(function (s) { return s !== undefined; }), util.hash);
+    })
+        .filter(function (s) { return s !== undefined; }), util.hash);
     if (uniqueDomains.length === 1) {
         var domain = domains[0];
         if (isDataRefDomain(domain) && sorts.length > 0) {
@@ -347,7 +371,7 @@ export function mergeDomains(domains) {
     }
     // only keep simple sort properties that work with unioned domains
     var simpleSorts = util.unique(sorts.map(function (s) {
-        if (s === true) {
+        if (util.isBoolean(s)) {
             return s;
         }
         if (s.op === 'count') {
@@ -356,7 +380,7 @@ export function mergeDomains(domains) {
         log.warn(log.message.domainSortDropped(s));
         return true;
     }), util.hash);
-    var sort = undefined;
+    var sort;
     if (simpleSorts.length === 1) {
         sort = simpleSorts[0];
     }

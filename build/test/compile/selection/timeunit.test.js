@@ -11,27 +11,32 @@ function getData(model) {
 }
 function getModel(unit2) {
     var model = parseModel({
-        "data": { "values": [
-                { "date": "Sun, 01 Jan 2012 23:00:01", "price": 150 },
-                { "date": "Sun, 02 Jan 2012 00:10:02", "price": 100 },
-                { "date": "Sun, 02 Jan 2012 01:20:03", "price": 170 },
-                { "date": "Sun, 02 Jan 2012 02:30:04", "price": 165 },
-                { "date": "Sun, 02 Jan 2012 03:40:05", "price": 200 }
-            ] },
-        "hconcat": [{
-                "mark": "point",
-                "selection": {
-                    "two": { "type": "single", "encodings": ["x", "y"] }
+        data: {
+            values: [
+                { date: 'Sun, 01 Jan 2012 23:00:01', price: 150 },
+                { date: 'Sun, 02 Jan 2012 00:10:02', price: 100 },
+                { date: 'Sun, 02 Jan 2012 01:20:03', price: 170 },
+                { date: 'Sun, 02 Jan 2012 02:30:04', price: 165 },
+                { date: 'Sun, 02 Jan 2012 03:40:05', price: 200 }
+            ]
+        },
+        hconcat: [
+            {
+                mark: 'point',
+                selection: {
+                    two: { type: 'single', encodings: ['x', 'y'] }
                 },
-                "encoding": {
-                    "x": {
-                        "field": "date",
-                        "type": "temporal",
-                        "timeUnit": "seconds"
+                encoding: {
+                    x: {
+                        field: 'date',
+                        type: 'temporal',
+                        timeUnit: 'seconds'
                     },
-                    "y": { "field": "price", "type": "quantitative" }
+                    y: { field: 'price', type: 'quantitative' }
                 }
-            }, unit2]
+            },
+            unit2
+        ]
     });
     model.parse();
     return model;
@@ -39,16 +44,16 @@ function getModel(unit2) {
 describe('Selection time unit', function () {
     it('dataflow nodes are constructed', function () {
         var model = parseUnitModel({
-            "mark": "point",
-            "encoding": {
-                "x": { "field": "date", "type": "temporal", "timeUnit": "seconds" },
-                "y": { "field": "date", "type": "temporal", "timeUnit": "minutes" }
+            mark: 'point',
+            encoding: {
+                x: { field: 'date', type: 'temporal', timeUnit: 'seconds' },
+                y: { field: 'date', type: 'temporal', timeUnit: 'minutes' }
             }
         });
-        var selCmpts = model.component.selection = selection.parseUnitSelection(model, {
-            "one": { "type": "single" },
-            "two": { "type": "single", "encodings": ["x", "y"] }
-        });
+        var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+            one: { type: 'single' },
+            two: { type: 'single', encodings: ['x', 'y'] }
+        }));
         assert.isUndefined(selCmpts['one'].timeUnit);
         assert.instanceOf(selCmpts['two'].timeUnit, TimeUnitNode);
         var as = selCmpts['two'].timeUnit.assemble().map(function (tx) { return tx.as; });
@@ -56,17 +61,17 @@ describe('Selection time unit', function () {
     });
     it('is added with conditional encodings', function () {
         var model = getModel({
-            "mark": "point",
-            "encoding": {
-                "x": {
-                    "field": "date",
-                    "type": "temporal",
-                    "timeUnit": "minutes"
+            mark: 'point',
+            encoding: {
+                x: {
+                    field: 'date',
+                    type: 'temporal',
+                    timeUnit: 'minutes'
                 },
-                "y": { "field": "price", "type": "quantitative" },
-                "color": {
-                    "condition": { "selection": "two", "value": "goldenrod" },
-                    "value": "steelblue"
+                y: { field: 'price', type: 'quantitative' },
+                color: {
+                    condition: { selection: 'two', value: 'goldenrod' },
+                    value: 'steelblue'
                 }
             }
         });
@@ -75,15 +80,15 @@ describe('Selection time unit', function () {
     });
     it('is added before selection filters', function () {
         var model = getModel({
-            "transform": [{ "filter": { "selection": "two" } }],
-            "mark": "point",
-            "encoding": {
-                "x": {
-                    "field": "date",
-                    "type": "temporal",
-                    "timeUnit": "minutes"
+            transform: [{ filter: { selection: 'two' } }],
+            mark: 'point',
+            encoding: {
+                x: {
+                    field: 'date',
+                    type: 'temporal',
+                    timeUnit: 'minutes'
                 },
-                "y": { "field": "price", "type": "quantitative" }
+                y: { field: 'price', type: 'quantitative' }
             }
         });
         var data2 = getData(model).filter(function (d) { return d.name === 'data_2'; })[0].transform;
@@ -103,15 +108,15 @@ describe('Selection time unit', function () {
     });
     it('removes duplicate time unit formulae', function () {
         var model = getModel({
-            "transform": [{ "filter": { "selection": "two" } }],
-            "mark": "point",
-            "encoding": {
-                "x": {
-                    "field": "date",
-                    "type": "temporal",
-                    "timeUnit": "seconds"
+            transform: [{ filter: { selection: 'two' } }],
+            mark: 'point',
+            encoding: {
+                x: {
+                    field: 'date',
+                    type: 'temporal',
+                    timeUnit: 'seconds'
                 },
-                "y": { "field": "price", "type": "quantitative" }
+                y: { field: 'price', type: 'quantitative' }
             }
         });
         var data2 = getData(model).filter(function (d) { return d.name === 'data_2'; })[0].transform;

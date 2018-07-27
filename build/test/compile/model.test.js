@@ -37,17 +37,20 @@ describe('Model', function () {
             var model = parseFacetModel({
                 facet: { row: { field: 'a', type: 'nominal' } },
                 spec: {
-                    layer: [{
+                    layer: [
+                        {
                             mark: 'point',
                             encoding: {
                                 x: { field: 'x', type: 'quantitative' }
                             }
-                        }, {
+                        },
+                        {
                             mark: 'point',
                             encoding: {
                                 color: { field: 'x', type: 'quantitative' }
                             }
-                        },]
+                        }
+                    ]
                 }
             });
             assert(model.hasDescendantWithFieldOnChannel('x'));
@@ -68,17 +71,20 @@ describe('Model', function () {
             var model = parseFacetModel({
                 facet: { row: { field: 'a', type: 'nominal' } },
                 spec: {
-                    layer: [{
+                    layer: [
+                        {
                             mark: 'point',
                             encoding: {
                                 color: { field: 'x', type: 'quantitative' }
                             }
-                        }, {
+                        },
+                        {
                             mark: 'point',
                             encoding: {
                                 color: { field: 'x', type: 'quantitative' }
                             }
-                        },]
+                        }
+                    ]
                 }
             });
             assert(!model.hasDescendantWithFieldOnChannel('x'));
@@ -93,9 +99,13 @@ describe('Model', function () {
                 spec: {
                     mark: 'point',
                     encoding: {
-                        x: { field: 'b', type: 'nominal', scale: {
+                        x: {
+                            field: 'b',
+                            type: 'nominal',
+                            scale: {
                                 padding: 0.345
-                            } }
+                            }
+                        }
                     }
                 },
                 resolve: {

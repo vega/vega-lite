@@ -129,7 +129,9 @@ var ParseNode = /** @class */ (function (_super) {
                         implicit[fieldDef.field] = 'flatten';
                     }
                 }
-                else if (isScaleFieldDef(fieldDef) && isSortField(fieldDef.sort) && accessPathDepth(fieldDef.sort.field) > 1) {
+                else if (isScaleFieldDef(fieldDef) &&
+                    isSortField(fieldDef.sort) &&
+                    accessPathDepth(fieldDef.sort.field) > 1) {
                     // Flatten fields that we sort by but that are not otherwise flattened.
                     if (!(fieldDef.sort.field in implicit)) {
                         implicit[fieldDef.sort.field] = 'flatten';
@@ -149,7 +151,10 @@ var ParseNode = /** @class */ (function (_super) {
             var parsedAs = ancestorParse.getWithExplicit(field);
             if (parsedAs.value !== undefined) {
                 // We always ignore derived fields even if they are implicitly defined because we expect users to create the right types.
-                if (parsedAs.explicit || parsedAs.value === implicit[field] || parsedAs.value === 'derived' || implicit[field] === 'flatten') {
+                if (parsedAs.explicit ||
+                    parsedAs.value === implicit[field] ||
+                    parsedAs.value === 'derived' ||
+                    implicit[field] === 'flatten') {
                     delete implicit[field];
                 }
                 else {
@@ -223,7 +228,7 @@ var ParseNode = /** @class */ (function (_super) {
         var _this = this;
         if (onlyNested === void 0) { onlyNested = false; }
         return keys(this._parse)
-            .filter(function (field) { return onlyNested ? accessPathDepth(field) > 1 : true; })
+            .filter(function (field) { return (onlyNested ? accessPathDepth(field) > 1 : true); })
             .map(function (field) {
             var expr = parseExpression(field, _this._parse[field]);
             if (!expr) {
@@ -235,7 +240,8 @@ var ParseNode = /** @class */ (function (_super) {
                 as: removePathFromField(field) // Vega output is always flattened
             };
             return formula;
-        }).filter(function (t) { return t !== null; });
+        })
+            .filter(function (t) { return t !== null; });
     };
     return ParseNode;
 }(DataFlowNode));

@@ -10,7 +10,9 @@ export var geoshape = {
     postEncodingTransform: function (model) {
         var encoding = model.encoding;
         var shapeDef = encoding.shape;
-        var transform = tslib_1.__assign({ type: 'geoshape', projection: model.projectionName() }, (shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON ? { field: vgField(shapeDef, { expr: 'datum' }) } : {}));
+        var transform = tslib_1.__assign({ type: 'geoshape', projection: model.projectionName() }, (shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON
+            ? { field: vgField(shapeDef, { expr: 'datum' }) }
+            : {}));
         return [transform];
     }
 };

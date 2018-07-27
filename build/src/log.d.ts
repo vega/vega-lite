@@ -5,8 +5,9 @@ import { AggregateOp } from 'vega';
 import { LoggerInterface } from 'vega-util';
 import { Channel, GeoPositionChannel } from './channel';
 import { CompositeMark } from './compositemark';
+import { ErrorBarCenter, ErrorBarExtent } from './compositemark/errorbar';
 import { DateTime, DateTimeExpr } from './datetime';
-import { FieldDef } from './fielddef';
+import { Aggregate, FieldDef } from './fielddef';
 import { Mark } from './mark';
 import { Projection } from './projection';
 import { ScaleType } from './scale';
@@ -46,6 +47,7 @@ export declare namespace message {
     const CANNOT_FIX_RANGE_STEP_WITH_FIT = "Cannot use a fixed value of \"rangeStep\" when \"autosize\" is \"fit\".";
     function cannotProjectOnChannelWithoutField(channel: Channel): string;
     function nearestNotSupportForContinuous(mark: string): string;
+    function selectionNotSupported(mark: CompositeMark): string;
     function selectionNotFound(name: string): string;
     const SCALE_BINDINGS_CONTINUOUS = "Scale bindings are currently only supported for scales with unbinned, continuous domains.";
     function noSuchRepeatedValue(field: string): string;
@@ -107,4 +109,11 @@ export declare namespace message {
     function invalidTimeUnit(unitName: string, value: string | number): string;
     function dayReplacedWithDate(fullTimeUnit: string): string;
     function droppedDay(d: DateTime | DateTimeExpr): string;
+    function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent): string;
+    function errorBarCenterIsUsedWithWrongExtent(center: ErrorBarCenter, extent: ErrorBarExtent, mark: 'errorbar' | 'errorband'): string;
+    function errorBarContinuousAxisHasCustomizedAggregate(aggregate: Aggregate, compositeMark: CompositeMark): string;
+    function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband'): string;
+    function errorBand1DNotSupport(property: 'interpolate' | 'tension'): string;
+    function channelRequiredForBinned(channel: Channel): string;
+    function domainRequiredForThresholdScale(channel: Channel): string;
 }

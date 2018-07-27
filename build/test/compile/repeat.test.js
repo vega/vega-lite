@@ -27,10 +27,7 @@ describe('Repeat', function () {
         }));
         it('should support arrays fo field defs', function () {
             var resolved = replaceRepeaterInEncoding({
-                detail: [
-                    { field: { repeat: 'row' }, type: 'quantitative' },
-                    { field: 'bar', type: 'quantitative' }
-                ]
+                detail: [{ field: { repeat: 'row' }, type: 'quantitative' }, { field: 'bar', type: 'quantitative' }]
             }, { row: 'foo' });
             assert.deepEqual(resolved, {
                 detail: [{ field: 'foo', type: 'quantitative' }, { field: 'bar', type: 'quantitative' }]
@@ -62,13 +59,15 @@ describe('Repeat', function () {
             var resolved = replaceRepeaterInEncoding({
                 color: {
                     condition: { selection: 'test', value: 'red' },
-                    field: { repeat: 'row' }, type: 'quantitative'
+                    field: { repeat: 'row' },
+                    type: 'quantitative'
                 }
             }, { row: 'foo' });
             assert.deepEqual(resolved, {
                 color: {
                     condition: { selection: 'test', value: 'red' },
-                    field: 'foo', type: 'quantitative'
+                    field: 'foo',
+                    type: 'quantitative'
                 }
             });
         });
@@ -88,7 +87,8 @@ describe('Repeat', function () {
             var resolved = replaceRepeaterInEncoding({
                 color: {
                     condition: { selection: 'test', value: 'red' },
-                    field: { repeat: 'row' }, type: 'quantitative'
+                    field: { repeat: 'row' },
+                    type: 'quantitative'
                 }
             }, { column: 'foo' });
             assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));

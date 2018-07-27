@@ -1,13 +1,14 @@
 import * as tslib_1 from "tslib";
 import { isArray, isBoolean, isNumber, isString } from 'vega-util';
 import { isAggregateOp, isCountingAggregateOp } from './aggregate';
-import { autoMaxBins, binToString } from './bin';
-import { rangeType } from './channel';
+import { autoMaxBins, binToString, isBinned, isBinning } from './bin';
+import { POSITION_SCALE_CHANNELS, rangeType } from './channel';
 import { dateTimeExpr, isDateTime } from './datetime';
+import { isFacetFieldDef } from './facet';
 import * as log from './log';
 import { getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit } from './timeunit';
 import { getFullName, QUANTITATIVE } from './type';
-import { flatAccessWithDatum, replacePathInField, titlecase } from './util';
+import { contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase } from './util';
 export function isConditionalSelection(c) {
     return c['selection'];
 }
@@ -33,8 +34,8 @@ export function hasConditionalValueDef(channelDef) {
 export function isFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
-export function isStringFieldDef(fieldDef) {
-    return isFieldDef(fieldDef) && isString(fieldDef.field);
+export function isStringFieldDef(channelDef) {
+    return isFieldDef(channelDef) && isString(channelDef.field);
 }
 export function isValueDef(channelDef) {
     return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
@@ -42,9 +43,21 @@ export function isValueDef(channelDef) {
 export function isScaleFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
+export function isPositionFieldDef(channelDef) {
+    return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
+}
+export function isMarkPropFieldDef(channelDef) {
+    return !!channelDef && !!channelDef['legend'];
+}
+export function isTextFieldDef(channelDef) {
+    return !!channelDef && !!channelDef['format'];
+}
 function isOpFieldDef(fieldDef) {
     return !!fieldDef['op'];
 }
+/**
+ * Get a Vega field reference from a Vega-Lite field def.
+ */
 export function vgField(fieldDef, opt) {
     if (opt === void 0) { opt = {}; }
     var field = fieldDef.field;
@@ -54,12 +67,12 @@ export function vgField(fieldDef, opt) {
         field = 'count_*';
     }
     else {
-        var fn = undefined;
+        var fn = void 0;
         if (!opt.nofn) {
             if (isOpFieldDef(fieldDef)) {
                 fn = fieldDef.op;
             }
-            else if (fieldDef.bin) {
+            else if (isBinning(fieldDef.bin)) {
                 fn = binToString(fieldDef.bin);
                 suffix = opt.binSuffix || '';
             }
@@ -80,7 +93,10 @@ export function vgField(fieldDef, opt) {
     if (prefix) {
         field = prefix + "_" + field;
     }
-    if (opt.expr) {
+    if (opt.forAs) {
+        return field;
+    }
+    else if (opt.expr) {
         // Expression to access flattened field. No need to escape dots.
         return flatAccessWithDatum(field, opt.expr);
     }
@@ -97,8 +113,6 @@ export function isDiscrete(fieldDef) {
             return true;
         case 'quantitative':
             return !!fieldDef.bin;
-        case 'latitude':
-        case 'longitude':
         case 'temporal':
             return false;
     }
@@ -115,7 +129,7 @@ export function verbalTitleFormatter(fieldDef, config) {
     if (aggregate === 'count') {
         return config.countTitle;
     }
-    else if (bin) {
+    else if (isBinning(bin)) {
         return field + " (binned)";
     }
     else if (timeUnit) {
@@ -128,7 +142,7 @@ export function verbalTitleFormatter(fieldDef, config) {
     return field;
 }
 export function functionalTitleFormatter(fieldDef, config) {
-    var fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
+    var fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
     if (fn) {
         return fn.toUpperCase() + '(' + fieldDef.field + ')';
     }
@@ -153,14 +167,46 @@ export function setTitleFormatter(formatter) {
 export function resetTitleFormatter() {
     setTitleFormatter(defaultTitleFormatter);
 }
-export function title(fieldDef, config) {
+export function title(fieldDef, config, _a) {
+    var allowDisabling = _a.allowDisabling;
+    var guide = getGuide(fieldDef) || {};
+    var guideTitle = guide.title;
+    if (allowDisabling) {
+        return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
+    }
+    else {
+        return guideTitle || fieldDef.title || defaultTitle(fieldDef, config);
+    }
+}
+export function getGuide(fieldDef) {
+    if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
+        return fieldDef.axis;
+    }
+    else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {
+        return fieldDef.legend;
+    }
+    else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
+        return fieldDef.header;
+    }
+    return undefined;
+}
+export function defaultTitle(fieldDef, config) {
     return titleFormatter(fieldDef, config);
+}
+export function format(fieldDef) {
+    if (isTextFieldDef(fieldDef) && fieldDef.format) {
+        return fieldDef.format;
+    }
+    else {
+        var guide = getGuide(fieldDef) || {};
+        return guide.format;
+    }
 }
 export function defaultType(fieldDef, channel) {
     if (fieldDef.timeUnit) {
         return 'temporal';
     }
-    if (fieldDef.bin) {
+    if (isBinning(fieldDef.bin)) {
         return 'quantitative';
     }
     switch (rangeType(channel)) {
@@ -192,8 +238,7 @@ export function getFieldDef(channelDef) {
  */
 export function normalize(channelDef, channel) {
     if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
-        var primitiveType = isString(channelDef) ? 'string' :
-            isNumber(channelDef) ? 'number' : 'boolean';
+        var primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
         log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
         return { value: channelDef };
     }
@@ -220,8 +265,11 @@ export function normalizeFieldDef(fieldDef, channel) {
         fieldDef = tslib_1.__assign({}, fieldDef, { timeUnit: normalizeTimeUnit(fieldDef.timeUnit) });
     }
     // Normalize bin
-    if (fieldDef.bin) {
+    if (isBinning(fieldDef.bin)) {
         fieldDef = tslib_1.__assign({}, fieldDef, { bin: normalizeBin(fieldDef.bin, channel) });
+    }
+    if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+        log.warn("Channel " + channel + " should not be used with \"binned\" bin");
     }
     // Normalize Type
     if (fieldDef.type) {
@@ -263,6 +311,12 @@ export function normalizeBin(bin, channel) {
 var COMPATIBLE = { compatible: true };
 export function channelCompatibility(fieldDef, channel) {
     var type = fieldDef.type;
+    if (type === 'geojson' && channel !== 'shape') {
+        return {
+            compatible: false,
+            warning: "Channel " + channel + " should not be used with a geojson data."
+        };
+    }
     switch (channel) {
         case 'row':
         case 'column':
@@ -299,7 +353,7 @@ export function channelCompatibility(fieldDef, channel) {
         case 'size':
         case 'x2':
         case 'y2':
-            if ((type === 'nominal' && !fieldDef['sort']) || type === 'geojson') {
+            if (type === 'nominal' && !fieldDef['sort']) {
                 return {
                     compatible: false,
                     warning: "Channel " + channel + " should not be used with an unsorted discrete field."
@@ -326,7 +380,7 @@ export function channelCompatibility(fieldDef, channel) {
     throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 export function isNumberFieldDef(fieldDef) {
-    return fieldDef.type === 'quantitative' || !!fieldDef.bin;
+    return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 export function isTimeFieldDef(fieldDef) {
     return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
@@ -338,7 +392,7 @@ export function isTimeFieldDef(fieldDef) {
 export function valueExpr(v, _a) {
     var timeUnit = _a.timeUnit, type = _a.type, time = _a.time, undefinedIfExprNotRequired = _a.undefinedIfExprNotRequired;
     var _b;
-    var expr = undefined;
+    var expr;
     if (isDateTime(v)) {
         expr = dateTimeExpr(v, true);
     }

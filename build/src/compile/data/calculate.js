@@ -27,12 +27,14 @@ var CalculateNode = /** @class */ (function (_super) {
                 var field_1 = fieldDef.field, timeUnit_1 = fieldDef.timeUnit;
                 var sort = fieldDef.sort;
                 // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
-                var calculate = sort.map(function (sortValue, i) {
+                var calculate = sort
+                    .map(function (sortValue, i) {
                     return fieldFilterExpression({ field: field_1, timeUnit: timeUnit_1, equal: sortValue }) + " ? " + i + " : ";
-                }).join('') + sort.length;
+                })
+                    .join('') + sort.length;
                 parent = new CalculateNode(parent, {
                     calculate: calculate,
-                    as: sortArrayIndexField(fieldDef, channel)
+                    as: sortArrayIndexField(fieldDef, channel, { forAs: true })
                 });
             }
         });
@@ -53,7 +55,7 @@ var CalculateNode = /** @class */ (function (_super) {
     return CalculateNode;
 }(DataFlowNode));
 export { CalculateNode };
-export function sortArrayIndexField(fieldDef, channel, expr) {
-    return vgField(fieldDef, { prefix: channel, suffix: 'sort_index', expr: expr });
+export function sortArrayIndexField(fieldDef, channel, opt) {
+    return vgField(fieldDef, tslib_1.__assign({ prefix: channel, suffix: 'sort_index' }, (opt || {})));
 }
 //# sourceMappingURL=calculate.js.map

@@ -15,8 +15,8 @@ describe('compile/data/bin', function () {
             encoding: {
                 y: {
                     bin: { extent: [0, 100] },
-                    'field': 'Acceleration',
-                    'type': 'quantitative'
+                    field: 'Acceleration',
+                    type: 'quantitative'
                 }
             }
         });
@@ -26,7 +26,7 @@ describe('compile/data/bin', function () {
             as: ['bin_extent_0_100_maxbins_10_Acceleration', 'bin_extent_0_100_maxbins_10_Acceleration_end'],
             maxbins: 10,
             extent: [0, 100],
-            signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
+            signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
         });
     });
     it('should add bin transform and correctly apply bin for binned field without custom extent', function () {
@@ -35,8 +35,8 @@ describe('compile/data/bin', function () {
             encoding: {
                 y: {
                     bin: true,
-                    'field': 'Acceleration',
-                    'type': 'quantitative'
+                    field: 'Acceleration',
+                    type: 'quantitative'
                 }
             }
         });
@@ -58,18 +58,18 @@ describe('compile/data/bin', function () {
     });
     it('should apply the bin transform only once for a binned field encoded in multiple channels', function () {
         var model = parseUnitModelWithScale({
-            data: { url: "data/movies.json" },
-            mark: "circle",
+            data: { url: 'data/movies.json' },
+            mark: 'circle',
             encoding: {
                 x: {
                     bin: true,
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 },
                 color: {
-                    bin: { "maxbins": 10 },
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "ordinal"
+                    bin: { maxbins: 10 },
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'ordinal'
                 }
             }
         });
@@ -83,8 +83,7 @@ describe('compile/data/bin', function () {
         assert.deepEqual(transform[1], {
             type: 'bin',
             field: 'Rotten_Tomatoes_Rating',
-            as: ['bin_maxbins_10_Rotten_Tomatoes_Rating',
-                'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
+            as: ['bin_maxbins_10_Rotten_Tomatoes_Rating', 'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
             signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_bins',
             maxbins: 10,
             extent: { signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent' }
@@ -102,27 +101,27 @@ describe('compile/data/bin', function () {
             as: 'binned_acceleration'
         };
         var model = parseUnitModelWithScale({
-            data: { url: "data/movies.json" },
-            mark: "circle",
+            data: { url: 'data/movies.json' },
+            mark: 'circle',
             transform: [t],
             encoding: {
                 x: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 },
                 color: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 }
             }
         });
         assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
-            "maxbins": 10,
+            maxbins: 10,
             as: ['binned_acceleration', 'binned_acceleration_end'],
             extent: [0, 100],
-            signal: "bin_extent_0_100_maxbins_10_Acceleration_bins",
+            signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
         });
     });
     it('should add bin transform from transform array and correctly apply bin with custom extent', function () {
@@ -132,27 +131,27 @@ describe('compile/data/bin', function () {
             as: 'binned_acceleration'
         };
         var model = parseUnitModelWithScale({
-            data: { url: "data/movies.json" },
-            mark: "circle",
+            data: { url: 'data/movies.json' },
+            mark: 'circle',
             transform: [t],
             encoding: {
                 x: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 },
                 color: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 }
             }
         });
         assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
-            "maxbins": 20,
+            maxbins: 20,
             as: ['binned_acceleration', 'binned_acceleration_end'],
             extent: [0, 100],
-            signal: "bin_extent_0_100_maxbins_20_Acceleration_bins",
+            signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins'
         });
     });
     it('should add bin transform from transform array with anchor property', function () {
@@ -162,17 +161,17 @@ describe('compile/data/bin', function () {
             as: 'binned_acceleration'
         };
         var model = parseUnitModelWithScale({
-            data: { url: "data/movies.json" },
-            mark: "circle",
+            data: { url: 'data/movies.json' },
+            mark: 'circle',
             transform: [t],
             encoding: {
                 x: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 },
                 color: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 }
             }
         });
@@ -183,7 +182,7 @@ describe('compile/data/bin', function () {
             maxbins: 10,
             as: ['binned_acceleration', 'binned_acceleration_end'],
             extent: [0, 100],
-            signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
+            signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
         });
     });
     it('should add bin transform from transform array with array as', function () {
@@ -193,17 +192,17 @@ describe('compile/data/bin', function () {
             as: ['binned_acceleration_start', 'binned_acceleration_stop']
         };
         var model = parseUnitModelWithScale({
-            data: { url: "data/movies.json" },
-            mark: "circle",
+            data: { url: 'data/movies.json' },
+            mark: 'circle',
             transform: [t],
             encoding: {
                 x: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 },
                 color: {
-                    field: "Rotten_Tomatoes_Rating",
-                    type: "quantitative"
+                    field: 'Rotten_Tomatoes_Rating',
+                    type: 'quantitative'
                 }
             }
         });
@@ -214,7 +213,7 @@ describe('compile/data/bin', function () {
             maxbins: 10,
             as: ['binned_acceleration_start', 'binned_acceleration_stop'],
             extent: [0, 100],
-            signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
+            signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
         });
     });
 });

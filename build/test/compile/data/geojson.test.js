@@ -7,21 +7,21 @@ import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('compile/data/geojson', function () {
     it('should make transform and assemble correctly', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "data": {
-                "url": "data/zipcodes.csv",
-                "format": {
-                    "type": "csv"
+            data: {
+                url: 'data/zipcodes.csv',
+                format: {
+                    type: 'csv'
                 }
             },
-            "mark": "circle",
-            "encoding": {
-                "longitude": {
-                    "field": "longitude",
-                    "type": "quantitative"
+            mark: 'circle',
+            encoding: {
+                longitude: {
+                    field: 'longitude',
+                    type: 'quantitative'
                 },
-                "latitude": {
-                    "field": "latitude",
-                    "type": "quantitative"
+                latitude: {
+                    field: 'latitude',
+                    type: 'quantitative'
                 }
             }
         });

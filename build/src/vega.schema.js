@@ -1,6 +1,6 @@
 import { isArray } from 'vega-util';
 import { flagKeys } from './util';
-export function isVgSignalRef(o) {
+export function isSignalRef(o) {
     return !!o['signal'];
 }
 export function isVgRangeStep(range) {
@@ -65,7 +65,16 @@ var VG_MARK_CONFIG_INDEX = {
     cursor: 1,
     href: 1,
     tooltip: 1,
-    cornerRadius: 1,
+    cornerRadius: 1
+    // commented below are vg channel that do not have mark config.
+    // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
+    // clip: 1,
+    // endAngle: 1,
+    // innerRadius: 1,
+    // outerRadius: 1,
+    // path: 1,
+    // startAngle: 1,
+    // url: 1,
 };
 export var VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 //# sourceMappingURL=vega.schema.js.map

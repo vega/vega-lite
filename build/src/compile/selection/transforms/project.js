@@ -10,7 +10,7 @@ var project = {
         var channels = {};
         var timeUnits = {};
         // TODO: find a possible channel mapping for these fields.
-        (selDef.fields || []).forEach(function (field) { return channels[field] = null; });
+        (selDef.fields || []).forEach(function (field) { return (channels[field] = null); });
         (selDef.encodings || []).forEach(function (channel) {
             var fieldDef = model.fieldDef(channel);
             if (fieldDef) {
@@ -42,7 +42,7 @@ var project = {
             }
         }
         var fields = selCmpt.fields || (selCmpt.fields = {});
-        projection.filter(function (p) { return p.channel; }).forEach(function (p) { return fields[p.channel] = p.field; });
+        projection.filter(function (p) { return p.channel; }).forEach(function (p) { return (fields[p.channel] = p.field); });
         if (keys(timeUnits).length) {
             selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
         }

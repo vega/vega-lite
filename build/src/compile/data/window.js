@@ -24,11 +24,13 @@ var WindowTransformNode = /** @class */ (function (_super) {
                 if (isSortField(fieldDef.sort)) {
                     var _b = fieldDef.sort, field = _b.field, op = _b.op;
                     parent = newParent = new WindowTransformNode(parent, {
-                        window: [{
+                        window: [
+                            {
                                 op: op,
                                 field: field,
-                                as: facetSortFieldName(fieldDef, fieldDef.sort)
-                            }],
+                                as: facetSortFieldName(fieldDef, fieldDef.sort, { forAs: true })
+                            }
+                        ],
                         groupby: [vgField(fieldDef)],
                         frame: [null, null]
                     });
@@ -77,7 +79,7 @@ var WindowTransformNode = /** @class */ (function (_super) {
         }
         var sort = {
             field: sortFields,
-            order: sortOrder,
+            order: sortOrder
         };
         var ignorePeers = this.transform.ignorePeers;
         var result = {
@@ -86,7 +88,7 @@ var WindowTransformNode = /** @class */ (function (_super) {
             as: as,
             ops: ops,
             fields: fields,
-            sort: sort,
+            sort: sort
         };
         if (ignorePeers !== undefined) {
             result.ignorePeers = ignorePeers;

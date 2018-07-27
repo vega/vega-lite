@@ -1,9 +1,8 @@
-import { Anchor, TitleOrient, VgMarkConfig, VgTitleConfig } from './vega.schema';
-export interface TitleBase {
-    /**
-     * The orientation of the title relative to the chart. One of `"top"` (the default), `"bottom"`, `"left"`, or `"right"`.
-     */
-    orient?: TitleOrient;
+import { Align, BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame } from 'vega';
+import { Color, VgMarkConfig } from './vega.schema';
+declare type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, Align, TextBaseline, TitleFrame, TitleAnchor>;
+export declare type TitleConfig = BaseTitleNoSignals;
+export interface TitleBase extends BaseTitleNoSignals {
     /**
      * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
      *
@@ -12,17 +11,28 @@ export interface TitleBase {
      *
      * __Note:__ [For now](https://github.com/vega/vega-lite/issues/2875), `anchor` is only customizable only for [single](https://vega.github.io/vega-lite/docs/spec.html) and [layered](https://vega.github.io/vega-lite/docs/layer.html) views.  For other composite views, `anchor` is always `"start"`.
      */
-    anchor?: Anchor;
-    /**
-     * The orthogonal offset in pixels by which to displace the title from its position along the edge of the chart.
-     */
-    offset?: number;
+    anchor?: TitleAnchor;
     /**
      * A [mark style property](https://vega.github.io/vega-lite/docs/config.html#style) to apply to the title text mark.
      *
      * __Default value:__ `"group-title"`.
      */
     style?: string | string[];
+    /**
+     * 	The integer z-index indicating the layering of the title group relative to other axis, mark and legend groups.
+     *
+     * __Default value:__ `0`.
+     *
+     * @TJS-type integer
+     * @minimum 0
+     */
+    zindex?: number;
+    /**
+     * Mark definitions for custom axis encoding.
+     *
+     * @hide
+     */
+    encoding?: TextEncodeEntry;
 }
 export interface TitleParams extends TitleBase {
     /**
@@ -30,7 +40,8 @@ export interface TitleParams extends TitleBase {
      */
     text: string;
 }
-export declare function extractTitleConfig(titleConfig: VgTitleConfig): {
+export declare function extractTitleConfig(titleConfig: TitleConfig): {
     mark: VgMarkConfig;
-    nonMark: TitleBase;
+    nonMark: BaseTitleNoSignals;
 };
+export {};

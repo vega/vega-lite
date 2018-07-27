@@ -1,6 +1,6 @@
-import { Legend } from '../..//legend';
+import { Legend as VgLegend } from 'vega';
 import { NonPositionScaleChannel } from '../../channel';
-import { VgLegend } from '../../vega.schema';
+import { Legend } from '../../legend';
 import { Split } from '../split';
 export declare class LegendComponent extends Split<VgLegend> {
 }

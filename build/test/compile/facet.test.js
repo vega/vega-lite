@@ -8,9 +8,9 @@ describe('FacetModel', function () {
     describe('initFacet', function () {
         it('should drop unsupported channel and throws warning', log.wrap(function (localLogger) {
             var model = parseFacetModel({
-                facet: ({
+                facet: {
                     shape: { field: 'a', type: 'quantitative' }
-                }),
+                },
                 spec: {
                     mark: 'point',
                     encoding: {}
@@ -66,9 +66,9 @@ describe('FacetModel', function () {
             model.parseAxisAndHeader();
             var headerMarks = model.assembleHeaderMarks();
             var columnHeader = headerMarks.filter(function (d) {
-                return d.name === "column_header";
+                return d.name === 'column_header';
             })[0];
-            assert(columnHeader.title.text.signal, "timeFormat(parent[\"year_date\"], '%Y')");
+            assert(columnHeader.title.text.signal, 'timeFormat(parent["year_date"], \'%Y\')');
         });
         it('applies number format for fieldref of a quantitative field', function () {
             var model = parseFacetModelWithScale({
@@ -86,9 +86,9 @@ describe('FacetModel', function () {
             model.parseAxisAndHeader();
             var headerMarks = model.assembleHeaderMarks();
             var columnHeader = headerMarks.filter(function (d) {
-                return d.name === "column_header";
+                return d.name === 'column_header';
             })[0];
-            assert(columnHeader.title.text.signal, "format(parent[\"a\"], 'd')");
+            assert(columnHeader.title.text.signal, 'format(parent["a"], \'d\')');
         });
         it('ignores number format for fieldref of a binned field', function () {
             var model = parseFacetModelWithScale({
@@ -106,9 +106,9 @@ describe('FacetModel', function () {
             model.parseAxisAndHeader();
             var headerMarks = model.assembleHeaderMarks();
             var columnHeader = headerMarks.filter(function (d) {
-                return d.name === "column_header";
+                return d.name === 'column_header';
             })[0];
-            assert(columnHeader.title.text.signal, "parent[\"a\"]");
+            assert(columnHeader.title.text.signal, 'parent["a"]');
         });
     });
     describe('parseScale', function () {
@@ -163,7 +163,7 @@ describe('FacetModel', function () {
             model.parseAxisAndHeader();
             var headerMarks = model.assembleHeaderMarks();
             var columnHeader = headerMarks.filter(function (d) {
-                return d.name === "column_header";
+                return d.name === 'column_header';
             })[0];
             assert.deepEqual(columnHeader.sort, { field: 'datum["a"]', order: 'ascending' });
         });
@@ -238,16 +238,16 @@ describe('FacetModel', function () {
         });
         it('returns a layout with header band if child spec is also a facet', function () {
             var model = parseFacetModelWithScale({
-                "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
-                "data": { "url": "data/cars.json" },
-                "facet": { "row": { "field": "Origin", "type": "ordinal" } },
-                "spec": {
-                    "facet": { "row": { "field": "Cylinders", "type": "ordinal" } },
-                    "spec": {
-                        "mark": "point",
-                        "encoding": {
-                            "x": { "field": "Horsepower", "type": "quantitative" },
-                            "y": { "field": "Acceleration", "type": "quantitative" }
+                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                data: { url: 'data/cars.json' },
+                facet: { row: { field: 'Origin', type: 'ordinal' } },
+                spec: {
+                    facet: { row: { field: 'Cylinders', type: 'ordinal' } },
+                    spec: {
+                        mark: 'point',
+                        encoding: {
+                            x: { field: 'Horsepower', type: 'quantitative' },
+                            y: { field: 'Acceleration', type: 'quantitative' }
                         }
                     }
                 }
@@ -277,14 +277,8 @@ describe('FacetModel', function () {
             var marks = model.assembleMarks();
             assert(marks[0].from.facet.aggregate.cross);
             assert.deepEqual(marks[0].sort, {
-                field: [
-                    'datum["a"]',
-                    'datum["b"]'
-                ],
-                order: [
-                    'ascending',
-                    'ascending'
-                ]
+                field: ['datum["a"]', 'datum["b"]'],
+                order: ['ascending', 'ascending']
             });
         });
         it('should add cross and sort if we facet by multiple dimensions with sort array', function () {
@@ -304,14 +298,8 @@ describe('FacetModel', function () {
             var marks = model.assembleMarks();
             assert(marks[0].from.facet.aggregate.cross);
             expect(marks[0].sort).toEqual({
-                field: [
-                    'datum["row_a_sort_index"]',
-                    'datum["column_b_sort_index"]'
-                ],
-                order: [
-                    'ascending',
-                    'ascending'
-                ]
+                field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
+                order: ['ascending', 'ascending']
             });
         });
         it('should add cross and sort if we facet by multiple dimensions with sort fields', function () {
@@ -336,14 +324,8 @@ describe('FacetModel', function () {
                 as: ['median_d_by_a', 'median_e_by_b']
             });
             expect(marks[0].sort).toEqual({
-                field: [
-                    'datum["median_d_by_a"]',
-                    'datum["median_e_by_b"]'
-                ],
-                order: [
-                    'ascending',
-                    'ascending'
-                ]
+                field: ['datum["median_d_by_a"]', 'datum["median_e_by_b"]'],
+                order: ['ascending', 'ascending']
             });
         });
         it('should add calculate cardinality for independent scales', function () {

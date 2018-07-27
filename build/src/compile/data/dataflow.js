@@ -50,21 +50,30 @@ var DataFlowNode = /** @class */ (function () {
     DataFlowNode.prototype.numChildren = function () {
         return this._children.length;
     };
-    DataFlowNode.prototype.addChild = function (child) {
-        this._children.push(child);
+    DataFlowNode.prototype.addChild = function (child, loc) {
+        if (loc !== undefined) {
+            this._children.splice(loc, 0, child);
+        }
+        else {
+            this._children.push(child);
+        }
     };
     DataFlowNode.prototype.removeChild = function (oldChild) {
-        this._children.splice(this._children.indexOf(oldChild), 1);
+        var loc = this._children.indexOf(oldChild);
+        this._children.splice(loc, 1);
+        return loc;
     };
     /**
      * Remove node from the dataflow.
      */
     DataFlowNode.prototype.remove = function () {
+        var loc = this._parent.removeChild(this);
         for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
             var child = _a[_i];
-            child.parent = this._parent;
+            // do not use the set method because we want to insert at a particular location
+            child._parent = this._parent;
+            this._parent.addChild(child, loc++);
         }
-        this._parent.removeChild(this);
     };
     /**
      * Insert another node as a parent of this node.
@@ -112,7 +121,7 @@ var OutputNode = /** @class */ (function (_super) {
         return _this;
     }
     OutputNode.prototype.clone = function () {
-        var cloneObj = new this.constructor;
+        var cloneObj = new this.constructor();
         cloneObj.debugName = 'clone_' + this.debugName;
         cloneObj._source = this._source;
         cloneObj._name = 'clone_' + this._name;

@@ -31,12 +31,17 @@ export function isFieldRangePredicate(predicate) {
     return false;
 }
 export function isFieldOneOfPredicate(predicate) {
-    return predicate && !!predicate.field && (isArray(predicate.oneOf) ||
-        isArray(predicate.in) // backward compatibility
+    return (predicate && !!predicate.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
     );
 }
 export function isFieldPredicate(predicate) {
-    return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTEPredicate(predicate);
+    return (isFieldOneOfPredicate(predicate) ||
+        isFieldEqualPredicate(predicate) ||
+        isFieldRangePredicate(predicate) ||
+        isFieldLTPredicate(predicate) ||
+        isFieldGTPredicate(predicate) ||
+        isFieldLTEPredicate(predicate) ||
+        isFieldGTEPredicate(predicate));
 }
 /**
  * Converts a predicate into an expression.
@@ -50,7 +55,8 @@ export function expression(model, filterOp, node) {
         else if (isSelectionPredicate(predicate)) {
             return selectionPredicate(model, predicate.selection, node);
         }
-        else { // Filter Object
+        else {
+            // Filter Object
             return fieldFilterExpression(predicate);
         }
     });
@@ -65,12 +71,12 @@ function predicateValuesExpr(vals, timeUnit) {
 export function fieldFilterExpression(predicate, useInRange) {
     if (useInRange === void 0) { useInRange = true; }
     var field = predicate.field, timeUnit = predicate.timeUnit;
-    var fieldExpr = timeUnit ?
-        // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
-        // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
-        // TODO: support utc
-        ('time(' + timeUnitFieldExpr(timeUnit, field) + ')') :
-        vgField(predicate, { expr: 'datum' });
+    var fieldExpr = timeUnit
+        ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
+            // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
+            // TODO: support utc
+            'time(' + timeUnitFieldExpr(timeUnit, field) + ')'
+        : vgField(predicate, { expr: 'datum' });
     if (isFieldEqualPredicate(predicate)) {
         return fieldExpr + '===' + predicateValueExpr(predicate.equal, timeUnit);
     }
@@ -91,20 +97,19 @@ export function fieldFilterExpression(predicate, useInRange) {
         return fieldExpr + ">=" + predicateValueExpr(lower, timeUnit);
     }
     else if (isFieldOneOfPredicate(predicate)) {
-        // "oneOf" was formerly "in" -- so we need to add backward compatibility
-        var oneOf = predicate.oneOf;
-        oneOf = oneOf || predicate['in'];
-        return 'indexof([' +
-            predicateValuesExpr(oneOf, timeUnit).join(',') +
-            '], ' + fieldExpr + ') !== -1';
+        return 'indexof([' + predicateValuesExpr(predicate.oneOf, timeUnit).join(',') + '], ' + fieldExpr + ') !== -1';
     }
     else if (isFieldRangePredicate(predicate)) {
         var lower = predicate.range[0];
         var upper = predicate.range[1];
         if (lower !== null && upper !== null && useInRange) {
-            return 'inrange(' + fieldExpr + ', [' +
-                predicateValueExpr(lower, timeUnit) + ', ' +
-                predicateValueExpr(upper, timeUnit) + '])';
+            return ('inrange(' +
+                fieldExpr +
+                ', [' +
+                predicateValueExpr(lower, timeUnit) +
+                ', ' +
+                predicateValueExpr(upper, timeUnit) +
+                '])');
         }
         var exprs = [];
         if (lower !== null) {

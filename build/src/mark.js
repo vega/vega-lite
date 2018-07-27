@@ -57,11 +57,18 @@ export function isPrimitiveMark(mark) {
     var markType = isMarkDef(mark) ? mark.type : mark;
     return markType in PRIMITIVE_MARK_INDEX;
 }
-export var STROKE_CONFIG = ['stroke', 'strokeWidth',
-    'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
+export var STROKE_CONFIG = [
+    'stroke',
+    'strokeWidth',
+    'strokeDash',
+    'strokeDashOffset',
+    'strokeOpacity',
+    'strokeJoin',
+    'strokeMiterLimit'
+];
 export var FILL_CONFIG = ['fill', 'fillOpacity'];
 export var FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
-export var VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color'];
+export var VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color', 'tooltip'];
 export var VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
     area: ['line', 'point'],
     bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
@@ -71,6 +78,7 @@ export var VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
 };
 export var defaultMarkConfig = {
     color: '#4c78a8',
+    tooltip: { content: 'encoding' }
 };
 export var defaultBarConfig = {
     binSpacing: 1,

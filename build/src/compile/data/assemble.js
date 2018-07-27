@@ -7,12 +7,15 @@ import { CalculateNode } from './calculate';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
 import { FilterNode } from './filter';
-import { FilterInvalidNode } from './filterinvalid';
+import { FlattenTransformNode } from './flatten';
+import { FoldTransformNode } from './fold';
 import { ParseNode } from './formatparse';
 import { GeoJSONNode } from './geojson';
 import { GeoPointNode } from './geopoint';
 import { IdentifierNode } from './identifier';
+import { ImputeNode } from './impute';
 import { LookupNode } from './lookup';
+import { SampleTransformNode } from './sample';
 import { SourceNode } from './source';
 import { StackNode } from './stack';
 import { TimeUnitNode } from './timeunit';
@@ -21,10 +24,10 @@ import { WindowTransformNode } from './window';
  * Print debug information for dataflow tree.
  */
 // tslint:disable-next-line
-function debug(node) {
-    console.log("" + node.constructor.name + (node.debugName ? " (" + node.debugName + ")" : '') + " -> " + (node.children.map(function (c) {
+export function debug(node) {
+    console.log("" + node.constructor.name + (node.debugName ? " (" + node.debugName + ")" : '') + " -> " + node.children.map(function (c) {
         return "" + c.constructor.name + (c.debugName ? " (" + c.debugName + ")" : '');
-    })));
+    }));
     console.log(node);
     node.children.forEach(debug);
 }
@@ -51,7 +54,7 @@ function makeWalkTree(data) {
         if (node instanceof ParseNode) {
             if (node.parent instanceof SourceNode && !dataSource.source) {
                 // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
-                dataSource.format = tslib_1.__assign({}, dataSource.format || {}, { parse: node.assembleFormatParse() });
+                dataSource.format = tslib_1.__assign({}, (dataSource.format || {}), { parse: node.assembleFormatParse() });
                 // add calculates for all nested fields
                 dataSource.transform = dataSource.transform.concat(node.assembleTransforms(true));
             }
@@ -82,12 +85,15 @@ function makeWalkTree(data) {
             node instanceof AggregateNode ||
             node instanceof LookupNode ||
             node instanceof WindowTransformNode ||
-            node instanceof IdentifierNode) {
+            node instanceof FoldTransformNode ||
+            node instanceof FlattenTransformNode ||
+            node instanceof IdentifierNode ||
+            node instanceof SampleTransformNode) {
             dataSource.transform.push(node.assemble());
         }
-        if (node instanceof FilterInvalidNode ||
-            node instanceof BinNode ||
+        if (node instanceof BinNode ||
             node instanceof TimeUnitNode ||
+            node instanceof ImputeNode ||
             node instanceof StackNode) {
             dataSource.transform = dataSource.transform.concat(node.assemble());
         }
@@ -165,11 +171,13 @@ function makeWalkTree(data) {
 export function assembleFacetData(root) {
     var data = [];
     var walkTree = makeWalkTree(data);
-    root.children.forEach(function (child) { return walkTree(child, {
-        source: root.name,
-        name: null,
-        transform: []
-    }); });
+    root.children.forEach(function (child) {
+        return walkTree(child, {
+            source: root.name,
+            name: null,
+            transform: []
+        });
+    });
     return data;
 }
 /**

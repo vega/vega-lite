@@ -6,13 +6,9 @@ export declare namespace Type {
     const ORDINAL: 'ordinal';
     const TEMPORAL: 'temporal';
     const NOMINAL: 'nominal';
-    const LATITUDE: 'latitude';
-    const LONGITUDE: 'longitude';
     const GEOJSON: 'geojson';
 }
-export declare type BasicType = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL;
-export declare type GeoType = typeof Type.LATITUDE | typeof Type.LONGITUDE | typeof Type.GEOJSON;
-export declare type Type = BasicType | GeoType;
+export declare type Type = typeof Type.QUANTITATIVE | typeof Type.ORDINAL | typeof Type.TEMPORAL | typeof Type.NOMINAL | typeof Type.GEOJSON;
 export declare const TYPE_INDEX: Flag<Type>;
 export declare function isType(t: any): t is Type;
 export declare const QUANTITATIVE: "quantitative";

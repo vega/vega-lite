@@ -1,5 +1,5 @@
 import { Channel } from '../channel';
-import { Config, ViewConfig } from '../config';
+import { Config, StyleConfigIndex, ViewConfig } from '../config';
 import { FieldDef, FieldDefBase, FieldRefOption, OrderFieldDef } from '../fielddef';
 import { GuideEncodingEntry } from '../guide';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
@@ -16,13 +16,11 @@ export declare function getStyles(mark: MarkDef): string[];
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config): MarkConfig[P];
+export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, config: Config, { skipGeneralMarkConfig }?: {
+    skipGeneralMarkConfig?: boolean;
+}): MarkConfig[P];
+export declare function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex): any;
 export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config): {
-    signal: string;
-};
-export declare function getSpecifiedOrDefaultValue<T>(specifiedValue: T, defaultValue: T | {
-    signal: string;
-}): T | {
     signal: string;
 };
 /**
@@ -36,7 +34,8 @@ export declare function binFormatExpression(startField: string, endField: string
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, timeFormatConfig: string, isUTCScale: boolean, alwaysReturn?: boolean): string;
+export declare function timeFormatExpression(field: string, timeUnit: TimeUnit, format: string, shortTimeLabels: boolean, rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
+isUTCScale: boolean, alwaysReturn?: boolean): string;
 /**
  * Return Vega sort parameters (tuple of field and order).
  */

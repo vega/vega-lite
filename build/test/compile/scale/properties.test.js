@@ -93,41 +93,51 @@ describe('compile/scale', function () {
             assert.isUndefined(rules.reverse('point', 'descending'));
         });
     });
+    describe('interpolate', function () {
+        it('should return hcl for continuous color scale', function () {
+            assert.equal(rules.interpolate('color', 'linear'), 'hcl');
+        });
+        it('should return undefined for discrete color scale', function () {
+            assert.isUndefined(rules.interpolate('color', 'sequential'));
+        });
+    });
     describe('zero', function () {
         it('should return true when mapping a quantitative field to x with scale.domain = "unaggregated"', function () {
-            assert(rules.zero('x', { field: 'a', type: 'quantitative' }, 'unaggregated', { type: 'point' }));
+            assert(rules.zero('x', { field: 'a', type: 'quantitative' }, 'unaggregated', { type: 'point' }, 'linear'));
         });
         it('should return true when mapping a quantitative field to size', function () {
-            assert(rules.zero('size', { field: 'a', type: 'quantitative' }, undefined, { type: 'point' }));
+            assert(rules.zero('size', { field: 'a', type: 'quantitative' }, undefined, { type: 'point' }, 'linear'));
         });
         it('should return false when mapping a ordinal field to size', function () {
-            assert(!rules.zero('size', { field: 'a', type: 'ordinal' }, undefined, { type: 'point' }));
+            assert(!rules.zero('size', { field: 'a', type: 'ordinal' }, undefined, { type: 'point' }, 'linear'));
         });
         it('should return true when mapping a non-binned quantitative field to x/y of point', function () {
             for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
                 var channel = _a[_i];
-                assert(rules.zero(channel, { field: 'a', type: 'quantitative' }, undefined, { type: 'point' }));
+                assert(rules.zero(channel, { field: 'a', type: 'quantitative' }, undefined, { type: 'point' }, 'linear'));
             }
         });
         it('should return false when mapping a quantitative field to dimension axis of bar, line, and area', function () {
             for (var _i = 0, _a = [BAR, AREA, LINE]; _i < _a.length; _i++) {
                 var mark = _a[_i];
-                assert.isFalse(rules.zero('x', { field: 'a', type: 'quantitative' }, undefined, { type: mark, orient: 'vertical' }));
-                assert.isFalse(rules.zero('y', { field: 'a', type: 'quantitative' }, undefined, { type: mark, orient: 'horizontal' }));
+                assert.isFalse(rules.zero('x', { field: 'a', type: 'quantitative' }, undefined, { type: mark, orient: 'vertical' }, 'linear'));
+                assert.isFalse(rules.zero('y', { field: 'a', type: 'quantitative' }, undefined, { type: mark, orient: 'horizontal' }, 'linear'));
             }
         });
         it('should return false when mapping a binned quantitative field to x/y', function () {
             for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
                 var channel = _a[_i];
-                assert(!rules.zero(channel, { bin: true, field: 'a', type: 'quantitative' }, undefined, { type: 'point' }));
+                assert(!rules.zero(channel, { bin: true, field: 'a', type: 'quantitative' }, undefined, { type: 'point' }, 'linear'));
             }
         });
         it('should return false when mapping a non-binned quantitative field with custom domain to x/y', function () {
             for (var _i = 0, _a = ['x', 'y']; _i < _a.length; _i++) {
                 var channel = _a[_i];
                 assert(!rules.zero(channel, {
-                    bin: true, field: 'a', type: 'quantitative'
-                }, [3, 5], { type: 'point' }));
+                    bin: true,
+                    field: 'a',
+                    type: 'quantitative'
+                }, [3, 5], { type: 'point' }, 'linear'));
             }
         });
     });

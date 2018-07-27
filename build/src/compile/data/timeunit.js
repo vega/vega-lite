@@ -16,7 +16,7 @@ var TimeUnitNode = /** @class */ (function (_super) {
     TimeUnitNode.makeFromEncoding = function (parent, model) {
         var formula = model.reduceFieldDef(function (timeUnitComponent, fieldDef) {
             if (fieldDef.timeUnit) {
-                var f = vgField(fieldDef);
+                var f = vgField(fieldDef, { forAs: true });
                 timeUnitComponent[f] = {
                     as: f,
                     timeUnit: fieldDef.timeUnit,

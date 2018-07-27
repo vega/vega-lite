@@ -28,9 +28,7 @@ function defaultSize(model) {
     }
     else {
         var scaleRange = scale ? scale.get('range') : undefined;
-        var rangeStep = scaleRange && isVgRangeStep(scaleRange) ?
-            scaleRange.step :
-            config.scale.rangeStep;
+        var rangeStep = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : config.scale.rangeStep;
         if (typeof rangeStep !== 'number') {
             // FIXME consolidate this log
             throw new Error('Function does not handle non-numeric rangeStep');

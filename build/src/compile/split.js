@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import * as log from '../log';
-import { duplicate, keys, stringify } from '../util';
+import { duplicate, getFirstDefined, keys, stringify } from '../util';
 /**
  * Generic class for storing properties that are explicitly specified
  * and implicitly determined by the compiler.
@@ -24,7 +24,7 @@ var Split = /** @class */ (function () {
     };
     Split.prototype.get = function (key) {
         // Explicit has higher precedence
-        return this.explicit[key] !== undefined ? this.explicit[key] : this.implicit[key];
+        return getFirstDefined(this.explicit[key], this.implicit[key]);
     };
     Split.prototype.getWithExplicit = function (key) {
         // Explicit has higher precedence

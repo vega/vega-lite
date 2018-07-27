@@ -23,8 +23,8 @@ export declare class DataFlowNode {
     parent: DataFlowNode;
     readonly children: DataFlowNode[];
     numChildren(): number;
-    addChild(child: DataFlowNode): void;
-    removeChild(oldChild: DataFlowNode): void;
+    addChild(child: DataFlowNode, loc?: number): void;
+    removeChild(oldChild: DataFlowNode): number;
     /**
      * Remove node from the dataflow.
      */

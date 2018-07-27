@@ -12,15 +12,15 @@ describe('stack', function () {
         var _loop_1 = function (stacked) {
             NON_STACKABLE_MARKS.forEach(function (nonStackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": nonStackableMark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: nonStackableMark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -35,12 +35,12 @@ describe('stack', function () {
     it('should be allowed for raw plot', function () {
         STACKABLE_MARKS.forEach(function (mark) {
             var spec = {
-                "data": { "url": "data/barley.json" },
-                "mark": mark,
-                "encoding": {
-                    "x": { "field": "yield", "type": "quantitative", "stack": "zero" },
-                    "y": { "field": "variety", "type": "nominal" },
-                    "color": { "field": "site", "type": "nominal" }
+                data: { url: 'data/barley.json' },
+                mark: mark,
+                encoding: {
+                    x: { field: 'yield', type: 'quantitative', stack: 'zero' },
+                    y: { field: 'variety', type: 'nominal' },
+                    color: { field: 'site', type: 'nominal' }
                 }
             };
             var stackProps = stack(spec.mark, spec.encoding, undefined);
@@ -51,12 +51,12 @@ describe('stack', function () {
     it('should prioritize axis with stack', function () {
         STACKABLE_MARKS.forEach(function (mark) {
             var spec = {
-                "data": { "url": "data/barley.json" },
-                "mark": mark,
-                "encoding": {
-                    "x": { "field": "yield", "type": "quantitative", "stack": "zero" },
-                    "y": { "field": "variety", "type": "quantitative" },
-                    "color": { "field": "site", "type": "nominal" }
+                data: { url: 'data/barley.json' },
+                mark: mark,
+                encoding: {
+                    x: { field: 'yield', type: 'quantitative', stack: 'zero' },
+                    y: { field: 'variety', type: 'quantitative' },
+                    color: { field: 'site', type: 'nominal' }
                 }
             };
             var stackProps = stack(spec.mark, spec.encoding, undefined);
@@ -68,14 +68,14 @@ describe('stack', function () {
         var _loop_2 = function (stacked) {
             PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -91,15 +91,15 @@ describe('stack', function () {
         var _loop_3 = function (stacked) {
             PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "aggregate": "count", "type": "quantitative" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { aggregate: 'count', type: 'quantitative' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -115,15 +115,15 @@ describe('stack', function () {
         var _loop_4 = function (stacked) {
             PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "variety", "type": "nominal" },
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'variety', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -140,16 +140,16 @@ describe('stack', function () {
             var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "aggregate": "count", "type": "quantitative" },
-                        "detail": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { aggregate: 'count', type: 'quantitative' },
+                        detail: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, spec.config.stack);
@@ -168,13 +168,13 @@ describe('stack', function () {
             var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative", "stack": stacked },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "aggregate": "count", "type": "quantitative" },
-                        "detail": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative', stack: stacked },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { aggregate: 'count', type: 'quantitative' },
+                        detail: { field: 'site', type: 'nominal' }
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, undefined);
@@ -192,15 +192,15 @@ describe('stack', function () {
         var _loop_7 = function (stacked) {
             PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "aggregate": "count", "type": "quantitative" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { aggregate: 'count', type: 'quantitative' },
+                        color: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -216,15 +216,15 @@ describe('stack', function () {
         var _loop_8 = function (stacked) {
             PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "field": "variety", "type": "nominal" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: mark,
+                    encoding: {
+                        x: { field: 'variety', type: 'nominal' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -241,15 +241,15 @@ describe('stack', function () {
             var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
-                    "mark": mark,
-                    "encoding": {
-                        "x": { "field": "a", "type": "quantitative", "aggregate": "sum" },
-                        "x2": { "field": "a", "type": "quantitative", "aggregate": "sum" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    mark: mark,
+                    encoding: {
+                        x: { field: 'a', type: 'quantitative', aggregate: 'sum' },
+                        x2: { field: 'a', type: 'quantitative', aggregate: 'sum' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -266,15 +266,15 @@ describe('stack', function () {
             var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
-                    "mark": mark,
-                    "encoding": {
-                        "y": { "field": "a", "type": "quantitative", "aggregate": "sum" },
-                        "y2": { "field": "a", "type": "quantitative", "aggregate": "sum" },
-                        "x": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    mark: mark,
+                    encoding: {
+                        y: { field: 'a', type: 'quantitative', aggregate: 'sum' },
+                        y2: { field: 'a', type: 'quantitative', aggregate: 'sum' },
+                        x: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     },
-                    "config": {
-                        "stack": stacked
+                    config: {
+                        stack: stacked
                     }
                 };
                 assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -292,15 +292,15 @@ describe('stack', function () {
                 var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
                 marks.forEach(function (mark) {
                     var spec = {
-                        "data": { "url": "data/barley.json" },
-                        "mark": mark,
-                        "encoding": {
-                            "x": { "field": "a", "type": "quantitative", "aggregate": "sum", "scale": { "type": scaleType } },
-                            "y": { "field": "variety", "type": "nominal" },
-                            "color": { "field": "site", "type": "nominal" }
+                        data: { url: 'data/barley.json' },
+                        mark: mark,
+                        encoding: {
+                            x: { field: 'a', type: 'quantitative', aggregate: 'sum', scale: { type: scaleType } },
+                            y: { field: 'variety', type: 'nominal' },
+                            color: { field: 'site', type: 'nominal' }
                         },
-                        "config": {
-                            "stack": stacked
+                        config: {
+                            stack: stacked
                         }
                     };
                     assert.isNotNull(stack(spec.mark, spec.encoding, spec.config.stack));
@@ -321,17 +321,17 @@ describe('stack', function () {
                 var marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
                 marks.forEach(function (mark) {
                     var spec = {
-                        "data": { "url": "data/barley.json" },
-                        "mark": mark,
-                        "encoding": {
-                            "x": {
+                        data: { url: 'data/barley.json' },
+                        mark: mark,
+                        encoding: {
+                            x: {
                                 aggregate: aggregate,
                                 stack: stackOffset,
-                                "field": "a",
-                                "type": "quantitative"
+                                field: 'a',
+                                type: 'quantitative'
                             },
-                            "y": { "field": "variety", "type": "nominal" },
-                            "color": { "field": "site", "type": "nominal" }
+                            y: { field: 'variety', type: 'nominal' },
+                            color: { field: 'site', type: 'nominal' }
                         }
                     };
                     assert.isTrue(isStacked(spec));
@@ -353,12 +353,12 @@ describe('stack', function () {
         it('should be correct for horizontal', function () {
             [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": stackableMark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: stackableMark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, undefined);
@@ -370,11 +370,11 @@ describe('stack', function () {
         it('should be correct for horizontal (single)', function () {
             [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": stackableMark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: stackableMark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        color: { field: 'site', type: 'nominal' }
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, undefined);
@@ -386,12 +386,12 @@ describe('stack', function () {
         it('should be correct for vertical', function () {
             [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": stackableMark,
-                    "encoding": {
-                        "y": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "x": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: stackableMark,
+                    encoding: {
+                        y: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        x: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, undefined);
@@ -403,11 +403,11 @@ describe('stack', function () {
         it('should be correct for vertical (single)', function () {
             [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": stackableMark,
-                    "encoding": {
-                        "y": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: stackableMark,
+                    encoding: {
+                        y: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        color: { field: 'site', type: 'nominal' }
                     }
                 };
                 var _stack = stack(spec.mark, spec.encoding, undefined);
@@ -421,12 +421,12 @@ describe('stack', function () {
         it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified', function () {
             [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
-                    "data": { "url": "data/barley.json" },
-                    "mark": stackableMark,
-                    "encoding": {
-                        "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                        "y": { "field": "variety", "type": "nominal" },
-                        "color": { "field": "site", "type": "nominal" }
+                    data: { url: 'data/barley.json' },
+                    mark: stackableMark,
+                    encoding: {
+                        x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                        y: { field: 'variety', type: 'nominal' },
+                        color: { field: 'site', type: 'nominal' }
                     }
                 };
                 assert.equal(stack(spec.mark, spec.encoding, undefined).offset, 'zero');
@@ -437,15 +437,15 @@ describe('stack', function () {
             var _loop_14 = function (stacked) {
                 [BAR, AREA].forEach(function (stackableMark) {
                     var spec = {
-                        "data": { "url": "data/barley.json" },
-                        "mark": stackableMark,
-                        "encoding": {
-                            "x": { "aggregate": "sum", "field": "yield", "type": "quantitative" },
-                            "y": { "field": "variety", "type": "nominal" },
-                            "color": { "field": "site", "type": "nominal" }
+                        data: { url: 'data/barley.json' },
+                        mark: stackableMark,
+                        encoding: {
+                            x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
+                            y: { field: 'variety', type: 'nominal' },
+                            color: { field: 'site', type: 'nominal' }
                         },
-                        "config": {
-                            "stack": stacked
+                        config: {
+                            stack: stacked
                         }
                     };
                     assert.equal(stack(spec.mark, spec.encoding, spec.config.stack).offset, stacked);

@@ -1,7 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isObject } from 'vega-util';
-import { COMPOSITE_MARK_STYLES } from './compositemark';
-import { VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX } from './compositemark/index';
+import { getAllCompositeMarks } from './compositemark';
 import { VL_ONLY_GUIDE_CONFIG } from './guide';
 import { defaultLegendConfig } from './legend';
 import * as mark from './mark';
@@ -14,9 +13,12 @@ export var defaultViewConfig = {
     width: 200,
     height: 200
 };
+export function isVgScheme(rangeConfig) {
+    return rangeConfig && !!rangeConfig['scheme'];
+}
 export var defaultConfig = {
     padding: 5,
-    timeFormat: '',
+    timeFormat: '%b %d, %Y',
     countTitle: 'Number of Records',
     invalidValues: 'filter',
     view: defaultViewConfig,
@@ -33,9 +35,26 @@ export var defaultConfig = {
     text: { color: 'black' },
     tick: mark.defaultTickConfig,
     trail: {},
-    box: { size: 14, extent: 1.5 },
-    boxWhisker: {},
-    boxMid: { color: 'white' },
+    boxplot: {
+        size: 14,
+        extent: 1.5,
+        box: {},
+        median: { color: 'white' },
+        outliers: {},
+        rule: {},
+        ticks: null
+    },
+    errorbar: {
+        center: 'mean',
+        rule: true,
+        ticks: false
+    },
+    errorband: {
+        band: {
+            opacity: 0.3
+        },
+        borders: false
+    },
     scale: defaultScaleConfig,
     projection: {},
     axis: {},
@@ -49,18 +68,24 @@ export var defaultConfig = {
     legend: defaultLegendConfig,
     selection: defaultSelectionConfig,
     style: {},
-    title: {},
+    title: {}
 };
 export function initConfig(config) {
     return mergeDeep(duplicate(defaultConfig), config);
 }
-var MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS, COMPOSITE_MARK_STYLES);
+var MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS);
 var VL_ONLY_CONFIG_PROPERTIES = [
-    'padding', 'numberFormat', 'timeFormat', 'countTitle',
-    'stack', 'scale', 'selection', 'invalidValues',
+    'padding',
+    'numberFormat',
+    'timeFormat',
+    'countTitle',
+    'stack',
+    'scale',
+    'selection',
+    'invalidValues',
     'overlay' // FIXME: Redesign and unhide this
 ];
-var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX, VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
 export function stripAndRedirectConfig(config) {
     config = duplicate(config);
     for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
@@ -107,6 +132,11 @@ export function stripAndRedirectConfig(config) {
         // For example, config.rect should not affect bar marks.
         redirectConfig(config, markType);
     }
+    for (var _g = 0, _h = getAllCompositeMarks(); _g < _h.length; _g++) {
+        var m = _h[_g];
+        // Clean up the composite mark config as we don't need them in the output specs anymore
+        delete config[m];
+    }
     // Redirect config.title -- so that title config do not
     // affect header labels, which also uses `title` directive to implement.
     redirectConfig(config, 'title', 'group-title');
@@ -118,8 +148,13 @@ export function stripAndRedirectConfig(config) {
     }
     return keys(config).length > 0 ? config : undefined;
 }
-function redirectConfig(config, prop, toProp) {
-    var propConfig = prop === 'title' ? extractTitleConfig(config.title).mark : config[prop];
+function redirectConfig(config, prop, // string = composite mark
+toProp, compositeMarkPart) {
+    var propConfig = prop === 'title'
+        ? extractTitleConfig(config.title).mark
+        : compositeMarkPart
+            ? config[prop][compositeMarkPart]
+            : config[prop];
     if (prop === 'view') {
         toProp = 'cell'; // View's default style is "cell"
     }
@@ -128,6 +163,9 @@ function redirectConfig(config, prop, toProp) {
     if (keys(style).length > 0) {
         config.style[toProp || prop] = style;
     }
-    delete config[prop];
+    if (!compositeMarkPart) {
+        // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
+        delete config[prop];
+    }
 }
 //# sourceMappingURL=config.js.map

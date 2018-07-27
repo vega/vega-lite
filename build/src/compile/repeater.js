@@ -72,8 +72,7 @@ function replaceRepeater(mapping, repeater) {
             var channelDef = mapping[channel];
             if (isArray(channelDef)) {
                 // array cannot have condition
-                out[channel] = channelDef.map(function (cd) { return replaceRepeaterInChannelDef(cd, repeater); })
-                    .filter(function (cd) { return cd; });
+                out[channel] = channelDef.map(function (cd) { return replaceRepeaterInChannelDef(cd, repeater); }).filter(function (cd) { return cd; });
             }
             else {
                 var cd = replaceRepeaterInChannelDef(channelDef, repeater);

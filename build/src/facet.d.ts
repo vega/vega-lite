@@ -1,4 +1,4 @@
-import { SortableFieldDef } from './fielddef';
+import { ChannelDef, SortableFieldDef } from './fielddef';
 import { Header } from './header';
 export interface FacetFieldDef<F> extends SortableFieldDef<F> {
     /**
@@ -16,3 +16,4 @@ export interface FacetMapping<F> {
      */
     column?: FacetFieldDef<F>;
 }
+export declare function isFacetFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FacetFieldDef<F>;

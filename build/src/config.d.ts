@@ -1,5 +1,5 @@
 import { AxisConfigMixins } from './axis';
-import { CompositeMarkConfigMixins } from './compositemark/index';
+import { CompositeMarkConfigMixins } from './compositemark';
 import { HeaderConfig } from './header';
 import { LegendConfig } from './legend';
 import { MarkConfigMixins } from './mark';
@@ -7,8 +7,9 @@ import { ProjectionConfig } from './projection';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
 import { StackOffset } from './stack';
+import { TitleConfig } from './title';
 import { TopLevelProperties } from './toplevelprops';
-import { StrokeJoin, VgMarkConfig, VgScheme, VgTitleConfig } from './vega.schema';
+import { StrokeJoin, VgMarkConfig, VgScheme } from './vega.schema';
 export interface ViewConfig {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
@@ -125,6 +126,7 @@ export interface RangeConfigProps {
      */
     symbol?: string[];
 }
+export declare function isVgScheme(rangeConfig: string[] | VgScheme): rangeConfig is VgScheme;
 export interface VLOnlyConfig {
     /**
      * Default axis and legend title for count fields.
@@ -148,14 +150,14 @@ export interface VLOnlyConfig {
      */
     fieldTitle?: 'verbal' | 'functional' | 'plain';
     /**
-     * D3 Number format for axis labels and text tables. For example "s" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
+     * D3 Number format for guide labels and text marks. For example "s" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
      */
     numberFormat?: string;
     /**
-     * Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).
+     * Default time format for raw time values (without time units) in text marks, legend labels and header labels.
      *
-     * __Default value:__ `''` (The format will be automatically determined).
-     *
+     * __Default value:__ `"%b %d, %Y"`
+     * __Note:__ Axes automatically determine format each label automatically so this config would not affect axes.
      */
     timeFormat?: string;
     /** Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). */
@@ -189,7 +191,7 @@ export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixi
     /**
      * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
      */
-    title?: VgTitleConfig;
+    title?: TitleConfig;
     /**
      * Projection configuration, which determines default properties for all [projections](https://vega.github.io/vega-lite/docs/projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](https://vega.github.io/vega-lite/docs/projection.html#config).
      */

@@ -33,7 +33,7 @@ var UnitModel = /** @class */ (function (_super) {
         _this.children = [];
         _this.initSize(tslib_1.__assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {})));
         var mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-        var encoding = _this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark);
+        var encoding = (_this.encoding = normalizeEncoding(replaceRepeaterInEncoding(spec.encoding || {}, repeater), mark));
         _this.markDef = normalizeMarkDef(spec.mark, encoding, config);
         // calculate stack properties
         _this.stack = stack(mark, encoding, _this.config.stack);
@@ -115,8 +115,11 @@ var UnitModel = /** @class */ (function (_super) {
         return NONPOSITION_SCALE_CHANNELS.reduce(function (_legend, channel) {
             var channelDef = encoding[channel];
             if (channelDef) {
-                var legend = isFieldDef(channelDef) ? channelDef.legend :
-                    (hasConditionalFieldDef(channelDef)) ? channelDef.condition['legend'] : null;
+                var legend = isFieldDef(channelDef)
+                    ? channelDef.legend
+                    : hasConditionalFieldDef(channelDef)
+                        ? channelDef.condition['legend']
+                        : null;
                 if (legend !== null && legend !== false) {
                     _legend[channel] = tslib_1.__assign({}, legend);
                 }

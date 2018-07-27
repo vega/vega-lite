@@ -1,10 +1,8 @@
 import * as tslib_1 from "tslib";
-/**
- * Utility files for producing Vega ValueRef for marks
- */
 import { isArray, isFunction, isString } from 'vega-util';
+import { isBinned, isBinning } from '../../bin';
 import { X, Y } from '../../channel';
-import { isFieldDef, isValueDef, vgField, } from '../../fielddef';
+import { format, isFieldDef, isValueDef, title, vgField } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain, ScaleType } from '../../scale';
 import { QUANTITATIVE } from '../../type';
@@ -15,23 +13,24 @@ import { binRequiresRange, formatSignalRef } from '../common';
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(channel, channelDef, scaleName, scale, stack, defaultRef) {
+export function position(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef) {
     if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
         // x or y use stack_end so that stacked line's point mark use stack_end too.
         return fieldRef(channelDef, scaleName, { suffix: 'end' });
     }
-    return midPoint(channel, channelDef, scaleName, scale, stack, defaultRef);
+    return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
 }
 /**
  * @return Vega ValueRef for normal x2- or y2-position without projection
  */
 export function position2(channel, aFieldDef, a2fieldDef, scaleName, scale, stack, defaultRef) {
-    if (isFieldDef(aFieldDef) && stack &&
+    if (isFieldDef(aFieldDef) &&
+        stack &&
         // If fieldChannel is X and channel is X2 (or Y and Y2)
         channel.charAt(0) === stack.fieldChannel.charAt(0)) {
         return fieldRef(aFieldDef, scaleName, { suffix: 'start' });
     }
-    return midPoint(channel, a2fieldDef, scaleName, scale, stack, defaultRef);
+    return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
 }
 export function getOffset(channel, markDef) {
     var offsetChannel = channel + 'Offset';
@@ -64,26 +63,26 @@ export function bandRef(scaleName, band) {
     };
 }
 /**
- * Signal that returns the middle of a bin. Should only be used with x and y.
+ * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(fieldDef, scaleName) {
+function binMidSignal(scaleName, fieldDef, fieldDef2) {
+    var start = vgField(fieldDef, { expr: 'datum' });
+    var end = fieldDef2 !== undefined
+        ? vgField(fieldDef2, { expr: 'datum' })
+        : vgField(fieldDef, { binSuffix: 'end', expr: 'datum' });
     return {
-        signal: "(" +
-            ("scale(\"" + scaleName + "\", " + vgField(fieldDef, { expr: 'datum' }) + ")") +
-            " + " +
-            ("scale(\"" + scaleName + "\", " + vgField(fieldDef, { binSuffix: 'end', expr: 'datum' }) + ")") +
-            ")/2"
+        signal: "scale(\"" + scaleName + "\", (" + start + " + " + end + ") / 2)"
     };
 }
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(channel, channelDef, scaleName, scale, stack, defaultRef) {
+export function midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef) {
     // TODO: datum support
     if (channelDef) {
         /* istanbul ignore else */
         if (isFieldDef(channelDef)) {
-            if (channelDef.bin) {
+            if (isBinning(channelDef.bin)) {
                 // Use middle only for x an y to place marks in the center between start and end of the bin range.
                 // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
                 if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
@@ -92,9 +91,17 @@ export function midPoint(channel, channelDef, scaleName, scale, stack, defaultRe
                         return fieldRef(channelDef, scaleName, { binSuffix: 'mid' });
                     }
                     // For non-stack, we can just calculate bin mid on the fly using signal.
-                    return binMidSignal(channelDef, scaleName);
+                    return binMidSignal(scaleName, channelDef);
                 }
                 return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? { binSuffix: 'range' } : {});
+            }
+            else if (isBinned(channelDef.bin)) {
+                if (isFieldDef(channel2Def)) {
+                    return binMidSignal(scaleName, channelDef, channel2Def);
+                }
+                else {
+                    log.warn(log.message.channelRequiredForBinned(channel));
+                }
             }
             if (scale) {
                 var scaleType = scale.get('type');
@@ -123,14 +130,28 @@ export function midPoint(channel, channelDef, scaleName, scale, stack, defaultRe
     }
     return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
-export function text(textDef, config) {
-    // text
-    if (textDef) {
-        if (isFieldDef(textDef)) {
-            return formatSignalRef(textDef, textDef.format, 'datum', config);
+export function tooltipForChannelDefs(channelDefs, config) {
+    var keyValues = [];
+    var usedKey = {};
+    for (var _i = 0, channelDefs_1 = channelDefs; _i < channelDefs_1.length; _i++) {
+        var fieldDef = channelDefs_1[_i];
+        var key = title(fieldDef, config, { allowDisabling: false });
+        var value = text(fieldDef, config).signal;
+        if (!usedKey[key]) {
+            keyValues.push("\"" + key + "\": " + value);
         }
-        else if (isValueDef(textDef)) {
-            return { value: textDef.value };
+        usedKey[key] = true;
+    }
+    return keyValues.length ? { signal: "{" + keyValues.join(', ') + "}" } : undefined;
+}
+export function text(channelDef, config) {
+    // text
+    if (channelDef) {
+        if (isValueDef(channelDef)) {
+            return { value: channelDef.value };
+        }
+        if (isFieldDef(channelDef)) {
+            return formatSignalRef(channelDef, format(channelDef), 'datum', config);
         }
     }
     return undefined;
@@ -180,7 +201,8 @@ export function getDefaultRef(defaultRef, channel, scaleName, scale, mark) {
             if (defaultRef === 'zeroOrMin') {
                 return channel === 'x' ? { value: 0 } : { field: { group: 'height' } };
             }
-            else { // zeroOrMax
+            else {
+                // zeroOrMax
                 return channel === 'x' ? { field: { group: 'width' } } : { value: 0 };
             }
         }

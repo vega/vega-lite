@@ -110,6 +110,10 @@ export var message;
         return "The \"nearest\" transform is not supported for " + mark + " marks.";
     }
     message.nearestNotSupportForContinuous = nearestNotSupportForContinuous;
+    function selectionNotSupported(mark) {
+        return "Selection not supported for " + mark + " yet";
+    }
+    message.selectionNotSupported = selectionNotSupported;
     function selectionNotFound(name) {
         return "Cannot find a selection named \"" + name + "\"";
     }
@@ -163,9 +167,11 @@ export var message;
     }
     message.invalidFieldType = invalidFieldType;
     function nonZeroScaleUsedWithLengthMark(mark, channel, opt) {
-        var scaleText = opt.scaleType ? opt.scaleType + " scale" :
-            opt.zeroFalse ? 'scale with zero=false' :
-                'scale with custom domain that excludes zero';
+        var scaleText = opt.scaleType
+            ? opt.scaleType + " scale"
+            : opt.zeroFalse
+                ? 'scale with zero=false'
+                : 'scale with custom domain that excludes zero';
         return "A " + scaleText + " is used to encode " + mark + "'s " + channel + ". This can be misleading as the " + (channel === 'x' ? 'width' : 'height') + " of the " + mark + " can be arbitrary based on the scale domain. You may want to use point mark instead.";
     }
     message.nonZeroScaleUsedWithLengthMark = nonZeroScaleUsedWithLengthMark;
@@ -183,7 +189,7 @@ export var message;
     message.emptyOrInvalidFieldType = emptyOrInvalidFieldType;
     function droppingColor(type, opt) {
         var fill = opt.fill, stroke = opt.stroke;
-        return "Dropping color " + type + " as the plot also has " + (fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke');
+        return ("Dropping color " + type + " as the plot also has " + (fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'));
     }
     message.droppingColor = droppingColor;
     function emptyFieldDef(fieldDef, channel) {
@@ -306,5 +312,34 @@ export var message;
         return "Dropping day from datetime " + stringify(d) + " as day cannot be combined with other units.";
     }
     message.droppedDay = droppedDay;
+    function errorBarCenterAndExtentAreNotNeeded(center, extent) {
+        return "" + (extent ? 'extent ' : '') + (extent && center ? 'and ' : '') + (center ? 'center ' : '') + (extent && center ? 'are ' : 'is ') + "not needed when data are aggregated.";
+    }
+    message.errorBarCenterAndExtentAreNotNeeded = errorBarCenterAndExtentAreNotNeeded;
+    function errorBarCenterIsUsedWithWrongExtent(center, extent, mark) {
+        return center + " is not usually used with " + extent + " for " + mark + ".";
+    }
+    message.errorBarCenterIsUsedWithWrongExtent = errorBarCenterIsUsedWithWrongExtent;
+    function errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark) {
+        return "Continuous axis should not have customized aggregation function " + aggregate + "; " + compositeMark + " already agregates the axis.";
+    }
+    message.errorBarContinuousAxisHasCustomizedAggregate = errorBarContinuousAxisHasCustomizedAggregate;
+    function errorBarCenterIsNotNeeded(extent, mark) {
+        return "Center is not needed to be specified in " + mark + " when extent is " + extent + ".";
+    }
+    message.errorBarCenterIsNotNeeded = errorBarCenterIsNotNeeded;
+    function errorBand1DNotSupport(property) {
+        return "1D error band does not support " + property;
+    }
+    message.errorBand1DNotSupport = errorBand1DNotSupport;
+    // CHANNEL
+    function channelRequiredForBinned(channel) {
+        return "Channel " + channel + " is required for \"binned\" bin";
+    }
+    message.channelRequiredForBinned = channelRequiredForBinned;
+    function domainRequiredForThresholdScale(channel) {
+        return "Domain for " + channel + " is required for threshold scale";
+    }
+    message.domainRequiredForThresholdScale = domainRequiredForThresholdScale;
 })(message || (message = {}));
 //# sourceMappingURL=log.js.map

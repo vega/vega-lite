@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { isArray, isString } from 'vega-util';
 import { isFieldDef, vgField } from '../../fielddef';
-import { duplicate } from '../../util';
+import { duplicate, getFirstDefined } from '../../util';
 import { sortParams } from '../common';
 import { DataFlowNode } from './dataflow';
 function getStackByFields(model) {
@@ -35,12 +35,12 @@ var StackNode = /** @class */ (function (_super) {
             for (var _i = 0, _b = stackTransform.sort; _i < _b.length; _i++) {
                 var sortField = _b[_i];
                 sortFields.push(sortField.field);
-                sortOrder.push(sortField.order === undefined ? 'ascending' : sortField.order);
+                sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
             }
         }
         var sort = {
             field: sortFields,
-            order: sortOrder,
+            order: sortOrder
         };
         var normalizedAs;
         if (isValidAsArray(as)) {
@@ -85,18 +85,18 @@ var StackNode = /** @class */ (function (_super) {
                 return s;
             }, { field: [], order: [] });
         }
-        // Refactored to add "as" in the make phase so that we can get producedFields
-        // from the as property
-        var field = model.vgField(stackProperties.fieldChannel);
         return new StackNode(parent, {
             dimensionFieldDef: dimensionFieldDef,
-            stackField: field,
+            stackField: model.vgField(stackProperties.fieldChannel),
             facetby: [],
             stackby: stackby,
             sort: sort,
             offset: stackProperties.offset,
             impute: stackProperties.impute,
-            as: [field + '_start', field + '_end']
+            as: [
+                model.vgField(stackProperties.fieldChannel, { suffix: 'start', forAs: true }),
+                model.vgField(stackProperties.fieldChannel, { suffix: 'end', forAs: true })
+            ]
         });
     };
     Object.defineProperty(StackNode.prototype, "stack", {
@@ -112,10 +112,10 @@ var StackNode = /** @class */ (function (_super) {
     StackNode.prototype.dependentFields = function () {
         var out = {};
         out[this._stack.stackField] = true;
-        this.getGroupbyFields().forEach(function (f) { return out[f] = true; });
-        this._stack.facetby.forEach(function (f) { return out[f] = true; });
+        this.getGroupbyFields().forEach(function (f) { return (out[f] = true); });
+        this._stack.facetby.forEach(function (f) { return (out[f] = true); });
         var field = this._stack.sort.field;
-        isArray(field) ? field.forEach(function (f) { return out[f] = true; }) : out[field] = true;
+        isArray(field) ? field.forEach(function (f) { return (out[f] = true); }) : (out[field] = true);
         return out;
     };
     StackNode.prototype.producedFields = function () {
@@ -148,7 +148,6 @@ var StackNode = /** @class */ (function (_super) {
         var _a = this._stack, facetby = _a.facetby, dimensionFieldDef = _a.dimensionFieldDef, field = _a.stackField, stackby = _a.stackby, sort = _a.sort, offset = _a.offset, impute = _a.impute, as = _a.as;
         // Impute
         if (impute && dimensionFieldDef) {
-            var dimensionField = dimensionFieldDef ? vgField(dimensionFieldDef, { binSuffix: 'mid' }) : undefined;
             if (dimensionFieldDef.bin) {
                 // As we can only impute one field at a time, we need to calculate
                 // mid point for a binned field
@@ -159,14 +158,14 @@ var StackNode = /** @class */ (function (_super) {
                         '+' +
                         vgField(dimensionFieldDef, { expr: 'datum', binSuffix: 'end' }) +
                         ')/2',
-                    as: dimensionField
+                    as: vgField(dimensionFieldDef, { binSuffix: 'mid', forAs: true })
                 });
             }
             transform.push({
                 type: 'impute',
                 field: field,
                 groupby: stackby,
-                key: dimensionField,
+                key: vgField(dimensionFieldDef, { binSuffix: 'mid' }),
                 method: 'value',
                 value: 0
             });

@@ -4,10 +4,10 @@ import { UnitModel } from '../unit';
 export declare function parseMarkGroup(model: UnitModel): any[];
 export declare function getSort(model: UnitModel): {
     field: string;
-    order?: import("../../../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-util").Order;
+    order?: import("../../../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-util").Order;
 } | {
     field: string[];
-    order?: import("../../../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-util").Order[];
+    order?: import("../../../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-util").Order[];
 } | {
     field: string;
     order: string;

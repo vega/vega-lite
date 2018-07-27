@@ -44,12 +44,12 @@ export declare type BaseSpec = Partial<DataMixins> & {
      */
     transform?: Transform[];
 };
-export declare type DataMixins = {
+export interface DataMixins {
     /**
      * An object describing the data source
      */
     data: Data;
-};
+}
 export interface LayoutSizeMixins {
     /**
      * The width of a visualization.
@@ -187,8 +187,8 @@ export declare type NormalizedConcatSpec = GenericVConcatSpec<NormalizedUnitSpec
 export declare type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> | GenericVConcatSpec<U, L> | GenericHConcatSpec<U, L>;
 export declare type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 export declare type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
-export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
-export declare type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> | TopLevel<GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>>;
+export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export declare type TopLevelSpec = TopLevelFacetedUnitSpec | TopLevelFacetSpec | TopLevel<ExtendedLayerSpec> | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 export declare function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any>;
 export declare function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec;
 export declare function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any>;
@@ -196,9 +196,6 @@ export declare function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<
 export declare function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> | GenericHConcatSpec<any, any>;
 export declare function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any>;
 export declare function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, any>;
-/**
- * Decompose extended unit specs into composition of pure unit specs.
- */
-export declare function normalize(spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec, config: Config): NormalizedSpec;
+export { normalizeTopLevelSpec as normalize } from './normalize';
 export declare function fieldDefs(spec: GenericSpec<any, any>): FieldDef<any>[];
 export declare function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean;

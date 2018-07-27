@@ -1,12 +1,13 @@
 import * as tslib_1 from "tslib";
+import { isBinning } from '../../bin';
 import { isScaleChannel } from '../../channel';
 import { vgField } from '../../fielddef';
 import * as log from '../../log';
-import { differ, duplicate, keys } from '../../util';
+import { differ, duplicate, keys, replacePathInField } from '../../util';
 import { binRequiresRange } from '../common';
 import { DataFlowNode } from './dataflow';
 function addDimension(dims, channel, fieldDef) {
-    if (fieldDef.bin) {
+    if (isBinning(fieldDef.bin)) {
         dims[vgField(fieldDef, {})] = true;
         dims[vgField(fieldDef, { binSuffix: 'end' })] = true;
         if (binRequiresRange(fieldDef, channel)) {
@@ -70,15 +71,15 @@ var AggregateNode = /** @class */ (function (_super) {
             if (aggregate) {
                 if (aggregate === 'count') {
                     meas['*'] = meas['*'] || {};
-                    meas['*']['count'] = vgField(fieldDef);
+                    meas['*']['count'] = vgField(fieldDef, { forAs: true });
                 }
                 else {
                     meas[field] = meas[field] || {};
-                    meas[field][aggregate] = vgField(fieldDef);
+                    meas[field][aggregate] = vgField(fieldDef, { forAs: true });
                     // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
                     if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-                        meas[field]['min'] = vgField({ field: field, aggregate: 'min' });
-                        meas[field]['max'] = vgField({ field: field, aggregate: 'max' });
+                        meas[field]['min'] = vgField({ field: field, aggregate: 'min' }, { forAs: true });
+                        meas[field]['max'] = vgField({ field: field, aggregate: 'max' }, { forAs: true });
                     }
                 }
             }
@@ -86,7 +87,7 @@ var AggregateNode = /** @class */ (function (_super) {
                 addDimension(dims, channel, fieldDef);
             }
         });
-        if ((keys(dims).length + keys(meas).length) === 0) {
+        if (keys(dims).length + keys(meas).length === 0) {
             return null;
         }
         return new AggregateNode(parent, dims, meas);
@@ -100,11 +101,11 @@ var AggregateNode = /** @class */ (function (_super) {
             if (op) {
                 if (op === 'count') {
                     meas['*'] = meas['*'] || {};
-                    meas['*']['count'] = as || vgField(s);
+                    meas['*']['count'] = as || vgField(s, { forAs: true });
                 }
                 else {
                     meas[field] = meas[field] || {};
-                    meas[field][op] = as || vgField(s);
+                    meas[field][op] = as || vgField(s, { forAs: true });
                 }
             }
         }
@@ -112,7 +113,7 @@ var AggregateNode = /** @class */ (function (_super) {
             var s = _c[_b];
             dims[s] = true;
         }
-        if ((keys(dims).length + keys(meas).length) === 0) {
+        if (keys(dims).length + keys(meas).length === 0) {
             return null;
         }
         return new AggregateNode(parent, dims, meas);
@@ -128,22 +129,23 @@ var AggregateNode = /** @class */ (function (_super) {
     };
     AggregateNode.prototype.addDimensions = function (fields) {
         var _this = this;
-        fields.forEach(function (f) { return _this.dimensions[f] = true; });
+        fields.forEach(function (f) { return (_this.dimensions[f] = true); });
     };
     AggregateNode.prototype.dependentFields = function () {
         var out = {};
-        keys(this.dimensions).forEach(function (f) { return out[f] = true; });
-        keys(this.measures).forEach(function (m) { return out[m] = true; });
+        keys(this.dimensions).forEach(function (f) { return (out[f] = true); });
+        keys(this.measures).forEach(function (m) { return (out[m] = true); });
         return out;
     };
     AggregateNode.prototype.producedFields = function () {
-        var _this = this;
         var out = {};
-        keys(this.measures).forEach(function (field) {
-            keys(_this.measures[field]).forEach(function (op) {
-                out[op + "_" + field] = true;
-            });
-        });
+        for (var _i = 0, _a = keys(this.measures); _i < _a.length; _i++) {
+            var field = _a[_i];
+            for (var _b = 0, _c = keys(this.measures[field]); _b < _c.length; _b++) {
+                var op = _c[_b];
+                out[this.measures[field][op] || op + "_" + field] = true;
+            }
+        }
         return out;
     };
     AggregateNode.prototype.assemble = function () {
@@ -156,7 +158,7 @@ var AggregateNode = /** @class */ (function (_super) {
                 var op = _c[_b];
                 as.push(this.measures[field][op]);
                 ops.push(op);
-                fields.push(field);
+                fields.push(replacePathInField(field));
             }
         }
         var result = {

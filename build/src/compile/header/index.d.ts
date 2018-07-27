@@ -1,7 +1,11 @@
+/**
+ * Utility for generating row / column headers
+ */
+import { Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig } from 'vega';
 import { Config } from '../../config';
 import { FacetFieldDef } from '../../facet';
 import { HeaderConfig } from '../../header';
-import { AxisOrient, VgAxis, VgComparator, VgMarkGroup, VgTitleConfig } from '../../vega.schema';
+import { VgComparator, VgMarkGroup } from '../../vega.schema';
 import { Model } from '../model';
 export declare type HeaderChannel = 'row' | 'column';
 export declare const HEADER_CHANNELS: HeaderChannel[];
@@ -42,10 +46,14 @@ export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
     type: string;
     role: string;
     title: {
+        style: string;
+        orient: string;
         text: string;
         offset: number;
-        orient: string;
+    } | {
         style: string;
+        text: string;
+        offset: number;
     };
 };
 export declare function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[];
@@ -78,19 +86,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     from: {
         data: string;
@@ -117,19 +202,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     from: {
         data: string;
@@ -150,19 +312,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     from: {
         data: string;
@@ -182,19 +421,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     from: {
         data: string;
@@ -270,19 +586,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     name: string;
     type: string;
@@ -305,19 +698,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     name: string;
     type: string;
@@ -334,19 +804,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     name: string;
     type: string;
@@ -362,19 +909,96 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
                 };
             };
         };
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
-        style: string;
     } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        orient: string;
         text: {
             signal: string;
         };
         offset: number;
-        orient: string;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
         style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        orient: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        angle: number;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        encode: {
+            update: {
+                align?: undefined;
+            } | {
+                align: {
+                    value: string;
+                };
+            };
+        };
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
+    } | {
+        baseline: string;
+        style: string;
+        text: {
+            signal: string;
+        };
+        offset: number;
     };
     name: string;
     type: string;

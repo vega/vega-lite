@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var chai_1 = require("chai");
-var vega_util_1 = require("vega-util");
-var util_1 = require("./util");
+import { assert } from 'chai';
+import { stringValue } from 'vega-util';
+import { compositeTypes, embedFn, parentSelector, spec, testRenderFn } from './util';
 var hits = {
     qq: [8, 19, 13, 21],
     qq_clear: [5, 16],
@@ -12,71 +10,71 @@ var hits = {
 };
 function toggle(key, idx, shiftKey, parent) {
     var fn = key.match('_clear') ? 'clear' : 'pt';
-    return "return " + fn + "(" + hits[key][idx] + ", " + vega_util_1.stringValue(parent) + ", " + !!shiftKey + ")";
+    return "return " + fn + "(" + hits[key][idx] + ", " + stringValue(parent) + ", " + !!shiftKey + ")";
 }
 describe('Toggle multi selections at runtime', function () {
     var type = 'multi';
-    var embed = util_1.embedFn(browser);
-    var testRender = util_1.testRenderFn(browser, 'multi/toggle');
+    var embed = embedFn(browser);
+    var testRender = testRenderFn(browser, 'multi/toggle');
     it('should toggle values into/out of the store', function () {
-        embed(util_1.spec('unit', 0, { type: type }));
+        embed(spec('unit', 0, { type: type }));
         browser.execute(toggle('qq', 0, false));
         browser.execute(toggle('qq', 1, true));
         var store = browser.execute(toggle('qq', 2, true)).value;
-        chai_1.assert.lengthOf(store, 3);
+        assert.lengthOf(store, 3);
         testRender('click_0');
         store = browser.execute(toggle('qq', 2, true)).value;
-        chai_1.assert.lengthOf(store, 2);
+        assert.lengthOf(store, 2);
         testRender('click_1');
         store = browser.execute(toggle('qq', 3, false)).value;
-        chai_1.assert.lengthOf(store, 1);
+        assert.lengthOf(store, 1);
         testRender('click_2');
     });
     it('should clear out the store w/o shiftKey', function () {
-        embed(util_1.spec('unit', 1, { type: type }));
+        embed(spec('unit', 1, { type: type }));
         browser.execute(toggle('qq', 0, false));
         browser.execute(toggle('qq', 1, true));
         browser.execute(toggle('qq', 2, true));
         browser.execute(toggle('qq', 3, true));
         testRender("clear_0");
         var store = browser.execute(toggle('qq_clear', 0, true)).value;
-        chai_1.assert.lengthOf(store, 4);
+        assert.lengthOf(store, 4);
         testRender("clear_1");
         store = browser.execute(toggle('qq_clear', 1, false)).value;
-        chai_1.assert.lengthOf(store, 0);
+        assert.lengthOf(store, 0);
         testRender("clear_2");
     });
     it('should toggle binned fields', function () {
-        embed(util_1.spec('unit', 0, { type: type, encodings: ['x', 'y'] }, { x: { bin: true }, y: { bin: true } }));
+        embed(spec('unit', 0, { type: type, encodings: ['x', 'y'] }, { x: { bin: true }, y: { bin: true } }));
         browser.execute(toggle('bins', 0, false));
         browser.execute(toggle('bins', 1, true));
         var store = browser.execute(toggle('bins', 2, true)).value;
-        chai_1.assert.lengthOf(store, 3);
+        assert.lengthOf(store, 3);
         testRender('bins_0');
         store = browser.execute(toggle('bins', 2, true)).value;
-        chai_1.assert.lengthOf(store, 2);
+        assert.lengthOf(store, 2);
         testRender('bins_1');
         store = browser.execute(toggle('bins', 3, false)).value;
-        chai_1.assert.lengthOf(store, 1);
+        assert.lengthOf(store, 1);
         testRender('bins_2');
     });
-    util_1.compositeTypes.forEach(function (specType, idx) {
+    compositeTypes.forEach(function (specType, idx) {
         it("should toggle in " + specType + " views", function () {
-            embed(util_1.spec(specType, idx, { type: type, resolve: 'union' }));
+            embed(spec(specType, idx, { type: type, resolve: 'union' }));
             var length = 0;
             for (var i = 0; i < hits.composite.length; i++) {
-                var parent_1 = util_1.parentSelector(specType, i % 3);
+                var parent_1 = parentSelector(specType, i % 3);
                 var store = browser.execute(toggle('composite', i, true, parent_1)).value;
-                chai_1.assert.equal(length = store.length, i + 1);
+                assert.equal((length = store.length), i + 1);
                 if (i % 3 === 2) {
                     testRender(specType + "_" + i);
                 }
             }
             for (var i = 0; i < hits.composite.length; i++) {
                 var even = i % 2 === 0;
-                var parent_2 = util_1.parentSelector(specType, ~~(i / 2));
+                var parent_2 = parentSelector(specType, ~~(i / 2));
                 var store = browser.execute(toggle('qq_clear', 0, even, parent_2)).value;
-                chai_1.assert.lengthOf(store, even ? length : length = length - 2, "iter: " + i);
+                assert.lengthOf(store, even ? length : (length = length - 2), "iter: " + i);
                 if (!even) {
                     testRender(specType + "_clear_" + i);
                 }
@@ -84,4 +82,4 @@ describe('Toggle multi selections at runtime', function () {
         });
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidG9nZ2xlLnRlc3QuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi90ZXN0LXJ1bnRpbWUvdG9nZ2xlLnRlc3QudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSw2QkFBNEI7QUFDNUIsdUNBQXNDO0FBQ3RDLCtCQUFtRjtBQUVuRixJQUFNLElBQUksR0FBRztJQUNYLEVBQUUsRUFBRSxDQUFDLENBQUMsRUFBRSxFQUFFLEVBQUUsRUFBRSxFQUFFLEVBQUUsQ0FBQztJQUNuQixRQUFRLEVBQUUsQ0FBQyxDQUFDLEVBQUUsRUFBRSxDQUFDO0lBQ2pCLElBQUksRUFBRSxDQUFDLENBQUMsRUFBRSxFQUFFLEVBQUUsRUFBRSxFQUFFLENBQUMsQ0FBQztJQUNwQixVQUFVLEVBQUUsQ0FBQyxFQUFFLEVBQUUsQ0FBQyxDQUFDO0lBQ25CLFNBQVMsRUFBRSxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDO0NBQzlCLENBQUM7QUFFRixnQkFBZ0IsR0FBVyxFQUFFLEdBQVcsRUFBRSxRQUFpQixFQUFFLE1BQWU7SUFDMUUsSUFBTSxFQUFFLEdBQUcsR0FBRyxDQUFDLEtBQUssQ0FBQyxRQUFRLENBQUMsQ0FBQyxDQUFDLENBQUMsT0FBTyxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUM7SUFDaEQsTUFBTSxDQUFDLFlBQVUsRUFBRSxTQUFJLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQyxHQUFHLENBQUMsVUFBSyx1QkFBVyxDQUFDLE1BQU0sQ0FBQyxVQUFLLENBQUMsQ0FBQyxRQUFRLE1BQUcsQ0FBQztBQUNsRixDQUFDO0FBRUQsUUFBUSxDQUFDLG9DQUFvQyxFQUFFO0lBQzdDLElBQU0sSUFBSSxHQUFHLE9BQU8sQ0FBQztJQUNyQixJQUFNLEtBQUssR0FBRyxjQUFPLENBQUMsT0FBTyxDQUFDLENBQUM7SUFDL0IsSUFBTSxVQUFVLEdBQUcsbUJBQVksQ0FBQyxPQUFPLEVB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
+//# sourceMappingURL=toggle.test.js.map

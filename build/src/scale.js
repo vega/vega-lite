@@ -42,7 +42,10 @@ var SCALE_CATEGORY_INDEX = {
     ordinal: 'ordinal',
     'bin-ordinal': 'bin-ordinal',
     point: 'ordinal-position',
-    band: 'ordinal-position'
+    band: 'ordinal-position',
+    quantile: 'discretizing',
+    quantize: 'discretizing',
+    threshold: 'discretizing'
 };
 export var SCALE_TYPES = keys(SCALE_CATEGORY_INDEX);
 /**
@@ -51,9 +54,9 @@ export var SCALE_TYPES = keys(SCALE_CATEGORY_INDEX);
 export function scaleCompatible(scaleType1, scaleType2) {
     var scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
     var scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
-    return scaleCategory1 === scaleCategory2 ||
+    return (scaleCategory1 === scaleCategory2 ||
         (scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time') ||
-        (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time');
+        (scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time'));
 }
 /**
  * Index for scale precedence -- high score = higher priority for merging.
@@ -75,6 +78,9 @@ var SCALE_PRECEDENCE_INDEX = {
     sequential: 0,
     ordinal: 0,
     'bin-ordinal': 0,
+    quantile: 0,
+    quantize: 0,
+    threshold: 0
 };
 /**
  * Return scale categories -- only scale of the same categories can be merged together.
@@ -82,9 +88,24 @@ var SCALE_PRECEDENCE_INDEX = {
 export function scaleTypePrecedence(scaleType) {
     return SCALE_PRECEDENCE_INDEX[scaleType];
 }
-export var CONTINUOUS_TO_CONTINUOUS_SCALES = ['linear', 'bin-linear', 'log', 'pow', 'sqrt', 'time', 'utc'];
+export var CONTINUOUS_TO_CONTINUOUS_SCALES = [
+    'linear',
+    'bin-linear',
+    'log',
+    'pow',
+    'sqrt',
+    'time',
+    'utc'
+];
 var CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
-export var CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['sequential' /* TODO add 'quantile', 'quantize', 'threshold'*/]);
+export var CONTINUOUS_TO_DISCRETE_SCALES = ['quantile', 'quantize', 'threshold'];
+var CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
+export var CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
+    'sequential',
+    'quantile',
+    'quantize',
+    'threshold'
+]);
 var CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 export var DISCRETE_DOMAIN_SCALES = ['ordinal', 'bin-ordinal', 'point', 'band'];
 var DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
@@ -102,6 +123,9 @@ export function hasContinuousDomain(type) {
 export function isContinuousToContinuous(type) {
     return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
 }
+export function isContinuousToDiscrete(type) {
+    return type in CONTINUOUS_TO_DISCRETE_INDEX;
+}
 export var defaultScaleConfig = {
     textXRangeStep: 90,
     rangeStep: 21,
@@ -116,7 +140,9 @@ export var defaultScaleConfig = {
     // FIXME: revise if these *can* become ratios of rangeStep
     minSize: 9,
     minStrokeWidth: 1,
-    maxStrokeWidth: 4
+    maxStrokeWidth: 4,
+    quantileCount: 4,
+    quantizeCount: 4
 };
 export function isExtendedScheme(scheme) {
     return scheme && !!scheme['name'];
@@ -158,9 +184,8 @@ export function scaleTypeSupportProperty(scaleType, propName) {
         case 'range':
             return true;
         case 'scheme':
-            return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize'], scaleType);
+            return contains(['sequential', 'ordinal', 'bin-ordinal', 'quantile', 'quantize', 'threshold'], scaleType);
         case 'interpolate':
-            // FIXME(https://github.com/vega/vega-lite/issues/2902) how about ordinal?
             return contains(['linear', 'bin-linear', 'pow', 'log', 'sqrt', 'utc', 'time'], scaleType);
         case 'round':
             return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
@@ -180,13 +205,15 @@ export function scaleTypeSupportProperty(scaleType, propName) {
         case 'base':
             return scaleType === 'log';
         case 'zero':
-            return hasContinuousDomain(scaleType) && !contains([
-                'log',
-                'time', 'utc',
-                'bin-linear',
-                'threshold',
-                'quantile' // quantile depends on distribution so zero does not matter
-            ], scaleType);
+            return (hasContinuousDomain(scaleType) &&
+                !contains([
+                    'log',
+                    'time',
+                    'utc',
+                    'bin-linear',
+                    'threshold',
+                    'quantile' // quantile depends on distribution so zero does not matter
+                ], scaleType));
     }
     /* istanbul ignore next: should never reach here*/
     throw new Error("Invalid scale property " + propName + ".");
@@ -232,7 +259,17 @@ export function scaleTypeSupportDataType(specifiedType, fieldDefType, bin) {
         if (bin) {
             return contains([ScaleType.BIN_LINEAR, ScaleType.BIN_ORDINAL, ScaleType.LINEAR], specifiedType);
         }
-        return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.LINEAR, ScaleType.SEQUENTIAL, undefined], specifiedType);
+        return contains([
+            ScaleType.LOG,
+            ScaleType.POW,
+            ScaleType.SQRT,
+            ScaleType.QUANTILE,
+            ScaleType.QUANTIZE,
+            ScaleType.THRESHOLD,
+            ScaleType.LINEAR,
+            ScaleType.SEQUENTIAL,
+            undefined
+        ], specifiedType);
     }
     return true;
 }
@@ -240,11 +277,14 @@ export function channelSupportScaleType(channel, scaleType) {
     switch (channel) {
         case Channel.X:
         case Channel.Y:
+            return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
         case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
         case Channel.OPACITY:
             // Although it generally doesn't make sense to use band with size and opacity,
             // it can also work since we use band: 0.5 to get midpoint.
-            return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+            return (isContinuousToContinuous(scaleType) ||
+                isContinuousToDiscrete(scaleType) ||
+                contains(['band', 'point'], scaleType));
         case Channel.COLOR:
         case Channel.FILL:
         case Channel.STROKE:

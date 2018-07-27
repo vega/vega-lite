@@ -41,7 +41,7 @@ export function parseUnitSelection(model, selDefs) {
             }
         }
         name_1 = varName(name_1);
-        var selCmpt = selCmpts[name_1] = tslib_1.__assign({}, selDef, { name: name_1, events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on });
+        var selCmpt = (selCmpts[name_1] = tslib_1.__assign({}, selDef, { name: name_1, events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on }));
         forEachTransform(selCmpt, function (txCompiler) {
             if (txCompiler.parse) {
                 txCompiler.parse(model, selDef, selCmpt);
@@ -68,10 +68,12 @@ export function assembleUnitSelectionSignals(model, signals) {
         });
         signals.push({
             name: name + MODIFY,
-            on: [{
+            on: [
+                {
                     events: { signal: name + TUPLE },
                     update: "modify(" + stringValue(selCmpt.name + STORE) + ", " + modifyExpr + ")"
-                }]
+                }
+            ]
         });
     });
     var facetModel = getFacetModel(model);
@@ -80,10 +82,12 @@ export function assembleUnitSelectionSignals(model, signals) {
         signals.unshift({
             name: 'facet',
             value: {},
-            on: [{
+            on: [
+                {
                     events: parseSelector('mousemove', 'scope'),
                     update: "isTuple(facet) ? facet : group(" + name_2 + ").datum"
-                }]
+                }
+            ]
         });
     }
     return signals;
@@ -103,7 +107,7 @@ export function assembleTopLevelSignals(model, signals) {
     });
     if (needsUnit) {
         var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
-        if (!(hasUnit.length)) {
+        if (!hasUnit.length) {
             signals.unshift({
                 name: 'unit',
                 value: {},
@@ -160,13 +164,12 @@ export function selectionPredicate(model, selections, dfnode) {
         if (selCmpt.empty !== 'none') {
             stores.push(store);
         }
-        return compiler(selCmpt.type).predicate + ("(" + store + ", datum") +
-            (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")");
+        return (compiler(selCmpt.type).predicate +
+            ("(" + store + ", datum") +
+            (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")"));
     }
     var predicateStr = logicalExpr(selections, expr);
-    return (stores.length
-        ? '!(' + stores.map(function (s) { return "length(data(" + s + "))"; }).join(' || ') + ') || '
-        : '') + ("(" + predicateStr + ")");
+    return ((stores.length ? '!(' + stores.map(function (s) { return "length(data(" + s + "))"; }).join(' || ') + ') || ' : '') + ("(" + predicateStr + ")"));
 }
 // Selections are parsed _after_ scales. If a scale domain is set to
 // use a selection, the SELECTION_DOMAIN constant is used as the
@@ -237,8 +240,9 @@ export function unitName(model) {
     var name = stringValue(model.name);
     var facet = getFacetModel(model);
     if (facet) {
-        name += (facet.facet.row ? " + '_' + (" + accessPathWithDatum(facet.vgField('row'), 'facet') + ")" : '')
-            + (facet.facet.column ? " + '_' + (" + accessPathWithDatum(facet.vgField('column'), 'facet') + ")" : '');
+        name +=
+            (facet.facet.row ? " + '_' + (" + accessPathWithDatum(facet.vgField('row'), 'facet') + ")" : '') +
+                (facet.facet.column ? " + '_' + (" + accessPathWithDatum(facet.vgField('column'), 'facet') + ")" : '');
     }
     return name;
 }

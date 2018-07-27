@@ -6,13 +6,13 @@ import { HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROP
 import { parseFacetModel } from '../../util';
 describe('compile/header/index', function () {
     describe('label aligns correctly according to angle', function () {
-        assert.deepEqual(labelAlign(23), { align: { value: 'right' } });
-        assert.deepEqual(labelAlign(135), { align: { value: 'left' } });
-        assert.deepEqual(labelAlign(50), { align: { value: 'right' } });
+        expect(labelAlign(23)).toEqual({ align: { value: 'right' } });
+        expect(labelAlign(135)).toEqual({ align: { value: 'left' } });
+        expect(labelAlign(50)).toEqual({ align: { value: 'right' } });
     });
     describe('label baseline adjusted according to angle', function () {
-        assert.deepEqual(labelBaseline(10), { baseline: 'middle' });
-        assert.deepEqual(labelBaseline(90), { baseline: 'top' });
+        expect(labelBaseline(10)).toEqual({ baseline: 'middle' });
+        expect(labelBaseline(90)).toEqual({ baseline: 'top' });
     });
     describe('getHeaderGroups', function () {
         it('should correctly process sort descending', function () {
@@ -78,7 +78,7 @@ describe('compile/header/index', function () {
             var columnLabelGroup = getTitleGroup(model, 'column');
             var title = columnLabelGroup.title, columnTitleGroupTopLevelProps = tslib_1.__rest(columnLabelGroup, ["title"]);
             it('returns a header group mark with correct name, role, and type.', function () {
-                assert.deepEqual(columnTitleGroupTopLevelProps, {
+                expect(columnTitleGroupTopLevelProps).toEqual({
                     name: 'column-title',
                     type: 'group',
                     role: 'column-title'
@@ -86,10 +86,9 @@ describe('compile/header/index', function () {
             });
             var name = title.text;
             it('contains a correct title definition, including the correct name and orientation', function () {
-                assert.deepEqual(title, {
+                expect(title).toEqual({
                     text: name,
                     offset: 10,
-                    orient: undefined,
                     style: 'guide-title'
                 });
             });
@@ -98,7 +97,7 @@ describe('compile/header/index', function () {
             var rowTitleGroup = getTitleGroup(model, 'row');
             var title = rowTitleGroup.title, rowTitleGroupTopLevelProps = tslib_1.__rest(rowTitleGroup, ["title"]);
             it('returns a header group mark with correct name, role, and type.', function () {
-                assert.deepEqual(rowTitleGroupTopLevelProps, {
+                expect(rowTitleGroupTopLevelProps).toEqual({
                     name: 'row-title',
                     type: 'group',
                     role: 'row-title'
@@ -106,7 +105,7 @@ describe('compile/header/index', function () {
             });
             var name = title.text;
             it('contains a correct title definition, including the correct name and orientation.', function () {
-                assert.deepEqual(title, {
+                expect(title).toEqual({
                     text: name,
                     offset: 10,
                     orient: 'left',
@@ -137,15 +136,15 @@ describe('compile/header/index', function () {
             var facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
             var headerTitleProps = getHeaderProperties(undefined, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should return the correct title property from header', function () {
-                assert.deepEqual(headerTitleProps, { fontSize: 40 });
+                expect(headerTitleProps).toEqual({ fontSize: 40 });
             });
             var configTitleProps = getHeaderProperties(config, undefined, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should return the correct title property from config', function () {
-                assert.deepEqual(configTitleProps, { fontSize: 20 });
+                expect(configTitleProps).toEqual({ fontSize: 20 });
             });
             var bothTitleProps = getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should overwrite the config title property with the header title property', function () {
-                assert.deepEqual(bothTitleProps, { fontSize: 40 });
+                expect(bothTitleProps).toEqual({ fontSize: 40 });
             });
         });
         describe('for label properties', function () {
@@ -169,15 +168,15 @@ describe('compile/header/index', function () {
             var facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
             var headerLabelProps = getHeaderProperties(undefined, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should return the correct label property from header', function () {
-                assert.deepEqual(headerLabelProps, { fontSize: 40 });
+                expect(headerLabelProps).toEqual({ fontSize: 40 });
             });
             var configLabelProps = getHeaderProperties(config, undefined, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should return the correct label property from config', function () {
-                assert.deepEqual(configLabelProps, { fontSize: 20 });
+                expect(configLabelProps).toEqual({ fontSize: 20 });
             });
             var bothLabelProps = getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should overwrite the config label property with the header label property', function () {
-                assert.deepEqual(bothLabelProps, { fontSize: 40 });
+                expect(bothLabelProps).toEqual({ fontSize: 40 });
             });
         });
     });

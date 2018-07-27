@@ -49,12 +49,32 @@ describe('compile/data/dataflow', function () {
                 var a = new DataFlowNode(null, 'a');
                 var b = new DataFlowNode(a, 'b');
                 var c = new DataFlowNode(b, 'c');
-                assert.deepEqual(a.children, [b]);
+                expect(a.children).toEqual([b]);
                 assert.equal(b.parent, a);
                 assert.equal(c.parent, b);
                 b.remove();
-                assert.deepEqual(a.children, [c]);
+                expect(a.children).toEqual([c]);
                 assert.equal(c.parent, a);
+            });
+            it('should maintain order', function () {
+                var root = new DataFlowNode(null, 'root');
+                var rootChild1 = new DataFlowNode(root, 'rootChild1');
+                var node = new DataFlowNode(root, 'node');
+                var rootChild2 = new DataFlowNode(root, 'rootChild2');
+                var child1 = new DataFlowNode(node, 'child1');
+                var child2 = new DataFlowNode(node, 'child2');
+                expect(root.children).toEqual([rootChild1, node, rootChild2]);
+                assert.equal(rootChild1.parent, root);
+                assert.equal(rootChild2.parent, root);
+                assert.equal(node.parent, root);
+                assert.equal(child1.parent, node);
+                assert.equal(child2.parent, node);
+                node.remove();
+                expect(root.children).toEqual([rootChild1, child1, child2, rootChild2]);
+                assert.equal(rootChild1.parent, root);
+                assert.equal(rootChild2.parent, root);
+                assert.equal(child1.parent, root);
+                assert.equal(child2.parent, root);
             });
         });
         describe('insertAsParentOf', function () {

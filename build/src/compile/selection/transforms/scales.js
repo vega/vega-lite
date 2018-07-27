@@ -5,11 +5,10 @@ import { hasContinuousDomain, isBinScale } from '../../../scale';
 import { channelSignalName } from '../selection';
 var scaleBindings = {
     has: function (selCmpt) {
-        return selCmpt.type === 'interval' && selCmpt.resolve === 'global' &&
-            selCmpt.bind && selCmpt.bind === 'scales';
+        return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
     },
     parse: function (model, selDef, selCmpt) {
-        var bound = selCmpt.scales = [];
+        var bound = (selCmpt.scales = []);
         selCmpt.project.forEach(function (p) {
             var channel = p.channel;
             var scale = model.getScaleComponent(channel);
@@ -33,7 +32,7 @@ var scaleBindings = {
             return signals;
         }
         var channels = selCmpt.scales.filter(function (channel) {
-            return !(signals.filter(function (s) { return s.name === channelSignalName(selCmpt, channel, 'data'); }).length);
+            return !signals.filter(function (s) { return s.name === channelSignalName(selCmpt, channel, 'data'); }).length;
         });
         return signals.concat(channels.map(function (channel) {
             return { name: channelSignalName(selCmpt, channel, 'data') };

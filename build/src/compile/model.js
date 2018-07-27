@@ -116,7 +116,7 @@ var Model = /** @class */ (function () {
             scales: null,
             projection: null,
             axes: {},
-            legends: {},
+            legends: {}
         };
     }
     Object.defineProperty(Model.prototype, "width", {
@@ -195,10 +195,12 @@ var Model = /** @class */ (function () {
             return undefined;
         }
         var _a = this.layout, align = _a.align, bounds = _a.bounds, center = _a.center, _b = _a.spacing, spacing = _b === void 0 ? {} : _b;
-        return tslib_1.__assign({ padding: isNumber(spacing) ? spacing : {
-                row: spacing.row || 10,
-                column: spacing.column || 10
-            } }, this.assembleDefaultLayout(), (align ? { align: align } : {}), (bounds ? { bounds: bounds } : {}), (center ? { center: center } : {}));
+        return tslib_1.__assign({ padding: isNumber(spacing)
+                ? spacing
+                : {
+                    row: spacing.row || 10,
+                    column: spacing.column || 10
+                } }, this.assembleDefaultLayout(), (align ? { align: align } : {}), (bounds ? { bounds: bounds } : {}), (center ? { center: center } : {}));
     };
     Model.prototype.assembleDefaultLayout = function () {
         return {};
@@ -228,7 +230,8 @@ var Model = /** @class */ (function () {
         return assembleProjections(this);
     };
     Model.prototype.assembleTitle = function () {
-        var title = tslib_1.__assign({}, extractTitleConfig(this.config.title).nonMark, this.title);
+        var _a = this.title || {}, encoding = _a.encoding, titleNoEncoding = tslib_1.__rest(_a, ["encoding"]);
+        var title = tslib_1.__assign({}, extractTitleConfig(this.config.title).nonMark, titleNoEncoding, (encoding ? { encode: { update: encoding } } : {}));
         if (title.text) {
             if (!contains(['unit', 'layer'], this.type)) {
                 // As described in https://github.com/vega/vega-lite/issues/2875:
@@ -259,7 +262,7 @@ var Model = /** @class */ (function () {
         group.marks = [].concat(this.assembleHeaderMarks(), this.assembleMarks());
         // Only include scales if this spec is top-level or if parent is facet.
         // (Otherwise, it will be merged with upper-level's scope.)
-        var scales = (!this.parent || isFacetModel(this.parent)) ? assembleScales(this) : [];
+        var scales = !this.parent || isFacetModel(this.parent) ? assembleScales(this) : [];
         if (scales.length > 0) {
             group.scales = scales;
         }
@@ -307,7 +310,8 @@ var Model = /** @class */ (function () {
         if (isFacetModel(this.parent)) {
             var channel = sizeType === 'width' ? 'x' : 'y';
             var scaleComponent = this.component.scales[channel];
-            if (scaleComponent && !scaleComponent.merged) { // independent scale
+            if (scaleComponent && !scaleComponent.merged) {
+                // independent scale
                 var type = scaleComponent.get('type');
                 var range = scaleComponent.get('range');
                 if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
@@ -386,7 +390,8 @@ var Model = /** @class */ (function () {
             // before it has the original name.
             return this.getName('projection');
         }
-        if ((this.component.projection && !this.component.projection.merged) || this.projectionNameMap.has(this.getName('projection'))) {
+        if ((this.component.projection && !this.component.projection.merged) ||
+            this.projectionNameMap.has(this.getName('projection'))) {
             return this.projectionNameMap.get(this.getName('projection'));
         }
         return undefined;
@@ -403,7 +408,7 @@ var Model = /** @class */ (function () {
         if (localScaleComponent && !localScaleComponent.merged) {
             return localScaleComponent;
         }
-        return (this.parent ? this.parent.getScaleComponent(channel) : undefined);
+        return this.parent ? this.parent.getScaleComponent(channel) : undefined;
     };
     /**
      * Traverse a model's hierarchy to get a particular selection component.
@@ -427,7 +432,7 @@ var ModelWithField = /** @class */ (function (_super) {
     function ModelWithField() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    /** Get "field" reference for vega */
+    /** Get "field" reference for Vega */
     ModelWithField.prototype.vgField = function (channel, opt) {
         if (opt === void 0) { opt = {}; }
         var fieldDef = this.fieldDef(channel);

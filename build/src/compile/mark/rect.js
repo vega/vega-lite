@@ -1,4 +1,5 @@
 import * as tslib_1 from "tslib";
+import { isBinned, isBinning } from '../../bin';
 import { X, Y } from '../../channel';
 import { isFieldDef } from '../../fielddef';
 import * as log from '../../log';
@@ -16,8 +17,9 @@ export function x(model) {
     var x2Def = model.encoding.x2;
     var xScale = model.getScaleComponent(X);
     var xScaleType = xScale ? xScale.get('type') : undefined;
-    if (isFieldDef(xDef) && xDef.bin && !x2Def) {
-        return mixins.binnedPosition(xDef, 'x', model.scaleName('x'), 0, xScale.get('reverse'));
+    var xScaleName = model.scaleName(X);
+    if (isFieldDef(xDef) && (isBinning(xDef.bin) || isBinned(xDef.bin))) {
+        return mixins.binPosition(xDef, x2Def, X, xScaleName, 0, xScale.get('reverse'));
     }
     else if (isFieldDef(xDef) && xScale && hasDiscreteDomain(xScaleType)) {
         /* istanbul ignore else */
@@ -29,7 +31,8 @@ export function x(model) {
             throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScaleType));
         }
     }
-    else { // continuous scale or no scale
+    else {
+        // continuous scale or no scale
         return tslib_1.__assign({}, mixins.pointPosition('x', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'x2'));
     }
 }
@@ -38,8 +41,9 @@ export function y(model) {
     var y2Def = model.encoding.y2;
     var yScale = model.getScaleComponent(Y);
     var yScaleType = yScale ? yScale.get('type') : undefined;
-    if (isFieldDef(yDef) && yDef.bin && !y2Def) {
-        return mixins.binnedPosition(yDef, 'y', model.scaleName('y'), 0, yScale.get('reverse'));
+    var yScaleName = model.scaleName(Y);
+    if (isFieldDef(yDef) && (isBinning(yDef.bin) || isBinned(yDef.bin))) {
+        return mixins.binPosition(yDef, y2Def, Y, yScaleName, 0, yScale.get('reverse'));
     }
     else if (isFieldDef(yDef) && yScale && hasDiscreteDomain(yScaleType)) {
         /* istanbul ignore else */
@@ -51,7 +55,8 @@ export function y(model) {
             throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScaleType));
         }
     }
-    else { // continuous scale or no scale
+    else {
+        // continuous scale or no scale
         return tslib_1.__assign({}, mixins.pointPosition('y', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'y2'));
     }
 }

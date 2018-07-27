@@ -1,14 +1,23 @@
-import { isBoolean } from 'vega-util';
+import { isBoolean, isObject } from 'vega-util';
 import { COLOR, COLUMN, FILL, OPACITY, ROW, SHAPE, SIZE, STROKE } from './channel';
 import { keys, varName } from './util';
 export function binToString(bin) {
     if (isBoolean(bin)) {
         return 'bin';
     }
-    return 'bin' + keys(bin).map(function (p) { return varName("_" + p + "_" + bin[p]); }).join('');
+    return ('bin' +
+        keys(bin)
+            .map(function (p) { return varName("_" + p + "_" + bin[p]); })
+            .join(''));
+}
+export function isBinning(bin) {
+    return bin === true || isBinParams(bin);
+}
+export function isBinned(bin) {
+    return bin === 'binned';
 }
 export function isBinParams(bin) {
-    return bin && !isBoolean(bin);
+    return isObject(bin);
 }
 export function autoMaxBins(channel) {
     switch (channel) {

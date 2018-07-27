@@ -7,21 +7,21 @@ describe('compile/data/geopoint', function () {
     describe('geojson', function () {
         it('should make transform and assemble correctly', function () {
             var model = parseUnitModel({
-                'data': {
-                    'url': 'data/zipcodes.csv',
-                    'format': {
-                        'type': 'csv'
+                data: {
+                    url: 'data/zipcodes.csv',
+                    format: {
+                        type: 'csv'
                     }
                 },
-                'mark': 'circle',
-                'encoding': {
-                    'longitude': {
-                        'field': 'longitude',
-                        'type': 'quantitative'
+                mark: 'circle',
+                encoding: {
+                    longitude: {
+                        field: 'longitude',
+                        type: 'quantitative'
                     },
-                    'latitude': {
-                        'field': 'latitude',
-                        'type': 'quantitative'
+                    latitude: {
+                        field: 'latitude',
+                        type: 'quantitative'
                     }
                 }
             });

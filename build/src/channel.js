@@ -3,7 +3,10 @@
  * such as 'x', 'y', 'color'.
  */
 import * as tslib_1 from "tslib";
-import { flagKeys } from './util';
+import { isBinned } from './bin';
+import { isFieldDef } from './fielddef';
+import { CIRCLE, POINT, SQUARE, TICK } from './mark';
+import { contains, flagKeys } from './util';
 export var Channel;
 (function (Channel) {
     // Facet
@@ -60,7 +63,7 @@ export var GEOPOSITION_CHANNEL_INDEX = {
     longitude: 1,
     longitude2: 1,
     latitude: 1,
-    latitude2: 1,
+    latitude2: 1
 };
 export var GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
 var UNIT_CHANNEL_INDEX = tslib_1.__assign({ 
@@ -128,8 +131,21 @@ export function isScaleChannel(channel) {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(channel, mark) {
-    return mark in getSupportedMark(channel);
+export function supportMark(encoding, channel, mark) {
+    if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
+        var primaryFieldDef = encoding[channel === X2 ? X : Y];
+        // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
+        // has "binned" data and thus need x2/y2 to specify the bin-end field.
+        if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return mark in getSupportedMark(channel);
+    }
 }
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -150,28 +166,59 @@ export function getSupportedMark(channel) {
         case ROW:
         case COLUMN:
             return {
-                point: true, tick: true, rule: true, circle: true, square: true,
-                bar: true, rect: true, line: true, trail: true, area: true, text: true, geoshape: true
+                // all marks
+                point: true,
+                tick: true,
+                rule: true,
+                circle: true,
+                square: true,
+                bar: true,
+                rect: true,
+                line: true,
+                trail: true,
+                area: true,
+                text: true,
+                geoshape: true
             };
         case X:
         case Y:
         case LATITUDE:
         case LONGITUDE:
             return {
-                point: true, tick: true, rule: true, circle: true, square: true,
-                bar: true, rect: true, line: true, trail: true, area: true, text: true
+                // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
+                point: true,
+                tick: true,
+                rule: true,
+                circle: true,
+                square: true,
+                bar: true,
+                rect: true,
+                line: true,
+                trail: true,
+                area: true,
+                text: true
             };
         case X2:
         case Y2:
         case LATITUDE2:
         case LONGITUDE2:
             return {
-                rule: true, bar: true, rect: true, area: true
+                rule: true,
+                bar: true,
+                rect: true,
+                area: true
             };
         case SIZE:
             return {
-                point: true, tick: true, rule: true, circle: true, square: true,
-                bar: true, text: true, line: true, trail: true
+                point: true,
+                tick: true,
+                rule: true,
+                circle: true,
+                square: true,
+                bar: true,
+                text: true,
+                line: true,
+                trail: true
             };
         case SHAPE:
             return { point: true, geoshape: true };

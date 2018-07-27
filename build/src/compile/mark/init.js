@@ -1,10 +1,11 @@
 import * as tslib_1 from "tslib";
+import { isBinned, isBinning } from '../../bin';
 import { isAggregate } from '../../encoding';
 import { isContinuous, isFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { AREA, BAR, CIRCLE, isMarkDef, LINE, POINT, RECT, RULE, SQUARE, TEXT, TICK } from '../../mark';
 import { QUANTITATIVE, TEMPORAL } from '../../type';
-import { contains } from '../../util';
+import { contains, getFirstDefined } from '../../util';
 import { getMarkConfig } from '../common';
 export function normalizeMarkDef(mark, encoding, config) {
     var markDef = isMarkDef(mark) ? tslib_1.__assign({}, mark) : { type: mark };
@@ -15,7 +16,7 @@ export function normalizeMarkDef(mark, encoding, config) {
         log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
     }
     // set opacity and filled if not specified in mark config
-    var specifiedOpacity = markDef.opacity !== undefined ? markDef.opacity : getMarkConfig('opacity', markDef, config);
+    var specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
     if (specifiedOpacity === undefined) {
         markDef.opacity = opacity(markDef.type, encoding);
     }
@@ -48,7 +49,7 @@ function opacity(mark, encoding) {
 function filled(markDef, config) {
     var filledConfig = getMarkConfig('filled', markDef, config);
     var mark = markDef.type;
-    return filledConfig !== undefined ? filledConfig : mark !== POINT && mark !== LINE && mark !== RULE;
+    return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);
 }
 function orient(mark, encoding, specifiedOrient) {
     switch (mark) {
@@ -60,39 +61,52 @@ function orient(mark, encoding, specifiedOrient) {
             // orient is meaningless for these marks.
             return undefined;
     }
-    var yIsRange = encoding.y2;
-    var xIsRange = encoding.x2;
+    var x = encoding.x, y = encoding.y, x2 = encoding.x2, y2 = encoding.y2;
     switch (mark) {
         case BAR:
-            if (yIsRange || xIsRange) {
+            if (isFieldDef(x) && isBinned(x.bin)) {
+                return 'vertical';
+            }
+            if (isFieldDef(y) && isBinned(y.bin)) {
+                return 'horizontal';
+            }
+            if (y2 || x2) {
                 // Ranged bar does not always have clear orientation, so we allow overriding
                 if (specifiedOrient) {
                     return specifiedOrient;
                 }
                 // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
-                var xDef = encoding.x;
-                if (!xIsRange && isFieldDef(xDef) && xDef.type === QUANTITATIVE && !xDef.bin) {
+                if (!x2 && isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) {
                     return 'horizontal';
                 }
                 // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
-                var yDef = encoding.y;
-                if (!yIsRange && isFieldDef(yDef) && yDef.type === QUANTITATIVE && !yDef.bin) {
+                if (!y2 && isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) {
                     return 'vertical';
                 }
             }
         /* tslint:disable */
         case RULE: // intentionally fall through
             // return undefined for line segment rule and bar with both axis ranged
-            if (xIsRange && yIsRange) {
+            if (x2 && y2) {
                 return undefined;
             }
         case AREA: // intentionally fall through
             // If there are range for both x and y, y (vertical) has higher precedence.
-            if (yIsRange) {
-                return 'vertical';
+            if (y2) {
+                if (isFieldDef(y) && isBinned(y.bin)) {
+                    return 'horizontal';
+                }
+                else {
+                    return 'vertical';
+                }
             }
-            else if (xIsRange) {
-                return 'horizontal';
+            else if (x2) {
+                if (isFieldDef(x) && isBinned(x.bin)) {
+                    return 'vertical';
+                }
+                else {
+                    return 'horizontal';
+                }
             }
             else if (mark === RULE) {
                 if (encoding.x && !encoding.y) {

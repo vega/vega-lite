@@ -1,7 +1,4 @@
 import * as tslib_1 from "tslib";
-/**
- * Utility for generating row / column headers
- */
 import { isArray } from 'vega-util';
 import { vgField } from '../../fielddef';
 import { HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP } from '../../header';
@@ -19,14 +16,15 @@ export function getHeaderType(orient) {
 }
 export function getTitleGroup(model, channel) {
     var title = model.component.layoutHeaders[channel].title;
-    var textOrient = channel === 'row' ? 'left' : undefined;
     var config = model.config ? model.config : undefined;
-    var facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef ? model.component.layoutHeaders[channel].facetFieldDef : undefined;
+    var facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef
+        ? model.component.layoutHeaders[channel].facetFieldDef
+        : undefined;
     return {
         name: channel + "-title",
         type: 'group',
         role: channel + "-title",
-        title: tslib_1.__assign({ text: title, offset: 10, orient: textOrient, style: 'guide-title' }, getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP))
+        title: tslib_1.__assign({ text: title, offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-title' }, getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP))
     };
 }
 export function getHeaderGroups(model, channel) {
@@ -47,7 +45,8 @@ export function getHeaderGroups(model, channel) {
 export function labelAlign(angle) {
     // to keep angle in [0, 360)
     angle = ((angle % 360) + 360) % 360;
-    if ((angle + 90) % 180 === 0) { // for 90 and 270
+    if ((angle + 90) % 180 === 0) {
+        // for 90 and 270
         return {}; // default center
     }
     else if (angle < 90 || 270 < angle) {
@@ -76,7 +75,7 @@ function getSort(facetFieldDef, channel) {
     }
     else if (isArray(sort)) {
         return {
-            field: sortArrayIndexField(facetFieldDef, channel, 'datum'),
+            field: sortArrayIndexField(facetFieldDef, channel, { expr: 'datum' }),
             order: 'ascending'
         };
     }
@@ -97,22 +96,26 @@ export function getHeaderGroup(model, channel, headerType, layoutHeader, headerC
             var format = header.format, labelAngle = header.labelAngle;
             var config = model.config ? model.config : undefined;
             var update = tslib_1.__assign({}, labelAlign(labelAngle));
-            title = tslib_1.__assign({ text: formatSignalRef(facetFieldDef, format, 'parent', model.config), offset: 10, orient: channel === 'row' ? 'left' : 'top', style: 'guide-label' }, getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP), (keys(update).length > 0 ? { encode: { update: update } } : {}));
+            title = tslib_1.__assign({ text: formatSignalRef(facetFieldDef, format, 'parent', model.config), offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-label' }, (labelAngle !== undefined ? { angle: labelAngle } : {}), labelBaseline(labelAngle), getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP), (keys(update).length > 0 ? { encode: { update: update } } : {}));
         }
         var axes = headerCmpt.axes;
         var hasAxes = axes && axes.length > 0;
         if (title || hasAxes) {
             var sizeChannel = channel === 'row' ? 'height' : 'width';
-            return tslib_1.__assign({ name: model.getName(channel + "_" + headerType), type: 'group', role: channel + "-" + headerType }, (layoutHeader.facetFieldDef ? {
-                from: { data: model.getName(channel + '_domain') },
-                sort: getSort(facetFieldDef, channel)
-            } : {}), (title ? { title: title } : {}), (headerCmpt.sizeSignal ? {
-                encode: {
-                    update: (_a = {},
-                        _a[sizeChannel] = headerCmpt.sizeSignal,
-                        _a)
+            return tslib_1.__assign({ name: model.getName(channel + "_" + headerType), type: 'group', role: channel + "-" + headerType }, (layoutHeader.facetFieldDef
+                ? {
+                    from: { data: model.getName(channel + '_domain') },
+                    sort: getSort(facetFieldDef, channel)
                 }
-            } : {}), (hasAxes ? { axes: axes } : {}));
+                : {}), (title ? { title: title } : {}), (headerCmpt.sizeSignal
+                ? {
+                    encode: {
+                        update: (_a = {},
+                            _a[sizeChannel] = headerCmpt.sizeSignal,
+                            _a)
+                    }
+                }
+                : {}), (hasAxes ? { axes: axes } : {}));
         }
     }
     return null;

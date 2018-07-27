@@ -4,15 +4,13 @@ import { TUPLE } from '../selection';
 import nearest from './nearest';
 var inputBindings = {
     has: function (selCmpt) {
-        return selCmpt.type === 'single' && selCmpt.resolve === 'global' &&
-            selCmpt.bind && selCmpt.bind !== 'scales';
+        return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales';
     },
     topLevelSignals: function (model, selCmpt, signals) {
         var name = selCmpt.name;
         var proj = selCmpt.project;
         var bind = selCmpt.bind;
-        var datum = nearest.has(selCmpt) ?
-            '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+        var datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
         proj.forEach(function (p) {
             var sgname = varName(name + "_" + p.field);
             var hasSignal = signals.filter(function (s) { return s.name === sgname; });
@@ -20,10 +18,12 @@ var inputBindings = {
                 signals.unshift({
                     name: sgname,
                     value: '',
-                    on: [{
+                    on: [
+                        {
                             events: selCmpt.events,
                             update: "datum && item().mark.marktype !== 'group' ? " + accessPathWithDatum(p.field, datum) + " : null"
-                        }],
+                        }
+                    ],
                     bind: bind[p.field] || bind[p.channel] || bind
                 });
             }

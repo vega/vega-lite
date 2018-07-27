@@ -19,10 +19,13 @@ var GeoPointNode = /** @class */ (function (_super) {
             return parent;
         }
         [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (coordinates) {
-            var pair = coordinates.map(function (channel) { return model.channelHasField(channel) ? model.fieldDef(channel).field : undefined; });
+            var pair = coordinates.map(function (channel) { return (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined); });
             var suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
             if (pair[0] || pair[1]) {
-                parent = new GeoPointNode(parent, model.projectionName(), pair, [model.getName('x' + suffix), model.getName('y' + suffix)]);
+                parent = new GeoPointNode(parent, model.projectionName(), pair, [
+                    model.getName('x' + suffix),
+                    model.getName('y' + suffix)
+                ]);
             }
         });
         return parent;

@@ -1,8 +1,9 @@
+import { SignalRef } from 'vega';
 import { Channel, ScaleChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
 import { Dict } from '../../util';
-import { VgBinding, VgData, VgEventStream, VgSignalRef } from '../../vega.schema';
+import { VgBinding, VgData, VgEventStream } from '../../vega.schema';
 import { DataFlowNode } from '../data/dataflow';
 import { TimeUnitNode } from '../data/timeunit';
 import { LayerModel } from '../layer';
@@ -52,8 +53,8 @@ export declare function assembleUnitSelectionData(model: UnitModel, data: VgData
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];
 export declare function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[];
 export declare function selectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string;
-export declare function isRawSelectionDomain(domainRaw: VgSignalRef): boolean;
-export declare function selectionScaleDomain(model: Model, domainRaw: VgSignalRef): VgSignalRef;
+export declare function isRawSelectionDomain(domainRaw: SignalRef): boolean;
+export declare function selectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef;
 export declare function unitName(model: Model): string;
 export declare function requiresSelectionId(model: Model): boolean;
 export declare function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data'): any;

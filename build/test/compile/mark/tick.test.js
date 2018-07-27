@@ -14,13 +14,13 @@ describe('Mark: Tick', function () {
         // This is a simplified example for stacked tick.
         // In reality this will be used as stacked's overlayed marker
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "tick",
-            "encoding": {
-                "x": { "aggregate": "sum", "field": "a", "type": "quantitative" },
-                "color": { "field": "b", "type": "ordinal" }
+            mark: 'tick',
+            encoding: {
+                x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
+                color: { field: 'b', type: 'ordinal' }
             },
-            "data": { "url": "data/barley.json" },
-            "config": { "stack": "zero" }
+            data: { url: 'data/barley.json' },
+            config: { stack: 'zero' }
         });
         var props = tick.encodeEntry(model);
         it('should use stack_end on x', function () {
@@ -31,13 +31,13 @@ describe('Mark: Tick', function () {
         // This is a simplified example for stacked tick.
         // In reality this will be used as stacked's overlayed marker
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "tick",
-            "encoding": {
-                "y": { "aggregate": "sum", "field": "a", "type": "quantitative" },
-                "color": { "field": "b", "type": "ordinal" }
+            mark: 'tick',
+            encoding: {
+                y: { aggregate: 'sum', field: 'a', type: 'quantitative' },
+                color: { field: 'b', type: 'ordinal' }
             },
-            "data": { "url": "data/barley.json" },
-            "config": { "stack": "zero" }
+            data: { url: 'data/barley.json' },
+            config: { stack: 'zero' }
         });
         var props = tick.encodeEntry(model);
         it('should use stack_end on y', function () {
@@ -46,9 +46,9 @@ describe('Mark: Tick', function () {
     });
     describe('with quantitative x', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': 'tick',
-            'encoding': { 'x': { 'field': 'Horsepower', 'type': 'quantitative' } },
-            'data': { 'url': 'data/cars.json' }
+            mark: 'tick',
+            encoding: { x: { field: 'Horsepower', type: 'quantitative' } },
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('should be centered on y', function () {
@@ -66,9 +66,9 @@ describe('Mark: Tick', function () {
     });
     describe('with quantitative y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': 'tick',
-            'encoding': { 'y': { 'field': 'Cylinders', 'type': 'quantitative' } },
-            'data': { 'url': 'data/cars.json' }
+            mark: 'tick',
+            encoding: { y: { field: 'Cylinders', type: 'quantitative' } },
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('should be centered on x', function () {
@@ -86,12 +86,12 @@ describe('Mark: Tick', function () {
     });
     describe('with quantitative x and ordinal y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': 'tick',
-            'encoding': {
-                'x': { 'field': 'Horsepower', 'type': 'quantitative' },
-                'y': { 'field': 'Cylinders', 'type': 'ordinal' }
+            mark: 'tick',
+            encoding: {
+                x: { field: 'Horsepower', type: 'quantitative' },
+                y: { field: 'Cylinders', type: 'ordinal' }
             },
-            'data': { 'url': 'data/cars.json' }
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('should scale on x', function () {
@@ -109,28 +109,28 @@ describe('Mark: Tick', function () {
     });
     describe('vertical ticks', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': 'tick',
-            'config': { 'mark': { 'orient': 'vertical' } },
-            'encoding': {
-                'x': { 'field': 'Horsepower', 'type': 'quantitative' },
-                'y': { 'field': 'Cylinders', 'type': 'ordinal' },
-                'size': { 'field': 'Acceleration', 'type': 'quantitative' }
+            mark: 'tick',
+            config: { mark: { orient: 'vertical' } },
+            encoding: {
+                x: { field: 'Horsepower', type: 'quantitative' },
+                y: { field: 'Cylinders', type: 'ordinal' },
+                size: { field: 'Acceleration', type: 'quantitative' }
             },
-            'data': { 'url': 'data/cars.json' },
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('maps size to height', function () {
-            assert.deepEqual(props.height, { 'field': 'Acceleration', 'scale': SIZE });
+            assert.deepEqual(props.height, { field: 'Acceleration', scale: SIZE });
         });
     });
     describe('vertical ticks with size in mark def', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': { 'type': 'tick', 'size': 5 },
-            'encoding': {
-                'x': { 'field': 'Horsepower', 'type': 'quantitative' },
-                'y': { 'field': 'Cylinders', 'type': 'ordinal' }
+            mark: { type: 'tick', size: 5 },
+            encoding: {
+                x: { field: 'Horsepower', type: 'quantitative' },
+                y: { field: 'Cylinders', type: 'ordinal' }
             },
-            'data': { 'url': 'data/cars.json' },
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('maps size to height in Vega', function () {
@@ -139,17 +139,17 @@ describe('Mark: Tick', function () {
     });
     describe('vertical ticks (implicit)', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            'mark': 'tick',
-            'encoding': {
-                'x': { 'field': 'Horsepower', 'type': 'quantitative' },
-                'y': { 'field': 'Cylinders', 'type': 'ordinal' },
-                'size': { 'field': 'Acceleration', 'type': 'quantitative' }
+            mark: 'tick',
+            encoding: {
+                x: { field: 'Horsepower', type: 'quantitative' },
+                y: { field: 'Cylinders', type: 'ordinal' },
+                size: { field: 'Acceleration', type: 'quantitative' }
             },
-            'data': { 'url': 'data/cars.json' },
+            data: { url: 'data/cars.json' }
         });
         var props = tick.encodeEntry(model);
         it('maps size to height in Vega', function () {
-            assert.deepEqual(props.height, { 'field': 'Acceleration', 'scale': SIZE });
+            assert.deepEqual(props.height, { field: 'Acceleration', scale: SIZE });
         });
     });
 });

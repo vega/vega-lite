@@ -14,45 +14,54 @@ describe('compile/layout', function () {
                 }
             });
             var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{
+            assert.deepEqual(size, [
+                {
                     name: 'x_step',
                     value: 21
-                }, {
+                },
+                {
                     name: 'width',
-                    update: 'bandspace(domain(\'x\').length, 1, 0.5) * x_step'
-                }]);
+                    update: "bandspace(domain('x').length, 1, 0.5) * x_step"
+                }
+            ]);
         });
         it('should return correct formula for ordinal-band scale with custom padding', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'rect',
                 encoding: {
-                    x: { field: 'a', type: 'ordinal', scale: { padding: 0.3 } },
+                    x: { field: 'a', type: 'ordinal', scale: { padding: 0.3 } }
                 }
             });
             var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{
+            assert.deepEqual(size, [
+                {
                     name: 'x_step',
                     value: 21
-                }, {
+                },
+                {
                     name: 'width',
-                    update: 'bandspace(domain(\'x\').length, 0.3, 0.3) * x_step'
-                }]);
+                    update: "bandspace(domain('x').length, 0.3, 0.3) * x_step"
+                }
+            ]);
         });
         it('should return correct formula for ordinal-band scale with custom paddingInner', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'rect',
                 encoding: {
-                    x: { field: 'a', type: 'ordinal', scale: { paddingInner: 0.3 } },
+                    x: { field: 'a', type: 'ordinal', scale: { paddingInner: 0.3 } }
                 }
             });
             var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{
+            assert.deepEqual(size, [
+                {
                     name: 'x_step',
                     value: 21
-                }, {
+                },
+                {
                     name: 'width',
-                    update: 'bandspace(domain(\'x\').length, 0.3, 0.15) * x_step'
-                }]);
+                    update: "bandspace(domain('x').length, 0.3, 0.15) * x_step"
+                }
+            ]);
         });
         it('should return only step if parent is facet', function () {
             var model = parseFacetModel({
@@ -72,10 +81,12 @@ describe('compile/layout', function () {
             model.parseScale();
             model.parseLayoutSize();
             var size = sizeSignals(model.child, 'width');
-            assert.deepEqual(size, [{
+            assert.deepEqual(size, [
+                {
                     name: 'child_x_step',
                     value: 21
-                }]);
+                }
+            ]);
         });
         it('should return static view size for ordinal x-scale with null', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({

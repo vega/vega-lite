@@ -1,8 +1,10 @@
+import * as tslib_1 from "tslib";
+import { isArray } from 'util';
 import { isNumber } from 'vega-util';
 import { COLOR, FILL, OPACITY, SCALE_CHANNELS, SHAPE, SIZE, STROKE, X, Y } from '../../channel';
+import { isVgScheme } from '../../config';
 import * as log from '../../log';
-import { channelScalePropertyIncompatability, isExtendedScheme, scaleTypeSupportProperty, } from '../../scale';
-import { hasContinuousDomain } from '../../scale';
+import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
 import { isUnitModel } from '../model';
@@ -72,7 +74,8 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
             if (!supportedByScaleType) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));
             }
-            else if (channelIncompatability) { // channel
+            else if (channelIncompatability) {
+                // channel
                 log.warn(channelIncompatability);
             }
             else {
@@ -96,7 +99,7 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
             }
         }
     }
-    return makeImplicit(defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep));
+    return makeImplicit(defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, specifiedScale.domain));
 }
 function parseScheme(scheme) {
     if (isExtendedScheme(scheme)) {
@@ -111,7 +114,7 @@ function parseScheme(scheme) {
     }
     return { scheme: scheme };
 }
-export function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep) {
+export function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, domain) {
     switch (channel) {
         case X:
         case Y:
@@ -144,7 +147,12 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
             var rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
-            return [rangeMin, rangeMax];
+            if (isContinuousToDiscrete(scaleType)) {
+                return interpolateRange(rangeMin, rangeMax, defaultContinuousToDiscreteCount(scaleType, config, domain, channel));
+            }
+            else {
+                return [rangeMin, rangeMax];
+            }
         case SHAPE:
             return 'symbol';
         case COLOR:
@@ -154,13 +162,60 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
                 // Only nominal data uses ordinal scale by default
                 return type === 'nominal' ? 'category' : 'ordinal';
             }
-            return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
+            else if (isContinuousToDiscrete(scaleType)) {
+                var count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
+                if (config.range && isVgScheme(config.range.ordinal)) {
+                    return tslib_1.__assign({}, config.range.ordinal, { count: count });
+                }
+                else {
+                    return { scheme: 'blues', count: count };
+                }
+            }
+            else if (isContinuousToContinuous(scaleType)) {
+                // Manually set colors for now. We will revise this after https://github.com/vega/vega/issues/1369
+                return ['#f7fbff', '#0e427f'];
+            }
+            else {
+                return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
+            }
         case OPACITY:
             // TODO: support custom rangeMin, rangeMax
             return [config.scale.minOpacity, config.scale.maxOpacity];
     }
     /* istanbul ignore next: should never reach here */
     throw new Error("Scale range undefined for channel " + channel);
+}
+export function defaultContinuousToDiscreteCount(scaleType, config, domain, channel) {
+    switch (scaleType) {
+        case 'quantile':
+            return config.scale.quantileCount;
+        case 'quantize':
+            return config.scale.quantizeCount;
+        case 'threshold':
+            if (domain !== undefined && isArray(domain)) {
+                return domain.length + 1;
+            }
+            else {
+                log.warn(log.message.domainRequiredForThresholdScale(channel));
+                // default threshold boundaries for threshold scale since domain has cardinality of 2
+                return 3;
+            }
+    }
+}
+/**
+ * Returns the linear interpolation of the range according to the cardinality
+ *
+ * @param rangeMin start of the range
+ * @param rangeMax end of the range
+ * @param cardinality number of values in the output range
+ */
+export function interpolateRange(rangeMin, rangeMax, cardinality) {
+    var ranges = [];
+    var step = (rangeMax - rangeMin) / (cardinality - 1);
+    for (var i = 0; i < cardinality; i++) {
+        ranges.push(rangeMin + i * step);
+    }
+    return ranges;
 }
 function sizeRangeMin(mark, zero, config) {
     if (zero) {

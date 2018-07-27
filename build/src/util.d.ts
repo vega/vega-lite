@@ -67,7 +67,7 @@ export declare function isBoolean(b: any): b is boolean;
  * Convert a string into a valid variable name
  */
 export declare function varName(s: string): string;
-export declare function logicalExpr<T>(op: LogicalOperand<T>, cb: Function): string;
+export declare function logicalExpr<T>(op: LogicalOperand<T>, cb: (...args: any[]) => string): string;
 export declare type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /**
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
@@ -81,11 +81,12 @@ export declare function titlecase(s: string): string;
  */
 export declare function accessPathWithDatum(path: string, datum?: string): string;
 /**
- * Return access with datum to the falttened field.
+ * Return access with datum to the flattened field.
+ *
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export declare function flatAccessWithDatum(path: string, datum?: string): string;
+export declare function flatAccessWithDatum(path: string, datum?: 'datum' | 'parent'): string;
 /**
  * Replaces path accesses with access to non-nested field.
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
@@ -100,3 +101,7 @@ export declare function removePathFromField(path: string): string;
  * Count the depth of the path. Returns 1 for fields that are not nested.
  */
 export declare function accessPathDepth(path: string): number;
+/**
+ * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
+ */
+export declare function getFirstDefined<T>(...args: T[]): T;

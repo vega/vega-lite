@@ -1,13 +1,24 @@
 import * as tslib_1 from "tslib";
-import { getMarkConfig } from '../common';
+import { getFirstDefined } from '../../util';
+import { getMarkConfig, getStyleConfig } from '../common';
 import * as mixins from './mixins';
 import * as ref from './valueref';
 export var text = {
     vgMark: 'text',
     encodeEntry: function (model) {
         var config = model.config, encoding = model.encoding, width = model.width, height = model.height, markDef = model.markDef;
-        return tslib_1.__assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.text(model), mixins.nonPosition('size', model, tslib_1.__assign({}, (markDef.size ? { defaultValue: markDef.size } : {}), { vgChannel: 'fontSize' // VL's text size is fontSize
-         })), mixins.valueIfDefined('align', align(model.markDef, encoding, config)));
+        // We have to support mark property and config for both size and fontSize for text
+        // - size is from original Vega-Lite, which allows users to easily transition from size channel of other marks to text.
+        // - fontSize is from Vega and we need support it to make sure that all Vega configs all work correctly in Vega-Lite.
+        // Precedence: markDef > style config > mark-specific config
+        // For each of them, fontSize is more specific than size, thus has higher precedence
+        var defaultValue = getFirstDefined(markDef.fontSize, markDef.size, getStyleConfig('fontSize', markDef, config.style), getStyleConfig('size', markDef, config.style), config[markDef.type].fontSize, config[markDef.type].size
+        // general mark config shouldn't be used as they are only for point/circle/square
+        );
+        return tslib_1.__assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), mixins.pointPosition('x', model, ref.mid(width)), mixins.pointPosition('y', model, ref.mid(height)), mixins.text(model), mixins.nonPosition('size', model, {
+            defaultValue: defaultValue,
+            vgChannel: 'fontSize' // VL's text size is fontSize
+        }), mixins.valueIfDefined('align', align(model.markDef, encoding, config)));
     }
 };
 function align(markDef, encoding, config) {

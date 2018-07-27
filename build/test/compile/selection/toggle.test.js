@@ -5,25 +5,28 @@ import toggle from '../../../src/compile/selection/transforms/toggle';
 import { parseUnitModel } from '../../util';
 describe('Toggle Selection Transform', function () {
     var model = parseUnitModel({
-        "mark": "circle",
-        "encoding": {
-            "x": { "field": "Horsepower", "type": "quantitative" },
-            "y": { "field": "Miles_per_Gallon", "type": "quantitative" },
-            "color": { "field": "Origin", "type": "nominal" }
+        mark: 'circle',
+        encoding: {
+            x: { field: 'Horsepower', type: 'quantitative' },
+            y: { field: 'Miles_per_Gallon', type: 'quantitative' },
+            color: { field: 'Origin', type: 'nominal' }
         }
     });
     model.parseScale();
-    var selCmpts = model.component.selection = selection.parseUnitSelection(model, {
-        "one": { "type": "multi" },
-        "two": {
-            "type": "multi", "resolve": "union",
-            "on": "mouseover", "toggle": "event.ctrlKey", "encodings": ["y", "color"]
+    var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+        one: { type: 'multi' },
+        two: {
+            type: 'multi',
+            resolve: 'union',
+            on: 'mouseover',
+            toggle: 'event.ctrlKey',
+            encodings: ['y', 'color']
         },
-        "three": { "type": "multi", "toggle": false },
-        "four": { "type": "multi", "toggle": null },
-        "five": { "type": "single" },
-        "six": { "type": "interval" }
-    });
+        three: { type: 'multi', toggle: false },
+        four: { type: 'multi', toggle: null },
+        five: { type: 'single' },
+        six: { type: 'interval' }
+    }));
     it('identifies transform invocation', function () {
         assert.isNotFalse(toggle.has(selCmpts['one']));
         assert.isNotFalse(toggle.has(selCmpts['two']));
@@ -34,23 +37,31 @@ describe('Toggle Selection Transform', function () {
     });
     it('builds toggle signals', function () {
         var oneSg = toggle.signals(model, selCmpts['one'], []);
-        assert.sameDeepMembers(oneSg, [{
+        assert.sameDeepMembers(oneSg, [
+            {
                 name: 'one_toggle',
                 value: false,
-                on: [{
+                on: [
+                    {
                         events: selCmpts['one'].events,
                         update: 'event.shiftKey'
-                    }]
-            }]);
+                    }
+                ]
+            }
+        ]);
         var twoSg = toggle.signals(model, selCmpts['two'], []);
-        assert.sameDeepMembers(twoSg, [{
+        assert.sameDeepMembers(twoSg, [
+            {
                 name: 'two_toggle',
                 value: false,
-                on: [{
+                on: [
+                    {
                         events: selCmpts['two'].events,
                         update: 'event.ctrlKey'
-                    }]
-            }]);
+                    }
+                ]
+            }
+        ]);
         var signals = selection.assembleUnitSelectionSignals(model, []);
         assert.includeDeepMembers(signals, oneSg.concat(twoSg));
     });
@@ -58,24 +69,24 @@ describe('Toggle Selection Transform', function () {
         var oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
         assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
         var twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
-        assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: \"\"}, two_toggle ? two_tuple : null');
+        assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
         var signals = selection.assembleUnitSelectionSignals(model, []);
         assert.includeDeepMembers(signals, [
             {
-                "name": "one_modify",
-                "on": [
+                name: 'one_modify',
+                on: [
                     {
-                        "events": { "signal": "one_tuple" },
-                        "update": "modify(\"one_store\", " + oneExpr + ")"
+                        events: { signal: 'one_tuple' },
+                        update: "modify(\"one_store\", " + oneExpr + ")"
                     }
                 ]
             },
             {
-                "name": "two_modify",
-                "on": [
+                name: 'two_modify',
+                on: [
                     {
-                        "events": { "signal": "two_tuple" },
-                        "update": "modify(\"two_store\", " + twoExpr + ")"
+                        events: { signal: 'two_tuple' },
+                        update: "modify(\"two_store\", " + twoExpr + ")"
                     }
                 ]
             }

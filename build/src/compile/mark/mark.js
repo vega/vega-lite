@@ -5,7 +5,7 @@ import { isAggregate } from '../../encoding';
 import { getFieldDef, isFieldDef, isValueDef, vgField } from '../../fielddef';
 import { AREA, isPathMark, LINE, TRAIL } from '../../mark';
 import { isSortField } from '../../sort';
-import { contains, keys } from '../../util';
+import { contains, getFirstDefined, keys } from '../../util';
 import { getStyles, sortParams } from '../common';
 import { area } from './area';
 import { bar } from './bar';
@@ -43,18 +43,20 @@ function parsePathMark(model) {
     var details = pathGroupingFields(model.mark, model.encoding);
     var pathMarks = getMarkGroups(model, {
         // If has subfacet for line/area group, need to use faceted data from below.
-        fromPrefix: (details.length > 0 ? FACETED_PATH_PREFIX : '')
+        fromPrefix: details.length > 0 ? FACETED_PATH_PREFIX : ''
     });
-    if (details.length > 0) { // have level of details - need to facet line into subgroups
+    if (details.length > 0) {
+        // have level of details - need to facet line into subgroups
         // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
-        return [{
+        return [
+            {
                 name: model.getName('pathgroup'),
                 type: 'group',
                 from: {
                     facet: {
                         name: FACETED_PATH_PREFIX + model.requestDataName(MAIN),
                         data: model.requestDataName(MAIN),
-                        groupby: details,
+                        groupby: details
                     }
                 },
                 encode: {
@@ -64,7 +66,8 @@ function parsePathMark(model) {
                     }
                 },
                 marks: pathMarks
-            }];
+            }
+        ];
     }
     else {
         return pathMarks;
@@ -85,14 +88,14 @@ export function getSort(model) {
         var dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
         if (isFieldDef(dimensionChannelDef)) {
             var s = dimensionChannelDef.sort;
-            var sortField = isSortField(s) ?
-                vgField({
+            var sortField = isSortField(s)
+                ? vgField({
                     // FIXME: this op might not already exist?
                     // FIXME: what if dimensionChannel (x or y) contains custom domain?
                     aggregate: isAggregate(model.encoding) ? s.op : undefined,
                     field: s.field
-                }, { expr: 'datum' }) :
-                vgField(dimensionChannelDef, {
+                }, { expr: 'datum' })
+                : vgField(dimensionChannelDef, {
                     // For stack with imputation, we only have bin_mid
                     binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
                     expr: 'datum'
@@ -109,17 +112,22 @@ export function getSort(model) {
 function getMarkGroups(model, opt) {
     if (opt === void 0) { opt = { fromPrefix: '' }; }
     var mark = model.mark;
-    var clip = model.markDef.clip !== undefined ?
-        !!model.markDef.clip : scaleClip(model);
+    var clip = getFirstDefined(model.markDef.clip, scaleClip(model));
     var style = getStyles(model.markDef);
     var key = model.encoding.key;
     var sort = getSort(model);
-    var postEncodingTransform = markCompiler[mark].postEncodingTransform ? markCompiler[mark].postEncodingTransform(model) : null;
-    return [tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip ? { clip: true } : {}), (style ? { style: style } : {}), (key ? { key: { field: key.field } } : {}), (sort ? { sort: sort } : {}), { from: { data: opt.fromPrefix + model.requestDataName(MAIN) }, encode: {
+    var postEncodingTransform = markCompiler[mark].postEncodingTransform
+        ? markCompiler[mark].postEncodingTransform(model)
+        : null;
+    return [
+        tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip ? { clip: true } : {}), (style ? { style: style } : {}), (key ? { key: { field: key.field } } : {}), (sort ? { sort: sort } : {}), { from: { data: opt.fromPrefix + model.requestDataName(MAIN) }, encode: {
                 update: markCompiler[mark].encodeEntry(model)
-            } }, (postEncodingTransform ? {
-            transform: postEncodingTransform
-        } : {}))];
+            } }, (postEncodingTransform
+            ? {
+                transform: postEncodingTransform
+            }
+            : {}))
+    ];
 }
 /**
  * Returns list of path grouping fields
@@ -132,7 +140,6 @@ export function pathGroupingFields(mark, encoding) {
             case 'x':
             case 'y':
             case 'order':
-            case 'tooltip':
             case 'href':
             case 'x2':
             case 'y2':
@@ -145,10 +152,11 @@ export function pathGroupingFields(mark, encoding) {
             case 'text':
             case 'shape':
                 return details;
+            case 'tooltip':
             case 'detail':
             case 'key':
                 var channelDef = encoding[channel];
-                if (channelDef) {
+                if (isArray(channelDef) || isFieldDef(channelDef)) {
                     (isArray(channelDef) ? channelDef : [channelDef]).forEach(function (fieldDef) {
                         if (!fieldDef.aggregate) {
                             details.push(vgField(fieldDef, {}));
@@ -188,7 +196,6 @@ export function pathGroupingFields(mark, encoding) {
 function scaleClip(model) {
     var xScale = model.getScaleComponent('x');
     var yScale = model.getScaleComponent('y');
-    return (xScale && xScale.get('domainRaw')) ||
-        (yScale && yScale.get('domainRaw')) ? true : false;
+    return (xScale && xScale.get('domainRaw')) || (yScale && yScale.get('domainRaw')) ? true : false;
 }
 //# sourceMappingURL=mark.js.map

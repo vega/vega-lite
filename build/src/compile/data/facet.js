@@ -1,5 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
+import { isBinning } from '../../bin';
 import { COLUMN, ROW } from '../../channel';
 import { vgField } from '../../fielddef';
 import * as log from '../../log';
@@ -29,11 +30,11 @@ var FacetNode = /** @class */ (function (_super) {
             var fieldDef = model.facet[channel];
             if (fieldDef) {
                 var bin = fieldDef.bin, sort = fieldDef.sort;
-                _this[channel] = tslib_1.__assign({ name: model.getName(channel + "_domain"), fields: [
-                        vgField(fieldDef)
-                    ].concat((bin ? [vgField(fieldDef, { binSuffix: 'end' })] : [])) }, (isSortField(sort) ? { sortField: sort } :
-                    isArray(sort) ? { sortIndexField: sortArrayIndexField(fieldDef, channel) } :
-                        {}));
+                _this[channel] = tslib_1.__assign({ name: model.getName(channel + "_domain"), fields: [vgField(fieldDef)].concat((isBinning(bin) ? [vgField(fieldDef, { binSuffix: 'end' })] : [])) }, (isSortField(sort)
+                    ? { sortField: sort }
+                    : isArray(sort)
+                        ? { sortIndexField: sortArrayIndexField(fieldDef, channel) }
+                        : {}));
             }
         }
         _this.childModel = model.child;
@@ -41,7 +42,7 @@ var FacetNode = /** @class */ (function (_super) {
     }
     Object.defineProperty(FacetNode.prototype, "fields", {
         get: function () {
-            return ((this.column && this.column.fields) || []).concat((this.row && this.row.fields) || []);
+            return ((this.column && this.column.fields) || []).concat(((this.row && this.row.fields) || []));
         },
         enumerable: true,
         configurable: true
@@ -98,7 +99,7 @@ var FacetNode = /** @class */ (function (_super) {
             var op = sortField.op, field = sortField.field;
             fields.push(field);
             ops.push(op);
-            as.push(vgField(sortField));
+            as.push(vgField(sortField, { forAs: true }));
         }
         else if (sortIndexField) {
             fields.push(sortIndexField);
@@ -109,9 +110,15 @@ var FacetNode = /** @class */ (function (_super) {
             name: this[channel].name,
             // Use data from the crossed one if it exist
             source: crossedDataName || this.data,
-            transform: [tslib_1.__assign({ type: 'aggregate', groupby: this[channel].fields }, (fields.length ? {
-                    fields: fields, ops: ops, as: as
-                } : {}))]
+            transform: [
+                tslib_1.__assign({ type: 'aggregate', groupby: this[channel].fields }, (fields.length
+                    ? {
+                        fields: fields,
+                        ops: ops,
+                        as: as
+                    }
+                    : {}))
+            ]
         };
     };
     FacetNode.prototype.assemble = function () {
@@ -126,12 +133,14 @@ var FacetNode = /** @class */ (function (_super) {
             data.push({
                 name: crossedDataName,
                 source: this.data,
-                transform: [{
+                transform: [
+                    {
                         type: 'aggregate',
                         groupby: this.column.fields.concat(this.row.fields),
                         fields: fields,
                         ops: ops
-                    }]
+                    }
+                ]
             });
         }
         for (var _i = 0, _a = [COLUMN, ROW]; _i < _a.length; _i++) {

@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { assert } from 'chai';
-import { defaultConfig, stripAndRedirectConfig } from '../src/config';
+import { defaultConfig, isVgScheme, stripAndRedirectConfig } from '../src/config';
 import { PRIMITIVE_MARKS } from '../src/mark';
 import { duplicate } from '../src/util';
 describe('config', function () {
@@ -10,6 +10,13 @@ describe('config', function () {
             }, title: {
                 color: 'red',
                 fontWeight: 'bold'
+            }, boxplot: {
+                rule: {
+                    fill: 'red'
+                },
+                median: {
+                    color: 'white'
+                }
             } });
         var copy = duplicate(config);
         var output = stripAndRedirectConfig(config);
@@ -38,6 +45,14 @@ describe('config', function () {
         });
         it('should remove empty config object', function () {
             assert.isUndefined(output.axisTop);
+        });
+    });
+    describe('isVgScheme', function () {
+        it('should return true for valid scheme object', function () {
+            assert.isTrue(isVgScheme({ scheme: 'viridis', count: 2 }));
+        });
+        it('should return false for non-scheme object', function () {
+            assert.isFalse(isVgScheme(['#EA98D2', '#659CCA']));
         });
     });
 });

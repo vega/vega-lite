@@ -10,9 +10,7 @@ describe('compile/data/calculate', function () {
         it('produces correct formula transform', function () {
             var model = parseUnitModel({
                 data: {
-                    values: [
-                        { a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }
-                    ]
+                    values: [{ a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }]
                 },
                 mark: 'bar',
                 encoding: {

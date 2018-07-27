@@ -9,17 +9,14 @@ describe('normalizeTransform()', function () {
                 { or: [{ field: 'a', equal: 5 }] }
             ]
         };
-        var transform = [
-            { filter: filter }
-        ];
-        assert.deepEqual(normalizeTransform(transform), [{
+        var transform = [{ filter: filter }];
+        assert.deepEqual(normalizeTransform(transform), [
+            {
                 filter: {
-                    and: [
-                        { not: { timeUnit: 'yearmonthdate', field: 'd', equal: { year: 2008 } } },
-                        { or: [{ field: 'a', equal: 5 }] }
-                    ]
+                    and: [{ not: { timeUnit: 'yearmonthdate', field: 'd', equal: { year: 2008 } } }, { or: [{ field: 'a', equal: 5 }] }]
                 }
-            }]);
+            }
+        ]);
         assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
     }));
 });

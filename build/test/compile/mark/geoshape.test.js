@@ -6,33 +6,34 @@ describe('Mark: Geoshape', function () {
     describe('encode', function () {
         it('should create no properties', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "projection": {
-                    "type": "albersUsa"
+                mark: 'geoshape',
+                projection: {
+                    type: 'albersUsa'
                 },
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {
-                    "color": {
-                        "value": "black"
+                encoding: {
+                    color: {
+                        value: 'black'
                     },
-                    "opacity": {
-                        "value": 0.8
+                    opacity: {
+                        value: 0.8
                     }
-                }
+                },
+                config: { mark: { tooltip: null } }
             });
             var props = geoshape.encodeEntry(model);
             assert.deepEqual({
-                "fill": {
-                    "value": "black"
+                fill: {
+                    value: 'black'
                 },
-                "opacity": {
-                    "value": 0.8
+                opacity: {
+                    value: 0.8
                 }
             }, props);
         });

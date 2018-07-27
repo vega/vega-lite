@@ -1,3 +1,5 @@
+import { Axis as VgAxis, Legend as VgLegend, SignalRef } from 'vega';
+import { Title as VgTitle } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
 import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
@@ -8,7 +10,7 @@ import { TitleParams } from '../title';
 import { GenericCompositionLayout } from '../toplevelprops';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgAxis, VgData, VgEncodeEntry, VgLayout, VgLegend, VgMarkGroup, VgProjection, VgSignal, VgSignalRef, VgTitle } from '../vega.schema';
+import { VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
 import { DataComponent } from './data';
@@ -84,8 +86,8 @@ export declare abstract class Model {
     readonly component: Component;
     abstract readonly children: Model[];
     constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve);
-    readonly width: VgSignalRef;
-    readonly height: VgSignalRef;
+    readonly width: SignalRef;
+    readonly height: SignalRef;
     protected initSize(size: LayoutSizeIndex): void;
     parse(): void;
     abstract parseData(): void;
@@ -126,7 +128,7 @@ export declare abstract class Model {
      * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
      */
     requestDataName(name: DataSourceType): string;
-    getSizeSignalRef(sizeType: 'width' | 'height'): VgSignalRef;
+    getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef;
     /**
      * Lookup the name of the datasource for an output node. You probably want to call this in assemble.
      */
@@ -159,7 +161,7 @@ export declare abstract class Model {
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export declare abstract class ModelWithField extends Model {
     abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
-    /** Get "field" reference for vega */
+    /** Get "field" reference for Vega */
     vgField(channel: SingleDefChannel, opt?: FieldRefOption): string;
     protected abstract getMapping(): {
         [key in Channel]?: any;

@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import { COUNTING_OPS } from '../src/aggregate';
-import { channelCompatibility, defaultType, normalize, title, vgField } from '../src/fielddef';
+import { CHANNELS } from '../src/channel';
+import { channelCompatibility, defaultTitle, defaultType, normalize, vgField } from '../src/fielddef';
 import * as log from '../src/log';
 import { TimeUnit } from '../src/timeunit';
 import { QUANTITATIVE, TEMPORAL } from '../src/type';
@@ -48,7 +49,11 @@ describe('fieldDef', function () {
                 field: 'a',
                 type: 'temporal'
             };
-            assert.deepEqual(normalize(fieldDef, 'x'), { timeUnit: 'yearmonthdate', field: 'a', type: 'temporal' });
+            assert.deepEqual(normalize(fieldDef, 'x'), {
+                timeUnit: 'yearmonthdate',
+                field: 'a',
+                type: 'temporal'
+            });
             assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
         }));
         it('should replace other type with quantitative for a field with counting aggregate.', log.wrap(function (localLogger) {
@@ -61,13 +66,13 @@ describe('fieldDef', function () {
         }));
         it('should return fieldDef with default type and throw warning if type is missing.', log.wrap(function (localLogger) {
             var fieldDef = { field: 'a' };
-            assert.deepEqual(normalize(fieldDef, 'x'), { field: 'a', type: 'quantitative' });
-            assert.equal(localLogger.warns[0], log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
+            expect(normalize(fieldDef, 'x')).toEqual({ field: 'a', type: 'quantitative' });
+            expect(localLogger.warns[0]).toEqual(log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
         }));
         it('should drop invalid aggregate ops and throw warning.', log.wrap(function (localLogger) {
-            var fieldDef = { aggregate: 'box-plot', field: 'a', type: 'quantitative' };
+            var fieldDef = { aggregate: 'boxplot', field: 'a', type: 'quantitative' };
             assert.deepEqual(normalize(fieldDef, 'x'), { field: 'a', type: 'quantitative' });
-            assert.equal(localLogger.warns[0], log.message.invalidAggregate('box-plot'));
+            assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
         }));
     });
     describe('channelCompatability', function () {
@@ -129,6 +134,12 @@ describe('fieldDef', function () {
             it('is incompatible with quantitative field', function () {
                 assert(!channelCompatibility({ field: 'a', type: 'quantitative' }, 'shape').compatible);
             });
+            it('is the only channel that is incompatible with geojson field', function () {
+                for (var _i = 0, CHANNELS_1 = CHANNELS; _i < CHANNELS_1.length; _i++) {
+                    var channel = CHANNELS_1[_i];
+                    assert(channelCompatibility({ field: 'a', type: 'geojson' }, channel).compatible === (channel === 'shape'));
+                }
+            });
         });
         describe('order', function () {
             it('is incompatible with nominal field', function () {
@@ -142,40 +153,40 @@ describe('fieldDef', function () {
             });
         });
     });
-    describe('title()', function () {
+    describe('defaultTitle()', function () {
         it('should return correct title for aggregate', function () {
-            assert.equal(title({ field: 'f', aggregate: 'mean' }, {}), 'Mean of f');
+            assert.equal(defaultTitle({ field: 'f', aggregate: 'mean' }, {}), 'Mean of f');
         });
         it('should return correct title for count', function () {
-            assert.equal(title({ aggregate: 'count' }, { countTitle: 'baz!' }), 'baz!');
+            assert.equal(defaultTitle({ aggregate: 'count' }, { countTitle: 'baz!' }), 'baz!');
         });
         it('should return correct title for bin', function () {
             var fieldDef = { field: 'f', type: QUANTITATIVE, bin: true };
-            assert.equal(title(fieldDef, {}), 'f (binned)');
+            assert.equal(defaultTitle(fieldDef, {}), 'f (binned)');
         });
         it('should return correct title for bin', function () {
             var fieldDef = { field: 'f', type: QUANTITATIVE, bin: true };
-            assert.equal(title(fieldDef, { fieldTitle: 'functional' }), 'BIN(f)');
+            assert.equal(defaultTitle(fieldDef, { fieldTitle: 'functional' }), 'BIN(f)');
         });
         it('should return correct title for timeUnit', function () {
             var fieldDef = { field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH };
-            assert.equal(title(fieldDef, {}), 'f (month)');
+            assert.equal(defaultTitle(fieldDef, {}), 'f (month)');
         });
         it('should return correct title for timeUnit', function () {
             var fieldDef = { field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE };
-            assert.equal(title(fieldDef, {}), 'f (year-month-date)');
+            assert.equal(defaultTitle(fieldDef, {}), 'f (year-month-date)');
         });
         it('should return correct title for timeUnit', function () {
             var fieldDef = { field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY };
-            assert.equal(title(fieldDef, {}), 'f (day)');
+            assert.equal(defaultTitle(fieldDef, {}), 'f (day)');
         });
         it('should return correct title for timeUnit', function () {
             var fieldDef = { field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER };
-            assert.equal(title(fieldDef, {}), 'f (year-quarter)');
+            assert.equal(defaultTitle(fieldDef, {}), 'f (year-quarter)');
         });
         it('should return correct title for raw field', function () {
             var fieldDef = { field: 'f', type: TEMPORAL };
-            assert.equal(title(fieldDef, {}), 'f');
+            assert.equal(defaultTitle(fieldDef, {}), 'f');
         });
     });
 });

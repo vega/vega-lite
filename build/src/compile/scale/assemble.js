@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { keys } from '../../util';
-import { isVgRangeStep, isVgSignalRef } from '../../vega.schema';
+import { isSignalRef, isVgRangeStep } from '../../vega.schema';
 import { isConcatModel, isLayerModel, isRepeatModel } from '../model';
 import { isRawSelectionDomain, selectionScaleDomain } from '../selection/selection';
 import { assembleDomain } from './domain';
@@ -54,11 +54,11 @@ export function assembleScaleRange(scaleRange, scaleName, model, channel) {
         else if (isArray(scaleRange) && scaleRange.length === 2) {
             var r0 = scaleRange[0];
             var r1 = scaleRange[1];
-            if (r0 === 0 && isVgSignalRef(r1)) {
+            if (r0 === 0 && isSignalRef(r1)) {
                 // Replace width signal just in case it is renamed.
                 return [0, { signal: model.getSizeName(r1.signal) }];
             }
-            else if (isVgSignalRef(r0) && r1 === 0) {
+            else if (isSignalRef(r0) && r1 === 0) {
                 // Replace height signal just in case it is renamed.
                 return [{ signal: model.getSizeName(r0.signal) }, 0];
             }

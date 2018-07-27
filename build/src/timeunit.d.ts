@@ -45,7 +45,7 @@ export declare namespace TimeUnit {
     const UTCYEARQUARTERMONTH: 'utcyearquartermonth';
 }
 export declare type LocalSingleTimeUnit = typeof TimeUnit.YEAR | typeof TimeUnit.QUARTER | typeof TimeUnit.MONTH | typeof TimeUnit.DAY | typeof TimeUnit.DATE | typeof TimeUnit.HOURS | typeof TimeUnit.MINUTES | typeof TimeUnit.SECONDS | typeof TimeUnit.MILLISECONDS;
-export declare const TIMEUNIT_PARTS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/timeunit").LocalSingleTimeUnit[];
+export declare const TIMEUNIT_PARTS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/timeunit").LocalSingleTimeUnit[];
 export declare function isLocalSingleTimeUnit(timeUnit: string): timeUnit is LocalSingleTimeUnit;
 export declare type UtcSingleTimeUnit = typeof TimeUnit.UTCYEAR | typeof TimeUnit.UTCQUARTER | typeof TimeUnit.UTCMONTH | typeof TimeUnit.UTCDAY | typeof TimeUnit.UTCDATE | typeof TimeUnit.UTCHOURS | typeof TimeUnit.UTCMINUTES | typeof TimeUnit.UTCSECONDS | typeof TimeUnit.UTCMILLISECONDS;
 export declare function isUtcSingleTimeUnit(timeUnit: string): timeUnit is UtcSingleTimeUnit;
@@ -58,7 +58,7 @@ export declare type UtcTimeUnit = UtcSingleTimeUnit | UtcMultiTimeUnit;
 export declare function isUTCTimeUnit(t: string): t is UtcTimeUnit;
 export declare function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit;
 export declare type TimeUnit = SingleTimeUnit | MultiTimeUnit;
-export declare const TIMEUNITS: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/timeunit").TimeUnit[];
+export declare const TIMEUNITS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/timeunit").TimeUnit[];
 export declare function isTimeUnit(t: string): t is TimeUnit;
 /**
  * Converts a date to only have the measurements relevant to the specified unit

@@ -7,19 +7,21 @@ import { parseUnitModel } from '../../util';
 describe('compile/data/lookup', function () {
     it('should parse lookup from array', function () {
         var model = parseUnitModel({
-            'data': { 'url': 'data/lookup_groups.csv' },
-            'transform': [{
-                    'lookup': 'person',
-                    'from': {
-                        'data': { 'url': 'data/lookup_people.csv' },
-                        'key': 'name',
-                        'fields': ['age', 'height']
+            data: { url: 'data/lookup_groups.csv' },
+            transform: [
+                {
+                    lookup: 'person',
+                    from: {
+                        data: { url: 'data/lookup_people.csv' },
+                        key: 'name',
+                        fields: ['age', 'height']
                     }
-                }],
-            'mark': 'bar',
-            'encoding': {}
+                }
+            ],
+            mark: 'bar',
+            encoding: {}
         });
-        var t = parseTransformArray(null, model, new AncestorParse);
+        var t = parseTransformArray(null, model, new AncestorParse());
         assert.deepEqual(t.assemble(), {
             type: 'lookup',
             from: 'lookup_0',
@@ -30,11 +32,11 @@ describe('compile/data/lookup', function () {
     });
     it('should create node for flat lookup', function () {
         var lookup = new LookupNode(null, {
-            'lookup': 'person',
-            'from': {
-                'data': { 'url': 'data/lookup_people.csv' },
-                'key': 'name',
-                'fields': ['age', 'height']
+            lookup: 'person',
+            from: {
+                data: { url: 'data/lookup_people.csv' },
+                key: 'name',
+                fields: ['age', 'height']
             }
         }, 'lookup_0');
         assert.deepEqual(lookup.assemble(), {
@@ -47,12 +49,12 @@ describe('compile/data/lookup', function () {
     });
     it('should create node for nested lookup', function () {
         var lookup = new LookupNode(null, {
-            'lookup': 'person',
-            'from': {
-                'data': { 'url': 'data/lookup_people.csv' },
-                'key': 'name'
+            lookup: 'person',
+            from: {
+                data: { url: 'data/lookup_people.csv' },
+                key: 'name'
             },
-            'as': 'foo'
+            as: 'foo'
         }, 'lookup_0');
         assert.deepEqual(lookup.assemble(), {
             type: 'lookup',
@@ -64,10 +66,10 @@ describe('compile/data/lookup', function () {
     });
     it('should warn if fields are not specified and as is missing', log.wrap(function (localLogger) {
         var lookup = new LookupNode(null, {
-            'lookup': 'person',
-            'from': {
-                'data': { 'url': 'data/lookup_people.csv' },
-                'key': 'name'
+            lookup: 'person',
+            from: {
+                data: { url: 'data/lookup_people.csv' },
+                key: 'name'
             }
         }, 'lookup_0');
         lookup.assemble();

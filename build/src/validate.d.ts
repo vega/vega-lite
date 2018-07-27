@@ -1,6 +1,6 @@
 import { FacetedCompositeUnitSpec } from './spec';
 export interface RequiredChannelMap {
-    [mark: string]: Array<string>;
+    [mark: string]: string[];
 }
 /**
  * Required Encoding Channels for each mark type

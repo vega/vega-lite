@@ -20,9 +20,8 @@ export declare namespace ScaleType {
     const POINT: 'point';
     const BAND: 'band';
 }
-export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | // typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD |
-typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
-export declare const SCALE_TYPES: import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/scale").ScaleType[];
+export declare type ScaleType = typeof ScaleType.LINEAR | typeof ScaleType.BIN_LINEAR | typeof ScaleType.LOG | typeof ScaleType.POW | typeof ScaleType.SQRT | typeof ScaleType.TIME | typeof ScaleType.UTC | typeof ScaleType.SEQUENTIAL | typeof ScaleType.QUANTILE | typeof ScaleType.QUANTIZE | typeof ScaleType.THRESHOLD | typeof ScaleType.ORDINAL | typeof ScaleType.BIN_ORDINAL | typeof ScaleType.POINT | typeof ScaleType.BAND;
+export declare const SCALE_TYPES: ScaleType[];
 /**
  * Whether the two given scale types can be merged together.
  */
@@ -32,13 +31,15 @@ export declare function scaleCompatible(scaleType1: ScaleType, scaleType2: Scale
  */
 export declare function scaleTypePrecedence(scaleType: ScaleType): number;
 export declare const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[];
+export declare const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[];
 export declare const CONTINUOUS_DOMAIN_SCALES: ScaleType[];
 export declare const DISCRETE_DOMAIN_SCALES: ScaleType[];
 export declare const TIME_SCALE_TYPES: ScaleType[];
 export declare function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band';
 export declare function isBinScale(type: ScaleType): type is 'bin-linear' | 'bin-ordinal';
-export declare function hasContinuousDomain(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' | 'sequential';
-export declare function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'bin-linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc';
+export declare function hasContinuousDomain(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc' | 'sequential' | 'quantile' | 'quantize' | 'threshold';
+export declare function isContinuousToContinuous(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'time' | 'utc';
+export declare function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold';
 export declare type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 export interface ScaleConfig {
     /**
@@ -189,6 +190,22 @@ export interface ScaleConfig {
      * @minimum 0
      */
     maxStrokeWidth?: number;
+    /**
+     * Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.
+     *
+     * __Default value:__ `4`
+     *
+     * @minimum 0
+     */
+    quantileCount?: number;
+    /**
+     * Default range cardinality for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.
+     *
+     * __Default value:__ `4`
+     *
+     * @minimum 0
+     */
+    quantizeCount?: number;
 }
 export declare const defaultScaleConfig: {
     textXRangeStep: number;
@@ -204,6 +221,8 @@ export declare const defaultScaleConfig: {
     minSize: number;
     minStrokeWidth: number;
     maxStrokeWidth: number;
+    quantileCount: number;
+    quantizeCount: number;
 };
 export interface SchemeParams {
     /**
@@ -218,8 +237,6 @@ export interface SchemeParams {
     extent?: number[];
     /**
      * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
-     *
-     * @hide
      */
     count?: number;
 }
@@ -257,7 +274,7 @@ export interface Scale {
      *
      * 2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`"ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`"band"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`"point"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.
      *
-     * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear) and [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal)).
+     * 3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`"bin-linear"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear), [`"bin-ordinal"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`"quantile"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`"quantize"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`"threshold"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).
      *
      * __Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type).
      */
@@ -395,13 +412,15 @@ export interface Scale {
      */
     zero?: boolean;
     /**
-     * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in RGB space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
+     * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
+     *
+     * * __Default value:__ `hcl`
      *
      * __Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `"linear"` to customize `interpolate`.
      */
     interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
-export declare const SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "type" | "domain" | "range" | "zero" | "nice" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "type" | "range" | "zero" | "domain" | "nice" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
 export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "zero" | "nice" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
 export declare const SCALE_TYPE_INDEX: ScaleTypeIndex;
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
@@ -409,9 +428,9 @@ export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName:
  * Returns undefined if the input channel supports the input scale property name
  */
 export declare function channelScalePropertyIncompatability(channel: Channel, propName: keyof Scale): string;
-export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams): boolean;
+export declare function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type, bin: boolean | BinParams | 'binned'): boolean;
 export declare function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean;
-export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): import("../../../../../../../../Users/kanitw/Documents/_code/_idl/_visrec/vega-lite/node_modules/vega-lite/build/src/scale").ScaleType[];
+export declare function getSupportedScaleType(channel: Channel, fieldDefType: Type, bin?: boolean): ScaleType[];
 export interface ScaleTypeIndex {
     [channel: string]: ScaleType[];
 }

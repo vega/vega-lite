@@ -5,7 +5,7 @@ import { LayerModel } from '../src/compile/layer';
 import { RepeatModel } from '../src/compile/repeat';
 import { UnitModel } from '../src/compile/unit';
 import { initConfig } from '../src/config';
-import { normalize, } from '../src/spec';
+import { normalize } from '../src/spec';
 import { isLayerSpec, isUnitSpec } from '../src/spec';
 import { normalizeAutoSize } from '../src/toplevelprops';
 export function parseModel(inputSpec) {

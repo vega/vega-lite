@@ -32,7 +32,7 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'bar',
                 encoding: {
-                    color: { field: 'a', type: 'quantitative' },
+                    color: { field: 'a', type: 'quantitative' }
                 }
             });
             var xDomain = testParseDomainForChannel(model, 'color');
@@ -52,39 +52,42 @@ describe('compile/scale', function () {
         });
         it('should return domain for stack', function () {
             var model = parseUnitModel({
-                mark: "bar",
+                mark: 'bar',
                 encoding: {
                     y: {
                         aggregate: 'sum',
                         field: 'origin',
                         type: 'quantitative'
                     },
-                    x: { field: 'x', type: "ordinal" },
-                    color: { field: 'color', type: "ordinal" }
+                    x: { field: 'x', type: 'ordinal' },
+                    color: { field: 'color', type: 'ordinal' }
                 }
             });
-            assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
+            assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                {
                     data: 'main',
                     field: 'sum_origin_start'
-                }, {
+                },
+                {
                     data: 'main',
                     field: 'sum_origin_end'
-                }]);
+                }
+            ]);
         });
         it('should return normalize domain for stack if specified', function () {
             var model = parseUnitModel({
-                mark: "bar",
+                mark: 'bar',
                 encoding: {
                     y: {
                         aggregate: 'sum',
                         field: 'origin',
                         type: 'quantitative'
                     },
-                    x: { field: 'x', type: "ordinal" },
-                    color: { field: 'color', type: "ordinal" }
+                    x: { field: 'x', type: 'ordinal' },
+                    color: { field: 'color', type: 'ordinal' }
                 },
                 config: {
-                    stack: "normalize"
+                    stack: 'normalize'
                 }
             });
             assert.deepEqual(testParseDomainForChannel(model, 'y'), [[0, 1]]);
@@ -98,23 +101,26 @@ describe('compile/scale', function () {
                     type: 'quantitative'
                 };
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: fieldDef
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
                         data: 'main',
                         field: 'bin_maxbins_15_origin'
-                    }, {
+                    },
+                    {
                         data: 'main',
                         field: 'bin_maxbins_15_origin_end'
-                    }]);
+                    }
+                ]);
                 assert.equal(localLogger.warns[0], log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
             }));
             it('should follow the custom bin.extent for binned Q', log.wrap(function (localLogger) {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'origin',
@@ -128,33 +134,36 @@ describe('compile/scale', function () {
             }));
             it('should return the unaggregated domain if requested for non-bin, non-sum Q', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             aggregate: 'mean',
                             field: 'acceleration',
                             scale: { domain: 'unaggregated' },
-                            type: "quantitative"
+                            type: 'quantitative'
                         }
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
                         data: MAIN,
                         field: 'min_acceleration'
-                    }, {
+                    },
+                    {
                         data: MAIN,
                         field: 'max_acceleration'
-                    }]);
+                    }
+                ]);
             });
             it('should return the aggregated domain for sum Q', log.wrap(function (localLogger) {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             aggregate: 'sum',
                             field: 'origin',
                             scale: { domain: 'unaggregated' },
-                            type: "quantitative"
+                            type: 'quantitative'
                         }
                     }
                 });
@@ -163,11 +172,11 @@ describe('compile/scale', function () {
             }));
             it('should return the right custom domain', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'horsepower',
-                            type: "quantitative",
+                            type: 'quantitative',
                             scale: { domain: [0, 200] }
                         }
                     }
@@ -177,7 +186,7 @@ describe('compile/scale', function () {
             });
             it('should follow the custom domain despite bin', log.wrap(function (localLogger) {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'origin',
@@ -192,12 +201,12 @@ describe('compile/scale', function () {
             }));
             it('should return the aggregated domain if we do not override it', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             aggregate: 'min',
                             field: 'origin',
-                            type: "quantitative"
+                            type: 'quantitative'
                         }
                     }
                 });
@@ -210,12 +219,12 @@ describe('compile/scale', function () {
             });
             it('should use the aggregated data for domain if specified in config', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             aggregate: 'min',
                             field: 'acceleration',
-                            type: "quantitative"
+                            type: 'quantitative'
                         }
                     },
                     config: {
@@ -224,23 +233,26 @@ describe('compile/scale', function () {
                         }
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
                         data: MAIN,
                         field: 'min_acceleration'
-                    }, {
+                    },
+                    {
                         data: MAIN,
                         field: 'max_acceleration'
-                    }]);
+                    }
+                ]);
             });
         });
         describe('for time', function () {
             it('should return the correct domain for month T', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'origin',
-                            type: "temporal",
+                            type: 'temporal',
                             timeUnit: 'month'
                         }
                     }
@@ -250,11 +262,11 @@ describe('compile/scale', function () {
             });
             it('should return the correct domain for month O', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'origin',
-                            type: "ordinal",
+                            type: 'ordinal',
                             timeUnit: 'month'
                         }
                     }
@@ -264,11 +276,11 @@ describe('compile/scale', function () {
             });
             it('should return the correct domain for yearmonth T', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'origin',
-                            type: "temporal",
+                            type: 'temporal',
                             timeUnit: 'yearmonth'
                         }
                     }
@@ -279,7 +291,7 @@ describe('compile/scale', function () {
             it('should return the correct domain for month O when specify sort', function () {
                 var sortDef = { op: 'mean', field: 'precipitation', order: 'descending' };
                 var model = parseUnitModel({
-                    mark: "bar",
+                    mark: 'bar',
                     encoding: {
                         x: {
                             timeUnit: 'month',
@@ -295,44 +307,46 @@ describe('compile/scale', function () {
                     }
                 });
                 var _domain = testParseDomainForChannel(model, 'x');
-                assert.deepEqual(_domain, [{
+                assert.deepEqual(_domain, [
+                    {
                         data: 'raw',
                         field: 'month_date',
                         sort: sortDef
-                    }]);
+                    }
+                ]);
             });
             it('should return the right custom domain with DateTime objects', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'year',
-                            type: "temporal",
+                            type: 'temporal',
                             scale: { domain: [{ year: 1970 }, { year: 1980 }] }
                         }
                     }
                 });
                 var _domain = testParseDomainForChannel(model, 'y');
                 expect(_domain).toEqual([
-                    { "signal": "{data: datetime(1970, 0, 1, 0, 0, 0, 0)}" },
-                    { "signal": "{data: datetime(1980, 0, 1, 0, 0, 0, 0)}" }
+                    { signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}' },
+                    { signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}' }
                 ]);
             });
             it('should return the right custom domain with date strings', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
                         y: {
                             field: 'year',
-                            type: "temporal",
-                            scale: { domain: ["Jan 1, 2007", "Jan 1, 2009"] }
+                            type: 'temporal',
+                            scale: { domain: ['Jan 1, 2007', 'Jan 1, 2009'] }
                         }
                     }
                 });
                 var _domain = testParseDomainForChannel(model, 'y');
                 expect(_domain).toEqual([
-                    { "signal": "{data: datetime(\"Jan 1, 2007\")}" },
-                    { "signal": "{data: datetime(\"Jan 1, 2009\")}" },
+                    { signal: "{data: datetime(\"Jan 1, 2007\")}" },
+                    { signal: "{data: datetime(\"Jan 1, 2009\")}" }
                 ]);
             });
         });
@@ -341,68 +355,79 @@ describe('compile/scale', function () {
                 var model = parseUnitModel({
                     mark: 'bar',
                     encoding: {
-                        color: { field: 'a', bin: true, type: 'ordinal' },
+                        color: { field: 'a', bin: true, type: 'ordinal' }
                     }
                 });
                 var xDomain = testParseDomainForChannel(model, 'color');
-                assert.deepEqual(xDomain, [{ data: 'main', field: 'bin_maxbins_6_a_range', sort: { field: 'bin_maxbins_6_a', op: 'min' } }]);
+                assert.deepEqual(xDomain, [
+                    { data: 'main', field: 'bin_maxbins_6_a_range', sort: { field: 'bin_maxbins_6_a', op: 'min' } }
+                ]);
             });
         });
         describe('for nominal', function () {
             it('should return correct domain with the provided sort property', function () {
                 var sortDef = { op: 'min', field: 'Acceleration' };
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
-                        y: { field: 'origin', type: "nominal", sort: sortDef }
+                        y: { field: 'origin', type: 'nominal', sort: sortDef }
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
-                        data: "raw",
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
+                        data: 'raw',
                         field: 'origin',
                         sort: sortDef
-                    }]);
+                    }
+                ]);
             });
             it('should return correct domain with the provided sort property with order property', function () {
-                var sortDef = { op: 'min', field: 'Acceleration', order: "descending" };
+                var sortDef = { op: 'min', field: 'Acceleration', order: 'descending' };
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
-                        y: { field: 'origin', type: "nominal", sort: sortDef }
+                        y: { field: 'origin', type: 'nominal', sort: sortDef }
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
-                        data: "raw",
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
+                        data: 'raw',
                         field: 'origin',
                         sort: sortDef
-                    }]);
+                    }
+                ]);
             });
             it('should return correct domain without sort if sort is not provided', function () {
                 var model = parseUnitModel({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
-                        y: { field: 'origin', type: "nominal" }
+                        y: { field: 'origin', type: 'nominal' }
                     }
                 });
-                assert.deepEqual(testParseDomainForChannel(model, 'y'), [{
-                        data: "main",
+                assert.deepEqual(testParseDomainForChannel(model, 'y'), [
+                    {
+                        data: 'main',
                         field: 'origin',
                         sort: true
-                    }]);
+                    }
+                ]);
             });
         });
     });
     describe('mergeDomains()', function () {
         it('should merge the same domains', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { field: 'b', op: 'mean' }
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { field: 'b', op: 'mean' }
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a',
@@ -410,11 +435,13 @@ describe('compile/scale', function () {
             });
         });
         it('should drop field if op is count', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { op: 'count', field: 'b' }
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a',
@@ -422,14 +449,17 @@ describe('compile/scale', function () {
             });
         });
         it('should sort the output domain if one domain is sorted', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a'
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { field: 'b', op: 'mean', order: 'descending' }
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a',
@@ -437,14 +467,17 @@ describe('compile/scale', function () {
             });
         });
         it('should sort the output domain if one domain is sorted with true', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: true
-                }, {
+                },
+                {
                     data: 'foo',
-                    field: 'b',
-                }]);
+                    field: 'b'
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 fields: ['a', 'b'],
@@ -452,28 +485,34 @@ describe('compile/scale', function () {
             });
         });
         it('should not sort if no domain is sorted', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a'
-                }, {
+                },
+                {
                     data: 'foo',
-                    field: 'b',
-                }]);
+                    field: 'b'
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 fields: ['a', 'b']
             });
         });
         it('should ignore order ascending as it is the default', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { field: 'b', op: 'mean', order: 'ascending' }
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'a',
                     sort: { field: 'b', op: 'mean' }
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a',
@@ -481,111 +520,142 @@ describe('compile/scale', function () {
             });
         });
         it('should merge domains with the same data', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a'
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'a'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a'
             });
         });
         it('should merge domains with the same data source', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a'
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'b'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 fields: ['a', 'b']
             });
         });
         it('should merge domains with different data source', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: true
-                }, {
+                },
+                {
                     data: 'bar',
                     field: 'a',
                     sort: true
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
-                fields: [{
+                fields: [
+                    {
                         data: 'foo',
                         field: 'a'
-                    }, {
+                    },
+                    {
                         data: 'bar',
                         field: 'a'
-                    }],
+                    }
+                ],
                 sort: true
             });
         });
         it('should merge domains with different data and sort', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: {
                         op: 'count'
                     }
-                }, {
+                },
+                {
                     data: 'bar',
                     field: 'a'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
-                fields: [{
+                fields: [
+                    {
                         data: 'foo',
                         field: 'a'
-                    }, {
+                    },
+                    {
                         data: 'bar',
                         field: 'a'
-                    }],
+                    }
+                ],
                 sort: {
                     op: 'count'
                 }
             });
         });
         it('should merge domains with the same and different data', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a'
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'b'
-                }, {
+                },
+                {
                     data: 'bar',
                     field: 'a'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
-                fields: [{
+                fields: [
+                    {
                         data: 'foo',
                         field: 'a'
-                    }, {
+                    },
+                    {
                         data: 'foo',
                         field: 'b'
-                    }, {
+                    },
+                    {
                         data: 'bar',
                         field: 'a'
-                    }]
+                    }
+                ]
             });
         });
         it('should merge signal domains', function () {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     signal: 'foo'
-                }, {
+                },
+                {
                     data: 'bar',
                     field: 'a'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
-                fields: [{
+                fields: [
+                    {
                         signal: 'foo'
-                    }, {
+                    },
+                    {
                         data: 'bar',
                         field: 'a'
                     }
@@ -593,17 +663,20 @@ describe('compile/scale', function () {
             });
         });
         it('should warn if sorts conflict', log.wrap(function (localLogger) {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: {
                         op: 'count'
                     }
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'b',
                     sort: true
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 fields: ['a', 'b'],
@@ -612,17 +685,20 @@ describe('compile/scale', function () {
             assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
         }));
         it('should warn if sorts conflict even if we do not union', log.wrap(function (localLogger) {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: {
                         op: 'count'
                     }
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'a',
                     sort: true
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 field: 'a',
@@ -631,17 +707,20 @@ describe('compile/scale', function () {
             assert.equal(localLogger.warns[0], log.message.MORE_THAN_ONE_SORT);
         }));
         it('should warn if we had to drop complex sort', log.wrap(function (localLogger) {
-            var domain = mergeDomains([{
+            var domain = mergeDomains([
+                {
                     data: 'foo',
                     field: 'a',
                     sort: {
                         op: 'mean',
                         field: 'c'
                     }
-                }, {
+                },
+                {
                     data: 'foo',
                     field: 'b'
-                }]);
+                }
+            ]);
             assert.deepEqual(domain, {
                 data: 'foo',
                 fields: ['a', 'b'],
@@ -664,7 +743,7 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'point',
                 encoding: {
-                    x: { field: 'a', type: 'quantitative' },
+                    x: { field: 'a', type: 'quantitative' }
                 }
             });
             var sort = domainSort(model, 'x', ScaleType.LINEAR);
@@ -674,7 +753,7 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'point',
                 encoding: {
-                    x: { field: 'a', type: 'ordinal' },
+                    x: { field: 'a', type: 'ordinal' }
                 }
             });
             var sort = domainSort(model, 'x', ScaleType.ORDINAL);
@@ -684,7 +763,7 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'point',
                 encoding: {
-                    x: { field: 'a', type: 'quantitative', sort: 'ascending' },
+                    x: { field: 'a', type: 'quantitative', sort: 'ascending' }
                 }
             });
             var sort = domainSort(model, 'x', ScaleType.ORDINAL);
@@ -694,7 +773,7 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'bar',
                 encoding: {
-                    x: { field: 'a', type: 'quantitative', sort: null },
+                    x: { field: 'a', type: 'quantitative', sort: null }
                 }
             });
             var sort = domainSort(model, 'x', ScaleType.ORDINAL);
@@ -737,11 +816,15 @@ describe('compile/scale', function () {
             var model = parseUnitModel({
                 mark: 'bar',
                 encoding: {
-                    x: { field: 'a', type: 'nominal', sort: "descending" },
+                    x: { field: 'a', type: 'nominal', sort: 'descending' },
                     y: { field: 'b', aggregate: 'sum', type: 'quantitative' }
                 }
             });
-            assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), { op: 'min', field: 'a', order: 'descending' });
+            assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
+                op: 'min',
+                field: 'a',
+                order: 'descending'
+            });
         });
         it('should return sort spec using derived sort index', function () {
             var model = parseUnitModel({
@@ -751,13 +834,17 @@ describe('compile/scale', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), { op: 'min', field: 'x_a_sort_index', order: 'ascending' });
+            assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), {
+                op: 'min',
+                field: 'x_a_sort_index',
+                order: 'ascending'
+            });
         });
         it('should return sort with flattened field access', function () {
             var model = parseUnitModel({
                 mark: 'bar',
                 encoding: {
-                    x: { field: 'a', type: 'ordinal', sort: { field: 'foo.bar', op: 'mean' } },
+                    x: { field: 'a', type: 'ordinal', sort: { field: 'foo.bar', op: 'mean' } }
                 }
             });
             assert.deepEqual(domainSort(model, 'x', ScaleType.ORDINAL), { op: 'mean', field: 'foo\\.bar' });

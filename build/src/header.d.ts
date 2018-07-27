@@ -1,6 +1,6 @@
-import { TextBaseline } from 'vega';
+import { FontWeight, TextBaseline } from 'vega';
+import { TitleConfig as VgTitleConfig } from 'vega';
 import { Guide } from './guide';
-import { FontWeight, VgTitleConfig } from './vega.schema';
 export declare const HEADER_TITLE_PROPERTIES_MAP: {
     [k in keyof HeaderConfig]: keyof VgTitleConfig;
 };
@@ -60,9 +60,15 @@ export interface HeaderConfig {
      */
     titleLimit?: number;
     /**
+     * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+     *
+     * __Default value:__ `10`
+     */
+    titlePadding?: number;
+    /**
      * The rotation angle of the header labels.
      *
-     * __Default value:__ `0`.
+     * __Default value:__ `0` for column header, `-90` for row header.
      *
      * @minimum -360
      * @maximum 360
@@ -88,6 +94,12 @@ export interface HeaderConfig {
      * __Default value:__ `0`, indicating no limit
      */
     labelLimit?: number;
+    /**
+     * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+     *
+     * __Default value:__ `10`
+     */
+    labelPadding?: number;
 }
 /**
  * Headers of row / column channels for faceted plots.

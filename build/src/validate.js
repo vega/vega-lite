@@ -47,16 +47,16 @@ export function getEncodingMappingError(spec, requiredChannelMap, supportedChann
     var encoding = spec.encoding;
     var requiredChannels = requiredChannelMap[mark];
     var supportedChannels = supportedChannelMap[mark];
-    for (var i in requiredChannels) { // all required channels are in encoding`
+    for (var i in requiredChannels) {
+        // all required channels are in encoding`
         if (!(requiredChannels[i] in encoding)) {
-            return 'Missing encoding channel \"' + requiredChannels[i] +
-                '\" for mark \"' + mark + '\"';
+            return 'Missing encoding channel "' + requiredChannels[i] + '" for mark "' + mark + '"';
         }
     }
-    for (var channel in encoding) { // all channels in encoding are supported
+    for (var channel in encoding) {
+        // all channels in encoding are supported
         if (!supportedChannels[channel]) {
-            return 'Encoding channel \"' + channel +
-                '\" is not supported by mark type \"' + mark + '\"';
+            return 'Encoding channel "' + channel + '" is not supported by mark type "' + mark + '"';
         }
     }
     if (mark === BAR && !encoding.x && !encoding.y) {

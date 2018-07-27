@@ -17,7 +17,7 @@ describe('UnitModel', function () {
             assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, BAR));
         }));
         it('should drop invalid channel and throws warning', log.wrap(function (localLogger) {
-            var _model = parseUnitModel({
+            parseUnitModel({
                 mark: 'bar',
                 encoding: {
                     _y: { type: 'quantitative' }
@@ -39,15 +39,10 @@ describe('UnitModel', function () {
             var model = parseUnitModel({
                 mark: 'bar',
                 encoding: {
-                    detail: [
-                        { field: 'a', type: 'ordinal' },
-                        { type: 'quantitative' }
-                    ]
+                    detail: [{ field: 'a', type: 'ordinal' }, { type: 'quantitative' }]
                 }
             });
-            assert.deepEqual(model.encoding.detail, [
-                { field: 'a', type: 'ordinal' }
-            ]);
+            assert.deepEqual(model.encoding.detail, [{ field: 'a', type: 'ordinal' }]);
             assert.equal(localLogger.warns[0], log.message.emptyFieldDef({ type: QUANTITATIVE }, DETAIL));
         }));
     });

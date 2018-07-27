@@ -18,7 +18,7 @@ var GeoJSONNode = /** @class */ (function (_super) {
     GeoJSONNode.parseAll = function (parent, model) {
         var geoJsonCounter = 0;
         [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (coordinates) {
-            var pair = coordinates.map(function (channel) { return model.channelHasField(channel) ? model.fieldDef(channel).field : undefined; });
+            var pair = coordinates.map(function (channel) { return (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined); });
             if (pair[0] || pair[1]) {
                 parent = new GeoJSONNode(parent, pair, null, model.getName("geojson_" + geoJsonCounter++));
             }

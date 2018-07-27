@@ -65,11 +65,13 @@ var BaseConcatModel = /** @class */ (function (_super) {
             var title = child.assembleTitle();
             var style = child.assembleGroupStyle();
             var layoutSizeEncodeEntry = child.assembleLayoutSize();
-            return tslib_1.__assign({ type: 'group', name: child.getName('group') }, (title ? { title: title } : {}), (style ? { style: style } : {}), (layoutSizeEncodeEntry ? {
-                encode: {
-                    update: layoutSizeEncodeEntry
+            return tslib_1.__assign({ type: 'group', name: child.getName('group') }, (title ? { title: title } : {}), (style ? { style: style } : {}), (layoutSizeEncodeEntry
+                ? {
+                    encode: {
+                        update: layoutSizeEncodeEntry
+                    }
                 }
-            } : {}), child.assembleGroup());
+                : {}), child.assembleGroup());
         });
     };
     return BaseConcatModel;

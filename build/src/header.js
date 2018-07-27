@@ -6,7 +6,8 @@ export var HEADER_TITLE_PROPERTIES_MAP = {
     titleFont: 'font',
     titleFontSize: 'fontSize',
     titleFontWeight: 'fontWeight',
-    titleLimit: 'limit'
+    titleLimit: 'limit',
+    titlePadding: 'offset'
 };
 export var HEADER_LABEL_PROPERTIES_MAP = {
     labelAngle: 'angle',
@@ -14,6 +15,7 @@ export var HEADER_LABEL_PROPERTIES_MAP = {
     labelFont: 'font',
     labelFontSize: 'fontSize',
     labelLimit: 'limit',
+    labelPadding: 'offset'
 };
 export var HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
 export var HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);

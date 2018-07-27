@@ -8,19 +8,19 @@ describe('Mark: Area', function () {
     function verticalArea(moreEncoding) {
         if (moreEncoding === void 0) { moreEncoding = {}; }
         return {
-            "mark": "area",
-            "encoding": tslib_1.__assign({ "x": { "timeUnit": "year", "field": "Year", "type": "temporal" }, "y": { "aggregate": "count", "type": "quantitative" } }, moreEncoding),
-            "data": { "url": "data/cars.json" }
+            mark: 'area',
+            encoding: tslib_1.__assign({ x: { timeUnit: 'year', field: 'Year', type: 'temporal' }, y: { aggregate: 'count', type: 'quantitative' } }, moreEncoding),
+            data: { url: 'data/cars.json' }
         };
     }
     describe('vertical area, with log', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "area",
-            "encoding": {
-                "x": { "bin": true, "type": "quantitative", "field": "IMDB_Rating" },
-                "y": { "scale": { "type": 'log' }, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean" }
+            mark: 'area',
+            encoding: {
+                x: { bin: true, type: 'quantitative', field: 'IMDB_Rating' },
+                y: { scale: { type: 'log' }, type: 'quantitative', field: 'US_Gross', aggregate: 'mean' }
             },
-            "data": { "url": 'data/movies.json' }
+            data: { url: 'data/movies.json' }
         });
         var props = area.encodeEntry(model);
         it('should end on axis', function () {
@@ -32,13 +32,13 @@ describe('Mark: Area', function () {
     });
     describe('stacked vertical area, with binned dimension', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "area",
-            "encoding": {
-                "x": { "bin": true, "type": "quantitative", "field": "IMDB_Rating" },
-                "y": { "type": "quantitative", "field": 'US_Gross', "aggregate": "sum" },
-                "color": { "type": "nominal", "field": 'c' }
+            mark: 'area',
+            encoding: {
+                x: { bin: true, type: 'quantitative', field: 'IMDB_Rating' },
+                y: { type: 'quantitative', field: 'US_Gross', aggregate: 'sum' },
+                color: { type: 'nominal', field: 'c' }
             },
-            "data": { "url": 'data/movies.json' }
+            data: { url: 'data/movies.json' }
         });
         var props = area.encodeEntry(model);
         it('should use bin_mid for x', function () {
@@ -47,12 +47,12 @@ describe('Mark: Area', function () {
     });
     describe('vertical area, with zero=false', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "area",
-            "encoding": {
-                "x": { "bin": true, "type": "quantitative", "field": "IMDB_Rating" },
-                "y": { "scale": { "zero": false }, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean" }
+            mark: 'area',
+            encoding: {
+                x: { bin: true, type: 'quantitative', field: 'IMDB_Rating' },
+                y: { scale: { zero: false }, type: 'quantitative', field: 'US_Gross', aggregate: 'mean' }
             },
-            "data": { "url": 'data/movies.json' }
+            data: { url: 'data/movies.json' }
         });
         var props = area.encodeEntry(model);
         it('should end on axis', function () {
@@ -90,7 +90,7 @@ describe('Mark: Area', function () {
     });
     describe('vertical stacked area with color', function () {
         var model = parseUnitModelWithScaleAndLayoutSize(verticalArea({
-            "color": { "field": "Origin", "type": "quantitative" }
+            color: { field: 'Origin', type: 'quantitative' }
         }));
         var props = area.encodeEntry(model);
         it('should have the correct value for y and y2', function () {
@@ -107,9 +107,9 @@ describe('Mark: Area', function () {
     function horizontalArea(moreEncoding) {
         if (moreEncoding === void 0) { moreEncoding = {}; }
         return {
-            "mark": "area",
-            "encoding": tslib_1.__assign({ "y": { "timeUnit": "year", "field": "Year", "type": "temporal" }, "x": { "aggregate": "count", "type": "quantitative" } }, moreEncoding),
-            "data": { "url": "data/cars.json" }
+            mark: 'area',
+            encoding: tslib_1.__assign({ y: { timeUnit: 'year', field: 'Year', type: 'temporal' }, x: { aggregate: 'count', type: 'quantitative' } }, moreEncoding),
+            data: { url: 'data/cars.json' }
         };
     }
     describe('horizontal area', function () {
@@ -127,12 +127,12 @@ describe('Mark: Area', function () {
     });
     describe('horizontal area, with log', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "area",
-            "encoding": {
-                "y": { "bin": true, "type": "quantitative", "field": "IMDB_Rating" },
-                "x": { "scale": { "type": 'log' }, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean" }
+            mark: 'area',
+            encoding: {
+                y: { bin: true, type: 'quantitative', field: 'IMDB_Rating' },
+                x: { scale: { type: 'log' }, type: 'quantitative', field: 'US_Gross', aggregate: 'mean' }
             },
-            "data": { "url": 'data/movies.json' }
+            data: { url: 'data/movies.json' }
         });
         var props = area.encodeEntry(model);
         it('should end on axis', function () {
@@ -144,12 +144,12 @@ describe('Mark: Area', function () {
     });
     describe('horizontal area, with zero=false', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "area",
-            "encoding": {
-                "y": { "bin": true, "type": "quantitative", "field": "IMDB_Rating" },
-                "x": { "scale": { "zero": false }, "type": "quantitative", "field": 'US_Gross', "aggregate": "mean" }
+            mark: 'area',
+            encoding: {
+                y: { bin: true, type: 'quantitative', field: 'IMDB_Rating' },
+                x: { scale: { zero: false }, type: 'quantitative', field: 'US_Gross', aggregate: 'mean' }
             },
-            "data": { "url": 'data/movies.json' }
+            data: { url: 'data/movies.json' }
         });
         var props = area.encodeEntry(model);
         it('should end on axis', function () {
@@ -161,7 +161,7 @@ describe('Mark: Area', function () {
     });
     describe('horizontal stacked area with color', function () {
         var model = parseUnitModelWithScaleAndLayoutSize(horizontalArea({
-            "color": { "field": "Origin", "type": "nominal" }
+            color: { field: 'Origin', type: 'nominal' }
         }));
         var props = area.encodeEntry(model);
         it('should have the correct value for x and x2', function () {
@@ -178,12 +178,12 @@ describe('Mark: Area', function () {
     describe('ranged area', function () {
         it('vertical area should work with aggregate', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "data": { "url": "data/cars.json" },
-                "mark": "area",
-                "encoding": {
-                    "x": { "timeUnit": "year", "field": "Year", "type": "temporal" },
-                    "y": { "aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative" },
-                    "y2": { "aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
+                data: { url: 'data/cars.json' },
+                mark: 'area',
+                encoding: {
+                    x: { timeUnit: 'year', field: 'Year', type: 'temporal' },
+                    y: { aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative' },
+                    y2: { aggregate: 'max', field: 'Weight_in_lbs', type: 'quantitative' }
                 }
             });
             var props = area.encodeEntry(model);
@@ -193,12 +193,12 @@ describe('Mark: Area', function () {
         });
         it('horizontal area should work with aggregate', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "data": { "url": "data/cars.json" },
-                "mark": "area",
-                "encoding": {
-                    "y": { "timeUnit": "year", "field": "Year", "type": "temporal" },
-                    "x": { "aggregate": "min", "field": "Weight_in_lbs", "type": "quantitative" },
-                    "x2": { "aggregate": "max", "field": "Weight_in_lbs", "type": "quantitative" }
+                data: { url: 'data/cars.json' },
+                mark: 'area',
+                encoding: {
+                    y: { timeUnit: 'year', field: 'Year', type: 'temporal' },
+                    x: { aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative' },
+                    x2: { aggregate: 'max', field: 'Weight_in_lbs', type: 'quantitative' }
                 }
             });
             var props = area.encodeEntry(model);

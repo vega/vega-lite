@@ -1,9 +1,31 @@
+import { Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, SymbolShape, TextBaseline } from 'vega';
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
-import { AxisOrient, VgAxis, VgAxisBase, VgAxisConfig } from './vega.schema';
-export interface AxisConfig extends VgAxisConfig, VlOnlyGuideConfig {
+import { Color, VgLayoutAlign } from './vega.schema';
+declare type BaseAxisNoSignals = AxisMixins & BaseAxis<number, number, boolean, number | boolean, string, Color, FontWeight, Align, TextBaseline, VgLayoutAlign, SymbolShape, LabelOverlap, number[]>;
+declare type VgAxisConfigNoSignals = BaseAxisNoSignals;
+interface AxisMixins {
+    /**
+     * A boolean flag indicating if grid lines should be included as part of the axis
+     *
+     * __Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.
+     */
+    grid?: boolean;
+    /**
+     * Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.
+     *
+     * __Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.
+     */
+    labelFlush?: boolean | number;
+    /**
+     * The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `"greedy"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).
+     *
+     * __Default value:__ `true` for non-nominal fields with non-log scales; `"greedy"` for log scales; otherwise `false`.
+     */
+    labelOverlap?: LabelOverlap;
 }
-export interface Axis extends VgAxisBase, Guide {
+export declare type AxisConfig = VgAxisConfigNoSignals & VlOnlyGuideConfig;
+export interface Axis extends BaseAxisNoSignals, Guide {
     /**
      * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y axis oriented for the right edge of the chart).
      *
@@ -17,20 +39,11 @@ export interface Axis extends VgAxisBase, Guide {
      */
     offset?: number;
     /**
-     * The anchor position of the axis in pixels. For x-axis with top or bottom orientation, this sets the axis group x coordinate. For y-axis with left or right orientation, this sets the axis group y coordinate.
+     * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
      *
      * __Default value__: `0`
      */
     position?: number;
-    /**
-     * The rotation angle of the axis labels.
-     *
-     * __Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.
-     *
-     * @minimum -360
-     * @maximum 360
-     */
-    labelAngle?: number;
     /**
      * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
      * @minimum 0
@@ -38,6 +51,12 @@ export interface Axis extends VgAxisBase, Guide {
      * __Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.
      */
     tickCount?: number;
+    /**
+     * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).
+     *
+     * __Default value__: `undefined`
+     */
+    tickStep?: number;
     /**
      * Explicitly set the visible axis tick values.
      */
@@ -96,8 +115,8 @@ export interface AxisEncoding {
     title?: GuideEncodingEntry;
 }
 export declare function isAxisProperty(prop: string): prop is keyof Axis;
-export declare const VG_AXIS_PROPERTIES: ("title" | "orient" | "scale" | "zindex" | "ticks" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "domain" | "grid" | "gridScale" | "tickSize" | "tickCount" | "format" | "values" | "offset" | "position" | "titlePadding" | "minExtent" | "maxExtent" | "encode")[];
-export declare const AXIS_PROPERTIES: ("title" | "orient" | "zindex" | "ticks" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "domain" | "grid" | "tickSize" | "tickCount" | "format" | "values" | "offset" | "position" | "titlePadding" | "minExtent" | "maxExtent" | "labelAngle" | "encoding" | "titleMaxLength")[];
+export declare const VG_AXIS_PROPERTIES: ("title" | "values" | "domain" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "scale" | "format" | "grid" | "gridScale" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "offset" | "orient" | "position" | "ticks" | "tickCount" | "tickSize" | "titlePadding" | "zindex" | "encode" | "bandPosition" | "titleAlign" | "titleX" | "titleY" | "titleOpacity" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickWidth" | "gridColor" | "gridDash" | "gridOpacity" | "gridWidth" | "labelAlign" | "labelBaseline" | "labelFlushOffset" | "labelFontWeight" | "labelOpacity")[];
+export declare const AXIS_PROPERTIES: ("title" | "values" | "domain" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "format" | "grid" | "labels" | "labelBound" | "labelFlush" | "labelPadding" | "labelOverlap" | "maxExtent" | "minExtent" | "offset" | "orient" | "position" | "ticks" | "tickCount" | "tickSize" | "titlePadding" | "zindex" | "encoding" | "bandPosition" | "titleAlign" | "titleX" | "titleY" | "titleOpacity" | "domainColor" | "domainOpacity" | "domainWidth" | "tickColor" | "tickExtra" | "tickOffset" | "tickOpacity" | "tickRound" | "tickWidth" | "gridColor" | "gridDash" | "gridOpacity" | "gridWidth" | "labelAlign" | "labelBaseline" | "labelFlushOffset" | "labelFontWeight" | "labelOpacity" | "tickStep")[];
 export interface AxisConfigMixins {
     /**
      * Axis configuration, which determines default properties for all `x` and `y` [axes](https://vega.github.io/vega-lite/docs/axis.html). For a full list of axis configuration options, please see the [corresponding section of the axis documentation](https://vega.github.io/vega-lite/docs/axis.html#config).
@@ -106,29 +125,30 @@ export interface AxisConfigMixins {
     /**
      * X-axis specific config.
      */
-    axisX?: VgAxisConfig;
+    axisX?: AxisConfig;
     /**
      * Y-axis specific config.
      */
-    axisY?: VgAxisConfig;
+    axisY?: AxisConfig;
     /**
      * Specific axis config for y-axis along the left edge of the chart.
      */
-    axisLeft?: VgAxisConfig;
+    axisLeft?: AxisConfig;
     /**
      * Specific axis config for y-axis along the right edge of the chart.
      */
-    axisRight?: VgAxisConfig;
+    axisRight?: AxisConfig;
     /**
      * Specific axis config for x-axis along the top edge of the chart.
      */
-    axisTop?: VgAxisConfig;
+    axisTop?: AxisConfig;
     /**
      * Specific axis config for x-axis along the bottom edge of the chart.
      */
-    axisBottom?: VgAxisConfig;
+    axisBottom?: AxisConfig;
     /**
      * Specific axis config for axes with "band" scales.
      */
-    axisBand?: VgAxisConfig;
+    axisBand?: AxisConfig;
 }
+export {};

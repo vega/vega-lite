@@ -1,6 +1,6 @@
 /// <reference types="webdriverio" />
 import { SelectionResolution, SelectionType } from '../src/selection';
-import { TopLevelExtendedSpec } from '../src/spec';
+import { TopLevelSpec } from '../src/spec';
 export declare const generate: string;
 export declare const output = "test-runtime/resources";
 export declare type ComposeType = 'unit' | 'repeat' | 'facet';
@@ -38,11 +38,11 @@ export declare const hits: {
         facet_clear: number[][];
     };
 };
-export declare function spec(compose: ComposeType, iter: number, sel: any, opts?: any): TopLevelExtendedSpec;
+export declare function spec(compose: ComposeType, iter: number, sel: any, opts?: any): TopLevelSpec;
 export declare function unitNameRegex(specType: ComposeType, idx: number): RegExp;
 export declare function parentSelector(compositeType: ComposeType, index: number): string;
 export declare function brush(key: string, idx: number, parent?: string, targetBrush?: boolean): string;
 export declare function pt(key: string, idx: number, parent?: string): string;
-export declare function embedFn(browser: WebdriverIO.Client<void>): (spec: TopLevelExtendedSpec) => void;
+export declare function embedFn(browser: WebdriverIO.Client<void>): (specification: TopLevelSpec) => void;
 export declare function svg(browser: WebdriverIO.Client<void>, path: string, filename: string): any;
 export declare function testRenderFn(browser: WebdriverIO.Client<void>, path: string): (filename: string) => void;

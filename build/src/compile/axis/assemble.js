@@ -1,11 +1,11 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { AXIS_PARTS, AXIS_PROPERTY_TYPE } from '../../axis';
-import { title as fieldDefTitle } from '../../fielddef';
-import { keys } from '../../util';
+import { defaultTitle } from '../../fielddef';
+import { getFirstDefined, keys } from '../../util';
 function assembleTitle(title, config) {
     if (isArray(title)) {
-        return title.map(function (fieldDef) { return fieldDefTitle(fieldDef, config); }).join(', ');
+        return title.map(function (fieldDef) { return defaultTitle(fieldDef, config); }).join(', ');
     }
     return title;
 }
@@ -36,10 +36,11 @@ export function assembleAxis(axisCmpt, kind, config, opt) {
             orient: orient }, axis, { domain: false, labels: false, 
             // Always set min/maxExtent to 0 to ensure that `config.axis*.minExtent` and `config.axis*.maxExtent`
             // would not affect gridAxis
-            maxExtent: 0, minExtent: 0, ticks: false, zindex: zindex !== undefined ? zindex : 0 // put grid behind marks by default
+            maxExtent: 0, minExtent: 0, ticks: false, zindex: getFirstDefined(zindex, 0) // put grid behind marks by default
          });
     }
-    else { // kind === 'main'
+    else {
+        // kind === 'main'
         if (!opt.header && axisCmpt.mainExtracted) {
             // if mainExtracted has been extracted to a separate facet
             return undefined;
@@ -58,7 +59,7 @@ export function assembleAxis(axisCmpt, kind, config, opt) {
         }
         var titleString = assembleTitle(title, config);
         return tslib_1.__assign({ scale: scale,
-            orient: orient, grid: false }, (titleString ? { title: titleString } : {}), axis, { zindex: zindex !== undefined ? zindex : 1 // put axis line above marks by default
+            orient: orient, grid: false }, (titleString ? { title: titleString } : {}), axis, { zindex: getFirstDefined(zindex, 1) // put axis line above marks by default
          });
     }
 }

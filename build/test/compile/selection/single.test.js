@@ -5,41 +5,51 @@ import single from '../../../src/compile/selection/single';
 import { parseUnitModelWithScale } from '../../util';
 describe('Single Selection', function () {
     var model = parseUnitModelWithScale({
-        "mark": "circle",
-        "encoding": {
-            "x": { "field": "Horsepower", "type": "quantitative" },
-            "y": { "field": "Miles_per_Gallon", "type": "quantitative", "bin": true },
-            "color": { "field": "Origin", "type": "nominal" }
+        mark: 'circle',
+        encoding: {
+            x: { field: 'Horsepower', type: 'quantitative' },
+            y: { field: 'Miles_per_Gallon', type: 'quantitative', bin: true },
+            color: { field: 'Origin', type: 'nominal' }
         }
     });
-    var selCmpts = model.component.selection = selection.parseUnitSelection(model, {
-        "one": { "type": "single" },
-        "two": {
-            "type": "single", "nearest": true,
-            "on": "mouseover", "encodings": ["y", "color"]
+    var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+        one: { type: 'single' },
+        two: {
+            type: 'single',
+            nearest: true,
+            on: 'mouseover',
+            encodings: ['y', 'color']
         }
-    });
+    }));
     it('builds tuple signals', function () {
         var oneSg = single.signals(model, selCmpts['one']);
-        assert.sameDeepMembers(oneSg, [{
+        assert.sameDeepMembers(oneSg, [
+            {
                 name: 'one_tuple',
                 value: {},
-                on: [{
+                on: [
+                    {
                         events: selCmpts['one'].events,
-                        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null",
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: [], fields: ["_vgsid_"], values: [datum["_vgsid_"]]} : null',
                         force: true
-                    }]
-            }]);
+                    }
+                ]
+            }
+        ]);
         var twoSg = single.signals(model, selCmpts['two']);
-        assert.sameDeepMembers(twoSg, [{
+        assert.sameDeepMembers(twoSg, [
+            {
                 name: 'two_tuple',
                 value: {},
-                on: [{
+                on: [
+                    {
                         events: selCmpts['two'].events,
-                        update: "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [\"y\", \"color\"], fields: [\"Miles_per_Gallon\", \"Origin\"], values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]], \"bin_Miles_per_Gallon\": 1} : null",
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: ["y", "color"], fields: ["Miles_per_Gallon", "Origin"], values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]], "bin_Miles_per_Gallon": 1} : null',
                         force: true
-                    }]
-            }]);
+                    }
+                ]
+            }
+        ]);
         var signals = selection.assembleUnitSelectionSignals(model, []);
         assert.includeDeepMembers(signals, oneSg.concat(twoSg));
     });
@@ -51,20 +61,20 @@ describe('Single Selection', function () {
         var signals = selection.assembleUnitSelectionSignals(model, []);
         assert.includeDeepMembers(signals, [
             {
-                "name": "one_modify",
-                "on": [
+                name: 'one_modify',
+                on: [
                     {
-                        "events": { "signal": "one_tuple" },
-                        "update": "modify(\"one_store\", " + oneExpr + ")"
+                        events: { signal: 'one_tuple' },
+                        update: "modify(\"one_store\", " + oneExpr + ")"
                     }
                 ]
             },
             {
-                "name": "two_modify",
-                "on": [
+                name: 'two_modify',
+                on: [
                     {
-                        "events": { "signal": "two_tuple" },
-                        "update": "modify(\"two_store\", " + twoExpr + ")"
+                        events: { signal: 'two_tuple' },
+                        update: "modify(\"two_store\", " + twoExpr + ")"
                     }
                 ]
             }
@@ -72,13 +82,19 @@ describe('Single Selection', function () {
     });
     it('builds top-level signals', function () {
         var oneSg = single.topLevelSignals(model, selCmpts['one'], []);
-        assert.sameDeepMembers(oneSg, [{
-                name: 'one', update: 'data(\"one_store\").length && {_vgsid_: data(\"one_store\")[0].values[0]}'
-            }]);
+        assert.sameDeepMembers(oneSg, [
+            {
+                name: 'one',
+                update: 'data("one_store").length && {_vgsid_: data("one_store")[0].values[0]}'
+            }
+        ]);
         var twoSg = single.topLevelSignals(model, selCmpts['two'], []);
-        assert.sameDeepMembers(twoSg, [{
-                name: 'two', update: 'data(\"two_store\").length && {Miles_per_Gallon: data(\"two_store\")[0].values[0], Origin: data(\"two_store\")[0].values[1]}'
-            }]);
+        assert.sameDeepMembers(twoSg, [
+            {
+                name: 'two',
+                update: 'data("two_store").length && {Miles_per_Gallon: data("two_store")[0].values[0], Origin: data("two_store")[0].values[1]}'
+            }
+        ]);
         var signals = selection.assembleTopLevelSignals(model, []);
         assert.deepEqual(signals, [
             {
@@ -91,7 +107,8 @@ describe('Single Selection', function () {
     it('builds unit datasets', function () {
         var data = [];
         assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
-            { name: 'one_store' }, { name: 'two_store' }
+            { name: 'one_store' },
+            { name: 'two_store' }
         ]);
     });
     it('leaves marks alone', function () {

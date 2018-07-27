@@ -1,6 +1,8 @@
+import { Legend as VgLegend } from 'vega';
+import { Title as VgTitle } from 'vega';
 import { Config } from '../config';
 import { LayoutSizeMixins, NormalizedLayerSpec } from '../spec';
-import { VgData, VgLayout, VgLegend, VgSignal, VgTitle } from '../vega.schema';
+import { VgData, VgLayout, VgSignal } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeater';
 export declare class LayerModel extends Model {

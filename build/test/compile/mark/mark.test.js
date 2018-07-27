@@ -9,11 +9,11 @@ describe('Mark', function () {
         // PATH
         describe('Multi-series Line', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": { "type": "line", "style": "trend" },
-                "encoding": {
-                    "x": { "field": "date", "type": "temporal", "axis": { "format": "%Y" } },
-                    "y": { "field": "price", "type": "quantitative" },
-                    "color": { "field": "symbol", "type": "nominal" }
+                mark: { type: 'line', style: 'trend' },
+                encoding: {
+                    x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
+                    y: { field: 'price', type: 'quantitative' },
+                    color: { field: 'symbol', type: 'nominal' }
                 }
             });
             it('should have a facet directive and a nested mark group that uses the faceted data.', function () {
@@ -48,10 +48,10 @@ describe('Mark', function () {
         });
         describe('Single Line', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "line",
-                "encoding": {
-                    "x": { "field": "date", "type": "temporal", "axis": { "format": "%Y" } },
-                    "y": { "field": "price", "type": "quantitative" }
+                mark: 'line',
+                encoding: {
+                    x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
+                    y: { field: 'price', type: 'quantitative' }
                 }
             });
             it('should have mark group with proper data and key', function () {
@@ -68,11 +68,11 @@ describe('Mark', function () {
         });
         describe('Points with key', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "point",
-                "encoding": {
-                    "x": { "field": "date", "type": "temporal", "axis": { "format": "%Y" } },
-                    "y": { "field": "price", "type": "quantitative" },
-                    "key": { "field": "k", "type": "quantitative" }
+                mark: 'point',
+                encoding: {
+                    x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
+                    y: { field: 'price', type: 'quantitative' },
+                    key: { field: 'k', type: 'quantitative' }
                 }
             });
             it('should have mark group with proper data and key', function () {
@@ -88,18 +88,18 @@ describe('Mark', function () {
         });
         it('Geoshape should have post encoding transform', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "geoshape",
-                "projection": {
-                    "type": "albersUsa"
+                mark: 'geoshape',
+                projection: {
+                    type: 'albersUsa'
                 },
-                "data": {
-                    "url": "data/us-10m.json",
-                    "format": {
-                        "type": "topojson",
-                        "feature": "states"
+                data: {
+                    url: 'data/us-10m.json',
+                    format: {
+                        type: 'topojson',
+                        feature: 'states'
                     }
                 },
-                "encoding": {}
+                encoding: {}
             });
             var markGroup = parseMarkGroup(model);
             assert.isDefined(markGroup[0].transform);
@@ -107,11 +107,11 @@ describe('Mark', function () {
         });
         describe('Aggregated Bar with a color with binned x', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "bar",
-                "encoding": {
-                    "x": { "type": "quantitative", "field": "Cost__Other", "aggregate": "sum" },
-                    "y": { "bin": true, "type": "quantitative", "field": "Cost__Total_$" },
-                    "color": { "type": "ordinal", "field": "Effect__Amount_of_damage" }
+                mark: 'bar',
+                encoding: {
+                    x: { type: 'quantitative', field: 'Cost__Other', aggregate: 'sum' },
+                    y: { bin: true, type: 'quantitative', field: 'Cost__Total_$' },
+                    color: { type: 'ordinal', field: 'Effect__Amount_of_damage' }
                 }
             });
             it('should use main stacked data source', function () {
@@ -130,11 +130,11 @@ describe('Mark', function () {
                     row: { field: 'a', type: 'nominal' }
                 },
                 spec: {
-                    "mark": "bar",
-                    "encoding": {
-                        "x": { "type": "quantitative", "field": "Cost__Other", "aggregate": "sum" },
-                        "y": { "bin": true, "type": "quantitative", "field": "Cost__Total_$" },
-                        "color": { "type": "ordinal", "field": "Effect__Amount_of_damage" }
+                    mark: 'bar',
+                    encoding: {
+                        x: { type: 'quantitative', field: 'Cost__Other', aggregate: 'sum' },
+                        y: { bin: true, type: 'quantitative', field: 'Cost__Total_$' },
+                        color: { type: 'ordinal', field: 'Effect__Amount_of_damage' }
                     }
                 }
             });
@@ -153,10 +153,10 @@ describe('Mark', function () {
         });
         describe('Aggregated bar', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "mark": "bar",
-                "encoding": {
-                    "x": { "type": "quantitative", "field": "Cost__Other", "aggregate": "sum" },
-                    "y": { "bin": true, "type": "quantitative", "field": "Cost__Total_$" }
+                mark: 'bar',
+                encoding: {
+                    x: { type: 'quantitative', field: 'Cost__Other', aggregate: 'sum' },
+                    y: { bin: true, type: 'quantitative', field: 'Cost__Total_$' }
                 }
             });
             it('should use main aggregated data source', function () {
@@ -172,68 +172,68 @@ describe('Mark', function () {
     describe('getSort', function () {
         it('should order by order field', function () {
             var model = parseUnitModel({
-                "data": { "url": "data/driving.json" },
-                "mark": "line",
-                "encoding": {
-                    "x": { "field": "miles", "type": "quantitative", "scale": { "zero": false } },
-                    "y": { "field": "gas", "type": "quantitative", "scale": { "zero": false } },
-                    "order": { "field": "year", "type": "temporal" }
+                data: { url: 'data/driving.json' },
+                mark: 'line',
+                encoding: {
+                    x: { field: 'miles', type: 'quantitative', scale: { zero: false } },
+                    y: { field: 'gas', type: 'quantitative', scale: { zero: false } },
+                    order: { field: 'year', type: 'temporal' }
                 }
             });
             assert.deepEqual(getSort(model), {
-                field: ['datum[\"year\"]'],
+                field: ['datum["year"]'],
                 order: ['ascending']
             });
         });
         it('should have no sort if order = {value: null}', function () {
             var model = parseUnitModel({
-                "data": { "url": "data/driving.json" },
-                "mark": "line",
-                "encoding": {
-                    "x": { "field": "miles", "type": "quantitative", "scale": { "zero": false } },
-                    "y": { "field": "gas", "type": "quantitative", "scale": { "zero": false } },
-                    "order": { "value": null }
+                data: { url: 'data/driving.json' },
+                mark: 'line',
+                encoding: {
+                    x: { field: 'miles', type: 'quantitative', scale: { zero: false } },
+                    y: { field: 'gas', type: 'quantitative', scale: { zero: false } },
+                    order: { value: null }
                 }
             });
             assert.equal(getSort(model), undefined);
         });
         it('should order by x by default if x is the dimension', function () {
             var model = parseUnitModelWithScale({
-                "data": { "url": "data/movies.json" },
-                "mark": "line",
-                "encoding": {
-                    "x": {
-                        "bin": { "maxbins": 10 },
-                        "field": "IMDB_Rating",
-                        "type": "quantitative"
+                data: { url: 'data/movies.json' },
+                mark: 'line',
+                encoding: {
+                    x: {
+                        bin: { maxbins: 10 },
+                        field: 'IMDB_Rating',
+                        type: 'quantitative'
                     },
-                    "color": {
-                        "field": "Source",
-                        "type": "nominal"
+                    color: {
+                        field: 'Source',
+                        type: 'nominal'
                     },
-                    "y": {
-                        "aggregate": "count",
-                        "type": "quantitative"
+                    y: {
+                        aggregate: 'count',
+                        type: 'quantitative'
                     }
                 }
             });
             assert.deepEqual(getSort(model), {
-                field: 'datum[\"bin_maxbins_10_IMDB_Rating\"]',
+                field: 'datum["bin_maxbins_10_IMDB_Rating"]',
                 order: 'descending'
             });
         });
         it('should not order by a missing dimension', function () {
             var model = parseUnitModelWithScale({
-                "data": { "url": "data/movies.json" },
-                "mark": "line",
-                "encoding": {
-                    "color": {
-                        "field": "Source",
-                        "type": "nominal"
+                data: { url: 'data/movies.json' },
+                mark: 'line',
+                encoding: {
+                    color: {
+                        field: 'Source',
+                        type: 'nominal'
                     },
-                    "y": {
-                        "aggregate": "count",
-                        "type": "quantitative"
+                    y: {
+                        aggregate: 'count',
+                        type: 'quantitative'
                     }
                 }
             });
@@ -262,9 +262,11 @@ describe('Mark', function () {
             var _a;
             for (var _i = 0, _b = [COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                assert.deepEqual(pathGroupingFields('line', (_a = {}, _a[channel] = {
-                    condition: { selection: 'sel', field: 'a', type: 'nominal' }
-                }, _a)), ['a']);
+                assert.deepEqual(pathGroupingFields('line', (_a = {},
+                    _a[channel] = {
+                        condition: { selection: 'sel', field: 'a', type: 'nominal' }
+                    },
+                    _a)), ['a']);
             }
         });
         it('should not return errors for all channels', function () {

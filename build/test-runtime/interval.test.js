@@ -1,128 +1,128 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var util_1 = require("./util");
+import * as tslib_1 from "tslib";
+import { assert } from 'chai';
+import { brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples } from './util';
 describe('interval selections at runtime in unit views', function () {
     var type = 'interval';
-    var hits = util_1.hits.interval;
-    var embed = util_1.embedFn(browser);
-    var testRender = util_1.testRenderFn(browser, type + "/unit");
+    var hits = hitsMaster.interval;
+    var embed = embedFn(browser);
+    var testRender = testRenderFn(browser, type + "/unit");
     it('should add extents to the store', function () {
         for (var i = 0; i < hits.drag.length; i++) {
-            embed(util_1.spec('unit', i, { type: type }));
-            var store = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store, 1);
-            chai_1.assert.lengthOf(store[0].intervals, 2);
-            chai_1.assert.equal(store[0].intervals[0].encoding, 'x');
-            chai_1.assert.equal(store[0].intervals[0].field, 'a');
-            chai_1.assert.equal(store[0].intervals[1].encoding, 'y');
-            chai_1.assert.equal(store[0].intervals[1].field, 'b');
-            chai_1.assert.lengthOf(store[0].intervals[0].extent, 2);
-            chai_1.assert.lengthOf(store[0].intervals[1].extent, 2);
+            embed(spec('unit', i, { type: type }));
+            var store = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store, 1);
+            assert.lengthOf(store[0].intervals, 2);
+            assert.equal(store[0].intervals[0].encoding, 'x');
+            assert.equal(store[0].intervals[0].field, 'a');
+            assert.equal(store[0].intervals[1].encoding, 'y');
+            assert.equal(store[0].intervals[1].field, 'b');
+            assert.lengthOf(store[0].intervals[0].extent, 2);
+            assert.lengthOf(store[0].intervals[1].extent, 2);
             testRender("drag_" + i);
         }
     });
     it('should respect projections', function () {
-        embed(util_1.spec('unit', 0, { type: type, encodings: ['x'] }));
+        embed(spec('unit', 0, { type: type, encodings: ['x'] }));
         for (var i = 0; i < hits.drag.length; i++) {
-            var store = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store, 1);
-            chai_1.assert.lengthOf(store[0].intervals, 1);
-            chai_1.assert.equal(store[0].intervals[0].encoding, 'x');
-            chai_1.assert.equal(store[0].intervals[0].field, 'a');
-            chai_1.assert.lengthOf(store[0].intervals[0].extent, 2);
+            var store = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store, 1);
+            assert.lengthOf(store[0].intervals, 1);
+            assert.equal(store[0].intervals[0].encoding, 'x');
+            assert.equal(store[0].intervals[0].field, 'a');
+            assert.lengthOf(store[0].intervals[0].extent, 2);
             testRender("x_" + i);
         }
-        embed(util_1.spec('unit', 1, { type: type, encodings: ['y'] }));
+        embed(spec('unit', 1, { type: type, encodings: ['y'] }));
         for (var i = 0; i < hits.drag.length; i++) {
-            var store = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store, 1);
-            chai_1.assert.lengthOf(store[0].intervals, 1);
-            chai_1.assert.equal(store[0].intervals[0].encoding, 'y');
-            chai_1.assert.equal(store[0].intervals[0].field, 'b');
-            chai_1.assert.lengthOf(store[0].intervals[0].extent, 2);
+            var store = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store, 1);
+            assert.lengthOf(store[0].intervals, 1);
+            assert.equal(store[0].intervals[0].encoding, 'y');
+            assert.equal(store[0].intervals[0].field, 'b');
+            assert.lengthOf(store[0].intervals[0].extent, 2);
             testRender("y_" + i);
         }
     });
     it('should clear out stored extents', function () {
         for (var i = 0; i < hits.drag_clear.length; i++) {
-            embed(util_1.spec('unit', i, { type: type }));
-            var store = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store, 1);
-            store = browser.execute(util_1.brush('drag_clear', i)).value;
-            chai_1.assert.lengthOf(store, 0);
+            embed(spec('unit', i, { type: type }));
+            var store = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store, 1);
+            store = browser.execute(brush('drag_clear', i)).value;
+            assert.lengthOf(store, 0);
             testRender("clear_" + i);
         }
     });
     it('should brush over binned domains', function () {
-        embed(util_1.spec('unit', 1, { type: type, encodings: ['y'] }, {
+        embed(spec('unit', 1, { type: type, encodings: ['y'] }, {
             x: { aggregate: 'count', field: '*', type: 'quantitative' },
             y: { bin: true },
             color: { value: 'steelblue', field: null, type: null }
         }));
         for (var i = 0; i < hits.bins.length; i++) {
-            var store_1 = browser.execute(util_1.brush('bins', i)).value;
-            chai_1.assert.lengthOf(store_1, 1);
-            chai_1.assert.lengthOf(store_1[0].intervals, 1);
+            var store_1 = browser.execute(brush('bins', i)).value;
+            assert.lengthOf(store_1, 1);
+            assert.lengthOf(store_1[0].intervals, 1);
             // length == 2 indicates a quantitative scale was inverted.
-            chai_1.assert.lengthOf(store_1[0].intervals[0].extent, 2);
+            assert.lengthOf(store_1[0].intervals[0].extent, 2);
             testRender("bins_" + i);
         }
-        var store = browser.execute(util_1.brush('bins_clear', 0)).value;
-        chai_1.assert.lengthOf(store, 0);
+        var store = browser.execute(brush('bins_clear', 0)).value;
+        assert.lengthOf(store, 0);
     });
     it('should brush over ordinal/nominal domains', function () {
         var xextents = [[2, 3, 4], [6, 7, 8]];
-        var yextents = [[48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
-            [16, 17, 19, 23, 24, 27, 28, 35, 39, 43, 48]];
+        var yextents = [
+            [48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
+            [16, 17, 19, 23, 24, 27, 28, 35, 39, 43, 48]
+        ];
         for (var i = 0; i < hits.drag.length; i++) {
-            embed(util_1.spec('unit', i, { type: type }, { x: { type: 'ordinal' }, y: { type: 'nominal' } }));
-            var store_2 = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store_2, 1);
-            chai_1.assert.lengthOf(store_2[0].intervals, 2);
-            chai_1.assert.sameMembers(store_2[0].intervals[0].extent, xextents[i]);
-            chai_1.assert.sameMembers(store_2[0].intervals[1].extent, yextents[i]);
+            embed(spec('unit', i, { type: type }, { x: { type: 'ordinal' }, y: { type: 'nominal' } }));
+            var store_2 = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store_2, 1);
+            assert.lengthOf(store_2[0].intervals, 2);
+            assert.sameMembers(store_2[0].intervals[0].extent, xextents[i]);
+            assert.sameMembers(store_2[0].intervals[1].extent, yextents[i]);
             testRender("ord_" + i);
         }
-        var store = browser.execute(util_1.brush('drag_clear', 0)).value;
-        chai_1.assert.lengthOf(store, 0);
+        var store = browser.execute(brush('drag_clear', 0)).value;
+        assert.lengthOf(store, 0);
     });
     it('should brush over temporal domains', function () {
-        var values = util_1.tuples.map(function (d) { return (tslib_1.__assign({}, d, { a: new Date(2017, d.a) })); });
+        var values = tuples.map(function (d) { return (tslib_1.__assign({}, d, { a: new Date(2017, d.a) })); });
         var toNumber = '[0].intervals[0].extent.map((d) => +d)';
-        embed(util_1.spec('unit', 0, { type: type, encodings: ['x'] }, { values: values, x: { type: 'temporal' } }));
+        embed(spec('unit', 0, { type: type, encodings: ['x'] }, { values: values, x: { type: 'temporal' } }));
         var extents = [[1485969714000, 1493634384000], [1496346498000, 1504364922000]];
         for (var i = 0; i < hits.drag.length; i++) {
-            var store = browser.execute(util_1.brush('drag', i) + toNumber).value;
-            chai_1.assert.sameMembers(store, extents[i]);
+            var store = browser.execute(brush('drag', i) + toNumber).value;
+            assert.sameMembers(store, extents[i]);
             testRender("temporal_" + i);
         }
-        var cleared = browser.execute(util_1.brush('drag_clear', 0)).value;
-        chai_1.assert.lengthOf(cleared, 0);
-        embed(util_1.spec('unit', 1, { type: type, encodings: ['x'] }, { values: values, x: { type: 'temporal', timeUnit: 'day' } }));
+        var cleared = browser.execute(brush('drag_clear', 0)).value;
+        assert.lengthOf(cleared, 0);
+        embed(spec('unit', 1, { type: type, encodings: ['x'] }, { values: values, x: { type: 'temporal', timeUnit: 'day' } }));
         extents = [[1136190528000, 1136361600000], [1136449728000, 1136535264000]];
         for (var i = 0; i < hits.drag.length; i++) {
-            var store = browser.execute(util_1.brush('drag', i) + toNumber).value;
-            chai_1.assert.sameMembers(store, extents[i]);
+            var store = browser.execute(brush('drag', i) + toNumber).value;
+            assert.sameMembers(store, extents[i]);
             testRender("dayTimeUnit_" + i);
         }
-        cleared = browser.execute(util_1.brush('drag_clear', 0)).value;
-        chai_1.assert.lengthOf(cleared, 0);
+        cleared = browser.execute(brush('drag_clear', 0)).value;
+        assert.lengthOf(cleared, 0);
     });
     it('should brush over log/pow scales', function () {
         for (var i = 0; i < hits.drag.length; i++) {
-            embed(util_1.spec('unit', i, { type: type }, {
+            embed(spec('unit', i, { type: type }, {
                 x: { scale: { type: 'pow', exponent: 1.5 } },
                 y: { scale: { type: 'log' } }
             }));
-            var store = browser.execute(util_1.brush('drag', i)).value;
-            chai_1.assert.lengthOf(store, 1);
-            chai_1.assert.lengthOf(store[0].intervals, 2);
-            chai_1.assert.lengthOf(store[0].intervals[0].extent, 2);
-            chai_1.assert.lengthOf(store[0].intervals[1].extent, 2);
+            var store = browser.execute(brush('drag', i)).value;
+            assert.lengthOf(store, 1);
+            assert.lengthOf(store[0].intervals, 2);
+            assert.lengthOf(store[0].intervals[0].extent, 2);
+            assert.lengthOf(store[0].intervals[1].extent, 2);
             testRender("logpow_" + i);
         }
     });
 });
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW50ZXJ2YWwudGVzdC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3Rlc3QtcnVudGltZS9pbnRlcnZhbC50ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUFBLDZCQUE0QjtBQUM1QiwrQkFBc0Y7QUFFdEYsUUFBUSxDQUFDLDhDQUE4QyxFQUFFO0lBQ3ZELElBQU0sSUFBSSxHQUFHLFVBQVUsQ0FBQztJQUN4QixJQUFNLElBQUksR0FBRyxXQUFVLENBQUMsUUFBUSxDQUFDO0lBQ2pDLElBQU0sS0FBSyxHQUFHLGNBQU8sQ0FBQyxPQUFPLENBQUMsQ0FBQztJQUMvQixJQUFNLFVBQVUsR0FBRyxtQkFBWSxDQUFDLE9BQU8sRUFBSyxJQUFJLFVBQU8sQ0FBQyxDQUFDO0lBRXpELEVBQUUsQ0FBQyxpQ0FBaUMsRUFBRTtRQUNwQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUMsR0FBRyxDQUFDLEVBQUUsQ0FBQyxHQUFHLElBQUksQ0FBQyxJQUFJLENBQUMsTUFBTSxFQUFFLENBQUMsRUFBRSxFQUFFLENBQUM7WUFDMUMsS0FBSyxDQUFDLFdBQUksQ0FBQyxNQUFNLEVBQUUsQ0FBQyxFQUFFLEVBQUMsSUFBSSxNQUFBLEVBQUMsQ0FBQyxDQUFDLENBQUM7WUFDL0IsSUFBTSxLQUFLLEdBQUcsT0FBTyxDQUFDLE9BQU8sQ0FBQyxZQUFLLENBQUMsTUFBTSxFQUFFLENBQUMsQ0FBQyxDQUFDLENBQUMsS0FBSyxDQUFDO1lBQ3RELGFBQU0sQ0FBQyxRQUFRLENBQUMsS0FBSyxFQUFFLENBQUMsQ0FBQyxDQUFDO1lBQzFCLGFBQU0sQ0FBQyxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxDQUFDLFNBQVMsRUFBRSxDQUFDLENBQUMsQ0FBQztZQUN2QyxhQUFNLENBQUMsS0FBSyxDQUFDLEtBQUssQ0FBQyxDQUFDLENBQUMsQ0FBQyxTQUFTLENBQUMsQ0FBQyxDQUFDLENBQUMsUUFBUSxFQUFFLEdBQUcsQ0FBQyxDQUFDO1lB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
+//# sourceMappingURL=interval.test.js.map

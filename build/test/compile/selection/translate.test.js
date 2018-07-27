@@ -6,46 +6,46 @@ import translate from '../../../src/compile/selection/transforms/translate';
 import { parseUnitModel } from '../../util';
 function getModel(xscale, yscale) {
     var model = parseUnitModel({
-        "mark": "circle",
-        "encoding": {
-            "x": { "field": "Horsepower", "type": "quantitative", "scale": { "type": xscale || "linear" } },
-            "y": { "field": "Miles_per_Gallon", "type": "quantitative", "scale": { "type": yscale || "linear" } },
-            "color": { "field": "Origin", "type": "nominal" }
+        mark: 'circle',
+        encoding: {
+            x: { field: 'Horsepower', type: 'quantitative', scale: { type: xscale || 'linear' } },
+            y: { field: 'Miles_per_Gallon', type: 'quantitative', scale: { type: yscale || 'linear' } },
+            color: { field: 'Origin', type: 'nominal' }
         }
     });
     model.parseScale();
     var selCmpts = selection.parseUnitSelection(model, {
-        "one": {
-            "type": "single"
+        one: {
+            type: 'single'
         },
-        "two": {
-            "type": "multi"
+        two: {
+            type: 'multi'
         },
-        "three": {
-            "type": "interval",
-            "translate": false
+        three: {
+            type: 'interval',
+            translate: false
         },
-        "four": {
-            "type": "interval"
+        four: {
+            type: 'interval'
         },
-        "five": {
-            "type": "interval",
-            "translate": "[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove"
+        five: {
+            type: 'interval',
+            translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
         },
-        "six": {
-            "type": "interval",
-            "bind": "scales"
+        six: {
+            type: 'interval',
+            bind: 'scales'
         },
-        "seven": {
-            "type": "interval",
-            "translate": null
+        seven: {
+            type: 'interval',
+            translate: null
         }
     });
     return { model: model, selCmpts: selCmpts };
 }
 describe('Translate Selection Transform', function () {
     it('identifies transform invocation', function () {
-        var _a = getModel(), _model = _a.model, selCmpts = _a.selCmpts;
+        var selCmpts = getModel().selCmpts;
         assert.isNotTrue(translate.has(selCmpts['one']));
         assert.isNotTrue(translate.has(selCmpts['two']));
         assert.isNotTrue(translate.has(selCmpts['three']));
@@ -61,22 +61,22 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals, [
                 {
-                    "name": "four_translate_anchor",
-                    "value": {},
-                    "on": [
+                    name: 'four_translate_anchor',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('@four_brush:mousedown', 'scope'),
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}"
+                            events: parseSelector('@four_brush:mousedown', 'scope'),
+                            update: '{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}'
                         }
                     ]
                 },
                 {
-                    "name": "four_translate_delta",
-                    "value": {},
-                    "on": [
+                    name: 'four_translate_delta',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
-                            "update": "{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}"
+                            events: parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                            update: '{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}'
                         }
                     ]
                 }
@@ -87,22 +87,22 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals, [
                 {
-                    "name": "five_translate_anchor",
-                    "value": {},
-                    "on": [
+                    name: 'five_translate_anchor',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
-                            "update": "{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}"
+                            events: parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
+                            update: '{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}'
                         }
                     ]
                 },
                 {
-                    "name": "five_translate_delta",
-                    "value": {},
-                    "on": [
+                    name: 'five_translate_delta',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
-                            "update": "{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}"
+                            events: parseSelector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
+                            update: '{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}'
                         }
                     ]
                 }
@@ -113,22 +113,22 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals, [
                 {
-                    "name": "six_translate_anchor",
-                    "value": {},
-                    "on": [
+                    name: 'six_translate_anchor',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('mousedown', 'scope'),
-                            "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
+                            events: parseSelector('mousedown', 'scope'),
+                            update: '{x: x(unit), y: y(unit), extent_x: domain("x"), extent_y: domain("y")}'
                         }
                     ]
                 },
                 {
-                    "name": "six_translate_delta",
-                    "value": {},
-                    "on": [
+                    name: 'six_translate_delta',
+                    value: {},
+                    on: [
                         {
-                            "events": parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
-                            "update": "{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}"
+                            events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                            update: '{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}'
                         }
                     ]
                 }
@@ -142,14 +142,14 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
                 {
-                    "events": { "signal": "four_translate_delta" },
-                    "update": "clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)"
+                    events: { signal: 'four_translate_delta' },
+                    update: 'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
                 }
             ]);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
                 {
-                    "events": { "signal": "four_translate_delta" },
-                    "update": "clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)"
+                    events: { signal: 'four_translate_delta' },
+                    update: 'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
                 }
             ]);
             var model2 = getModel('log', 'pow').model;
@@ -157,14 +157,14 @@ describe('Translate Selection Transform', function () {
             signals = selection.assembleUnitSelectionSignals(model2, []);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
                 {
-                    "events": { "signal": "four_translate_delta" },
-                    "update": "clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)"
+                    events: { signal: 'four_translate_delta' },
+                    update: 'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
                 }
             ]);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
                 {
-                    "events": { "signal": "four_translate_delta" },
-                    "update": "clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)"
+                    events: { signal: 'four_translate_delta' },
+                    update: 'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
                 }
             ]);
         });
@@ -174,14 +174,14 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
                 {
-                    "events": { "signal": "six_translate_delta" },
-                    "update": "panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)"
+                    events: { signal: 'six_translate_delta' },
+                    update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
                 }
             ]);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
                 {
-                    "events": { "signal": "six_translate_delta" },
-                    "update": "panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)"
+                    events: { signal: 'six_translate_delta' },
+                    update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
                 }
             ]);
         });
@@ -191,14 +191,14 @@ describe('Translate Selection Transform', function () {
             var signals = selection.assembleUnitSelectionSignals(model, []);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
                 {
-                    "events": { "signal": "six_translate_delta" },
-                    "update": "panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)"
+                    events: { signal: 'six_translate_delta' },
+                    update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
                 }
             ]);
             assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
                 {
-                    "events": { "signal": "six_translate_delta" },
-                    "update": "panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 1)"
+                    events: { signal: 'six_translate_delta' },
+                    update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 1)'
                 }
             ]);
         });

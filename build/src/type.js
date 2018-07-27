@@ -6,8 +6,6 @@ export var Type;
     Type.ORDINAL = 'ordinal';
     Type.TEMPORAL = 'temporal';
     Type.NOMINAL = 'nominal';
-    Type.LATITUDE = 'latitude';
-    Type.LONGITUDE = 'longitude';
     Type.GEOJSON = 'geojson';
 })(Type || (Type = {}));
 export var TYPE_INDEX = {
@@ -15,8 +13,6 @@ export var TYPE_INDEX = {
     ordinal: 1,
     temporal: 1,
     nominal: 1,
-    latitude: 1,
-    longitude: 1,
     geojson: 1
 };
 export function isType(t) {
@@ -48,10 +44,6 @@ export function getFullName(type) {
             case 'n':
             case NOMINAL:
                 return 'nominal';
-            case Type.LATITUDE:
-                return 'latitude';
-            case Type.LONGITUDE:
-                return 'longitude';
             case GEOJSON:
                 return 'geojson';
         }

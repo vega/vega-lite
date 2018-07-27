@@ -25,12 +25,14 @@ var nearest = {
                     isVoronoi: { value: true }
                 }
             },
-            transform: [{
+            transform: [
+                {
                     type: 'voronoi',
-                    x: { expr: (x || (!x && !y)) ? 'datum.datum.x || 0' : '0' },
-                    y: { expr: (y || (!x && !y)) ? 'datum.datum.y || 0' : '0' },
+                    x: { expr: x || (!x && !y) ? 'datum.datum.x || 0' : '0' },
+                    y: { expr: y || (!x && !y) ? 'datum.datum.y || 0' : '0' },
                     size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
-                }]
+                }
+            ]
         };
         var index = 0;
         var exists = false;

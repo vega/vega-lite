@@ -19,25 +19,31 @@ var zoom = {
         var sy = stringValue(model.scaleName(Y));
         var events = parseSelector(selCmpt.zoom, 'scope');
         if (!hasScales) {
-            events = events.map(function (e) { return (e.markname = name + INTERVAL_BRUSH, e); });
+            events = events.map(function (e) { return ((e.markname = name + INTERVAL_BRUSH), e); });
         }
         signals.push({
             name: name + ANCHOR,
-            on: [{
+            on: [
+                {
                     events: events,
-                    update: !hasScales ? "{x: x(unit), y: y(unit)}" :
-                        '{' + [
-                            (sx ? "x: invert(" + sx + ", x(unit))" : ''),
-                            (sy ? "y: invert(" + sy + ", y(unit))" : '')
-                        ].filter(function (expr) { return !!expr; }).join(', ') + '}'
-                }]
+                    update: !hasScales
+                        ? "{x: x(unit), y: y(unit)}"
+                        : '{' +
+                            [sx ? "x: invert(" + sx + ", x(unit))" : '', sy ? "y: invert(" + sy + ", y(unit))" : '']
+                                .filter(function (expr) { return !!expr; })
+                                .join(', ') +
+                            '}'
+                }
+            ]
         }, {
             name: delta,
-            on: [{
+            on: [
+                {
                     events: events,
                     force: true,
                     update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
-                }]
+                }
+            ]
         });
         if (x !== null) {
             onDelta(model, selCmpt, 'x', 'width', signals);
@@ -61,11 +67,16 @@ function onDelta(model, selCmpt, channel, size, signals) {
     var base = hasScales ? domain(model, channel) : signal.name;
     var delta = name + DELTA;
     var anchor = "" + name + ANCHOR + "." + channel;
-    var zoomFn = !hasScales ? 'zoomLinear' :
-        scaleType === 'log' ? 'zoomLog' :
-            scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
+    var zoomFn = !hasScales
+        ? 'zoomLinear'
+        : scaleType === 'log'
+            ? 'zoomLog'
+            : scaleType === 'pow'
+                ? 'zoomPow'
+                : 'zoomLinear';
     var update = zoomFn + "(" + base + ", " + anchor + ", " + delta +
-        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') + ')';
+        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') +
+        ')';
     signal.on.push({
         events: { signal: delta },
         update: hasScales ? update : "clampRange(" + update + ", 0, " + sizeSg + ")"

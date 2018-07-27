@@ -4,7 +4,7 @@ import * as ref from './valueref';
 export var rule = {
     vgMark: 'rule',
     encodeEntry: function (model) {
-        var _config = model.config, markDef = model.markDef, width = model.width, height = model.height;
+        var markDef = model.markDef, width = model.width, height = model.height;
         var orient = markDef.orient;
         if (!model.encoding.x && !model.encoding.y && !model.encoding.latitude && !model.encoding.longitude) {
             // Show nothing if we have none of x, y, lat, and long.

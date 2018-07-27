@@ -14,26 +14,26 @@ describe('src/compile', function () {
     describe('parseScaleCore', function () {
         it('respects explicit scale type', function () {
             var model = parseModel({
-                "data": { "url": "data/seattle-weather.csv" },
-                "layer": [
+                data: { url: 'data/seattle-weather.csv' },
+                layer: [
                     {
-                        "mark": "bar",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative"
+                        mark: 'bar',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative'
                             }
                         }
                     },
                     {
-                        "mark": "rule",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative",
-                                "scale": { "type": "log" }
+                        mark: 'rule',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative',
+                                scale: { type: 'log' }
                             }
                         }
                     }
@@ -44,26 +44,26 @@ describe('src/compile', function () {
         });
         it('respects explicit scale type', function () {
             var model = parseModel({
-                "data": { "url": "data/seattle-weather.csv" },
-                "layer": [
+                data: { url: 'data/seattle-weather.csv' },
+                layer: [
                     {
-                        "mark": "bar",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative",
-                                "scale": { "type": "log" }
+                        mark: 'bar',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative',
+                                scale: { type: 'log' }
                             }
                         }
                     },
                     {
-                        "mark": "rule",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative"
+                        mark: 'rule',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative'
                             }
                         }
                     }
@@ -75,27 +75,27 @@ describe('src/compile', function () {
         // TODO: this actually shouldn't get merged
         it('favors the first explicit scale type', log.wrap(function (localLogger) {
             var model = parseModel({
-                "data": { "url": "data/seattle-weather.csv" },
-                "layer": [
+                data: { url: 'data/seattle-weather.csv' },
+                layer: [
                     {
-                        "mark": "bar",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative",
-                                "scale": { "type": "log" }
+                        mark: 'bar',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative',
+                                scale: { type: 'log' }
                             }
                         }
                     },
                     {
-                        "mark": "rule",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative",
-                                "scale": { "type": "pow" }
+                        mark: 'rule',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative',
+                                scale: { type: 'pow' }
                             }
                         }
                     }
@@ -107,29 +107,30 @@ describe('src/compile', function () {
         }));
         it('favors the band over point', function () {
             var model = parseModel({
-                "data": { "url": "data/seattle-weather.csv" },
-                "layer": [
+                data: { url: 'data/seattle-weather.csv' },
+                layer: [
                     {
-                        "mark": "point",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative"
+                        mark: 'point',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative'
                             },
-                            "x": { "field": "weather", "type": "nominal" }
-                        }
-                    }, {
-                        "mark": "bar",
-                        "encoding": {
-                            "y": {
-                                "aggregate": "mean",
-                                "field": "precipitation",
-                                "type": "quantitative"
-                            },
-                            "x": { "field": "weather", "type": "nominal" }
+                            x: { field: 'weather', type: 'nominal' }
                         }
                     },
+                    {
+                        mark: 'bar',
+                        encoding: {
+                            y: {
+                                aggregate: 'mean',
+                                field: 'precipitation',
+                                type: 'quantitative'
+                            },
+                            x: { field: 'weather', type: 'nominal' }
+                        }
+                    }
                 ]
             });
             parseScaleCore(model);
@@ -137,21 +138,21 @@ describe('src/compile', function () {
         });
         it('correctly ignores x/y when lon/lat', function () {
             var model = parseModel({
-                "data": {
-                    "url": "data/zipcodes.csv",
-                    "format": {
-                        "type": "csv"
+                data: {
+                    url: 'data/zipcodes.csv',
+                    format: {
+                        type: 'csv'
                     }
                 },
-                "mark": "point",
-                "encoding": {
-                    "longitude": {
-                        "field": "longitude",
-                        "type": "quantitative"
+                mark: 'point',
+                encoding: {
+                    longitude: {
+                        field: 'longitude',
+                        type: 'quantitative'
                     },
-                    "latitude": {
-                        "field": "latitude",
-                        "type": "quantitative"
+                    latitude: {
+                        field: 'latitude',
+                        type: 'quantitative'
                     }
                 }
             });
@@ -161,23 +162,23 @@ describe('src/compile', function () {
         });
         it('correctly ignores shape when geojson', function () {
             var model = parseModel({
-                "mark": "geoshape",
-                "data": { "url": "data/income.json" },
-                "transform": [
+                mark: 'geoshape',
+                data: { url: 'data/income.json' },
+                transform: [
                     {
-                        "lookup": "id",
-                        "from": {
-                            "data": {
-                                "url": "data/us-10m.json",
-                                "format": { "type": "topojson", "feature": "states" }
+                        lookup: 'id',
+                        from: {
+                            data: {
+                                url: 'data/us-10m.json',
+                                format: { type: 'topojson', feature: 'states' }
                             },
-                            "key": "id"
+                            key: 'id'
                         },
-                        "as": "geo"
+                        as: 'geo'
                     }
                 ],
-                "encoding": {
-                    "shape": { "field": "geo", "type": "geojson" },
+                encoding: {
+                    shape: { field: 'geo', type: 'geojson' }
                 }
             });
             parseScaleCore(model);
@@ -187,25 +188,25 @@ describe('src/compile', function () {
     describe('parseScale', function () {
         it('does not throw warning when two equivalent objects are specified', log.wrap(function (logger) {
             var model = parseModel({
-                "data": { "url": "data/seattle-weather.csv" },
-                "layer": [
+                data: { url: 'data/seattle-weather.csv' },
+                layer: [
                     {
-                        "mark": "circle",
-                        "encoding": {
-                            "y": {
-                                "field": "a",
-                                "type": "nominal",
-                                "scale": { "rangeStep": 17 }
+                        mark: 'circle',
+                        encoding: {
+                            y: {
+                                field: 'a',
+                                type: 'nominal',
+                                scale: { rangeStep: 17 }
                             }
                         }
                     },
                     {
-                        "mark": "point",
-                        "encoding": {
-                            "y": {
-                                "field": "a",
-                                "type": "nominal",
-                                "scale": { "rangeStep": 17 }
+                        mark: 'point',
+                        encoding: {
+                            y: {
+                                field: 'a',
+                                type: 'nominal',
+                                scale: { rangeStep: 17 }
                             }
                         }
                     }
@@ -218,9 +219,9 @@ describe('src/compile', function () {
         describe('x ordinal point', function () {
             it('should create an x point scale with rangeStep and no range', function () {
                 var model = parseUnitModelWithScale({
-                    mark: "point",
+                    mark: 'point',
                     encoding: {
-                        x: { field: 'origin', type: "nominal" }
+                        x: { field: 'origin', type: 'nominal' }
                     }
                 });
                 var scale = model.getScaleComponent('x');
@@ -232,7 +233,7 @@ describe('src/compile', function () {
             var model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
-                    x: { field: 'origin', type: "nominal", scale: { type: 'band', padding: 0.6 } }
+                    x: { field: 'origin', type: 'nominal', scale: { type: 'band', padding: 0.6 } }
                 }
             });
             var scale = model.getScaleComponent('x');
@@ -244,7 +245,7 @@ describe('src/compile', function () {
             var model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
-                    x: { field: 'origin', type: "nominal", scale: { type: 'band' } }
+                    x: { field: 'origin', type: 'nominal', scale: { type: 'band' } }
                 },
                 config: {
                     scale: { bandPaddingInner: 0.3 }
@@ -257,46 +258,50 @@ describe('src/compile', function () {
         });
         describe('nominal with color', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: 'origin', type: "nominal" }
+                    color: { field: 'origin', type: 'nominal' }
                 }
             });
             var scale = model.getScaleComponent('color');
             it('should create correct color scale', function () {
                 assert.equal(scale.implicit.name, 'color');
                 assert.equal(scale.implicit.type, 'ordinal');
-                assert.deepEqual(scale.domains, [{
+                assert.deepEqual(scale.domains, [
+                    {
                         data: 'main',
                         field: 'origin',
                         sort: true
-                    }]);
+                    }
+                ]);
                 assert.equal(scale.implicit.range, 'category');
             });
         });
         describe('ordinal with color', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: 'origin', type: "ordinal" }
+                    color: { field: 'origin', type: 'ordinal' }
                 }
             });
             var scale = model.getScaleComponent('color');
             it('should create sequential color scale', function () {
                 assert.equal(scale.implicit.name, 'color');
                 assert.equal(scale.implicit.type, 'ordinal');
-                assert.deepEqual(scale.domains, [{
+                assert.deepEqual(scale.domains, [
+                    {
                         data: 'main',
                         field: 'origin',
                         sort: true
-                    }]);
+                    }
+                ]);
             });
         });
         describe('quantitative with color', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: "origin", type: "quantitative" }
+                    color: { field: 'origin', type: 'quantitative' }
                 }
             });
             var scale = model.getScaleComponent('color');
@@ -304,17 +309,19 @@ describe('src/compile', function () {
                 assert.equal(scale.implicit.name, 'color');
                 assert.equal(scale.implicit.type, 'sequential');
                 assert.equal(scale.implicit.range, 'ramp');
-                assert.deepEqual(scale.domains, [{
+                assert.deepEqual(scale.domains, [
+                    {
                         data: 'main',
                         field: 'origin'
-                    }]);
+                    }
+                ]);
             });
         });
         describe('color with bin', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: "origin", type: "quantitative", bin: true }
+                    color: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
             var scale = model.getScaleComponent('color');
@@ -325,9 +332,9 @@ describe('src/compile', function () {
         });
         describe('ordinal color with bin', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: "origin", type: "ordinal", bin: true }
+                    color: { field: 'origin', type: 'ordinal', bin: true }
                 }
             });
             var scale = model.getScaleComponent('color');
@@ -338,9 +345,9 @@ describe('src/compile', function () {
         });
         describe('opacity with bin', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    opacity: { field: "origin", type: "quantitative", bin: true }
+                    opacity: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
             var scale = model.getScaleComponent('opacity');
@@ -351,9 +358,9 @@ describe('src/compile', function () {
         });
         describe('size with bin', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    size: { field: "origin", type: "quantitative", bin: true }
+                    size: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
             var scale = model.getScaleComponent('size');
@@ -364,9 +371,9 @@ describe('src/compile', function () {
         });
         describe('color with time unit', function () {
             var model = parseUnitModelWithScale({
-                mark: "point",
+                mark: 'point',
                 encoding: {
-                    color: { field: 'origin', type: "temporal", timeUnit: "year" }
+                    color: { field: 'origin', type: 'temporal', timeUnit: 'year' }
                 }
             });
             var scale = model.getScaleComponent('color');
@@ -377,15 +384,17 @@ describe('src/compile', function () {
         });
         describe('selection domain', function () {
             var model = parseUnitModelWithScale({
-                mark: "area",
+                mark: 'area',
                 encoding: {
                     x: {
-                        field: "date", type: "temporal",
-                        scale: { domain: { selection: "brush", encoding: "x" } },
+                        field: 'date',
+                        type: 'temporal',
+                        scale: { domain: { selection: 'brush', encoding: 'x' } }
                     },
                     y: {
-                        field: "date", type: "temporal",
-                        scale: { domain: { selection: "foobar", field: "Miles_per_Gallon" } },
+                        field: 'date',
+                        type: 'temporal',
+                        scale: { domain: { selection: 'foobar', field: 'Miles_per_Gallon' } }
                     }
                 }
             });
@@ -404,50 +413,54 @@ describe('src/compile', function () {
             it('should use cloned subtree', function () {
                 var model = parseModelWithScale({
                     facet: {
-                        row: { field: "symbol", type: "nominal" }
+                        row: { field: 'symbol', type: 'nominal' }
                     },
-                    data: { url: "foo.csv" },
+                    data: { url: 'foo.csv' },
                     spec: {
                         mark: 'point',
                         encoding: {
-                            x: { field: 'a', type: 'quantitative' },
+                            x: { field: 'a', type: 'quantitative' }
                         }
                     }
                 });
-                assert.deepEqual(model.component.scales.x.domains, [{
+                assert.deepEqual(model.component.scales.x.domains, [
+                    {
                         data: 'scale_child_main',
                         field: 'a'
-                    }]);
+                    }
+                ]);
             });
             it('should not use cloned subtree if the data is not faceted', function () {
                 var model = parseModelWithScale({
                     facet: {
-                        row: { field: "symbol", type: "nominal" }
+                        row: { field: 'symbol', type: 'nominal' }
                     },
-                    data: { url: "foo.csv" },
+                    data: { url: 'foo.csv' },
                     spec: {
                         data: { url: 'foo' },
                         mark: 'point',
                         encoding: {
-                            x: { field: 'a', type: 'quantitative' },
+                            x: { field: 'a', type: 'quantitative' }
                         }
                     }
                 });
-                assert.deepEqual(model.component.scales.x.domains, [{
+                assert.deepEqual(model.component.scales.x.domains, [
+                    {
                         data: 'child_main',
                         field: 'a'
-                    }]);
+                    }
+                ]);
             });
             it('should not use cloned subtree if the scale is independent', function () {
                 var model = parseModelWithScale({
                     facet: {
-                        row: { field: "symbol", type: "nominal" }
+                        row: { field: 'symbol', type: 'nominal' }
                     },
-                    data: { url: "foo.csv" },
+                    data: { url: 'foo.csv' },
                     spec: {
                         mark: 'point',
                         encoding: {
-                            x: { field: 'a', type: 'quantitative' },
+                            x: { field: 'a', type: 'quantitative' }
                         }
                     },
                     resolve: {
@@ -456,10 +469,12 @@ describe('src/compile', function () {
                         }
                     }
                 });
-                assert.deepEqual(model.children[0].component.scales.x.domains, [{
+                assert.deepEqual(model.children[0].component.scales.x.domains, [
+                    {
                         data: 'child_main',
                         field: 'a'
-                    }]);
+                    }
+                ]);
             });
         });
     });

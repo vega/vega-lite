@@ -25,13 +25,13 @@ var LookupNode = /** @class */ (function (_super) {
         return new LookupNode(parent, transform, fromOutputNode.getSource());
     };
     LookupNode.prototype.producedFields = function () {
-        return toSet(this.transform.from.fields || ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]));
+        return toSet(this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as]));
     };
     LookupNode.prototype.assemble = function () {
         var foreign;
         if (this.transform.from.fields) {
             // lookup a few fields and add create a flat output
-            foreign = tslib_1.__assign({ values: this.transform.from.fields }, this.transform.as ? { as: ((this.transform.as instanceof Array) ? this.transform.as : [this.transform.as]) } : {});
+            foreign = tslib_1.__assign({ values: this.transform.from.fields }, (this.transform.as ? { as: this.transform.as instanceof Array ? this.transform.as : [this.transform.as] } : {}));
         }
         else {
             // lookup full record and nest it

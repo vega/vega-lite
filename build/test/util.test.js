@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { flatAccessWithDatum } from '../src/util';
-import { accessPathDepth, accessPathWithDatum, deleteNestedProperty, hash, replacePathInField, stringify, varName, } from '../src/util';
+import { accessPathDepth, accessPathWithDatum, deleteNestedProperty, hash, replacePathInField, stringify, varName } from '../src/util';
 describe('util', function () {
     describe('varName', function () {
         it('replaces all non-alphanumeric characters with _', function () {

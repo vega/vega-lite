@@ -1,3 +1,5 @@
+import { isArray } from 'vega-util';
+import { isBinning } from '../../bin';
 import { isColorChannel, isScaleChannel, rangeType } from '../../channel';
 import * as log from '../../log';
 import { channelSupportScaleType, scaleTypeSupportDataType } from '../../scale';
@@ -7,24 +9,25 @@ import * as util from '../../util';
  * or determine default type if type is unspecified or inappropriate.
  */
 // NOTE: CompassQL uses this method.
-export function scaleType(specifiedType, channel, fieldDef, mark, scaleConfig) {
-    var defaultScaleType = defaultType(channel, fieldDef, mark, scaleConfig);
+export function scaleType(specifiedScale, channel, fieldDef, mark, scaleConfig) {
+    var defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
+    var type = specifiedScale.type;
     if (!isScaleChannel(channel)) {
         // There is no scale for these channels
         return null;
     }
-    if (specifiedType !== undefined) {
+    if (type !== undefined) {
         // Check if explicitly specified scale type is supported by the channel
-        if (!channelSupportScaleType(channel, specifiedType)) {
-            log.warn(log.message.scaleTypeNotWorkWithChannel(channel, specifiedType, defaultScaleType));
+        if (!channelSupportScaleType(channel, type)) {
+            log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type, defaultScaleType));
             return defaultScaleType;
         }
         // Check if explicitly specified scale type is supported by the data type
-        if (!scaleTypeSupportDataType(specifiedType, fieldDef.type, fieldDef.bin)) {
-            log.warn(log.message.scaleTypeNotWorkWithFieldDef(specifiedType, defaultScaleType));
+        if (!scaleTypeSupportDataType(type, fieldDef.type, fieldDef.bin)) {
+            log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
             return defaultScaleType;
         }
-        return specifiedType;
+        return type;
     }
     return defaultScaleType;
 }
@@ -32,7 +35,7 @@ export function scaleType(specifiedType, channel, fieldDef, mark, scaleConfig) {
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(channel, fieldDef, mark, scaleConfig) {
+function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
     switch (fieldDef.type) {
         case 'nominal':
         case 'ordinal':
@@ -66,8 +69,13 @@ function defaultType(channel, fieldDef, mark, scaleConfig) {
             return 'time';
         case 'quantitative':
             if (isColorChannel(channel)) {
-                if (fieldDef.bin) {
+                if (isBinning(fieldDef.bin)) {
                     return 'bin-ordinal';
+                }
+                var _a = specifiedScale || {}, _b = _a.domain, domain = _b === void 0 ? undefined : _b, _c = _a.range, range = _c === void 0 ? undefined : _c;
+                if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
+                    // If there are piecewise domain and range specified, use lineaer as default color scale as sequential does not support piecewise domain
+                    return 'linear';
                 }
                 // Use `sequential` as the default color scale for continuous data
                 // since it supports both array range and scheme range.
@@ -80,12 +88,10 @@ function defaultType(channel, fieldDef, mark, scaleConfig) {
             }
             // x and y use a linear scale because selections don't work with bin scales.
             // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
-            if (fieldDef.bin && channel !== 'x' && channel !== 'y') {
+            if (isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
                 return 'bin-linear';
             }
             return 'linear';
-        case 'latitude':
-        case 'longitude':
         case 'geojson':
             return undefined;
     }

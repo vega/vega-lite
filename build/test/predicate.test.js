@@ -150,19 +150,18 @@ describe('filter', function () {
     it('generates expressions for composed filters', function () {
         var expr = expression(null, { not: { field: 'color', equal: 'red' } });
         assert.equal(expr, '!(datum["color"]==="red")');
-        expr = expression(null, { and: [
-                { field: 'color', equal: 'red' },
-                { field: 'x', range: [0, 5] }
-            ] });
+        expr = expression(null, {
+            and: [{ field: 'color', equal: 'red' }, { field: 'x', range: [0, 5] }]
+        });
         assert.equal(expr, '(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
-        expr = expression(null, { and: [
+        expr = expression(null, {
+            and: [
                 { field: 'color', oneOf: ['red', 'yellow'] },
-                { or: [
-                        { field: 'x', range: [0, null] },
-                        'datum.price > 10',
-                        { not: 'datum["x"]===5' }
-                    ] }
-            ] });
+                {
+                    or: [{ field: 'x', range: [0, null] }, 'datum.price > 10', { not: 'datum["x"]===5' }]
+                }
+            ]
+        });
         assert.equal(expr, '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
             '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))');
     });

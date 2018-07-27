@@ -7,10 +7,31 @@ import { duplicate, keys } from './util';
  */
 var SUNDAY_YEAR = 2006;
 export function isDateTime(o) {
-    return !!o && (!!o.year || !!o.quarter || !!o.month || !!o.date || !!o.day ||
-        !!o.hours || !!o.minutes || !!o.seconds || !!o.milliseconds);
+    return (!!o &&
+        (!!o.year ||
+            !!o.quarter ||
+            !!o.month ||
+            !!o.date ||
+            !!o.day ||
+            !!o.hours ||
+            !!o.minutes ||
+            !!o.seconds ||
+            !!o.milliseconds));
 }
-export var MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+export var MONTHS = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december'
+];
 export var SHORT_MONTHS = MONTHS.map(function (m) { return m.substr(0, 3); });
 export var DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 export var SHORT_DAYS = DAYS.map(function (d) { return d.substr(0, 3); });
@@ -20,7 +41,7 @@ function normalizeQuarter(q) {
             log.warn(log.message.invalidTimeUnit('quarter', q));
         }
         // We accept 1-based quarter, so need to readjust to 0-based quarter
-        return (q - 1) + '';
+        return (q - 1).toString();
     }
     else {
         // Invalid quarter
@@ -30,7 +51,7 @@ function normalizeQuarter(q) {
 function normalizeMonth(m) {
     if (isNumber(m)) {
         // We accept 1-based month, so need to readjust to 0-based month
-        return (m - 1) + '';
+        return (m - 1).toString();
     }
     else {
         var lowerM = m.toLowerCase();

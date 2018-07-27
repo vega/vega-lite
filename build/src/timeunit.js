@@ -133,7 +133,7 @@ var SET_DATE_METHOD = {
     milliseconds: 'setMilliseconds',
     // Day and quarter have their own special cases
     quarter: null,
-    day: null,
+    day: null
 };
 /**
  * Converts a date to only have the measurements relevant to the specified unit
@@ -142,20 +142,20 @@ var SET_DATE_METHOD = {
  */
 export function convert(unit, date) {
     var isUTC = isUTCTimeUnit(unit);
-    var result = isUTC ?
-        // start with uniform date
-        new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0)) :
-        new Date(0, 0, 1, 0, 0, 0, 0);
+    var result = isUTC
+        ? // start with uniform date
+            new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
+        : new Date(0, 0, 1, 0, 0, 0, 0);
     for (var _i = 0, TIMEUNIT_PARTS_1 = TIMEUNIT_PARTS; _i < TIMEUNIT_PARTS_1.length; _i++) {
         var timeUnitPart = TIMEUNIT_PARTS_1[_i];
         if (containsTimeUnit(unit, timeUnitPart)) {
             switch (timeUnitPart) {
                 case TimeUnit.DAY:
-                    throw new Error('Cannot convert to TimeUnits containing \'day\'');
+                    throw new Error("Cannot convert to TimeUnits containing 'day'");
                 case TimeUnit.QUARTER: {
                     var _a = dateMethods('month', isUTC), getDateMethod_1 = _a.getDateMethod, setDateMethod_1 = _a.setDateMethod;
                     // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-                    result[setDateMethod_1]((Math.floor(date[getDateMethod_1]() / 3)) * 3);
+                    result[setDateMethod_1](Math.floor(date[getDateMethod_1]() / 3) * 3);
                     break;
                 }
                 default:
@@ -183,11 +183,8 @@ export function getTimeUnitParts(timeUnit) {
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit, timeUnit) {
     var index = fullTimeUnit.indexOf(timeUnit);
-    return index > -1 &&
-        (timeUnit !== TimeUnit.SECONDS ||
-            index === 0 ||
-            fullTimeUnit.charAt(index - 1) !== 'i' // exclude milliseconds
-        );
+    return (index > -1 && (timeUnit !== TimeUnit.SECONDS || index === 0 || fullTimeUnit.charAt(index - 1) !== 'i') // exclude milliseconds
+    );
 }
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef

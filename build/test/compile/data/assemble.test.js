@@ -20,7 +20,7 @@ describe('compile/data/assemble', function () {
                 isFaceted: false
             }, {});
             assert.equal(data.length, 1);
-            assert.equal(data[0].name, "foo");
+            assert.equal(data[0].name, 'foo');
         });
         it('should assemble raw and main output', function () {
             var src = new SourceNode({ url: 'foo.csv' });
@@ -39,20 +39,24 @@ describe('compile/data/assemble', function () {
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
             }, {});
-            assert.deepEqual(data, [{
+            assert.deepEqual(data, [
+                {
                     name: 'source_0',
                     url: 'foo.csv',
                     format: { type: 'csv' }
-                }, {
+                },
+                {
                     name: 'data_0',
                     source: 'source_0',
-                    transform: [{
+                    transform: [
+                        {
                             type: 'aggregate',
                             groupby: ['a'],
                             ops: ['count'],
                             fields: ['b'],
                             as: ['count_*']
-                        }]
+                        }
+                    ]
                 }
             ]);
         });
@@ -65,8 +69,8 @@ describe('compile/data/assemble', function () {
                 window: [
                     {
                         op: 'row_number',
-                        as: 'ordered_row_number',
-                    },
+                        as: 'ordered_row_number'
+                    }
                 ],
                 ignorePeers: false,
                 sort: [
@@ -90,27 +94,31 @@ describe('compile/data/assemble', function () {
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
             }, {});
-            assert.deepEqual(data, [{
+            assert.deepEqual(data, [
+                {
                     name: 'source_0',
                     url: 'foo.csv',
                     format: { type: 'csv' }
-                }, {
+                },
+                {
                     name: 'data_0',
                     source: 'source_0',
-                    transform: [{
+                    transform: [
+                        {
                             type: 'window',
                             ops: ['row_number'],
                             fields: [null],
                             params: [null],
                             sort: {
-                                field: ["f"],
-                                order: ["ascending"],
+                                field: ['f'],
+                                order: ['ascending']
                             },
                             ignorePeers: false,
                             as: ['ordered_row_number'],
                             frame: [null, 0],
                             groupby: ['f']
-                        }]
+                        }
+                    ]
                 }
             ]);
         });
@@ -127,10 +135,12 @@ describe('compile/data/assemble', function () {
             }, {
                 foo: [1, 2, 3]
             });
-            assert.deepEqual(data, [{
+            assert.deepEqual(data, [
+                {
                     name: 'foo',
                     values: [1, 2, 3]
-                }]);
+                }
+            ]);
         });
     });
 });

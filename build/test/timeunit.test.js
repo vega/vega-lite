@@ -55,7 +55,7 @@ describe('timeUnit', function () {
         it('should throw an error for the DAY timeunit', function () {
             assert.throws(function () {
                 convert(TimeUnit.DAY, new Date(2000, 11, 2, 23, 59, 59, 999));
-            }, Error, 'Cannot convert to TimeUnits containing \'day\'');
+            }, Error, "Cannot convert to TimeUnits containing 'day'");
         });
         it('should return expected result for YEARQUARTER', function () {
             var date = convert(TimeUnit.YEARQUARTER, new Date(2000, 11, 2, 23, 59, 59, 999));

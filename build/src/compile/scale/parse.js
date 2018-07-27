@@ -1,7 +1,7 @@
 import { SCALE_CHANNELS, SHAPE, X, Y } from '../../channel';
 import { getFieldDef, hasConditionalFieldDef, isFieldDef } from '../../fielddef';
 import { GEOSHAPE } from '../../mark';
-import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, scaleCompatible, scaleTypePrecedence, } from '../../scale';
+import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, scaleCompatible, scaleTypePrecedence } from '../../scale';
 import { GEOJSON } from '../../type';
 import { keys } from '../../util';
 import { isUnitModel } from '../model';
@@ -37,11 +37,10 @@ function parseUnitScaleCore(model) {
     var encoding = model.encoding, config = model.config, mark = model.mark;
     return SCALE_CHANNELS.reduce(function (scaleComponents, channel) {
         var fieldDef;
-        var specifiedScale = undefined;
+        var specifiedScale;
         var channelDef = encoding[channel];
         // Don't generate scale for shape of geoshape
-        if (isFieldDef(channelDef) && mark === GEOSHAPE &&
-            channel === SHAPE && channelDef.type === GEOJSON) {
+        if (isFieldDef(channelDef) && mark === GEOSHAPE && channel === SHAPE && channelDef.type === GEOJSON) {
             return scaleComponents;
         }
         if (isFieldDef(channelDef)) {
@@ -60,16 +59,18 @@ function parseUnitScaleCore(model) {
         }
         if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
             specifiedScale = specifiedScale || {};
-            var specifiedScaleType = specifiedScale.type;
-            var sType = scaleType(specifiedScale.type, channel, fieldDef, mark, config.scale);
-            scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), { value: sType, explicit: specifiedScaleType === sType });
+            var sType = scaleType(specifiedScale, channel, fieldDef, mark, config.scale);
+            scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
+                value: sType,
+                explicit: specifiedScale.type === sType
+            });
         }
         return scaleComponents;
     }, {});
 }
-var scaleTypeTieBreaker = tieBreakByComparing(function (st1, st2) { return (scaleTypePrecedence(st1) - scaleTypePrecedence(st2)); });
+var scaleTypeTieBreaker = tieBreakByComparing(function (st1, st2) { return scaleTypePrecedence(st1) - scaleTypePrecedence(st2); });
 function parseNonUnitScaleCore(model) {
-    var scaleComponents = model.component.scales = {};
+    var scaleComponents = (model.component.scales = {});
     var scaleTypeWithExplicitIndex = {};
     var resolve = model.component.resolve;
     var _loop_1 = function (child) {

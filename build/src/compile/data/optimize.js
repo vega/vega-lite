@@ -1,9 +1,9 @@
 import { MAIN } from '../../data';
-import { every, flatten, keys, vals } from '../../util';
+import { flatten, keys, vals } from '../../util';
 import { AggregateNode } from './aggregate';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
-import { FilterInvalidNode } from './filterinvalid';
+import { ParseNode } from './formatparse';
 import * as optimizers from './optimizers';
 import { StackNode } from './stack';
 export var FACET_SCALE_PREFIX = 'scale_';
@@ -22,7 +22,7 @@ function cloneSubtree(facet) {
             else if (copy_1 instanceof AggregateNode || copy_1 instanceof StackNode) {
                 copy_1.addDimensions(facet.fields);
             }
-            flatten(node.children.map(clone)).forEach(function (n) { return n.parent = copy_1; });
+            flatten(node.children.map(clone)).forEach(function (n) { return (n.parent = copy_1); });
             return [copy_1];
         }
         return flatten(node.children.map(clone));
@@ -49,7 +49,7 @@ function moveFacetDown(node) {
             moveMainDownToFacet(node.model.component.data.main);
             // replicate the subtree and place it before the facet's main node
             var copy = flatten(node.children.map(cloneSubtree(node)));
-            copy.forEach(function (c) { return c.parent = node.model.component.data.main; });
+            copy.forEach(function (c) { return (c.parent = node.model.component.data.main); });
         }
     }
     else {
@@ -71,10 +71,6 @@ function moveMainDownToFacet(node) {
  * Remove nodes that are not required starting from a root.
  */
 function removeUnnecessaryNodes(node) {
-    // remove empty null filter nodes
-    if (node instanceof FilterInvalidNode && every(vals(node.filter), function (f) { return f === null; })) {
-        node.remove();
-    }
     // remove output nodes that are not required
     if (node instanceof OutputNode && !node.isRequired()) {
         node.remove();
@@ -98,6 +94,44 @@ function getLeaves(roots) {
     return leaves;
 }
 /**
+ * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ */
+export function mergeParse(node) {
+    var parseChildren = node.children.filter(function (x) { return x instanceof ParseNode; });
+    if (parseChildren.length > 1) {
+        var commonParse = {};
+        for (var _i = 0, parseChildren_1 = parseChildren; _i < parseChildren_1.length; _i++) {
+            var parseNode = parseChildren_1[_i];
+            var parse = parseNode.parse;
+            for (var _a = 0, _b = keys(parse); _a < _b.length; _a++) {
+                var k = _b[_a];
+                if (commonParse[k] === undefined) {
+                    commonParse[k] = parse[k];
+                }
+                else if (commonParse[k] !== parse[k]) {
+                    delete commonParse[k];
+                }
+            }
+        }
+        if (keys(commonParse).length !== 0) {
+            var mergedParseNode = new ParseNode(node, commonParse);
+            for (var _c = 0, parseChildren_2 = parseChildren; _c < parseChildren_2.length; _c++) {
+                var parseNode = parseChildren_2[_c];
+                for (var _d = 0, _e = keys(commonParse); _d < _e.length; _d++) {
+                    var key = _e[_d];
+                    delete parseNode.parse[key];
+                }
+                node.removeChild(parseNode);
+                parseNode.parent = mergedParseNode;
+                if (keys(parseNode.parse).length === 0) {
+                    parseNode.remove();
+                }
+            }
+        }
+    }
+    node.children.forEach(mergeParse);
+}
+/**
  * Optimizes the dataflow of the passed in data component.
  */
 export function optimizeDataflow(dataComponent) {
@@ -110,6 +144,7 @@ export function optimizeDataflow(dataComponent) {
     getLeaves(roots).forEach(optimizers.iterateFromLeaves(optimizers.moveParseUp));
     getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
     roots.forEach(moveFacetDown);
+    roots.forEach(mergeParse);
     keys(dataComponent.sources).forEach(function (s) {
         if (dataComponent.sources[s].numChildren() === 0) {
             delete dataComponent.sources[s];

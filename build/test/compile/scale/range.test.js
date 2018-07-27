@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
-import { parseRangeForChannel } from '../../../src/compile/scale/range';
+import { defaultContinuousToDiscreteCount, interpolateRange, parseRangeForChannel } from '../../../src/compile/scale/range';
 import { makeExplicit, makeImplicit } from '../../../src/compile/split';
 import { defaultConfig } from '../../../src/config';
 import * as log from '../../../src/log';
@@ -37,7 +37,7 @@ describe('compile/scale', function () {
                     assert.deepEqual(parseRangeForChannel('x', scaleType, NOMINAL, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit({ step: 21 }));
                 }
             });
-            it('should return config.scale.textXRangeStep by default for text mark\'s x band/point scales.', function () {
+            it("should return config.scale.textXRangeStep by default for text mark's x band/point scales.", function () {
                 for (var _i = 0, _a = ['point', 'band']; _i < _a.length; _i++) {
                     var scaleType = _a[_i];
                     assert.deepEqual(parseRangeForChannel('x', scaleType, NOMINAL, {}, { scale: { textXRangeStep: 55 } }, undefined, 'text', false, 'plot_width', []), makeImplicit({ step: 55 }));
@@ -109,9 +109,21 @@ describe('compile/scale', function () {
             it('should use the specified scheme with count for a quantitative color field.', function () {
                 assert.deepEqual(parseRangeForChannel('color', 'ordinal', QUANTITATIVE, { scheme: { name: 'viridis', count: 3 } }, defaultConfig, undefined, 'point', false, 'plot_width', []), makeExplicit({ scheme: 'viridis', count: 3 }));
             });
+            it('should use default ordinal range for quantile/quantize scales', function () {
+                var scales = ['quantile', 'quantize'];
+                scales.forEach(function (discretizingScale) {
+                    assert.deepEqual(parseRangeForChannel('color', discretizingScale, QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit({ scheme: 'blues', count: 4 }));
+                });
+            });
+            it('should use default ordinal range for threshold scale', function () {
+                assert.deepEqual(parseRangeForChannel('color', 'threshold', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit({ scheme: 'blues', count: 3 }));
+            });
+            it('should use default color range for log scale', function () {
+                assert.deepEqual(parseRangeForChannel('color', 'log', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit(['#f7fbff', '#0e427f']));
+            });
         });
         describe('opacity', function () {
-            it('should use default opacityRange as opacity\'s scale range.', function () {
+            it("should use default opacityRange as opacity's scale range.", function () {
                 assert.deepEqual(parseRangeForChannel('opacity', 'linear', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
             });
         });
@@ -189,12 +201,53 @@ describe('compile/scale', function () {
                         ), makeImplicit([0, 81]));
                     }
                 });
+                it('should return range interpolation of length 4 for quantile/quantize scales', function () {
+                    var scales = ['quantile', 'quantize'];
+                    scales.forEach(function (discretizingScale) {
+                        assert.deepEqual(parseRangeForChannel('size', discretizingScale, QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit([9, 126.33333333333333, 243.66666666666666, 361]));
+                    });
+                });
+                it('should return range interpolation of length 4 for threshold scale', function () {
+                    assert.deepEqual(parseRangeForChannel('size', 'threshold', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit([9, 185, 361]));
+                });
             });
         });
         describe('shape', function () {
-            it('should use default symbol range in Vega as shape\'s scale range.', function () {
+            it("should use default symbol range in Vega as shape's scale range.", function () {
                 assert.deepEqual(parseRangeForChannel('shape', 'ordinal', QUANTITATIVE, {}, defaultConfig, undefined, 'point', false, 'plot_width', []), makeImplicit('symbol'));
             });
+        });
+    });
+    describe('defaultContinuousToDiscreteCount', function () {
+        it('should use config.scale.quantileCount for quantile scale', function () {
+            var config = {
+                scale: {
+                    quantileCount: 4
+                }
+            };
+            assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x'), 4);
+        });
+        it('should use config.scale.quantizeCount for quantize scale', function () {
+            var config = {
+                scale: {
+                    quantizeCount: 4
+                }
+            };
+            assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x'), 4);
+        });
+        it('should use domain size for threshold scale', function () {
+            assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x'), 3);
+        });
+        it('should throw warning and default to 4 for scale without domain', function () {
+            log.wrap(function (localLogger) {
+                assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x'), 4);
+                assert.equal(localLogger.warns[0], log.message.domainRequiredForThresholdScale('x'));
+            });
+        });
+    });
+    describe('interpolateRange', function () {
+        it('should return the correct interpolation of 1 - 100 with cardinality of 5', function () {
+            assert.deepEqual(interpolateRange(0, 100, 5), [0, 25, 50, 75, 100]);
         });
     });
 });

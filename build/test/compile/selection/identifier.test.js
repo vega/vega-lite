@@ -41,7 +41,7 @@ describe('Identifier transform', function () {
     it('is added immediately after aggregate transforms', function () {
         function test(transform) {
             var aggr = -1;
-            transform.some(function (t, i) { return (aggr = i, t.type === 'aggregate'); });
+            transform.some(function (t, i) { return ((aggr = i), t.type === 'aggregate'); });
             assert.isAtLeast(aggr, 0);
             assert.equal(transform[aggr + 1].type, 'identifier');
         }
@@ -58,7 +58,7 @@ describe('Identifier transform', function () {
         var _loop_1 = function (type) {
             var data = getVgData({ pt: { type: type } }, null, null, null, null, [{ calculate: 'datum.Horsepower * 2', as: 'foo' }]);
             var calc = -1;
-            data[0].transform.some(function (t, i) { return (calc = i, t.type === 'formula' && t.as === 'foo'); });
+            data[0].transform.some(function (t, i) { return ((calc = i), t.type === 'formula' && t.as === 'foo'); });
             assert.equal(data[0].transform[calc - 1].type, 'identifier');
         };
         for (var _i = 0, _a = ['single', 'multi']; _i < _a.length; _i++) {

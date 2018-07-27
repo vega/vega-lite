@@ -4,7 +4,7 @@ import { X, Y } from '../../channel';
 import { warn } from '../../log';
 import { hasContinuousDomain, isBinScale } from '../../scale';
 import { keys } from '../../util';
-import { channelSignalName, positionalProjections, STORE, TUPLE, unitName, } from './selection';
+import { channelSignalName, positionalProjections, STORE, TUPLE, unitName } from './selection';
 import scales from './transforms/scales';
 export var BRUSH = '_brush';
 export var SCALE_TRIGGER = '_scale_trigger';
@@ -27,11 +27,12 @@ var interval = {
                 }
             });
         }
-        selCmpt.project.forEach(function (p) {
+        for (var _i = 0, _a = selCmpt.project; _i < _a.length; _i++) {
+            var p = _a[_i];
             var channel = p.channel;
             if (channel !== X && channel !== Y) {
                 warn('Interval selections only support x and y encoding channels.');
-                return;
+                continue;
             }
             var cs = channelSignals(model, selCmpt, channel);
             var dname = channelSignalName(selCmpt, channel, 'data');
@@ -41,22 +42,20 @@ var interval = {
             var toNum = hasContinuousDomain(scaleType) ? '+' : '';
             signals.push.apply(signals, cs);
             tupleTriggers.push(dname);
-            intervals.push("{encoding: " + stringValue(channel) + ", " +
-                ("field: " + stringValue(p.field) + ", extent: " + dname + "}"));
+            intervals.push("{encoding: " + stringValue(channel) + ", " + ("field: " + stringValue(p.field) + ", extent: " + dname + "}"));
             scaleTriggers.push({
                 scaleName: model.scaleName(channel),
                 expr: "(!isArray(" + dname + ") || " +
                     ("(" + toNum + "invert(" + scaleStr + ", " + vname + ")[0] === " + toNum + dname + "[0] && ") +
                     (toNum + "invert(" + scaleStr + ", " + vname + ")[1] === " + toNum + dname + "[1]))")
             });
-        });
+        }
         // Proxy scale reactions to ensure that an infinite loop doesn't occur
         // when an interval selection filter touches the scale.
         if (!hasScales) {
             signals.push({
                 name: name + SCALE_TRIGGER,
-                update: scaleTriggers.map(function (t) { return t.expr; }).join(' && ') +
-                    (" ? " + (name + SCALE_TRIGGER) + " : {}")
+                update: scaleTriggers.map(function (t) { return t.expr; }).join(' && ') + (" ? " + (name + SCALE_TRIGGER) + " : {}")
             });
         }
         // Only add an interval to the store if it has valid data extents. Data extents
@@ -64,17 +63,17 @@ var interval = {
         // ordinal/nominal domains which, when inverted, will still produce a valid datum.
         return signals.concat({
             name: name + TUPLE,
-            on: [{
+            on: [
+                {
                     events: tupleTriggers.map(function (t) { return ({ signal: t }); }),
-                    update: tupleTriggers.join(' && ') +
-                        (" ? {unit: " + unitName(model) + ", intervals: [" + intervals.join(', ') + "]} : null")
-                }]
+                    update: tupleTriggers.join(' && ') + (" ? {unit: " + unitName(model) + ", intervals: [" + intervals.join(', ') + "]} : null")
+                }
+            ]
         });
     },
     modifyExpr: function (model, selCmpt) {
         var tpl = selCmpt.name + TUPLE;
-        return tpl + ', ' +
-            (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
+        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
     },
     marks: function (model, selCmpt, marks) {
         var name = selCmpt.name;
@@ -97,7 +96,10 @@ var interval = {
         if (selCmpt.resolve === 'global') {
             for (var _i = 0, _b = keys(update); _i < _b.length; _i++) {
                 var key = _b[_i];
-                update[key] = [tslib_1.__assign({ test: store + ".length && " + store + "[0].unit === " + unitName(model) }, update[key]), { value: 0 }];
+                update[key] = [
+                    tslib_1.__assign({ test: store + ".length && " + store + "[0].unit === " + unitName(model) }, update[key]),
+                    { value: 0 }
+                ];
             }
         }
         // Two brush marks ensure that fill colors and other aesthetic choices do
@@ -105,16 +107,19 @@ var interval = {
         // be interacted with (e.g., dragging it around).
         var _c = selCmpt.mark, fill = _c.fill, fillOpacity = _c.fillOpacity, stroke = tslib_1.__rest(_c, ["fill", "fillOpacity"]);
         var vgStroke = keys(stroke).reduce(function (def, k) {
-            def[k] = [{
-                    test: [
-                        xi !== null && name + "_x[0] !== " + name + "_x[1]",
-                        yi != null && name + "_y[0] !== " + name + "_y[1]",
-                    ].filter(function (x) { return x; }).join(' && '),
+            def[k] = [
+                {
+                    test: [xi !== null && name + "_x[0] !== " + name + "_x[1]", yi != null && name + "_y[0] !== " + name + "_y[1]"]
+                        .filter(function (x) { return x; })
+                        .join(' && '),
                     value: stroke[k]
-                }, { value: null }];
+                },
+                { value: null }
+            ];
             return def;
         }, {});
-        return [{
+        return [
+            {
                 name: name + BRUSH + '_bg',
                 type: 'rect',
                 clip: true,
@@ -125,7 +130,8 @@ var interval = {
                     },
                     update: update
                 }
-            }].concat(marks, {
+            }
+        ].concat(marks, {
             name: name + BRUSH,
             type: 'rect',
             clip: true,
@@ -162,15 +168,23 @@ function channelSignals(model, selCmpt, channel) {
     // to their domains (e.g., filtering) should clear the brushes.
     on.push({
         events: { signal: selCmpt.name + SCALE_TRIGGER },
-        update: hasContinuousDomain(scaleType) && !isBinScale(scaleType) ?
-            "[scale(" + scaleStr + ", " + dname + "[0]), scale(" + scaleStr + ", " + dname + "[1])]" : "[0, 0]"
+        update: hasContinuousDomain(scaleType) && !isBinScale(scaleType)
+            ? "[scale(" + scaleStr + ", " + dname + "[0]), scale(" + scaleStr + ", " + dname + "[1])]"
+            : "[0, 0]"
     });
-    return hasScales ? [{ name: dname, on: [] }] : [{
-            name: vname, value: [], on: on
-        }, {
-            name: dname,
-            on: [{ events: { signal: vname }, update: vname + "[0] === " + vname + "[1] ? null : invert(" + scaleStr + ", " + vname + ")" }]
-        }];
+    return hasScales
+        ? [{ name: dname, on: [] }]
+        : [
+            {
+                name: vname,
+                value: [],
+                on: on
+            },
+            {
+                name: dname,
+                on: [{ events: { signal: vname }, update: vname + "[0] === " + vname + "[1] ? null : invert(" + scaleStr + ", " + vname + ")" }]
+            }
+        ];
 }
 function events(selCmpt, cb) {
     return selCmpt.events.reduce(function (on, evt) {

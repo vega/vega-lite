@@ -1,7 +1,7 @@
+import { Axis as VgAxis } from 'vega';
 import { Axis, AxisPart } from '../../axis';
 import { FieldDefBase } from '../../fielddef';
 import { Omit } from '../../util';
-import { VgAxis } from '../../vega.schema';
 import { Split } from '../split';
 export declare type AxisComponentProps = Omit<VgAxis, 'title'> & {
     title: string | FieldDefBase<string>[];

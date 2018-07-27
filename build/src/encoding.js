@@ -1,10 +1,10 @@
-import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
+import { isAggregateOp } from './aggregate';
+import { isBinning } from './bin';
 import { CHANNELS, isChannel, supportMark } from './channel';
-import { getFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isValueDef, normalize, normalizeFieldDef } from './fielddef';
+import { getFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './fielddef';
 import * as log from './log';
-import { Type } from './type';
-import { contains, keys, some } from './util';
+import { keys, some } from './util';
 export function channelHasField(encoding, channel) {
     var channelDef = encoding && encoding[channel];
     if (channelDef) {
@@ -32,15 +32,64 @@ export function isAggregate(encoding) {
         return false;
     });
 }
+export function extractTransformsFromEncoding(oldEncoding, config) {
+    var groupby = [];
+    var bins = [];
+    var timeUnits = [];
+    var aggregate = [];
+    var encoding = {};
+    forEach(oldEncoding, function (channelDef, channel) {
+        if (isFieldDef(channelDef)) {
+            var transformedField = vgField(channelDef, { forAs: true });
+            if (channelDef.aggregate && isAggregateOp(channelDef.aggregate)) {
+                aggregate.push({
+                    op: channelDef.aggregate,
+                    field: channelDef.field,
+                    as: transformedField
+                });
+            }
+            else {
+                // Add bin or timeUnit transform if applicable
+                var bin = channelDef.bin;
+                if (isBinning(bin)) {
+                    var field = channelDef.field;
+                    bins.push({ bin: bin, field: field, as: transformedField });
+                }
+                else if (channelDef.timeUnit) {
+                    var timeUnit = channelDef.timeUnit, field = channelDef.field;
+                    timeUnits.push({ timeUnit: timeUnit, field: field, as: transformedField });
+                }
+                // TODO(@alanbanh): make bin correct
+                groupby.push(transformedField);
+            }
+            // now the field should refer to post-transformed field instead
+            encoding[channel] = {
+                field: vgField(channelDef),
+                type: channelDef.type,
+                title: title(channelDef, config, { allowDisabling: true })
+            };
+        }
+        else {
+            // For value def, just copy
+            encoding[channel] = oldEncoding[channel];
+        }
+    });
+    return {
+        bins: bins,
+        timeUnits: timeUnits,
+        aggregate: aggregate,
+        groupby: groupby,
+        encoding: encoding
+    };
+}
 export function normalizeEncoding(encoding, mark) {
     return keys(encoding).reduce(function (normalizedEncoding, channel) {
-        var _a;
         if (!isChannel(channel)) {
             // Drop invalid channel
             log.warn(log.message.invalidEncodingChannel(channel));
             return normalizedEncoding;
         }
-        if (!supportMark(channel, mark)) {
+        if (!supportMark(encoding, channel, mark)) {
             // Drop unsupported channel
             log.warn(log.message.incompatibleChannel(channel, mark));
             return normalizedEncoding;
@@ -64,8 +113,7 @@ export function normalizeEncoding(encoding, mark) {
             (channel === 'tooltip' && isArray(channelDef))) {
             if (channelDef) {
                 // Array of fieldDefs for detail channel (or production rule)
-                normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef])
-                    .reduce(function (defs, fieldDef) {
+                normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(function (defs, fieldDef) {
                     if (!isFieldDef(fieldDef)) {
                         log.warn(log.message.emptyFieldDef(fieldDef, channel));
                     }
@@ -77,16 +125,6 @@ export function normalizeEncoding(encoding, mark) {
             }
         }
         else {
-            var fieldDef = getFieldDef(encoding[channel]);
-            if (fieldDef && contains([Type.LATITUDE, Type.LONGITUDE], fieldDef.type)) {
-                var _b = channel, _ = normalizedEncoding[_b], newEncoding = tslib_1.__rest(normalizedEncoding, [typeof _b === "symbol" ? _b : _b + ""]);
-                var newChannel = channel === 'x' ? 'longitude' :
-                    channel === 'y' ? 'latitude' :
-                        channel === 'x2' ? 'longitude2' :
-                            channel === 'y2' ? 'latitude2' : undefined;
-                log.warn(log.message.latLongDeprecated(channel, fieldDef.type, newChannel));
-                return tslib_1.__assign({}, newEncoding, (_a = {}, _a[newChannel] = tslib_1.__assign({}, normalize(fieldDef, channel), { type: 'quantitative' }), _a));
-            }
             if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
                 log.warn(log.message.emptyFieldDef(channelDef, channel));
                 return normalizedEncoding;

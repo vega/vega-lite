@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { contains } from '../../util';
-import { isVgSignalRef } from '../../vega.schema';
+import { isSignalRef } from '../../vega.schema';
 import { isConcatModel, isLayerModel, isRepeatModel } from '../model';
 export function assembleProjections(model) {
     if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
@@ -26,7 +26,7 @@ export function assembleProjectionForModel(model) {
         signal: "[" + component.size.map(function (ref) { return ref.signal; }).join(', ') + "]"
     };
     var fit = component.data.reduce(function (sources, data) {
-        var source = isVgSignalRef(data) ? data.signal : "data('" + model.lookupDataSource(data) + "')";
+        var source = isSignalRef(data) ? data.signal : "data('" + model.lookupDataSource(data) + "')";
         if (!contains(sources, source)) {
             // build a unique list of sources
             sources.push(source);
@@ -36,9 +36,11 @@ export function assembleProjectionForModel(model) {
     if (fit.length <= 0) {
         throw new Error("Projection's fit didn't find any data sources");
     }
-    return [tslib_1.__assign({ name: name,
+    return [
+        tslib_1.__assign({ name: name,
             size: size, fit: {
                 signal: fit.length > 1 ? "[" + fit.join(', ') + "]" : fit[0]
-            } }, rest)];
+            } }, rest)
+    ];
 }
 //# sourceMappingURL=assemble.js.map

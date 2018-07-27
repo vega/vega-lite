@@ -2,8 +2,8 @@ import { COLOR, FILL, OPACITY, SHAPE, SIZE, STROKE } from '../../channel';
 import { isFieldDef, title as fieldDefTitle } from '../../fielddef';
 import { LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
 import { GEOJSON } from '../../type';
-import { deleteNestedProperty, keys } from '../../util';
-import { getSpecifiedOrDefaultValue, guideEncodeEntry, mergeTitleComponent, numberFormat } from '../common';
+import { deleteNestedProperty, getFirstDefined, keys } from '../../util';
+import { guideEncodeEntry, mergeTitleComponent, numberFormat } from '../common';
 import { isUnitModel } from '../model';
 import { parseGuideResolve } from '../resolve';
 import { defaultTieBreaker, makeImplicit, mergeValuesWithExplicit } from '../split';
@@ -22,7 +22,9 @@ function parseUnitLegend(model) {
     var encoding = model.encoding;
     return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
         var def = encoding[channel];
-        if (model.legend(channel) && model.getScaleComponent(channel) && !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
+        if (model.legend(channel) &&
+            model.getScaleComponent(channel) &&
+            !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
             legendComponent[channel] = parseLegendForChannel(model, channel);
         }
         return legendComponent;
@@ -43,33 +45,40 @@ function getLegendDefWithScale(model, channel) {
             return _a = {}, _a[channel] = model.scaleName(channel), _a;
     }
 }
+function isExplicit(value, property, legend, fieldDef) {
+    switch (property) {
+        case 'values':
+            // specified legend.values is already respected, but may get transformed.
+            return !!legend.values;
+        case 'title':
+            // title can be explicit if fieldDef.title is set
+            if (property === 'title' && value === fieldDef.title) {
+                return true;
+            }
+    }
+    // Otherwise, things are explicit if the returned value matches the specified property
+    return value === legend[property];
+}
 export function parseLegendForChannel(model, channel) {
     var fieldDef = model.fieldDef(channel);
     var legend = model.legend(channel);
     var legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
-    LEGEND_PROPERTIES.forEach(function (property) {
+    for (var _i = 0, LEGEND_PROPERTIES_1 = LEGEND_PROPERTIES; _i < LEGEND_PROPERTIES_1.length; _i++) {
+        var property = LEGEND_PROPERTIES_1[_i];
         var value = getProperty(property, legend, channel, model);
         if (value !== undefined) {
-            var explicit = 
-            // specified legend.values is already respected, but may get transformed.
-            property === 'values' ? !!legend.values :
-                // title can be explicit if fieldDef.title is set
-                property === 'title' && value === model.fieldDef(channel).title ? true :
-                    // Otherwise, things are explicit if the returned value matches the specified property
-                    value === legend[property];
+            var explicit = isExplicit(value, property, legend, fieldDef);
             if (explicit || model.config.legend[property] === undefined) {
                 legendCmpt.set(property, value, explicit);
             }
         }
-    });
-    // 2) Add mark property definition groups
+    }
     var legendEncoding = legend.encoding || {};
     var legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(function (e, part) {
         var legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
-        var value = encode[part] ?
-            // TODO: replace legendCmpt with type is sufficient
-            encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt.get('type')) : // apply rule
-            legendEncodingPart; // no rule -- just default values
+        var value = encode[part]
+            ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
+            : legendEncodingPart; // no rule -- just default values
         if (value !== undefined && keys(value).length > 0) {
             e[part] = { update: value };
         }
@@ -87,15 +96,14 @@ function getProperty(property, specifiedLegend, channel, model) {
             // We don't include temporal field here as we apply format in encode block
             return numberFormat(fieldDef, specifiedLegend.format, model.config);
         case 'title':
-            // For falsy value, keep undefined so we use default,
-            // but use null for '', null, and false to hide the title
-            var specifiedTitle = fieldDef.title !== undefined ? fieldDef.title :
-                specifiedLegend.title || (specifiedLegend.title === undefined ? undefined : null);
-            return getSpecifiedOrDefaultValue(specifiedTitle, fieldDefTitle(fieldDef, model.config)) || undefined; // make falsy value undefined so output Vega spec is shorter
+            return fieldDefTitle(fieldDef, model.config, { allowDisabling: true }) || undefined;
+        // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
+        // case 'clipHeight':
+        //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+        case 'labelOverlap':
+            return getFirstDefined(specifiedLegend.labelOverlap, properties.labelOverlap(model.getScaleComponent(channel).get('type')));
         case 'values':
             return properties.values(specifiedLegend, fieldDef);
-        case 'type':
-            return getSpecifiedOrDefaultValue(specifiedLegend.type, properties.type(fieldDef.type, channel, model.getScaleComponent(channel).get('type')));
     }
     // Otherwise, return specified property.
     return specifiedLegend[property];

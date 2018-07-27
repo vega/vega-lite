@@ -6,8 +6,8 @@ import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark: Rule', function () {
     describe('without encoding', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {}
+            mark: 'rule',
+            encoding: {}
         });
         var props = rule.encodeEntry(model);
         it('should not show anything', function () {
@@ -17,8 +17,8 @@ describe('Mark: Rule', function () {
     });
     describe('with x-only', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": { "x": { "field": "a", "type": "quantitative" } }
+            mark: 'rule',
+            encoding: { x: { field: 'a', type: 'quantitative' } }
         });
         var props = rule.encodeEntry(model);
         it('should create vertical rule that fits height', function () {
@@ -29,8 +29,8 @@ describe('Mark: Rule', function () {
     });
     describe('with y-only', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": { "y": { "field": "a", "type": "quantitative" } }
+            mark: 'rule',
+            encoding: { y: { field: 'a', type: 'quantitative' } }
         });
         var props = rule.encodeEntry(model);
         it('should create horizontal rule that fits height', function () {
@@ -41,10 +41,10 @@ describe('Mark: Rule', function () {
     });
     describe('with x and x2 only', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "quantitative" },
-                "x2": { "field": "a2", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'quantitative' },
+                x2: { field: 'a2', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -59,10 +59,10 @@ describe('Mark: Rule', function () {
     });
     describe('with y and y2 only', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "y": { "field": "a", "type": "quantitative" },
-                "y2": { "field": "a2", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                y: { field: 'a', type: 'quantitative' },
+                y2: { field: 'a2', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -77,11 +77,11 @@ describe('Mark: Rule', function () {
     });
     describe('with x, x2, and y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "quantitative" },
-                "x2": { "field": "a2", "type": "quantitative" },
-                "y": { "field": "b", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'quantitative' },
+                x2: { field: 'a2', type: 'quantitative' },
+                y: { field: 'b', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -93,12 +93,12 @@ describe('Mark: Rule', function () {
     });
     describe('with x, x2, y, and y2', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "quantitative" },
-                "x2": { "field": "a2", "type": "quantitative" },
-                "y": { "field": "b", "type": "quantitative" },
-                "y2": { "field": "b2", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'quantitative' },
+                x2: { field: 'a2', type: 'quantitative' },
+                y: { field: 'b', type: 'quantitative' },
+                y2: { field: 'b2', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -111,10 +111,10 @@ describe('Mark: Rule', function () {
     });
     describe('with x and y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "quantitative" },
-                "y": { "field": "b", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'quantitative' },
+                y: { field: 'b', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -125,11 +125,11 @@ describe('Mark: Rule', function () {
     });
     describe('with y, y2, and x', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "y": { "field": "a", "type": "quantitative" },
-                "y2": { "field": "a2", "type": "quantitative" },
-                "x": { "field": "b", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                y: { field: 'a', type: 'quantitative' },
+                y2: { field: 'a2', type: 'quantitative' },
+                x: { field: 'b', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -141,10 +141,10 @@ describe('Mark: Rule', function () {
     });
     describe('with nominal x, quantitative y with no y2', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "ordinal" },
-                "y": { "field": "b", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'ordinal' },
+                y: { field: 'b', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -157,10 +157,10 @@ describe('Mark: Rule', function () {
     });
     describe('with nominal y, quantitative x with no y2', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "y": { "field": "a", "type": "ordinal" },
-                "x": { "field": "b", "type": "quantitative" }
+            mark: 'rule',
+            encoding: {
+                y: { field: 'a', type: 'ordinal' },
+                x: { field: 'b', type: 'quantitative' }
             }
         });
         var props = rule.encodeEntry(model);
@@ -173,14 +173,15 @@ describe('Mark: Rule', function () {
     });
     describe('horizontal stacked rule with color', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "y": { "field": "a", "type": "ordinal" },
-                "x": { "aggregate": "sum", "field": "b", "type": "quantitative" },
-                "color": { "field": "Origin", "type": "nominal" }
+            mark: 'rule',
+            encoding: {
+                y: { field: 'a', type: 'ordinal' },
+                x: { aggregate: 'sum', field: 'b', type: 'quantitative' },
+                color: { field: 'Origin', type: 'nominal' }
             },
-            "config": {
-                "stack": "zero"
+            config: {
+                stack: 'zero',
+                invalidValues: null
             }
         });
         var props = rule.encodeEntry(model);
@@ -192,14 +193,15 @@ describe('Mark: Rule', function () {
     });
     describe('vertical stacked rule with color', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "rule",
-            "encoding": {
-                "x": { "field": "a", "type": "ordinal" },
-                "y": { "aggregate": "sum", "field": "b", "type": "quantitative" },
-                "color": { "field": "Origin", "type": "nominal" }
+            mark: 'rule',
+            encoding: {
+                x: { field: 'a', type: 'ordinal' },
+                y: { aggregate: 'sum', field: 'b', type: 'quantitative' },
+                color: { field: 'Origin', type: 'nominal' }
             },
-            "config": {
-                "stack": "zero"
+            config: {
+                stack: 'zero',
+                invalidValues: null
             }
         });
         var props = rule.encodeEntry(model);

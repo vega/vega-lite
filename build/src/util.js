@@ -54,7 +54,7 @@ export function hash(a) {
     var h = 0;
     for (var i = 0; i < str.length; i++) {
         var char = str.charCodeAt(i);
-        h = ((h << 5) - h) + char;
+        h = (h << 5) - h + char;
         h = h & h; // Convert to 32bit integer
     }
     return h;
@@ -255,13 +255,17 @@ export function accessPathWithDatum(path, datum) {
     var pieces = splitAccessPath(path);
     var prefixes = [];
     for (var i = 1; i <= pieces.length; i++) {
-        var prefix = "[" + pieces.slice(0, i).map(stringValue).join('][') + "]";
+        var prefix = "[" + pieces
+            .slice(0, i)
+            .map(stringValue)
+            .join('][') + "]";
         prefixes.push("" + datum + prefix);
     }
     return prefixes.join(' && ');
 }
 /**
- * Return access with datum to the falttened field.
+ * Return access with datum to the flattened field.
+ *
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
@@ -274,7 +278,9 @@ export function flatAccessWithDatum(path, datum) {
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
  */
 export function replacePathInField(path) {
-    return "" + splitAccessPath(path).map(function (p) { return p.replace('.', '\\.'); }).join('\\.');
+    return "" + splitAccessPath(path)
+        .map(function (p) { return p.replace('.', '\\.'); })
+        .join('\\.');
 }
 /**
  * Remove path accesses with access from field.
@@ -291,5 +297,21 @@ export function accessPathDepth(path) {
         return 0;
     }
     return splitAccessPath(path).length;
+}
+/**
+ * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
+ */
+export function getFirstDefined() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    for (var _a = 0, args_1 = args; _a < args_1.length; _a++) {
+        var arg = args_1[_a];
+        if (arg !== undefined) {
+            return arg;
+        }
+    }
+    return undefined;
 }
 //# sourceMappingURL=util.js.map

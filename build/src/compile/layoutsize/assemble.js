@@ -1,4 +1,5 @@
 import { hasDiscreteDomain } from '../../scale';
+import { getFirstDefined } from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
 import { isFacetModel } from '../model';
 export function assembleLayoutSignals(model) {
@@ -41,30 +42,34 @@ export function sizeSignals(model, sizeType) {
         throw new Error('layout size is range step although there is no rangeStep.');
     }
     else {
-        return [{
+        return [
+            {
                 name: name,
                 value: size
-            }];
+            }
+        ];
     }
 }
 function stepSignal(scaleName, range) {
     return {
         name: scaleName + '_step',
-        value: range.step,
+        value: range.step
     };
 }
 export function sizeExpr(scaleName, scaleComponent, cardinality) {
     var type = scaleComponent.get('type');
     var padding = scaleComponent.get('padding');
-    var paddingOuter = scaleComponent.get('paddingOuter');
-    paddingOuter = paddingOuter !== undefined ? paddingOuter : padding;
+    var paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
     var paddingInner = scaleComponent.get('paddingInner');
-    paddingInner = type === 'band' ?
-        // only band has real paddingInner
-        (paddingInner !== undefined ? paddingInner : padding) :
-        // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-        1;
+    paddingInner =
+        type === 'band'
+            ? // only band has real paddingInner
+                paddingInner !== undefined
+                    ? paddingInner
+                    : padding
+            : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
+                // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+                1;
     return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + scaleName + "_step";
 }
 //# sourceMappingURL=assemble.js.map

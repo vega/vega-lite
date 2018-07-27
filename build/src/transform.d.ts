@@ -1,6 +1,7 @@
 import { AggregateOp } from 'vega';
 import { BinParams } from './bin';
 import { Data } from './data';
+import { ImputeParams } from './impute';
 import { LogicalOperand } from './logical';
 import { Predicate } from './predicate';
 import { SortField } from './sort';
@@ -91,9 +92,6 @@ export interface AggregatedFieldDef {
      */
     as: string;
 }
-/**
- * @hide
- */
 export interface StackTransform {
     /**
      * The field which is stacked.
@@ -167,6 +165,62 @@ export interface WindowTransform {
      */
     sort?: SortField[];
 }
+export interface ImputeSequence {
+    /**
+     * The starting value of the sequence.
+     * __Default value:__ `0`
+     */
+    start?: number;
+    /**
+     * The ending value(exclusive) of the sequence.
+     */
+    stop: number;
+    /**
+     * The step value between sequence entries.
+     * __Default value:__ `1` or `-1` if `stop < start`
+     */
+    step?: number;
+}
+export declare function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence;
+export interface ImputeTransform extends ImputeParams {
+    /**
+     * The data field for which the missing values should be imputed.
+     */
+    impute: string;
+    /**
+     * A key field that uniquely identifies data objects within a group.
+     * Missing key values (those occurring in the data but not in the current group) will be imputed.
+     */
+    key: string;
+    /**
+     * An optional array of fields by which to group the values.
+     * Imputation will then be performed on a per-group basis.
+     */
+    groupby?: string[];
+}
+export interface FlattenTransform {
+    /**
+     * An array of one or more data fields containing arrays to flatten.
+     * If multiple fields are specified, their array values should have a parallel structure, ideally with the same length.
+     * If the lengths of parallel arrays do not match,
+     * the longest array will be used with `null` values added for missing entries.
+     */
+    flatten: string[];
+    /**
+     * The output field names for extracted array values.
+     *
+     * __Default value:__ The field name of the corresponding array field
+     */
+    as?: string[];
+}
+export interface SampleTransform {
+    /**
+     * The maximum number of data objects to include in the sample.
+     *
+     * __Default value:__ `1000`
+     */
+    sample: number;
+}
 export interface LookupData {
     /**
      * Secondary data source to lookup in.
@@ -204,14 +258,29 @@ export interface LookupTransform {
      */
     default?: string;
 }
+export interface FoldTransform {
+    /**
+     * An array of data fields indicating the properties to fold.
+     */
+    fold: string[];
+    /**
+     * The output field names for the key and value properties produced by the fold transform.
+     * __Default value:__ `["key", "value"]`
+     */
+    as?: [string, string];
+}
 export declare function isLookup(t: Transform): t is LookupTransform;
+export declare function isSample(t: Transform): t is SampleTransform;
 export declare function isWindow(t: Transform): t is WindowTransform;
+export declare function isFlatten(t: Transform): t is FlattenTransform;
 export declare function isCalculate(t: Transform): t is CalculateTransform;
 export declare function isBin(t: Transform): t is BinTransform;
+export declare function isImpute(t: Transform): t is ImputeTransform;
 export declare function isTimeUnit(t: Transform): t is TimeUnitTransform;
 export declare function isAggregate(t: Transform): t is AggregateTransform;
 export declare function isStack(t: Transform): t is StackTransform;
-export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform;
-export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | AggregateTransform | WindowTransform | StackTransform | {
+export declare function isFold(t: Transform): t is FoldTransform;
+export declare type Transform = FilterTransform | CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform;
+export declare function normalizeTransform(transform: Transform[]): (CalculateTransform | LookupTransform | BinTransform | TimeUnitTransform | ImputeTransform | AggregateTransform | WindowTransform | StackTransform | FlattenTransform | FoldTransform | SampleTransform | {
     filter: LogicalOperand<Predicate>;
 })[];

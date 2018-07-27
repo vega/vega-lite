@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { MAIN, RAW } from '../../data';
 import * as log from '../../log';
-import { isAggregate, isBin, isCalculate, isFilter, isLookup, isStack, isTimeUnit, isWindow } from '../../transform';
+import { isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow } from '../../transform';
 import { keys } from '../../util';
 import { isFacetModel, isLayerModel, isUnitModel } from '../model';
 import { requiresSelectionId } from '../selection/selection';
@@ -11,13 +11,16 @@ import { CalculateNode } from './calculate';
 import { OutputNode } from './dataflow';
 import { FacetNode } from './facet';
 import { FilterNode } from './filter';
-import { FilterInvalidNode } from './filterinvalid';
+import { FlattenTransformNode } from './flatten';
+import { FoldTransformNode } from './fold';
 import { ParseNode } from './formatparse';
 import { GeoJSONNode } from './geojson';
 import { GeoPointNode } from './geopoint';
 import { IdentifierNode } from './identifier';
+import { ImputeNode } from './impute';
 import { AncestorParse } from './index';
 import { LookupNode } from './lookup';
+import { SampleTransformNode } from './sample';
 import { SourceNode } from './source';
 import { StackNode } from './stack';
 import { TimeUnitNode } from './timeunit';
@@ -39,7 +42,9 @@ function parseRoot(model, sources) {
     }
     else {
         // If we don't have a source defined (overriding parent's data), use the parent's facet root or main.
-        return model.parent.component.data.facetRoot ? model.parent.component.data.facetRoot : model.parent.component.data.main;
+        return model.parent.component.data.facetRoot
+            ? model.parent.component.data.facetRoot
+            : model.parent.component.data.main;
     }
 }
 /**
@@ -48,59 +53,67 @@ function parseRoot(model, sources) {
 export function parseTransformArray(head, model, ancestorParse) {
     var lookupCounter = 0;
     model.transforms.forEach(function (t) {
+        var derivedType = undefined;
+        var transformNode;
         if (isCalculate(t)) {
-            head = new CalculateNode(head, t);
-            ancestorParse.set(t.as, 'derived', false);
+            transformNode = head = new CalculateNode(head, t);
+            derivedType = 'derived';
         }
         else if (isFilter(t)) {
-            head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
+            transformNode = head = ParseNode.makeImplicitFromFilterTransform(head, t, ancestorParse) || head;
             head = new FilterNode(head, model, t.filter);
         }
         else if (isBin(t)) {
-            var bin = head = BinNode.makeFromTransform(head, t, model);
-            for (var _i = 0, _a = keys(bin.producedFields()); _i < _a.length; _i++) {
-                var field = _a[_i];
-                ancestorParse.set(field, 'number', false);
-            }
+            transformNode = head = BinNode.makeFromTransform(head, t, model);
+            derivedType = 'number';
         }
         else if (isTimeUnit(t)) {
-            head = TimeUnitNode.makeFromTransform(head, t);
-            ancestorParse.set(t.as, 'date', false);
+            transformNode = head = TimeUnitNode.makeFromTransform(head, t);
+            derivedType = 'date';
         }
         else if (isAggregate(t)) {
-            var agg = head = AggregateNode.makeFromTransform(head, t);
+            transformNode = head = AggregateNode.makeFromTransform(head, t);
+            derivedType = 'number';
             if (requiresSelectionId(model)) {
                 head = new IdentifierNode(head);
             }
-            for (var _b = 0, _c = keys(agg.producedFields()); _b < _c.length; _b++) {
-                var field = _c[_b];
-                ancestorParse.set(field, 'derived', false);
-            }
         }
         else if (isLookup(t)) {
-            var lookup = head = LookupNode.make(head, model, t, lookupCounter++);
-            for (var _d = 0, _e = keys(lookup.producedFields()); _d < _e.length; _d++) {
-                var field = _e[_d];
-                ancestorParse.set(field, 'derived', false);
-            }
+            transformNode = head = LookupNode.make(head, model, t, lookupCounter++);
+            derivedType = 'derived';
         }
         else if (isWindow(t)) {
-            var window_1 = head = new WindowTransformNode(head, t);
-            for (var _f = 0, _g = keys(window_1.producedFields()); _f < _g.length; _f++) {
-                var field = _g[_f];
-                ancestorParse.set(field, 'derived', false);
-            }
+            transformNode = head = new WindowTransformNode(head, t);
+            derivedType = 'number';
         }
         else if (isStack(t)) {
-            var stack = head = StackNode.makeFromTransform(head, t);
-            for (var _h = 0, _j = keys(stack.producedFields()); _h < _j.length; _h++) {
-                var field = _j[_h];
-                ancestorParse.set(field, 'derived', false);
-            }
+            transformNode = head = StackNode.makeFromTransform(head, t);
+            derivedType = 'derived';
+        }
+        else if (isFold(t)) {
+            transformNode = head = new FoldTransformNode(head, t);
+            derivedType = 'derived';
+        }
+        else if (isFlatten(t)) {
+            transformNode = head = new FlattenTransformNode(head, t);
+            derivedType = 'derived';
+        }
+        else if (isSample(t)) {
+            head = new SampleTransformNode(head, t);
+        }
+        else if (isImpute(t)) {
+            transformNode = head = ImputeNode.makeFromTransform(head, t);
+            derivedType = 'derived';
         }
         else {
             log.warn(log.message.invalidTransformIgnored(t));
             return;
+        }
+        if (transformNode && derivedType !== undefined) {
+            for (var _i = 0, _a = keys(transformNode.producedFields()); _i < _a.length; _i++) {
+                var field = _a[_i];
+                ancestorParse.set(field, derivedType, false);
+            }
         }
     });
     return head;
@@ -213,10 +226,8 @@ export function parseData(model) {
                 head = new IdentifierNode(head);
             }
         }
+        head = ImputeNode.makeFromEncoding(head, model) || head;
         head = StackNode.makeFromEncoding(head, model) || head;
-    }
-    if (isUnitModel(model)) {
-        head = FilterInvalidNode.make(head, model) || head;
     }
     // output node for marks
     var mainName = model.getName(MAIN);

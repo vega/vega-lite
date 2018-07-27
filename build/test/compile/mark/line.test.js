@@ -7,11 +7,11 @@ import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark: Line', function () {
     describe('with x, y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "data": { "url": "data/barley.json" },
-            "mark": "line",
-            "encoding": {
-                "x": { "field": "year", "type": "ordinal" },
-                "y": { "field": "yield", "type": "quantitative" }
+            data: { url: 'data/barley.json' },
+            mark: 'line',
+            encoding: {
+                x: { field: 'year', type: 'ordinal' },
+                y: { field: 'yield', type: 'quantitative' }
             }
         });
         var props = line.encodeEntry(model);
@@ -24,12 +24,12 @@ describe('Mark: Line', function () {
     });
     describe('with x, y, color', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "data": { "url": "data/barley.json" },
-            "mark": "line",
-            "encoding": {
-                "x": { "field": "year", "type": "ordinal" },
-                "y": { "field": "yield", "type": "quantitative" },
-                "color": { "field": "Acceleration", "type": "quantitative" }
+            data: { url: 'data/barley.json' },
+            mark: 'line',
+            encoding: {
+                x: { field: 'year', type: 'ordinal' },
+                y: { field: 'yield', type: 'quantitative' },
+                color: { field: 'Acceleration', type: 'quantitative' }
             }
         });
         var props = line.encodeEntry(model);
@@ -40,12 +40,12 @@ describe('Mark: Line', function () {
     describe('with x, y, size', function () {
         it('should have scale for size', function () {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "data": { "url": "data/barley.json" },
-                "mark": "line",
-                "encoding": {
-                    "x": { "field": "year", "type": "ordinal" },
-                    "y": { "field": "yield", "type": "quantitative", "aggregate": "mean" },
-                    "size": { "field": "variety", "type": "nominal" }
+                data: { url: 'data/barley.json' },
+                mark: 'line',
+                encoding: {
+                    x: { field: 'year', type: 'ordinal' },
+                    y: { field: 'yield', type: 'quantitative', aggregate: 'mean' },
+                    size: { field: 'variety', type: 'nominal' }
                 }
             });
             var props = line.encodeEntry(model);
@@ -53,12 +53,12 @@ describe('Mark: Line', function () {
         });
         it('should drop aggregate size field', log.wrap(function (localLogger) {
             var model = parseUnitModelWithScaleAndLayoutSize({
-                "data": { "url": "data/barley.json" },
-                "mark": "line",
-                "encoding": {
-                    "x": { "field": "year", "type": "ordinal" },
-                    "y": { "field": "yield", "type": "quantitative", "aggregate": "mean" },
-                    "size": { "field": "Acceleration", "type": "quantitative", "aggregate": "mean" }
+                data: { url: 'data/barley.json' },
+                mark: 'line',
+                encoding: {
+                    x: { field: 'year', type: 'ordinal' },
+                    y: { field: 'yield', type: 'quantitative', aggregate: 'mean' },
+                    size: { field: 'Acceleration', type: 'quantitative', aggregate: 'mean' }
                 }
             });
             var props = line.encodeEntry(model);
@@ -69,14 +69,14 @@ describe('Mark: Line', function () {
     });
     describe('with stacked y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "data": { "url": "data/barley.json" },
-            "mark": "line",
-            "encoding": {
-                "x": { "field": "year", "type": "ordinal" },
-                "y": { "field": "yield", "type": "quantitative", "aggregate": "sum" },
-                "color": { "field": "a", "type": "nominal" }
+            data: { url: 'data/barley.json' },
+            mark: 'line',
+            encoding: {
+                x: { field: 'year', type: 'ordinal' },
+                y: { field: 'yield', type: 'quantitative', aggregate: 'sum' },
+                color: { field: 'a', type: 'nominal' }
             },
-            "config": { "stack": "zero" }
+            config: { stack: 'zero' }
         });
         var props = line.encodeEntry(model);
         it('should use y_end', function () {
@@ -85,14 +85,14 @@ describe('Mark: Line', function () {
     });
     describe('with stacked x', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "data": { "url": "data/barley.json" },
-            "mark": "line",
-            "encoding": {
-                "y": { "field": "year", "type": "ordinal" },
-                "x": { "field": "yield", "type": "quantitative", "aggregate": "sum" },
-                "color": { "field": "a", "type": "nominal" }
+            data: { url: 'data/barley.json' },
+            mark: 'line',
+            encoding: {
+                y: { field: 'year', type: 'ordinal' },
+                x: { field: 'yield', type: 'quantitative', aggregate: 'sum' },
+                color: { field: 'a', type: 'nominal' }
             },
-            "config": { "stack": "zero" }
+            config: { stack: 'zero' }
         });
         var props = line.encodeEntry(model);
         it('should use x_end', function () {
@@ -101,9 +101,9 @@ describe('Mark: Line', function () {
     });
     describe('with x', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "line",
-            "encoding": { "x": { "field": "year", "type": "ordinal" } },
-            "data": { "url": "data/barley.json" }
+            mark: 'line',
+            encoding: { x: { field: 'year', type: 'ordinal' } },
+            data: { url: 'data/barley.json' }
         });
         var props = line.encodeEntry(model);
         it('should be centered on y', function () {
@@ -118,9 +118,9 @@ describe('Mark: Line', function () {
     });
     describe('with y', function () {
         var model = parseUnitModelWithScaleAndLayoutSize({
-            "mark": "line",
-            "encoding": { "y": { "field": "year", "type": "ordinal" } },
-            "data": { "url": "data/barley.json" }
+            mark: 'line',
+            encoding: { y: { field: 'year', type: 'ordinal' } },
+            data: { url: 'data/barley.json' }
         });
         var props = line.encodeEntry(model);
         it('should be centered on x', function () {

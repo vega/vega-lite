@@ -1,27 +1,30 @@
-import * as tslib_1 from "tslib";
+import { keys } from '../util';
 import { isMarkDef } from './../mark';
-import { BOXPLOT, normalizeBoxPlot, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX } from './boxplot';
-import { ERRORBAR, normalizeErrorBar } from './errorbar';
-// This package import below makes the generated .d.ts file compatible with
-// Typescript 2.7 so that libraries requiring us can use Typedoc (which
-// currently is limited to Typescript 2.7). This comment and import can be
-// removed when Typedoc is updated to Typescript 2.9 or later. See
-// https://github.com/vega/vega-lite/issues/3862 for more details.
-import * as boxplot from './boxplot';
+import { BOXPLOT, BOXPLOT_PARTS, normalizeBoxPlot } from './boxplot';
+import { ERRORBAND, ERRORBAND_PARTS, normalizeErrorBand } from './errorband';
+import { ERRORBAR, ERRORBAR_PARTS, normalizeErrorBar } from './errorbar';
 /**
  * Registry index for all composite mark's normalizer
  */
-var normalizerRegistry = {};
-export function add(mark, normalizer) {
-    normalizerRegistry[mark] = normalizer;
+var compositeMarkRegistry = {};
+export function add(mark, normalizer, parts) {
+    compositeMarkRegistry[mark] = { normalizer: normalizer, parts: parts };
 }
 export function remove(mark) {
-    delete normalizerRegistry[mark];
+    delete compositeMarkRegistry[mark];
 }
-export var COMPOSITE_MARK_STYLES = boxplot.BOXPLOT_STYLES;
-export var VL_ONLY_COMPOSITE_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({}, VL_ONLY_BOXPLOT_CONFIG_PROPERTY_INDEX);
-add(BOXPLOT, normalizeBoxPlot);
-add(ERRORBAR, normalizeErrorBar);
+export function getAllCompositeMarks() {
+    return keys(compositeMarkRegistry);
+}
+export function getCompositeMarkParts(mark) {
+    if (mark in compositeMarkRegistry) {
+        return compositeMarkRegistry[mark].parts;
+    }
+    throw new Error("Unregistered composite mark " + mark);
+}
+add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
+add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
+add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
 /**
  * Transform a unit spec with composite mark into a normal layer spec.
  */
@@ -29,8 +32,8 @@ export function normalize(
 // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
 spec, config) {
     var mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    var normalizer = normalizerRegistry[mark];
-    if (normalizer) {
+    if (mark in compositeMarkRegistry) {
+        var normalizer = compositeMarkRegistry[mark].normalizer;
         return normalizer(spec, config);
     }
     throw new Error("Invalid mark type \"" + mark + "\"");

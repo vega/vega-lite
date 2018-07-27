@@ -5,18 +5,21 @@ describe('compile/scale/assemble', function () {
     describe('assembleScales', function () {
         it('includes all scales for concat', function () {
             var model = parseConcatModel({
-                vconcat: [{
+                vconcat: [
+                    {
                         mark: 'point',
                         encoding: {
                             x: { field: 'a', type: 'ordinal' }
                         }
-                    }, {
+                    },
+                    {
                         mark: 'bar',
                         encoding: {
                             x: { field: 'b', type: 'ordinal' },
                             y: { field: 'c', type: 'quantitative' }
                         }
-                    }]
+                    }
+                ]
             });
             model.parseScale();
             var scales = assembleScales(model);
@@ -24,19 +27,22 @@ describe('compile/scale/assemble', function () {
         });
         it('includes all scales from children for layer, both shared and independent', function () {
             var model = parseLayerModel({
-                layer: [{
+                layer: [
+                    {
                         mark: 'point',
                         encoding: {
                             x: { field: 'a', type: 'quantitative' },
                             y: { field: 'c', type: 'quantitative' }
                         }
-                    }, {
+                    },
+                    {
                         mark: 'point',
                         encoding: {
                             x: { field: 'b', type: 'quantitative' },
                             y: { field: 'c', type: 'quantitative' }
                         }
-                    }],
+                    }
+                ],
                 resolve: {
                     scale: {
                         x: 'independent'

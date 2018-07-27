@@ -9,16 +9,16 @@ var single = {
         var hasSignal = signals.filter(function (s) { return s.name === selCmpt.name; });
         var data = "data(" + stringValue(selCmpt.name + STORE) + ")";
         var values = data + "[0].values";
-        return hasSignal.length ? signals : signals.concat({
-            name: selCmpt.name,
-            update: data + ".length && {" +
-                selCmpt.project.map(function (p, i) { return p.field + ": " + values + "[" + i + "]"; }).join(', ') + '}'
-        });
+        return hasSignal.length
+            ? signals
+            : signals.concat({
+                name: selCmpt.name,
+                update: data + ".length && {" + selCmpt.project.map(function (p, i) { return p.field + ": " + values + "[" + i + "]"; }).join(', ') + '}'
+            });
     },
     modifyExpr: function (model, selCmpt) {
         var tpl = selCmpt.name + TUPLE;
-        return tpl + ', ' +
-            (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
+        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
     }
 };
 export default single;

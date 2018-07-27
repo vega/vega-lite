@@ -2,6 +2,7 @@ import { FieldDef } from '../../fielddef';
 import { VgFormulaTransform } from '../../vega.schema';
 import { ModelWithField } from '../model';
 import { SingleDefChannel } from './../../channel';
+import { FieldRefOption } from './../../fielddef';
 import { CalculateTransform } from './../../transform';
 import { DataFlowNode } from './dataflow';
 /**
@@ -15,4 +16,4 @@ export declare class CalculateNode extends DataFlowNode {
     producedFields(): {};
     assemble(): VgFormulaTransform;
 }
-export declare function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, expr?: 'datum'): string;
+export declare function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption): string;
