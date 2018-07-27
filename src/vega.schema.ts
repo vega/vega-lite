@@ -3,7 +3,7 @@ import {Align, Field as VgField, FontStyle, FontWeight, SignalRef, SortField, Te
 // Transform Imports
 import {
   AggregateTransform,
-  // BinTransform,
+  BinTransform,
   CollectTransform,
   ExtentTransform,
   FilterTransform,
@@ -24,6 +24,7 @@ import {
 // Exporting Transforms with Vg-prefix
 export {
   AggregateTransform as VgAggregateTransform,
+  BinTransform as VgBinTransform,
   CollectTransform as VgCollectTransform,
   ExtentTransform as VgExtentTransform,
   FilterTransform as VgFilterTransform,
@@ -375,14 +376,6 @@ export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef &
 //  ...
 // }
 
-export interface VgBinTransform extends BaseBin {
-  type: 'bin';
-  extent?: number[] | {signal: string};
-  field: string;
-  as: string[];
-  signal?: string;
-}
-
 export interface VgStackTransform {
   type: 'stack';
   offset?: StackOffset;
@@ -393,7 +386,7 @@ export interface VgStackTransform {
 }
 
 export type VgTransform =
-  | VgBinTransform // TODO
+  | BinTransform
   | ExtentTransform
   | FormulaTransform
   | AggregateTransform

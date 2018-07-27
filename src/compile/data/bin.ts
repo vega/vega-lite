@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
@@ -71,7 +72,7 @@ export interface BinComponent {
   field: string;
   extentSignal?: string;
   signal?: string;
-  as: string[];
+  as: [string, string];
 
   // Range Formula
 
@@ -148,23 +149,24 @@ export class BinNode extends DataFlowNode {
     return flatten(
       vals(this.bins).map(bin => {
         const transform: VgTransform[] = [];
-
-        const binTrans: VgBinTransform = {
-          type: 'bin',
-          field: bin.field,
-          as: bin.as,
-          signal: bin.signal,
-          ...bin.bin
-        };
-
+        let extent: SignalRef;
         if (!bin.bin.extent && bin.extentSignal) {
           transform.push({
             type: 'extent',
             field: bin.field,
             signal: bin.extentSignal
           });
-          binTrans.extent = {signal: bin.extentSignal};
+          extent = {signal: bin.extentSignal};
         }
+
+        const binTrans = {
+          type: 'bin',
+          field: bin.field,
+          as: bin.as,
+          signal: bin.signal,
+          ...bin.bin,
+          ...(extent !== undefined ? {extent: extent} : {})
+        } as VgBinTransform;
 
         transform.push(binTrans);
 

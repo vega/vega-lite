@@ -33,7 +33,7 @@ export interface BaseBin {
    *
    * @minItems 1
    */
-  divide?: number[];
+  divide?: [number, number];
   /**
    * Maximum number of bins.
    *
