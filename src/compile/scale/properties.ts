@@ -1,4 +1,4 @@
-import {Channel, ScaleChannel, X, Y} from '../../channel';
+import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
@@ -12,6 +12,7 @@ import {
   NiceTime,
   Scale,
   ScaleConfig,
+  ScaleType,
   scaleTypeSupportProperty
 } from '../../scale';
 import {Sort} from '../../sort';
@@ -21,8 +22,6 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {COLOR, FILL, STROKE} from './../../channel';
-import {ScaleType} from './../../scale';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseScaleRange} from './range';
 

@@ -5,7 +5,7 @@ import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
-import {UnitModel} from './../unit';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {

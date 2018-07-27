@@ -7,7 +7,7 @@ import {AggregateTransform} from '../../transform';
 import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
-import {UnitModel} from './../unit';
+import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {

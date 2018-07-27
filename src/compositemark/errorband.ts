@@ -1,10 +1,10 @@
 import {Config} from '../config';
+import {Encoding} from '../encoding';
+import * as log from '../log';
 import {MarkDef} from '../mark';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
-import {Encoding} from './../encoding';
-import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {Interpolate, Orient} from './../vega.schema';
+import {Interpolate, Orient} from '../vega.schema';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
 

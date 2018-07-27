@@ -1,23 +1,23 @@
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
+import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import {Field, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys} from '../util';
-import {Encoding, extractTransformsFromEncoding} from './../encoding';
-import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
-import {Orient} from './../vega.schema';
+import {Orient} from '../vega.schema';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
   filterUnsupportedChannels,
   GenericCompositeMarkDef,
-  makeCompositeAggregatePartFactory
+  makeCompositeAggregatePartFactory,
+  PartsMixins
 } from './common';
-import {PartsMixins} from './common';
 import {ErrorBand, ErrorBandDef} from './errorband';
 
 export const ERRORBAR: 'errorbar' = 'errorbar';

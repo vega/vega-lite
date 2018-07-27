@@ -5,9 +5,9 @@ import {isSortArray} from '../../sort';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {SingleDefChannel} from './../../channel';
-import {FieldRefOption} from './../../fielddef';
-import {CalculateTransform} from './../../transform';
+import {SingleDefChannel} from '../../channel';
+import {FieldRefOption} from '../../fielddef';
+import {CalculateTransform} from '../../transform';
 import {DataFlowNode} from './dataflow';
 
 /**

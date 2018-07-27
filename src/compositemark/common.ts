@@ -1,13 +1,13 @@
 import {isBoolean, isString} from 'vega-util';
-
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
 import {Encoding, reduce} from '../encoding';
 import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {Orient} from '../vega.schema';
-import * as log from './../log';
+
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 

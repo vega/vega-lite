@@ -6,8 +6,8 @@ import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
+import {Orient} from '../../vega.schema';
 import {getMarkConfig} from '../common';
-import {Orient} from './../../vega.schema';
 
 export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string>, config: Config) {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
