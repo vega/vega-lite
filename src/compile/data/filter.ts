@@ -32,7 +32,6 @@ export class FilterNode extends TransformNode {
   }
 
   public hash() {
-    // FIX include something from model in hash
     return hash(this.filter);
   }
 }
