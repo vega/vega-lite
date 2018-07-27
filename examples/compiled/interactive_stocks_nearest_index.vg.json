@@ -94,7 +94,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -129,7 +129,7 @@
             {"scale": "color", "field": "symbol"}
           ],
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -171,7 +171,9 @@
             },
             {"value": "black"}
           ],
-          "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"field": {"group": "height"}},
           "y2": {"value": 0}
@@ -192,10 +194,12 @@
             },
             {"value": "black"}
           ],
-          "tooltip": {"signal": "{\"date\": timeFormat(datum[\"date\"], '')}"},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
-          "text": {"signal": "timeFormat(datum[\"date\"], '')"}
+          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"}
         }
       }
     }

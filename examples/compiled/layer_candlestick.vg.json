@@ -244,7 +244,7 @@
             {"value": "#ae1325"}
           ],
           "tooltip": {
-            "signal": "{\"Date in 2009\": timeFormat(datum[\"date\"], ''), \"low\": format(datum[\"low\"], \"\"), \"high\": format(datum[\"high\"], \"\")}"
+            "signal": "{\"Date in 2009\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"low\": format(datum[\"low\"], \"\"), \"high\": format(datum[\"high\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "low"},
@@ -268,7 +268,7 @@
             {"value": "#ae1325"}
           ],
           "tooltip": {
-            "signal": "{\"Date in 2009\": timeFormat(datum[\"date\"], ''), \"open\": format(datum[\"open\"], \"\"), \"close\": format(datum[\"close\"], \"\")}"
+            "signal": "{\"Date in 2009\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"open\": format(datum[\"open\"], \"\"), \"close\": format(datum[\"close\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "date"},
           "width": {"value": 5},

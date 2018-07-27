@@ -2098,7 +2098,7 @@
           "description": "Mark Config "
         },
         "numberFormat": {
-          "description": "D3 Number format for axis labels and text tables. For example \"s\" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).",
+          "description": "D3 Number format for guide labels and text marks. For example \"s\" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).",
           "type": "string"
         },
         "padding": {
@@ -2154,7 +2154,7 @@
           "description": "Tick-Specific Config "
         },
         "timeFormat": {
-          "description": "Default datetime format for axis and legend labels. The format can be set directly on each axis and legend. Use [D3's time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\n__Default value:__ `''` (The format will be automatically determined).",
+          "description": "Default time format for raw time values (without time units) in text marks, legend labels and header labels.\n\n__Default value:__ `\"%b %d, %Y\"`\n__Note:__ Axes automatically determine format each label automatically so this config would not affect axes.",
           "type": "string"
         },
         "title": {
