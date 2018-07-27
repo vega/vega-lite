@@ -29,7 +29,7 @@
         "update": {
           "stroke": {"value": "green"},
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\")}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
@@ -55,7 +55,7 @@
             {"value": "red"}
           ],
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], ''), \"price\": format(datum[\"price\"], \"\")}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
