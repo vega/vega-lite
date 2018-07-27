@@ -1,13 +1,13 @@
+import {SingleDefChannel} from '../../channel';
 import {DateTime} from '../../datetime';
 import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
+import {FieldRefOption} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
+import {CalculateTransform} from '../../transform';
 import {duplicate} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {SingleDefChannel} from '../../channel';
-import {FieldRefOption} from '../../fielddef';
-import {CalculateTransform} from '../../transform';
 import {DataFlowNode} from './dataflow';
 
 /**

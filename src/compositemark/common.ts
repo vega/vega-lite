@@ -8,7 +8,6 @@ import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from 
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {Orient} from '../vega.schema';
 
-
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
