@@ -126,10 +126,10 @@
               "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
               "value": null
             },
-            {"scale": "color", "field": "symbol"}
+            {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -234,6 +234,29 @@
   ],
   "axes": [
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "grid": false,
@@ -256,20 +279,7 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "title": "symbol",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
-    }
-  ],
+  "legends": [{"stroke": "color", "title": "symbol"}],
   "config": {
     "axisY": {"minExtent": 30},
     "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
