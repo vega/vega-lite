@@ -92,10 +92,11 @@ export function symbols(
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {
-        const stroke =
-          (getFirstConditionValue(encoding.stroke || encoding.color) as string) ||
-          markDef.stroke ||
-          (!filled && markDef.color);
+        const stroke = getFirstDefined(
+          getFirstConditionValue(encoding.stroke || encoding.color) as string,
+          markDef.stroke,
+          filled ? markDef.color : undefined
+        );
         if (stroke) {
           out.stroke = {value: stroke};
         }

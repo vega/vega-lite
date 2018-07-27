@@ -37,13 +37,14 @@ export function color(model: UnitModel): VgEncodeEntry {
     : undefined;
 
   const defaultValue = {
-    fill:
-      markDef.fill ||
-      configValue.fill ||
+    fill: getFirstDefined(
+      markDef.fill,
+      configValue.fill,
       // If there is no fill, always fill symbols, bar, geoshape
       // with transparent fills https://github.com/vega/vega-lite/issues/1316
-      transparentIfNeeded,
-    stroke: markDef.stroke || configValue.stroke
+      transparentIfNeeded
+    ),
+    stroke: getFirstDefined(markDef.stroke, configValue.stroke)
   };
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
@@ -69,7 +70,7 @@ export function color(model: UnitModel): VgEncodeEntry {
     }
 
     return {
-      ...nonPosition('fill', model, {defaultValue: defaultValue.fill || transparentIfNeeded}),
+      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultValue.fill, transparentIfNeeded)}),
       ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
     };
   } else if (encoding.color) {
@@ -79,15 +80,16 @@ export function color(model: UnitModel): VgEncodeEntry {
       ...nonPosition('color', model, {
         vgChannel: colorVgChannel,
         // apply default fill/stroke first, then color config, then transparent if needed.
-        defaultValue:
-          markDef[colorVgChannel] ||
-          markDef.color ||
-          configValue[colorVgChannel] ||
-          configValue.color ||
-          (filled ? transparentIfNeeded : undefined)
+        defaultValue: getFirstDefined(
+          markDef[colorVgChannel],
+          markDef.color,
+          configValue[colorVgChannel],
+          configValue.color,
+          filled ? transparentIfNeeded : undefined
+        )
       })
     };
-  } else if (markDef.fill || markDef.stroke) {
+  } else if (markDef.fill !== undefined || markDef.stroke !== undefined) {
     // Ignore markDef.color, config.color
     if (markDef.color) {
       log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
@@ -100,7 +102,7 @@ export function color(model: UnitModel): VgEncodeEntry {
       // override config with markDef.color
       [colorVgChannel]: {value: markDef.color}
     };
-  } else if (configValue.fill || configValue.stroke) {
+  } else if (configValue.fill !== undefined || configValue.stroke !== undefined) {
     // ignore config.color
     return fillStrokeMarkDefAndConfig;
   } else if (configValue.color) {
