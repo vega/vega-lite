@@ -25,7 +25,7 @@ export class FoldTransformNode extends TransformNode {
   }
 
   public hash() {
-    return hash(this.transform);
+    return 'FoldTransformNode' + hash(this.transform);
   }
 
   public assemble(): VgFoldTransform {

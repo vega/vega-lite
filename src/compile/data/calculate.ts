@@ -74,7 +74,7 @@ export class CalculateNode extends DataFlowNode {
   }
 
   public hash() {
-    return hash(this.transform);
+    return 'CalculateNode' + hash(this.transform);
   }
 }
 

@@ -25,7 +25,7 @@ export class FlattenTransformNode extends TransformNode {
   }
 
   public hash() {
-    return hash(this.transform);
+    return 'FlattenTransformNode' + hash(this.transform);
   }
 
   public assemble(): VgFlattenTransform {

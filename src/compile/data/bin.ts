@@ -145,8 +145,9 @@ export class BinNode extends TransformNode {
   }
 
   public hash() {
-    return hash(this.bins);
+    return 'BinNode' + hash(this.bins);
   }
+
   public assemble(): VgTransform[] {
     return flatten(
       vals(this.bins).map(bin => {
