@@ -93,7 +93,7 @@ In the example below, we use the time unit transform to extract the month compon
 
 To parse data in local time or UTC time, there are three cases:
 
-1) Times are parsed as UTC time if the date strings are in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+1) Times are parsed as UTC time if the date strings are in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). Note that date strings without time are interpreted as UTC but but date strings with time and without timezone as local.
 
 <span class="vl-example" data-name="time_parse_utc"></span>
 
