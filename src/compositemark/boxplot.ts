@@ -6,7 +6,7 @@ import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
-import {Flag, keys} from '../util';
+import {Flag, getFirstDefined, keys} from '../util';
 import {Orient} from '../vega.schema';
 import {
   compositeMarkContinuousAxis,
@@ -90,7 +90,7 @@ export function normalizeBoxPlot(
   }
 
   const extent = markDef.extent || config.boxplot.extent;
-  const sizeValue = markDef.size || config.boxplot.size;
+  const sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
   const isMinMax = !isNumber(extent);
 
   const {
