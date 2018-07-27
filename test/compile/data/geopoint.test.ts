@@ -39,6 +39,7 @@ describe('compile/data/geopoint', () => {
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
         assert.equal(transform.type, 'geopoint');
+        // @ts-ignore
         assert.isTrue(every(['longitude', 'latitude'], field => contains(transform.fields, field)));
         assert.isTrue(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a)));
         assert.isDefined(transform.projection);

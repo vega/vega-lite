@@ -10,14 +10,14 @@ import {
   FlattenTransform,
   FoldTransform,
   FormulaTransform,
-  // GeoJSONTransform,
-  // GeoPointTransform,
-  // GeoShapeTransform,
+  GeoJSONTransform,
+  GeoPointTransform,
+  GeoShapeTransform,
   IdentifierTransform,
   ImputeTransform,
   LookupTransform,
   SampleTransform,
-  // StackTransform,
+  StackTransform,
   WindowTransform
 } from 'vega';
 
@@ -31,15 +31,15 @@ export {
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
   FormulaTransform as VgFormulaTransform,
-  // GeoJSONTransform as VgGeoJSONTransform,
-  // GeoPointTransform as VgGeoPointTransform,
-  // GeoShapeTransform as VgGeoShapeTransform,
-  // GeoShapeTransform as VgPostEncodingTransform,
+  GeoJSONTransform as VgGeoJSONTransform,
+  GeoPointTransform as VgGeoPointTransform,
+  GeoShapeTransform as VgGeoShapeTransform,
+  GeoShapeTransform as VgPostEncodingTransform,
   IdentifierTransform as VgIdentifierTransform,
   ImputeTransform as VgImputeTransform,
   LookupTransform as VgLookupTransform,
   SampleTransform as VgSampleTransform,
-  // StackTransform as VgStackTransform,
+  StackTransform as VgStackTransform,
   WindowTransform as VgWindowTransform
 };
 
@@ -51,9 +51,7 @@ export {
 } from 'vega';
 
 import {isArray} from 'vega-util';
-import {BaseBin} from './bin';
 import {NiceTime, ScaleType} from './scale';
-import {StackOffset} from './stack';
 import {Flag, flagKeys} from './util';
 
 export type Color = string;
@@ -376,15 +374,6 @@ export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef &
 //  ...
 // }
 
-export interface VgStackTransform {
-  type: 'stack';
-  offset?: StackOffset;
-  groupby: string[];
-  field: string;
-  sort: VgSort;
-  as: string[];
-}
-
 export type VgTransform =
   | BinTransform
   | ExtentTransform
@@ -393,38 +382,15 @@ export type VgTransform =
   | FilterTransform
   | FlattenTransform
   | ImputeTransform
-  | VgStackTransform // TODO
+  | StackTransform
   | CollectTransform
   | LookupTransform
   | IdentifierTransform
-  | VgGeoPointTransform // TODO
-  | VgGeoJSONTransform // TODO
-  | WindowTransform // TODO
+  | GeoPointTransform
+  | GeoJSONTransform
+  | WindowTransform
   | FoldTransform
   | SampleTransform;
-
-export interface VgGeoPointTransform {
-  type: 'geopoint';
-  projection: string; // projection name
-  fields: VgField[];
-  as?: string[];
-}
-
-export interface VgGeoShapeTransform {
-  type: 'geoshape';
-  projection: string; // projection name
-  field?: VgField;
-  as?: string;
-}
-
-export interface VgGeoJSONTransform {
-  type: 'geojson';
-  fields?: VgField[];
-  geojson?: VgField;
-  signal: string;
-}
-
-export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
 
