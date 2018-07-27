@@ -17,6 +17,7 @@
 /test-runtime
 
 _config.yml
+codecov.yml
 CONTRIBUTING.md
 Gemfile
 Gemfile.lock
