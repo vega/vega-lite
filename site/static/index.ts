@@ -2,7 +2,7 @@ import {text} from 'd3-fetch';
 import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
-import {post} from 'vega-embed/build/post';
+import {post} from 'vega-embed/build/src/post';
 import {Handler} from 'vega-tooltip';
 import {compile, TopLevelSpec} from '../../src';
 import {runStreamingExample} from './streaming';
@@ -71,6 +71,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
+      // tslint:disable-next-line
       .on('click', function() {
         post(window, editorURL, {
           mode: 'vega-lite',
@@ -102,13 +103,13 @@ function getSpec(el: d3.BaseType) {
   }
 }
 
-window['changeSpec'] = function(elId: string, newSpec: string) {
+window['changeSpec'] = (elId: string, newSpec: string) => {
   const el = document.getElementById(elId);
   select(el).attr('data-name', newSpec);
   getSpec(el);
 };
 
-window['buildSpecOpts'] = function(id: string, baseName: string) {
+window['buildSpecOpts'] = (id: string, baseName: string) => {
   const oldName = select('#' + id).attr('data-name');
   const prefixSel = select('select[name=' + id + ']');
   const inputsSel = selectAll('input[name=' + id + ']:checked');
@@ -167,7 +168,7 @@ function setSlide(
   links: NodeListOf<any>,
   active: number
 ) {
-  return function() {
+  return () => {
     // Reset all slides
     for (let i = 0; i < indicators.length; i++) {
       indicators[i].setAttribute('data-state', '');
