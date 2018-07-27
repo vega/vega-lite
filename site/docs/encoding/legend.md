@@ -57,7 +57,9 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 }
 ```
 
-To customize legends, a `legend` object in [an encoding channel's definition](encoding.html) can contain the following properties:
+To customize legends, you can specify a `legend` object in [an encoding channel's definition](encoding.html). This section lists all properties of legends.
+
+_See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-guide-to-guides-axes-legends-in-vega) demonstrates axes and legends in the underlying Vega language.
 
 {:#properties}
 
