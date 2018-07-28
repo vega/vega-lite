@@ -156,4 +156,27 @@ describe('compile/data/window', () => {
     const window = new WindowTransformNode(null, transform);
     assert.deepEqual(window, window.clone());
   });
+
+  it('should generate the correct hash', () => {
+    const transform: Transform = {
+      window: [
+        {
+          op: 'row_number',
+          as: 'ordered_row_number'
+        }
+      ],
+      ignorePeers: false,
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
+      groupby: ['f'],
+      frame: [null, 0]
+    };
+    const window = new WindowTransformNode(null, transform);
+    const hash = window.hash();
+    assert.deepEqual(hash, 'WindowTransformNode1103660051');
+  });
 });

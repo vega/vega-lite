@@ -16,5 +16,12 @@ describe('compile/data/sample', () => {
         size: 500
       });
     });
+    it('should generate the correct hash', () => {
+      const transform: Transform = {
+        sample: 500
+      };
+      const sample = new SampleTransformNode(null, transform);
+      assert.deepEqual(sample.hash(), 'SampleTransformNode{"sample":500}');
+    });
   });
 });

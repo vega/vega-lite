@@ -99,4 +99,20 @@ describe('compile/data/lookup', () => {
       assert.equal(localLogger.warns[0], log.message.NO_FIELDS_NEEDS_AS);
     })
   );
+  it('should generate the correct hash', () => {
+    const lookup = new LookupNode(
+      null,
+      {
+        lookup: 'person',
+        from: {
+          data: {url: 'data/lookup_people.csv'},
+          key: 'name'
+        }
+      },
+      'lookup_0'
+    );
+    lookup.assemble();
+
+    assert.equal(lookup.hash(), 'LookupNode-848385244');
+  });
 });

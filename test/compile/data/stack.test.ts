@@ -318,5 +318,18 @@ describe('compile/data/stack', () => {
         sum_a_end: true
       });
     });
+
+    it('should generate the correct hash', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'ordinal'}
+        }
+      });
+      const stack = StackNode.makeFromEncoding(null, model);
+      assert.deepEqual(stack.hash(), 'StackNode-2072318240');
+    });
   });
 });
