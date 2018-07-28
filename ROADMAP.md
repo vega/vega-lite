@@ -4,16 +4,17 @@ We intend to create a `Roadmap.md` file. To seed it initially, let's collect som
 
 We want Vega-Lite to become a standard langauge for decarative Data Visualization across different programming languages. Morover, we want Vega-Lite together with Vega to be a standard language in the visualization reserch community. A core principle is the declarative grammar of visualization and interactions and compiling to low level Vega to allow maximum flexibility. To this end, it is important to extend the supported features, refine existing feature and make sure they are complete within our grammar, and improving scalability to larger datasets. 
 
-## Planned to work on or being worked on
+## Have planned design but no bandwidth to implement yet
 
-* Interactions with Maps (???)
-* Facet Wrap (#3270)
-
-## We have figured out the details but don't have the bandwidth to implement it
-
-* Jittering (#396)
 * Join aggregates (#3912)
 * Arc Marks (#408)
+
+## Plan to work on, still in design phase
+
+
+* Facet Wrap (#3270)
+* Jittering (#396)
+* Interactions with Maps (???)
 
 ## No timeline yet
 
