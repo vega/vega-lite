@@ -41,11 +41,12 @@ function cloneSubtree(facet: FacetNode) {
  * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
  * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
  */
-function moveFacetDown(node: DataFlowNode) {
+function moveFacetDown(node: DataFlowNode): boolean {
+  let flag = false;
   if (node instanceof FacetNode) {
     if (node.numChildren() === 1 && !(node.children[0] instanceof OutputNode)) {
       // move down until we hit a fork or output node
-
+      flag = true;
       const child = node.children[0];
 
       if (child instanceof AggregateNode || child instanceof StackNode) {
@@ -56,6 +57,7 @@ function moveFacetDown(node: DataFlowNode) {
       moveFacetDown(node);
     } else {
       // move main to facet
+      flag = true;
       moveMainDownToFacet(node.model.component.data.main);
 
       // replicate the subtree and place it before the facet's main node
@@ -63,8 +65,9 @@ function moveFacetDown(node: DataFlowNode) {
       copy.forEach(c => (c.parent = node.model.component.data.main));
     }
   } else {
-    node.children.forEach(moveFacetDown);
+    flag = node.children.map(moveFacetDown).some(x => x === true) || flag;
   }
+  return flag;
 }
 
 function moveMainDownToFacet(node: DataFlowNode) {
@@ -83,13 +86,16 @@ function moveMainDownToFacet(node: DataFlowNode) {
 /**
  * Remove nodes that are not required starting from a root.
  */
-function removeUnnecessaryNodes(node: DataFlowNode) {
+function removeUnnecessaryNodes(node: DataFlowNode): boolean {
   // remove output nodes that are not required
+  let flag = false;
   if (node instanceof OutputNode && !node.isRequired()) {
+    flag = true;
     node.remove();
   }
 
-  node.children.forEach(removeUnnecessaryNodes);
+  flag = node.children.map(removeUnnecessaryNodes).some(x => x === true) || flag;
+  return flag;
 }
 
 /**
@@ -112,7 +118,8 @@ function getLeaves(roots: DataFlowNode[]) {
 /**
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export function mergeParse(node: DataFlowNode) {
+export function mergeParse(node: DataFlowNode): boolean {
+  let flag = false;
   const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
   if (parseChildren.length > 1) {
     const commonParse = {};
@@ -127,6 +134,7 @@ export function mergeParse(node: DataFlowNode) {
       }
     }
     if (keys(commonParse).length !== 0) {
+      flag = true;
       const mergedParseNode = new ParseNode(node, commonParse);
       for (const parseNode of parseChildren) {
         for (const key of keys(commonParse)) {
@@ -140,32 +148,51 @@ export function mergeParse(node: DataFlowNode) {
       }
     }
   }
-  node.children.forEach(mergeParse);
+  return node.children.map(mergeParse).some(x => x === true) || flag;
 }
 
 /**
  * Optimizes the dataflow of the passed in data component.
  */
-export function optimizeDataflow(dataComponent: DataComponent) {
-  let roots: SourceNode[] = vals(dataComponent.sources);
+export function optimizeDataflow(data: DataComponent) {
+  function helper(dataComponent: DataComponent) {
+    let roots: SourceNode[] = vals(dataComponent.sources);
+    let mutatedFlag = false;
+    // PITFALL Short Circuit logic
+    mutatedFlag = roots.map(removeUnnecessaryNodes).some(x => x === true) || mutatedFlag;
 
-  roots.forEach(removeUnnecessaryNodes);
+    // remove source nodes that don't have any children because they also don't have output nodes
+    roots = roots.filter(r => r.numChildren() > 0);
 
-  // remove source nodes that don't have any children because they also don't have output nodes
-  roots = roots.filter(r => r.numChildren() > 0);
-  getLeaves(roots).forEach(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees));
-  roots = roots.filter(r => r.numChildren() > 0);
+    mutatedFlag =
+      getLeaves(roots)
+        .map(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees))
+        .some(x => x === true) || mutatedFlag;
+    roots = roots.filter(r => r.numChildren() > 0);
 
-  getLeaves(roots).forEach(optimizers.iterateFromLeaves(optimizers.moveParseUp));
-  getLeaves(roots).forEach(optimizers.removeDuplicateTimeUnits);
+    mutatedFlag =
+      getLeaves(roots)
+        .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
+        .some(x => x === true) || mutatedFlag;
 
-  roots.forEach(moveFacetDown);
-  roots.forEach(mergeParse);
-  roots.forEach(optimizers.mergeIdenticalTransforms);
+    mutatedFlag =
+      getLeaves(roots)
+        .map(optimizers.removeDuplicateTimeUnits)
+        .some(x => x === true) || mutatedFlag;
 
-  keys(dataComponent.sources).forEach(s => {
-    if (dataComponent.sources[s].numChildren() === 0) {
-      delete dataComponent.sources[s];
+    mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
+    mutatedFlag = roots.map(mergeParse).some(x => x === true) || mutatedFlag;
+    mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
+    keys(dataComponent.sources).forEach(s => {
+      if (dataComponent.sources[s].numChildren() === 0) {
+        delete dataComponent.sources[s];
+      }
+    });
+    return mutatedFlag;
+  }
+  for (let i = 0; i < 5; i++) {
+    if (!helper(data)) {
+      break;
     }
-  });
+  }
 }
