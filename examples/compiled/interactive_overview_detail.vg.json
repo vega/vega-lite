@@ -326,7 +326,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"date\": timeFormat(datum[\"date\"], '%Y'), \"price\": format(datum[\"price\"], \"\")}"
+                "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
               },
               "x": {"scale": "concat_1_x", "field": "date"},
               "y": {"scale": "concat_1_y", "field": "price"},
@@ -389,11 +389,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
-          "encode": {
-            "labels": {
-              "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-            }
-          },
           "zindex": 1
         },
         {

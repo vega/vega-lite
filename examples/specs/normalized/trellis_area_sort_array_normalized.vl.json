@@ -19,7 +19,7 @@
       "x": {
         "field": "date",
         "type": "temporal",
-        "axis": {"title": "Time", "grid": false}
+        "axis": {"format": "%Y", "title": "Time", "grid": false}
       },
       "y": {
         "field": "price",
