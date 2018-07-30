@@ -4,7 +4,7 @@
   "data": {"url": "data/stocks.csv"},
   "mark": "line",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+    "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"},
     "color": {"field": "symbol", "type": "nominal"}
   }

@@ -5,7 +5,7 @@
   "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "mark": "line",
   "encoding": {
-    "x": {"field": "date", "type": "temporal", "axis": {"format": "%Y"}},
+    "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"}
   }
 }

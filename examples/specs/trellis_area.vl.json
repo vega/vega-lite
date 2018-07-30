@@ -17,7 +17,6 @@
           "field": "date",
           "type": "temporal",
           "axis": {
-              "format": "%Y",
               "title": "Time",
               "grid": false
           }
