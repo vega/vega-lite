@@ -7,6 +7,8 @@ import {checkLinks} from './debug';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
+import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {MergeIdenticalNodes} from './optimizers';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
@@ -90,15 +92,19 @@ function moveMainDownToFacet(node: DataFlowNode) {
 /**
  * Remove nodes that are not required starting from a root.
  */
-function removeUnnecessaryNodes(node: DataFlowNode): boolean {
-  // remove output nodes that are not required
-  let mutatedFlag = false;
-  if (node instanceof OutputNode && !node.isRequired()) {
-    mutatedFlag = true;
-    node.remove();
+class RemoveUnnecessaryNodes extends TopDownOptimizer {
+  public optimize(node: DataFlowNode): boolean {
+    // remove output nodes that are not required
+    if (node instanceof OutputNode && !node.isRequired()) {
+      this.setMutated();
+      node.remove();
+    }
+    for (const child of node.children) {
+      this.optimize(child);
+    }
+
+    return this.mutatedFlag;
   }
-  mutatedFlag = node.children.map(removeUnnecessaryNodes).some(isTrue) || mutatedFlag;
-  return mutatedFlag;
 }
 
 /**
@@ -121,76 +127,80 @@ function getLeaves(roots: DataFlowNode[]) {
 /**
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
-  let mutatedFlag = false;
-  const parent = node.parent;
-  const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
+export class MergeParse extends BottomUpOptimizer {
+  public optimize(node: DataFlowNode): optimizers.OptimizerFlags {
+    const parent = node.parent;
+    const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
 
-  if (parseChildren.length > 1) {
-    const commonParse = {};
-    for (const parseNode of parseChildren) {
-      const parse = parseNode.parse;
-      for (const k of keys(parse)) {
-        if (commonParse[k] === undefined) {
-          commonParse[k] = parse[k];
-        } else if (commonParse[k] !== parse[k]) {
-          delete commonParse[k];
-        }
-      }
-    }
-    if (keys(commonParse).length !== 0) {
-      mutatedFlag = true;
-      const mergedParseNode = new ParseNode(parent, commonParse);
+    if (parseChildren.length > 1) {
+      const commonParse = {};
       for (const parseNode of parseChildren) {
-        for (const key of keys(commonParse)) {
-          delete parseNode.parse[key];
+        const parse = parseNode.parse;
+        for (const k of keys(parse)) {
+          if (commonParse[k] === undefined) {
+            commonParse[k] = parse[k];
+          } else if (commonParse[k] !== parse[k]) {
+            delete commonParse[k];
+          }
         }
-        parent.removeChild(parseNode);
-        parseNode.parent = mergedParseNode;
-        if (keys(parseNode.parse).length === 0) {
-          parseNode.remove();
+      }
+      if (keys(commonParse).length !== 0) {
+        this.setMutated();
+        const mergedParseNode = new ParseNode(parent, commonParse);
+        for (const parseNode of parseChildren) {
+          for (const key of keys(commonParse)) {
+            delete parseNode.parse[key];
+          }
+          parent.removeChild(parseNode);
+          parseNode.parent = mergedParseNode;
+          if (keys(parseNode.parse).length === 0) {
+            parseNode.remove();
+          }
         }
       }
     }
+    this.setContinue();
+    return this.flags;
   }
-  return {continueFlag: true, mutatedFlag};
 }
 
 export function isTrue(x: boolean) {
   return x;
 }
 
+// any type to avoid error of Cannot use 'new' with an expression whose type lacks a call or construct signature.
+function runOptimizer(flag: boolean, nodes: DataFlowNode[], optimizer: any) {
+  const flags = nodes.map(node => {
+    const optimizerInstance = new optimizer();
+    if (optimizerInstance instanceof BottomUpOptimizer) {
+      return optimizerInstance.optimizeNextFromLeaves(node);
+    } else {
+      return optimizerInstance.optimize(node);
+    }
+  });
+  return flags.some(isTrue) || flag;
+}
+
 function optimizationDataflowHelper(dataComponent: DataComponent) {
   let roots: SourceNode[] = vals(dataComponent.sources);
   let mutatedFlag = false;
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
-  mutatedFlag = roots.map(removeUnnecessaryNodes).some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, roots, RemoveUnnecessaryNodes);
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag =
-    getLeaves(roots)
-      .map(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees))
-      .some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.RemoveUnusedSubtrees);
 
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag =
-    getLeaves(roots)
-      .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
-      .some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.MoveParseUp);
 
-  mutatedFlag =
-    getLeaves(roots)
-      .map(optimizers.removeDuplicateTimeUnits)
-      .some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.RemoveDuplicateTimeUnits);
 
-  mutatedFlag =
-    getLeaves(roots)
-      .map(optimizers.iterateFromLeaves(mergeParse))
-      .some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), MergeParse);
 
-  mutatedFlag = roots.map(optimizers.mergeIdenticalNodes).some(isTrue) || mutatedFlag;
+  mutatedFlag = runOptimizer(mutatedFlag, roots, MergeIdenticalNodes);
+
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
       delete dataComponent.sources[s];
