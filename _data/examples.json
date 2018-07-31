@@ -165,7 +165,8 @@
       },
       {
         "name": "layer_line_co2_concentration",
-        "title": "Carbon Dioxide in the Atmosphere"
+        "title": "Carbon Dioxide in the Atmosphere",
+        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)"
       },
       {
         "name": "window_rank",
@@ -320,7 +321,8 @@
       },
       {
         "name": "layer_line_co2_concentration",
-        "title": "Carbon Dioxide in the Atmosphere"
+        "title": "Carbon Dioxide in the Atmosphere",
+        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)"
       },
       {
         "name": "layer_bar_annotations",
