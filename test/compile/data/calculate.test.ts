@@ -40,7 +40,7 @@ describe('compile/data/calculate', () => {
     });
 
     it('calculates right dependent fields for nested field', () => {
-      expect(getDependentFields('datum.x.y')).toEqual({x: true});
+      expect(getDependentFields('datum.x.y')).toEqual({x: true, 'x.y': true});
       expect(getDependentFields('datum["x.y"]')).toEqual({'x.y': true});
     });
   });
