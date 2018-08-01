@@ -181,7 +181,7 @@ describe('compile/data/impute', () => {
         value: 200
       };
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.hash(), 'ImputeNode {"impute":"y","key":"x","method":"value","value":200}');
+      assert.deepEqual(impute.hash(), 'Impute {"impute":"y","key":"x","method":"value","value":200}');
     });
   });
 

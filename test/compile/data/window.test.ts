@@ -177,6 +177,6 @@ describe('compile/data/window', () => {
     };
     const window = new WindowTransformNode(null, transform);
     const hash = window.hash();
-    assert.deepEqual(hash, 'WindowTransformNode 1103660051');
+    assert.deepEqual(hash, 'WindowTransform 1103660051');
   });
 });

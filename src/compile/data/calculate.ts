@@ -74,7 +74,7 @@ export class CalculateNode extends TransformNode {
   }
 
   public hash() {
-    return `CalculateNode ${hash(this.transform)}`;
+    return `Calculate ${hash(this.transform)}`;
   }
 }
 

@@ -113,6 +113,6 @@ describe('compile/data/lookup', () => {
     );
     lookup.assemble();
 
-    assert.equal(lookup.hash(), 'LookupNode -848385244');
+    assert.equal(lookup.hash(), 'Lookup -848385244');
   });
 });

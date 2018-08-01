@@ -57,7 +57,7 @@ describe('compile/data/flatten', () => {
         flatten: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.hash(), 'FlattenTransformNode {"as":["a","b"],"flatten":["a","b"]}');
+      assert.deepEqual(flatten.hash(), 'FlattenTransform {"as":["a","b"],"flatten":["a","b"]}');
     });
   });
 });

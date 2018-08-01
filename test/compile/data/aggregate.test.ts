@@ -44,7 +44,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual(agg.hash(), 'AggregateNode -97616516');
+      assert.deepEqual(agg.hash(), 'Aggregate -97616516');
     });
   });
 

@@ -167,7 +167,7 @@ export class AggregateNode extends TransformNode {
   }
 
   public hash() {
-    return `AggregateNode ${hash({dimensions: this.dimensions, measures: this.measures})}`;
+    return `Aggregate ${hash({dimensions: this.dimensions, measures: this.measures})}`;
   }
 
   public assemble(): VgAggregateTransform {

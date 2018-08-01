@@ -329,7 +329,7 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      assert.deepEqual(stack.hash(), 'StackNode -2072318240');
+      assert.deepEqual(stack.hash(), 'Stack -2072318240');
     });
   });
 });

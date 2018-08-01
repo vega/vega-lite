@@ -80,7 +80,7 @@ export class TimeUnitNode extends TransformNode {
   }
 
   public hash() {
-    return `TimeUnitNode ${hash(this.formula)}`;
+    return `TimeUnit ${hash(this.formula)}`;
   }
 
   public assemble() {

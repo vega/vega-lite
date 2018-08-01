@@ -21,7 +21,7 @@ describe('compile/data/sample', () => {
         sample: 500
       };
       const sample = new SampleTransformNode(null, transform);
-      assert.deepEqual(sample.hash(), 'SampleTransformNode {"sample":500}');
+      assert.deepEqual(sample.hash(), 'SampleTransform {"sample":500}');
     });
   });
 });

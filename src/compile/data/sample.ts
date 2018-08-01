@@ -16,7 +16,7 @@ export class SampleTransformNode extends TransformNode {
   }
 
   public hash() {
-    return `SampleTransformNode ${hash(this.transform)}`;
+    return `SampleTransform ${hash(this.transform)}`;
   }
   public assemble(): VgSampleTransform {
     return {

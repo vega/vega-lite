@@ -68,7 +68,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const fold = new FoldTransformNode(null, transform);
-      assert.deepEqual(fold.hash(), 'FoldTransformNode {"as":["A","B"],"fold":["a","b"]}');
+      assert.deepEqual(fold.hash(), 'FoldTransform {"as":["A","B"],"fold":["a","b"]}');
     });
   });
 });
