@@ -16,7 +16,7 @@ import {getDependentFields} from './expressions';
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
 
-export class CalculateNode extends DataFlowNode {
+export class CalculateNode extends TransformNode {
   private _dependentFields: StringSet;
 
   public clone() {

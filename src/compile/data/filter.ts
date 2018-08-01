@@ -3,8 +3,8 @@ import {expression, Predicate} from '../../predicate';
 import {duplicate, hash, StringSet} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {getDependentFields} from './expressions';
 import {DataFlowNode, TransformNode} from './dataflow';
+import {getDependentFields} from './expressions';
 
 export class FilterNode extends TransformNode {
   private expr: string;
