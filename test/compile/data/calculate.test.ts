@@ -55,7 +55,7 @@ describe('compile/data/calculate', () => {
         }
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
-      assert.deepEqual(node.hash(), 'CalculateNode1019364572');
+      assert.deepEqual(node.hash(), 'CalculateNode 1019364572');
     });
   });
 });

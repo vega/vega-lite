@@ -32,6 +32,6 @@ export class FilterNode extends TransformNode {
   }
 
   public hash() {
-    return 'FilterNode' + hash(this.filter);
+    return `FilterNode ${hash(this.filter)}`;
   }
 }

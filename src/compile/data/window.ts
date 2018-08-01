@@ -60,7 +60,7 @@ export class WindowTransformNode extends TransformNode {
   }
 
   public hash() {
-    return 'WindowTransformNode' + hash(this.transform);
+    return `WindowTransformNode ${hash(this.transform)}`;
   }
 
   public assemble(): VgWindowTransform {

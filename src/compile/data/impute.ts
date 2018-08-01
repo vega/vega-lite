@@ -60,7 +60,7 @@ export class ImputeNode extends TransformNode {
   }
 
   public hash() {
-    return 'ImputeNode' + hash(this.transform);
+    return `ImputeNode ${hash(this.transform)}`;
   }
 
   public assemble() {

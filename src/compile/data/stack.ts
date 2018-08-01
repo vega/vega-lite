@@ -193,7 +193,7 @@ export class StackNode extends TransformNode {
   }
 
   public hash() {
-    return 'StackNode' + hash(this._stack);
+    return `StackNode ${hash(this._stack)}`;
   }
 
   private getGroupbyFields() {

@@ -41,7 +41,7 @@ export class LookupNode extends TransformNode {
   }
 
   public hash() {
-    return 'LookupNode' + hash({transform: this.transform, secondary: this.secondary});
+    return `LookupNode ${hash({transform: this.transform, secondary: this.secondary})}`;
   }
 
   public assemble(): VgLookupTransform {

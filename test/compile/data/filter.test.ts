@@ -56,7 +56,7 @@ describe('compile/data/filter', () => {
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const filterNode = new FilterNode(null, null, {field: 'a', equal: {year: 2000}});
-      assert.deepEqual(filterNode.hash(), 'FilterNode{"equal":{"year":2000},"field":"a"}');
+      assert.deepEqual(filterNode.hash(), 'FilterNode {"equal":{"year":2000},"field":"a"}');
     });
   });
 });

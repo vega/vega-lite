@@ -57,7 +57,7 @@ describe('compile/data/timeunit', () => {
         }
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
-      assert.deepEqual(timeUnitNode.hash(), 'TimeUnitNode{"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+      assert.deepEqual(timeUnitNode.hash(), 'TimeUnitNode {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
     });
   });
 });
