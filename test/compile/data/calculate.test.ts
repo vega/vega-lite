@@ -1,5 +1,5 @@
 /* tslint:disable:quotemark */
-import {CalculateNode, getDependentFields} from '../../../src/compile/data/calculate';
+import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
 
@@ -27,21 +27,6 @@ describe('compile/data/calculate', () => {
         expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
         as: 'x_a_sort_index'
       });
-    });
-  });
-
-  describe('getDependentFields', () => {
-    it('calcuates right dependent fields for simple expression', () => {
-      expect(getDependentFields('datum.x + datum.y')).toEqual({x: true, y: true});
-    });
-
-    it('calcuates right dependent fields for compres expression', () => {
-      expect(getDependentFields('toString(datum.x) + 12')).toEqual({x: true});
-    });
-
-    it('calculates right dependent fields for nested field', () => {
-      expect(getDependentFields('datum.x.y')).toEqual({x: true, 'x.y': true});
-      expect(getDependentFields('datum["x.y"]')).toEqual({'x.y': true});
     });
   });
 });
