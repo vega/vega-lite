@@ -20,42 +20,7 @@
           "type": "formula",
           "expr": "toNumber(datum[\"people\"])",
           "as": "people"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age", "gender"],
-          "ops": ["sum"],
-          "fields": ["people"],
-          "as": ["sum_people"]
         },
-        {
-          "type": "impute",
-          "field": "sum_people",
-          "groupby": ["gender"],
-          "key": "age",
-          "method": "value",
-          "value": 0
-        },
-        {
-          "type": "stack",
-          "groupby": ["age"],
-          "field": "sum_people",
-          "sort": {"field": ["gender"], "order": ["descending"]},
-          "as": ["sum_people_start", "sum_people_end"],
-          "offset": "zero"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],
@@ -96,7 +61,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_main",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["gender"]
         }
       },
@@ -138,7 +103,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_1_main",
-          "data": "data_1",
+          "data": "source_0",
           "groupby": ["gender"]
         }
       },
@@ -177,13 +142,7 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "age"},
-          {"data": "data_1", "field": "age"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
@@ -191,12 +150,8 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "sum_people_start"},
-          {"data": "data_0", "field": "sum_people_end"},
-          {"data": "data_1", "field": "sum_people_start"},
-          {"data": "data_1", "field": "sum_people_end"}
-        ]
+        "data": "source_0",
+        "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
@@ -205,13 +160,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "gender"},
-          {"data": "data_1", "field": "gender"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "gender", "sort": true},
       "range": ["#EA98D2", "#659CCA"]
     }
   ],
