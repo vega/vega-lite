@@ -57,8 +57,8 @@ function moveFacetDown(node: DataFlowNode): boolean {
       moveFacetDown(node);
     } else {
       // move main to facet
-      flag = true;
-      moveMainDownToFacet(node.model.component.data.main);
+
+      flag = moveMainDownToFacet(node.model.component.data.main) || flag;
 
       // replicate the subtree and place it before the facet's main node
       const copy: DataFlowNode[] = flatten(node.children.map(cloneSubtree(node)));
@@ -70,17 +70,19 @@ function moveFacetDown(node: DataFlowNode): boolean {
   return flag;
 }
 
-function moveMainDownToFacet(node: DataFlowNode) {
+function moveMainDownToFacet(node: DataFlowNode): boolean {
+  let flag = false;
   if (node instanceof OutputNode && node.type === MAIN) {
     if (node.numChildren() === 1) {
       const child = node.children[0];
-
       if (!(child instanceof FacetNode)) {
+        flag = true;
         child.swapWithParent();
         moveMainDownToFacet(node);
       }
     }
   }
+  return flag;
 }
 
 /**
@@ -148,50 +150,53 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
   }
-  return node.children.map(mergeParse).some(x => x === true) || flag;
+  flag = node.children.map(mergeParse).some(x => x === true) || flag;
+  return flag;
+}
+
+function optimizationDataflowHelper(dataComponent: DataComponent) {
+  let roots: SourceNode[] = vals(dataComponent.sources);
+  let mutatedFlag = false;
+  // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
+  mutatedFlag = roots.map(removeUnnecessaryNodes).some(x => x === true) || mutatedFlag;
+  // remove source nodes that don't have any children because they also don't have output nodes
+  roots = roots.filter(r => r.numChildren() > 0);
+
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees))
+      .some(x => x === true) || mutatedFlag;
+
+  roots = roots.filter(r => r.numChildren() > 0);
+
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
+      .some(x => x === true) || mutatedFlag;
+
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.removeDuplicateTimeUnits)
+      .some(x => x === true) || mutatedFlag;
+
+  mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
+
+  mutatedFlag = roots.map(mergeParse).some(x => x === true) || mutatedFlag;
+  mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
+  keys(dataComponent.sources).forEach(s => {
+    if (dataComponent.sources[s].numChildren() === 0) {
+      delete dataComponent.sources[s];
+    }
+  });
+  return mutatedFlag;
 }
 
 /**
  * Optimizes the dataflow of the passed in data component.
  */
 export function optimizeDataflow(data: DataComponent) {
-  function helper(dataComponent: DataComponent) {
-    let roots: SourceNode[] = vals(dataComponent.sources);
-    let mutatedFlag = false;
-    // PITFALL Short Circuit logic
-    mutatedFlag = roots.map(removeUnnecessaryNodes).some(x => x === true) || mutatedFlag;
-
-    // remove source nodes that don't have any children because they also don't have output nodes
-    roots = roots.filter(r => r.numChildren() > 0);
-
-    mutatedFlag =
-      getLeaves(roots)
-        .map(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees))
-        .some(x => x === true) || mutatedFlag;
-    roots = roots.filter(r => r.numChildren() > 0);
-
-    mutatedFlag =
-      getLeaves(roots)
-        .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
-        .some(x => x === true) || mutatedFlag;
-
-    mutatedFlag =
-      getLeaves(roots)
-        .map(optimizers.removeDuplicateTimeUnits)
-        .some(x => x === true) || mutatedFlag;
-
-    mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
-    mutatedFlag = roots.map(mergeParse).some(x => x === true) || mutatedFlag;
-    mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
-    keys(dataComponent.sources).forEach(s => {
-      if (dataComponent.sources[s].numChildren() === 0) {
-        delete dataComponent.sources[s];
-      }
-    });
-    return mutatedFlag;
-  }
   for (let i = 0; i < 5; i++) {
-    if (!helper(data)) {
+    if (!optimizationDataflowHelper(data)) {
       break;
     }
   }
