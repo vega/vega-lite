@@ -29,4 +29,16 @@ describe('compile/data/calculate', () => {
       });
     });
   });
+
+  describe('dependentFields and producedFields', () => {
+    it('returns the right fields', () => {
+      const node = new CalculateNode(null, {
+        calculate: 'datum.foo + 2',
+        as: 'bar'
+      });
+
+      expect(node.dependentFields()).toEqual({foo: true});
+      expect(node.producedFields()).toEqual({bar: true});
+    });
+  });
 });

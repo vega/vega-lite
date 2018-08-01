@@ -5,21 +5,26 @@ import {FieldRefOption} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
-import {duplicate} from '../../util';
+import {duplicate, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
+import {getDependentFields} from './expressions';
 
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
 export class CalculateNode extends DataFlowNode {
+  private _dependentFields: StringSet;
+
   public clone() {
     return new CalculateNode(null, duplicate(this.transform));
   }
 
   constructor(parent: DataFlowNode, private transform: CalculateTransform) {
     super(parent);
+
+    this._dependentFields = getDependentFields(this.transform.calculate);
   }
 
   public static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField) {
@@ -52,6 +57,10 @@ export class CalculateNode extends DataFlowNode {
     const out = {};
     out[this.transform.as] = true;
     return out;
+  }
+
+  public dependentFields() {
+    return this._dependentFields;
   }
 
   public assemble(): VgFormulaTransform {
