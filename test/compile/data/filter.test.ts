@@ -5,6 +5,7 @@ import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {Dict} from '../../../src/util';
 import {parseUnitModel} from '../../util';
+import {FilterNode} from './../../../src/compile/data/filter';
 
 describe('compile/data/filter', () => {
   it('should create parse for filtered fields', () => {
@@ -40,6 +41,15 @@ describe('compile/data/filter', () => {
       b: 'string',
       c: 'date',
       d: 'number'
+    });
+  });
+
+  describe('dependentFields and producedFields', () => {
+    it('returns the right fields', () => {
+      const node = new FilterNode(null, null, 'datum.foo > 2');
+
+      expect(node.dependentFields()).toEqual({foo: true});
+      expect(node.producedFields()).toEqual({});
     });
   });
 });
