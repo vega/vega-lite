@@ -5,19 +5,29 @@ import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
+export interface OptimizerFlags {
+  /**
+   * If true iteration continues
+   */
+  continueFlag: boolean;
+  /**
+   * If true the tree has been mutated by the function
+   */
+  mutatedFlag: boolean;
+}
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
  *
  * If the callback returns true, the recursion continues.
  */
-export function iterateFromLeaves(f: (node: DataFlowNode) => [boolean, boolean]) {
+export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
   function optimizeNextFromLeaves(node: DataFlowNode): boolean {
     if (node instanceof SourceNode) {
       return false;
     }
 
     const next = node.parent;
-    const [continueFlag, mutatedFlag] = f(node);
+    const {continueFlag, mutatedFlag} = f(node);
     let childFlag = false;
     if (continueFlag) {
       childFlag = optimizeNextFromLeaves(next);
@@ -31,18 +41,18 @@ export function iterateFromLeaves(f: (node: DataFlowNode) => [boolean, boolean])
 /**
  * Move parse nodes up to forks.
  */
-export function moveParseUp(node: DataFlowNode): [boolean, boolean] {
+export function moveParseUp(node: DataFlowNode): OptimizerFlags {
   const parent = node.parent;
   let flag = false;
   // move parse up by merging or swapping
   if (node instanceof ParseNode) {
     if (parent instanceof SourceNode) {
-      return [false, flag];
+      return {continueFlag: false, mutatedFlag: flag};
     }
 
     if (parent.numChildren() > 1) {
       // don't move parse further up but continue with parent.
-      return [true, flag];
+      return {continueFlag: true, mutatedFlag: flag};
     }
 
     if (parent instanceof ParseNode) {
@@ -51,14 +61,13 @@ export function moveParseUp(node: DataFlowNode): [boolean, boolean] {
     } else {
       // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
       if (hasIntersection(parent.producedFields(), node.dependentFields())) {
-        return [true, flag];
+        return {continueFlag: true, mutatedFlag: flag};
       }
       flag = true;
       node.swapWithParent();
     }
   }
-
-  return [true, flag];
+  return {continueFlag: true, mutatedFlag: flag};
 }
 
 function mergeBucket(parent: DataFlowNode, nodes: DataFlowNode[]) {
@@ -99,16 +108,17 @@ export function mergeIdenticalTransforms(node: DataFlowNode): boolean {
  * The reason is that we don't need subtrees that don't have any output nodes.
  * Facet nodes are needed for the row or column domains.
  */
-export function removeUnusedSubtrees(node: DataFlowNode): [boolean, boolean] {
+export function removeUnusedSubtrees(node: DataFlowNode): OptimizerFlags {
+  // @ts-ignore
   let flag = false;
   if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
     // no need to continue with parent because it is output node or will have children (there was a fork)
-    return [false, false];
+    return {continueFlag: false, mutatedFlag: flag};
   } else {
     flag = true;
     node.remove();
   }
-  return [true, flag];
+  return {continueFlag: true, mutatedFlag: flag};
 }
 
 /**
@@ -132,6 +142,6 @@ export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
       }
     }
 
-    return [true, flag];
+    return {continueFlag: true, mutatedFlag: flag};
   })(leaf);
 }
