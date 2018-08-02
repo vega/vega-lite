@@ -3785,16 +3785,6 @@
       "additionalProperties": false,
       "properties": {
         "as": {
-          "additionalItems": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "string"
-              }
-            ]
-          },
           "description": "The output field names for the key and value properties produced by the fold transform.\n__Default value:__ `[\"key\", \"value\"]`",
           "items": [
             {
@@ -3804,6 +3794,7 @@
               "type": "string"
             }
           ],
+          "maxItems": 2,
           "minItems": 2,
           "type": "array"
         },

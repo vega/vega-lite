@@ -93,7 +93,7 @@
     "source-map-support": "^0.5.6",
     "svg2png-many": "^0.0.7",
     "ts-jest": "^23.0.0",
-    "ts-json-schema-generator": "^0.30.0",
+    "ts-json-schema-generator": "^0.32.0",
     "ts-node": "^7.0.0",
     "tslint": "5.11.0",
     "tslint-config-prettier": "^1.13.0",
