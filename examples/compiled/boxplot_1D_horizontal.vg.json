@@ -43,6 +43,21 @@
           "type": "formula",
           "expr": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
           "as": "lower_whisker_people"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"lower_box_people\"])",
+          "as": "lower_box_people"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"upper_box_people\"])",
+          "as": "upper_box_people"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"mid_box_people\"])",
+          "as": "mid_box_people"
         }
       ]
     },

@@ -18,6 +18,11 @@
           "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
         },
         {
+          "type": "formula",
+          "expr": "toDate(datum[\"Release_Date\"])",
+          "as": "Release_Date"
+        },
+        {
           "type": "window",
           "params": [null],
           "as": ["AverageYearRating"],
