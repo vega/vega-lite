@@ -120,7 +120,7 @@ For example, `{"filter": {"field": "car_color", "oneOf": ["red", "yellow"]}}` ch
 
 {% include table.html props="valid" source="FieldValidPredicate" %}
 
-For example, `{"filter": {"field": "car_color", "valid": true}}` checks if the `car_color` field's value is not `null` and whether it is not `NaN`.
+For example, `{"filter": {"field": "car_color", "valid": true}}` checks if the `car_color` field's value is valid meaning it is both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
 
 
 {:#selection-predicate}
