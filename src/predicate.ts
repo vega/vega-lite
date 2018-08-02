@@ -152,7 +152,7 @@ export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPr
 }
 
 export function isFieldValidPredicate(predicate: any): predicate is FieldValidPredicate {
-  return predicate && !!predicate.field && predicate.valid;
+  return predicate && !!predicate.field && predicate.valid !== undefined;
 }
 
 export function isFieldPredicate(
@@ -228,7 +228,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldOneOfPredicate(predicate)) {
     return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
-    return `${fieldExpr} !== null && !isNaN(${fieldExpr})`;
+    return `${fieldExpr}!==null&&!isNaN(${fieldExpr})`;
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
     const upper = predicate.range[1];
