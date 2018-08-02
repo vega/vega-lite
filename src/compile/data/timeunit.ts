@@ -1,10 +1,10 @@
 import {vgField} from '../../fielddef';
 import {fieldExpr, TimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, keys, vals} from '../../util';
+import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 export interface TimeUnitComponent {
   as: string;
@@ -12,7 +12,7 @@ export interface TimeUnitComponent {
   field: string;
 }
 
-export class TimeUnitNode extends DataFlowNode {
+export class TimeUnitNode extends TransformNode {
   public clone() {
     return new TimeUnitNode(null, duplicate(this.formula));
   }
@@ -77,6 +77,10 @@ export class TimeUnitNode extends DataFlowNode {
     });
 
     return out;
+  }
+
+  public hash() {
+    return `TimeUnit ${hash(this.formula)}`;
   }
 
   public assemble() {

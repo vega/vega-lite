@@ -1,4 +1,5 @@
 /* tslint:disable:quotemark */
+import {assert} from 'chai';
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
@@ -39,6 +40,22 @@ describe('compile/data/calculate', () => {
 
       expect(node.dependentFields()).toEqual({foo: true});
       expect(node.producedFields()).toEqual({bar: true});
+    });
+  });
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const model = parseUnitModel({
+        data: {
+          values: [{a: 'A', b: 28}, {a: 'B', b: 55}, {a: 'C', b: 43}]
+        },
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', sort: ['B', 'A', 'C']},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      });
+      const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
+      assert.deepEqual(node.hash(), 'Calculate 1019364572');
     });
   });
 });

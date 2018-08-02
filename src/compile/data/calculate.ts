@@ -5,16 +5,18 @@ import {FieldRefOption} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
-import {duplicate, StringSet} from '../../util';
+import {duplicate, hash, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
+
+import {DataFlowNode, TransformNode} from './dataflow';
 import {getDependentFields} from './expressions';
 
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
  */
-export class CalculateNode extends DataFlowNode {
+
+export class CalculateNode extends TransformNode {
   private _dependentFields: StringSet;
 
   public clone() {
@@ -69,6 +71,10 @@ export class CalculateNode extends DataFlowNode {
       expr: this.transform.calculate,
       as: this.transform.as
     };
+  }
+
+  public hash() {
+    return `Calculate ${hash(this.transform)}`;
   }
 }
 

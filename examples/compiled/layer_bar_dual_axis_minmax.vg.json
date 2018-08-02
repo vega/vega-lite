@@ -17,17 +17,19 @@
           "temp_max": "number",
           "temp_min": "number"
         }
-      }
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      },
       "transform": [
         {
           "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": ["month_date"],
@@ -42,11 +44,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
-        {
           "type": "aggregate",
           "groupby": ["month_date"],
           "ops": ["max"],
@@ -59,11 +56,6 @@
       "name": "data_2",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
         {
           "type": "aggregate",
           "groupby": ["month_date"],

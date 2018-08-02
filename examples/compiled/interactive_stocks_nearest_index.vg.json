@@ -21,16 +21,6 @@
           "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
-        }
-      ]
     }
   ],
   "signals": [
@@ -184,7 +174,7 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -211,8 +201,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"},
-          {"data": "data_1", "field": "date"}
+          {"data": "data_0", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]

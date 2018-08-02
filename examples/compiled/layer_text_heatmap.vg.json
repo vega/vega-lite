@@ -4,23 +4,10 @@
   "padding": 5,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Origin", "Cylinders"],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",
@@ -43,7 +30,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -67,7 +54,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -89,13 +76,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Cylinders"},
-          {"data": "data_1", "field": "Cylinders"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -103,13 +84,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -117,7 +92,7 @@
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "count_*"},
       "range": "heatmap",
       "zero": false
     }

@@ -98,24 +98,7 @@
           "type": "formula",
           "expr": "toNumber(datum[\"population\"])",
           "as": "population"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "year_year",
-          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "formula",
           "as": "year_year",
@@ -154,7 +137,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_year\"]", "order": "descending"},
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#333"},
@@ -173,7 +156,7 @@
       "name": "layer_2_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -208,8 +191,7 @@
         "fields": [
           {"data": "data_0", "field": "year_start"},
           {"data": "data_0", "field": "year_end"},
-          {"data": "data_2", "field": "year_year"},
-          {"data": "data_3", "field": "year_year"}
+          {"data": "data_1", "field": "year_year"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -223,12 +205,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_2", "field": "population"},
-          {"data": "data_3", "field": "population"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "population"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

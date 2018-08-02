@@ -167,3 +167,11 @@ export class OutputNode extends DataFlowNode {
     this._source = source;
   }
 }
+
+export abstract class TransformNode extends DataFlowNode {
+  public abstract hash(): string | number;
+}
+
+export function isTransformNode(x: DataFlowNode) {
+  return x instanceof TransformNode;
+}

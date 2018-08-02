@@ -25,6 +25,29 @@ describe('compile/data/summary', () => {
     });
   });
 
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          y: {
+            aggregate: 'sum',
+            field: 'Acceleration',
+            type: 'quantitative'
+          },
+          x: {
+            field: 'Origin',
+            type: 'ordinal'
+          },
+          color: {type: 'quantitative', aggregate: 'count'}
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      assert.deepEqual(agg.hash(), 'Aggregate -97616516');
+    });
+  });
+
   describe('parseUnit', () => {
     it('should produce the correct summary component for sum(Acceleration) and count(*)', () => {
       const model = parseUnitModel({
