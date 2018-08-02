@@ -142,7 +142,10 @@ export interface FieldOneOfPredicate extends FieldPredicateBase {
 }
 
 export interface FieldValidPredicate extends FieldPredicateBase {
-  valid: true;
+  /**
+   * If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+   */
+  valid: boolean;
 }
 
 export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate {
@@ -228,7 +231,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldOneOfPredicate(predicate)) {
     return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
-    return `${fieldExpr}!==null&&!isNaN(${fieldExpr})`;
+    return predicate.valid ? `${fieldExpr}!==null&&!isNaN(${fieldExpr})` : `${fieldExpr}===null||isNaN(${fieldExpr})`;
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
     const upper = predicate.range[1];
