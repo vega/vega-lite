@@ -3757,9 +3757,7 @@
           "description": "Time unit for the field to be filtered."
         },
         "valid": {
-          "enum": [
-            true
-          ],
+          "description": "If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).",
           "type": "boolean"
         }
       },
