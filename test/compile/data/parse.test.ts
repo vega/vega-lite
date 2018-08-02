@@ -80,7 +80,7 @@ describe('compile/data/parse', () => {
       assert.deepEqual(parse.combine(), {date: 'date'});
     });
 
-    it('should return a BinNode node and a TimeUnitNode', () => {
+    it('should return a BinNode and a TimeUnitNode', () => {
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
@@ -95,7 +95,7 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, parse);
       expect(root.children[0] instanceof BinNode);
       expect(result instanceof TimeUnitNode);
-      expect(parse.combine()).toEqual({a: 'number', a_end: 'number', b: 'date'});
+      expect(parse.combine()).toEqual({a: 'number', a_end: 'number', b: 'date', field: 'date'});
     });
 
     it('should return a BinNode and a AggregateNode', () => {
