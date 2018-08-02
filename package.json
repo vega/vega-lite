@@ -98,7 +98,7 @@
     "tslint": "5.11.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-eslint-rules": "^5.3.1",
-    "typescript": "next",
+    "typescript": "^3.0.1",
     "uglify-js": "^3.4.4",
     "vega": "^4.1.0",
     "vega-datasets": "^1.19.0",

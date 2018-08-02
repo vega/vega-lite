@@ -6020,9 +6020,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@next:
-  version "3.1.0-dev.20180727"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.0-dev.20180727.tgz#dec7ac54fb393b55c3c5b8f53499bb11183cfb0e"
+typescript@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.1.tgz#43738f29585d3a87575520a4b93ab6026ef11fdb"
 
 typescript@~2.9.2:
   version "2.9.2"
