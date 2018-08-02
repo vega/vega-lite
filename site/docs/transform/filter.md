@@ -112,7 +112,16 @@ For example, to check if the `height` field's value is greater than or equals to
 
 {% include table.html props="oneOf" source="FieldOneOfPredicate" %}
 
-For example, `{"filter": {"field": "car_color", "oneOf":["red", "yellow"]}}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
+For example, `{"filter": {"field": "car_color", "oneOf": ["red", "yellow"]}}` checks if the `car_color` field's value is `"red"` or `"yellow"`.
+
+
+{:#valid-predicate}
+### Field Valid Predicate
+
+{% include table.html props="valid" source="FieldValidPredicate" %}
+
+For example, `{"filter": {"field": "car_color", "valid": true}}` checks if the `car_color` field's value is not `null` and whether it is not `NaN`.
+
 
 {:#selection-predicate}
 ## Selection Predicate

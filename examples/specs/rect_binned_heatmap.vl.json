@@ -1,6 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {"url": "data/movies.json"},
+  "transform": [{
+    "filter": {"and": [
+      {"field": "IMDB_Rating", "valid": true},
+      {"field": "Rotten_Tomatoes_Rating", "valid": true}
+    ]}
+  }],
   "mark": "rect",
   "width": 300,
   "height": 200,
@@ -8,7 +14,8 @@
     "x": {
       "bin": {"maxbins":60},
       "field": "IMDB_Rating",
-      "type": "quantitative"
+      "type": "quantitative",
+      "scale": {"domain": [0,10]}
     },
     "y": {
       "bin": {"maxbins": 40},

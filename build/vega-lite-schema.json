@@ -3745,6 +3745,30 @@
       ],
       "type": "object"
     },
+    "FieldValidPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        },
+        "valid": {
+          "enum": [
+            true
+          ],
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "field",
+        "valid"
+      ],
+      "type": "object"
+    },
     "FilterTransform": {
       "additionalProperties": false,
       "properties": {
@@ -6994,6 +7018,9 @@
         },
         {
           "$ref": "#/definitions/FieldGTEPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldValidPredicate"
         },
         {
           "$ref": "#/definitions/SelectionPredicate"
