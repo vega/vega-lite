@@ -16,7 +16,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"IMDB_Rating\"] !== null && !isNaN(datum[\"IMDB_Rating\"])) && (datum[\"Rotten_Tomatoes_Rating\"] !== null && !isNaN(datum[\"Rotten_Tomatoes_Rating\"]))"
+          "expr": "(datum[\"IMDB_Rating\"]!==null&&!isNaN(datum[\"IMDB_Rating\"])) && (datum[\"Rotten_Tomatoes_Rating\"]!==null&&!isNaN(datum[\"Rotten_Tomatoes_Rating\"]))"
         },
         {
           "type": "extent",
@@ -101,7 +101,13 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": [0, 10],
+      "domain": {
+        "data": "source_0",
+        "fields": [
+          "bin_maxbins_60_IMDB_Rating",
+          "bin_maxbins_60_IMDB_Rating_end"
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "zero": false
     },
@@ -135,6 +141,9 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/20)"},
+      "values": {
+        "signal": "sequence(bin_maxbins_60_IMDB_Rating_bins.start, bin_maxbins_60_IMDB_Rating_bins.stop + bin_maxbins_60_IMDB_Rating_bins.step, bin_maxbins_60_IMDB_Rating_bins.step)"
+      },
       "zindex": 1
     },
     {
