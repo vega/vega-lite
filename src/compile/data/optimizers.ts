@@ -58,6 +58,13 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
     if (parent instanceof ParseNode) {
       flag = true;
       parent.merge(node);
+    } else if (parent instanceof TimeUnitNode) {
+      // Remove intersecting output fields
+      for (const field in parent.producedFields()) {
+        if (field in node.producedFields()) {
+          delete node.parse[field];
+        }
+      }
     } else {
       // remove intersecting output fields
       for (const field in parent.producedFields()) {
