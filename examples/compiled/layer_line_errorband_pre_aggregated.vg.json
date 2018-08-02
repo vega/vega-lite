@@ -44,6 +44,7 @@
           "as": "year_Year",
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
         },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {"type": "formula", "expr": "datum.ci1", "as": "lower_ci1"},
         {"type": "formula", "expr": "datum.ci0", "as": "upper_ci1"}
       ]

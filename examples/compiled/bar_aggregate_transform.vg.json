@@ -16,6 +16,11 @@
           "ops": ["mean"],
           "fields": ["Acceleration"],
           "as": ["mean_acc"]
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"mean_acc\"])",
+          "as": "mean_acc"
         }
       ]
     }

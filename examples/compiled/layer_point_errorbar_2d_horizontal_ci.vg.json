@@ -16,6 +16,16 @@
           "ops": ["ci0", "ci1"],
           "fields": ["yield", "yield"],
           "as": ["lower_yield", "upper_yield"]
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"lower_yield\"])",
+          "as": "lower_yield"
+        },
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"upper_yield\"])",
+          "as": "upper_yield"
         }
       ]
     },
