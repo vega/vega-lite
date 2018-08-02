@@ -14,8 +14,7 @@
     "x": {
       "bin": {"maxbins":60},
       "field": "IMDB_Rating",
-      "type": "quantitative",
-      "scale": {"domain": [0,10]}
+      "type": "quantitative"
     },
     "y": {
       "bin": {"maxbins": 40},
