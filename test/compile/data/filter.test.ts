@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {AncestorParse} from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
+import {FilterNode} from '../../../src/compile/data/filter';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {Dict} from '../../../src/util';
@@ -40,6 +41,22 @@ describe('compile/data/filter', () => {
       b: 'string',
       c: 'date',
       d: 'number'
+    });
+  });
+
+  describe('dependentFields and producedFields', () => {
+    it('returns the right fields', () => {
+      const node = new FilterNode(null, null, 'datum.foo > 2');
+
+      expect(node.dependentFields()).toEqual({foo: true});
+      expect(node.producedFields()).toEqual({});
+    });
+  });
+
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const filterNode = new FilterNode(null, null, {field: 'a', equal: {year: 2000}});
+      assert.deepEqual(filterNode.hash(), 'Filter {"equal":{"year":2000},"field":"a"}');
     });
   });
 });

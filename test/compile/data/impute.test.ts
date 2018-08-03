@@ -172,6 +172,17 @@ describe('compile/data/impute', () => {
         }
       ]);
     });
+
+    it('should generate the correct hash', () => {
+      const transform: Transform = {
+        impute: 'y',
+        key: 'x',
+        method: 'value',
+        value: 200
+      };
+      const impute = new ImputeNode(null, transform);
+      assert.deepEqual(impute.hash(), 'Impute {"impute":"y","key":"x","method":"value","value":200}');
+    });
   });
 
   describe('Impute Encoding', () => {

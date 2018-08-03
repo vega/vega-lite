@@ -46,4 +46,18 @@ describe('compile/data/timeunit', () => {
       ]);
     });
   });
+
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+      const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
+      assert.deepEqual(timeUnitNode.hash(), 'TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+    });
+  });
 });

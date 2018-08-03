@@ -1,7 +1,7 @@
+import {Config} from '../config';
+import {AnyMark, isMarkDef} from '../mark';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {keys} from '../util';
-import {Config} from './../config';
-import {AnyMark, isMarkDef} from './../mark';
-import {GenericUnitSpec, NormalizedLayerSpec} from './../spec';
 import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
 import {
   ERRORBAND,

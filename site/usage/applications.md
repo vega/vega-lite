@@ -42,7 +42,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 -   <span class="octicon octicon-star"></span> [JupyterLab](https://github.com/jupyterlab/jupyterlab), an extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
 -   [nteract](https://github.com/nteract/nteract), interactive notebook application with Vega and Vega-Lite renderer.
--   <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
+-   <span class="octicon octicon-star"></span> [Observable](https://beta.observablehq.com/), an interactive JavaScript notebook. [Embed example](https://beta.observablehq.com/@domoritz/hello-vega-embed) and [exploration example](https://beta.observablehq.com/@mbostock/exploring-data-with-vega-lite).
 -   [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 
 ## Tools that use Vega-Lite

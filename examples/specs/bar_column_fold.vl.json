@@ -1,17 +1,12 @@
 {
- "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
   "data": {
-    "values":
-     [{ "country": "USA",
-        "gold": 10,
-        "silver": 20},
-      { "country": "Canada",
-        "gold": 7,
-        "silver": 26}]
+    "values": [
+      {"country": "USA", "gold": 10, "silver": 20},
+      {"country": "Canada", "gold": 7, "silver": 26}
+    ]
   },
-  "transform": [
-    {"fold": ["gold", "silver"]}
-    ],
+  "transform": [{"fold": ["gold", "silver"]}],
   "mark": "bar",
   "encoding": {
     "column": {"field": "key",  "type": "nominal"},

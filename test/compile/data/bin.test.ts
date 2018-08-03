@@ -239,4 +239,30 @@ describe('compile/data/bin', () => {
       signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
     });
   });
+
+  it('should generate the correct hash', () => {
+    const t: BinTransform = {
+      bin: {extent: [0, 100], anchor: 6},
+      field: 'Acceleration',
+      as: ['binned_acceleration_start', 'binned_acceleration_stop']
+    };
+
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/movies.json'},
+      mark: 'circle',
+      transform: [t],
+      encoding: {
+        x: {
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
+        },
+        color: {
+          field: 'Rotten_Tomatoes_Rating',
+          type: 'quantitative'
+        }
+      }
+    });
+    const binNode = BinNode.makeFromTransform(null, t, model);
+    assert.deepEqual(binNode.hash(), 'Bin 1594083826');
+  });
 });

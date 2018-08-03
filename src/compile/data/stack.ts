@@ -2,11 +2,11 @@ import {isArray, isString} from 'vega-util';
 import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
-import {duplicate, getFirstDefined} from '../../util';
+import {duplicate, getFirstDefined, hash} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
-import {UnitModel} from './../unit';
-import {DataFlowNode} from './dataflow';
+import {UnitModel} from '../unit';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce(
@@ -71,7 +71,7 @@ function isValidAsArray(as: string[] | string): as is string[] {
   return isArray(as) && as.every(s => isString(s)) && as.length > 1;
 }
 
-export class StackNode extends DataFlowNode {
+export class StackNode extends TransformNode {
   private _stack: StackComponent;
 
   public clone() {
@@ -117,6 +117,7 @@ export class StackNode extends DataFlowNode {
       as: normalizedAs
     });
   }
+
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
 
@@ -189,6 +190,10 @@ export class StackNode extends DataFlowNode {
       result[item] = true;
       return result;
     }, {});
+  }
+
+  public hash() {
+    return `Stack ${hash(this._stack)}`;
   }
 
   private getGroupbyFields() {

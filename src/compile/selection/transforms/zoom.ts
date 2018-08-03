@@ -2,9 +2,9 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
 import {ScaleChannel, X, Y} from '../../../channel';
 import {VgSignal} from '../../../vega.schema';
+import {UnitModel} from '../../unit';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
 import {channelSignalName, positionalProjections, SelectionComponent} from '../selection';
-import {UnitModel} from './../../unit';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 

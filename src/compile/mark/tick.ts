@@ -1,3 +1,4 @@
+import {getFirstDefined} from '../../util';
 import {isVgRangeStep} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -25,7 +26,7 @@ export const tick: MarkCompiler = {
         defaultValue: defaultSize(model),
         vgChannel: vgSizeChannel
       }),
-      [vgThicknessChannel]: {value: markDef.thickness || config.tick.thickness}
+      [vgThicknessChannel]: {value: getFirstDefined(markDef.thickness, config.tick.thickness)}
     };
   }
 };

@@ -46,7 +46,9 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 
 {:#properties}
 
-To customize axis, an `axis` object in [an encoding channel's definition](encoding.html) can contain the following properties:
+To customize axis, you can specify an `axis` object in [an encoding channel's definition](encoding.html).  This section lists all properties of axes.
+
+_See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-guide-to-guides-axes-legends-in-vega) demonstrates axes and legends in the underlying Vega language.
 
 {:#general}
 ### General

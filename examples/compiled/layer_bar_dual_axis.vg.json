@@ -15,17 +15,19 @@
           "precipitation": "number",
           "temp_max": "number"
         }
-      }
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      },
       "transform": [
         {
           "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": ["month_date"],
@@ -39,11 +41,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
         {
           "type": "aggregate",
           "groupby": ["month_date"],

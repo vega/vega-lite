@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Jeffrey Heer, Dominik Moritz, Kanit \"Ham\" Wongsuphasawat",
-  "version": "3.0.0-rc0",
+  "version": "3.0.0-rc1",
   "collaborators": [
     "Kanit Wongsuphasawat <kanitw@gmail.com> (http://kanitw.yellowpigz.com)",
     "Dominik Moritz <domoritz@cs.washington.edu> (https://www.domoritz.de)",
@@ -82,7 +82,6 @@
     "highlight.js": "^9.12.0",
     "jest": "^23.4.1",
     "json-stable-stringify": "^1.0.1",
-    "json-stringify-pretty-compact": "^1.2.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.13.7",
     "rollup": "^0.63.4",
@@ -93,12 +92,12 @@
     "source-map-support": "^0.5.6",
     "svg2png-many": "^0.0.7",
     "ts-jest": "^23.0.0",
-    "ts-json-schema-generator": "^0.30.0",
+    "ts-json-schema-generator": "^0.32.0",
     "ts-node": "^7.0.0",
     "tslint": "5.11.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-eslint-rules": "^5.3.1",
-    "typescript": "^2.9.2",
+    "typescript": "^3.0.1",
     "uglify-js": "^3.4.4",
     "vega": "^4.1.0",
     "vega-datasets": "^1.19.0",
@@ -114,6 +113,7 @@
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
+    "json-stringify-pretty-compact": "^1.2.0",
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
     "vega-typings": "^0.3.32",

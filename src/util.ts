@@ -42,7 +42,7 @@ export const stringify = stableStringify;
 /**
  * Converts any object into a string of limited size, or a number.
  */
-export function hash(a: any) {
+export function hash(a: any): string | number {
   if (isNumber(a)) {
     return a;
   }

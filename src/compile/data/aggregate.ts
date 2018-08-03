@@ -4,11 +4,11 @@ import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, keys, replacePathInField, StringSet} from '../../util';
+import {Dict, differ, duplicate, hash, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
-import {UnitModel} from './../unit';
-import {DataFlowNode} from './dataflow';
+import {UnitModel} from '../unit';
+import {DataFlowNode, TransformNode} from './dataflow';
 
 function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
   if (isBinning(fieldDef.bin)) {
@@ -43,7 +43,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
   }
 }
 
-export class AggregateNode extends DataFlowNode {
+export class AggregateNode extends TransformNode {
   public clone() {
     return new AggregateNode(null, {...this.dimensions}, duplicate(this.measures));
   }
@@ -164,6 +164,10 @@ export class AggregateNode extends DataFlowNode {
     }
 
     return out;
+  }
+
+  public hash() {
+    return `Aggregate ${hash({dimensions: this.dimensions, measures: this.measures})}`;
   }
 
   public assemble(): VgAggregateTransform {

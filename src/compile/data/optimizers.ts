@@ -1,5 +1,5 @@
 import {hasIntersection, keys} from '../../util';
-import {DataFlowNode, OutputNode} from './dataflow';
+import {DataFlowNode, isTransformNode, OutputNode, TransformNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {SourceNode} from './source';
@@ -55,6 +55,35 @@ export function moveParseUp(node: DataFlowNode) {
   }
 
   return true;
+}
+
+function mergeBucket(parent: DataFlowNode, nodes: DataFlowNode[]) {
+  const mergedTransform = nodes.shift();
+  nodes.forEach(x => {
+    parent.removeChild(x);
+    x.parent = mergedTransform;
+    x.remove();
+  });
+}
+
+/**
+ * Merge Identical Transforms at forks by comparing hashes.
+ */
+export function mergeIdenticalTransforms(node: DataFlowNode) {
+  const transforms = node.children.filter((x): x is TransformNode => isTransformNode(x));
+  const hashes = transforms.map(x => x.hash());
+  const buckets = {};
+  for (let i = 0; i < hashes.length; i++) {
+    if (buckets[hashes[i]] === undefined) {
+      buckets[hashes[i]] = [transforms[i]];
+    } else {
+      buckets[hashes[i]].push(transforms[i]);
+    }
+  }
+  for (const k of keys(buckets)) {
+    mergeBucket(node, buckets[k]);
+  }
+  node.children.forEach(mergeIdenticalTransforms);
 }
 
 /**

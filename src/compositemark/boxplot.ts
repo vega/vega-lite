@@ -1,13 +1,13 @@
 import {isNumber, isObject} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
+import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform} from '../transform';
-import {Flag, keys} from '../util';
-import {Encoding, extractTransformsFromEncoding} from './../encoding';
-import * as log from './../log';
-import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from './../spec';
-import {Orient} from './../vega.schema';
+import {Flag, getFirstDefined, keys} from '../util';
+import {Orient} from '../vega.schema';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -90,7 +90,7 @@ export function normalizeBoxPlot(
   }
 
   const extent = markDef.extent || config.boxplot.extent;
-  const sizeValue = markDef.size || config.boxplot.size;
+  const sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
   const isMinMax = !isNumber(extent);
 
   const {
