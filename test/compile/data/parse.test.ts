@@ -316,5 +316,29 @@ describe('compile/data/parse', () => {
       assert.isTrue(root.children[0] instanceof ImputeNode);
       assert.isTrue(result instanceof ImputeNode);
     });
+    it('should not add ParseNode for output of TimeUnitNode when explicit parse exists', () => {
+      const transform: Transform = {
+        timeUnit: 'yearmonth',
+        field: 'a',
+        as: 'yearmonth_a'
+      };
+      const model = parseUnitModel({
+        data: {values: [], format: {parse: {a: '%d-%b-%y'}}},
+        mark: 'point',
+        transform: [transform],
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+          color: {field: 'c', type: 'nominal'}
+        }
+      });
+      const ancestorParse = new AncestorParse();
+      const root = new DataFlowNode(null);
+      let head: DataFlowNode = ParseNode.makeExplicit(root, model, ancestorParse);
+      head = parseTransformArray(head, model, ancestorParse);
+
+      expect(head.parent).toBeInstanceOf(ParseNode);
+      expect((head.parent as ParseNode).parse).toEqual({a: '%d-%b-%y'});
+    });
   });
 });
