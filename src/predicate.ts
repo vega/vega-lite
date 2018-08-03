@@ -18,6 +18,7 @@ export type Predicate =
   | FieldGTPredicate
   | FieldLTEPredicate
   | FieldGTEPredicate
+  | FieldValidPredicate
   // b) Selection Predicate
   | SelectionPredicate
   // c) Vega Expression string
@@ -30,7 +31,8 @@ export type FieldPredicate =
   | FieldLTEPredicate
   | FieldGTEPredicate
   | FieldRangePredicate
-  | FieldOneOfPredicate;
+  | FieldOneOfPredicate
+  | FieldValidPredicate;
 
 export interface SelectionPredicate {
   /**
@@ -139,10 +141,21 @@ export interface FieldOneOfPredicate extends FieldPredicateBase {
   oneOf: string[] | number[] | boolean[] | DateTime[];
 }
 
+export interface FieldValidPredicate extends FieldPredicateBase {
+  /**
+   * If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+   */
+  valid: boolean;
+}
+
 export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate {
   return (
     predicate && !!predicate.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
   );
+}
+
+export function isFieldValidPredicate(predicate: any): predicate is FieldValidPredicate {
+  return predicate && !!predicate.field && predicate.valid !== undefined;
 }
 
 export function isFieldPredicate(
@@ -216,7 +229,9 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     const lower = predicate.gte;
     return `${fieldExpr}>=${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
-    return 'indexof([' + predicateValuesExpr(predicate.oneOf, timeUnit).join(',') + '], ' + fieldExpr + ') !== -1';
+    return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
+  } else if (isFieldValidPredicate(predicate)) {
+    return predicate.valid ? `${fieldExpr}!==null&&!isNaN(${fieldExpr})` : `${fieldExpr}===null||isNaN(${fieldExpr})`;
   } else if (isFieldRangePredicate(predicate)) {
     const lower = predicate.range[0];
     const upper = predicate.range[1];

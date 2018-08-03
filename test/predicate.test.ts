@@ -1,14 +1,17 @@
 import {assert} from 'chai';
-
 import {
   expression,
   fieldFilterExpression,
   isFieldEqualPredicate,
   isFieldLTEPredicate,
   isFieldOneOfPredicate,
-  isFieldRangePredicate
+  isFieldRangePredicate,
+  isFieldValidPredicate,
+  Predicate
 } from '../src/predicate';
 import {TimeUnit} from '../src/timeunit';
+import {without} from '../src/util';
+import {FieldValidPredicate} from './../src/predicate';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
@@ -16,6 +19,16 @@ describe('filter', () => {
   const rangeFilter = {field: 'x', range: [0, 5]};
   const exprFilter = 'datum["x"]===5';
   const lessThanEqualsFilter = {field: 'x', lte: 'z'};
+  const validFilter: FieldValidPredicate = {field: 'x', valid: true};
+
+  const allFilters: Predicate[] = [
+    equalFilter,
+    lessThanEqualsFilter,
+    oneOfFilter,
+    rangeFilter,
+    validFilter,
+    exprFilter
+  ];
 
   describe('isEqualFilter', () => {
     it('should return true for an equal filter', () => {
@@ -23,7 +36,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [oneOfFilter, rangeFilter, exprFilter].forEach(filter => {
+      without(allFilters, [equalFilter]).forEach(filter => {
         assert.isFalse(isFieldEqualPredicate(filter));
       });
     });
@@ -35,7 +48,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [equalFilter, oneOfFilter, rangeFilter, exprFilter].forEach(filter => {
+      without(allFilters, [lessThanEqualsFilter]).forEach(filter => {
         assert.isFalse(isFieldLTEPredicate(filter));
       });
     });
@@ -47,7 +60,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [equalFilter, rangeFilter, exprFilter].forEach(filter => {
+      without(allFilters, [oneOfFilter]).forEach(filter => {
         assert.isFalse(isFieldOneOfPredicate(filter));
       });
     });
@@ -59,8 +72,20 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      [oneOfFilter, equalFilter, exprFilter].forEach(filter => {
+      without(allFilters, [rangeFilter]).forEach(filter => {
         assert.isFalse(isFieldRangePredicate(filter));
+      });
+    });
+  });
+
+  describe('isValidFilter', () => {
+    it('should return true for a valid filter', () => {
+      assert.isTrue(isFieldValidPredicate(validFilter));
+    });
+
+    it('should return false for other filters', () => {
+      without(allFilters, [validFilter]).forEach(filter => {
+        assert.isFalse(isFieldValidPredicate(filter));
       });
     });
   });
@@ -89,6 +114,11 @@ describe('filter', () => {
     it('should return correct expression for greaterThanEquals', () => {
       const expr = expression(null, {field: 'x', gte: 1});
       assert.equal(expr, 'datum["x"]>=1');
+    });
+
+    it('should return correct expression for valid', () => {
+      const expr = expression(null, {field: 'x', valid: true});
+      assert.equal(expr, 'datum["x"]!==null&&!isNaN(datum["x"])');
     });
 
     it('should return a correct expression for an EqualFilter with datetime object', () => {

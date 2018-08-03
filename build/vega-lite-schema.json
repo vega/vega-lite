@@ -3745,6 +3745,28 @@
       ],
       "type": "object"
     },
+    "FieldValidPredicate": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "description": "Field to be filtered.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Time unit for the field to be filtered."
+        },
+        "valid": {
+          "description": "If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "field",
+        "valid"
+      ],
+      "type": "object"
+    },
     "FilterTransform": {
       "additionalProperties": false,
       "properties": {
@@ -6985,6 +7007,9 @@
         },
         {
           "$ref": "#/definitions/FieldGTEPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldValidPredicate"
         },
         {
           "$ref": "#/definitions/SelectionPredicate"

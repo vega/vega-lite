@@ -15,6 +15,10 @@
       },
       "transform": [
         {
+          "type": "filter",
+          "expr": "(datum[\"IMDB_Rating\"]!==null&&!isNaN(datum[\"IMDB_Rating\"])) && (datum[\"Rotten_Tomatoes_Rating\"]!==null&&!isNaN(datum[\"Rotten_Tomatoes_Rating\"]))"
+        },
+        {
           "type": "extent",
           "field": "IMDB_Rating",
           "signal": "bin_maxbins_60_IMDB_Rating_extent"
