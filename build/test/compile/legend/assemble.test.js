@@ -1,9 +1,11 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { parseUnitModelWithScale } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var util_1 = require("../../util");
 describe('legend/assemble', function () {
     it('merges legend of the same field with the default type.', function () {
-        var model = parseUnitModelWithScale({
+        var model = util_1.parseUnitModelWithScale({
             $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
             description: 'A scatterplot showing horsepower and miles per gallons.',
             data: { url: 'data/cars.json' },
@@ -17,13 +19,13 @@ describe('legend/assemble', function () {
         });
         model.parseLegend();
         var legends = model.assembleLegends();
-        assert.equal(legends.length, 1);
-        assert.equal(legends[0].title, 'Origin');
-        assert.equal(legends[0].stroke, 'color');
-        assert.equal(legends[0].shape, 'shape');
+        chai_1.assert.equal(legends.length, 1);
+        chai_1.assert.equal(legends[0].title, 'Origin');
+        chai_1.assert.equal(legends[0].stroke, 'color');
+        chai_1.assert.equal(legends[0].shape, 'shape');
     });
     it('merges legend of the same field and favor symbol legend over gradient', function () {
-        var model = parseUnitModelWithScale({
+        var model = util_1.parseUnitModelWithScale({
             data: { values: [{ a: 'A', b: 28 }, { a: 'B', b: 55 }] },
             mark: 'bar',
             encoding: {
@@ -35,10 +37,10 @@ describe('legend/assemble', function () {
         });
         model.parseLegend();
         var legends = model.assembleLegends();
-        assert.equal(legends.length, 1);
-        assert.equal(legends[0].title, 'b');
-        assert.equal(legends[0].fill, 'color');
-        assert.equal(legends[0].size, 'size');
+        chai_1.assert.equal(legends.length, 1);
+        chai_1.assert.equal(legends[0].title, 'b');
+        chai_1.assert.equal(legends[0].fill, 'color');
+        chai_1.assert.equal(legends[0].size, 'size');
     });
 });
 //# sourceMappingURL=assemble.test.js.map

@@ -1,11 +1,14 @@
+"use strict";
 /* tslint:disable quotemark */
-import { assert } from 'chai';
-import { selector as parseSelector } from 'vega-event-selector';
-import * as selection from '../../../src/compile/selection/selection';
-import { keys } from '../../../src/util';
-import { parseUnitModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var chai_1 = require("chai");
+var vega_event_selector_1 = require("vega-event-selector");
+var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
+var util_1 = require("../../../src/util");
+var util_2 = require("../../util");
 describe('Selection', function () {
-    var model = parseUnitModel({
+    var model = util_2.parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -19,25 +22,25 @@ describe('Selection', function () {
             two: { type: 'multi' },
             three: { type: 'interval' }
         });
-        assert.sameMembers(keys(component), ['one', 'two', 'three']);
-        assert.equal(component.one.name, 'one');
-        assert.equal(component.one.type, 'single');
-        assert.sameDeepMembers(component['one'].project, [{ field: '_vgsid_', channel: null }]);
-        assert.sameDeepMembers(component['one'].events, parseSelector('click', 'scope'));
-        assert.equal(component.two.name, 'two');
-        assert.equal(component.two.type, 'multi');
-        assert.equal(component.two.toggle, 'event.shiftKey');
-        assert.sameDeepMembers(component['two'].project, [{ field: '_vgsid_', channel: null }]);
-        assert.sameDeepMembers(component['two'].events, parseSelector('click', 'scope'));
-        assert.equal(component.three.name, 'three');
-        assert.equal(component.three.type, 'interval');
-        assert.equal(component.three.translate, '[mousedown, window:mouseup] > window:mousemove!');
-        assert.equal(component.three.zoom, 'wheel!');
-        assert.sameDeepMembers(component['three'].project, [
+        chai_1.assert.sameMembers(util_1.keys(component), ['one', 'two', 'three']);
+        chai_1.assert.equal(component.one.name, 'one');
+        chai_1.assert.equal(component.one.type, 'single');
+        chai_1.assert.sameDeepMembers(component['one'].project, [{ field: '_vgsid_', channel: null }]);
+        chai_1.assert.sameDeepMembers(component['one'].events, vega_event_selector_1.selector('click', 'scope'));
+        chai_1.assert.equal(component.two.name, 'two');
+        chai_1.assert.equal(component.two.type, 'multi');
+        chai_1.assert.equal(component.two.toggle, 'event.shiftKey');
+        chai_1.assert.sameDeepMembers(component['two'].project, [{ field: '_vgsid_', channel: null }]);
+        chai_1.assert.sameDeepMembers(component['two'].events, vega_event_selector_1.selector('click', 'scope'));
+        chai_1.assert.equal(component.three.name, 'three');
+        chai_1.assert.equal(component.three.type, 'interval');
+        chai_1.assert.equal(component.three.translate, '[mousedown, window:mouseup] > window:mousemove!');
+        chai_1.assert.equal(component.three.zoom, 'wheel!');
+        chai_1.assert.sameDeepMembers(component['three'].project, [
             { field: 'Horsepower', channel: 'x' },
             { field: 'Miles_per_Gallon', channel: 'y' }
         ]);
-        assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
+        chai_1.assert.sameDeepMembers(component['three'].events, vega_event_selector_1.selector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
     });
     it('supports inline default overrides', function () {
         var component = selection.parseUnitSelection(model, {
@@ -60,24 +63,24 @@ describe('Selection', function () {
                 zoom: 'wheel[event.altKey]'
             }
         });
-        assert.sameMembers(keys(component), ['one', 'two', 'three']);
-        assert.equal(component.one.name, 'one');
-        assert.equal(component.one.type, 'single');
-        assert.sameDeepMembers(component['one'].project, [{ field: 'Cylinders', channel: null }]);
-        assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
-        assert.equal(component.two.name, 'two');
-        assert.equal(component.two.type, 'multi');
-        assert.equal(component.two.toggle, 'event.ctrlKey');
-        assert.sameDeepMembers(component['two'].project, [{ field: 'Origin', channel: 'color' }]);
-        assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
-        assert.equal(component.three.name, 'three');
-        assert.equal(component.three.type, 'interval');
-        assert.equal(component.three.translate, false);
-        assert.equal(component.three.zoom, 'wheel[event.altKey]');
-        assert.sameDeepMembers(component['three'].project, [
+        chai_1.assert.sameMembers(util_1.keys(component), ['one', 'two', 'three']);
+        chai_1.assert.equal(component.one.name, 'one');
+        chai_1.assert.equal(component.one.type, 'single');
+        chai_1.assert.sameDeepMembers(component['one'].project, [{ field: 'Cylinders', channel: null }]);
+        chai_1.assert.sameDeepMembers(component['one'].events, vega_event_selector_1.selector('dblclick', 'scope'));
+        chai_1.assert.equal(component.two.name, 'two');
+        chai_1.assert.equal(component.two.type, 'multi');
+        chai_1.assert.equal(component.two.toggle, 'event.ctrlKey');
+        chai_1.assert.sameDeepMembers(component['two'].project, [{ field: 'Origin', channel: 'color' }]);
+        chai_1.assert.sameDeepMembers(component['two'].events, vega_event_selector_1.selector('mouseover', 'scope'));
+        chai_1.assert.equal(component.three.name, 'three');
+        chai_1.assert.equal(component.three.type, 'interval');
+        chai_1.assert.equal(component.three.translate, false);
+        chai_1.assert.equal(component.three.zoom, 'wheel[event.altKey]');
+        chai_1.assert.sameDeepMembers(component['three'].project, [
             { field: 'Miles_per_Gallon', channel: 'y' }
         ]);
-        assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
+        chai_1.assert.sameDeepMembers(component['three'].events, vega_event_selector_1.selector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
     });
     it('respects selection configs', function () {
         model.config.selection = {
@@ -94,24 +97,24 @@ describe('Selection', function () {
             two: { type: 'multi' },
             three: { type: 'interval' }
         });
-        assert.sameMembers(keys(component), ['one', 'two', 'three']);
-        assert.equal(component.one.name, 'one');
-        assert.equal(component.one.type, 'single');
-        assert.sameDeepMembers(component['one'].project, [{ field: 'Cylinders', channel: null }]);
-        assert.sameDeepMembers(component['one'].events, parseSelector('dblclick', 'scope'));
-        assert.equal(component.two.name, 'two');
-        assert.equal(component.two.type, 'multi');
-        assert.equal(component.two.toggle, 'event.ctrlKey');
-        assert.sameDeepMembers(component['two'].project, [{ field: 'Origin', channel: 'color' }]);
-        assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
-        assert.equal(component.three.name, 'three');
-        assert.equal(component.three.type, 'interval');
-        assert(!component.three.translate);
-        assert.equal(component.three.zoom, 'wheel[event.altKey]');
-        assert.sameDeepMembers(component['three'].project, [
+        chai_1.assert.sameMembers(util_1.keys(component), ['one', 'two', 'three']);
+        chai_1.assert.equal(component.one.name, 'one');
+        chai_1.assert.equal(component.one.type, 'single');
+        chai_1.assert.sameDeepMembers(component['one'].project, [{ field: 'Cylinders', channel: null }]);
+        chai_1.assert.sameDeepMembers(component['one'].events, vega_event_selector_1.selector('dblclick', 'scope'));
+        chai_1.assert.equal(component.two.name, 'two');
+        chai_1.assert.equal(component.two.type, 'multi');
+        chai_1.assert.equal(component.two.toggle, 'event.ctrlKey');
+        chai_1.assert.sameDeepMembers(component['two'].project, [{ field: 'Origin', channel: 'color' }]);
+        chai_1.assert.sameDeepMembers(component['two'].events, vega_event_selector_1.selector('mouseover', 'scope'));
+        chai_1.assert.equal(component.three.name, 'three');
+        chai_1.assert.equal(component.three.type, 'interval');
+        chai_1.assert(!component.three.translate);
+        chai_1.assert.equal(component.three.zoom, 'wheel[event.altKey]');
+        chai_1.assert.sameDeepMembers(component['three'].project, [
             { field: 'Miles_per_Gallon', channel: 'y' }
         ]);
-        assert.sameDeepMembers(component['three'].events, parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
+        chai_1.assert.sameDeepMembers(component['three'].events, vega_event_selector_1.selector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope'));
     });
 });
 //# sourceMappingURL=parse.test.js.map

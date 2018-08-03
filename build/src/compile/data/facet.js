@@ -1,15 +1,17 @@
-import * as tslib_1 from "tslib";
-import { isArray } from 'vega-util';
-import { isBinning } from '../../bin';
-import { COLUMN, ROW } from '../../channel';
-import { vgField } from '../../fielddef';
-import * as log from '../../log';
-import { hasDiscreteDomain } from '../../scale';
-import { isSortField } from '../../sort';
-import { isVgRangeStep } from '../../vega.schema';
-import { assembleDomain, getFieldFromDomain } from '../scale/domain';
-import { sortArrayIndexField } from './calculate';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var bin_1 = require("../../bin");
+var channel_1 = require("../../channel");
+var fielddef_1 = require("../../fielddef");
+var log = tslib_1.__importStar(require("../../log"));
+var scale_1 = require("../../scale");
+var sort_1 = require("../../sort");
+var vega_schema_1 = require("../../vega.schema");
+var domain_1 = require("../scale/domain");
+var calculate_1 = require("./calculate");
+var dataflow_1 = require("./dataflow");
 /**
  * A node that helps us track what fields we are faceting by.
  */
@@ -25,15 +27,15 @@ var FacetNode = /** @class */ (function (_super) {
         _this.model = model;
         _this.name = name;
         _this.data = data;
-        for (var _i = 0, _a = [COLUMN, ROW]; _i < _a.length; _i++) {
+        for (var _i = 0, _a = [channel_1.COLUMN, channel_1.ROW]; _i < _a.length; _i++) {
             var channel = _a[_i];
             var fieldDef = model.facet[channel];
             if (fieldDef) {
                 var bin = fieldDef.bin, sort = fieldDef.sort;
-                _this[channel] = tslib_1.__assign({ name: model.getName(channel + "_domain"), fields: [vgField(fieldDef)].concat((isBinning(bin) ? [vgField(fieldDef, { binSuffix: 'end' })] : [])) }, (isSortField(sort)
+                _this[channel] = tslib_1.__assign({ name: model.getName(channel + "_domain"), fields: [fielddef_1.vgField(fieldDef)].concat((bin_1.isBinning(bin) ? [fielddef_1.vgField(fieldDef, { binSuffix: 'end' })] : [])) }, (sort_1.isSortField(sort)
                     ? { sortField: sort }
-                    : isArray(sort)
-                        ? { sortIndexField: sortArrayIndexField(fieldDef, channel) }
+                    : vega_util_1.isArray(sort)
+                        ? { sortIndexField: calculate_1.sortArrayIndexField(fieldDef, channel) }
                         : {}));
             }
         }
@@ -61,9 +63,9 @@ var FacetNode = /** @class */ (function (_super) {
             if (childScaleComponent && !childScaleComponent.merged) {
                 var type = childScaleComponent.get('type');
                 var range = childScaleComponent.get('range');
-                if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
-                    var domain = assembleDomain(this.childModel, channel);
-                    var field = getFieldFromDomain(domain);
+                if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
+                    var domain = domain_1.assembleDomain(this.childModel, channel);
+                    var field = domain_1.getFieldFromDomain(domain);
                     if (field) {
                         childIndependentFieldsWithStep[channel] = field;
                     }
@@ -99,7 +101,7 @@ var FacetNode = /** @class */ (function (_super) {
             var op = sortField.op, field = sortField.field;
             fields.push(field);
             ops.push(op);
-            as.push(vgField(sortField, { forAs: true }));
+            as.push(fielddef_1.vgField(sortField, { forAs: true }));
         }
         else if (sortIndexField) {
             fields.push(sortIndexField);
@@ -143,7 +145,7 @@ var FacetNode = /** @class */ (function (_super) {
                 ]
             });
         }
-        for (var _i = 0, _a = [COLUMN, ROW]; _i < _a.length; _i++) {
+        for (var _i = 0, _a = [channel_1.COLUMN, channel_1.ROW]; _i < _a.length; _i++) {
             var channel = _a[_i];
             if (this[channel]) {
                 data.push(this.assembleRowColumnData(channel, crossedDataName, childIndependentFieldsWithStep));
@@ -152,6 +154,6 @@ var FacetNode = /** @class */ (function (_super) {
         return data;
     };
     return FacetNode;
-}(DataFlowNode));
-export { FacetNode };
+}(dataflow_1.DataFlowNode));
+exports.FacetNode = FacetNode;
 //# sourceMappingURL=facet.js.map

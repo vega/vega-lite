@@ -1,15 +1,18 @@
-import * as log from '../../../log';
-import { isPathMark } from '../../../mark';
-import { positionalProjections } from '../selection';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var log = tslib_1.__importStar(require("../../../log"));
+var mark_1 = require("../../../mark");
+var selection_1 = require("../selection");
 var VORONOI = 'voronoi';
 var nearest = {
     has: function (selCmpt) {
         return selCmpt.type !== 'interval' && selCmpt.nearest;
     },
     marks: function (model, selCmpt, marks) {
-        var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
+        var _a = selection_1.positionalProjections(selCmpt), x = _a.x, y = _a.y;
         var markType = model.mark;
-        if (isPathMark(markType)) {
+        if (mark_1.isPathMark(markType)) {
             log.warn(log.message.nearestNotSupportForContinuous(markType));
             return marks;
         }
@@ -51,5 +54,5 @@ var nearest = {
         return marks;
     }
 };
-export default nearest;
+exports.default = nearest;
 //# sourceMappingURL=nearest.js.map

@@ -52,10 +52,10 @@ export declare const TOOLTIP: "tooltip";
 export declare const HREF: "href";
 export declare type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 export declare const GEOPOSITION_CHANNEL_INDEX: Flag<GeoPositionChannel>;
-export declare const GEOPOSITION_CHANNELS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/channel").GeoPositionChannel[];
+export declare const GEOPOSITION_CHANNELS: import("vega-lite/build/src/channel").GeoPositionChannel[];
 export declare type ColorChannel = 'color' | 'fill' | 'stroke';
 export declare function isColorChannel(channel: Channel): channel is ColorChannel;
-export declare const CHANNELS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/channel").Channel[];
+export declare const CHANNELS: import("vega-lite/build/src/channel").Channel[];
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -67,15 +67,15 @@ export declare const CHANNELS: import("../../../../../../Users/domoritz/Develope
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
 export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'row' | 'column' | 'color' | 'fill' | 'stroke' | 'size' | 'shape' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
 export declare function isChannel(str: string): str is Channel;
-export declare const UNIT_CHANNELS: ("text" | "shape" | "latitude" | "longitude" | "x" | "y" | "x2" | "y2" | "longitude2" | "latitude2" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
-export declare const NONPOSITION_CHANNELS: ("text" | "shape" | "color" | "fill" | "stroke" | "opacity" | "size" | "detail" | "key" | "tooltip" | "href" | "order")[];
+export declare const UNIT_CHANNELS: ("color" | "fill" | "opacity" | "order" | "stroke" | "text" | "shape" | "latitude" | "longitude" | "x" | "y" | "x2" | "y2" | "longitude2" | "latitude2" | "size" | "detail" | "key" | "tooltip" | "href")[];
+export declare const NONPOSITION_CHANNELS: ("color" | "fill" | "opacity" | "order" | "stroke" | "text" | "shape" | "size" | "detail" | "key" | "tooltip" | "href")[];
 export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];
 export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
-export declare const NONPOSITION_SCALE_CHANNELS: ("shape" | "color" | "fill" | "stroke" | "opacity" | "size")[];
+export declare const NONPOSITION_SCALE_CHANNELS: ("color" | "fill" | "opacity" | "stroke" | "shape" | "size")[];
 export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 /** List of channels with scales */
-export declare const SCALE_CHANNELS: ("shape" | "x" | "y" | "color" | "fill" | "stroke" | "opacity" | "size")[];
+export declare const SCALE_CHANNELS: ("color" | "fill" | "opacity" | "stroke" | "shape" | "x" | "y" | "size")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];
 export declare function isScaleChannel(channel: Channel): channel is ScaleChannel;
 export declare type SupportedMark = {

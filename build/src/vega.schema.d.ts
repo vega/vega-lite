@@ -512,7 +512,7 @@ export interface VgMarkConfig {
      */
     cornerRadius?: number;
 }
-export declare const VG_MARK_CONFIGS: ("dir" | "font" | "text" | "shape" | "interpolate" | "fill" | "stroke" | "opacity" | "size" | "tooltip" | "href" | "orient" | "fillOpacity" | "strokeWidth" | "strokeCap" | "strokeOpacity" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "cursor" | "tension" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
+export declare const VG_MARK_CONFIGS: ("cursor" | "fill" | "fillOpacity" | "font" | "fontSize" | "fontStyle" | "fontWeight" | "opacity" | "stroke" | "strokeOpacity" | "strokeWidth" | "dir" | "text" | "shape" | "interpolate" | "size" | "tooltip" | "href" | "orient" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "cornerRadius")[];
 export declare type VgComparatorOrder = 'ascending' | 'descending';
 export interface VgComparator {
     field?: string | string[];

@@ -1,66 +1,70 @@
-import { SCALE_CHANNELS, SHAPE, X, Y } from '../../channel';
-import { getFieldDef, hasConditionalFieldDef, isFieldDef } from '../../fielddef';
-import { GEOSHAPE } from '../../mark';
-import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, scaleCompatible, scaleTypePrecedence } from '../../scale';
-import { GEOJSON } from '../../type';
-import { keys } from '../../util';
-import { isUnitModel } from '../model';
-import { defaultScaleResolve } from '../resolve';
-import { mergeValuesWithExplicit, tieBreakByComparing } from '../split';
-import { ScaleComponent } from './component';
-import { parseScaleDomain } from './domain';
-import { parseScaleProperty } from './properties';
-import { parseScaleRange } from './range';
-import { scaleType } from './type';
-export function parseScale(model) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var channel_1 = require("../../channel");
+var fielddef_1 = require("../../fielddef");
+var mark_1 = require("../../mark");
+var scale_1 = require("../../scale");
+var type_1 = require("../../type");
+var util_1 = require("../../util");
+var model_1 = require("../model");
+var resolve_1 = require("../resolve");
+var split_1 = require("../split");
+var component_1 = require("./component");
+var domain_1 = require("./domain");
+var properties_1 = require("./properties");
+var range_1 = require("./range");
+var type_2 = require("./type");
+function parseScale(model) {
     parseScaleCore(model);
-    parseScaleDomain(model);
-    for (var _i = 0, NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES_1 = NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES; _i < NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES_1.length; _i++) {
+    domain_1.parseScaleDomain(model);
+    for (var _i = 0, NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES_1 = scale_1.NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES; _i < NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES_1.length; _i++) {
         var prop = NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES_1[_i];
-        parseScaleProperty(model, prop);
+        properties_1.parseScaleProperty(model, prop);
     }
     // range depends on zero
-    parseScaleRange(model);
+    range_1.parseScaleRange(model);
 }
-export function parseScaleCore(model) {
-    if (isUnitModel(model)) {
+exports.parseScale = parseScale;
+function parseScaleCore(model) {
+    if (model_1.isUnitModel(model)) {
         model.component.scales = parseUnitScaleCore(model);
     }
     else {
         model.component.scales = parseNonUnitScaleCore(model);
     }
 }
+exports.parseScaleCore = parseScaleCore;
 /**
  * Parse scales for all channels of a model.
  */
 function parseUnitScaleCore(model) {
     var encoding = model.encoding, config = model.config, mark = model.mark;
-    return SCALE_CHANNELS.reduce(function (scaleComponents, channel) {
+    return channel_1.SCALE_CHANNELS.reduce(function (scaleComponents, channel) {
         var fieldDef;
         var specifiedScale;
         var channelDef = encoding[channel];
         // Don't generate scale for shape of geoshape
-        if (isFieldDef(channelDef) && mark === GEOSHAPE && channel === SHAPE && channelDef.type === GEOJSON) {
+        if (fielddef_1.isFieldDef(channelDef) && mark === mark_1.GEOSHAPE && channel === channel_1.SHAPE && channelDef.type === type_1.GEOJSON) {
             return scaleComponents;
         }
-        if (isFieldDef(channelDef)) {
+        if (fielddef_1.isFieldDef(channelDef)) {
             fieldDef = channelDef;
             specifiedScale = channelDef.scale;
         }
-        else if (hasConditionalFieldDef(channelDef)) {
+        else if (fielddef_1.hasConditionalFieldDef(channelDef)) {
             fieldDef = channelDef.condition;
             specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
         }
-        else if (channel === X) {
-            fieldDef = getFieldDef(encoding.x2);
+        else if (channel === channel_1.X) {
+            fieldDef = fielddef_1.getFieldDef(encoding.x2);
         }
-        else if (channel === Y) {
-            fieldDef = getFieldDef(encoding.y2);
+        else if (channel === channel_1.Y) {
+            fieldDef = fielddef_1.getFieldDef(encoding.y2);
         }
         if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
             specifiedScale = specifiedScale || {};
-            var sType = scaleType(specifiedScale, channel, fieldDef, mark, config.scale);
-            scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
+            var sType = type_2.scaleType(specifiedScale, channel, fieldDef, mark, config.scale);
+            scaleComponents[channel] = new component_1.ScaleComponent(model.scaleName(channel + '', true), {
                 value: sType,
                 explicit: specifiedScale.type === sType
             });
@@ -68,7 +72,7 @@ function parseUnitScaleCore(model) {
         return scaleComponents;
     }, {});
 }
-var scaleTypeTieBreaker = tieBreakByComparing(function (st1, st2) { return scaleTypePrecedence(st1) - scaleTypePrecedence(st2); });
+var scaleTypeTieBreaker = split_1.tieBreakByComparing(function (st1, st2) { return scale_1.scaleTypePrecedence(st1) - scale_1.scaleTypePrecedence(st2); });
 function parseNonUnitScaleCore(model) {
     var scaleComponents = (model.component.scales = {});
     var scaleTypeWithExplicitIndex = {};
@@ -76,16 +80,16 @@ function parseNonUnitScaleCore(model) {
     var _loop_1 = function (child) {
         parseScaleCore(child);
         // Instead of always merging right away -- check if it is compatible to merge first!
-        keys(child.component.scales).forEach(function (channel) {
+        util_1.keys(child.component.scales).forEach(function (channel) {
             // if resolve is undefined, set default first
-            resolve.scale[channel] = resolve.scale[channel] || defaultScaleResolve(channel, model);
+            resolve.scale[channel] = resolve.scale[channel] || resolve_1.defaultScaleResolve(channel, model);
             if (resolve.scale[channel] === 'shared') {
                 var explicitScaleType = scaleTypeWithExplicitIndex[channel];
                 var childScaleType = child.component.scales[channel].getWithExplicit('type');
                 if (explicitScaleType) {
-                    if (scaleCompatible(explicitScaleType.value, childScaleType.value)) {
+                    if (scale_1.scaleCompatible(explicitScaleType.value, childScaleType.value)) {
                         // merge scale component if type are compatible
-                        scaleTypeWithExplicitIndex[channel] = mergeValuesWithExplicit(explicitScaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker);
+                        scaleTypeWithExplicitIndex[channel] = split_1.mergeValuesWithExplicit(explicitScaleType, childScaleType, 'type', 'scale', scaleTypeTieBreaker);
                     }
                     else {
                         // Otherwise, update conflicting channel to be independent
@@ -106,11 +110,11 @@ function parseNonUnitScaleCore(model) {
         _loop_1(child);
     }
     // Merge each channel listed in the index
-    keys(scaleTypeWithExplicitIndex).forEach(function (channel) {
+    util_1.keys(scaleTypeWithExplicitIndex).forEach(function (channel) {
         // Create new merged scale component
         var name = model.scaleName(channel, true);
         var typeWithExplicit = scaleTypeWithExplicitIndex[channel];
-        scaleComponents[channel] = new ScaleComponent(name, typeWithExplicit);
+        scaleComponents[channel] = new component_1.ScaleComponent(name, typeWithExplicit);
         // rename each child and mark them as merged
         for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
             var child = _a[_i];

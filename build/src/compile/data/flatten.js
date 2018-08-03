@@ -1,6 +1,8 @@
-import * as tslib_1 from "tslib";
-import { duplicate } from '../../util';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
 /**
  * A class for flatten transform nodes
  */
@@ -14,7 +16,7 @@ var FlattenTransformNode = /** @class */ (function (_super) {
         return _this;
     }
     FlattenTransformNode.prototype.clone = function () {
-        return new FlattenTransformNode(this.parent, duplicate(this.transform));
+        return new FlattenTransformNode(this.parent, util_1.duplicate(this.transform));
     };
     FlattenTransformNode.prototype.producedFields = function () {
         var _this = this;
@@ -22,6 +24,9 @@ var FlattenTransformNode = /** @class */ (function (_super) {
             out[_this.transform.as[i]] = true;
             return out;
         }, {});
+    };
+    FlattenTransformNode.prototype.hash = function () {
+        return "FlattenTransform " + util_1.hash(this.transform);
     };
     FlattenTransformNode.prototype.assemble = function () {
         var _a = this.transform, fields = _a.flatten, as = _a.as;
@@ -33,6 +38,6 @@ var FlattenTransformNode = /** @class */ (function (_super) {
         return result;
     };
     return FlattenTransformNode;
-}(DataFlowNode));
-export { FlattenTransformNode };
+}(dataflow_1.TransformNode));
+exports.FlattenTransformNode = FlattenTransformNode;
 //# sourceMappingURL=flatten.js.map

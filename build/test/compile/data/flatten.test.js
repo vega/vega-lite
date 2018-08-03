@@ -1,6 +1,8 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { FlattenTransformNode } from '../../../src/compile/data/flatten';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var flatten_1 = require("../../../src/compile/data/flatten");
 describe('compile/data/flatten', function () {
     describe('FlattenTransformNode', function () {
         it('should return a proper vg transform', function () {
@@ -8,8 +10,8 @@ describe('compile/data/flatten', function () {
                 flatten: ['a', 'b'],
                 as: ['a', 'b']
             };
-            var flatten = new FlattenTransformNode(null, transform);
-            assert.deepEqual(flatten.assemble(), {
+            var flatten = new flatten_1.FlattenTransformNode(null, transform);
+            chai_1.assert.deepEqual(flatten.assemble(), {
                 type: 'flatten',
                 fields: ['a', 'b'],
                 as: ['a', 'b']
@@ -19,8 +21,8 @@ describe('compile/data/flatten', function () {
             var transform = {
                 flatten: ['a', 'b']
             };
-            var flatten = new FlattenTransformNode(null, transform);
-            assert.deepEqual(flatten.assemble(), {
+            var flatten = new flatten_1.FlattenTransformNode(null, transform);
+            chai_1.assert.deepEqual(flatten.assemble(), {
                 type: 'flatten',
                 fields: ['a', 'b'],
                 as: ['a', 'b']
@@ -31,8 +33,8 @@ describe('compile/data/flatten', function () {
                 flatten: ['a', 'b'],
                 as: ['A']
             };
-            var flatten = new FlattenTransformNode(null, transform);
-            assert.deepEqual(flatten.assemble(), {
+            var flatten = new flatten_1.FlattenTransformNode(null, transform);
+            chai_1.assert.deepEqual(flatten.assemble(), {
                 type: 'flatten',
                 fields: ['a', 'b'],
                 as: ['A', 'b']
@@ -42,8 +44,15 @@ describe('compile/data/flatten', function () {
             var transform = {
                 flatten: ['a', 'b']
             };
-            var flatten = new FlattenTransformNode(null, transform);
-            assert.deepEqual(flatten.producedFields(), { a: true, b: true });
+            var flatten = new flatten_1.FlattenTransformNode(null, transform);
+            chai_1.assert.deepEqual(flatten.producedFields(), { a: true, b: true });
+        });
+        it('should generate the correct hash', function () {
+            var transform = {
+                flatten: ['a', 'b']
+            };
+            var flatten = new flatten_1.FlattenTransformNode(null, transform);
+            chai_1.assert.deepEqual(flatten.hash(), 'FlattenTransform {"as":["a","b"],"flatten":["a","b"]}');
         });
     });
 });

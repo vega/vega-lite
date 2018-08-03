@@ -1,10 +1,12 @@
-import * as tslib_1 from "tslib";
-import { isBoolean, isString } from 'vega-util';
-import { reduce } from '../encoding';
-import { isContinuous, isFieldDef } from '../fielddef';
-import { isMarkDef } from '../mark';
-import * as log from './../log';
-export function makeCompositeAggregatePartFactory(compositeMarkDef, continuousAxis, continuousAxisChannelDef, sharedEncoding, compositeMarkConfig) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var encoding_1 = require("../encoding");
+var fielddef_1 = require("../fielddef");
+var log = tslib_1.__importStar(require("../log"));
+var mark_1 = require("../mark");
+function makeCompositeAggregatePartFactory(compositeMarkDef, continuousAxis, continuousAxisChannelDef, sharedEncoding, compositeMarkConfig) {
     var scale = continuousAxisChannelDef.scale, axis = continuousAxisChannelDef.axis;
     return function (partName, mark, positionPrefix, endPositionPrefix, extraEncoding) {
         if (endPositionPrefix === void 0) { endPositionPrefix = undefined; }
@@ -17,7 +19,7 @@ export function makeCompositeAggregatePartFactory(compositeMarkDef, continuousAx
                 : continuousAxisChannelDef.field;
         return partLayerMixins(compositeMarkDef, partName, compositeMarkConfig, {
             mark: mark,
-            encoding: tslib_1.__assign((_a = {}, _a[continuousAxis] = tslib_1.__assign({ field: positionPrefix + '_' + continuousAxisChannelDef.field, type: continuousAxisChannelDef.type }, (title ? { title: title } : {}), (scale ? { scale: scale } : {}), (axis ? { axis: axis } : {})), _a), (isString(endPositionPrefix)
+            encoding: tslib_1.__assign((_a = {}, _a[continuousAxis] = tslib_1.__assign({ field: positionPrefix + '_' + continuousAxisChannelDef.field, type: continuousAxisChannelDef.type }, (title ? { title: title } : {}), (scale ? { scale: scale } : {}), (axis ? { axis: axis } : {})), _a), (vega_util_1.isString(endPositionPrefix)
                 ? (_b = {},
                     _b[continuousAxis + '2'] = {
                         field: endPositionPrefix + '_' + continuousAxisChannelDef.field,
@@ -27,17 +29,19 @@ export function makeCompositeAggregatePartFactory(compositeMarkDef, continuousAx
         });
     };
 }
-export function partLayerMixins(markDef, part, compositeMarkConfig, partBaseSpec) {
+exports.makeCompositeAggregatePartFactory = makeCompositeAggregatePartFactory;
+function partLayerMixins(markDef, part, compositeMarkConfig, partBaseSpec) {
     var color = markDef.color, opacity = markDef.opacity;
     var mark = markDef.type;
     if (markDef[part] || (markDef[part] === undefined && compositeMarkConfig[part])) {
         return [
-            tslib_1.__assign({}, partBaseSpec, { mark: tslib_1.__assign({}, compositeMarkConfig[part], (color ? { color: color } : {}), (opacity ? { opacity: opacity } : {}), (isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : { type: partBaseSpec.mark }), { style: mark + "-" + part }, (isBoolean(markDef[part]) ? {} : markDef[part])) })
+            tslib_1.__assign({}, partBaseSpec, { mark: tslib_1.__assign({}, compositeMarkConfig[part], (color ? { color: color } : {}), (opacity ? { opacity: opacity } : {}), (mark_1.isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : { type: partBaseSpec.mark }), { style: mark + "-" + part }, (vega_util_1.isBoolean(markDef[part]) ? {} : markDef[part])) })
         ];
     }
     return [];
 }
-export function compositeMarkContinuousAxis(spec, orient, compositeMark) {
+exports.partLayerMixins = partLayerMixins;
+function compositeMarkContinuousAxis(spec, orient, compositeMark) {
     var encoding = spec.encoding;
     var continuousAxisChannelDef;
     var continuousAxisChannelDef2;
@@ -72,11 +76,12 @@ export function compositeMarkContinuousAxis(spec, orient, compositeMark) {
         continuousAxis: continuousAxis
     };
 }
-export function compositeMarkOrient(spec, compositeMark) {
+exports.compositeMarkContinuousAxis = compositeMarkContinuousAxis;
+function compositeMarkOrient(spec, compositeMark) {
     var mark = spec.mark, encoding = spec.encoding;
-    if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
+    if (fielddef_1.isFieldDef(encoding.x) && fielddef_1.isContinuous(encoding.x)) {
         // x is continuous
-        if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+        if (fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
             // both x and y are continuous
             if (encoding.x.aggregate === undefined && encoding.y.aggregate === compositeMark) {
                 return 'vertical';
@@ -88,7 +93,7 @@ export function compositeMarkOrient(spec, compositeMark) {
                 throw new Error('Both x and y cannot have aggregate');
             }
             else {
-                if (isMarkDef(mark) && mark.orient) {
+                if (mark_1.isMarkDef(mark) && mark.orient) {
                     return mark.orient;
                 }
                 // default orientation = vertical
@@ -98,7 +103,7 @@ export function compositeMarkOrient(spec, compositeMark) {
         // x is continuous but y is not
         return 'horizontal';
     }
-    else if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+    else if (fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
         // y is continuous but x is not
         return 'vertical';
     }
@@ -107,8 +112,9 @@ export function compositeMarkOrient(spec, compositeMark) {
         throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
     }
 }
-export function filterUnsupportedChannels(spec, supportedChannels, compositeMark) {
-    return tslib_1.__assign({}, spec, { encoding: reduce(spec.encoding, function (newEncoding, fieldDef, channel) {
+exports.compositeMarkOrient = compositeMarkOrient;
+function filterUnsupportedChannels(spec, supportedChannels, compositeMark) {
+    return tslib_1.__assign({}, spec, { encoding: encoding_1.reduce(spec.encoding, function (newEncoding, fieldDef, channel) {
             if (supportedChannels.indexOf(channel) > -1) {
                 newEncoding[channel] = fieldDef;
             }
@@ -118,4 +124,5 @@ export function filterUnsupportedChannels(spec, supportedChannels, compositeMark
             return newEncoding;
         }, {}) });
 }
+exports.filterUnsupportedChannels = filterUnsupportedChannels;
 //# sourceMappingURL=common.js.map

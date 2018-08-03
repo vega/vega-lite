@@ -1,14 +1,13 @@
 import { Channel } from '../channel';
 import { Config } from '../config';
 import { Data } from '../data';
+import { Encoding } from '../encoding';
 import { PositionFieldDef } from '../fielddef';
+import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { TitleParams } from '../title';
 import { Transform } from '../transform';
-import { Encoding } from './../encoding';
-import { GenericUnitSpec, NormalizedLayerSpec } from './../spec';
-import { Orient } from './../vega.schema';
-import { GenericCompositeMarkDef } from './common';
-import { PartsMixins } from './common';
+import { Orient } from '../vega.schema';
+import { GenericCompositeMarkDef, PartsMixins } from './common';
 import { ErrorBand, ErrorBandDef } from './errorband';
 export declare const ERRORBAR: 'errorbar';
 export declare type ErrorBar = typeof ERRORBAR;

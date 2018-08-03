@@ -1,7 +1,7 @@
 import { Config } from '../config';
-import { Encoding } from './../encoding';
-import { GenericUnitSpec, NormalizedLayerSpec } from './../spec';
-import { Interpolate, Orient } from './../vega.schema';
+import { Encoding } from '../encoding';
+import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
+import { Interpolate, Orient } from '../vega.schema';
 import { GenericCompositeMarkDef, PartsMixins } from './common';
 import { ErrorBarCenter, ErrorBarExtent } from './errorbar';
 export declare const ERRORBAND: 'errorband';

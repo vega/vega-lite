@@ -1,17 +1,19 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { StackNode } from '../../../src/compile/data/stack';
-import { parseUnitModelWithScale } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var stack_1 = require("../../../src/compile/data/stack");
+var util_1 = require("../../util");
 function parse(model) {
-    return StackNode.makeFromEncoding(null, model).stack;
+    return stack_1.StackNode.makeFromEncoding(null, model).stack;
 }
 function assemble(model) {
-    return StackNode.makeFromEncoding(null, model).assemble();
+    return stack_1.StackNode.makeFromEncoding(null, model).assemble();
 }
 describe('compile/data/stack', function () {
     describe('StackNode.makeFromEncoding', function () {
         it('should produce correct stack component for bar with color', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -19,7 +21,7 @@ describe('compile/data/stack', function () {
                     color: { field: 'c', type: 'ordinal' }
                 }
             });
-            assert.deepEqual(parse(model), {
+            chai_1.assert.deepEqual(parse(model), {
                 dimensionFieldDef: { field: 'b', type: 'nominal' },
                 facetby: [],
                 stackField: 'sum_a',
@@ -34,7 +36,7 @@ describe('compile/data/stack', function () {
             });
         });
         it('should produce correct stack component with both start and end of the binned field for bar with color and binned y', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -42,7 +44,7 @@ describe('compile/data/stack', function () {
                     color: { field: 'c', type: 'ordinal' }
                 }
             });
-            assert.deepEqual(parse(model), {
+            chai_1.assert.deepEqual(parse(model), {
                 dimensionFieldDef: { bin: { maxbins: 10 }, field: 'b', type: 'quantitative' },
                 facetby: [],
                 stackField: 'sum_a',
@@ -57,14 +59,14 @@ describe('compile/data/stack', function () {
             });
         });
         it('should produce correct stack component for 1D bar with color', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
                     color: { field: 'c', type: 'ordinal' }
                 }
             });
-            assert.deepEqual(parse(model), {
+            chai_1.assert.deepEqual(parse(model), {
                 dimensionFieldDef: undefined,
                 facetby: [],
                 stackField: 'sum_a',
@@ -77,7 +79,7 @@ describe('compile/data/stack', function () {
                 impute: false,
                 as: ['sum_a_start', 'sum_a_end']
             });
-            assert.deepEqual(assemble(model), [
+            chai_1.assert.deepEqual(assemble(model), [
                 {
                     type: 'stack',
                     groupby: [],
@@ -92,7 +94,7 @@ describe('compile/data/stack', function () {
             ]);
         });
         it('should produce correct stack component for area with color and order', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'area',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -101,7 +103,7 @@ describe('compile/data/stack', function () {
                     order: { aggregate: 'mean', field: 'd', type: 'quantitative' }
                 }
             });
-            assert.deepEqual(parse(model), {
+            chai_1.assert.deepEqual(parse(model), {
                 dimensionFieldDef: { field: 'b', type: 'nominal' },
                 facetby: [],
                 stackField: 'sum_a',
@@ -114,7 +116,7 @@ describe('compile/data/stack', function () {
                 impute: true,
                 as: ['sum_a_start', 'sum_a_end']
             });
-            assert.deepEqual(assemble(model), [
+            chai_1.assert.deepEqual(assemble(model), [
                 {
                     type: 'impute',
                     field: 'sum_a',
@@ -137,7 +139,7 @@ describe('compile/data/stack', function () {
             ]);
         });
         it('should produce correct stack component for area with color and binned dimension', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'area',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -145,7 +147,7 @@ describe('compile/data/stack', function () {
                     color: { field: 'c', type: 'nominal' }
                 }
             });
-            assert.deepEqual(parse(model), {
+            chai_1.assert.deepEqual(parse(model), {
                 dimensionFieldDef: { bin: { maxbins: 10 }, field: 'b', type: 'quantitative' },
                 facetby: [],
                 stackField: 'sum_a',
@@ -158,7 +160,7 @@ describe('compile/data/stack', function () {
                 impute: true,
                 as: ['sum_a_start', 'sum_a_end']
             });
-            assert.deepEqual(assemble(model), [
+            chai_1.assert.deepEqual(assemble(model), [
                 {
                     type: 'formula',
                     expr: '(datum["bin_maxbins_10_b"]+datum["bin_maxbins_10_b_end"])/2',
@@ -193,8 +195,8 @@ describe('compile/data/stack', function () {
                 groupby: ['age'],
                 as: ['v1', 'v2']
             };
-            var stack = StackNode.makeFromTransform(null, transform);
-            assert.deepEqual(stack.assemble(), [
+            var stack = stack_1.StackNode.makeFromTransform(null, transform);
+            chai_1.assert.deepEqual(stack.assemble(), [
                 {
                     type: 'stack',
                     groupby: ['age'],
@@ -212,8 +214,8 @@ describe('compile/data/stack', function () {
                 offset: 'normalize',
                 as: 'val'
             };
-            var stack = StackNode.makeFromTransform(null, transform);
-            assert.deepEqual(stack.assemble(), [
+            var stack = stack_1.StackNode.makeFromTransform(null, transform);
+            chai_1.assert.deepEqual(stack.assemble(), [
                 {
                     type: 'stack',
                     groupby: ['age', 'gender'],
@@ -232,8 +234,8 @@ describe('compile/data/stack', function () {
                 sort: [{ field: 'height', order: 'ascending' }, { field: 'weight', order: 'descending' }],
                 as: 'val'
             };
-            var stack = StackNode.makeFromTransform(null, transform);
-            assert.deepEqual(stack.assemble(), [
+            var stack = stack_1.StackNode.makeFromTransform(null, transform);
+            chai_1.assert.deepEqual(stack.assemble(), [
                 {
                     type: 'stack',
                     groupby: ['age', 'gender'],
@@ -252,8 +254,8 @@ describe('compile/data/stack', function () {
                 sort: [{ field: 'height' }],
                 as: 'val'
             };
-            var stack = StackNode.makeFromTransform(null, transform);
-            assert.deepEqual(stack.assemble(), [
+            var stack = stack_1.StackNode.makeFromTransform(null, transform);
+            chai_1.assert.deepEqual(stack.assemble(), [
                 {
                     type: 'stack',
                     groupby: ['age', 'gender'],
@@ -272,14 +274,14 @@ describe('compile/data/stack', function () {
                 groupby: ['age'],
                 as: 'people'
             };
-            var stack = StackNode.makeFromTransform(null, transform);
-            assert.deepEqual(stack.producedFields(), {
+            var stack = stack_1.StackNode.makeFromTransform(null, transform);
+            chai_1.assert.deepEqual(stack.producedFields(), {
                 people: true,
                 people_end: true
             });
         });
         it('should give producedFields correctly when in encoding channel', function () {
-            var model = parseUnitModelWithScale({
+            var model = util_1.parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -287,11 +289,23 @@ describe('compile/data/stack', function () {
                     color: { field: 'c', type: 'ordinal' }
                 }
             });
-            var stack = StackNode.makeFromEncoding(null, model);
-            assert.deepEqual(stack.producedFields(), {
+            var stack = stack_1.StackNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(stack.producedFields(), {
                 sum_a_start: true,
                 sum_a_end: true
             });
+        });
+        it('should generate the correct hash', function () {
+            var model = util_1.parseUnitModelWithScale({
+                mark: 'bar',
+                encoding: {
+                    x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
+                    y: { field: 'b', type: 'nominal' },
+                    color: { field: 'c', type: 'ordinal' }
+                }
+            });
+            var stack = stack_1.StackNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(stack.hash(), 'Stack -2072318240');
         });
     });
 });

@@ -1,8 +1,11 @@
-import * as tslib_1 from "tslib";
-import { isString, toSet } from 'vega-util';
-import * as log from '../../log';
-import { DataFlowNode, OutputNode } from './dataflow';
-import { SourceNode } from './source';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var log = tslib_1.__importStar(require("../../log"));
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
+var source_1 = require("./source");
 var LookupNode = /** @class */ (function (_super) {
     tslib_1.__extends(LookupNode, _super);
     function LookupNode(parent, transform, secondary) {
@@ -13,19 +16,22 @@ var LookupNode = /** @class */ (function (_super) {
     }
     LookupNode.make = function (parent, model, transform, counter) {
         var sources = model.component.data.sources;
-        var s = new SourceNode(transform.from.data);
+        var s = new source_1.SourceNode(transform.from.data);
         var fromSource = sources[s.hash()];
         if (!fromSource) {
             sources[s.hash()] = s;
             fromSource = s;
         }
         var fromOutputName = model.getName("lookup_" + counter);
-        var fromOutputNode = new OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
+        var fromOutputNode = new dataflow_1.OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
         model.component.data.outputNodes[fromOutputName] = fromOutputNode;
         return new LookupNode(parent, transform, fromOutputNode.getSource());
     };
     LookupNode.prototype.producedFields = function () {
-        return toSet(this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as]));
+        return vega_util_1.toSet(this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as]));
+    };
+    LookupNode.prototype.hash = function () {
+        return "Lookup " + util_1.hash({ transform: this.transform, secondary: this.secondary });
     };
     LookupNode.prototype.assemble = function () {
         var foreign;
@@ -36,7 +42,7 @@ var LookupNode = /** @class */ (function (_super) {
         else {
             // lookup full record and nest it
             var asName = this.transform.as;
-            if (!isString(asName)) {
+            if (!vega_util_1.isString(asName)) {
                 log.warn(log.message.NO_FIELDS_NEEDS_AS);
                 asName = '_lookup';
             }
@@ -47,6 +53,6 @@ var LookupNode = /** @class */ (function (_super) {
         return tslib_1.__assign({ type: 'lookup', from: this.secondary, key: this.transform.from.key, fields: [this.transform.lookup] }, foreign, (this.transform.default ? { default: this.transform.default } : {}));
     };
     return LookupNode;
-}(DataFlowNode));
-export { LookupNode };
+}(dataflow_1.TransformNode));
+exports.LookupNode = LookupNode;
 //# sourceMappingURL=lookup.js.map

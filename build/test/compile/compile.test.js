@@ -1,15 +1,18 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import * as log from '../../src/log';
-import { compile } from '../../src/compile/compile';
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var chai_1 = require("chai");
+var log = tslib_1.__importStar(require("../../src/log"));
+var compile_1 = require("../../src/compile/compile");
 describe('compile/compile', function () {
     it('should throw error for invalid spec', function () {
-        assert.throws(function () {
-            compile({});
+        chai_1.assert.throws(function () {
+            compile_1.compile({});
         }, Error, log.message.INVALID_SPEC);
     });
     it('should return a spec with default top-level properties, size signals, data, marks, and title', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -17,16 +20,16 @@ describe('compile/compile', function () {
             mark: 'point',
             encoding: {}
         }).spec;
-        assert.equal(spec.padding, 5);
-        assert.equal(spec.autosize, 'pad');
-        assert.equal(spec.width, 21);
-        assert.equal(spec.height, 21);
-        assert.deepEqual(spec.title, { text: 'test' });
-        assert.equal(spec.data.length, 1); // just source
-        assert.equal(spec.marks.length, 1); // just the root group
+        chai_1.assert.equal(spec.padding, 5);
+        chai_1.assert.equal(spec.autosize, 'pad');
+        chai_1.assert.equal(spec.width, 21);
+        chai_1.assert.equal(spec.height, 21);
+        chai_1.assert.deepEqual(spec.title, { text: 'test' });
+        chai_1.assert.equal(spec.data.length, 1); // just source
+        chai_1.assert.equal(spec.marks.length, 1); // just the root group
     });
     it('should return a spec with specified top-level properties, size signals, data and marks', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             padding: 123,
             data: {
                 values: [{ a: 'A', b: 28 }]
@@ -34,15 +37,15 @@ describe('compile/compile', function () {
             mark: 'point',
             encoding: {}
         }).spec;
-        assert.equal(spec.padding, 123);
-        assert.equal(spec.autosize, 'pad');
-        assert.equal(spec.width, 21);
-        assert.equal(spec.height, 21);
-        assert.equal(spec.data.length, 1); // just source.
-        assert.equal(spec.marks.length, 1); // just the root group
+        chai_1.assert.equal(spec.padding, 123);
+        chai_1.assert.equal(spec.autosize, 'pad');
+        chai_1.assert.equal(spec.width, 21);
+        chai_1.assert.equal(spec.height, 21);
+        chai_1.assert.equal(spec.data.length, 1); // just source.
+        chai_1.assert.equal(spec.marks.length, 1); // just the root group
     });
     it('should use size signal for bar chart width', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: { values: [{ a: 'A', b: 28 }] },
             mark: 'bar',
             encoding: {
@@ -50,7 +53,7 @@ describe('compile/compile', function () {
                 y: { field: 'b', type: 'quantitative' }
             }
         }).spec;
-        assert.deepEqual(spec.signals, [
+        chai_1.assert.deepEqual(spec.signals, [
             {
                 name: 'x_step',
                 value: 21
@@ -60,10 +63,10 @@ describe('compile/compile', function () {
                 update: "bandspace(domain('x').length, 0.1, 0.05) * x_step"
             }
         ]);
-        assert.equal(spec.height, 200);
+        chai_1.assert.equal(spec.height, 200);
     });
     it('should set resize to true if requested', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             autosize: {
                 resize: true
             },
@@ -71,10 +74,10 @@ describe('compile/compile', function () {
             mark: 'point',
             encoding: {}
         }).spec;
-        assert(spec.autosize.resize);
+        chai_1.assert(spec.autosize.resize);
     });
     it('should set autosize to fit and containment if requested', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             autosize: {
                 type: 'fit',
                 contains: 'content'
@@ -83,19 +86,19 @@ describe('compile/compile', function () {
             mark: 'point',
             encoding: {}
         }).spec;
-        assert.deepEqual(spec.autosize, { type: 'fit', contains: 'content' });
+        chai_1.assert.deepEqual(spec.autosize, { type: 'fit', contains: 'content' });
     });
     it('should set autosize to fit if requested', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             autosize: 'fit',
             data: { url: 'foo.csv' },
             mark: 'point',
             encoding: {}
         }).spec;
-        assert.equal(spec.autosize, 'fit');
+        chai_1.assert.equal(spec.autosize, 'fit');
     });
     it('warn if size is data driven and autosize is fit', log.wrap(function (localLogger) {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: { values: [{ a: 'A', b: 28 }] },
             mark: 'bar',
             autosize: 'fit',
@@ -104,12 +107,12 @@ describe('compile/compile', function () {
                 y: { field: 'b', type: 'quantitative' }
             }
         }).spec;
-        assert.equal(localLogger.warns[0], log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
-        assert.equal(spec.width, 200);
-        assert.equal(spec.height, 200);
+        chai_1.assert.equal(localLogger.warns[0], log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
+        chai_1.assert.equal(spec.width, 200);
+        chai_1.assert.equal(spec.height, 200);
     }));
     it('warn if trying to fit composed spec', log.wrap(function (localLogger) {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: { values: [{ a: 'A', b: 28 }] },
             autosize: 'fit',
             vconcat: [
@@ -119,11 +122,11 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.equal(localLogger.warns[0], log.message.FIT_NON_SINGLE);
-        assert.equal(spec.autosize, 'pad');
+        chai_1.assert.equal(localLogger.warns[0], log.message.FIT_NON_SINGLE);
+        chai_1.assert.equal(spec.autosize, 'pad');
     }));
     it('should return title for a layered spec.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -135,10 +138,10 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        chai_1.assert.deepEqual(spec.title, { text: 'test' });
     });
     it('should return title (string) for a layered spec.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -150,10 +153,10 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        chai_1.assert.deepEqual(spec.title, { text: 'test' });
     });
     it('should return title from a child of a layer spec if parent has no title.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -165,10 +168,10 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        chai_1.assert.deepEqual(spec.title, { text: 'test' });
     });
     it('should return a title for a concat spec, throw warning if anchor is set to other values than "start" and automatically set anchor to "start".', log.wrap(function (localLogger) {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -181,14 +184,14 @@ describe('compile/compile', function () {
             ],
             config: { title: { anchor: 'middle' } }
         }).spec;
-        assert.deepEqual(spec.title, {
+        chai_1.assert.deepEqual(spec.title, {
             text: 'test',
             anchor: 'start' // We only support anchor as start for concat
         });
-        assert.equal(localLogger.warns[0], log.message.cannotSetTitleAnchor('concat'));
+        chai_1.assert.equal(localLogger.warns[0], log.message.cannotSetTitleAnchor('concat'));
     }));
     it('should return a title for a concat spec, automatically set anchor to "start", and augment the title with non-mark title config (e.g., offset).', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -201,14 +204,14 @@ describe('compile/compile', function () {
             ],
             config: { title: { offset: 5 } }
         }).spec;
-        assert.deepEqual(spec.title, {
+        chai_1.assert.deepEqual(spec.title, {
             text: 'test',
             anchor: 'start',
             offset: 5
         });
     });
     it('should not have title if there is no title.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             data: {
                 values: [{ a: 'A', b: 28 }]
             },
@@ -220,10 +223,10 @@ describe('compile/compile', function () {
             ],
             config: { title: { offset: 5 } }
         }).spec;
-        assert.isUndefined(spec.title);
+        chai_1.assert.isUndefined(spec.title);
     });
     it('should use provided config.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             mark: 'point',
             data: { url: 'foo.csv' },
             encoding: {}
@@ -232,10 +235,10 @@ describe('compile/compile', function () {
                 background: 'blue'
             }
         }).spec;
-        assert.equal(spec.config.background, 'blue');
+        chai_1.assert.equal(spec.config.background, 'blue');
     });
     it('should merge spec and provided config.', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             mark: 'point',
             data: { url: 'foo.csv' },
             encoding: {},
@@ -247,10 +250,10 @@ describe('compile/compile', function () {
                 background: 'blue'
             }
         }).spec;
-        assert.equal(spec.config.background, 'red');
+        chai_1.assert.equal(spec.config.background, 'red');
     });
     it('should return a spec with projections (implicit)', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             mark: 'geoshape',
             data: {
                 url: 'data/us-10m.json',
@@ -261,10 +264,10 @@ describe('compile/compile', function () {
             },
             encoding: {}
         }).spec;
-        assert.isDefined(spec.projections);
+        chai_1.assert.isDefined(spec.projections);
     });
     it('should return a spec with projections (explicit)', function () {
-        var spec = compile({
+        var spec = compile_1.compile({
             mark: 'geoshape',
             projection: {
                 type: 'albersUsa'
@@ -278,7 +281,7 @@ describe('compile/compile', function () {
             },
             encoding: {}
         }).spec;
-        assert.isDefined(spec.projections);
+        chai_1.assert.isDefined(spec.projections);
     });
 });
 //# sourceMappingURL=compile.test.js.map

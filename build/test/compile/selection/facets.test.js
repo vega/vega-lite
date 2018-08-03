@@ -1,9 +1,12 @@
+"use strict";
 /* tslint:disable quotemark */
-import { assert } from 'chai';
-import * as selection from '../../../src/compile/selection/selection';
-import { parseModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var chai_1 = require("chai");
+var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
+var util_1 = require("../../util");
 describe('Faceted Selections', function () {
-    var model = parseModel({
+    var model = util_1.parseModel({
         data: { url: 'data/anscombe.json' },
         facet: {
             column: { field: 'Series', type: 'nominal' },
@@ -32,7 +35,7 @@ describe('Faceted Selections', function () {
     model.parse();
     var unit = model.children[0].children[1];
     it('should assemble a facet signal', function () {
-        assert.includeDeepMembers(selection.assembleUnitSelectionSignals(unit, []), [
+        chai_1.assert.includeDeepMembers(selection.assembleUnitSelectionSignals(unit, []), [
             {
                 name: 'facet',
                 value: {},
@@ -46,7 +49,7 @@ describe('Faceted Selections', function () {
         ]);
     });
     it('should name the unit with the facet keys', function () {
-        assert.equal(selection.unitName(unit), "\"child_layer_1\" + '_' + (facet[\"bin_maxbins_6_X\"]) + '_' + (facet[\"Series\"])");
+        chai_1.assert.equal(selection.unitName(unit), "\"child_layer_1\" + '_' + (facet[\"bin_maxbins_6_X\"]) + '_' + (facet[\"Series\"])");
     });
 });
 //# sourceMappingURL=facets.test.js.map

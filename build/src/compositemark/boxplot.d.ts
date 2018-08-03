@@ -1,7 +1,7 @@
 import { Config } from '../config';
-import { Encoding } from './../encoding';
-import { GenericUnitSpec, NormalizedLayerSpec } from './../spec';
-import { Orient } from './../vega.schema';
+import { Encoding } from '../encoding';
+import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
+import { Orient } from '../vega.schema';
 import { GenericCompositeMarkDef, PartsMixins } from './common';
 export declare const BOXPLOT: 'boxplot';
 export declare type BoxPlot = typeof BOXPLOT;

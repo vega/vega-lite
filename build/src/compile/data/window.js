@@ -1,9 +1,11 @@
-import * as tslib_1 from "tslib";
-import { vgField } from '../../fielddef';
-import { isSortField } from '../../sort';
-import { duplicate } from '../../util';
-import { facetSortFieldName } from '../facet';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var fielddef_1 = require("../../fielddef");
+var sort_1 = require("../../sort");
+var util_1 = require("../../util");
+var facet_1 = require("../facet");
+var dataflow_1 = require("./dataflow");
 /**
  * A class for the window transform nodes
  */
@@ -21,17 +23,17 @@ var WindowTransformNode = /** @class */ (function (_super) {
             // only need to make one for crossed facet
             for (var _i = 0, _a = [row, column]; _i < _a.length; _i++) {
                 var fieldDef = _a[_i];
-                if (isSortField(fieldDef.sort)) {
+                if (sort_1.isSortField(fieldDef.sort)) {
                     var _b = fieldDef.sort, field = _b.field, op = _b.op;
                     parent = newParent = new WindowTransformNode(parent, {
                         window: [
                             {
                                 op: op,
                                 field: field,
-                                as: facetSortFieldName(fieldDef, fieldDef.sort, { forAs: true })
+                                as: facet_1.facetSortFieldName(fieldDef, fieldDef.sort, { forAs: true })
                             }
                         ],
-                        groupby: [vgField(fieldDef)],
+                        groupby: [fielddef_1.vgField(fieldDef)],
                         frame: [null, null]
                     });
                 }
@@ -41,7 +43,7 @@ var WindowTransformNode = /** @class */ (function (_super) {
         return null;
     };
     WindowTransformNode.prototype.clone = function () {
-        return new WindowTransformNode(this.parent, duplicate(this.transform));
+        return new WindowTransformNode(this.parent, util_1.duplicate(this.transform));
     };
     WindowTransformNode.prototype.producedFields = function () {
         var _this = this;
@@ -52,7 +54,10 @@ var WindowTransformNode = /** @class */ (function (_super) {
         return out;
     };
     WindowTransformNode.prototype.getDefaultName = function (windowFieldDef) {
-        return windowFieldDef.as || vgField(windowFieldDef);
+        return windowFieldDef.as || fielddef_1.vgField(windowFieldDef);
+    };
+    WindowTransformNode.prototype.hash = function () {
+        return "WindowTransform " + util_1.hash(this.transform);
     };
     WindowTransformNode.prototype.assemble = function () {
         var fields = [];
@@ -102,6 +107,6 @@ var WindowTransformNode = /** @class */ (function (_super) {
         return result;
     };
     return WindowTransformNode;
-}(DataFlowNode));
-export { WindowTransformNode };
+}(dataflow_1.TransformNode));
+exports.WindowTransformNode = WindowTransformNode;
 //# sourceMappingURL=window.js.map

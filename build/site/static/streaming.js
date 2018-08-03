@@ -1,5 +1,7 @@
-import { embedExample } from '.';
-export function runStreamingExample(eleId) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var _1 = require(".");
+function runStreamingExample(eleId) {
     var vlSpec = {
         $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
         data: { name: 'table' },
@@ -14,7 +16,7 @@ export function runStreamingExample(eleId) {
             color: { field: 'category', type: 'nominal' }
         }
     };
-    var view = embedExample(eleId, vlSpec, false, false);
+    var view = _1.embedExample(eleId, vlSpec, false, false);
     /**
      * Generates a new tuple with random walk.
      */
@@ -42,4 +44,5 @@ export function runStreamingExample(eleId) {
         view.change('table', changeSet).run();
     }, 1000);
 }
+exports.runStreamingExample = runStreamingExample;
 //# sourceMappingURL=streaming.js.map

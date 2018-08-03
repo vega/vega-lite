@@ -1,28 +1,31 @@
-import * as tslib_1 from "tslib";
-import { isArray } from 'util';
-import { isNumber } from 'vega-util';
-import { COLOR, FILL, OPACITY, SCALE_CHANNELS, SHAPE, SIZE, STROKE, X, Y } from '../../channel';
-import { isVgScheme } from '../../config';
-import * as log from '../../log';
-import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
-import * as util from '../../util';
-import { isVgRangeStep } from '../../vega.schema';
-import { isUnitModel } from '../model';
-import { makeExplicit, makeImplicit } from '../split';
-import { parseNonUnitScaleProperty } from './properties';
-export var RANGE_PROPERTIES = ['range', 'rangeStep', 'scheme'];
-export function parseScaleRange(model) {
-    if (isUnitModel(model)) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var util_1 = require("util");
+var vega_util_1 = require("vega-util");
+var channel_1 = require("../../channel");
+var config_1 = require("../../config");
+var log = tslib_1.__importStar(require("../../log"));
+var scale_1 = require("../../scale");
+var util = tslib_1.__importStar(require("../../util"));
+var vega_schema_1 = require("../../vega.schema");
+var model_1 = require("../model");
+var split_1 = require("../split");
+var properties_1 = require("./properties");
+exports.RANGE_PROPERTIES = ['range', 'rangeStep', 'scheme'];
+function parseScaleRange(model) {
+    if (model_1.isUnitModel(model)) {
         parseUnitScaleRange(model);
     }
     else {
-        parseNonUnitScaleProperty(model, 'range');
+        properties_1.parseNonUnitScaleProperty(model, 'range');
     }
 }
+exports.parseScaleRange = parseScaleRange;
 function parseUnitScaleRange(model) {
     var localScaleComponents = model.component.scales;
     // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
-    SCALE_CHANNELS.forEach(function (channel) {
+    channel_1.SCALE_CHANNELS.forEach(function (channel) {
         var localScaleCmpt = localScaleComponents[channel];
         if (!localScaleCmpt) {
             return;
@@ -49,12 +52,12 @@ function getXYRangeStep(model) {
     var xyRangeSteps = [];
     var xScale = model.getScaleComponent('x');
     var xRange = xScale && xScale.get('range');
-    if (xRange && isVgRangeStep(xRange) && isNumber(xRange.step)) {
+    if (xRange && vega_schema_1.isVgRangeStep(xRange) && vega_util_1.isNumber(xRange.step)) {
         xyRangeSteps.push(xRange.step);
     }
     var yScale = model.getScaleComponent('y');
     var yRange = yScale && yScale.get('range');
-    if (yRange && isVgRangeStep(yRange) && isNumber(yRange.step)) {
+    if (yRange && vega_schema_1.isVgRangeStep(yRange) && vega_util_1.isNumber(yRange.step)) {
         xyRangeSteps.push(yRange.step);
     }
     return xyRangeSteps;
@@ -62,15 +65,15 @@ function getXYRangeStep(model) {
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
-export function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, sizeSpecified, sizeSignal, xyRangeSteps) {
+function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, sizeSpecified, sizeSignal, xyRangeSteps) {
     var noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
     // Check if any of the range properties is specified.
     // If so, check if it is compatible and make sure that we only output one of the properties
-    for (var _i = 0, RANGE_PROPERTIES_1 = RANGE_PROPERTIES; _i < RANGE_PROPERTIES_1.length; _i++) {
+    for (var _i = 0, RANGE_PROPERTIES_1 = exports.RANGE_PROPERTIES; _i < RANGE_PROPERTIES_1.length; _i++) {
         var property = RANGE_PROPERTIES_1[_i];
         if (specifiedScale[property] !== undefined) {
-            var supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
-            var channelIncompatability = channelScalePropertyIncompatability(channel, property);
+            var supportedByScaleType = scale_1.scaleTypeSupportProperty(scaleType, property);
+            var channelIncompatability = scale_1.channelScalePropertyIncompatability(channel, property);
             if (!supportedByScaleType) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));
             }
@@ -81,14 +84,14 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
             else {
                 switch (property) {
                     case 'range':
-                        return makeExplicit(specifiedScale[property]);
+                        return split_1.makeExplicit(specifiedScale[property]);
                     case 'scheme':
-                        return makeExplicit(parseScheme(specifiedScale[property]));
+                        return split_1.makeExplicit(parseScheme(specifiedScale[property]));
                     case 'rangeStep':
                         var rangeStep = specifiedScale[property];
                         if (rangeStep !== null) {
                             if (!sizeSpecified) {
-                                return makeExplicit({ step: rangeStep });
+                                return split_1.makeExplicit({ step: rangeStep });
                             }
                             else {
                                 // If top-level size is specified, we ignore specified rangeStep.
@@ -99,10 +102,11 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
             }
         }
     }
-    return makeImplicit(defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, specifiedScale.domain));
+    return split_1.makeImplicit(defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, specifiedScale.domain));
 }
+exports.parseRangeForChannel = parseRangeForChannel;
 function parseScheme(scheme) {
-    if (isExtendedScheme(scheme)) {
+    if (scale_1.isExtendedScheme(scheme)) {
         var r = { scheme: scheme.name };
         if (scheme.count) {
             r.count = scheme.count;
@@ -114,12 +118,12 @@ function parseScheme(scheme) {
     }
     return { scheme: scheme };
 }
-export function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, domain) {
+function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, domain) {
     switch (channel) {
-        case X:
-        case Y:
+        case channel_1.X:
+        case channel_1.Y:
             if (util.contains(['point', 'band'], scaleType) && !noRangeStep) {
-                if (channel === X && mark === 'text') {
+                if (channel === channel_1.X && mark === 'text') {
                     if (config.scale.textXRangeStep) {
                         return { step: config.scale.textXRangeStep };
                     }
@@ -136,63 +140,64 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
             // (We do not have the right size signal here since parseLayoutSize() happens after parseScale().)
             // We will later replace these temporary names with
             // the final name in assembleScaleRange()
-            if (channel === Y && hasContinuousDomain(scaleType)) {
+            if (channel === channel_1.Y && scale_1.hasContinuousDomain(scaleType)) {
                 // For y continuous scale, we have to start from the height as the bottom part has the max value.
                 return [{ signal: sizeSignal }, 0];
             }
             else {
                 return [0, { signal: sizeSignal }];
             }
-        case SIZE:
+        case channel_1.SIZE:
             // TODO: support custom rangeMin, rangeMax
             var rangeMin = sizeRangeMin(mark, zero, config);
             var rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
-            if (isContinuousToDiscrete(scaleType)) {
+            if (scale_1.isContinuousToDiscrete(scaleType)) {
                 return interpolateRange(rangeMin, rangeMax, defaultContinuousToDiscreteCount(scaleType, config, domain, channel));
             }
             else {
                 return [rangeMin, rangeMax];
             }
-        case SHAPE:
+        case channel_1.SHAPE:
             return 'symbol';
-        case COLOR:
-        case FILL:
-        case STROKE:
+        case channel_1.COLOR:
+        case channel_1.FILL:
+        case channel_1.STROKE:
             if (scaleType === 'ordinal') {
                 // Only nominal data uses ordinal scale by default
                 return type === 'nominal' ? 'category' : 'ordinal';
             }
-            else if (isContinuousToDiscrete(scaleType)) {
+            else if (scale_1.isContinuousToDiscrete(scaleType)) {
                 var count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
-                if (config.range && isVgScheme(config.range.ordinal)) {
+                if (config.range && config_1.isVgScheme(config.range.ordinal)) {
                     return tslib_1.__assign({}, config.range.ordinal, { count: count });
                 }
                 else {
                     return { scheme: 'blues', count: count };
                 }
             }
-            else if (isContinuousToContinuous(scaleType)) {
+            else if (scale_1.isContinuousToContinuous(scaleType)) {
                 // Manually set colors for now. We will revise this after https://github.com/vega/vega/issues/1369
                 return ['#f7fbff', '#0e427f'];
             }
             else {
                 return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
             }
-        case OPACITY:
+        case channel_1.OPACITY:
             // TODO: support custom rangeMin, rangeMax
             return [config.scale.minOpacity, config.scale.maxOpacity];
     }
     /* istanbul ignore next: should never reach here */
     throw new Error("Scale range undefined for channel " + channel);
 }
-export function defaultContinuousToDiscreteCount(scaleType, config, domain, channel) {
+exports.defaultRange = defaultRange;
+function defaultContinuousToDiscreteCount(scaleType, config, domain, channel) {
     switch (scaleType) {
         case 'quantile':
             return config.scale.quantileCount;
         case 'quantize':
             return config.scale.quantizeCount;
         case 'threshold':
-            if (domain !== undefined && isArray(domain)) {
+            if (domain !== undefined && util_1.isArray(domain)) {
                 return domain.length + 1;
             }
             else {
@@ -202,6 +207,7 @@ export function defaultContinuousToDiscreteCount(scaleType, config, domain, chan
             }
     }
 }
+exports.defaultContinuousToDiscreteCount = defaultContinuousToDiscreteCount;
 /**
  * Returns the linear interpolation of the range according to the cardinality
  *
@@ -209,7 +215,7 @@ export function defaultContinuousToDiscreteCount(scaleType, config, domain, chan
  * @param rangeMax end of the range
  * @param cardinality number of values in the output range
  */
-export function interpolateRange(rangeMin, rangeMax, cardinality) {
+function interpolateRange(rangeMin, rangeMax, cardinality) {
     var ranges = [];
     var step = (rangeMax - rangeMin) / (cardinality - 1);
     for (var i = 0; i < cardinality; i++) {
@@ -217,6 +223,7 @@ export function interpolateRange(rangeMin, rangeMax, cardinality) {
     }
     return ranges;
 }
+exports.interpolateRange = interpolateRange;
 function sizeRangeMin(mark, zero, config) {
     if (zero) {
         return 0;

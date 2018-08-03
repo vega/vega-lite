@@ -1,29 +1,32 @@
-import { isArray } from 'vega-util';
-import { isBinning } from '../../bin';
-import { isColorChannel, isScaleChannel, rangeType } from '../../channel';
-import * as log from '../../log';
-import { channelSupportScaleType, scaleTypeSupportDataType } from '../../scale';
-import * as util from '../../util';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var bin_1 = require("../../bin");
+var channel_1 = require("../../channel");
+var log = tslib_1.__importStar(require("../../log"));
+var scale_1 = require("../../scale");
+var util = tslib_1.__importStar(require("../../util"));
 /**
  * Determine if there is a specified scale type and if it is appropriate,
  * or determine default type if type is unspecified or inappropriate.
  */
 // NOTE: CompassQL uses this method.
-export function scaleType(specifiedScale, channel, fieldDef, mark, scaleConfig) {
+function scaleType(specifiedScale, channel, fieldDef, mark, scaleConfig) {
     var defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
     var type = specifiedScale.type;
-    if (!isScaleChannel(channel)) {
+    if (!channel_1.isScaleChannel(channel)) {
         // There is no scale for these channels
         return null;
     }
     if (type !== undefined) {
         // Check if explicitly specified scale type is supported by the channel
-        if (!channelSupportScaleType(channel, type)) {
+        if (!scale_1.channelSupportScaleType(channel, type)) {
             log.warn(log.message.scaleTypeNotWorkWithChannel(channel, type, defaultScaleType));
             return defaultScaleType;
         }
         // Check if explicitly specified scale type is supported by the data type
-        if (!scaleTypeSupportDataType(type, fieldDef.type, fieldDef.bin)) {
+        if (!scale_1.scaleTypeSupportDataType(type, fieldDef.type, fieldDef.bin)) {
             log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
             return defaultScaleType;
         }
@@ -31,6 +34,7 @@ export function scaleType(specifiedScale, channel, fieldDef, mark, scaleConfig) 
     }
     return defaultScaleType;
 }
+exports.scaleType = scaleType;
 /**
  * Determine appropriate default scale type.
  */
@@ -39,7 +43,7 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
     switch (fieldDef.type) {
         case 'nominal':
         case 'ordinal':
-            if (isColorChannel(channel) || rangeType(channel) === 'discrete') {
+            if (channel_1.isColorChannel(channel) || channel_1.rangeType(channel) === 'discrete') {
                 if (channel === 'shape' && fieldDef.type === 'ordinal') {
                     log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
                 }
@@ -58,22 +62,22 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
             // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
             return 'point';
         case 'temporal':
-            if (isColorChannel(channel)) {
+            if (channel_1.isColorChannel(channel)) {
                 return 'sequential';
             }
-            else if (rangeType(channel) === 'discrete') {
+            else if (channel_1.rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
                 // TODO: consider using quantize (equivalent to binning) once we have it
                 return 'ordinal';
             }
             return 'time';
         case 'quantitative':
-            if (isColorChannel(channel)) {
-                if (isBinning(fieldDef.bin)) {
+            if (channel_1.isColorChannel(channel)) {
+                if (bin_1.isBinning(fieldDef.bin)) {
                     return 'bin-ordinal';
                 }
                 var _a = specifiedScale || {}, _b = _a.domain, domain = _b === void 0 ? undefined : _b, _c = _a.range, range = _c === void 0 ? undefined : _c;
-                if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
+                if (domain && vega_util_1.isArray(domain) && domain.length > 2 && (range && vega_util_1.isArray(range) && range.length > 2)) {
                     // If there are piecewise domain and range specified, use lineaer as default color scale as sequential does not support piecewise domain
                     return 'linear';
                 }
@@ -81,14 +85,14 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
                 // since it supports both array range and scheme range.
                 return 'sequential';
             }
-            else if (rangeType(channel) === 'discrete') {
+            else if (channel_1.rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
                 // TODO: consider using quantize (equivalent to binning) once we have it
                 return 'ordinal';
             }
             // x and y use a linear scale because selections don't work with bin scales.
             // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
-            if (isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
+            if (bin_1.isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
                 return 'bin-linear';
             }
             return 'linear';

@@ -1,12 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import * as log from '../../src/log';
-import { normalize } from '../../src/spec';
-import { defaultConfig } from '.././../src/config';
+var chai_1 = require("chai");
+var log = tslib_1.__importStar(require("../../src/log"));
+var spec_1 = require("../../src/spec");
+var config_1 = require(".././../src/config");
 describe('normalizeBoxMinMax', function () {
     it('should produce an error if both axes have aggregate boxplot', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: {
@@ -23,11 +26,11 @@ describe('normalizeBoxMinMax', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Both x and y cannot have aggregate');
     });
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -44,7 +47,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -157,8 +160,8 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce an error if neither the x axis or y axis is specified', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: {
@@ -168,13 +171,13 @@ describe('normalizeBoxMinMax', function () {
                 encoding: {
                     color: { value: 'skyblue' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Need a valid continuous axis for boxplots');
     });
     it('should produce a warning if continuous axis has aggregate property', log.wrap(function (localLogger) {
         var aggregate = 'min';
         var type = 'boxplot';
-        normalize({
+        spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -192,24 +195,24 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig);
-        assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, type));
+        }, config_1.defaultConfig);
+        chai_1.assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, type));
     }));
     it('should produce an error if build 1D boxplot with a discrete axis', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: 'boxplot',
                 encoding: {
                     x: { field: 'age', type: 'ordinal' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Need a valid continuous axis for boxplots');
     });
     it('should produce an error if both axes are discrete', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: {
@@ -225,12 +228,12 @@ describe('normalizeBoxMinMax', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Need a valid continuous axis for boxplots');
     });
     it('should produce an error if in 2D boxplot both axes are not valid field definitions', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: {
@@ -245,12 +248,12 @@ describe('normalizeBoxMinMax', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Need a valid continuous axis for boxplots');
     });
     it('should produce an error if 1D boxplot only axis is discrete', function () {
-        assert.throws(function () {
-            normalize({
+        chai_1.assert.throws(function () {
+            spec_1.normalize({
                 description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 mark: 'boxplot',
@@ -258,11 +261,11 @@ describe('normalizeBoxMinMax', function () {
                     x: { field: 'age', type: 'ordinal' },
                     color: { value: 'skyblue' }
                 }
-            }, defaultConfig);
+            }, config_1.defaultConfig);
         }, Error, 'Need a valid continuous axis for boxplots');
     });
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with orient', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -279,7 +282,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -392,7 +395,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for horizontal boxplot with two quantitative axes and specify orientation with orient', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -409,7 +412,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -522,7 +525,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and specify orientation with aggregate', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -539,7 +542,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -652,7 +655,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for horizontal boxplot with two quantitative axes and specify orientation with aggregate', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -669,7 +672,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -782,7 +785,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for vertical boxplot with min and max', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -798,7 +801,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -911,7 +914,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for horizontal boxplot with min and max', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -927,7 +930,7 @@ describe('normalizeBoxMinMax', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -1040,7 +1043,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for horizontal with no nonpositional encoding properties boxplot with min and max', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1055,7 +1058,7 @@ describe('normalizeBoxMinMax', function () {
                     axis: { title: 'population' }
                 }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -1167,7 +1170,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for 1D boxplot with only x', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1181,7 +1184,7 @@ describe('normalizeBoxMinMax', function () {
                     axis: { title: 'population' }
                 }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -1289,7 +1292,7 @@ describe('normalizeBoxMinMax', function () {
         });
     });
     it('should produce correct layered specs for 1D boxplot with only y', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1303,7 +1306,7 @@ describe('normalizeBoxMinMax', function () {
                     axis: { title: 'population' }
                 }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             transform: [
@@ -1413,7 +1416,7 @@ describe('normalizeBoxMinMax', function () {
 });
 describe('normalizeBoxIQR', function () {
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers with boxplot mark type', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: 'boxplot',
@@ -1426,7 +1429,7 @@ describe('normalizeBoxIQR', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [
@@ -1467,11 +1470,11 @@ describe('normalizeBoxIQR', function () {
                             as: 'iqr_people'
                         },
                         {
-                            calculate: "min(datum.upper_box_people + datum.iqr_people * " + defaultConfig.boxplot.extent + ", datum.max_people)",
+                            calculate: "min(datum.upper_box_people + datum.iqr_people * " + config_1.defaultConfig.boxplot.extent + ", datum.max_people)",
                             as: 'upper_whisker_people'
                         },
                         {
-                            calculate: "max(datum.lower_box_people - datum.iqr_people * " + defaultConfig.boxplot.extent + ", datum.min_people)",
+                            calculate: "max(datum.lower_box_people - datum.iqr_people * " + config_1.defaultConfig.boxplot.extent + ", datum.min_people)",
                             as: 'lower_whisker_people'
                         }
                     ],
@@ -1589,7 +1592,7 @@ describe('normalizeBoxIQR', function () {
         });
     });
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1605,7 +1608,7 @@ describe('normalizeBoxIQR', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [
@@ -1768,7 +1771,7 @@ describe('normalizeBoxIQR', function () {
         });
     });
     it('should produce correct layered specs for vertical IQR boxplot where color encodes the mean of the people field', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1788,7 +1791,7 @@ describe('normalizeBoxIQR', function () {
                     type: 'quantitative'
                 }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [

@@ -3,8 +3,8 @@ import { Model } from './compile/model';
 import { DateTime } from './datetime';
 import { LogicalOperand } from './logical';
 import { TimeUnit } from './timeunit';
-export declare type Predicate = FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate | SelectionPredicate | string;
-export declare type FieldPredicate = FieldEqualPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate | FieldRangePredicate | FieldOneOfPredicate;
+export declare type Predicate = FieldEqualPredicate | FieldRangePredicate | FieldOneOfPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate | FieldValidPredicate | SelectionPredicate | string;
+export declare type FieldPredicate = FieldEqualPredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate | FieldRangePredicate | FieldOneOfPredicate | FieldValidPredicate;
 export interface SelectionPredicate {
     /**
      * Filter using a selection name.
@@ -74,7 +74,14 @@ export interface FieldOneOfPredicate extends FieldPredicateBase {
      */
     oneOf: string[] | number[] | boolean[] | DateTime[];
 }
+export interface FieldValidPredicate extends FieldPredicateBase {
+    /**
+     * If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).
+     */
+    valid: boolean;
+}
 export declare function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate;
+export declare function isFieldValidPredicate(predicate: any): predicate is FieldValidPredicate;
 export declare function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate;
 /**
  * Converts a predicate into an expression.

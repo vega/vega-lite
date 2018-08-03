@@ -1,7 +1,9 @@
-import * as tslib_1 from "tslib";
-import { LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2 } from '../../channel';
-import { duplicate } from '../../util';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var channel_1 = require("../../channel");
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
 var GeoPointNode = /** @class */ (function (_super) {
     tslib_1.__extends(GeoPointNode, _super);
     function GeoPointNode(parent, projection, fields, as) {
@@ -12,15 +14,15 @@ var GeoPointNode = /** @class */ (function (_super) {
         return _this;
     }
     GeoPointNode.prototype.clone = function () {
-        return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
+        return new GeoPointNode(null, this.projection, util_1.duplicate(this.fields), util_1.duplicate(this.as));
     };
     GeoPointNode.parseAll = function (parent, model) {
         if (!model.projectionName()) {
             return parent;
         }
-        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (coordinates) {
+        [[channel_1.LONGITUDE, channel_1.LATITUDE], [channel_1.LONGITUDE2, channel_1.LATITUDE2]].forEach(function (coordinates) {
             var pair = coordinates.map(function (channel) { return (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined); });
-            var suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
+            var suffix = coordinates[0] === channel_1.LONGITUDE2 ? '2' : '';
             if (pair[0] || pair[1]) {
                 parent = new GeoPointNode(parent, model.projectionName(), pair, [
                     model.getName('x' + suffix),
@@ -39,6 +41,6 @@ var GeoPointNode = /** @class */ (function (_super) {
         };
     };
     return GeoPointNode;
-}(DataFlowNode));
-export { GeoPointNode };
+}(dataflow_1.DataFlowNode));
+exports.GeoPointNode = GeoPointNode;
 //# sourceMappingURL=geopoint.js.map

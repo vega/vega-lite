@@ -1,9 +1,11 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { WindowTransformNode } from '../../../src/compile/data/window';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var window_1 = require("../../../src/compile/data/window");
 describe('compile/data/window', function () {
     it('creates correct window nodes for calculating sort field of crossed facet', function () {
-        var window = WindowTransformNode.makeFromFacet(null, {
+        var window = window_1.WindowTransformNode.makeFromFacet(null, {
             row: { field: 'r', type: 'nominal' },
             column: { field: 'c', type: 'nominal', sort: { op: 'median', field: 'x' } }
         });
@@ -22,7 +24,7 @@ describe('compile/data/window', function () {
         });
     });
     it('does not create any window nodes for crossed facet', function () {
-        assert.deepEqual(WindowTransformNode.makeFromFacet(null, {
+        chai_1.assert.deepEqual(window_1.WindowTransformNode.makeFromFacet(null, {
             row: { field: 'a', type: 'nominal' }
         }), null);
     });
@@ -44,8 +46,8 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window.assemble(), {
+        var window = new window_1.WindowTransformNode(null, transform);
+        chai_1.assert.deepEqual(window.assemble(), {
             type: 'window',
             ops: ['row_number'],
             fields: [null],
@@ -78,8 +80,8 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window.assemble(), {
+        var window = new window_1.WindowTransformNode(null, transform);
+        chai_1.assert.deepEqual(window.assemble(), {
             type: 'window',
             ops: ['row_number'],
             fields: [null],
@@ -120,8 +122,8 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        assert.deepEqual({ count_field: true, ordered_row_number: true, sum_field: true }, window.producedFields());
+        var window = new window_1.WindowTransformNode(null, transform);
+        chai_1.assert.deepEqual({ count_field: true, ordered_row_number: true, sum_field: true }, window.producedFields());
     });
     it('should clone to an equivalent version', function () {
         var transform = {
@@ -141,8 +143,30 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window, window.clone());
+        var window = new window_1.WindowTransformNode(null, transform);
+        chai_1.assert.deepEqual(window, window.clone());
+    });
+    it('should generate the correct hash', function () {
+        var transform = {
+            window: [
+                {
+                    op: 'row_number',
+                    as: 'ordered_row_number'
+                }
+            ],
+            ignorePeers: false,
+            sort: [
+                {
+                    field: 'f',
+                    order: 'ascending'
+                }
+            ],
+            groupby: ['f'],
+            frame: [null, 0]
+        };
+        var window = new window_1.WindowTransformNode(null, transform);
+        var hash = window.hash();
+        chai_1.assert.deepEqual(hash, 'WindowTransform 1103660051');
     });
 });
 //# sourceMappingURL=window.test.js.map

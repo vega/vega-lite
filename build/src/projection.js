@@ -1,4 +1,6 @@
-export var PROJECTION_PROPERTIES = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PROJECTION_PROPERTIES = [
     'type',
     'clipAngle',
     'clipExtent',

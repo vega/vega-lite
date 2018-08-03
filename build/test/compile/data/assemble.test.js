@@ -1,45 +1,47 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { AggregateNode } from '../../../src/compile/data/aggregate';
-import { assembleRootData } from '../../../src/compile/data/assemble';
-import { OutputNode } from '../../../src/compile/data/dataflow';
-import { SourceNode } from '../../../src/compile/data/source';
-import { WindowTransformNode } from '../../../src/compile/data/window';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var aggregate_1 = require("../../../src/compile/data/aggregate");
+var assemble_1 = require("../../../src/compile/data/assemble");
+var dataflow_1 = require("../../../src/compile/data/dataflow");
+var source_1 = require("../../../src/compile/data/source");
+var window_1 = require("../../../src/compile/data/window");
 describe('compile/data/assemble', function () {
     describe('assembleData', function () {
         it('should assemble named data source', function () {
-            var src = new SourceNode({ name: 'foo' });
+            var src = new source_1.SourceNode({ name: 'foo' });
             var outputNodeRefCounts = {};
-            var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+            var main = new dataflow_1.OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = src;
-            assert.equal(main.getSource(), 'mainOut');
-            var data = assembleRootData({
+            chai_1.assert.equal(main.getSource(), 'mainOut');
+            var data = assemble_1.assembleRootData({
                 sources: { named: src },
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
             }, {});
-            assert.equal(data.length, 1);
-            assert.equal(data[0].name, 'foo');
+            chai_1.assert.equal(data.length, 1);
+            chai_1.assert.equal(data[0].name, 'foo');
         });
         it('should assemble raw and main output', function () {
-            var src = new SourceNode({ url: 'foo.csv' });
+            var src = new source_1.SourceNode({ url: 'foo.csv' });
             var outputNodeRefCounts = {};
-            var raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
+            var raw = new dataflow_1.OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
             raw.parent = src;
-            var agg = new AggregateNode(null, { a: true }, { b: { count: 'count_*' } });
+            var agg = new aggregate_1.AggregateNode(null, { a: true }, { b: { count: 'count_*' } });
             agg.parent = raw;
-            var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+            var main = new dataflow_1.OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = agg;
-            assert.equal(raw.getSource(), 'rawOut');
-            assert.equal(main.getSource(), 'mainOut');
-            var data = assembleRootData({
+            chai_1.assert.equal(raw.getSource(), 'rawOut');
+            chai_1.assert.equal(main.getSource(), 'mainOut');
+            var data = assemble_1.assembleRootData({
                 sources: { named: src },
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
             }, {});
-            assert.deepEqual(data, [
+            chai_1.assert.deepEqual(data, [
                 {
                     name: 'source_0',
                     url: 'foo.csv',
@@ -61,9 +63,9 @@ describe('compile/data/assemble', function () {
             ]);
         });
         it('should assemble window transform node', function () {
-            var src = new SourceNode({ url: 'foo.csv' });
+            var src = new source_1.SourceNode({ url: 'foo.csv' });
             var outputNodeRefCounts = {};
-            var raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
+            var raw = new dataflow_1.OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
             raw.parent = src;
             var transform = {
                 window: [
@@ -82,19 +84,19 @@ describe('compile/data/assemble', function () {
                 groupby: ['f'],
                 frame: [null, 0]
             };
-            var agg = new WindowTransformNode(null, transform);
+            var agg = new window_1.WindowTransformNode(null, transform);
             agg.parent = raw;
-            var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+            var main = new dataflow_1.OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = agg;
-            assert.equal(raw.getSource(), 'rawOut');
-            assert.equal(main.getSource(), 'mainOut');
-            var data = assembleRootData({
+            chai_1.assert.equal(raw.getSource(), 'rawOut');
+            chai_1.assert.equal(main.getSource(), 'mainOut');
+            var data = assemble_1.assembleRootData({
                 sources: { named: src },
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
             }, {});
-            assert.deepEqual(data, [
+            chai_1.assert.deepEqual(data, [
                 {
                     name: 'source_0',
                     url: 'foo.csv',
@@ -123,11 +125,11 @@ describe('compile/data/assemble', function () {
             ]);
         });
         it('should assemble named datasets with datastore', function () {
-            var src = new SourceNode({ name: 'foo' });
+            var src = new source_1.SourceNode({ name: 'foo' });
             var outputNodeRefCounts = {};
-            var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+            var main = new dataflow_1.OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = src;
-            var data = assembleRootData({
+            var data = assemble_1.assembleRootData({
                 sources: { named: src },
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
@@ -135,7 +137,7 @@ describe('compile/data/assemble', function () {
             }, {
                 foo: [1, 2, 3]
             });
-            assert.deepEqual(data, [
+            chai_1.assert.deepEqual(data, [
                 {
                     name: 'foo',
                     values: [1, 2, 3]

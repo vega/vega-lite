@@ -14,12 +14,12 @@ export declare function labelAngle(model: UnitModel, specifiedAxis: Axis, channe
 export declare function labelBaseline(angle: number, axisOrient: AxisOrient): "top" | "middle" | "bottom";
 export declare function labelAlign(angle: number, axisOrient: AxisOrient): Align;
 export declare function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis): number | boolean;
-export declare function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType): import("../../../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-typings/types/spec/axis").LabelOverlap;
+export declare function labelOverlap(fieldDef: FieldDef<string>, specifiedAxis: Axis, channel: PositionScaleChannel, scaleType: ScaleType): import("vega-typings/types/spec/axis").LabelOverlap;
 export declare function orient(channel: PositionScaleChannel): "left" | "bottom";
 export declare function tickCount(channel: PositionScaleChannel, fieldDef: FieldDef<string>, scaleType: ScaleType, size: SignalRef, scaleName: string, specifiedAxis: Axis): {
     signal: string;
 };
-export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel): (string | number | boolean | import("../../../../../../../../Users/domoritz/Developer/UW/vega-lite/src/datetime").DateTime | {
+export declare function values(specifiedAxis: Axis, model: UnitModel, fieldDef: FieldDef<string>, channel: PositionScaleChannel): (string | number | boolean | import("../../datetime").DateTime | {
     signal: string;
 })[] | {
     signal: string;

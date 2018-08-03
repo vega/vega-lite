@@ -1,82 +1,84 @@
+"use strict";
 /* tslint:disable quotemark */
-import { assert } from 'chai';
-import { COLOR, X, Y } from '../../../src/channel';
-import { rule } from '../../../src/compile/mark/rule';
-import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var channel_1 = require("../../../src/channel");
+var rule_1 = require("../../../src/compile/mark/rule");
+var util_1 = require("../../util");
 describe('Mark: Rule', function () {
     describe('without encoding', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {}
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should not show anything', function () {
-            assert.isUndefined(props.x);
-            assert.isUndefined(props.y);
+            chai_1.assert.isUndefined(props.x);
+            chai_1.assert.isUndefined(props.y);
         });
     });
     describe('with x-only', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: { x: { field: 'a', type: 'quantitative' } }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create vertical rule that fits height', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'a' });
-            assert.deepEqual(props.y, { field: { group: 'height' } });
-            assert.deepEqual(props.y2, { value: 0 });
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a' });
+            chai_1.assert.deepEqual(props.y, { field: { group: 'height' } });
+            chai_1.assert.deepEqual(props.y2, { value: 0 });
         });
     });
     describe('with y-only', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: { y: { field: 'a', type: 'quantitative' } }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create horizontal rule that fits height', function () {
-            assert.deepEqual(props.y, { scale: Y, field: 'a' });
-            assert.deepEqual(props.x, { value: 0 });
-            assert.deepEqual(props.x2, { field: { group: 'width' } });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'a' });
+            chai_1.assert.deepEqual(props.x, { value: 0 });
+            chai_1.assert.deepEqual(props.x2, { field: { group: 'width' } });
         });
     });
     describe('with x and x2 only', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'quantitative' },
                 x2: { field: 'a2', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create horizontal rule on the axis', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'a' });
-            assert.deepEqual(props.x2, { scale: X, field: 'a2' });
-            assert.deepEqual(props.y, {
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a' });
+            chai_1.assert.deepEqual(props.x2, { scale: channel_1.X, field: 'a2' });
+            chai_1.assert.deepEqual(props.y, {
                 mult: 0.5,
                 signal: 'height'
             });
         });
     });
     describe('with y and y2 only', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 y: { field: 'a', type: 'quantitative' },
                 y2: { field: 'a2', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create horizontal rules on the axis', function () {
-            assert.deepEqual(props.y, { scale: Y, field: 'a' });
-            assert.deepEqual(props.y2, { scale: Y, field: 'a2' });
-            assert.deepEqual(props.x, {
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'a' });
+            chai_1.assert.deepEqual(props.y2, { scale: channel_1.Y, field: 'a2' });
+            chai_1.assert.deepEqual(props.x, {
                 mult: 0.5,
                 signal: 'width'
             });
         });
     });
     describe('with x, x2, and y', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'quantitative' },
@@ -84,15 +86,15 @@ describe('Mark: Rule', function () {
                 y: { field: 'b', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create horizontal rules', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'a' });
-            assert.deepEqual(props.x2, { scale: X, field: 'a2' });
-            assert.deepEqual(props.y, { scale: Y, field: 'b' });
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a' });
+            chai_1.assert.deepEqual(props.x2, { scale: channel_1.X, field: 'a2' });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'b' });
         });
     });
     describe('with x, x2, y, and y2', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'quantitative' },
@@ -101,30 +103,30 @@ describe('Mark: Rule', function () {
                 y2: { field: 'b2', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create oblique rules', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'a' });
-            assert.deepEqual(props.x2, { scale: X, field: 'a2' });
-            assert.deepEqual(props.y, { scale: Y, field: 'b' });
-            assert.deepEqual(props.y2, { scale: Y, field: 'b2' });
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a' });
+            chai_1.assert.deepEqual(props.x2, { scale: channel_1.X, field: 'a2' });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'b' });
+            chai_1.assert.deepEqual(props.y2, { scale: channel_1.Y, field: 'b2' });
         });
     });
     describe('with x and y', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'quantitative' },
                 y: { field: 'b', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create oblique rules', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'a' });
-            assert.deepEqual(props.y, { scale: Y, field: 'b' });
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a' });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'b' });
         });
     });
     describe('with y, y2, and x', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 y: { field: 'a', type: 'quantitative' },
@@ -132,47 +134,47 @@ describe('Mark: Rule', function () {
                 x: { field: 'b', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create vertical rules', function () {
-            assert.deepEqual(props.y, { scale: Y, field: 'a' });
-            assert.deepEqual(props.y2, { scale: Y, field: 'a2' });
-            assert.deepEqual(props.x, { scale: X, field: 'b' });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'a' });
+            chai_1.assert.deepEqual(props.y2, { scale: channel_1.Y, field: 'a2' });
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'b' });
         });
     });
     describe('with nominal x, quantitative y with no y2', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'ordinal' },
                 y: { field: 'b', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create vertical rule that emulates bar chart', function () {
-            assert.equal(model.markDef.orient, 'vertical');
-            assert.deepEqual(props.x, { scale: X, field: 'a', band: 0.5 });
-            assert.deepEqual(props.y, { scale: Y, field: 'b' });
-            assert.deepEqual(props.y2, { scale: Y, value: 0 });
+            chai_1.assert.equal(model.markDef.orient, 'vertical');
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'a', band: 0.5 });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'b' });
+            chai_1.assert.deepEqual(props.y2, { scale: channel_1.Y, value: 0 });
         });
     });
     describe('with nominal y, quantitative x with no y2', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 y: { field: 'a', type: 'ordinal' },
                 x: { field: 'b', type: 'quantitative' }
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should create horizontal rule that emulates bar chart', function () {
-            assert.equal(model.markDef.orient, 'horizontal');
-            assert.deepEqual(props.x, { scale: X, field: 'b' });
-            assert.deepEqual(props.x2, { scale: X, value: 0 });
-            assert.deepEqual(props.y, { scale: Y, field: 'a', band: 0.5 });
+            chai_1.assert.equal(model.markDef.orient, 'horizontal');
+            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'b' });
+            chai_1.assert.deepEqual(props.x2, { scale: channel_1.X, value: 0 });
+            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'a', band: 0.5 });
         });
     });
     describe('horizontal stacked rule with color', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 y: { field: 'a', type: 'ordinal' },
@@ -184,15 +186,15 @@ describe('Mark: Rule', function () {
                 invalidValues: null
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should have the correct value for x, x2, and color', function () {
-            assert.deepEqual(props.x, { scale: 'x', field: 'sum_b_end' });
-            assert.deepEqual(props.x2, { scale: 'x', field: 'sum_b_start' });
-            assert.deepEqual(props.stroke, { scale: COLOR, field: 'Origin' });
+            chai_1.assert.deepEqual(props.x, { scale: 'x', field: 'sum_b_end' });
+            chai_1.assert.deepEqual(props.x2, { scale: 'x', field: 'sum_b_start' });
+            chai_1.assert.deepEqual(props.stroke, { scale: channel_1.COLOR, field: 'Origin' });
         });
     });
     describe('vertical stacked rule with color', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
             mark: 'rule',
             encoding: {
                 x: { field: 'a', type: 'ordinal' },
@@ -204,11 +206,11 @@ describe('Mark: Rule', function () {
                 invalidValues: null
             }
         });
-        var props = rule.encodeEntry(model);
+        var props = rule_1.rule.encodeEntry(model);
         it('should have the correct value for y, y2, and color', function () {
-            assert.deepEqual(props.y, { scale: 'y', field: 'sum_b_end' });
-            assert.deepEqual(props.y2, { scale: 'y', field: 'sum_b_start' });
-            assert.deepEqual(props.stroke, { scale: COLOR, field: 'Origin' });
+            chai_1.assert.deepEqual(props.y, { scale: 'y', field: 'sum_b_end' });
+            chai_1.assert.deepEqual(props.y2, { scale: 'y', field: 'sum_b_start' });
+            chai_1.assert.deepEqual(props.stroke, { scale: channel_1.COLOR, field: 'Origin' });
         });
     });
 });

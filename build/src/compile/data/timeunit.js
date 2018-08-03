@@ -1,8 +1,10 @@
-import * as tslib_1 from "tslib";
-import { vgField } from '../../fielddef';
-import { fieldExpr } from '../../timeunit';
-import { duplicate, keys, vals } from '../../util';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var fielddef_1 = require("../../fielddef");
+var timeunit_1 = require("../../timeunit");
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
 var TimeUnitNode = /** @class */ (function (_super) {
     tslib_1.__extends(TimeUnitNode, _super);
     function TimeUnitNode(parent, formula) {
@@ -11,12 +13,12 @@ var TimeUnitNode = /** @class */ (function (_super) {
         return _this;
     }
     TimeUnitNode.prototype.clone = function () {
-        return new TimeUnitNode(null, duplicate(this.formula));
+        return new TimeUnitNode(null, util_1.duplicate(this.formula));
     };
     TimeUnitNode.makeFromEncoding = function (parent, model) {
         var formula = model.reduceFieldDef(function (timeUnitComponent, fieldDef) {
             if (fieldDef.timeUnit) {
-                var f = vgField(fieldDef, { forAs: true });
+                var f = fielddef_1.vgField(fieldDef, { forAs: true });
                 timeUnitComponent[f] = {
                     as: f,
                     timeUnit: fieldDef.timeUnit,
@@ -25,7 +27,7 @@ var TimeUnitNode = /** @class */ (function (_super) {
             }
             return timeUnitComponent;
         }, {});
-        if (keys(formula).length === 0) {
+        if (util_1.keys(formula).length === 0) {
             return null;
         }
         return new TimeUnitNode(parent, formula);
@@ -46,28 +48,31 @@ var TimeUnitNode = /** @class */ (function (_super) {
     };
     TimeUnitNode.prototype.producedFields = function () {
         var out = {};
-        vals(this.formula).forEach(function (f) {
+        util_1.vals(this.formula).forEach(function (f) {
             out[f.as] = true;
         });
         return out;
     };
     TimeUnitNode.prototype.dependentFields = function () {
         var out = {};
-        vals(this.formula).forEach(function (f) {
+        util_1.vals(this.formula).forEach(function (f) {
             out[f.field] = true;
         });
         return out;
     };
+    TimeUnitNode.prototype.hash = function () {
+        return "TimeUnit " + util_1.hash(this.formula);
+    };
     TimeUnitNode.prototype.assemble = function () {
-        return vals(this.formula).map(function (c) {
+        return util_1.vals(this.formula).map(function (c) {
             return {
                 type: 'formula',
                 as: c.as,
-                expr: fieldExpr(c.timeUnit, c.field)
+                expr: timeunit_1.fieldExpr(c.timeUnit, c.field)
             };
         });
     };
     return TimeUnitNode;
-}(DataFlowNode));
-export { TimeUnitNode };
+}(dataflow_1.TransformNode));
+exports.TimeUnitNode = TimeUnitNode;
 //# sourceMappingURL=timeunit.js.map

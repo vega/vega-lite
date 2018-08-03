@@ -1,25 +1,30 @@
-import { defaultScaleConfig, hasDiscreteDomain } from '../../scale';
-import { isVgRangeStep } from '../../vega.schema';
-import { mergeValuesWithExplicit } from '../split';
-export function parseLayerLayoutSize(model) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var scale_1 = require("../../scale");
+var vega_schema_1 = require("../../vega.schema");
+var split_1 = require("../split");
+function parseLayerLayoutSize(model) {
     parseChildrenLayoutSize(model);
     var layoutSizeCmpt = model.component.layoutSize;
     layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
     layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
-export var parseRepeatLayoutSize = parseLayerLayoutSize;
-export function parseConcatLayoutSize(model) {
+exports.parseLayerLayoutSize = parseLayerLayoutSize;
+exports.parseRepeatLayoutSize = parseLayerLayoutSize;
+function parseConcatLayoutSize(model) {
     parseChildrenLayoutSize(model);
     var layoutSizeCmpt = model.component.layoutSize;
     var sizeTypeToMerge = model.isVConcat ? 'width' : 'height';
     layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
 }
-export function parseChildrenLayoutSize(model) {
+exports.parseConcatLayoutSize = parseConcatLayoutSize;
+function parseChildrenLayoutSize(model) {
     for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
         var child = _a[_i];
         child.parseLayoutSize();
     }
 }
+exports.parseChildrenLayoutSize = parseChildrenLayoutSize;
 function parseNonUnitLayoutSizeForChannel(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var resolve = model.component.resolve;
@@ -42,7 +47,7 @@ function parseNonUnitLayoutSizeForChannel(model, sizeType) {
                 mergedSize = undefined;
                 break;
             }
-            mergedSize = mergeValuesWithExplicit(mergedSize, childSize, sizeType, '');
+            mergedSize = split_1.mergeValuesWithExplicit(mergedSize, childSize, sizeType, '');
         }
         else {
             mergedSize = childSize;
@@ -65,7 +70,7 @@ function parseNonUnitLayoutSizeForChannel(model, sizeType) {
         };
     }
 }
-export function parseUnitLayoutSize(model) {
+function parseUnitLayoutSize(model) {
     var layoutSizeComponent = model.component.layoutSize;
     if (!layoutSizeComponent.explicit.width) {
         var width = defaultUnitSize(model, 'width');
@@ -76,6 +81,7 @@ export function parseUnitLayoutSize(model) {
         layoutSizeComponent.set('height', height, false);
     }
 }
+exports.parseUnitLayoutSize = parseUnitLayoutSize;
 function defaultUnitSize(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var config = model.config;
@@ -83,7 +89,7 @@ function defaultUnitSize(model, sizeType) {
     if (scaleComponent) {
         var scaleType = scaleComponent.get('type');
         var range = scaleComponent.get('range');
-        if (hasDiscreteDomain(scaleType) && isVgRangeStep(range)) {
+        if (scale_1.hasDiscreteDomain(scaleType) && vega_schema_1.isVgRangeStep(range)) {
             // For discrete domain with range.step, use dynamic width/height
             return 'range-step';
         }
@@ -101,7 +107,7 @@ function defaultUnitSize(model, sizeType) {
             return config.scale.textXRangeStep;
         }
         // Set width/height equal to rangeStep config or if rangeStep is null, use value from default scale config.
-        return config.scale.rangeStep || defaultScaleConfig.rangeStep;
+        return config.scale.rangeStep || scale_1.defaultScaleConfig.rangeStep;
     }
 }
 //# sourceMappingURL=parse.js.map

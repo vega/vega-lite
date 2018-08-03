@@ -1,6 +1,8 @@
-import * as tslib_1 from "tslib";
-import { duplicate } from '../../util';
-import { Split } from '../split';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var util_1 = require("../../util");
+var split_1 = require("../split");
 function isFalseOrNull(v) {
     return v === false || v === null;
 }
@@ -17,7 +19,7 @@ var AxisComponent = /** @class */ (function (_super) {
         return _this;
     }
     AxisComponent.prototype.clone = function () {
-        return new AxisComponent(duplicate(this.explicit), duplicate(this.implicit), this.mainExtracted);
+        return new AxisComponent(util_1.duplicate(this.explicit), util_1.duplicate(this.implicit), this.mainExtracted);
     };
     AxisComponent.prototype.hasAxisPart = function (part) {
         // FIXME(https://github.com/vega/vega-lite/issues/2552) this method can be wrong if users use a Vega theme.
@@ -32,6 +34,6 @@ var AxisComponent = /** @class */ (function (_super) {
         return !isFalseOrNull(this.get(part));
     };
     return AxisComponent;
-}(Split));
-export { AxisComponent };
+}(split_1.Split));
+exports.AxisComponent = AxisComponent;
 //# sourceMappingURL=component.js.map

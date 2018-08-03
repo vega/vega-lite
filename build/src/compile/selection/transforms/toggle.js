@@ -1,4 +1,6 @@
-import { TUPLE, unitName } from '../selection';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var selection_1 = require("../selection");
 var TOGGLE = '_toggle';
 var toggle = {
     has: function (selCmpt) {
@@ -12,12 +14,12 @@ var toggle = {
         });
     },
     modifyExpr: function (model, selCmpt, expr) {
-        var tpl = selCmpt.name + TUPLE;
+        var tpl = selCmpt.name + selection_1.TUPLE;
         var signal = selCmpt.name + TOGGLE;
         return (signal + " ? null : " + tpl + ", " +
-            (selCmpt.resolve === 'global' ? signal + " ? null : true, " : signal + " ? null : {unit: " + unitName(model) + "}, ") +
+            (selCmpt.resolve === 'global' ? signal + " ? null : true, " : signal + " ? null : {unit: " + selection_1.unitName(model) + "}, ") +
             (signal + " ? " + tpl + " : null"));
     }
 };
-export default toggle;
+exports.default = toggle;
 //# sourceMappingURL=toggle.js.map

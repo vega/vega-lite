@@ -23,8 +23,7 @@
     "encoding": {
       "x": {
         "field": "date",
-        "type": "temporal",
-        "axis": {"format": "%Y"}
+        "type": "temporal"
       },
       "y": {
         "field": "price",

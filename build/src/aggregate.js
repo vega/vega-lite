@@ -1,5 +1,7 @@
-import { toSet } from 'vega-util';
-import { contains, flagKeys } from './util';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var vega_util_1 = require("vega-util");
+var util_1 = require("./util");
 var AGGREGATE_OP_INDEX = {
     argmax: 1,
     argmin: 1,
@@ -24,19 +26,21 @@ var AGGREGATE_OP_INDEX = {
     variance: 1,
     variancep: 1
 };
-export var AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
-export function isAggregateOp(a) {
+exports.AGGREGATE_OPS = util_1.flagKeys(AGGREGATE_OP_INDEX);
+function isAggregateOp(a) {
     return !!AGGREGATE_OP_INDEX[a];
 }
-export var COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
-export function isCountingAggregateOp(aggregate) {
-    return aggregate && contains(COUNTING_OPS, aggregate);
+exports.isAggregateOp = isAggregateOp;
+exports.COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
+function isCountingAggregateOp(aggregate) {
+    return aggregate && util_1.contains(exports.COUNTING_OPS, aggregate);
 }
+exports.isCountingAggregateOp = isCountingAggregateOp;
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export var SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
+exports.SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
-export var SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
-export var SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
+exports.SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
+exports.SHARED_DOMAIN_OP_INDEX = vega_util_1.toSet(exports.SHARED_DOMAIN_OPS);
 //# sourceMappingURL=aggregate.js.map

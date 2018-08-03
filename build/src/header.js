@@ -1,4 +1,6 @@
-export var HEADER_TITLE_PROPERTIES_MAP = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HEADER_TITLE_PROPERTIES_MAP = {
     titleAnchor: 'anchor',
     titleAngle: 'angle',
     titleBaseline: 'baseline',
@@ -9,7 +11,7 @@ export var HEADER_TITLE_PROPERTIES_MAP = {
     titleLimit: 'limit',
     titlePadding: 'offset'
 };
-export var HEADER_LABEL_PROPERTIES_MAP = {
+exports.HEADER_LABEL_PROPERTIES_MAP = {
     labelAngle: 'angle',
     labelColor: 'color',
     labelFont: 'font',
@@ -17,6 +19,6 @@ export var HEADER_LABEL_PROPERTIES_MAP = {
     labelLimit: 'limit',
     labelPadding: 'offset'
 };
-export var HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
-export var HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);
+exports.HEADER_TITLE_PROPERTIES = Object.keys(exports.HEADER_TITLE_PROPERTIES_MAP);
+exports.HEADER_LABEL_PROPERTIES = Object.keys(exports.HEADER_LABEL_PROPERTIES_MAP);
 //# sourceMappingURL=header.js.map

@@ -1,25 +1,27 @@
-import * as tslib_1 from "tslib";
-import { stringValue } from 'vega-util';
-import { X, Y } from '../../channel';
-import { warn } from '../../log';
-import { hasContinuousDomain, isBinScale } from '../../scale';
-import { keys } from '../../util';
-import { channelSignalName, positionalProjections, STORE, TUPLE, unitName } from './selection';
-import scales from './transforms/scales';
-export var BRUSH = '_brush';
-export var SCALE_TRIGGER = '_scale_trigger';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var channel_1 = require("../../channel");
+var log_1 = require("../../log");
+var scale_1 = require("../../scale");
+var util_1 = require("../../util");
+var selection_1 = require("./selection");
+var scales_1 = tslib_1.__importDefault(require("./transforms/scales"));
+exports.BRUSH = '_brush';
+exports.SCALE_TRIGGER = '_scale_trigger';
 var interval = {
     predicate: 'vlInterval',
     scaleDomain: 'vlIntervalDomain',
     signals: function (model, selCmpt) {
         var name = selCmpt.name;
-        var hasScales = scales.has(selCmpt);
+        var hasScales = scales_1.default.has(selCmpt);
         var signals = [];
         var intervals = [];
         var tupleTriggers = [];
         var scaleTriggers = [];
         if (selCmpt.translate && !hasScales) {
-            var filterExpr_1 = "!event.item || event.item.mark.name !== " + stringValue(name + BRUSH);
+            var filterExpr_1 = "!event.item || event.item.mark.name !== " + vega_util_1.stringValue(name + exports.BRUSH);
             events(selCmpt, function (_, evt) {
                 var filters = evt.between[0].filter || (evt.between[0].filter = []);
                 if (filters.indexOf(filterExpr_1) < 0) {
@@ -30,19 +32,19 @@ var interval = {
         for (var _i = 0, _a = selCmpt.project; _i < _a.length; _i++) {
             var p = _a[_i];
             var channel = p.channel;
-            if (channel !== X && channel !== Y) {
-                warn('Interval selections only support x and y encoding channels.');
+            if (channel !== channel_1.X && channel !== channel_1.Y) {
+                log_1.warn('Interval selections only support x and y encoding channels.');
                 continue;
             }
             var cs = channelSignals(model, selCmpt, channel);
-            var dname = channelSignalName(selCmpt, channel, 'data');
-            var vname = channelSignalName(selCmpt, channel, 'visual');
-            var scaleStr = stringValue(model.scaleName(channel));
+            var dname = selection_1.channelSignalName(selCmpt, channel, 'data');
+            var vname = selection_1.channelSignalName(selCmpt, channel, 'visual');
+            var scaleStr = vega_util_1.stringValue(model.scaleName(channel));
             var scaleType = model.getScaleComponent(channel).get('type');
-            var toNum = hasContinuousDomain(scaleType) ? '+' : '';
+            var toNum = scale_1.hasContinuousDomain(scaleType) ? '+' : '';
             signals.push.apply(signals, cs);
             tupleTriggers.push(dname);
-            intervals.push("{encoding: " + stringValue(channel) + ", " + ("field: " + stringValue(p.field) + ", extent: " + dname + "}"));
+            intervals.push("{encoding: " + vega_util_1.stringValue(channel) + ", " + ("field: " + vega_util_1.stringValue(p.field) + ", extent: " + dname + "}"));
             scaleTriggers.push({
                 scaleName: model.scaleName(channel),
                 expr: "(!isArray(" + dname + ") || " +
@@ -54,33 +56,33 @@ var interval = {
         // when an interval selection filter touches the scale.
         if (!hasScales) {
             signals.push({
-                name: name + SCALE_TRIGGER,
-                update: scaleTriggers.map(function (t) { return t.expr; }).join(' && ') + (" ? " + (name + SCALE_TRIGGER) + " : {}")
+                name: name + exports.SCALE_TRIGGER,
+                update: scaleTriggers.map(function (t) { return t.expr; }).join(' && ') + (" ? " + (name + exports.SCALE_TRIGGER) + " : {}")
             });
         }
         // Only add an interval to the store if it has valid data extents. Data extents
         // are set to null if pixel extents are equal to account for intervals over
         // ordinal/nominal domains which, when inverted, will still produce a valid datum.
         return signals.concat({
-            name: name + TUPLE,
+            name: name + selection_1.TUPLE,
             on: [
                 {
                     events: tupleTriggers.map(function (t) { return ({ signal: t }); }),
-                    update: tupleTriggers.join(' && ') + (" ? {unit: " + unitName(model) + ", intervals: [" + intervals.join(', ') + "]} : null")
+                    update: tupleTriggers.join(' && ') + (" ? {unit: " + selection_1.unitName(model) + ", intervals: [" + intervals.join(', ') + "]} : null")
                 }
             ]
         });
     },
     modifyExpr: function (model, selCmpt) {
-        var tpl = selCmpt.name + TUPLE;
-        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
+        var tpl = selCmpt.name + selection_1.TUPLE;
+        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + selection_1.unitName(model) + "}");
     },
     marks: function (model, selCmpt, marks) {
         var name = selCmpt.name;
-        var _a = positionalProjections(selCmpt), xi = _a.xi, yi = _a.yi;
-        var store = "data(" + stringValue(selCmpt.name + STORE) + ")";
+        var _a = selection_1.positionalProjections(selCmpt), xi = _a.xi, yi = _a.yi;
+        var store = "data(" + vega_util_1.stringValue(selCmpt.name + selection_1.STORE) + ")";
         // Do not add a brush if we're binding to scales.
-        if (scales.has(selCmpt)) {
+        if (scales_1.default.has(selCmpt)) {
             return marks;
         }
         var update = {
@@ -94,10 +96,10 @@ var interval = {
         // this based on the `unit` property. Hide the brush mark if it corresponds
         // to a unit different from the one in the store.
         if (selCmpt.resolve === 'global') {
-            for (var _i = 0, _b = keys(update); _i < _b.length; _i++) {
+            for (var _i = 0, _b = util_1.keys(update); _i < _b.length; _i++) {
                 var key = _b[_i];
                 update[key] = [
-                    tslib_1.__assign({ test: store + ".length && " + store + "[0].unit === " + unitName(model) }, update[key]),
+                    tslib_1.__assign({ test: store + ".length && " + store + "[0].unit === " + selection_1.unitName(model) }, update[key]),
                     { value: 0 }
                 ];
             }
@@ -106,7 +108,7 @@ var interval = {
         // not interefere with the core marks, but that the brushed region can still
         // be interacted with (e.g., dragging it around).
         var _c = selCmpt.mark, fill = _c.fill, fillOpacity = _c.fillOpacity, stroke = tslib_1.__rest(_c, ["fill", "fillOpacity"]);
-        var vgStroke = keys(stroke).reduce(function (def, k) {
+        var vgStroke = util_1.keys(stroke).reduce(function (def, k) {
             def[k] = [
                 {
                     test: [xi !== null && name + "_x[0] !== " + name + "_x[1]", yi != null && name + "_y[0] !== " + name + "_y[1]"]
@@ -120,7 +122,7 @@ var interval = {
         }, {});
         return [
             {
-                name: name + BRUSH + '_bg',
+                name: name + exports.BRUSH + '_bg',
                 type: 'rect',
                 clip: true,
                 encode: {
@@ -132,7 +134,7 @@ var interval = {
                 }
             }
         ].concat(marks, {
-            name: name + BRUSH,
+            name: name + exports.BRUSH,
             type: 'rect',
             clip: true,
             encode: {
@@ -144,19 +146,19 @@ var interval = {
         });
     }
 };
-export default interval;
+exports.default = interval;
 /**
  * Returns the visual and data signals for an interval selection.
  */
 function channelSignals(model, selCmpt, channel) {
-    var vname = channelSignalName(selCmpt, channel, 'visual');
-    var dname = channelSignalName(selCmpt, channel, 'data');
-    var hasScales = scales.has(selCmpt);
+    var vname = selection_1.channelSignalName(selCmpt, channel, 'visual');
+    var dname = selection_1.channelSignalName(selCmpt, channel, 'data');
+    var hasScales = scales_1.default.has(selCmpt);
     var scaleName = model.scaleName(channel);
-    var scaleStr = stringValue(scaleName);
+    var scaleStr = vega_util_1.stringValue(scaleName);
     var scale = model.getScaleComponent(channel);
     var scaleType = scale ? scale.get('type') : undefined;
-    var size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
+    var size = model.getSizeSignalRef(channel === channel_1.X ? 'width' : 'height').signal;
     var coord = channel + "(unit)";
     var on = events(selCmpt, function (def, evt) {
         return def.concat({ events: evt.between[0], update: "[" + coord + ", " + coord + "]" }, // Brush Start
@@ -167,8 +169,8 @@ function channelSignals(model, selCmpt, channel) {
     // (bin-linear, band, point) cannot be pan/zoomed and any other changes
     // to their domains (e.g., filtering) should clear the brushes.
     on.push({
-        events: { signal: selCmpt.name + SCALE_TRIGGER },
-        update: hasContinuousDomain(scaleType) && !isBinScale(scaleType)
+        events: { signal: selCmpt.name + exports.SCALE_TRIGGER },
+        update: scale_1.hasContinuousDomain(scaleType) && !scale_1.isBinScale(scaleType)
             ? "[scale(" + scaleStr + ", " + dname + "[0]), scale(" + scaleStr + ", " + dname + "[1])]"
             : "[0, 0]"
     });
@@ -189,7 +191,7 @@ function channelSignals(model, selCmpt, channel) {
 function events(selCmpt, cb) {
     return selCmpt.events.reduce(function (on, evt) {
         if (!evt.between) {
-            warn(evt + " is not an ordered event stream for interval selections");
+            log_1.warn(evt + " is not an ordered event stream for interval selections");
             return on;
         }
         return cb(on, evt);

@@ -1,6 +1,8 @@
-import * as tslib_1 from "tslib";
-import { duplicate } from '../../util';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
 /**
  * A class for the sample transform nodes
  */
@@ -12,7 +14,10 @@ var SampleTransformNode = /** @class */ (function (_super) {
         return _this;
     }
     SampleTransformNode.prototype.clone = function () {
-        return new SampleTransformNode(this.parent, duplicate(this.transform));
+        return new SampleTransformNode(this.parent, util_1.duplicate(this.transform));
+    };
+    SampleTransformNode.prototype.hash = function () {
+        return "SampleTransform " + util_1.hash(this.transform);
     };
     SampleTransformNode.prototype.assemble = function () {
         return {
@@ -21,6 +26,6 @@ var SampleTransformNode = /** @class */ (function (_super) {
         };
     };
     return SampleTransformNode;
-}(DataFlowNode));
-export { SampleTransformNode };
+}(dataflow_1.TransformNode));
+exports.SampleTransformNode = SampleTransformNode;
 //# sourceMappingURL=sample.js.map

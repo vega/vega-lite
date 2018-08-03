@@ -1,11 +1,14 @@
-import { hasDiscreteDomain } from '../../scale';
-import { getFirstDefined } from '../../util';
-import { isVgRangeStep } from '../../vega.schema';
-import { isFacetModel } from '../model';
-export function assembleLayoutSignals(model) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var scale_1 = require("../../scale");
+var util_1 = require("../../util");
+var vega_schema_1 = require("../../vega.schema");
+var model_1 = require("../model");
+function assembleLayoutSignals(model) {
     return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
-export function sizeSignals(model, sizeType) {
+exports.assembleLayoutSignals = assembleLayoutSignals;
+function sizeSignals(model, sizeType) {
     var channel = sizeType === 'width' ? 'x' : 'y';
     var size = model.component.layoutSize.get(sizeType);
     if (!size || size === 'merged') {
@@ -18,9 +21,9 @@ export function sizeSignals(model, sizeType) {
         if (scaleComponent) {
             var type = scaleComponent.get('type');
             var range = scaleComponent.get('range');
-            if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+            if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
                 var scaleName = model.scaleName(channel);
-                if (isFacetModel(model.parent)) {
+                if (model_1.isFacetModel(model.parent)) {
                     // If parent is facet and this is an independent scale, return only signal signal
                     // as the width/height will be calculated using the cardinality from
                     // facet's aggregate rather than reading from scale domain
@@ -50,16 +53,17 @@ export function sizeSignals(model, sizeType) {
         ];
     }
 }
+exports.sizeSignals = sizeSignals;
 function stepSignal(scaleName, range) {
     return {
         name: scaleName + '_step',
         value: range.step
     };
 }
-export function sizeExpr(scaleName, scaleComponent, cardinality) {
+function sizeExpr(scaleName, scaleComponent, cardinality) {
     var type = scaleComponent.get('type');
     var padding = scaleComponent.get('padding');
-    var paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
+    var paddingOuter = util_1.getFirstDefined(scaleComponent.get('paddingOuter'), padding);
     var paddingInner = scaleComponent.get('paddingInner');
     paddingInner =
         type === 'band'
@@ -72,4 +76,5 @@ export function sizeExpr(scaleName, scaleComponent, cardinality) {
                 1;
     return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + scaleName + "_step";
 }
+exports.sizeExpr = sizeExpr;
 //# sourceMappingURL=assemble.js.map

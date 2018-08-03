@@ -1,13 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import * as log from '../../src/log';
-import { isMarkDef } from '../../src/mark';
-import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
-import { every, some } from '../../src/util';
-import { defaultConfig } from '.././../src/config';
+var chai_1 = require("chai");
+var log = tslib_1.__importStar(require("../../src/log"));
+var mark_1 = require("../../src/mark");
+var spec_1 = require("../../src/spec");
+var util_1 = require("../../src/util");
+var config_1 = require(".././../src/config");
 describe('normalizeErrorBand', function () {
     it('should produce correct layered specs for mean point and vertical error band', function () {
-        assert.deepEqual(normalize({
+        chai_1.assert.deepEqual(spec_1.normalize({
             data: {
                 url: 'data/population.json'
             },
@@ -22,7 +25,7 @@ describe('normalizeErrorBand', function () {
                     type: 'quantitative'
                 }
             }
-        }, defaultConfig), {
+        }, config_1.defaultConfig), {
             data: {
                 url: 'data/population.json'
             },
@@ -79,102 +82,102 @@ describe('normalizeErrorBand', function () {
         });
     });
     it('should produce correct layered specs with rect + rule, instead of area + line, in 1D error band', function () {
-        var outputSpec = normalize({
+        var outputSpec = spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', borders: true },
             encoding: { y: { field: 'people', type: 'quantitative' } }
-        }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        }, config_1.defaultConfig);
+        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(some(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
+            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
             }));
-            assert.isTrue(some(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
+            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
             }));
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce correct layered specs with area + line, in 2D error band', function () {
-        var outputSpec = normalize({
+        var outputSpec = spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', borders: true },
             encoding: {
                 y: { field: 'people', type: 'quantitative' },
                 x: { field: 'age', type: 'ordinal' }
             }
-        }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        }, config_1.defaultConfig);
+        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(some(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
+            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
             }));
-            assert.isTrue(some(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
+            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
             }));
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce correct layered specs with interpolation in 2D error band', function () {
-        var outputSpec = normalize({
+        var outputSpec = spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'monotone' },
             encoding: {
                 y: { field: 'people', type: 'quantitative' },
                 x: { field: 'age', type: 'ordinal' }
             }
-        }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        }, config_1.defaultConfig);
+        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(every(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
+            chai_1.assert.isTrue(util_1.every(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
             }));
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce correct layered specs with out interpolation in 1D error band', function () {
-        var outputSpec = normalize({
+        var outputSpec = spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'bundle', tension: 1 },
             encoding: {
                 y: { field: 'people', type: 'quantitative' }
             }
-        }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        }, config_1.defaultConfig);
+        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(every(layer, function (unitSpec) {
-                return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
+            chai_1.assert.isTrue(util_1.every(layer, function (unitSpec) {
+                return spec_1.isUnitSpec(unitSpec) && mark_1.isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
             }));
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce a warning 1D error band has interpolate property', log.wrap(function (localLogger) {
-        normalize({
+        spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'monotone' },
             encoding: {
                 y: { field: 'people', type: 'quantitative' }
             }
-        }, defaultConfig);
-        assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+        }, config_1.defaultConfig);
+        chai_1.assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
     }));
     it('should produce a warning 1D error band has tension property', log.wrap(function (localLogger) {
-        normalize({
+        spec_1.normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', tension: 1 },
             encoding: {
                 y: { field: 'people', type: 'quantitative' }
             }
-        }, defaultConfig);
-        assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
+        }, config_1.defaultConfig);
+        chai_1.assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
     }));
 });
 //# sourceMappingURL=errorband.test.js.map

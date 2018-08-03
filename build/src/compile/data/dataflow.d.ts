@@ -60,3 +60,7 @@ export declare class OutputNode extends DataFlowNode {
     isRequired(): boolean;
     setSource(source: string): void;
 }
+export declare abstract class TransformNode extends DataFlowNode {
+    abstract hash(): string | number;
+}
+export declare function isTransformNode(x: DataFlowNode): boolean;

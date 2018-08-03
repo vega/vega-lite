@@ -1,13 +1,18 @@
-export function isLogicalOr(op) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function isLogicalOr(op) {
     return !!op.or;
 }
-export function isLogicalAnd(op) {
+exports.isLogicalOr = isLogicalOr;
+function isLogicalAnd(op) {
     return !!op.and;
 }
-export function isLogicalNot(op) {
+exports.isLogicalAnd = isLogicalAnd;
+function isLogicalNot(op) {
     return !!op.not;
 }
-export function forEachLeaf(op, fn) {
+exports.isLogicalNot = isLogicalNot;
+function forEachLeaf(op, fn) {
     if (isLogicalNot(op)) {
         forEachLeaf(op.not, fn);
     }
@@ -27,7 +32,8 @@ export function forEachLeaf(op, fn) {
         fn(op);
     }
 }
-export function normalizeLogicalOperand(op, normalizer) {
+exports.forEachLeaf = forEachLeaf;
+function normalizeLogicalOperand(op, normalizer) {
     if (isLogicalNot(op)) {
         return { not: normalizeLogicalOperand(op.not, normalizer) };
     }
@@ -41,4 +47,5 @@ export function normalizeLogicalOperand(op, normalizer) {
         return normalizer(op);
     }
 }
+exports.normalizeLogicalOperand = normalizeLogicalOperand;
 //# sourceMappingURL=logical.js.map

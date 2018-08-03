@@ -1,8 +1,10 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { SourceNode } from '../../../src/compile/data/source';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var source_1 = require("../../../src/compile/data/source");
 function parse(data) {
-    return new SourceNode(data);
+    return new source_1.SourceNode(data);
 }
 describe('compile/data/source', function () {
     describe('compileUnit', function () {
@@ -11,10 +13,10 @@ describe('compile/data/source', function () {
                 values: [{ a: 1, b: 2, c: 3 }, { a: 4, b: 5, c: 6 }]
             });
             it('should have values', function () {
-                assert.deepEqual(source.data.values, [{ a: 1, b: 2, c: 3 }, { a: 4, b: 5, c: 6 }]);
+                chai_1.assert.deepEqual(source.data.values, [{ a: 1, b: 2, c: 3 }, { a: 4, b: 5, c: 6 }]);
             });
             it('should have no source.format.type', function () {
-                assert.deepEqual(source.data.format, undefined);
+                chai_1.assert.deepEqual(source.data.format, undefined);
             });
         });
         describe('with explicit values as CSV', function () {
@@ -23,10 +25,10 @@ describe('compile/data/source', function () {
                 format: { type: 'csv' }
             });
             it('should have values', function () {
-                assert.deepEqual(source.data.values, 'a\n1\n2\n3');
+                chai_1.assert.deepEqual(source.data.values, 'a\n1\n2\n3');
             });
             it('should have correct type', function () {
-                assert.equal(source.data.format.type, 'csv');
+                chai_1.assert.equal(source.data.format.type, 'csv');
             });
         });
         describe('with link to url', function () {
@@ -34,10 +36,10 @@ describe('compile/data/source', function () {
                 url: 'http://foo.bar/file.csv'
             });
             it('should have format.type csv', function () {
-                assert.equal(source.data.format.type, 'csv');
+                chai_1.assert.equal(source.data.format.type, 'csv');
             });
             it('should have correct url', function () {
-                assert.equal(source.data.url, 'http://foo.bar/file.csv');
+                chai_1.assert.equal(source.data.url, 'http://foo.bar/file.csv');
             });
         });
         describe('without file ending', function () {
@@ -45,19 +47,19 @@ describe('compile/data/source', function () {
                 url: 'http://foo.bar/file.baz'
             });
             it('should have format.type json', function () {
-                assert.equal(source.data.format.type, 'json');
+                chai_1.assert.equal(source.data.format.type, 'json');
             });
         });
         describe('with no data specified', function () {
             var source = parse(undefined);
             it('should provide placeholder source data', function () {
-                assert.equal(source.dataName, 'source');
+                chai_1.assert.equal(source.dataName, 'source');
             });
         });
         describe('with named data source provided', function () {
             var source = parse({ name: 'foo' });
             it('should provide named source data', function () {
-                assert.equal(source.dataName, 'foo');
+                chai_1.assert.equal(source.dataName, 'foo');
             });
         });
         describe('data format', function () {
@@ -67,7 +69,7 @@ describe('compile/data/source', function () {
                         url: 'http://foo.bar',
                         format: { type: 'json', property: 'baz' }
                     });
-                    assert.equal(source.data.format.property, 'baz');
+                    chai_1.assert.equal(source.data.format.property, 'baz');
                 });
             });
             describe('topojson', function () {
@@ -77,10 +79,10 @@ describe('compile/data/source', function () {
                         format: { type: 'topojson', feature: 'baz' }
                     });
                     it('should have format.type topojson', function () {
-                        assert.equal(source.data.format.type, 'topojson');
+                        chai_1.assert.equal(source.data.format.type, 'topojson');
                     });
                     it('should have format.feature baz', function () {
-                        assert.equal(source.data.format.feature, 'baz');
+                        chai_1.assert.equal(source.data.format.feature, 'baz');
                     });
                 });
                 describe('mesh property is specified', function () {
@@ -89,10 +91,10 @@ describe('compile/data/source', function () {
                         format: { type: 'topojson', mesh: 'baz' }
                     });
                     it('should have format.type topojson', function () {
-                        assert.equal(source.data.format.type, 'topojson');
+                        chai_1.assert.equal(source.data.format.type, 'topojson');
                     });
                     it('should have format.mesh baz', function () {
-                        assert.equal(source.data.format.mesh, 'baz');
+                        chai_1.assert.equal(source.data.format.mesh, 'baz');
                     });
                 });
             });

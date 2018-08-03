@@ -1,6 +1,6 @@
-import { Config } from './../config';
-import { AnyMark } from './../mark';
-import { GenericUnitSpec, NormalizedLayerSpec } from './../spec';
+import { Config } from '../config';
+import { AnyMark } from '../mark';
+import { GenericUnitSpec, NormalizedLayerSpec } from '../spec';
 import { BoxPlot, BoxPlotConfigMixins, BoxPlotDef } from './boxplot';
 import { ErrorBand, ErrorBandConfigMixins, ErrorBandDef } from './errorband';
 import { ErrorBar, ErrorBarConfigMixins, ErrorBarDef } from './errorbar';

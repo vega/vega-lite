@@ -1,16 +1,19 @@
-import { stringValue } from 'vega-util';
-import { accessPathWithDatum } from '../../util';
-import { TUPLE, unitName } from './selection';
-import nearest from './transforms/nearest';
-export function signals(model, selCmpt) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var util_1 = require("../../util");
+var selection_1 = require("./selection");
+var nearest_1 = tslib_1.__importDefault(require("./transforms/nearest"));
+function signals(model, selCmpt) {
     var proj = selCmpt.project;
-    var datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+    var datum = nearest_1.default.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
     var bins = [];
     var encodings = proj
-        .map(function (p) { return stringValue(p.channel); })
+        .map(function (p) { return vega_util_1.stringValue(p.channel); })
         .filter(function (e) { return e; })
         .join(', ');
-    var fields = proj.map(function (p) { return stringValue(p.field); }).join(', ');
+    var fields = proj.map(function (p) { return vega_util_1.stringValue(p.field); }).join(', ');
     var values = proj
         .map(function (p) {
         var channel = p.channel;
@@ -18,9 +21,9 @@ export function signals(model, selCmpt) {
         // Binned fields should capture extents, for a range test against the raw field.
         return fieldDef && fieldDef.bin
             ? (bins.push(p.field),
-                "[" + accessPathWithDatum(model.vgField(channel, {}), datum) + ", " +
-                    (accessPathWithDatum(model.vgField(channel, { binSuffix: 'end' }), datum) + "]"))
-            : "" + accessPathWithDatum(p.field, datum);
+                "[" + util_1.accessPathWithDatum(model.vgField(channel, {}), datum) + ", " +
+                    (util_1.accessPathWithDatum(model.vgField(channel, { binSuffix: 'end' }), datum) + "]"))
+            : "" + util_1.accessPathWithDatum(p.field, datum);
     })
         .join(', ');
     // Only add a discrete selection to the store if a datum is present _and_
@@ -32,15 +35,15 @@ export function signals(model, selCmpt) {
     // be cleared on the second click).
     return [
         {
-            name: selCmpt.name + TUPLE,
+            name: selCmpt.name + selection_1.TUPLE,
             value: {},
             on: [
                 {
                     events: selCmpt.events,
                     update: "datum && item().mark.marktype !== 'group' ? " +
-                        ("{unit: " + unitName(model) + ", encodings: [" + encodings + "], ") +
+                        ("{unit: " + selection_1.unitName(model) + ", encodings: [" + encodings + "], ") +
                         ("fields: [" + fields + "], values: [" + values + "]") +
-                        (bins.length ? ', ' + bins.map(function (b) { return stringValue('bin_' + b) + ": 1"; }).join(', ') : '') +
+                        (bins.length ? ', ' + bins.map(function (b) { return vega_util_1.stringValue('bin_' + b) + ": 1"; }).join(', ') : '') +
                         '} : null',
                     force: true
                 }
@@ -48,14 +51,15 @@ export function signals(model, selCmpt) {
         }
     ];
 }
+exports.signals = signals;
 var multi = {
     predicate: 'vlMulti',
     scaleDomain: 'vlMultiDomain',
     signals: signals,
     modifyExpr: function (model, selCmpt) {
-        var tpl = selCmpt.name + TUPLE;
-        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'null' : "{unit: " + unitName(model) + "}");
+        var tpl = selCmpt.name + selection_1.TUPLE;
+        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'null' : "{unit: " + selection_1.unitName(model) + "}");
     }
 };
-export default multi;
+exports.default = multi;
 //# sourceMappingURL=multi.js.map

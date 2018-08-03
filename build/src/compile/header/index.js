@@ -1,20 +1,23 @@
-import * as tslib_1 from "tslib";
-import { isArray } from 'vega-util';
-import { vgField } from '../../fielddef';
-import { HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP } from '../../header';
-import { isSortField } from '../../sort';
-import { keys } from '../../util';
-import { formatSignalRef } from '../common';
-import { sortArrayIndexField } from '../data/calculate';
-export var HEADER_CHANNELS = ['row', 'column'];
-export var HEADER_TYPES = ['header', 'footer'];
-export function getHeaderType(orient) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var fielddef_1 = require("../../fielddef");
+var header_1 = require("../../header");
+var sort_1 = require("../../sort");
+var util_1 = require("../../util");
+var common_1 = require("../common");
+var calculate_1 = require("../data/calculate");
+exports.HEADER_CHANNELS = ['row', 'column'];
+exports.HEADER_TYPES = ['header', 'footer'];
+function getHeaderType(orient) {
     if (orient === 'top' || orient === 'left') {
         return 'header';
     }
     return 'footer';
 }
-export function getTitleGroup(model, channel) {
+exports.getHeaderType = getHeaderType;
+function getTitleGroup(model, channel) {
     var title = model.component.layoutHeaders[channel].title;
     var config = model.config ? model.config : undefined;
     var facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef
@@ -24,13 +27,14 @@ export function getTitleGroup(model, channel) {
         name: channel + "-title",
         type: 'group',
         role: channel + "-title",
-        title: tslib_1.__assign({ text: title, offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-title' }, getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP))
+        title: tslib_1.__assign({ text: title, offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-title' }, getHeaderProperties(config, facetFieldDef, header_1.HEADER_TITLE_PROPERTIES, header_1.HEADER_TITLE_PROPERTIES_MAP))
     };
 }
-export function getHeaderGroups(model, channel) {
+exports.getTitleGroup = getTitleGroup;
+function getHeaderGroups(model, channel) {
     var layoutHeader = model.component.layoutHeaders[channel];
     var groups = [];
-    for (var _i = 0, HEADER_TYPES_1 = HEADER_TYPES; _i < HEADER_TYPES_1.length; _i++) {
+    for (var _i = 0, HEADER_TYPES_1 = exports.HEADER_TYPES; _i < HEADER_TYPES_1.length; _i++) {
         var headerType = HEADER_TYPES_1[_i];
         if (layoutHeader[headerType]) {
             for (var _a = 0, _b = layoutHeader[headerType]; _a < _b.length; _a++) {
@@ -41,8 +45,9 @@ export function getHeaderGroups(model, channel) {
     }
     return groups;
 }
+exports.getHeaderGroups = getHeaderGroups;
 // 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
-export function labelAlign(angle) {
+function labelAlign(angle) {
     // to keep angle in [0, 360)
     angle = ((angle % 360) + 360) % 360;
     if ((angle + 90) % 180 === 0) {
@@ -57,7 +62,8 @@ export function labelAlign(angle) {
     }
     return {};
 }
-export function labelBaseline(angle) {
+exports.labelAlign = labelAlign;
+function labelBaseline(angle) {
     // to keep angle in [0, 360)
     angle = ((angle % 360) + 360) % 360;
     if (45 <= angle && angle <= 135) {
@@ -65,28 +71,29 @@ export function labelBaseline(angle) {
     }
     return { baseline: 'middle' };
 }
+exports.labelBaseline = labelBaseline;
 function getSort(facetFieldDef, channel) {
     var sort = facetFieldDef.sort;
-    if (isSortField(sort)) {
+    if (sort_1.isSortField(sort)) {
         return {
-            field: vgField(sort, { expr: 'datum' }),
+            field: fielddef_1.vgField(sort, { expr: 'datum' }),
             order: sort.order || 'ascending'
         };
     }
-    else if (isArray(sort)) {
+    else if (vega_util_1.isArray(sort)) {
         return {
-            field: sortArrayIndexField(facetFieldDef, channel, { expr: 'datum' }),
+            field: calculate_1.sortArrayIndexField(facetFieldDef, channel, { expr: 'datum' }),
             order: 'ascending'
         };
     }
     else {
         return {
-            field: vgField(facetFieldDef, { expr: 'datum' }),
+            field: fielddef_1.vgField(facetFieldDef, { expr: 'datum' }),
             order: sort || 'ascending'
         };
     }
 }
-export function getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt) {
+function getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt) {
     var _a;
     if (headerCmpt) {
         var title = null;
@@ -96,7 +103,7 @@ export function getHeaderGroup(model, channel, headerType, layoutHeader, headerC
             var format = header.format, labelAngle = header.labelAngle;
             var config = model.config ? model.config : undefined;
             var update = tslib_1.__assign({}, labelAlign(labelAngle));
-            title = tslib_1.__assign({ text: formatSignalRef(facetFieldDef, format, 'parent', model.config), offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-label' }, (labelAngle !== undefined ? { angle: labelAngle } : {}), labelBaseline(labelAngle), getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP), (keys(update).length > 0 ? { encode: { update: update } } : {}));
+            title = tslib_1.__assign({ text: common_1.formatSignalRef(facetFieldDef, format, 'parent', model.config), offset: 10 }, (channel === 'row' ? { orient: 'left' } : {}), { style: 'guide-label' }, (labelAngle !== undefined ? { angle: labelAngle } : {}), labelBaseline(labelAngle), getHeaderProperties(config, facetFieldDef, header_1.HEADER_LABEL_PROPERTIES, header_1.HEADER_LABEL_PROPERTIES_MAP), (util_1.keys(update).length > 0 ? { encode: { update: update } } : {}));
         }
         var axes = headerCmpt.axes;
         var hasAxes = axes && axes.length > 0;
@@ -120,7 +127,8 @@ export function getHeaderGroup(model, channel, headerType, layoutHeader, headerC
     }
     return null;
 }
-export function getHeaderProperties(config, facetFieldDef, properties, propertiesMap) {
+exports.getHeaderGroup = getHeaderGroup;
+function getHeaderProperties(config, facetFieldDef, properties, propertiesMap) {
     var props = {};
     for (var _i = 0, properties_1 = properties; _i < properties_1.length; _i++) {
         var prop = properties_1[_i];
@@ -137,4 +145,5 @@ export function getHeaderProperties(config, facetFieldDef, properties, propertie
     }
     return props;
 }
+exports.getHeaderProperties = getHeaderProperties;
 //# sourceMappingURL=index.js.map

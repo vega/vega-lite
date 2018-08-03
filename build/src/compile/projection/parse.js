@@ -1,13 +1,15 @@
-import * as tslib_1 from "tslib";
-import { LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE } from '../../channel';
-import { MAIN } from '../../data';
-import { PROJECTION_PROPERTIES } from '../../projection';
-import { GEOJSON } from '../../type';
-import { duplicate, every, stringify } from '../../util';
-import { isUnitModel } from '../model';
-import { ProjectionComponent } from './component';
-export function parseProjection(model) {
-    if (isUnitModel(model)) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var channel_1 = require("../../channel");
+var data_1 = require("../../data");
+var projection_1 = require("../../projection");
+var type_1 = require("../../type");
+var util_1 = require("../../util");
+var model_1 = require("../model");
+var component_1 = require("./component");
+function parseProjection(model) {
+    if (model_1.isUnitModel(model)) {
         model.component.projection = parseUnitProjection(model);
     }
     else {
@@ -18,32 +20,33 @@ export function parseProjection(model) {
         model.component.projection = parseNonUnitProjections(model);
     }
 }
+exports.parseProjection = parseProjection;
 function parseUnitProjection(model) {
     var specifiedProjection = model.specifiedProjection, config = model.config, hasProjection = model.hasProjection;
     if (hasProjection) {
-        var data_1 = [];
-        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (posssiblePair) {
+        var data_2 = [];
+        [[channel_1.LONGITUDE, channel_1.LATITUDE], [channel_1.LONGITUDE2, channel_1.LATITUDE2]].forEach(function (posssiblePair) {
             if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
-                data_1.push({
-                    signal: model.getName("geojson_" + data_1.length)
+                data_2.push({
+                    signal: model.getName("geojson_" + data_2.length)
                 });
             }
         });
-        if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
-            data_1.push({
-                signal: model.getName("geojson_" + data_1.length)
+        if (model.channelHasField(channel_1.SHAPE) && model.fieldDef(channel_1.SHAPE).type === type_1.GEOJSON) {
+            data_2.push({
+                signal: model.getName("geojson_" + data_2.length)
             });
         }
-        if (data_1.length === 0) {
+        if (data_2.length === 0) {
             // main source is geojson, so we can just use that
-            data_1.push(model.requestDataName(MAIN));
+            data_2.push(model.requestDataName(data_1.MAIN));
         }
-        return new ProjectionComponent(model.projectionName(true), tslib_1.__assign({}, (config.projection || {}), (specifiedProjection || {})), [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data_1);
+        return new component_1.ProjectionComponent(model.projectionName(true), tslib_1.__assign({}, (config.projection || {}), (specifiedProjection || {})), [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data_2);
     }
     return undefined;
 }
 function mergeIfNoConflict(first, second) {
-    var allPropertiesShared = every(PROJECTION_PROPERTIES, function (prop) {
+    var allPropertiesShared = util_1.every(projection_1.PROJECTION_PROPERTIES, function (prop) {
         // neither has the poperty
         if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
             return true;
@@ -52,20 +55,20 @@ function mergeIfNoConflict(first, second) {
         if (first.explicit.hasOwnProperty(prop) &&
             second.explicit.hasOwnProperty(prop) &&
             // some properties might be signals or objects and require hashing for comparison
-            stringify(first.get(prop)) === stringify(second.get(prop))) {
+            util_1.stringify(first.get(prop)) === util_1.stringify(second.get(prop))) {
             return true;
         }
         return false;
     });
-    var size = stringify(first.size) === stringify(second.size);
+    var size = util_1.stringify(first.size) === util_1.stringify(second.size);
     if (size) {
         if (allPropertiesShared) {
             return first;
         }
-        else if (stringify(first.explicit) === stringify({})) {
+        else if (util_1.stringify(first.explicit) === util_1.stringify({})) {
             return second;
         }
-        else if (stringify(second.explicit) === stringify({})) {
+        else if (util_1.stringify(second.explicit) === util_1.stringify({})) {
             return first;
         }
     }
@@ -77,7 +80,7 @@ function parseNonUnitProjections(model) {
         return undefined;
     }
     var nonUnitProjection;
-    var mergable = every(model.children, function (child) {
+    var mergable = util_1.every(model.children, function (child) {
         parseProjection(child);
         var projection = child.component.projection;
         if (!projection) {
@@ -101,7 +104,7 @@ function parseNonUnitProjections(model) {
     if (nonUnitProjection && mergable) {
         // so we can elevate it to the layer level
         var name_1 = model.projectionName(true);
-        var modelProjection_1 = new ProjectionComponent(name_1, nonUnitProjection.specifiedProjection, nonUnitProjection.size, duplicate(nonUnitProjection.data));
+        var modelProjection_1 = new component_1.ProjectionComponent(name_1, nonUnitProjection.specifiedProjection, nonUnitProjection.size, util_1.duplicate(nonUnitProjection.data));
         // rename and assign all others as merged
         model.children.forEach(function (child) {
             if (child.component.projection) {

@@ -1,11 +1,14 @@
+"use strict";
 /* tslint:disable quotemark */
-import { assert } from 'chai';
-import { selector as parseSelector } from 'vega-event-selector';
-import interval from '../../../src/compile/selection/interval';
-import * as selection from '../../../src/compile/selection/selection';
-import { parseUnitModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var chai_1 = require("chai");
+var vega_event_selector_1 = require("vega-event-selector");
+var interval_1 = tslib_1.__importDefault(require("../../../src/compile/selection/interval"));
+var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
+var util_1 = require("../../util");
 describe('Interval Selections', function () {
-    var model = parseUnitModel({
+    var model = util_1.parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -42,18 +45,18 @@ describe('Interval Selections', function () {
     }));
     describe('Tuple Signals', function () {
         it('builds projection signals', function () {
-            var oneSg = interval.signals(model, selCmpts['one']);
-            assert.includeDeepMembers(oneSg, [
+            var oneSg = interval_1.default.signals(model, selCmpts['one']);
+            chai_1.assert.includeDeepMembers(oneSg, [
                 {
                     name: 'one_x',
                     value: [],
                     on: [
                         {
-                            events: parseSelector('mousedown', 'scope')[0],
+                            events: vega_event_selector_1.selector('mousedown', 'scope')[0],
                             update: '[x(unit), x(unit)]'
                         },
                         {
-                            events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                            events: vega_event_selector_1.selector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
                             update: '[one_x[0], clamp(x(unit), 0, width)]'
                         },
                         {
@@ -76,33 +79,33 @@ describe('Interval Selections', function () {
                     update: '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
                 }
             ]);
-            var twoSg = interval.signals(model, selCmpts['two']);
-            assert.includeDeepMembers(twoSg, [
+            var twoSg = interval_1.default.signals(model, selCmpts['two']);
+            chai_1.assert.includeDeepMembers(twoSg, [
                 {
                     name: 'two_Miles_per_Gallon',
                     on: []
                 }
             ]);
-            var threeSg = interval.signals(model, selCmpts['thr_ee']);
-            assert.includeDeepMembers(threeSg, [
+            var threeSg = interval_1.default.signals(model, selCmpts['thr_ee']);
+            chai_1.assert.includeDeepMembers(threeSg, [
                 {
                     name: 'thr_ee_x',
                     value: [],
                     on: [
                         {
-                            events: parseSelector('mousedown', 'scope')[0],
+                            events: vega_event_selector_1.selector('mousedown', 'scope')[0],
                             update: '[x(unit), x(unit)]'
                         },
                         {
-                            events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                            events: vega_event_selector_1.selector('[mousedown, mouseup] > mousemove', 'scope')[0],
                             update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
                         },
                         {
-                            events: parseSelector('keydown', 'scope')[0],
+                            events: vega_event_selector_1.selector('keydown', 'scope')[0],
                             update: '[x(unit), x(unit)]'
                         },
                         {
-                            events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
+                            events: vega_event_selector_1.selector('[keydown, keyup] > keypress', 'scope')[0],
                             update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
                         },
                         {
@@ -125,19 +128,19 @@ describe('Interval Selections', function () {
                     value: [],
                     on: [
                         {
-                            events: parseSelector('mousedown', 'scope')[0],
+                            events: vega_event_selector_1.selector('mousedown', 'scope')[0],
                             update: '[y(unit), y(unit)]'
                         },
                         {
-                            events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                            events: vega_event_selector_1.selector('[mousedown, mouseup] > mousemove', 'scope')[0],
                             update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
                         },
                         {
-                            events: parseSelector('keydown', 'scope')[0],
+                            events: vega_event_selector_1.selector('keydown', 'scope')[0],
                             update: '[y(unit), y(unit)]'
                         },
                         {
-                            events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
+                            events: vega_event_selector_1.selector('[keydown, keyup] > keypress', 'scope')[0],
                             update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
                         },
                         {
@@ -162,8 +165,8 @@ describe('Interval Selections', function () {
             ]);
         });
         it('builds trigger signals', function () {
-            var oneSg = interval.signals(model, selCmpts['one']);
-            assert.includeDeepMembers(oneSg, [
+            var oneSg = interval_1.default.signals(model, selCmpts['one']);
+            chai_1.assert.includeDeepMembers(oneSg, [
                 {
                     name: 'one_tuple',
                     on: [
@@ -174,8 +177,8 @@ describe('Interval Selections', function () {
                     ]
                 }
             ]);
-            var twoSg = interval.signals(model, selCmpts['two']);
-            assert.includeDeepMembers(twoSg, [
+            var twoSg = interval_1.default.signals(model, selCmpts['two']);
+            chai_1.assert.includeDeepMembers(twoSg, [
                 {
                     name: 'two_tuple',
                     on: [
@@ -186,8 +189,8 @@ describe('Interval Selections', function () {
                     ]
                 }
             ]);
-            var threeSg = interval.signals(model, selCmpts['thr_ee']);
-            assert.includeDeepMembers(threeSg, [
+            var threeSg = interval_1.default.signals(model, selCmpts['thr_ee']);
+            chai_1.assert.includeDeepMembers(threeSg, [
                 {
                     name: 'thr_ee_tuple',
                     on: [
@@ -200,7 +203,7 @@ describe('Interval Selections', function () {
             ]);
         });
         it('namespaces signals when encoding/fields collide', function () {
-            var model2 = parseUnitModel({
+            var model2 = util_1.parseUnitModel({
                 mark: 'circle',
                 encoding: {
                     x: { field: 'x', type: 'quantitative' },
@@ -215,20 +218,20 @@ describe('Interval Selections', function () {
                     zoom: false
                 }
             }));
-            var sg = interval.signals(model, selCmpts2['one']);
-            assert.equal(sg[0].name, 'one_x');
-            assert.equal(sg[1].name, 'one_x_1');
+            var sg = interval_1.default.signals(model, selCmpts2['one']);
+            chai_1.assert.equal(sg[0].name, 'one_x');
+            chai_1.assert.equal(sg[1].name, 'one_x_1');
         });
     });
     it('builds modify signals', function () {
-        var oneExpr = interval.modifyExpr(model, selCmpts['one']);
-        assert.equal(oneExpr, 'one_tuple, true');
-        var twoExpr = interval.modifyExpr(model, selCmpts['two']);
-        assert.equal(twoExpr, 'two_tuple, true');
-        var threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
-        assert.equal(threeExpr, 'thr_ee_tuple, {unit: ""}');
+        var oneExpr = interval_1.default.modifyExpr(model, selCmpts['one']);
+        chai_1.assert.equal(oneExpr, 'one_tuple, true');
+        var twoExpr = interval_1.default.modifyExpr(model, selCmpts['two']);
+        chai_1.assert.equal(twoExpr, 'two_tuple, true');
+        var threeExpr = interval_1.default.modifyExpr(model, selCmpts['thr_ee']);
+        chai_1.assert.equal(threeExpr, 'thr_ee_tuple, {unit: ""}');
         var signals = selection.assembleUnitSelectionSignals(model, []);
-        assert.includeDeepMembers(signals, [
+        chai_1.assert.includeDeepMembers(signals, [
             {
                 name: 'one_modify',
                 on: [
@@ -260,7 +263,7 @@ describe('Interval Selections', function () {
     });
     it('builds brush mark', function () {
         var marks = [{ hello: 'world' }];
-        assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
+        chai_1.assert.sameDeepMembers(interval_1.default.marks(model, selCmpts['one'], marks), [
             {
                 name: 'one_brush_bg',
                 type: 'rect',
@@ -374,8 +377,8 @@ describe('Interval Selections', function () {
             }
         ]);
         // Scale-bound interval selections should not add a brush mark.
-        assert.sameDeepMembers(interval.marks(model, selCmpts['two'], marks), marks);
-        assert.sameDeepMembers(interval.marks(model, selCmpts['thr_ee'], marks), [
+        chai_1.assert.sameDeepMembers(interval_1.default.marks(model, selCmpts['two'], marks), marks);
+        chai_1.assert.sameDeepMembers(interval_1.default.marks(model, selCmpts['thr_ee'], marks), [
             {
                 name: 'thr_ee_brush_bg',
                 type: 'rect',

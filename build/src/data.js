@@ -1,12 +1,17 @@
-export function isUrlData(data) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function isUrlData(data) {
     return !!data['url'];
 }
-export function isInlineData(data) {
+exports.isUrlData = isUrlData;
+function isInlineData(data) {
     return !!data['values'];
 }
-export function isNamedData(data) {
+exports.isInlineData = isInlineData;
+function isNamedData(data) {
     return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
-export var MAIN = 'main';
-export var RAW = 'raw';
+exports.isNamedData = isNamedData;
+exports.MAIN = 'main';
+exports.RAW = 'raw';
 //# sourceMappingURL=data.js.map

@@ -1,6 +1,8 @@
-import * as tslib_1 from "tslib";
-import { duplicate } from '../../util';
-import { DataFlowNode } from './dataflow';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var util_1 = require("../../util");
+var dataflow_1 = require("./dataflow");
 /**
  * A class for flatten transform nodes
  */
@@ -14,13 +16,16 @@ var FoldTransformNode = /** @class */ (function (_super) {
         return _this;
     }
     FoldTransformNode.prototype.clone = function () {
-        return new FoldTransformNode(this.parent, duplicate(this.transform));
+        return new FoldTransformNode(this.parent, util_1.duplicate(this.transform));
     };
     FoldTransformNode.prototype.producedFields = function () {
         return this.transform.as.reduce(function (result, item) {
             result[item] = true;
             return result;
         }, {});
+    };
+    FoldTransformNode.prototype.hash = function () {
+        return "FoldTransform " + util_1.hash(this.transform);
     };
     FoldTransformNode.prototype.assemble = function () {
         var _a = this.transform, fold = _a.fold, as = _a.as;
@@ -32,6 +37,6 @@ var FoldTransformNode = /** @class */ (function (_super) {
         return result;
     };
     return FoldTransformNode;
-}(DataFlowNode));
-export { FoldTransformNode };
+}(dataflow_1.TransformNode));
+exports.FoldTransformNode = FoldTransformNode;
 //# sourceMappingURL=fold.js.map

@@ -1,11 +1,14 @@
+"use strict";
 /* tslint:disable quotemark */
-import { assert } from 'chai';
-import { selector as parseSelector } from 'vega-event-selector';
-import * as selection from '../../../src/compile/selection/selection';
-import translate from '../../../src/compile/selection/transforms/translate';
-import { parseUnitModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var chai_1 = require("chai");
+var vega_event_selector_1 = require("vega-event-selector");
+var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
+var translate_1 = tslib_1.__importDefault(require("../../../src/compile/selection/transforms/translate"));
+var util_1 = require("../../util");
 function getModel(xscale, yscale) {
-    var model = parseUnitModel({
+    var model = util_1.parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative', scale: { type: xscale || 'linear' } },
@@ -46,26 +49,26 @@ function getModel(xscale, yscale) {
 describe('Translate Selection Transform', function () {
     it('identifies transform invocation', function () {
         var selCmpts = getModel().selCmpts;
-        assert.isNotTrue(translate.has(selCmpts['one']));
-        assert.isNotTrue(translate.has(selCmpts['two']));
-        assert.isNotTrue(translate.has(selCmpts['three']));
-        assert.isNotFalse(translate.has(selCmpts['four']));
-        assert.isNotFalse(translate.has(selCmpts['five']));
-        assert.isNotFalse(translate.has(selCmpts['six']));
-        assert.isNotTrue(translate.has(selCmpts['seven']));
+        chai_1.assert.isNotTrue(translate_1.default.has(selCmpts['one']));
+        chai_1.assert.isNotTrue(translate_1.default.has(selCmpts['two']));
+        chai_1.assert.isNotTrue(translate_1.default.has(selCmpts['three']));
+        chai_1.assert.isNotFalse(translate_1.default.has(selCmpts['four']));
+        chai_1.assert.isNotFalse(translate_1.default.has(selCmpts['five']));
+        chai_1.assert.isNotFalse(translate_1.default.has(selCmpts['six']));
+        chai_1.assert.isNotTrue(translate_1.default.has(selCmpts['seven']));
     });
     describe('Anchor/Delta signals', function () {
         var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
         it('builds them for default invocation', function () {
             model.component.selection = { four: selCmpts['four'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            chai_1.assert.includeDeepMembers(signals, [
                 {
                     name: 'four_translate_anchor',
                     value: {},
                     on: [
                         {
-                            events: parseSelector('@four_brush:mousedown', 'scope'),
+                            events: vega_event_selector_1.selector('@four_brush:mousedown', 'scope'),
                             update: '{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}'
                         }
                     ]
@@ -75,7 +78,7 @@ describe('Translate Selection Transform', function () {
                     value: {},
                     on: [
                         {
-                            events: parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                            events: vega_event_selector_1.selector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
                             update: '{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}'
                         }
                     ]
@@ -85,13 +88,13 @@ describe('Translate Selection Transform', function () {
         it('builds them for custom events', function () {
             model.component.selection = { five: selCmpts['five'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            chai_1.assert.includeDeepMembers(signals, [
                 {
                     name: 'five_translate_anchor',
                     value: {},
                     on: [
                         {
-                            events: parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
+                            events: vega_event_selector_1.selector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
                             update: '{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}'
                         }
                     ]
@@ -101,7 +104,7 @@ describe('Translate Selection Transform', function () {
                     value: {},
                     on: [
                         {
-                            events: parseSelector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
+                            events: vega_event_selector_1.selector('[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove', 'scope'),
                             update: '{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}'
                         }
                     ]
@@ -111,13 +114,13 @@ describe('Translate Selection Transform', function () {
         it('builds them for scale-bound intervals', function () {
             model.component.selection = { six: selCmpts['six'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            chai_1.assert.includeDeepMembers(signals, [
                 {
                     name: 'six_translate_anchor',
                     value: {},
                     on: [
                         {
-                            events: parseSelector('mousedown', 'scope'),
+                            events: vega_event_selector_1.selector('mousedown', 'scope'),
                             update: '{x: x(unit), y: y(unit), extent_x: domain("x"), extent_y: domain("y")}'
                         }
                     ]
@@ -127,7 +130,7 @@ describe('Translate Selection Transform', function () {
                     value: {},
                     on: [
                         {
-                            events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                            events: vega_event_selector_1.selector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
                             update: '{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}'
                         }
                     ]
@@ -140,13 +143,13 @@ describe('Translate Selection Transform', function () {
             var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
             model.component.selection = { four: selCmpts['four'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
                 {
                     events: { signal: 'four_translate_delta' },
                     update: 'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
                 }
             ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
                 {
                     events: { signal: 'four_translate_delta' },
                     update: 'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
@@ -155,13 +158,13 @@ describe('Translate Selection Transform', function () {
             var model2 = getModel('log', 'pow').model;
             model2.component.selection = { four: selCmpts['four'] };
             signals = selection.assembleUnitSelectionSignals(model2, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
                 {
                     events: { signal: 'four_translate_delta' },
                     update: 'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
                 }
             ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
                 {
                     events: { signal: 'four_translate_delta' },
                     update: 'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
@@ -172,13 +175,13 @@ describe('Translate Selection Transform', function () {
             var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
             model.component.selection = { six: selCmpts['six'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
                 {
                     events: { signal: 'six_translate_delta' },
                     update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
                 }
             ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
                 {
                     events: { signal: 'six_translate_delta' },
                     update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
@@ -189,13 +192,13 @@ describe('Translate Selection Transform', function () {
             var _a = getModel('log', 'pow'), model = _a.model, selCmpts = _a.selCmpts;
             model.component.selection = { six: selCmpts['six'] };
             var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
                 {
                     events: { signal: 'six_translate_delta' },
                     update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
                 }
             ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
+            chai_1.assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
                 {
                     events: { signal: 'six_translate_delta' },
                     update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 1)'

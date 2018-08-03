@@ -1,10 +1,12 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { assembleScalesForModel } from '../../../src/compile/scale/assemble';
-import { parseConcatModel, parseRepeatModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var assemble_1 = require("../../../src/compile/scale/assemble");
+var util_1 = require("../../util");
 describe('Selection + Scales', function () {
     it('assembles domainRaw from selection parameter', function () {
-        var model = parseConcatModel({
+        var model = util_1.parseConcatModel({
             vconcat: [
                 {
                     mark: 'area',
@@ -55,26 +57,26 @@ describe('Selection + Scales', function () {
         });
         model.parseScale();
         model.parseSelection();
-        var scales = assembleScalesForModel(model.children[1]);
+        var scales = assemble_1.assembleScalesForModel(model.children[1]);
         var xscale = scales[0];
         var yscale = scales[1];
         var cscale = scales[2];
         var oscale = scales[3];
-        assert.isObject(xscale.domain);
-        assert.property(xscale, 'domainRaw');
-        assert.propertyVal(xscale.domainRaw, 'signal', 'vlIntervalDomain("brush_store", "x", null)');
-        assert.isObject(yscale.domain);
-        assert.property(yscale, 'domainRaw');
-        assert.deepPropertyVal(yscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
-        assert.isObject(cscale.domain);
-        assert.property(cscale, 'domainRaw');
-        assert.propertyVal(cscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
-        assert.isObject(oscale.domain);
-        assert.property(oscale, 'domainRaw');
-        assert.propertyVal(oscale.domainRaw, 'signal', 'null');
+        chai_1.assert.isObject(xscale.domain);
+        chai_1.assert.property(xscale, 'domainRaw');
+        chai_1.assert.propertyVal(xscale.domainRaw, 'signal', 'vlIntervalDomain("brush_store", "x", null)');
+        chai_1.assert.isObject(yscale.domain);
+        chai_1.assert.property(yscale, 'domainRaw');
+        chai_1.assert.deepPropertyVal(yscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
+        chai_1.assert.isObject(cscale.domain);
+        chai_1.assert.property(cscale, 'domainRaw');
+        chai_1.assert.propertyVal(cscale.domainRaw, 'signal', 'vlMultiDomain("brush2_store", null, "price", "intersect")');
+        chai_1.assert.isObject(oscale.domain);
+        chai_1.assert.property(oscale, 'domainRaw');
+        chai_1.assert.propertyVal(oscale.domainRaw, 'signal', 'null');
     });
     it('should bind both scales in diagonal repeated views', function () {
-        var model = parseRepeatModel({
+        var model = util_1.parseRepeatModel({
             repeat: {
                 row: ['Horsepower', 'Acceleration'],
                 column: ['Miles_per_Gallon', 'Acceleration']
@@ -98,15 +100,15 @@ describe('Selection + Scales', function () {
         });
         model.parseScale();
         model.parseSelection();
-        var scales = assembleScalesForModel(model.children[3]);
-        assert.isTrue(scales.length === 2);
-        assert.property(scales[0], 'domainRaw');
-        assert.property(scales[1], 'domainRaw');
-        assert.propertyVal(scales[0].domainRaw, 'signal', 'grid_Acceleration');
-        assert.propertyVal(scales[1].domainRaw, 'signal', 'grid_Acceleration');
+        var scales = assemble_1.assembleScalesForModel(model.children[3]);
+        chai_1.assert.isTrue(scales.length === 2);
+        chai_1.assert.property(scales[0], 'domainRaw');
+        chai_1.assert.property(scales[1], 'domainRaw');
+        chai_1.assert.propertyVal(scales[0].domainRaw, 'signal', 'grid_Acceleration');
+        chai_1.assert.propertyVal(scales[1].domainRaw, 'signal', 'grid_Acceleration');
     });
     it('should merge domainRaw for layered views', function () {
-        var model = parseConcatModel({
+        var model = util_1.parseConcatModel({
             data: { url: 'data/sp500.csv' },
             vconcat: [
                 {
@@ -138,9 +140,9 @@ describe('Selection + Scales', function () {
         });
         model.parseScale();
         model.parseSelection();
-        var scales = assembleScalesForModel(model.children[0]);
-        assert.property(scales[0], 'domainRaw');
-        assert.propertyVal(scales[0].domainRaw, 'signal', 'vlIntervalDomain("brush_store", null, "date")');
+        var scales = assemble_1.assembleScalesForModel(model.children[0]);
+        chai_1.assert.property(scales[0], 'domainRaw');
+        chai_1.assert.propertyVal(scales[0].domainRaw, 'signal', 'vlIntervalDomain("brush_store", null, "date")');
     });
 });
 //# sourceMappingURL=scales.test.js.map

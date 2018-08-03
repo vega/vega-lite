@@ -1,36 +1,39 @@
-import * as tslib_1 from "tslib";
-import { isUrlData } from '../../data';
-import { vals } from '../../util';
-import { AggregateNode } from './aggregate';
-import { BinNode } from './bin';
-import { CalculateNode } from './calculate';
-import { OutputNode } from './dataflow';
-import { FacetNode } from './facet';
-import { FilterNode } from './filter';
-import { FlattenTransformNode } from './flatten';
-import { FoldTransformNode } from './fold';
-import { ParseNode } from './formatparse';
-import { GeoJSONNode } from './geojson';
-import { GeoPointNode } from './geopoint';
-import { IdentifierNode } from './identifier';
-import { ImputeNode } from './impute';
-import { LookupNode } from './lookup';
-import { SampleTransformNode } from './sample';
-import { SourceNode } from './source';
-import { StackNode } from './stack';
-import { TimeUnitNode } from './timeunit';
-import { WindowTransformNode } from './window';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var data_1 = require("../../data");
+var util_1 = require("../../util");
+var aggregate_1 = require("./aggregate");
+var bin_1 = require("./bin");
+var calculate_1 = require("./calculate");
+var dataflow_1 = require("./dataflow");
+var facet_1 = require("./facet");
+var filter_1 = require("./filter");
+var flatten_1 = require("./flatten");
+var fold_1 = require("./fold");
+var formatparse_1 = require("./formatparse");
+var geojson_1 = require("./geojson");
+var geopoint_1 = require("./geopoint");
+var identifier_1 = require("./identifier");
+var impute_1 = require("./impute");
+var lookup_1 = require("./lookup");
+var sample_1 = require("./sample");
+var source_1 = require("./source");
+var stack_1 = require("./stack");
+var timeunit_1 = require("./timeunit");
+var window_1 = require("./window");
 /**
  * Print debug information for dataflow tree.
  */
 // tslint:disable-next-line
-export function debug(node) {
+function debug(node) {
     console.log("" + node.constructor.name + (node.debugName ? " (" + node.debugName + ")" : '') + " -> " + node.children.map(function (c) {
         return "" + c.constructor.name + (c.debugName ? " (" + c.debugName + ")" : '');
     }));
     console.log(node);
     node.children.forEach(debug);
 }
+exports.debug = debug;
 function makeWalkTree(data) {
     // to name datasources
     var datasetIndex = 0;
@@ -38,10 +41,10 @@ function makeWalkTree(data) {
      * Recursively walk down the tree.
      */
     function walkTree(node, dataSource) {
-        if (node instanceof SourceNode) {
+        if (node instanceof source_1.SourceNode) {
             // If the source is a named data source or a data source with values, we need
             // to put it in a different data source. Otherwise, Vega may override the data.
-            if (!isUrlData(node.data)) {
+            if (!data_1.isUrlData(node.data)) {
                 data.push(dataSource);
                 var newData = {
                     name: null,
@@ -51,8 +54,8 @@ function makeWalkTree(data) {
                 dataSource = newData;
             }
         }
-        if (node instanceof ParseNode) {
-            if (node.parent instanceof SourceNode && !dataSource.source) {
+        if (node instanceof formatparse_1.ParseNode) {
+            if (node.parent instanceof source_1.SourceNode && !dataSource.source) {
                 // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
                 dataSource.format = tslib_1.__assign({}, (dataSource.format || {}), { parse: node.assembleFormatParse() });
                 // add calculates for all nested fields
@@ -63,7 +66,7 @@ function makeWalkTree(data) {
                 dataSource.transform = dataSource.transform.concat(node.assembleTransforms());
             }
         }
-        if (node instanceof FacetNode) {
+        if (node instanceof facet_1.FacetNode) {
             if (!dataSource.name) {
                 dataSource.name = "data_" + datasetIndex++;
             }
@@ -78,35 +81,35 @@ function makeWalkTree(data) {
             // break here because the rest of the tree has to be taken care of by the facet.
             return;
         }
-        if (node instanceof FilterNode ||
-            node instanceof CalculateNode ||
-            node instanceof GeoPointNode ||
-            node instanceof GeoJSONNode ||
-            node instanceof AggregateNode ||
-            node instanceof LookupNode ||
-            node instanceof WindowTransformNode ||
-            node instanceof FoldTransformNode ||
-            node instanceof FlattenTransformNode ||
-            node instanceof IdentifierNode ||
-            node instanceof SampleTransformNode) {
+        if (node instanceof filter_1.FilterNode ||
+            node instanceof calculate_1.CalculateNode ||
+            node instanceof geopoint_1.GeoPointNode ||
+            node instanceof geojson_1.GeoJSONNode ||
+            node instanceof aggregate_1.AggregateNode ||
+            node instanceof lookup_1.LookupNode ||
+            node instanceof window_1.WindowTransformNode ||
+            node instanceof fold_1.FoldTransformNode ||
+            node instanceof flatten_1.FlattenTransformNode ||
+            node instanceof identifier_1.IdentifierNode ||
+            node instanceof sample_1.SampleTransformNode) {
             dataSource.transform.push(node.assemble());
         }
-        if (node instanceof BinNode ||
-            node instanceof TimeUnitNode ||
-            node instanceof ImputeNode ||
-            node instanceof StackNode) {
+        if (node instanceof bin_1.BinNode ||
+            node instanceof timeunit_1.TimeUnitNode ||
+            node instanceof impute_1.ImputeNode ||
+            node instanceof stack_1.StackNode) {
             dataSource.transform = dataSource.transform.concat(node.assemble());
         }
-        if (node instanceof AggregateNode) {
+        if (node instanceof aggregate_1.AggregateNode) {
             if (!dataSource.name) {
                 dataSource.name = "data_" + datasetIndex++;
             }
         }
-        if (node instanceof OutputNode) {
+        if (node instanceof dataflow_1.OutputNode) {
             if (dataSource.source && dataSource.transform.length === 0) {
                 node.setSource(dataSource.source);
             }
-            else if (node.parent instanceof OutputNode) {
+            else if (node.parent instanceof dataflow_1.OutputNode) {
                 // Note that an output node may be required but we still do not assemble a
                 // separate data source for it.
                 node.setSource(dataSource.name);
@@ -133,7 +136,7 @@ function makeWalkTree(data) {
         switch (node.numChildren()) {
             case 0:
                 // done
-                if (node instanceof OutputNode && (!dataSource.source || dataSource.transform.length > 0)) {
+                if (node instanceof dataflow_1.OutputNode && (!dataSource.source || dataSource.transform.length > 0)) {
                     // do not push empty datasources that are simply references
                     data.push(dataSource);
                 }
@@ -145,17 +148,17 @@ function makeWalkTree(data) {
                 if (!dataSource.name) {
                     dataSource.name = "data_" + datasetIndex++;
                 }
-                var source_1 = dataSource.name;
+                var source_2 = dataSource.name;
                 if (!dataSource.source || dataSource.transform.length > 0) {
                     data.push(dataSource);
                 }
                 else {
-                    source_1 = dataSource.source;
+                    source_2 = dataSource.source;
                 }
                 node.children.forEach(function (child) {
                     var newData = {
                         name: null,
-                        source: source_1,
+                        source: source_2,
                         transform: []
                     };
                     walkTree(child, newData);
@@ -168,7 +171,7 @@ function makeWalkTree(data) {
 /**
  * Assemble data sources that are derived from faceted data.
  */
-export function assembleFacetData(root) {
+function assembleFacetData(root) {
     var data = [];
     var walkTree = makeWalkTree(data);
     root.children.forEach(function (child) {
@@ -180,6 +183,7 @@ export function assembleFacetData(root) {
     });
     return data;
 }
+exports.assembleFacetData = assembleFacetData;
 /**
  * Create Vega Data array from a given compiled model and append all of them to the given array
  *
@@ -187,8 +191,8 @@ export function assembleFacetData(root) {
  * @param  data array
  * @return modified data array
  */
-export function assembleRootData(dataComponent, datasets) {
-    var roots = vals(dataComponent.sources);
+function assembleRootData(dataComponent, datasets) {
+    var roots = util_1.vals(dataComponent.sources);
     var data = [];
     // roots.forEach(debug);
     var walkTree = makeWalkTree(data);
@@ -216,8 +220,8 @@ export function assembleRootData(dataComponent, datasets) {
         }
     }
     // now fix the from references in lookup transforms
-    for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
-        var d = data_1[_i];
+    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+        var d = data_2[_i];
         for (var _a = 0, _b = d.transform || []; _a < _b.length; _a++) {
             var t = _b[_a];
             if (t.type === 'lookup') {
@@ -226,12 +230,13 @@ export function assembleRootData(dataComponent, datasets) {
         }
     }
     // inline values for datasets that are in the datastore
-    for (var _c = 0, data_2 = data; _c < data_2.length; _c++) {
-        var d = data_2[_c];
+    for (var _c = 0, data_3 = data; _c < data_3.length; _c++) {
+        var d = data_3[_c];
         if (d.name in datasets) {
             d.values = datasets[d.name];
         }
     }
     return data;
 }
+exports.assembleRootData = assembleRootData;
 //# sourceMappingURL=assemble.js.map

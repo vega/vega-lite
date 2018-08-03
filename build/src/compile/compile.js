@@ -1,13 +1,15 @@
-import * as tslib_1 from "tslib";
-import { initConfig, stripAndRedirectConfig } from '../config';
-import * as vlFieldDef from '../fielddef';
-import * as log from '../log';
-import { isLayerSpec, isUnitSpec, normalize } from '../spec';
-import { extractTopLevelProperties, normalizeAutoSize } from '../toplevelprops';
-import { keys, mergeDeep } from '../util';
-import { buildModel } from './buildmodel';
-import { assembleRootData } from './data/assemble';
-import { optimizeDataflow } from './data/optimize';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var config_1 = require("../config");
+var vlFieldDef = tslib_1.__importStar(require("../fielddef"));
+var log = tslib_1.__importStar(require("../log"));
+var spec_1 = require("../spec");
+var toplevelprops_1 = require("../toplevelprops");
+var util_1 = require("../util");
+var buildmodel_1 = require("./buildmodel");
+var assemble_1 = require("./data/assemble");
+var optimize_1 = require("./data/optimize");
 /**
  * Vega-Lite's main function, for compiling Vega-lite spec into Vega spec.
  *
@@ -35,7 +37,7 @@ import { optimizeDataflow } from './data/optimize';
  *     v
  * Vega spec
  */
-export function compile(inputSpec, opt) {
+function compile(inputSpec, opt) {
     if (opt === void 0) { opt = {}; }
     // 0. Augment opt with default opts
     if (opt.logger) {
@@ -48,16 +50,16 @@ export function compile(inputSpec, opt) {
     }
     try {
         // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
-        var config = initConfig(mergeDeep({}, opt.config, inputSpec.config));
+        var config = config_1.initConfig(util_1.mergeDeep({}, opt.config, inputSpec.config));
         // 2. Normalize: Convert input spec -> normalized spec
         // - Decompose all extended unit specs into composition of unit spec.  For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
-        var spec = normalize(inputSpec, config);
+        var spec = spec_1.normalize(inputSpec, config);
         // - Normalize autosize to be a autosize properties object.
-        var autosize = normalizeAutoSize(inputSpec.autosize, config.autosize, isLayerSpec(spec) || isUnitSpec(spec));
+        var autosize = toplevelprops_1.normalizeAutoSize(inputSpec.autosize, config.autosize, spec_1.isLayerSpec(spec) || spec_1.isUnitSpec(spec));
         // 3. Build Model: normalized spec -> Model (a tree structure)
         // This phases instantiates the models with default config by doing a top-down traversal. This allows us to pass properties that child models derive from their parents via their constructors.
         // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, RepeatModel, ConcatModel) for different types of models.
-        var model = buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
+        var model = buildmodel_1.buildModel(spec, null, '', undefined, undefined, config, autosize.type === 'fit');
         // 4 Parse: Model --> Model with components
         // Note that components = intermediate representations that are equivalent to Vega specs.
         // We need these intermediate representation because we need to merge many visualizaiton "components" like projections, scales, axes, and legends.
@@ -70,7 +72,7 @@ export function compile(inputSpec, opt) {
         // Please see inside model.parse() for order of different components parsed.
         model.parse();
         // 5. Optimize the dataflow.  This will modify the data component of the model.
-        optimizeDataflow(model.component.data);
+        optimize_1.optimizeDataflow(model.component.data);
         // 6. Assemble: convert model components --> Vega Spec.
         return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
     }
@@ -85,8 +87,9 @@ export function compile(inputSpec, opt) {
         }
     }
 }
+exports.compile = compile;
 function getTopLevelProperties(topLevelSpec, config, autosize) {
-    return tslib_1.__assign({ autosize: keys(autosize).length === 1 && autosize.type ? autosize.type : autosize }, extractTopLevelProperties(config), extractTopLevelProperties(topLevelSpec));
+    return tslib_1.__assign({ autosize: util_1.keys(autosize).length === 1 && autosize.type ? autosize.type : autosize }, toplevelprops_1.extractTopLevelProperties(config), toplevelprops_1.extractTopLevelProperties(topLevelSpec));
 }
 /*
  * Assemble the top-level model.
@@ -97,10 +100,10 @@ function getTopLevelProperties(topLevelSpec, config, autosize) {
 function assembleTopLevelModel(model, topLevelProperties) {
     // TODO: change type to become VgSpec
     // Config with Vega-Lite only config removed.
-    var vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
+    var vgConfig = model.config ? config_1.stripAndRedirectConfig(model.config) : undefined;
     var data = [].concat(model.assembleSelectionData([]), 
     // only assemble data in the root
-    assembleRootData(model.component.data, topLevelProperties.datasets || {}));
+    assemble_1.assembleRootData(model.component.data, topLevelProperties.datasets || {}));
     delete topLevelProperties.datasets;
     var projections = model.assembleProjections();
     var title = model.assembleTitle();

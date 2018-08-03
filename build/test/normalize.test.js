@@ -1,8 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import * as log from '../src/log';
-import { normalize } from '../src/spec';
-import { defaultConfig, initConfig } from './../src/config';
+var chai_1 = require("chai");
+var config_1 = require("../src/config");
+var log = tslib_1.__importStar(require("../src/log"));
+var spec_1 = require("../src/spec");
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 describe('normalize()', function () {
     describe('normalizeFacetedUnit', function () {
@@ -20,8 +23,8 @@ describe('normalize()', function () {
                     y: { field: 'US_DVD_Sales', type: 'quantitative' }
                 }
             };
-            var config = initConfig(spec.config);
-            assert.deepEqual(normalize(spec, config), {
+            var config = config_1.initConfig(spec.config);
+            chai_1.assert.deepEqual(spec_1.normalize(spec, config), {
                 name: 'faceted',
                 description: 'faceted spec',
                 data: { url: 'data/movies.json' },
@@ -49,8 +52,8 @@ describe('normalize()', function () {
                     y: { field: 'US_DVD_Sales', type: 'quantitative' }
                 }
             };
-            var config = initConfig(spec.config);
-            assert.deepEqual(normalize(spec, config), {
+            var config = config_1.initConfig(spec.config);
+            chai_1.assert.deepEqual(spec_1.normalize(spec, config), {
                 data: { url: 'data/movies.json' },
                 facet: {
                     row: { field: 'MPAA_Rating', type: 'ordinal' }
@@ -67,7 +70,7 @@ describe('normalize()', function () {
     });
     describe('normalizeFacet', function () {
         it('should produce correct layered specs for mean point and vertical error bar', function () {
-            assert.deepEqual(normalize({
+            chai_1.assert.deepEqual(spec_1.normalize({
                 description: 'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 transform: [{ calculate: "(datum.sex==1) ? 'Men':'Women'", as: 'sex' }],
@@ -90,7 +93,7 @@ describe('normalize()', function () {
                         }
                     ]
                 }
-            }, defaultConfig), {
+            }, config_1.defaultConfig), {
                 description: 'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
                 data: {
                     url: 'data/population.json'
@@ -156,7 +159,7 @@ describe('normalize()', function () {
     });
     describe('normalizeLayer', function () {
         it('correctly passes shared projection and encoding to children of layer', function () {
-            var output = normalize({
+            var output = spec_1.normalize({
                 data: { url: 'data/population.json' },
                 projection: { type: 'mercator' },
                 encoding: {
@@ -176,8 +179,8 @@ describe('normalize()', function () {
                         ]
                     }
                 ]
-            }, defaultConfig);
-            assert.deepEqual(output, {
+            }, config_1.defaultConfig);
+            chai_1.assert.deepEqual(output, {
                 data: { url: 'data/population.json' },
                 layer: [
                     {
@@ -210,7 +213,7 @@ describe('normalize()', function () {
             });
         });
         it('correctly overrides shared projection and encoding and throws warnings', log.wrap(function (localLogger) {
-            var output = normalize({
+            var output = spec_1.normalize({
                 data: { url: 'data/population.json' },
                 projection: { type: 'mercator' },
                 encoding: {
@@ -228,14 +231,14 @@ describe('normalize()', function () {
                         }
                     }
                 ]
-            }, defaultConfig);
-            assert.equal(localLogger.warns.length, 2);
-            assert.equal(localLogger.warns[0], log.message.projectionOverridden({
+            }, config_1.defaultConfig);
+            chai_1.assert.equal(localLogger.warns.length, 2);
+            chai_1.assert.equal(localLogger.warns[0], log.message.projectionOverridden({
                 parentProjection: { type: 'mercator' },
                 projection: { type: 'albersUsa' }
             }));
-            assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
-            assert.deepEqual(output, {
+            chai_1.assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
+            chai_1.assert.deepEqual(output, {
                 data: { url: 'data/population.json' },
                 layer: [
                     {
@@ -267,8 +270,8 @@ describe('normalize()', function () {
                 },
                 config: { line: { point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -298,8 +301,8 @@ describe('normalize()', function () {
                     y: { field: 'price', type: 'quantitative' }
                 }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -328,8 +331,8 @@ describe('normalize()', function () {
                     y: { field: 'price', type: 'quantitative' }
                 }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -360,8 +363,8 @@ describe('normalize()', function () {
                 },
                 config: { line: { point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 facet: {
                     row: { field: 'symbol', type: 'nominal' }
@@ -397,8 +400,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {}, point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -436,8 +439,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -469,8 +472,8 @@ describe('normalize()', function () {
                         y: { field: 'price', type: 'quantitative' }
                     }
                 };
-                var normalizedSpec = normalize(spec, spec.config);
-                assert.deepEqual(normalizedSpec, {
+                var normalizedSpec = spec_1.normalize(spec, spec.config);
+                chai_1.assert.deepEqual(normalizedSpec, {
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: 'area',
                     encoding: {
@@ -494,8 +497,8 @@ describe('normalize()', function () {
                         area: { point: overlay, line: overlay }
                     }
                 };
-                var normalizedSpec = normalize(spec, spec.config);
-                assert.deepEqual(normalizedSpec, {
+                var normalizedSpec = spec_1.normalize(spec, spec.config);
+                chai_1.assert.deepEqual(normalizedSpec, {
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: 'area',
                     encoding: {
@@ -519,8 +522,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -554,8 +557,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            var normalizedSpec = spec_1.normalize(spec, spec.config);
+            chai_1.assert.deepEqual(normalizedSpec, {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -590,7 +593,7 @@ describe('normalize()', function () {
                     x2: { aggregate: 'max', field: 'people', type: 'quantitative' }
                 }
             };
-            assert.deepEqual(normalize(spec, defaultConfig), {
+            chai_1.assert.deepEqual(spec_1.normalize(spec, config_1.defaultConfig), {
                 data: { url: 'data/population.json' },
                 mark: 'rule',
                 encoding: {
@@ -610,7 +613,7 @@ describe('normalize()', function () {
                     x2: { aggregate: 'max', field: 'people', type: 'quantitative' }
                 }
             };
-            assert.deepEqual(normalize(spec, defaultConfig), spec);
+            chai_1.assert.deepEqual(spec_1.normalize(spec, config_1.defaultConfig), spec);
         });
         it('should convert x2 -> x if there is no x in the encoding', function () {
             var spec = {
@@ -622,7 +625,7 @@ describe('normalize()', function () {
                     y2: { aggregate: 'max', field: 'people', type: 'quantitative' }
                 }
             };
-            assert.deepEqual(normalize(spec, defaultConfig), {
+            chai_1.assert.deepEqual(spec_1.normalize(spec, config_1.defaultConfig), {
                 data: { url: 'data/population.json' },
                 mark: 'rule',
                 encoding: {

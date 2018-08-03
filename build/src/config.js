@@ -1,27 +1,30 @@
-import * as tslib_1 from "tslib";
-import { isObject } from 'vega-util';
-import { getAllCompositeMarks } from './compositemark';
-import { VL_ONLY_GUIDE_CONFIG } from './guide';
-import { defaultLegendConfig } from './legend';
-import * as mark from './mark';
-import { PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX } from './mark';
-import { defaultScaleConfig } from './scale';
-import { defaultConfig as defaultSelectionConfig } from './selection';
-import { extractTitleConfig } from './title';
-import { duplicate, keys, mergeDeep } from './util';
-export var defaultViewConfig = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var compositemark_1 = require("./compositemark");
+var guide_1 = require("./guide");
+var legend_1 = require("./legend");
+var mark = tslib_1.__importStar(require("./mark"));
+var mark_1 = require("./mark");
+var scale_1 = require("./scale");
+var selection_1 = require("./selection");
+var title_1 = require("./title");
+var util_1 = require("./util");
+exports.defaultViewConfig = {
     width: 200,
     height: 200
 };
-export function isVgScheme(rangeConfig) {
+function isVgScheme(rangeConfig) {
     return rangeConfig && !!rangeConfig['scheme'];
 }
-export var defaultConfig = {
+exports.isVgScheme = isVgScheme;
+exports.defaultConfig = {
     padding: 5,
     timeFormat: '%b %d, %Y',
     countTitle: 'Number of Records',
     invalidValues: 'filter',
-    view: defaultViewConfig,
+    view: exports.defaultViewConfig,
     mark: mark.defaultMarkConfig,
     area: {},
     bar: mark.defaultBarConfig,
@@ -55,7 +58,7 @@ export var defaultConfig = {
         },
         borders: false
     },
-    scale: defaultScaleConfig,
+    scale: scale_1.defaultScaleConfig,
     projection: {},
     axis: {},
     axisX: {},
@@ -65,15 +68,16 @@ export var defaultConfig = {
     axisTop: {},
     axisBottom: {},
     axisBand: {},
-    legend: defaultLegendConfig,
-    selection: defaultSelectionConfig,
+    legend: legend_1.defaultLegendConfig,
+    selection: selection_1.defaultConfig,
     style: {},
     title: {}
 };
-export function initConfig(config) {
-    return mergeDeep(duplicate(defaultConfig), config);
+function initConfig(config) {
+    return util_1.mergeDeep(util_1.duplicate(exports.defaultConfig), config);
 }
-var MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS);
+exports.initConfig = initConfig;
+var MARK_STYLES = ['view'].concat(mark_1.PRIMITIVE_MARKS);
 var VL_ONLY_CONFIG_PROPERTIES = [
     'padding',
     'numberFormat',
@@ -85,29 +89,29 @@ var VL_ONLY_CONFIG_PROPERTIES = [
     'invalidValues',
     'overlay' // FIXME: Redesign and unhide this
 ];
-var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
-export function stripAndRedirectConfig(config) {
-    config = duplicate(config);
+var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, mark_1.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+function stripAndRedirectConfig(config) {
+    config = util_1.duplicate(config);
     for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
         var prop = VL_ONLY_CONFIG_PROPERTIES_1[_i];
         delete config[prop];
     }
     // Remove Vega-Lite only axis/legend config
     if (config.axis) {
-        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
+        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = guide_1.VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
             var prop = VL_ONLY_GUIDE_CONFIG_1[_a];
             delete config.axis[prop];
         }
     }
     if (config.legend) {
-        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
+        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = guide_1.VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
             var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
             delete config.legend[prop];
         }
     }
     // Remove Vega-Lite only generic mark config
     if (config.mark) {
-        for (var _c = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = VL_ONLY_MARK_CONFIG_PROPERTIES; _c < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _c++) {
+        for (var _c = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = mark_1.VL_ONLY_MARK_CONFIG_PROPERTIES; _c < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _c++) {
             var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_1[_c];
             delete config.mark[prop];
         }
@@ -115,7 +119,7 @@ export function stripAndRedirectConfig(config) {
     for (var _d = 0, MARK_STYLES_1 = MARK_STYLES; _d < MARK_STYLES_1.length; _d++) {
         var markType = MARK_STYLES_1[_d];
         // Remove Vega-Lite-only mark config
-        for (var _e = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = VL_ONLY_MARK_CONFIG_PROPERTIES; _e < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _e++) {
+        for (var _e = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = mark_1.VL_ONLY_MARK_CONFIG_PROPERTIES; _e < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _e++) {
             var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_2[_e];
             delete config[markType][prop];
         }
@@ -132,7 +136,7 @@ export function stripAndRedirectConfig(config) {
         // For example, config.rect should not affect bar marks.
         redirectConfig(config, markType);
     }
-    for (var _g = 0, _h = getAllCompositeMarks(); _g < _h.length; _g++) {
+    for (var _g = 0, _h = compositemark_1.getAllCompositeMarks(); _g < _h.length; _g++) {
         var m = _h[_g];
         // Clean up the composite mark config as we don't need them in the output specs anymore
         delete config[m];
@@ -142,16 +146,17 @@ export function stripAndRedirectConfig(config) {
     redirectConfig(config, 'title', 'group-title');
     // Remove empty config objects
     for (var prop in config) {
-        if (isObject(config[prop]) && keys(config[prop]).length === 0) {
+        if (vega_util_1.isObject(config[prop]) && util_1.keys(config[prop]).length === 0) {
             delete config[prop];
         }
     }
-    return keys(config).length > 0 ? config : undefined;
+    return util_1.keys(config).length > 0 ? config : undefined;
 }
+exports.stripAndRedirectConfig = stripAndRedirectConfig;
 function redirectConfig(config, prop, // string = composite mark
 toProp, compositeMarkPart) {
     var propConfig = prop === 'title'
-        ? extractTitleConfig(config.title).mark
+        ? title_1.extractTitleConfig(config.title).mark
         : compositeMarkPart
             ? config[prop][compositeMarkPart]
             : config[prop];
@@ -160,7 +165,7 @@ toProp, compositeMarkPart) {
     }
     var style = tslib_1.__assign({}, propConfig, config.style[prop]);
     // set config.style if it is not an empty object
-    if (keys(style).length > 0) {
+    if (util_1.keys(style).length > 0) {
         config.style[toProp || prop] = style;
     }
     if (!compositeMarkPart) {

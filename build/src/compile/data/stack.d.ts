@@ -2,8 +2,8 @@ import { FieldDef } from '../../fielddef';
 import { StackOffset } from '../../stack';
 import { StackTransform } from '../../transform';
 import { VgSort, VgTransform } from '../../vega.schema';
-import { UnitModel } from './../unit';
-import { DataFlowNode } from './dataflow';
+import { UnitModel } from '../unit';
+import { DataFlowNode, TransformNode } from './dataflow';
 export interface StackComponent {
     /**
      * Faceted field.
@@ -40,7 +40,7 @@ export interface StackComponent {
      */
     as: string[];
 }
-export declare class StackNode extends DataFlowNode {
+export declare class StackNode extends TransformNode {
     private _stack;
     clone(): StackNode;
     constructor(parent: DataFlowNode, stack: StackComponent);
@@ -50,6 +50,7 @@ export declare class StackNode extends DataFlowNode {
     addDimensions(fields: string[]): void;
     dependentFields(): {};
     producedFields(): {};
+    hash(): string;
     private getGroupbyFields;
     assemble(): VgTransform[];
 }

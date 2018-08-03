@@ -1,26 +1,28 @@
+"use strict";
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { AggregateNode } from '../../../src/compile/data/aggregate';
-import { parseUnitModel } from '../../util';
+Object.defineProperty(exports, "__esModule", { value: true });
+var chai_1 = require("chai");
+var aggregate_1 = require("../../../src/compile/data/aggregate");
+var util_1 = require("../../util");
 describe('compile/data/summary', function () {
     describe('clone', function () {
         it('should have correct type', function () {
-            var agg = new AggregateNode(null, {}, {});
-            assert(agg instanceof AggregateNode);
+            var agg = new aggregate_1.AggregateNode(null, {}, {});
+            chai_1.assert(agg instanceof aggregate_1.AggregateNode);
             var clone = agg.clone();
-            assert(clone instanceof AggregateNode);
+            chai_1.assert(clone instanceof aggregate_1.AggregateNode);
         });
         it('should have make a deep copy', function () {
-            var agg = new AggregateNode(null, { foo: true }, {});
+            var agg = new aggregate_1.AggregateNode(null, { foo: true }, {});
             var clone = agg.clone();
             clone.addDimensions(['bar']);
-            assert.deepEqual(clone.dependentFields(), { foo: true, bar: true });
-            assert.deepEqual(agg.dependentFields(), { foo: true });
+            chai_1.assert.deepEqual(clone.dependentFields(), { foo: true, bar: true });
+            chai_1.assert.deepEqual(agg.dependentFields(), { foo: true });
         });
     });
-    describe('parseUnit', function () {
-        it('should produce the correct summary component for sum(Acceleration) and count(*)', function () {
-            var model = parseUnitModel({
+    describe('hash', function () {
+        it('should generate the correct hash', function () {
+            var model = util_1.parseUnitModel({
                 mark: 'point',
                 encoding: {
                     y: {
@@ -35,8 +37,29 @@ describe('compile/data/summary', function () {
                     color: { type: 'quantitative', aggregate: 'count' }
                 }
             });
-            var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.hash(), 'Aggregate -97616516');
+        });
+    });
+    describe('parseUnit', function () {
+        it('should produce the correct summary component for sum(Acceleration) and count(*)', function () {
+            var model = util_1.parseUnitModel({
+                mark: 'point',
+                encoding: {
+                    y: {
+                        aggregate: 'sum',
+                        field: 'Acceleration',
+                        type: 'quantitative'
+                    },
+                    x: {
+                        field: 'Origin',
+                        type: 'ordinal'
+                    },
+                    color: { type: 'quantitative', aggregate: 'count' }
+                }
+            });
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: ['Origin'],
                 ops: ['sum', 'count'],
@@ -45,15 +68,15 @@ describe('compile/data/summary', function () {
             });
         });
         it('should produce the correct summary component for aggregated plot with detail arrays', function () {
-            var model = parseUnitModel({
+            var model = util_1.parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { aggregate: 'mean', field: 'Displacement', type: 'quantitative' },
                     detail: [{ field: 'Origin', type: 'ordinal' }, { field: 'Cylinders', type: 'quantitative' }]
                 }
             });
-            var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: ['Origin', 'Cylinders'],
                 ops: ['mean'],
@@ -62,7 +85,7 @@ describe('compile/data/summary', function () {
             });
         });
         it('should include conditional field in the summary component', function () {
-            var model = parseUnitModel({
+            var model = util_1.parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { aggregate: 'mean', field: 'Displacement', type: 'quantitative' },
@@ -72,8 +95,8 @@ describe('compile/data/summary', function () {
                     }
                 }
             });
-            var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: ['Origin'],
                 ops: ['mean'],
@@ -82,14 +105,14 @@ describe('compile/data/summary', function () {
             });
         });
         it('should add min and max if needed for unaggregated scale domain', function () {
-            var model = parseUnitModel({
+            var model = util_1.parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { aggregate: 'mean', field: 'Displacement', type: 'quantitative', scale: { domain: 'unaggregated' } }
                 }
             });
-            var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: [],
                 ops: ['mean', 'min', 'max'],
@@ -98,7 +121,7 @@ describe('compile/data/summary', function () {
             });
         });
         it('should add correct dimensions when binning', function () {
-            var model = parseUnitModel({
+            var model = util_1.parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { bin: true, field: 'Displacement', type: 'quantitative' },
@@ -106,8 +129,8 @@ describe('compile/data/summary', function () {
                     color: { aggregate: 'count', type: 'quantitative' }
                 }
             });
-            var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromEncoding(null, model);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: [
                     'bin_maxbins_10_Displacement',
@@ -129,8 +152,8 @@ describe('compile/data/summary', function () {
                 ],
                 groupby: ['Displacement_mean', 'Acceleration_sum']
             };
-            var agg = AggregateNode.makeFromTransform(null, t);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromTransform(null, t);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: ['Displacement_mean', 'Acceleration_sum'],
                 ops: ['mean', 'sum'],
@@ -147,8 +170,8 @@ describe('compile/data/summary', function () {
                 ],
                 groupby: ['Displacement_mean', 'Acceleration_sum']
             };
-            var agg = AggregateNode.makeFromTransform(null, t);
-            assert.deepEqual(agg.assemble(), {
+            var agg = aggregate_1.AggregateNode.makeFromTransform(null, t);
+            chai_1.assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
                 groupby: ['Displacement_mean', 'Acceleration_sum'],
                 ops: ['mean', 'max', 'sum'],
@@ -166,7 +189,7 @@ describe('compile/data/summary', function () {
                 ],
                 groupby: ['AvgDisplacement', 'Acceleration_sum']
             };
-            var agg = AggregateNode.makeFromTransform(null, t);
+            var agg = aggregate_1.AggregateNode.makeFromTransform(null, t);
             expect(agg.producedFields()).toEqual({
                 AvgDisplacement: true,
                 Acceleration_sum: true

@@ -420,8 +420,8 @@ export interface Scale {
      */
     interpolate?: ScaleInterpolate | ScaleInterpolateParams;
 }
-export declare const SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "type" | "range" | "zero" | "domain" | "nice" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
-export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("reverse" | "base" | "padding" | "zero" | "nice" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const SCALE_PROPERTIES: ("padding" | "reverse" | "base" | "type" | "range" | "zero" | "domain" | "nice" | "rangeStep" | "scheme" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
+export declare const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES: ("padding" | "reverse" | "base" | "zero" | "nice" | "round" | "paddingInner" | "paddingOuter" | "clamp" | "exponent" | "interpolate")[];
 export declare const SCALE_TYPE_INDEX: ScaleTypeIndex;
 export declare function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean;
 /**

@@ -1,27 +1,29 @@
-import * as tslib_1 from "tslib";
-import { isNumber, isString } from 'vega-util';
-import { isChannel, isScaleChannel } from '../channel';
-import { forEach, reduce } from '../encoding';
-import { getFieldDef, vgField } from '../fielddef';
-import * as log from '../log';
-import { hasDiscreteDomain } from '../scale';
-import { isFacetSpec, isLayerSpec, isUnitSpec } from '../spec';
-import { extractTitleConfig } from '../title';
-import { extractCompositionLayout } from '../toplevelprops';
-import { normalizeTransform } from '../transform';
-import { contains, keys, varName } from '../util';
-import { isVgRangeStep } from '../vega.schema';
-import { assembleAxes } from './axis/assemble';
-import { getHeaderGroups, getTitleGroup, HEADER_CHANNELS } from './header/index';
-import { sizeExpr } from './layoutsize/assemble';
-import { assembleLegends } from './legend/assemble';
-import { parseLegend } from './legend/parse';
-import { assembleProjections } from './projection/assemble';
-import { parseProjection } from './projection/parse';
-import { assembleScales } from './scale/assemble';
-import { assembleDomain, getFieldFromDomain } from './scale/domain';
-import { parseScale } from './scale/parse';
-import { Split } from './split';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var vega_util_1 = require("vega-util");
+var channel_1 = require("../channel");
+var encoding_1 = require("../encoding");
+var fielddef_1 = require("../fielddef");
+var log = tslib_1.__importStar(require("../log"));
+var scale_1 = require("../scale");
+var spec_1 = require("../spec");
+var title_1 = require("../title");
+var toplevelprops_1 = require("../toplevelprops");
+var transform_1 = require("../transform");
+var util_1 = require("../util");
+var vega_schema_1 = require("../vega.schema");
+var assemble_1 = require("./axis/assemble");
+var index_1 = require("./header/index");
+var assemble_2 = require("./layoutsize/assemble");
+var assemble_3 = require("./legend/assemble");
+var parse_1 = require("./legend/parse");
+var assemble_4 = require("./projection/assemble");
+var parse_2 = require("./projection/parse");
+var assemble_5 = require("./scale/assemble");
+var domain_1 = require("./scale/domain");
+var parse_3 = require("./scale/parse");
+var split_1 = require("./split");
 var NameMap = /** @class */ (function () {
     function NameMap() {
         this.nameMap = {};
@@ -42,7 +44,7 @@ var NameMap = /** @class */ (function () {
     };
     return NameMap;
 }());
-export { NameMap };
+exports.NameMap = NameMap;
 /*
   We use type guards instead of `instanceof` as `instanceof` makes
   different parts of the compiler depend on the actual implementation of
@@ -52,21 +54,26 @@ export { NameMap };
   On the other hand, type guards only make different parts of the compiler
   depend on the type of the model classes, but not the actual implementation.
 */
-export function isUnitModel(model) {
+function isUnitModel(model) {
     return model && model.type === 'unit';
 }
-export function isFacetModel(model) {
+exports.isUnitModel = isUnitModel;
+function isFacetModel(model) {
     return model && model.type === 'facet';
 }
-export function isRepeatModel(model) {
+exports.isFacetModel = isFacetModel;
+function isRepeatModel(model) {
     return model && model.type === 'repeat';
 }
-export function isConcatModel(model) {
+exports.isRepeatModel = isRepeatModel;
+function isConcatModel(model) {
     return model && model.type === 'concat';
 }
-export function isLayerModel(model) {
+exports.isConcatModel = isConcatModel;
+function isLayerModel(model) {
     return model && model.type === 'layer';
 }
+exports.isLayerModel = isLayerModel;
 var Model = /** @class */ (function () {
     function Model(spec, parent, parentGivenName, config, repeater, resolve) {
         var _this = this;
@@ -91,24 +98,24 @@ var Model = /** @class */ (function () {
         this.repeater = repeater;
         // If name is not provided, always use parent's givenName to avoid name conflicts.
         this.name = spec.name || parentGivenName;
-        this.title = isString(spec.title) ? { text: spec.title } : spec.title;
+        this.title = vega_util_1.isString(spec.title) ? { text: spec.title } : spec.title;
         // Shared name maps
         this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
         this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
         this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
         this.data = spec.data;
         this.description = spec.description;
-        this.transforms = normalizeTransform(spec.transform || []);
-        this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
+        this.transforms = transform_1.normalizeTransform(spec.transform || []);
+        this.layout = spec_1.isUnitSpec(spec) || spec_1.isLayerSpec(spec) ? undefined : toplevelprops_1.extractCompositionLayout(spec);
         this.component = {
             data: {
                 sources: parent ? parent.component.data.sources : {},
                 outputNodes: parent ? parent.component.data.outputNodes : {},
                 outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
                 // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined
-                isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
+                isFaceted: spec_1.isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
             },
-            layoutSize: new Split(),
+            layoutSize: new split_1.Split(),
             layoutHeaders: { row: {}, column: {} },
             mark: null,
             resolve: tslib_1.__assign({ scale: {}, axis: {}, legend: {} }, (resolve || {})),
@@ -154,10 +161,10 @@ var Model = /** @class */ (function () {
         this.parseMarkGroup(); // depends on data name, scale, layout size, axisGroup, and children's scale, axis, legend and mark.
     };
     Model.prototype.parseScale = function () {
-        parseScale(this);
+        parse_3.parseScale(this);
     };
     Model.prototype.parseProjection = function () {
-        parseProjection(this);
+        parse_2.parseProjection(this);
     };
     /**
      * Rename top-level spec's size to be just width / height, ignoring model name.
@@ -173,7 +180,7 @@ var Model = /** @class */ (function () {
         }
     };
     Model.prototype.parseLegend = function () {
-        parseLegend(this);
+        parse_1.parseLegend(this);
     };
     Model.prototype.assembleGroupStyle = function () {
         if (this.type === 'unit' || this.type === 'layer') {
@@ -195,7 +202,7 @@ var Model = /** @class */ (function () {
             return undefined;
         }
         var _a = this.layout, align = _a.align, bounds = _a.bounds, center = _a.center, _b = _a.spacing, spacing = _b === void 0 ? {} : _b;
-        return tslib_1.__assign({ padding: isNumber(spacing)
+        return tslib_1.__assign({ padding: vega_util_1.isNumber(spacing)
                 ? spacing
                 : {
                     row: spacing.row || 10,
@@ -208,32 +215,32 @@ var Model = /** @class */ (function () {
     Model.prototype.assembleHeaderMarks = function () {
         var layoutHeaders = this.component.layoutHeaders;
         var headerMarks = [];
-        for (var _i = 0, HEADER_CHANNELS_1 = HEADER_CHANNELS; _i < HEADER_CHANNELS_1.length; _i++) {
+        for (var _i = 0, HEADER_CHANNELS_1 = index_1.HEADER_CHANNELS; _i < HEADER_CHANNELS_1.length; _i++) {
             var channel = HEADER_CHANNELS_1[_i];
             if (layoutHeaders[channel].title) {
-                headerMarks.push(getTitleGroup(this, channel));
+                headerMarks.push(index_1.getTitleGroup(this, channel));
             }
         }
-        for (var _a = 0, HEADER_CHANNELS_2 = HEADER_CHANNELS; _a < HEADER_CHANNELS_2.length; _a++) {
+        for (var _a = 0, HEADER_CHANNELS_2 = index_1.HEADER_CHANNELS; _a < HEADER_CHANNELS_2.length; _a++) {
             var channel = HEADER_CHANNELS_2[_a];
-            headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
+            headerMarks = headerMarks.concat(index_1.getHeaderGroups(this, channel));
         }
         return headerMarks;
     };
     Model.prototype.assembleAxes = function () {
-        return assembleAxes(this.component.axes, this.config);
+        return assemble_1.assembleAxes(this.component.axes, this.config);
     };
     Model.prototype.assembleLegends = function () {
-        return assembleLegends(this);
+        return assemble_3.assembleLegends(this);
     };
     Model.prototype.assembleProjections = function () {
-        return assembleProjections(this);
+        return assemble_4.assembleProjections(this);
     };
     Model.prototype.assembleTitle = function () {
         var _a = this.title || {}, encoding = _a.encoding, titleNoEncoding = tslib_1.__rest(_a, ["encoding"]);
-        var title = tslib_1.__assign({}, extractTitleConfig(this.config.title).nonMark, titleNoEncoding, (encoding ? { encode: { update: encoding } } : {}));
+        var title = tslib_1.__assign({}, title_1.extractTitleConfig(this.config.title).nonMark, titleNoEncoding, (encoding ? { encode: { update: encoding } } : {}));
         if (title.text) {
-            if (!contains(['unit', 'layer'], this.type)) {
+            if (!util_1.contains(['unit', 'layer'], this.type)) {
                 // As described in https://github.com/vega/vega-lite/issues/2875:
                 // Due to vega/vega#960 (comment), we only support title's anchor for unit and layered spec for now.
                 if (title.anchor && title.anchor !== 'start') {
@@ -241,7 +248,7 @@ var Model = /** @class */ (function () {
                 }
                 title.anchor = 'start';
             }
-            return keys(title).length > 0 ? title : undefined;
+            return util_1.keys(title).length > 0 ? title : undefined;
         }
         return undefined;
     };
@@ -262,7 +269,7 @@ var Model = /** @class */ (function () {
         group.marks = [].concat(this.assembleHeaderMarks(), this.assembleMarks());
         // Only include scales if this spec is top-level or if parent is facet.
         // (Otherwise, it will be merged with upper-level's scope.)
-        var scales = !this.parent || isFacetModel(this.parent) ? assembleScales(this) : [];
+        var scales = !this.parent || isFacetModel(this.parent) ? assemble_5.assembleScales(this) : [];
         if (scales.length > 0) {
             group.scales = scales;
         }
@@ -293,7 +300,7 @@ var Model = /** @class */ (function () {
         return false;
     };
     Model.prototype.getName = function (text) {
-        return varName((this.name ? this.name + '_' : '') + text);
+        return util_1.varName((this.name ? this.name + '_' : '') + text);
     };
     /**
      * Request a data source name for the given data source type and mark that data source as required. This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
@@ -314,14 +321,14 @@ var Model = /** @class */ (function () {
                 // independent scale
                 var type = scaleComponent.get('type');
                 var range = scaleComponent.get('range');
-                if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+                if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
                     var scaleName = scaleComponent.get('name');
-                    var domain = assembleDomain(this, channel);
-                    var field = getFieldFromDomain(domain);
+                    var domain = domain_1.assembleDomain(this, channel);
+                    var field = domain_1.getFieldFromDomain(domain);
                     if (field) {
-                        var fieldRef = vgField({ aggregate: 'distinct', field: field }, { expr: 'datum' });
+                        var fieldRef = fielddef_1.vgField({ aggregate: 'distinct', field: field }, { expr: 'datum' });
                         return {
-                            signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+                            signal: assemble_2.sizeExpr(scaleName, scaleComponent, fieldRef)
                         };
                     }
                     else {
@@ -373,7 +380,7 @@ var Model = /** @class */ (function () {
         // be in the scale component or exist in the name map
         if (
         // If there is a scale for the channel, there should be a local scale component for it
-        (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
+        (channel_1.isChannel(originalScaleName) && channel_1.isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
             // in the scale name map (the scale get merged by its parent)
             this.scaleNameMap.has(this.getName(originalScaleName))) {
             return this.scaleNameMap.get(this.getName(originalScaleName));
@@ -425,7 +432,7 @@ var Model = /** @class */ (function () {
     };
     return Model;
 }());
-export { Model };
+exports.Model = Model;
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 var ModelWithField = /** @class */ (function (_super) {
     tslib_1.__extends(ModelWithField, _super);
@@ -439,11 +446,11 @@ var ModelWithField = /** @class */ (function (_super) {
         if (!fieldDef) {
             return undefined;
         }
-        return vgField(fieldDef, opt);
+        return fielddef_1.vgField(fieldDef, opt);
     };
     ModelWithField.prototype.reduceFieldDef = function (f, init, t) {
-        return reduce(this.getMapping(), function (acc, cd, c) {
-            var fieldDef = getFieldDef(cd);
+        return encoding_1.reduce(this.getMapping(), function (acc, cd, c) {
+            var fieldDef = fielddef_1.getFieldDef(cd);
             if (fieldDef) {
                 return f(acc, fieldDef, c);
             }
@@ -451,8 +458,8 @@ var ModelWithField = /** @class */ (function (_super) {
         }, init, t);
     };
     ModelWithField.prototype.forEachFieldDef = function (f, t) {
-        forEach(this.getMapping(), function (cd, c) {
-            var fieldDef = getFieldDef(cd);
+        encoding_1.forEach(this.getMapping(), function (cd, c) {
+            var fieldDef = fielddef_1.getFieldDef(cd);
             if (fieldDef) {
                 f(fieldDef, c);
             }
@@ -460,5 +467,5 @@ var ModelWithField = /** @class */ (function (_super) {
     };
     return ModelWithField;
 }(Model));
-export { ModelWithField };
+exports.ModelWithField = ModelWithField;
 //# sourceMappingURL=model.js.map

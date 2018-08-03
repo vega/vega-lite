@@ -1,5 +1,7 @@
-import * as tslib_1 from "tslib";
-import { Split } from '../split';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
+var split_1 = require("../split");
 var ProjectionComponent = /** @class */ (function (_super) {
     tslib_1.__extends(ProjectionComponent, _super);
     function ProjectionComponent(name, specifiedProjection, size, data) {
@@ -13,6 +15,6 @@ var ProjectionComponent = /** @class */ (function (_super) {
         return _this;
     }
     return ProjectionComponent;
-}(Split));
-export { ProjectionComponent };
+}(split_1.Split));
+exports.ProjectionComponent = ProjectionComponent;
 //# sourceMappingURL=component.js.map

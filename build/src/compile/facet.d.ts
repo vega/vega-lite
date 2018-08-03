@@ -1,11 +1,10 @@
 import { Channel } from '../channel';
 import { Config } from '../config';
 import { FacetFieldDef, FacetMapping } from '../facet';
-import { FieldDef } from '../fielddef';
+import { FieldDef, FieldRefOption } from '../fielddef';
 import { EncodingSortField } from '../sort';
 import { NormalizedFacetSpec } from '../spec';
 import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
-import { FieldRefOption } from './../fielddef';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
 export declare function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt?: FieldRefOption): string;

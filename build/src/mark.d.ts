@@ -32,7 +32,7 @@ export declare const CIRCLE: "circle";
 export declare const SQUARE: "square";
 export declare function isMark(m: string): m is Mark;
 export declare function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail';
-export declare const PRIMITIVE_MARKS: import("../../../../../../Users/domoritz/Developer/UW/vega-lite/node_modules/vega-lite/build/src/mark").Mark[];
+export declare const PRIMITIVE_MARKS: import("vega-lite/build/src/mark").Mark[];
 export interface ColorMixins {
     /**
      * Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.
