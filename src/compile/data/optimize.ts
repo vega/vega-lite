@@ -120,9 +120,13 @@ function getLeaves(roots: DataFlowNode[]) {
 /**
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export function mergeParse(node: DataFlowNode): boolean {
+export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
   let flag = false;
-  const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
+  const parent = node.parent;
+  if (parent === undefined) {
+    return {continueFlag: false, mutatedFlag: false};
+  }
+  const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
   if (parseChildren.length > 1) {
     const commonParse = {};
     for (const parseNode of parseChildren) {
@@ -137,12 +141,12 @@ export function mergeParse(node: DataFlowNode): boolean {
     }
     if (keys(commonParse).length !== 0) {
       flag = true;
-      const mergedParseNode = new ParseNode(node, commonParse);
+      const mergedParseNode = new ParseNode(parent, commonParse);
       for (const parseNode of parseChildren) {
         for (const key of keys(commonParse)) {
           delete parseNode.parse[key];
         }
-        node.removeChild(parseNode);
+        parent.removeChild(parseNode);
         parseNode.parent = mergedParseNode;
         if (keys(parseNode.parse).length === 0) {
           parseNode.remove();
@@ -150,8 +154,20 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
   }
-  flag = node.children.map(mergeParse).some(x => x === true) || flag;
-  return flag;
+  return {continueFlag: true, mutatedFlag: flag};
+}
+
+export function moveParse(node: DataFlowNode): optimizers.OptimizerFlags {
+  let continueFlag = false;
+  let mutatedFlag = false;
+  let temp = optimizers.moveParseUp(node);
+  continueFlag = temp.continueFlag || continueFlag;
+  mutatedFlag = temp.mutatedFlag || mutatedFlag;
+  temp = mergeParse(node);
+  continueFlag = temp.continueFlag || continueFlag;
+  mutatedFlag = temp.mutatedFlag || mutatedFlag;
+
+  return {continueFlag, mutatedFlag};
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent) {
@@ -171,7 +187,7 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 
   mutatedFlag =
     getLeaves(roots)
-      .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
+      .map(optimizers.iterateFromLeaves(moveParse))
       .some(x => x === true) || mutatedFlag;
 
   mutatedFlag =
@@ -180,9 +196,8 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
       .some(x => x === true) || mutatedFlag;
 
   mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
-
-  mutatedFlag = roots.map(mergeParse).some(x => x === true) || mutatedFlag;
   mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
+
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
       delete dataComponent.sources[s];

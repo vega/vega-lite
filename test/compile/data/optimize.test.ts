@@ -14,7 +14,7 @@ describe('compile/data/optimize', () => {
       const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
       // @ts-ignore
       const parse2 = new ParseNode(root, {b: 'string', c: 'boolean'});
-      mergeParse(root);
+      mergeParse(parse1);
       assert.deepEqual(root.children.length, 1);
       const mergedParseNode = root.children[0] as ParseNode;
       assert.deepEqual(mergedParseNode.parse, {a: 'number', b: 'string', c: 'boolean'});
@@ -26,7 +26,7 @@ describe('compile/data/optimize', () => {
       const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
       // @ts-ignore
       const parse2 = new ParseNode(root, {a: 'boolean', d: 'date'});
-      mergeParse(root);
+      mergeParse(parse1);
       assert.deepEqual(root.children.length, 1);
       const mergedParseNode = root.children[0] as ParseNode;
       assert.deepEqual(mergedParseNode.parse, {b: 'string', d: 'date'});
