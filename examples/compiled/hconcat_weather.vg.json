@@ -8,26 +8,16 @@
     {
       "name": "source_0",
       "url": "data/weather.csv",
-      "format": {"type": "csv"},
-      "transform": [
-        {"type": "filter", "expr": "datum.location === 'Seattle'"},
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"precipitation\"])",
-          "as": "precipitation"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_min\"])",
-          "as": "temp_min"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date",
+          "precipitation": "number",
+          "temp_min": "number",
+          "temp_max": "number"
         }
-      ]
+      },
+      "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
     },
     {
       "name": "data_0",

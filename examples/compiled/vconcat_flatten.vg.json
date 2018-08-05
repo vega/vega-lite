@@ -33,7 +33,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "flatten", "fields": ["lc"], "as": ["lc"]},
         {"type": "formula", "expr": "toNumber(datum[\"ra\"])", "as": "ra"},
         {"type": "formula", "expr": "toNumber(datum[\"dec\"])", "as": "dec"},
         {
@@ -45,7 +44,8 @@
           "type": "formula",
           "expr": "toNumber(datum[\"lc\"] && datum[\"lc\"][\"mag\"])",
           "as": "lc.mag"
-        }
+        },
+        {"type": "flatten", "fields": ["lc"], "as": ["lc"]}
       ]
     },
     {
