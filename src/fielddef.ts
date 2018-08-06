@@ -30,6 +30,8 @@ import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
 
+type Value = number | string | boolean | null;
+
 /**
  * Definition object for a constant value of an encoding channel.
  */
@@ -37,7 +39,7 @@ export interface ValueDef {
   /**
    * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
    */
-  value: number | string | boolean | null;
+  value: Value;
 }
 
 /**
@@ -100,7 +102,7 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
    * A constant value in visual domain.
    */
-  value?: number | string | boolean;
+  value?: Value;
 }
 
 /**

@@ -9558,7 +9558,8 @@
           "type": [
             "number",
             "string",
-            "boolean"
+            "boolean",
+            "null"
           ]
         }
       },
@@ -9590,7 +9591,8 @@
           "type": [
             "number",
             "string",
-            "boolean"
+            "boolean",
+            "null"
           ]
         }
       },
@@ -9622,7 +9624,8 @@
           "type": [
             "number",
             "string",
-            "boolean"
+            "boolean",
+            "null"
           ]
         }
       },
