@@ -16,6 +16,7 @@ import { StackOffset } from './stack';
 import { TimeUnit } from './timeunit';
 import { AggregatedFieldDef, WindowFieldDef } from './transform';
 import { Type } from './type';
+declare type Value = number | string | boolean | null;
 /**
  * Definition object for a constant value of an encoding channel.
  */
@@ -23,7 +24,7 @@ export interface ValueDef {
     /**
      * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
      */
-    value: number | string | boolean | null;
+    value: Value;
 }
 /**
  * Generic type for conditional channelDef.
@@ -74,7 +75,7 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
     /**
      * A constant value in visual domain.
      */
-    value?: number | string | boolean;
+    value?: Value;
 }
 /**
  * Reference to a repeated value.
@@ -315,3 +316,4 @@ export declare function valueExpr(v: number | string | boolean | DateTime, { tim
 export declare function valueArray(fieldDef: FieldDef<string>, values: (number | string | boolean | DateTime)[]): (string | number | boolean | DateTime | {
     signal: string;
 })[];
+export {};
