@@ -5,26 +5,9 @@
   "width": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/barley.json",
-      "format": {"type": "json", "parse": {"yield": "number"}}
-    },
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
       "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "ops": ["median"],
-          "fields": ["yield"],
-          "as": ["median_yield"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -33,6 +16,24 @@
           "ops": ["q1", "q3"],
           "fields": ["yield", "yield"],
           "as": ["lower_yield", "upper_yield"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"yield\"])",
+          "as": "yield"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["variety"],
+          "ops": ["median"],
+          "fields": ["yield"],
+          "as": ["median_yield"]
         }
       ]
     }
@@ -49,7 +50,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -72,7 +73,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -97,9 +98,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "lower_yield"},
-          {"data": "data_1", "field": "upper_yield"},
-          {"data": "data_0", "field": "median_yield"}
+          {"data": "data_0", "field": "lower_yield"},
+          {"data": "data_0", "field": "upper_yield"},
+          {"data": "data_1", "field": "median_yield"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -111,8 +112,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "variety"},
-          {"data": "data_0", "field": "variety"}
+          {"data": "data_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"}
         ],
         "sort": true
       },
