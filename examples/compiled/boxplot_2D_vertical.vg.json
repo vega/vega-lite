@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/population.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"people": "number"}}
     },
     {
       "name": "data_0",
@@ -49,11 +49,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
         {
           "type": "window",
           "params": [null, null],
