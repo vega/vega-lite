@@ -59,15 +59,18 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
       flag = true;
       parent.merge(node);
     } else {
-      // Remove intersecting output fields
+      // remove intersecting output fields
       for (const field in parent.producedFields()) {
         if (field in node.producedFields()) {
           delete node.parse[field];
         }
       }
-
+      // remove parse nodes that aren't parsing anything
+      if (keys(node.parse).length === 0) {
+        node.remove();
+      }
       // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-      if (hasIntersection(parent.producedFields(), node.dependentFields())) {
+      if (hasIntersection(parent.producedFields(), node.dependentFields()) || keys(node.parse).length === 0) {
         return {continueFlag: true, mutatedFlag: flag};
       }
       flag = true;
