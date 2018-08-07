@@ -62,15 +62,12 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
       // remove intersecting output fields
       for (const field in parent.producedFields()) {
         if (field in node.producedFields()) {
+          flag = true;
           delete node.parse[field];
         }
       }
-      // remove parse nodes that aren't parsing anything
-      if (keys(node.parse).length === 0) {
-        node.remove();
-      }
       // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-      if (hasIntersection(parent.producedFields(), node.dependentFields()) || keys(node.parse).length === 0) {
+      if (hasIntersection(parent.producedFields(), node.dependentFields())) {
         return {continueFlag: true, mutatedFlag: flag};
       }
       flag = true;
@@ -153,5 +150,18 @@ export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
     }
 
     return {continueFlag: true, mutatedFlag: flag};
+  })(leaf);
+}
+
+export function removeEmptyParse(leaf: DataFlowNode): boolean {
+  return iterateFromLeaves((node: DataFlowNode) => {
+    let modifiedTree = false;
+    if (node instanceof ParseNode) {
+      if (keys(node.parse).length === 0) {
+        node.remove();
+        modifiedTree = true;
+      }
+    }
+    return {continueFlag: true, mutatedFlag: modifiedTree};
   })(leaf);
 }

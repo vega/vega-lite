@@ -195,6 +195,11 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
       .map(optimizers.removeDuplicateTimeUnits)
       .some(x => x === true) || mutatedFlag;
 
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.removeEmptyParse)
+      .some(x => x === true) || mutatedFlag;
+
   mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
   mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
 
