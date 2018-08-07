@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/population.json",
-      "format": {"type": "json"}
+      "format": {"type": "json", "parse": {"people": "number"}}
     },
     {
       "name": "data_0",
@@ -42,17 +42,6 @@
           "type": "formula",
           "expr": "max(datum.lower_box_people - datum.iqr_people * 1.5, datum.min_people)",
           "as": "lower_whisker_people"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
         }
       ]
     }
@@ -164,7 +153,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.2},
@@ -196,7 +185,7 @@
           {"data": "data_0", "field": "upper_box_people"},
           {"data": "data_0", "field": "upper_whisker_people"},
           {"data": "data_0", "field": "mid_box_people"},
-          {"data": "data_1", "field": "people"}
+          {"data": "source_0", "field": "people"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -209,7 +198,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "age"},
-          {"data": "data_1", "field": "age"}
+          {"data": "source_0", "field": "age"}
         ],
         "sort": true
       },

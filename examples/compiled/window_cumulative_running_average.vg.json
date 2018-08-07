@@ -10,10 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Year": "date", "Miles_per_Gallon": "number"}
-      },
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {"type": "filter", "expr": "datum.Miles_per_Gallon !== null"},
         {
@@ -30,7 +27,29 @@
           "sort": {"field": ["year"], "order": ["ascending"]},
           "ignorePeers": false,
           "frame": [null, 0]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+          "as": "Miles_per_Gallon"
         },
+        {
+          "type": "formula",
+          "as": "year_Year",
+          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
         {
           "type": "formula",
           "as": "year_Year",
@@ -44,7 +63,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -69,7 +88,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -89,15 +108,22 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "year_Year"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "year_Year"},
+          {"data": "data_1", "field": "year_Year"}
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": ["Miles_per_Gallon", "Average_MPG"]
+        "fields": [
+          {"data": "data_0", "field": "Miles_per_Gallon"},
+          {"data": "data_1", "field": "Average_MPG"}
+        ]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
