@@ -1,5 +1,4 @@
-import {isArray} from 'util';
-import {isNumber} from 'vega-util';
+import {isArray, isNumber} from 'vega-util';
 import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
 import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
