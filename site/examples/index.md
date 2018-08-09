@@ -53,3 +53,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 * [Vega-Lite downloads](https://bl.ocks.org/domoritz/81008b55ae2e2649eb42f600440f87d2) by @domoritz
 * [Waterfall Chart](https://bl.ocks.org/italo-batista/5f93b3c9f87dffcf01bb489d90f60652/ef01271c72c57dc940bb357019be1c6cdf9eb51a) by @italo-batista
 * [Bar, Small Multiple, Heatmap, Gantt Charts: Exploring NYC Event Permits](https://medium.com/enigma-engineering/exploring-new-york-city-event-permits-with-vega-lite-f83178ff9a8d) by [@hydrosquall](https://twitter.com/hydrosquall)
+* [Image Pixel Render](https://beta.observablehq.com/@amitkaps/image-pixel-render-with-vega-lite) by @amitkaps
