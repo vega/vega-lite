@@ -156,11 +156,9 @@ export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
 export function removeEmptyParse(leaf: DataFlowNode): boolean {
   return iterateFromLeaves((node: DataFlowNode) => {
     let modifiedTree = false;
-    if (node instanceof ParseNode) {
-      if (keys(node.parse).length === 0) {
-        node.remove();
-        modifiedTree = true;
-      }
+    if (node instanceof ParseNode && keys(node.parse).length === 0) {
+      node.remove();
+      modifiedTree = true;
     }
     return {continueFlag: true, mutatedFlag: modifiedTree};
   })(leaf);

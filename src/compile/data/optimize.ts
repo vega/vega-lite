@@ -127,7 +127,7 @@ export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
     return {continueFlag: false, mutatedFlag: false};
   }
   const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
-  if (parseChildren.length > 1) {
+  if (parseChildren.length > 0) {
     const commonParse = {};
     for (const parseNode of parseChildren) {
       const parse = parseNode.parse;

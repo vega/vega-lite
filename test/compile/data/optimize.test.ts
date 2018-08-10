@@ -1,10 +1,11 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
+import {DataFlowNode, OutputNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {mergeParse} from '../../../src/compile/data/optimize';
+import {mergeParse, optimizeDataflow} from '../../../src/compile/data/optimize';
 import {moveParseUp} from '../../../src/compile/data/optimizers';
+import {SourceNode} from '../../../src/compile/data/source';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 
 describe('compile/data/optimize', () => {
@@ -45,6 +46,62 @@ describe('compile/data/optimize', () => {
 
       moveParseUp(parse);
       expect(parse.producedFields()).toEqual({a: true});
+    });
+  });
+  describe('optimizeDataFlow', () => {
+    it('should push up common parse', () => {
+      const source = new SourceNode(null);
+      // @ts-ignore
+      const parseOne = new ParseNode(source, {a: 'time', b: 'number'});
+      // @ts-ignore
+      const parseTwo = new ParseNode(source, {a: 'time', b: 'date'});
+      // @ts-ignore
+      const outputOne = new OutputNode(parseOne, 'foo', null, {foo: 1});
+      // @ts-ignore
+      const outputTwo = new OutputNode(parseTwo, 'bar', null, {bar: 1});
+
+      optimizeDataflow({sources: {source: source}} as any);
+
+      expect(source.children.length).toEqual(1);
+      expect(source.children[0]).toBeInstanceOf(ParseNode);
+
+      const commonParse = source.children[0] as ParseNode;
+      expect(commonParse.parse).toEqual({a: 'time'});
+      expect(commonParse.children.length).toEqual(2);
+
+      expect(commonParse.children[0]).toBeInstanceOf(ParseNode);
+      expect(commonParse.children[0]).toMatchObject(parseOne);
+
+      expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
+      expect(commonParse.children[1]).toMatchObject(parseTwo);
+    });
+    it('should push parse up from lowest level first to avoid conflicting common parse', () => {
+      const source = new SourceNode(null);
+      const parseOne = new ParseNode(source, {a: 'time'}); // @ts-ignore
+      const parseTwo = new ParseNode(source, {b: 'number'});
+      const parseThree = new ParseNode(parseTwo, {a: 'number'});
+      // @ts-ignore
+      const outputOne = new OutputNode(parseOne, 'foo', null, {foo: 1});
+      // @ts-ignore
+      const outputTwo = new OutputNode(parseThree, 'bar', null, {bar: 1});
+
+      optimizeDataflow({sources: {source: source}} as any);
+
+      expect(source.children.length).toEqual(1);
+      expect(source.children[0]).toBeInstanceOf(ParseNode);
+
+      const commonParse = source.children[0] as ParseNode;
+      expect(commonParse.parse).toEqual({b: 'number'});
+
+      expect(commonParse.children.length).toEqual(2);
+      expect(commonParse.children[0]).toBeInstanceOf(ParseNode);
+      expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
+
+      const p1 = commonParse.children[0] as ParseNode;
+      const p2 = commonParse.children[0] as ParseNode;
+
+      expect(p1.parse).toEqual({a: 'time'});
+      expect(p2.parse).toEqual({a: 'number'});
     });
   });
 });
