@@ -248,14 +248,6 @@
           "source": "facet",
           "name": "data_0",
           "transform": [
-            {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-            {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
-          ]
-        },
-        {
-          "source": "facet",
-          "name": "data_1",
-          "transform": [
             {
               "type": "aggregate",
               "groupby": [],
@@ -267,7 +259,7 @@
         },
         {
           "source": "facet",
-          "name": "data_2",
+          "name": "data_1",
           "transform": [
             {
               "type": "aggregate",
@@ -276,6 +268,14 @@
               "fields": ["median_y_by_b"],
               "as": ["median_median_y_by_b"]
             }
+          ]
+        },
+        {
+          "source": "facet",
+          "name": "data_2",
+          "transform": [
+            {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+            {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
           ]
         }
       ],
@@ -290,7 +290,7 @@
           "name": "child_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -320,7 +320,7 @@
           "name": "child_layer_1_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "stroke": [
@@ -343,7 +343,7 @@
           "name": "child_layer_2_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "stroke": [

@@ -31,9 +31,11 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["average"],
+          "fields": ["AverageRating"],
+          "as": ["average_AverageRating"]
         }
       ]
     },
@@ -42,11 +44,9 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["average"],
-          "fields": ["AverageRating"],
-          "as": ["average_AverageRating"]
+          "type": "formula",
+          "expr": "toNumber(datum[\"IMDB_Rating\"])",
+          "as": "IMDB_Rating"
         }
       ]
     }
@@ -63,7 +63,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -87,7 +87,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -113,8 +113,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "IMDB_Rating"},
-          {"data": "data_1", "field": "average_AverageRating"}
+          {"data": "data_1", "field": "IMDB_Rating"},
+          {"data": "data_0", "field": "average_AverageRating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -124,7 +124,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "Title", "sort": true},
+      "domain": {"data": "data_1", "field": "Title", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
