@@ -67,7 +67,7 @@ describe('compile/data/optimize', () => {
     });
     it('should push parse up from lowest level first to avoid conflicting common parse', () => {
       const source = new SourceNode(null);
-      const parseOne = new ParseNode(source, {a: 'time'}); // @ts-ignore
+      const parseOne = new ParseNode(source, {a: 'time'});
       const parseTwo = new ParseNode(source, {b: 'number'});
       const parseThree = new ParseNode(parseTwo, {a: 'number'});
       // @ts-ignore
