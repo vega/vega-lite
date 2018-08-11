@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "description": "Horizontally concatenated charts that show different types of discretizing scales.",
   "autosize": "pad",
   "padding": 5,
   "data": [
