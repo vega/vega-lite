@@ -96,7 +96,7 @@ describe('compile/data/optimize', () => {
       expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
 
       const p1 = commonParse.children[0] as ParseNode;
-      const p2 = commonParse.children[0] as ParseNode;
+      const p2 = commonParse.children[1] as ParseNode;
 
       expect(p1.parse).toEqual({a: 'time'});
       expect(p2.parse).toEqual({a: 'number'});
