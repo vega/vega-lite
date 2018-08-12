@@ -10,7 +10,14 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
+<<<<<<< HEAD
       "format": {"type": "json", "parse": {"Year": "date"}},
+=======
+      "format": {
+        "type": "json",
+        "parse": {"Year": "date", "Miles_per_Gallon": "number"}
+      },
+>>>>>>> [Travis] Update examples (build: 18868)
       "transform": [
         {"type": "filter", "expr": "datum.Miles_per_Gallon !== null"},
         {
@@ -27,6 +34,7 @@
           "sort": {"field": ["year"], "order": ["ascending"]},
           "ignorePeers": false,
           "frame": [null, 0]
+<<<<<<< HEAD
         }
       ]
     },
@@ -49,6 +57,8 @@
           "type": "formula",
           "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
           "as": "Miles_per_Gallon"
+=======
+>>>>>>> [Travis] Update examples (build: 18868)
         },
         {
           "type": "formula",

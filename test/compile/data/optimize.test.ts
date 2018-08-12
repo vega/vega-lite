@@ -4,7 +4,9 @@ import {assert} from 'chai';
 import {DataFlowNode, OutputNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {mergeParse, optimizeDataflow} from '../../../src/compile/data/optimize';
+import {moveParseUp} from '../../../src/compile/data/optimizers';
 import {SourceNode} from '../../../src/compile/data/source';
+import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 
 describe('compile/data/optimize', () => {
   describe('mergeParse', () => {

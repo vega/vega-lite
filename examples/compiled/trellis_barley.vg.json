@@ -47,6 +47,7 @@
           "as": ["median_yield"]
         }
       ]
+<<<<<<< HEAD
     },
     {
       "name": "data_3",
@@ -86,6 +87,8 @@
           "as": ["median_yield"]
         }
       ]
+=======
+>>>>>>> [Travis] Update examples (build: 18868)
     }
   ],
   "signals": [
@@ -253,7 +256,11 @@
     {
       "name": "trellis_barley_x",
       "type": "linear",
+<<<<<<< HEAD
       "domain": {"data": "data_5", "field": "median_yield"},
+=======
+      "domain": {"data": "data_2", "field": "median_yield"},
+>>>>>>> [Travis] Update examples (build: 18868)
       "range": [0, {"signal": "trellis_barley_child_width"}],
       "zero": false,
       "nice": true
@@ -272,7 +279,11 @@
     {
       "name": "trellis_barley_color",
       "type": "ordinal",
+<<<<<<< HEAD
       "domain": {"data": "data_5", "field": "year", "sort": true},
+=======
+      "domain": {"data": "data_2", "field": "year", "sort": true},
+>>>>>>> [Travis] Update examples (build: 18868)
       "range": "category"
     }
   ],
