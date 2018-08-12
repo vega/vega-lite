@@ -157,19 +157,6 @@ export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
   return {continueFlag: true, mutatedFlag: flag};
 }
 
-export function moveParse(node: DataFlowNode): optimizers.OptimizerFlags {
-  let continueFlag = false;
-  let mutatedFlag = false;
-  let temp = optimizers.moveParseUp(node);
-  continueFlag = temp.continueFlag || continueFlag;
-  mutatedFlag = temp.mutatedFlag || mutatedFlag;
-  temp = mergeParse(node);
-  continueFlag = temp.continueFlag || continueFlag;
-  mutatedFlag = temp.mutatedFlag || mutatedFlag;
-
-  return {continueFlag, mutatedFlag};
-}
-
 function optimizationDataflowHelper(dataComponent: DataComponent) {
   let roots: SourceNode[] = vals(dataComponent.sources);
   let mutatedFlag = false;
@@ -187,7 +174,12 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 
   mutatedFlag =
     getLeaves(roots)
-      .map(optimizers.iterateFromLeaves(moveParse))
+      .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
+      .some(x => x === true) || mutatedFlag;
+
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.iterateFromLeaves(mergeParse))
       .some(x => x === true) || mutatedFlag;
 
   mutatedFlag =
