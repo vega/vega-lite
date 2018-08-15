@@ -27,12 +27,12 @@ import {WindowTransformNode} from './window';
  */
 // tslint:disable-next-line
 export function debug(node: DataFlowNode) {
-  console.log(
+  // console.log(
     `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
     })}`
   );
-  console.log(node);
+  // console.log(node);
   node.children.forEach(debug);
 }
 
