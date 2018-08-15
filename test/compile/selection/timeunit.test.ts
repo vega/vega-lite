@@ -104,8 +104,8 @@ describe('Selection time unit', () => {
       }
     });
     console.log(inspect(getData(model), false, null));
-    const data0 = getData(model).filter(d => d.name === 'data_1')[0].transform;
-    const data1 = getData(model).filter(d => d.name === 'data_2')[0].transform;
+    const data0 = getData(model).filter(d => d.name === 'data_0')[0].transform;
+    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
     let tuIdx = -1;
     let selIdx = -1;
     data0.forEach((tx, idx) => {
