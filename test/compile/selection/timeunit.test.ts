@@ -1,6 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
+import {inspect} from 'util';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
@@ -102,8 +103,9 @@ describe('Selection time unit', () => {
         y: {field: 'price', type: 'quantitative'}
       }
     });
-    const data0 = getData(model).filter(d => d.name === 'data_0')[0].transform;
-    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    console.log(inspect(getData(model), false, null));
+    const data0 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    const data1 = getData(model).filter(d => d.name === 'data_2')[0].transform;
     let tuIdx = -1;
     let selIdx = -1;
     data0.forEach((tx, idx) => {

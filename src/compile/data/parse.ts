@@ -84,16 +84,11 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'date';
 
       // Create parse node specifying type of input to transform as date
-<<<<<<< HEAD
       const parsedAs = ancestorParse.getWithExplicit(t.field);
       if (parsedAs.value === undefined) {
         head = new ParseNode(head, {[t.field]: derivedType});
         ancestorParse.set(t.field, derivedType, false);
       }
-=======
-      head = new ParseNode(head, {[t.field]: derivedType});
-      ancestorParse.set(t.field, derivedType, false);
->>>>>>> * Add ParseNode for aggregates in transform block
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       if (requiresSelectionId(model)) {
