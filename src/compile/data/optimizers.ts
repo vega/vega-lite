@@ -50,11 +50,6 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
       return {continueFlag: false, mutatedFlag: flag};
     }
 
-    if (parent.numChildren() > 1) {
-      // don't move parse further up but continue with parent.
-      return {continueFlag: true, mutatedFlag: flag};
-    }
-
     if (parent instanceof ParseNode) {
       flag = true;
       parent.merge(node);
@@ -69,7 +64,6 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
       // remove intersecting output fields
       for (const field in parent.producedFields()) {
         if (field in node.producedFields()) {
-          flag = true;
           delete node.parse[field];
         }
       }

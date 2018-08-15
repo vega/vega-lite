@@ -127,31 +127,14 @@ export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
     return {continueFlag: false, mutatedFlag: false};
   }
   const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
-  if (parseChildren.length > 0) {
-    const commonParse = {};
+  if (parseChildren.length > 1) {
+    flag = true;
+    const mergedParse = new ParseNode(parent, {});
     for (const parseNode of parseChildren) {
-      const parse = parseNode.parse;
-      for (const k of keys(parse)) {
-        if (commonParse[k] === undefined) {
-          commonParse[k] = parse[k];
-        } else if (commonParse[k] !== parse[k]) {
-          delete commonParse[k];
-        }
-      }
-    }
-    if (keys(commonParse).length !== 0) {
-      flag = true;
-      const mergedParseNode = new ParseNode(parent, commonParse);
-      for (const parseNode of parseChildren) {
-        for (const key of keys(commonParse)) {
-          delete parseNode.parse[key];
-        }
-        parent.removeChild(parseNode);
-        parseNode.parent = mergedParseNode;
-        if (keys(parseNode.parse).length === 0) {
-          parseNode.remove();
-        }
-      }
+      parseNode.parent = mergedParse;
+      parseNode.remove();
+      mergedParse.merge(parseNode);
+      parent.removeChild(parseNode);
     }
   }
   return {continueFlag: true, mutatedFlag: flag};

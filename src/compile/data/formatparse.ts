@@ -216,6 +216,24 @@ export class ParseNode extends DataFlowNode {
   }
 
   public merge(other: ParseNode) {
+    for (const field in this.parse) {
+      if (field in other.parse) {
+        const type1 = this.parse[field];
+        const type2 = other.parse[field];
+        // Might want to store these types in constants
+        if (type1 === 'date' || type2 === 'date') {
+          this.parse[field] = 'date';
+        } else if (type1 === 'number' || type2 === 'number') {
+          this.parse[field] = 'number';
+        } else if (type1 === 'boolean' || type2 === 'boolean') {
+          this.parse[field] = 'boolean';
+        } else if (type1 === 'string' || type2 === 'string') {
+          this.parse[field] = 'string';
+        } else {
+          throw new Error(log.message.unrecognizedParse(type1));
+        }
+      }
+    }
     this._parse = {...this._parse, ...other.parse};
     other.remove();
   }
