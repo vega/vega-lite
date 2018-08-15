@@ -13,7 +13,6 @@
     {
       "name": "data_0",
       "source": "source_0",
-<<<<<<< HEAD
       "transform": [
         {
           "type": "aggregate",
@@ -27,8 +26,6 @@
     {
       "name": "data_1",
       "source": "source_0",
-=======
->>>>>>> [Travis] Update examples (build: 18868)
       "transform": [
         {
           "type": "aggregate",
@@ -38,22 +35,6 @@
           "as": ["min_Horsepower"]
         }
       ]
-<<<<<<< HEAD
-=======
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Cylinders"],
-          "ops": ["max"],
-          "fields": ["Horsepower"],
-          "as": ["max_Horsepower"]
-        }
-      ]
->>>>>>> [Travis] Update examples (build: 18868)
     }
   ],
   "signals": [
@@ -69,11 +50,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-<<<<<<< HEAD
       "from": {"data": "data_0"},
-=======
-      "from": {"data": "data_1"},
->>>>>>> [Travis] Update examples (build: 18868)
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
@@ -92,11 +69,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-<<<<<<< HEAD
       "from": {"data": "data_0"},
-=======
-      "from": {"data": "data_1"},
->>>>>>> [Travis] Update examples (build: 18868)
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -120,7 +93,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -139,11 +112,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-<<<<<<< HEAD
       "from": {"data": "data_1"},
-=======
-      "from": {"data": "data_0"},
->>>>>>> [Travis] Update examples (build: 18868)
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -169,13 +138,8 @@
       "type": "point",
       "domain": {
         "fields": [
-<<<<<<< HEAD
           {"data": "data_0", "field": "Cylinders"},
           {"data": "data_1", "field": "Cylinders"}
-=======
-          {"data": "data_1", "field": "Cylinders"},
-          {"data": "data_0", "field": "Cylinders"}
->>>>>>> [Travis] Update examples (build: 18868)
         ],
         "sort": true
       },
@@ -187,13 +151,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-<<<<<<< HEAD
           {"data": "data_0", "field": "max_Horsepower"},
           {"data": "data_1", "field": "min_Horsepower"}
-=======
-          {"data": "data_1", "field": "max_Horsepower"},
-          {"data": "data_0", "field": "min_Horsepower"}
->>>>>>> [Travis] Update examples (build: 18868)
         ]
       },
       "range": [{"signal": "height"}, 0],

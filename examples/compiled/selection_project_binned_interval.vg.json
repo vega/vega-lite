@@ -19,7 +19,7 @@
         {
           "type": "extent",
           "field": "Acceleration",
-          "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
+          "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
         },
         {
           "type": "bin",
@@ -28,9 +28,13 @@
             "bin_maxbins_10_Acceleration",
             "bin_maxbins_10_Acceleration_end"
           ],
-          "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
+          "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
           "maxbins": 10,
-          "extent": {"signal": "layer_0_bin_maxbins_10_Acceleration_extent"}
+          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
+        },
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -51,7 +55,7 @@
         {
           "type": "extent",
           "field": "Acceleration",
-          "signal": "layer_1_bin_maxbins_10_Acceleration_extent"
+          "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
         },
         {
           "type": "bin",
@@ -60,13 +64,9 @@
             "bin_maxbins_10_Acceleration",
             "bin_maxbins_10_Acceleration_end"
           ],
-          "signal": "layer_1_bin_maxbins_10_Acceleration_bins",
+          "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
           "maxbins": 10,
-          "extent": {"signal": "layer_1_bin_maxbins_10_Acceleration_extent"}
-        },
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "extent": {"signal": "layer_0_bin_maxbins_10_Acceleration_extent"}
         },
         {
           "type": "aggregate",
@@ -279,7 +279,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -307,7 +307,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -380,10 +380,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration_end"},
           {"data": "data_1", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration_end"}
+          {"data": "data_1", "field": "bin_maxbins_10_Acceleration_end"},
+          {"data": "data_0", "field": "bin_maxbins_10_Acceleration"},
+          {"data": "data_0", "field": "bin_maxbins_10_Acceleration_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -394,8 +394,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_1", "field": "count_*"},
+          {"data": "data_0", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],

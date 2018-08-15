@@ -10,20 +10,19 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-<<<<<<< HEAD
-      "format": {"type": "json", "parse": {"Year": "date"}},
-=======
-      "format": {
-        "type": "json",
-        "parse": {"Year": "date", "Miles_per_Gallon": "number"}
-      },
->>>>>>> [Travis] Update examples (build: 18868)
+      "format": {"type": "json"},
       "transform": [
         {"type": "filter", "expr": "datum.Miles_per_Gallon !== null"},
         {
           "type": "formula",
           "as": "year",
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+        },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
+          "as": "Miles_per_Gallon"
         },
         {
           "type": "window",
@@ -34,31 +33,6 @@
           "sort": {"field": ["year"], "order": ["ascending"]},
           "ignorePeers": false,
           "frame": [null, 0]
-<<<<<<< HEAD
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "year_Year",
-          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-=======
->>>>>>> [Travis] Update examples (build: 18868)
         },
         {
           "type": "formula",
@@ -73,7 +47,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -98,7 +72,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -118,22 +92,15 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "year_Year"},
-          {"data": "data_0", "field": "year_Year"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Miles_per_Gallon"},
-          {"data": "data_0", "field": "Average_MPG"}
-        ]
+        "data": "source_0",
+        "fields": ["Miles_per_Gallon", "Average_MPG"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,

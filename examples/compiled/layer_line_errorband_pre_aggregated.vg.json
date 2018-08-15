@@ -36,7 +36,21 @@
       ]
     },
     {
-      "name": "data_0",
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "as": "year_Year",
+          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+        },
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {"type": "formula", "expr": "datum.ci1", "as": "lower_ci1"},
+        {"type": "formula", "expr": "datum.ci0", "as": "upper_ci1"}
+      ]
+    },
+    {
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -44,31 +58,12 @@
           "expr": "toNumber(datum[\"center\"])",
           "as": "center"
         },
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "formula",
           "as": "year_Year",
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
         }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "year_Year",
-          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {"type": "formula", "expr": "datum.ci1", "as": "lower_ci1"},
-        {"type": "formula", "expr": "datum.ci0", "as": "upper_ci1"}
       ]
     }
   ],
@@ -78,7 +73,7 @@
       "type": "area",
       "style": ["area", "errorband-band"],
       "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
@@ -101,7 +96,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_Year\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -123,8 +118,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "year_Year"},
-          {"data": "data_1", "field": "year_Year"}
+          {"data": "data_1", "field": "year_Year"},
+          {"data": "data_2", "field": "year_Year"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -134,9 +129,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "lower_ci1"},
-          {"data": "data_2", "field": "upper_ci1"},
-          {"data": "data_1", "field": "center"}
+          {"data": "data_1", "field": "lower_ci1"},
+          {"data": "data_1", "field": "upper_ci1"},
+          {"data": "data_2", "field": "center"}
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -22,6 +22,8 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"},
         {
           "type": "window",
           "params": [null],
@@ -114,22 +116,6 @@
           "fields": ["median_y_by_b"],
           "as": ["median_median_y_by_b"]
         }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
-      ]
-    },
-    {
-      "name": "data_5",
-      "source": "data_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
       ]
     }
   ],
@@ -269,14 +255,6 @@
               "as": ["median_median_y_by_b"]
             }
           ]
-        },
-        {
-          "source": "facet",
-          "name": "data_2",
-          "transform": [
-            {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-            {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
-          ]
         }
       ],
       "encode": {
@@ -290,7 +268,7 @@
           "name": "child_layer_0_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_2"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -399,7 +377,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_5", "field": "x"},
+          {"data": "data_0", "field": "x"},
           {"data": "data_2", "field": "median_median_x_by_a"}
         ]
       },
@@ -412,7 +390,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_5", "field": "y"},
+          {"data": "data_0", "field": "y"},
           {"data": "data_3", "field": "median_median_y_by_b"}
         ]
       },

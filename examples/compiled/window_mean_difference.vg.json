@@ -8,7 +8,7 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"IMDB_Rating": "number"}},
       "transform": [
         {"type": "filter", "expr": "datum.IMDB_Rating != null"},
         {
@@ -38,17 +38,6 @@
           "as": ["average_AverageRating"]
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
-        }
-      ]
     }
   ],
   "signals": [
@@ -63,7 +52,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -113,7 +102,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "IMDB_Rating"},
+          {"data": "source_0", "field": "IMDB_Rating"},
           {"data": "data_0", "field": "average_AverageRating"}
         ]
       },
@@ -124,7 +113,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_1", "field": "Title", "sort": true},
+      "domain": {"data": "source_0", "field": "Title", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

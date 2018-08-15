@@ -33,8 +33,8 @@
           "type": "aggregate",
           "groupby": ["month_date", "location"],
           "ops": ["mean"],
-          "fields": ["temp_max"],
-          "as": ["mean_temp_max"]
+          "fields": ["precipitation"],
+          "as": ["mean_precipitation"]
         }
       ]
     },
@@ -46,8 +46,8 @@
           "type": "aggregate",
           "groupby": ["month_date", "location"],
           "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
+          "fields": ["wind"],
+          "as": ["mean_wind"]
         }
       ]
     },
@@ -59,8 +59,8 @@
           "type": "aggregate",
           "groupby": ["month_date", "location"],
           "ops": ["mean"],
-          "fields": ["wind"],
-          "as": ["mean_wind"]
+          "fields": ["temp_max"],
+          "as": ["mean_temp_max"]
         }
       ]
     }
@@ -86,7 +86,7 @@
           "from": {
             "facet": {
               "name": "faceted_path_child_temp_max_main",
-              "data": "data_0",
+              "data": "data_2",
               "groupby": ["location"]
             }
           },
@@ -185,7 +185,7 @@
           "from": {
             "facet": {
               "name": "faceted_path_child_precipitation_main",
-              "data": "data_1",
+              "data": "data_0",
               "groupby": ["location"]
             }
           },
@@ -290,7 +290,7 @@
           "from": {
             "facet": {
               "name": "faceted_path_child_wind_main",
-              "data": "data_2",
+              "data": "data_1",
               "groupby": ["location"]
             }
           },
@@ -382,9 +382,9 @@
       "type": "ordinal",
       "domain": {
         "fields": [
+          {"data": "data_2", "field": "location"},
           {"data": "data_0", "field": "location"},
-          {"data": "data_1", "field": "location"},
-          {"data": "data_2", "field": "location"}
+          {"data": "data_1", "field": "location"}
         ],
         "sort": true
       },
@@ -393,13 +393,13 @@
     {
       "name": "child_temp_max_x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "month_date"},
+      "domain": {"data": "data_2", "field": "month_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "child_temp_max_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "mean_temp_max"},
+      "domain": {"data": "data_2", "field": "mean_temp_max"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -407,13 +407,13 @@
     {
       "name": "child_precipitation_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "month_date"},
+      "domain": {"data": "data_0", "field": "month_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "child_precipitation_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "mean_precipitation"},
+      "domain": {"data": "data_0", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -421,13 +421,13 @@
     {
       "name": "child_wind_x",
       "type": "time",
-      "domain": {"data": "data_2", "field": "month_date"},
+      "domain": {"data": "data_1", "field": "month_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "child_wind_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "mean_wind"},
+      "domain": {"data": "data_1", "field": "mean_wind"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -23,13 +23,13 @@
         {
           "type": "geojson",
           "fields": ["lon", "lat"],
-          "signal": "layer_1_layer_0_geojson_0"
+          "signal": "layer_1_layer_1_geojson_0"
         },
         {
           "type": "geopoint",
           "projection": "projection",
           "fields": ["lon", "lat"],
-          "as": ["layer_1_layer_0_x", "layer_1_layer_0_y"]
+          "as": ["layer_1_layer_1_x", "layer_1_layer_1_y"]
         }
       ]
     },
@@ -40,13 +40,13 @@
         {
           "type": "geojson",
           "fields": ["lon", "lat"],
-          "signal": "layer_1_layer_1_geojson_0"
+          "signal": "layer_1_layer_0_geojson_0"
         },
         {
           "type": "geopoint",
           "projection": "projection",
           "fields": ["lon", "lat"],
-          "as": ["layer_1_layer_1_x", "layer_1_layer_1_y"]
+          "as": ["layer_1_layer_0_x", "layer_1_layer_0_y"]
         }
       ]
     }
@@ -76,7 +76,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -94,7 +94,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "dy": {"value": -6},

@@ -7,7 +7,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Cylinders": "number"}},
       "transform": [
         {
           "type": "aggregate",
@@ -56,17 +56,6 @@
           "ops": ["min"],
           "fields": ["xc"],
           "as": ["min_xc"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Cylinders\"])",
-          "as": "Cylinders"
         }
       ]
     }
@@ -147,7 +136,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "data_1"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "fill": [
@@ -214,8 +203,8 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "min_xc"},
-          {"data": "data_1", "field": "x"},
-          {"data": "data_1", "field": "x2"},
+          {"data": "source_0", "field": "x"},
+          {"data": "source_0", "field": "x2"},
           {"data": "source_0", "field": "xc"}
         ]
       },
@@ -229,7 +218,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
+          {"data": "source_0", "field": "Origin"}
         ],
         "sort": true
       },
@@ -238,20 +227,14 @@
     {
       "name": "opacity",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Cylinders"},
+      "domain": {"data": "source_0", "field": "Cylinders"},
       "range": [0.3, 0.8],
       "zero": false
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "y"},
-          {"data": "data_1", "field": "y2"},
-          {"data": "source_0", "field": "yc"}
-        ]
-      },
+      "domain": {"data": "source_0", "fields": ["y", "y2", "yc"]},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

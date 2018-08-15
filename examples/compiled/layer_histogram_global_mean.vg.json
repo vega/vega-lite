@@ -16,19 +16,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
-          "as": ["mean_IMDB_Rating"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
           "type": "extent",
           "field": "IMDB_Rating",
           "signal": "layer_0_bin_maxbins_10_IMDB_Rating_extent"
@@ -55,6 +42,19 @@
           "as": ["count_*"]
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["mean"],
+          "fields": ["IMDB_Rating"],
+          "as": ["mean_IMDB_Rating"]
+        }
+      ]
     }
   ],
   "marks": [
@@ -62,7 +62,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": [
@@ -90,7 +90,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -117,9 +117,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating_end"},
-          {"data": "data_0", "field": "mean_IMDB_Rating"}
+          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating"},
+          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating_end"},
+          {"data": "data_1", "field": "mean_IMDB_Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -129,7 +129,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -37,7 +37,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_population_geojson_0"
+          "signal": "child_engineers_geojson_0"
         }
       ]
     },
@@ -55,7 +55,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_engineers_geojson_0"
+          "signal": "child_hurricanes_geojson_0"
         }
       ]
     },
@@ -73,7 +73,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child_hurricanes_geojson_0"
+          "signal": "child_population_geojson_0"
         }
       ]
     }
@@ -107,7 +107,7 @@
           "name": "child_population_marks",
           "type": "shape",
           "style": ["geoshape"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -145,7 +145,7 @@
           "name": "child_engineers_marks",
           "type": "shape",
           "style": ["geoshape"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -183,7 +183,7 @@
           "name": "child_hurricanes_marks",
           "type": "shape",
           "style": ["geoshape"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -214,21 +214,21 @@
     {
       "name": "child_population_color",
       "type": "sequential",
-      "domain": {"data": "data_0", "field": "population"},
+      "domain": {"data": "data_2", "field": "population"},
       "range": "heatmap",
       "zero": false
     },
     {
       "name": "child_engineers_color",
       "type": "sequential",
-      "domain": {"data": "data_1", "field": "engineers"},
+      "domain": {"data": "data_0", "field": "engineers"},
       "range": "heatmap",
       "zero": false
     },
     {
       "name": "child_hurricanes_color",
       "type": "sequential",
-      "domain": {"data": "data_2", "field": "hurricanes"},
+      "domain": {"data": "data_1", "field": "hurricanes"},
       "range": "heatmap",
       "zero": false
     }

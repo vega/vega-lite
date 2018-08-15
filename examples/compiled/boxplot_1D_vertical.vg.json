@@ -17,6 +17,26 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "window",
+          "params": [null, null],
+          "as": ["lower_box_people", "upper_box_people"],
+          "ops": ["q1", "q3"],
+          "fields": ["people", "people"],
+          "sort": {"field": [], "order": []},
+          "groupby": [],
+          "frame": [null, null]
+        },
+        {
+          "type": "filter",
+          "expr": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["q1", "q3", "median", "min", "max"],
@@ -45,26 +65,6 @@
           "as": "lower_whisker_people"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "window",
-          "params": [null, null],
-          "as": ["lower_box_people", "upper_box_people"],
-          "ops": ["q1", "q3"],
-          "fields": ["people", "people"],
-          "sort": {"field": [], "order": []},
-          "groupby": [],
-          "frame": [null, null]
-        },
-        {
-          "type": "filter",
-          "expr": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
-        }
-      ]
     }
   ],
   "marks": [
@@ -72,7 +72,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -95,7 +95,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -118,7 +118,7 @@
       "name": "layer_0_layer_2_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -142,7 +142,7 @@
       "name": "layer_0_layer_3_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -167,7 +167,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point", "boxplot-outliers"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -200,12 +200,12 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "lower_whisker_people"},
-          {"data": "data_0", "field": "lower_box_people"},
-          {"data": "data_0", "field": "upper_box_people"},
-          {"data": "data_0", "field": "upper_whisker_people"},
-          {"data": "data_0", "field": "mid_box_people"},
-          {"data": "data_1", "field": "people"}
+          {"data": "data_1", "field": "lower_whisker_people"},
+          {"data": "data_1", "field": "lower_box_people"},
+          {"data": "data_1", "field": "upper_box_people"},
+          {"data": "data_1", "field": "upper_whisker_people"},
+          {"data": "data_1", "field": "mid_box_people"},
+          {"data": "data_0", "field": "people"}
         ]
       },
       "range": [{"signal": "height"}, 0],

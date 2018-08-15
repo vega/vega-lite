@@ -18,6 +18,11 @@
           "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
         },
         {
+          "type": "formula",
+          "expr": "toNumber(datum[\"IMDB_Rating\"])",
+          "as": "IMDB_Rating"
+        },
+        {
           "type": "window",
           "params": [null],
           "as": ["AverageYearRating"],
@@ -30,17 +35,6 @@
         {
           "type": "filter",
           "expr": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
         }
       ]
     }
@@ -58,7 +52,7 @@
       "type": "rect",
       "clip": true,
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -109,10 +103,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "IMDB_Rating"},
-          {"data": "source_0", "field": "AverageYearRating"}
-        ]
+        "data": "source_0",
+        "fields": ["IMDB_Rating", "AverageYearRating"]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -121,13 +113,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Title"},
-          {"data": "source_0", "field": "Title"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Title", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

@@ -9,7 +9,7 @@
       "url": "data/population.json",
       "format": {
         "type": "json",
-        "parse": {"age": "number", "people": "number"}
+        "parse": {"people": "number", "age": "number"}
       },
       "transform": [
         {"type": "filter", "expr": "datum.year == 2000"},

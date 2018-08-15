@@ -23,49 +23,6 @@
       "transform": [
         {
           "type": "extent",
-          "field": "Horsepower",
-          "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
-        },
-        {
-          "type": "bin",
-          "field": "Horsepower",
-          "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
-          "signal": "child_Horsepower_bin_maxbins_10_Horsepower_bins",
-          "maxbins": 10,
-          "extent": {
-            "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
-          }
-        },
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_10_Horsepower",
-            "bin_maxbins_10_Horsepower_end",
-            "Origin"
-          ],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        },
-        {
-          "type": "stack",
-          "groupby": [
-            "bin_maxbins_10_Horsepower",
-            "bin_maxbins_10_Horsepower_end"
-          ],
-          "field": "count_*",
-          "sort": {"field": ["Origin"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
-          "offset": "zero"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
           "field": "Miles_per_Gallon",
           "signal": "child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
         },
@@ -107,7 +64,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -151,6 +108,49 @@
           "offset": "zero"
         }
       ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "extent",
+          "field": "Horsepower",
+          "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Horsepower",
+          "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
+          "signal": "child_Horsepower_bin_maxbins_10_Horsepower_bins",
+          "maxbins": 10,
+          "extent": {
+            "signal": "child_Horsepower_bin_maxbins_10_Horsepower_extent"
+          }
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_Horsepower",
+            "bin_maxbins_10_Horsepower_end",
+            "Origin"
+          ],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
+        },
+        {
+          "type": "stack",
+          "groupby": [
+            "bin_maxbins_10_Horsepower",
+            "bin_maxbins_10_Horsepower_end"
+          ],
+          "field": "count_*",
+          "sort": {"field": ["Origin"], "order": ["descending"]},
+          "as": ["count_*_start", "count_*_end"],
+          "offset": "zero"
+        }
+      ]
     }
   ],
   "layout": {
@@ -172,7 +172,7 @@
           "name": "child_Horsepower_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -250,7 +250,7 @@
           "name": "child_Miles_per_Gallon_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -334,7 +334,7 @@
           "name": "child_Acceleration_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -407,9 +407,9 @@
       "type": "ordinal",
       "domain": {
         "fields": [
+          {"data": "data_2", "field": "Origin"},
           {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"},
-          {"data": "data_2", "field": "Origin"}
+          {"data": "data_1", "field": "Origin"}
         ],
         "sort": true
       },
@@ -419,7 +419,7 @@
       "name": "child_Horsepower_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
+        "data": "data_2",
         "fields": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"]
       },
       "range": [0, {"signal": "width"}],
@@ -428,7 +428,7 @@
     {
       "name": "child_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_2", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -437,7 +437,7 @@
       "name": "child_Miles_per_Gallon_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
+        "data": "data_0",
         "fields": [
           "bin_maxbins_10_Miles_per_Gallon",
           "bin_maxbins_10_Miles_per_Gallon_end"
@@ -449,7 +449,7 @@
     {
       "name": "child_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "data_1", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_0", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -458,7 +458,7 @@
       "name": "child_Acceleration_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
+        "data": "data_1",
         "fields": [
           "bin_maxbins_10_Acceleration",
           "bin_maxbins_10_Acceleration_end"
@@ -470,7 +470,7 @@
     {
       "name": "child_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "data_2", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_1", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
