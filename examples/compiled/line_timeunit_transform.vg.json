@@ -10,18 +10,15 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv",
+        "parse": {"date": "date", "temp_max": "number"}
+      },
       "transform": [
         {
           "type": "formula",
           "as": "month",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
         },
         {
           "type": "aggregate",

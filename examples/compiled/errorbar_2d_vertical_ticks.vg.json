@@ -9,14 +9,13 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
           "type": "formula",
           "as": "year_Year",
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
         },
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
         {
           "type": "aggregate",
           "groupby": ["year_Year"],

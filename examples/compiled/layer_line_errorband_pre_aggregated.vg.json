@@ -36,21 +36,7 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "as": "year_Year",
-          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
-        },
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
-        {"type": "formula", "expr": "datum.ci1", "as": "lower_ci1"},
-        {"type": "formula", "expr": "datum.ci0", "as": "upper_ci1"}
-      ]
-    },
-    {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -58,7 +44,26 @@
           "expr": "toNumber(datum[\"center\"])",
           "as": "center"
         },
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "formula",
+          "as": "year_Year",
+          "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
+        },
+        {"type": "formula", "expr": "datum.ci1", "as": "lower_ci1"},
+        {"type": "formula", "expr": "datum.ci0", "as": "upper_ci1"}
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
         {
           "type": "formula",
           "as": "year_Year",
