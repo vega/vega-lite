@@ -5,7 +5,7 @@ import {Channel, ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {accessPathWithDatum, Dict, logicalExpr, varName} from '../../util';
+import {accessPathWithDatum, Dict, keys, logicalExpr, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
@@ -137,9 +137,12 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     });
   });
 
-  const facetModel = getFacetModel(model);
-  if (signals.length && facetModel) {
-    const name = stringValue(facetModel.getName('cell'));
+  return signals;
+}
+
+export function assembleFacetSignals(model: FacetModel, signals: any[]) {
+  if (model.component.selection && keys(model.component.selection).length) {
+    const name = stringValue(model.getName('cell'));
     signals.unshift({
       name: 'facet',
       value: {},

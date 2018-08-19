@@ -1,6 +1,7 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
+import {FacetModel} from '../../../src/compile/facet';
 import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseModel} from '../../util';
@@ -37,7 +38,7 @@ describe('Faceted Selections', () => {
   const unit = model.children[0].children[1] as UnitModel;
 
   it('should assemble a facet signal', () => {
-    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(unit, []), [
+    assert.includeDeepMembers(selection.assembleFacetSignals(model as FacetModel, []), [
       {
         name: 'facet',
         value: {},
