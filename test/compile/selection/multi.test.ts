@@ -21,6 +21,16 @@ describe('Multi Selection', () => {
       on: 'mouseover',
       toggle: 'event.ctrlKey',
       encodings: ['y', 'color']
+    },
+    'thr-ee': {
+      type: 'multi',
+      fields: ['Horsepower'],
+      init: {Horsepower: 50}
+    },
+    four: {
+      type: 'multi',
+      encodings: ['x', 'color'],
+      init: {Horsepower: 50, color: 'Japan'}
     }
   }));
 
@@ -55,13 +65,52 @@ describe('Multi Selection', () => {
       }
     ]);
 
+    const threeSg = multi.signals(model, selCmpts['thr_ee']);
+    expect(threeSg).toEqual([
+      {
+        name: 'thr_ee_tuple',
+        update: '{unit: "", fields: thr_ee_tuple_fields, values: [50]}',
+        react: false,
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
+    const fourSg = multi.signals(model, selCmpts['four']);
+    expect(fourSg).toEqual([
+      {
+        name: 'four_tuple',
+        update: '{unit: "", fields: four_tuple_fields, values: [50,"Japan"]}',
+        react: false,
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
+    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg, threeSg, fourSg)));
   });
 
   it('builds unit datasets', () => {
     const data: any[] = [];
-    expect(selection.assembleUnitSelectionData(model, data)).toEqual([{name: 'one_store'}, {name: 'two_store'}]);
+    expect(selection.assembleUnitSelectionData(model, data)).toEqual([
+      {name: 'one_store'},
+      {name: 'two_store'},
+      {name: 'thr_ee_store'},
+      {name: 'four_store'}
+    ]);
   });
 
   it('leaves marks alone', () => {
