@@ -5,6 +5,7 @@ import {SelectionDef} from '../../../selection';
 import {Dict, keys} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {ProjectSelectionComponent, SelectionComponent, TUPLE, TupleStoreType} from '../selection';
+import scales from './scales';
 import {TransformCompiler} from './transforms';
 
 export const TUPLE_FIELDS = '_fields';
@@ -71,7 +72,11 @@ const project: TransformCompiler = {
     }
 
     if (init) {
-      selCmpt.init = proj.map(p => init[p.channel] || init[p.field]);
+      if (scales.has(selCmpt)) {
+        log.warn(log.message.NO_INIT_SCALE_BINDINGS);
+      } else {
+        selCmpt.init = proj.map(p => (init[p.channel] !== undefined ? init[p.channel] : init[p.field]));
+      }
     }
 
     if (keys(timeUnits).length) {

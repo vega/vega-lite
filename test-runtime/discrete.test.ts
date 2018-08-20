@@ -51,6 +51,22 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       test((i: number) => embed(spec('unit', i, {type, fields})));
     });
 
+    it('should initialize', () => {
+      embed(
+        spec('unit', 0, {
+          type,
+          encodings: ['x', 'color'],
+          init: {x: 4, color: 0}
+        })
+      );
+      const store = browser.execute('return view.data("sel_store")').value;
+      assert.lengthOf(store, 1);
+      assert.lengthOf(store[0].fields, 2);
+      assert.lengthOf(store[0].values, 2);
+      assert.deepEqual(store[0].values, [4, 0]);
+      testRender('init');
+    });
+
     it('should clear out the store', () => {
       for (let i = 0; i < hits.qq_clear.length; i++) {
         embed(spec('unit', i, {type}));

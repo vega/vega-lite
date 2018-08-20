@@ -25,6 +25,16 @@ describe('Single Selection', () => {
       on: 'mouseover',
       encodings: ['y', 'color'],
       resolve: 'intersect'
+    },
+    'thr-ee': {
+      type: 'single',
+      fields: ['Horsepower'],
+      init: {Horsepower: 50}
+    },
+    four: {
+      type: 'single',
+      encodings: ['x', 'color'],
+      init: {x: 50, Origin: 'Japan'}
     }
   }));
 
@@ -59,8 +69,42 @@ describe('Single Selection', () => {
       }
     ]);
 
+    const threeSg = single.signals(model, selCmpts['thr_ee']);
+    assert.sameDeepMembers(threeSg, [
+      {
+        name: 'thr_ee_tuple',
+        update: '{unit: "", fields: thr_ee_tuple_fields, values: [50]}',
+        react: false,
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [datum["Horsepower"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
+    const fourSg = single.signals(model, selCmpts['four']);
+    assert.sameDeepMembers(fourSg, [
+      {
+        name: 'four_tuple',
+        update: '{unit: "", fields: four_tuple_fields, values: [50,"Japan"]}',
+        react: false,
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [datum["Horsepower"], datum["Origin"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    assert.includeDeepMembers(signals, oneSg.concat(twoSg, threeSg, fourSg));
   });
 
   it('builds modify signals', () => {
@@ -106,7 +150,9 @@ describe('Single Selection', () => {
     const data: any[] = [];
     assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
       {name: 'one_store'},
-      {name: 'two_store'}
+      {name: 'two_store'},
+      {name: 'thr_ee_store'},
+      {name: 'four_store'}
     ]);
   });
 

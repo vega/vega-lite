@@ -119,6 +119,8 @@ export namespace message {
   export const SCALE_BINDINGS_CONTINUOUS =
     'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+  export const NO_INIT_SCALE_BINDINGS = 'Selections bound to scales cannot be separately initialized.';
+
   // REPEAT
   export function noSuchRepeatedValue(field: string) {
     return `Unknown repeated value "${field}".`;
