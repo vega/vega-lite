@@ -22,7 +22,7 @@ const inputBindings: TransformCompiler = {
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,
-          value: init ? init[i] : null,
+          ...(init ? {value: init[i]} : {}),
           on: [
             {
               events: selCmpt.events,
