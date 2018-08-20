@@ -43,6 +43,7 @@ export interface BaseSelectionDef {
    * When set to `none`, empty selections contain no data values.
    */
   empty?: 'all' | 'none';
+  init?: {[key: string]: number | string};
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {

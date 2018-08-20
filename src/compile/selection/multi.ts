@@ -6,6 +6,7 @@ import {TUPLE_FIELDS} from './transforms/project';
 export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+  const init = selCmpt.init;
   const proj = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
   const values = proj
@@ -29,7 +30,7 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   return [
     {
       name: name + TUPLE,
-      value: {},
+      update: init ? `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: ${JSON.stringify(selCmpt.init)}}` : '',
       on: [
         {
           events: selCmpt.events,
