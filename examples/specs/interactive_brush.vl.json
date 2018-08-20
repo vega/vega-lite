@@ -4,7 +4,8 @@
   "data": {"url": "data/cars.json"},
   "selection": {
     "brush": {
-      "type": "interval"
+      "type": "interval",
+      "init": {"x": [55, 160], "y": [13, 37]}
     }
   },
   "mark": "point",
