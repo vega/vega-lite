@@ -28,16 +28,20 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   // for constant null states but varying toggles (e.g., shift-click in
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
+  const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
   return [
     {
       name: name + TUPLE,
-      update: init ? `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: ${JSON.stringify(selCmpt.init)}}` : '',
+      ...(init
+        ? {
+            update: `{${update}: ${JSON.stringify(init)}}`,
+            react: false
+          }
+        : {value: []}),
       on: [
         {
           events: selCmpt.events,
-          update:
-            `datum && item().mark.marktype !== 'group' ? ` +
-            `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
+          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
           force: true
         }
       ]
