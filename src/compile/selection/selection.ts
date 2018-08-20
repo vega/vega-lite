@@ -28,6 +28,7 @@ export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export interface SelectionComponent {
   name: string;
   type: SelectionType;
+  init?: (number | string)[];
   events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
@@ -136,12 +137,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
 
     signals.push({
       name: name + MODIFY,
-      on: [
-        {
-          events: {signal: name + TUPLE},
-          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
-        }
-      ]
+      update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
     });
   });
 
