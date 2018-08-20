@@ -29,7 +29,6 @@ describe('Multi Selection', () => {
     expect(oneSg).toEqual([
       {
         name: 'one_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['one'].events,
@@ -45,7 +44,6 @@ describe('Multi Selection', () => {
     expect(twoSg).toEqual([
       {
         name: 'two_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['two'].events,
