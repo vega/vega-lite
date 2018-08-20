@@ -87,21 +87,11 @@ describe('Toggle Selection Transform', () => {
     assert.includeDeepMembers(signals, [
       {
         name: 'one_modify',
-        on: [
-          {
-            events: {signal: 'one_tuple'},
-            update: `modify(\"one_store\", ${oneExpr})`
-          }
-        ]
+        update: `modify(\"one_store\", ${oneExpr})`
       },
       {
         name: 'two_modify',
-        on: [
-          {
-            events: {signal: 'two_tuple'},
-            update: `modify(\"two_store\", ${twoExpr})`
-          }
-        ]
+        update: `modify(\"two_store\", ${twoExpr})`
       }
     ]);
   });

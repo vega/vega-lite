@@ -31,7 +31,6 @@ describe('Multi Selection', () => {
     assert.sameDeepMembers(oneSg, [
       {
         name: 'one_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['one'].events,
@@ -47,7 +46,6 @@ describe('Multi Selection', () => {
     assert.sameDeepMembers(twoSg, [
       {
         name: 'two_tuple',
-        value: {},
         on: [
           {
             events: selCmpts['two'].events,

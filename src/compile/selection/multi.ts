@@ -37,7 +37,7 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
             update: `{${update}: ${JSON.stringify(init)}}`,
             react: false
           }
-        : {value: []}),
+        : {}),
       on: [
         {
           events: selCmpt.events,

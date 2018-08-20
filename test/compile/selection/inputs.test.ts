@@ -65,7 +65,6 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'one__vgsid_',
-        value: '',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -90,7 +89,6 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'two_Horsepower',
-        value: '',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -101,7 +99,6 @@ describe('Inputs Selection Transform', () => {
       },
       {
         name: 'two_Cylinders',
-        value: '',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -126,7 +123,6 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'three_Origin',
-        value: '',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -141,7 +137,6 @@ describe('Inputs Selection Transform', () => {
       },
       {
         name: 'three_Cylinders',
-        value: '',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
