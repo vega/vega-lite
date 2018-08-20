@@ -42,6 +42,19 @@ describe('Interval Selections', () => {
         strokeDashOffset: 3,
         strokeOpacity: 0.25
       }
+    },
+    four: {
+      type: 'interval',
+      translate: false,
+      zoom: false,
+      encodings: ['x'],
+      init: {x: [50, 70]}
+    },
+    five: {
+      type: 'interval',
+      translate: false,
+      zoom: false,
+      init: {x: [50, 60], y: [23, 54]}
     }
   }));
 
@@ -169,6 +182,111 @@ describe('Interval Selections', () => {
             '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
         }
       ]);
+
+      const fourSg = interval.signals(model, selCmpts['four']);
+      assert.includeDeepMembers(fourSg, [
+        {
+          name: 'four_x',
+          update: '[scale("x", 50),scale("x", 70)]',
+          react: false,
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[x(unit), x(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[four_x[0], clamp(x(unit), 0, width)]'
+            },
+            {
+              events: {signal: 'four_scale_trigger'},
+              update: '[scale("x", four_Horsepower[0]),scale("x", four_Horsepower[1])]'
+            }
+          ]
+        },
+        {
+          name: 'four_Horsepower',
+          value: [50, 70],
+          on: [
+            {
+              events: {signal: 'four_x'},
+              update: 'four_x[0] === four_x[1] ? null : invert("x", four_x)'
+            }
+          ]
+        },
+        {
+          name: 'four_scale_trigger',
+          update:
+            '(!isArray(four_Horsepower) || (+invert("x", four_x)[0] === +four_Horsepower[0] && +invert("x", four_x)[1] === +four_Horsepower[1])) ? four_scale_trigger : {}'
+        }
+      ]);
+
+      const fiveSg = interval.signals(model, selCmpts['five']);
+      assert.includeDeepMembers(fiveSg, [
+        {
+          name: 'five_x',
+          update: '[scale("x", 50),scale("x", 60)]',
+          react: false,
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[x(unit), x(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[five_x[0], clamp(x(unit), 0, width)]'
+            },
+            {
+              events: {signal: 'five_scale_trigger'},
+              update: '[scale("x", five_Horsepower[0]),scale("x", five_Horsepower[1])]'
+            }
+          ]
+        },
+        {
+          name: 'five_Horsepower',
+          value: [50, 60],
+          on: [
+            {
+              events: {signal: 'five_x'},
+              update: 'five_x[0] === five_x[1] ? null : invert("x", five_x)'
+            }
+          ]
+        },
+        {
+          name: 'five_y',
+          update: '[scale("y", 23),scale("y", 54)]',
+          react: false,
+          on: [
+            {
+              events: parseSelector('mousedown', 'scope')[0],
+              update: '[y(unit), y(unit)]'
+            },
+            {
+              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              update: '[five_y[0], clamp(y(unit), 0, height)]'
+            },
+            {
+              events: {signal: 'five_scale_trigger'},
+              update: '[scale("y", five_Miles_per_Gallon[0]),scale("y", five_Miles_per_Gallon[1])]'
+            }
+          ]
+        },
+        {
+          name: 'five_Miles_per_Gallon',
+          value: [23, 54],
+          on: [
+            {
+              events: {signal: 'five_y'},
+              update: 'five_y[0] === five_y[1] ? null : invert("y", five_y)'
+            }
+          ]
+        },
+        {
+          name: 'five_scale_trigger',
+          update:
+            '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}'
+        }
+      ]);
     });
 
     it('builds trigger signals', () => {
@@ -208,6 +326,37 @@ describe('Interval Selections', () => {
               events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
               update:
                 'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null'
+            }
+          ]
+        }
+      ]);
+
+      const fourSg = interval.signals(model, selCmpts['four']);
+      assert.includeDeepMembers(fourSg, [
+        {
+          name: 'four_tuple',
+          update: '{unit: "", fields: four_tuple_fields, values: [[50,70]]}',
+          react: false,
+          on: [
+            {
+              events: [{signal: 'four_Horsepower'}],
+              update: 'four_Horsepower ? {unit: "", fields: four_tuple_fields, values: [four_Horsepower]} : null'
+            }
+          ]
+        }
+      ]);
+
+      const fiveSg = interval.signals(model, selCmpts['five']);
+      assert.includeDeepMembers(fiveSg, [
+        {
+          name: 'five_tuple',
+          update: '{unit: "", fields: five_tuple_fields, values: [[50,60],[23,54]]}',
+          react: false,
+          on: [
+            {
+              events: [{signal: 'five_Horsepower'}, {signal: 'five_Miles_per_Gallon'}],
+              update:
+                'five_Horsepower && five_Miles_per_Gallon ? {unit: "", fields: five_tuple_fields, values: [five_Horsepower,five_Miles_per_Gallon]} : null'
             }
           ]
         }

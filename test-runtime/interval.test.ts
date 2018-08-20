@@ -54,6 +54,17 @@ describe('interval selections at runtime in unit views', () => {
     }
   });
 
+  it('should initialize', () => {
+    embed(spec('unit', 0, {type, init: {x: [2, 7], y: [25, 37]}}));
+    const store = browser.execute('return view.data("sel_store")').value;
+    assert.lengthOf(store, 1);
+    assert.lengthOf(store[0].fields, 2);
+    assert.lengthOf(store[0].values, 2);
+    assert.deepEqual(store[0].values[0], [2, 7]);
+    assert.deepEqual(store[0].values[1], [25, 37]);
+    testRender('init');
+  });
+
   it('should clear out stored extents', () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
       embed(spec('unit', i, {type}));
