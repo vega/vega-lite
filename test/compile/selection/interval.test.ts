@@ -63,7 +63,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'one_scale_trigger'},
-                update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
+                update: '[scale("x", one_Horsepower[0]),scale("x", one_Horsepower[1])]'
               }
             ]
           },
@@ -115,7 +115,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'thr_ee_scale_trigger'},
-                update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]'
+                update: '[scale("x", thr_ee_Horsepower[0]),scale("x", thr_ee_Horsepower[1])]'
               }
             ]
           },
@@ -150,7 +150,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'thr_ee_scale_trigger'},
-                update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]'
+                update: '[scale("y", thr_ee_Miles_per_Gallon[0]),scale("y", thr_ee_Miles_per_Gallon[1])]'
               }
             ]
           },
@@ -202,7 +202,7 @@ describe('Interval Selections', () => {
           {
             events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
             update:
-              'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower, thr_ee_Miles_per_Gallon]} : null'
+              'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null'
           }
         ]
       });
@@ -249,30 +249,15 @@ describe('Interval Selections', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          on: [
-            {
-              events: {signal: 'one_tuple'},
-              update: `modify(\"one_store\", ${oneExpr})`
-            }
-          ]
+          update: `modify(\"one_store\", ${oneExpr})`
         },
         {
           name: 'two_modify',
-          on: [
-            {
-              events: {signal: 'two_tuple'},
-              update: `modify(\"two_store\", ${twoExpr})`
-            }
-          ]
+          update: `modify(\"two_store\", ${twoExpr})`
         },
         {
           name: 'thr_ee_modify',
-          on: [
-            {
-              events: {signal: 'thr_ee_tuple'},
-              update: `modify(\"thr_ee_store\", ${threeExpr})`
-            }
-          ]
+          update: `modify(\"thr_ee_store\", ${threeExpr})`
         }
       ])
     );
