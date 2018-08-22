@@ -3,6 +3,7 @@ import {assert} from 'chai';
 
 import * as log from '../../src/log';
 import {normalize} from '../../src/spec';
+import {Transform} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
 
 describe('normalizeBoxMinMax', () => {
@@ -1554,6 +1555,26 @@ describe('normalizeBoxMinMax', () => {
         ]
       }
     );
+  });
+
+  it("should not overwrite transform with boxplot's transfroms", () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {
+          type: 'boxplot',
+          extent: 'min-max'
+        },
+        transform: [{calculate: 'age * 2', as: 'age2'}],
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative', title: 'population'}}
+      },
+      defaultConfig
+    );
+
+    const transforms: Transform[] = outputSpec.transform;
+    expect(transforms).toBeDefined();
+    expect(transforms).not.toHaveLength(0);
+    expect(transforms[0]).toEqual({calculate: 'age * 2', as: 'age2'});
   });
 });
 
