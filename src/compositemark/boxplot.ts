@@ -186,7 +186,7 @@ export function normalizeBoxPlot(
   }
   return {
     ...outerSpec,
-    transform,
+    transform: (outerSpec.transform || []).concat(transform),
     layer: boxLayer
   };
 }
