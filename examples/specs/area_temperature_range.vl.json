@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "title": "Seattle Temperature Range, 2012-2015",
+  "data": {
+    "url": "data/seattle-weather.csv"
+  },
+  "width": 600,
+  "height": 300,
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "axis": { "title": "Date", "format": "%b" },
+      "field": "date",
+      "timeUnit": "monthdate",
+      "type": "temporal"
+    },
+    "y": {
+      "title": "Daily Temperature Range (C)",
+      "field": "temp_max",
+      "type": "quantitative",
+      "aggregate": "max"
+    },
+    "y2": { "field": "temp_min", "type": "quantitative", "aggregate": "min" },
+    "opacity": { "value": 0.7 }
+  }
+}

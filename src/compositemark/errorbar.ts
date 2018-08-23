@@ -211,6 +211,7 @@ export function errorBarParams<
 
   return {
     transform: [
+      ...(outerSpec.transform || []),
       ...bins,
       ...timeUnits,
       ...(!aggregate.length ? [] : [{aggregate, groupby}]),

@@ -17,4 +17,4 @@ Please:
 }
 ```
 
-- [ ] If applicable, include error messages and screenshots, GIF videos (e.g. using https://www.cockos.com/licecap/), or working examples (e.g. https://bit.ly/vega-lite-blocks)
+- [ ] If applicable, include error messages and screenshots, GIF videos (e.g. using https://www.cockos.com/licecap/), or working examples (e.g. by clicking share in the [Vega-Editor](https://vega.github.io/editor/) or https://bit.ly/vega-lite-blocks)

@@ -471,6 +471,23 @@ describe('normalizeErrorBar with raw data input', () => {
       assert.fail(!layer, false, 'layer should be a part of the spec');
     }
   });
+
+  it("should not overwrite transform with errorbar's transfroms", () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'errorbar',
+        transform: [{calculate: 'age * 2', as: 'age2'}],
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative', title: 'population'}}
+      },
+      defaultConfig
+    );
+
+    const transforms: Transform[] = outputSpec.transform;
+    expect(transforms).toBeDefined();
+    expect(transforms).not.toHaveLength(0);
+    expect(transforms[0]).toEqual({calculate: 'age * 2', as: 'age2'});
+  });
 });
 
 describe('normalizeErrorBar for all possible extents and centers with raw data input', () => {

@@ -6,6 +6,7 @@ permalink: /docs/area.html
 ---
 
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -19,17 +20,18 @@ permalink: /docs/area.html
 `area` represent multiple data element as a single area shape. Area marks are often used to show change over time, using either a single area or stacked areas.
 
 ## Documentation Overview
+
 {:.no_toc}
 
 - TOC
-{:toc}
-
+  {:toc}
 
 {:#properties}
+
 ## Area Mark Properties
 
-
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -61,7 +63,6 @@ By setting the `line` and `point` properties of the mark definition to `true` or
 
 <span class="vl-example" data-name="area_overlay"></span>
 
-
 ### Stacked Area Chart
 
 Adding a color field to area chart creates stacked area chart by default. For example, here we split the area chart by industry.
@@ -81,17 +82,20 @@ We can also shift the stacked area chart's baseline to center and produces a [st
 <span class="vl-example" data-name="stacked_area_stream"></span>
 
 {:#ranged}
+
 ### Ranged Area
 
 Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas.
 For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
 
-<span class="vl-example" data-name="layer_area_ci"></span>
+<span class="vl-example" data-name="area_temperature_range"></span>
 
 {:#config}
+
 ## Area Config
 
 {: .suppress-error}
+
 ```json
 // Top-level View Specification
 {
@@ -103,6 +107,6 @@ For example, we can use ranged area with the `ci0` and `ci0` [aggregation operat
 }
 ```
 
-The `area` property of the top-level [`config`](config.html) object sets the default properties for all area marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `area` property of the top-level [`config`](config.html) object sets the default properties for all area marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The area config can contain any [area mark properties](#properties) (except `type`, `style`, `clip`, and `orient`).

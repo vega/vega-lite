@@ -133,5 +133,5 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 
 The `errorbar` config object sets the default properties for `errorbar` marks.
 
-The error bar config can contain all [error bar mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
+The error bar config can contain all [error bar mark properties](#properties) but currently does not support `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934) for details.
 
