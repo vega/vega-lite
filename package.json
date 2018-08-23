@@ -114,6 +114,7 @@
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
+    "json-stable-stringify": "^1.0.1",
     "json-stringify-pretty-compact": "^1.2.0",
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
