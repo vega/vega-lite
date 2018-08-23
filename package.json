@@ -23,7 +23,7 @@
     "test": "test"
   },
   "scripts": {
-    "prebuild": "mkdir -p build/src",
+    "prebuild": "mkdir -p build/src && cp package.json build/",
     "build": "npm run build:only",
     "build:only": "tsc && rollup -c",
     "postbuild": "uglifyjs build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && npm run schema",
