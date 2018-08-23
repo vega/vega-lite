@@ -22,6 +22,7 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
+import {assembleFacetSignals} from './selection/selection';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -414,7 +415,7 @@ export class FacetModel extends ModelWithField {
       },
       ...(data.length > 0 ? {data: data} : {}),
       ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
-      ...child.assembleGroup()
+      ...child.assembleGroup(assembleFacetSignals(this, []))
     };
 
     return [markGroup];
