@@ -1,15 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var d3_fetch_1 = require("d3-fetch");
-var d3_selection_1 = require("d3-selection");
-var hljs = tslib_1.__importStar(require("highlight.js"));
-var vega = tslib_1.__importStar(require("vega"));
-var post_1 = require("vega-embed/build/src/post");
-var vega_tooltip_1 = require("vega-tooltip");
-var src_1 = require("../../src");
-var streaming_1 = require("./streaming");
-window['runStreamingExample'] = streaming_1.runStreamingExample;
+import { text } from 'd3-fetch';
+import { event, select, selectAll } from 'd3-selection';
+import * as hljs from 'highlight.js';
+import * as vega from 'vega';
+import { post } from 'vega-embed/build/src/post';
+import { Handler } from 'vega-tooltip';
+import { compile } from '../../src';
+import { runStreamingExample } from './streaming';
+window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;
 var loader = vega.loader({
     baseURL: BASEURL
@@ -19,8 +16,8 @@ function trim(str) {
     return str.replace(/^\s+|\s+$/g, '');
 }
 /* Anchors */
-d3_selection_1.selectAll('h2, h3, h4, h5, h6').each(function () {
-    var sel = d3_selection_1.select(this);
+selectAll('h2, h3, h4, h5, h6').each(function () {
+    var sel = select(this);
     var name = sel.attr('id');
     var title = sel.text();
     sel.html('<a href="#' + name + '" class="anchor"><span class="octicon octicon-link"></span></a>' + trim(title));
@@ -42,18 +39,18 @@ function renderExample($target, specText) {
     var spec = JSON.parse(specText);
     embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
 }
-function embedExample($target, spec, actions, tooltip) {
+export function embedExample($target, spec, actions, tooltip) {
     if (actions === void 0) { actions = true; }
     if (tooltip === void 0) { tooltip = true; }
-    var vgSpec = src_1.compile(spec).spec;
+    var vgSpec = compile(spec).spec;
     var view = new vega.View(vega.parse(vgSpec), { loader: loader }).renderer('svg').initialize($target);
     if (tooltip) {
-        var handler = new vega_tooltip_1.Handler().call;
+        var handler = new Handler().call;
         view.tooltip(handler);
     }
     view.run();
     if (actions) {
-        d3_selection_1.select($target)
+        select($target)
             .append('div')
             .attr('class', 'vega-actions')
             .append('a')
@@ -61,25 +58,24 @@ function embedExample($target, spec, actions, tooltip) {
             .attr('href', '#')
             // tslint:disable-next-line
             .on('click', function () {
-            post_1.post(window, editorURL, {
+            post(window, editorURL, {
                 mode: 'vega-lite',
                 spec: JSON.stringify(spec, null, 2),
                 config: vgSpec.config,
                 renderer: 'svg'
             });
-            d3_selection_1.event.preventDefault();
+            event.preventDefault();
         });
     }
     return view;
 }
-exports.embedExample = embedExample;
 function getSpec(el) {
-    var sel = d3_selection_1.select(el);
+    var sel = select(el);
     var name = sel.attr('data-name');
     if (name) {
         var dir = sel.attr('data-dir');
         var fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
-        d3_fetch_1.text(fullUrl)
+        text(fullUrl)
             .then(function (spec) {
             renderExample(sel, spec);
         })
@@ -91,13 +87,13 @@ function getSpec(el) {
 }
 window['changeSpec'] = function (elId, newSpec) {
     var el = document.getElementById(elId);
-    d3_selection_1.select(el).attr('data-name', newSpec);
+    select(el).attr('data-name', newSpec);
     getSpec(el);
 };
 window['buildSpecOpts'] = function (id, baseName) {
-    var oldName = d3_selection_1.select('#' + id).attr('data-name');
-    var prefixSel = d3_selection_1.select('select[name=' + id + ']');
-    var inputsSel = d3_selection_1.selectAll('input[name=' + id + ']:checked');
+    var oldName = select('#' + id).attr('data-name');
+    var prefixSel = select('select[name=' + id + ']');
+    var inputsSel = selectAll('input[name=' + id + ']:checked');
     var prefix = prefixSel.empty() ? id : prefixSel.property('value');
     var values = inputsSel
         .nodes()
@@ -109,7 +105,7 @@ window['buildSpecOpts'] = function (id, baseName) {
         window['changeSpec'](id, newName);
     }
 };
-d3_selection_1.selectAll('.vl-example').each(function () {
+selectAll('.vl-example').each(function () {
     getSpec(this);
 });
 // caroussel for the front page

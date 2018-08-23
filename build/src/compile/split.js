@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var log = tslib_1.__importStar(require("../log"));
-var util_1 = require("../util");
+import * as tslib_1 from "tslib";
+import * as log from '../log';
+import { duplicate, getFirstDefined, keys, stringify } from '../util';
 /**
  * Generic class for storing properties that are explicitly specified
  * and implicitly determined by the compiler.
@@ -17,7 +15,7 @@ var Split = /** @class */ (function () {
         this.implicit = implicit;
     }
     Split.prototype.clone = function () {
-        return new Split(util_1.duplicate(this.explicit), util_1.duplicate(this.implicit));
+        return new Split(duplicate(this.explicit), duplicate(this.implicit));
     };
     Split.prototype.combine = function () {
         // FIXME remove "as any".
@@ -26,7 +24,7 @@ var Split = /** @class */ (function () {
     };
     Split.prototype.get = function (key) {
         // Explicit has higher precedence
-        return util_1.getFirstDefined(this.explicit[key], this.implicit[key]);
+        return getFirstDefined(this.explicit[key], this.implicit[key]);
     };
     Split.prototype.getWithExplicit = function (key) {
         // Explicit has higher precedence
@@ -68,7 +66,7 @@ var Split = /** @class */ (function () {
      * overwrite properties from this split.
      */
     Split.prototype.copyAll = function (other) {
-        for (var _i = 0, _a = util_1.keys(other.combine()); _i < _a.length; _i++) {
+        for (var _i = 0, _a = keys(other.combine()); _i < _a.length; _i++) {
             var key = _a[_i];
             var val = other.getWithExplicit(key);
             this.setWithExplicit(key, val);
@@ -76,22 +74,20 @@ var Split = /** @class */ (function () {
     };
     return Split;
 }());
-exports.Split = Split;
-function makeExplicit(value) {
+export { Split };
+export function makeExplicit(value) {
     return {
         explicit: true,
         value: value
     };
 }
-exports.makeExplicit = makeExplicit;
-function makeImplicit(value) {
+export function makeImplicit(value) {
     return {
         explicit: false,
         value: value
     };
 }
-exports.makeImplicit = makeImplicit;
-function tieBreakByComparing(compare) {
+export function tieBreakByComparing(compare) {
     return function (v1, v2, property, propertyOf) {
         var diff = compare(v1.value, v2.value);
         if (diff > 0) {
@@ -103,16 +99,14 @@ function tieBreakByComparing(compare) {
         return defaultTieBreaker(v1, v2, property, propertyOf);
     };
 }
-exports.tieBreakByComparing = tieBreakByComparing;
-function defaultTieBreaker(v1, v2, property, propertyOf) {
+export function defaultTieBreaker(v1, v2, property, propertyOf) {
     if (v1.explicit && v2.explicit) {
         log.warn(log.message.mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
     }
     // If equal score, prefer v1.
     return v1;
 }
-exports.defaultTieBreaker = defaultTieBreaker;
-function mergeValuesWithExplicit(v1, v2, property, propertyOf, tieBreaker) {
+export function mergeValuesWithExplicit(v1, v2, property, propertyOf, tieBreaker) {
     if (tieBreaker === void 0) { tieBreaker = defaultTieBreaker; }
     if (v1 === undefined || v1.value === undefined) {
         // For first run
@@ -124,12 +118,11 @@ function mergeValuesWithExplicit(v1, v2, property, propertyOf, tieBreaker) {
     else if (v2.explicit && !v1.explicit) {
         return v2;
     }
-    else if (util_1.stringify(v1.value) === util_1.stringify(v2.value)) {
+    else if (stringify(v1.value) === stringify(v2.value)) {
         return v1;
     }
     else {
         return tieBreaker(v1, v2, property, propertyOf);
     }
 }
-exports.mergeValuesWithExplicit = mergeValuesWithExplicit;
 //# sourceMappingURL=split.js.map

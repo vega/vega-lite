@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var chai_1 = require("chai");
-var assemble_1 = require("../../../src/compile/scale/assemble");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { assembleScaleRange, assembleScales } from '../../../src/compile/scale/assemble';
+import { parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseRepeatModel, parseUnitModel, parseUnitModelWithScale } from '../../util';
 describe('compile/scale/assemble', function () {
     describe('assembleScales', function () {
         it('includes all scales for concat', function () {
-            var model = util_1.parseConcatModel({
+            var model = parseConcatModel({
                 vconcat: [
                     {
                         mark: 'point',
@@ -24,11 +22,11 @@ describe('compile/scale/assemble', function () {
                 ]
             });
             model.parseScale();
-            var scales = assemble_1.assembleScales(model);
-            chai_1.assert.equal(scales.length, 3);
+            var scales = assembleScales(model);
+            assert.equal(scales.length, 3);
         });
         it('includes all scales from children for layer, both shared and independent', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 layer: [
                     {
                         mark: 'point',
@@ -52,11 +50,11 @@ describe('compile/scale/assemble', function () {
                 }
             });
             model.parseScale();
-            var scales = assemble_1.assembleScales(model);
-            chai_1.assert.equal(scales.length, 3); // 2 x, 1 y
+            var scales = assembleScales(model);
+            assert.equal(scales.length, 3); // 2 x, 1 y
         });
         it('includes all scales for repeat', function () {
-            var model = util_1.parseRepeatModel({
+            var model = parseRepeatModel({
                 repeat: {
                     row: ['Acceleration', 'Horsepower']
                 },
@@ -68,11 +66,11 @@ describe('compile/scale/assemble', function () {
                 }
             });
             model.parseScale();
-            var scales = assemble_1.assembleScales(model);
-            chai_1.assert.equal(scales.length, 2);
+            var scales = assembleScales(model);
+            assert.equal(scales.length, 2);
         });
         it('includes shared scales, but not independent scales (as they are nested) for facet.', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative', format: 'd' }
                 },
@@ -87,23 +85,23 @@ describe('compile/scale/assemble', function () {
                     scale: { x: 'independent' }
                 }
             });
-            var scales = assemble_1.assembleScales(model);
-            chai_1.assert.equal(scales.length, 1);
-            chai_1.assert.equal(scales[0].name, 'y');
+            var scales = assembleScales(model);
+            assert.equal(scales.length, 1);
+            assert.equal(scales[0].name, 'y');
         });
     });
     describe('assembleScaleRange', function () {
         it('replaces a range step constant with a signal', function () {
-            var model = util_1.parseUnitModel({
+            var model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { field: 'x', type: 'nominal' }
                 }
             });
-            chai_1.assert.deepEqual(assemble_1.assembleScaleRange({ step: 21 }, 'x', model, 'x'), { step: { signal: 'x_step' } });
+            assert.deepEqual(assembleScaleRange({ step: 21 }, 'x', model, 'x'), { step: { signal: 'x_step' } });
         });
         it('updates width signal when renamed.', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'x', type: 'quantitative' }
@@ -111,10 +109,10 @@ describe('compile/scale/assemble', function () {
             });
             // mock renaming
             model.renameLayoutSize('width', 'new_width');
-            chai_1.assert.deepEqual(assemble_1.assembleScaleRange([0, { signal: 'width' }], 'x', model, 'x'), [0, { signal: 'new_width' }]);
+            assert.deepEqual(assembleScaleRange([0, { signal: 'width' }], 'x', model, 'x'), [0, { signal: 'new_width' }]);
         });
         it('updates height signal when renamed.', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'y', type: 'quantitative' }
@@ -122,7 +120,7 @@ describe('compile/scale/assemble', function () {
             });
             // mock renaming
             model.renameLayoutSize('height', 'new_height');
-            chai_1.assert.deepEqual(assemble_1.assembleScaleRange([0, { signal: 'height' }], 'x', model, 'x'), [0, { signal: 'new_height' }]);
+            assert.deepEqual(assembleScaleRange([0, { signal: 'height' }], 'x', model, 'x'), [0, { signal: 'new_height' }]);
         });
     });
 });

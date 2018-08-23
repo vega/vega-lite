@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
+import * as tslib_1 from "tslib";
 /**
  * A node in the dataflow tree.
  */
@@ -104,7 +102,7 @@ var DataFlowNode = /** @class */ (function () {
     };
     return DataFlowNode;
 }());
-exports.DataFlowNode = DataFlowNode;
+export { DataFlowNode };
 var OutputNode = /** @class */ (function (_super) {
     tslib_1.__extends(OutputNode, _super);
     /**
@@ -153,7 +151,7 @@ var OutputNode = /** @class */ (function (_super) {
     };
     return OutputNode;
 }(DataFlowNode));
-exports.OutputNode = OutputNode;
+export { OutputNode };
 var TransformNode = /** @class */ (function (_super) {
     tslib_1.__extends(TransformNode, _super);
     function TransformNode() {
@@ -161,9 +159,8 @@ var TransformNode = /** @class */ (function (_super) {
     }
     return TransformNode;
 }(DataFlowNode));
-exports.TransformNode = TransformNode;
-function isTransformNode(x) {
+export { TransformNode };
+export function isTransformNode(x) {
     return x instanceof TransformNode;
 }
-exports.isTransformNode = isTransformNode;
 //# sourceMappingURL=dataflow.js.map

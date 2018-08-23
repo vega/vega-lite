@@ -1,24 +1,22 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var header_1 = require("../../../src/compile/header");
-var index_1 = require("../../../src/compile/header/index");
-var header_2 = require("../../../src/header");
-var util_1 = require("../../util");
+import * as tslib_1 from "tslib";
+import { assert } from 'chai';
+import { getHeaderGroups, getTitleGroup, labelAlign, labelBaseline } from '../../../src/compile/header';
+import { getHeaderProperties } from '../../../src/compile/header/index';
+import { HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP } from '../../../src/header';
+import { parseFacetModel } from '../../util';
 describe('compile/header/index', function () {
     describe('label aligns correctly according to angle', function () {
-        expect(header_1.labelAlign(23)).toEqual({ align: { value: 'right' } });
-        expect(header_1.labelAlign(135)).toEqual({ align: { value: 'left' } });
-        expect(header_1.labelAlign(50)).toEqual({ align: { value: 'right' } });
+        expect(labelAlign(23)).toEqual({ align: { value: 'right' } });
+        expect(labelAlign(135)).toEqual({ align: { value: 'left' } });
+        expect(labelAlign(50)).toEqual({ align: { value: 'right' } });
     });
     describe('label baseline adjusted according to angle', function () {
-        expect(header_1.labelBaseline(10)).toEqual({ baseline: 'middle' });
-        expect(header_1.labelBaseline(90)).toEqual({ baseline: 'top' });
+        expect(labelBaseline(10)).toEqual({ baseline: 'middle' });
+        expect(labelBaseline(90)).toEqual({ baseline: 'top' });
     });
     describe('getHeaderGroups', function () {
         it('should correctly process sort descending', function () {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     row: { field: 'a', type: 'ordinal', sort: 'ascending' },
                     column: { field: 'a', type: 'ordinal', sort: 'descending' }
@@ -34,13 +32,13 @@ describe('compile/header/index', function () {
             model.parseScale();
             model.parseLayoutSize();
             model.parseAxisAndHeader();
-            var rowHeaderGroups = header_1.getHeaderGroups(model, 'row');
-            var columnHeaderGroups = header_1.getHeaderGroups(model, 'column');
-            chai_1.assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
-            chai_1.assert.equal(columnHeaderGroups[0].sort.order, 'descending');
+            var rowHeaderGroups = getHeaderGroups(model, 'row');
+            var columnHeaderGroups = getHeaderGroups(model, 'column');
+            assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
+            assert.equal(columnHeaderGroups[0].sort.order, 'descending');
         });
         it('should correctly process sort field', function () {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     row: { field: 'a', type: 'ordinal', sort: { field: 'd', op: 'min' } }
                 },
@@ -55,12 +53,12 @@ describe('compile/header/index', function () {
             model.parseScale();
             model.parseLayoutSize();
             model.parseAxisAndHeader();
-            var rowHeaderGroups = header_1.getHeaderGroups(model, 'row');
-            chai_1.assert.equal(rowHeaderGroups[0].sort.field, 'datum["min_d"]');
+            var rowHeaderGroups = getHeaderGroups(model, 'row');
+            assert.equal(rowHeaderGroups[0].sort.field, 'datum["min_d"]');
         });
     });
     describe('getTitleGroup', function () {
-        var model = util_1.parseFacetModel({
+        var model = parseFacetModel({
             facet: {
                 row: { field: 'a', type: 'ordinal' },
                 column: { field: 'a', type: 'ordinal' }
@@ -77,7 +75,7 @@ describe('compile/header/index', function () {
         model.parseLayoutSize();
         model.parseAxisAndHeader();
         describe('for column', function () {
-            var columnLabelGroup = header_1.getTitleGroup(model, 'column');
+            var columnLabelGroup = getTitleGroup(model, 'column');
             var title = columnLabelGroup.title, columnTitleGroupTopLevelProps = tslib_1.__rest(columnLabelGroup, ["title"]);
             it('returns a header group mark with correct name, role, and type.', function () {
                 expect(columnTitleGroupTopLevelProps).toEqual({
@@ -96,7 +94,7 @@ describe('compile/header/index', function () {
             });
         });
         describe('for row', function () {
-            var rowTitleGroup = header_1.getTitleGroup(model, 'row');
+            var rowTitleGroup = getTitleGroup(model, 'row');
             var title = rowTitleGroup.title, rowTitleGroupTopLevelProps = tslib_1.__rest(rowTitleGroup, ["title"]);
             it('returns a header group mark with correct name, role, and type.', function () {
                 expect(rowTitleGroupTopLevelProps).toEqual({
@@ -118,7 +116,7 @@ describe('compile/header/index', function () {
     });
     describe('getHeaderProperties', function () {
         describe('for title properties', function () {
-            var titleSpec = util_1.parseFacetModel({
+            var titleSpec = parseFacetModel({
                 config: { header: { titleFontSize: 20 } },
                 facet: {
                     row: { field: 'a', type: 'ordinal', header: { titleFontSize: 40 } }
@@ -136,21 +134,21 @@ describe('compile/header/index', function () {
             titleSpec.parseAxisAndHeader();
             var config = titleSpec.config;
             var facetFieldDef = titleSpec.component.layoutHeaders['row'].facetFieldDef;
-            var headerTitleProps = index_1.getHeaderProperties(undefined, facetFieldDef, header_2.HEADER_TITLE_PROPERTIES, header_2.HEADER_TITLE_PROPERTIES_MAP);
+            var headerTitleProps = getHeaderProperties(undefined, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should return the correct title property from header', function () {
                 expect(headerTitleProps).toEqual({ fontSize: 40 });
             });
-            var configTitleProps = index_1.getHeaderProperties(config, undefined, header_2.HEADER_TITLE_PROPERTIES, header_2.HEADER_TITLE_PROPERTIES_MAP);
+            var configTitleProps = getHeaderProperties(config, undefined, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should return the correct title property from config', function () {
                 expect(configTitleProps).toEqual({ fontSize: 20 });
             });
-            var bothTitleProps = index_1.getHeaderProperties(config, facetFieldDef, header_2.HEADER_TITLE_PROPERTIES, header_2.HEADER_TITLE_PROPERTIES_MAP);
+            var bothTitleProps = getHeaderProperties(config, facetFieldDef, HEADER_TITLE_PROPERTIES, HEADER_TITLE_PROPERTIES_MAP);
             it('should overwrite the config title property with the header title property', function () {
                 expect(bothTitleProps).toEqual({ fontSize: 40 });
             });
         });
         describe('for label properties', function () {
-            var labelSpec = util_1.parseFacetModel({
+            var labelSpec = parseFacetModel({
                 config: { header: { labelFontSize: 20 } },
                 facet: {
                     row: { field: 'a', type: 'ordinal', header: { labelFontSize: 40 } }
@@ -168,15 +166,15 @@ describe('compile/header/index', function () {
             labelSpec.parseAxisAndHeader();
             var config = labelSpec.config;
             var facetFieldDef = labelSpec.component.layoutHeaders['row'].facetFieldDef;
-            var headerLabelProps = index_1.getHeaderProperties(undefined, facetFieldDef, header_2.HEADER_LABEL_PROPERTIES, header_2.HEADER_LABEL_PROPERTIES_MAP);
+            var headerLabelProps = getHeaderProperties(undefined, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should return the correct label property from header', function () {
                 expect(headerLabelProps).toEqual({ fontSize: 40 });
             });
-            var configLabelProps = index_1.getHeaderProperties(config, undefined, header_2.HEADER_LABEL_PROPERTIES, header_2.HEADER_LABEL_PROPERTIES_MAP);
+            var configLabelProps = getHeaderProperties(config, undefined, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should return the correct label property from config', function () {
                 expect(configLabelProps).toEqual({ fontSize: 20 });
             });
-            var bothLabelProps = index_1.getHeaderProperties(config, facetFieldDef, header_2.HEADER_LABEL_PROPERTIES, header_2.HEADER_LABEL_PROPERTIES_MAP);
+            var bothLabelProps = getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP);
             it('should overwrite the config label property with the header label property', function () {
                 expect(bothLabelProps).toEqual({ fontSize: 40 });
             });

@@ -1,16 +1,13 @@
-"use strict";
 /* tslint:disable quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var channel_1 = require("../../src/channel");
-var log = tslib_1.__importStar(require("../../src/log"));
-var type_1 = require("../../src/type");
-var util_1 = require("../util");
+import { assert } from 'chai';
+import { ROW, SHAPE } from '../../src/channel';
+import * as log from '../../src/log';
+import { ORDINAL } from '../../src/type';
+import { parseFacetModel, parseFacetModelWithScale } from '../util';
 describe('FacetModel', function () {
     describe('initFacet', function () {
         it('should drop unsupported channel and throws warning', log.wrap(function (localLogger) {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     shape: { field: 'a', type: 'quantitative' }
                 },
@@ -19,11 +16,11 @@ describe('FacetModel', function () {
                     encoding: {}
                 }
             });
-            chai_1.assert.equal(model.facet['shape'], undefined);
-            chai_1.assert.equal(localLogger.warns[0], log.message.incompatibleChannel(channel_1.SHAPE, 'facet'));
+            assert.equal(model.facet['shape'], undefined);
+            assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
         }));
         it('should drop channel without field and value and throws warning', log.wrap(function (localLogger) {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     row: { type: 'ordinal' }
                 },
@@ -32,11 +29,11 @@ describe('FacetModel', function () {
                     encoding: {}
                 }
             });
-            chai_1.assert.equal(model.facet.row, undefined);
-            chai_1.assert.equal(localLogger.warns[0], log.message.emptyFieldDef({ type: type_1.ORDINAL }, channel_1.ROW));
+            assert.equal(model.facet.row, undefined);
+            assert.equal(localLogger.warns[0], log.message.emptyFieldDef({ type: ORDINAL }, ROW));
         }));
         it('should drop channel without field and value and throws warning', log.wrap(function (localLogger) {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     row: { field: 'a', type: 'quantitative' }
                 },
@@ -45,8 +42,8 @@ describe('FacetModel', function () {
                     encoding: {}
                 }
             });
-            chai_1.assert.deepEqual(model.facet.row, { field: 'a', type: 'quantitative' });
-            chai_1.assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(channel_1.ROW));
+            assert.deepEqual(model.facet.row, { field: 'a', type: 'quantitative' });
+            assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
         }));
     });
     describe('parseAxisAndHeader', function () {
@@ -54,7 +51,7 @@ describe('FacetModel', function () {
         // - correctly join title for nested facet
         // - correctly generate headers with right labels and axes
         it('applies text format to the fieldref of a temporal field', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { timeUnit: 'year', field: 'date', type: 'ordinal' }
                 },
@@ -71,10 +68,10 @@ describe('FacetModel', function () {
             var columnHeader = headerMarks.filter(function (d) {
                 return d.name === 'column_header';
             })[0];
-            chai_1.assert(columnHeader.title.text.signal, 'timeFormat(parent["year_date"], \'%Y\')');
+            assert(columnHeader.title.text.signal, 'timeFormat(parent["year_date"], \'%Y\')');
         });
         it('applies number format for fieldref of a quantitative field', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative', format: 'd' }
                 },
@@ -91,10 +88,10 @@ describe('FacetModel', function () {
             var columnHeader = headerMarks.filter(function (d) {
                 return d.name === 'column_header';
             })[0];
-            chai_1.assert(columnHeader.title.text.signal, 'format(parent["a"], \'d\')');
+            assert(columnHeader.title.text.signal, 'format(parent["a"], \'d\')');
         });
         it('ignores number format for fieldref of a binned field', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { bin: true, field: 'a', type: 'quantitative' }
                 },
@@ -111,12 +108,12 @@ describe('FacetModel', function () {
             var columnHeader = headerMarks.filter(function (d) {
                 return d.name === 'column_header';
             })[0];
-            chai_1.assert(columnHeader.title.text.signal, 'parent["a"]');
+            assert(columnHeader.title.text.signal, 'parent["a"]');
         });
     });
     describe('parseScale', function () {
         it('should correctly set scale component for a model', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'quantitative' }
                 },
@@ -127,10 +124,10 @@ describe('FacetModel', function () {
                     }
                 }
             });
-            chai_1.assert(model.component.scales['x']);
+            assert(model.component.scales['x']);
         });
         it('should create independent scales if resolve is set to independent', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'quantitative' }
                 },
@@ -146,12 +143,12 @@ describe('FacetModel', function () {
                     }
                 }
             });
-            chai_1.assert(!model.component.scales['x']);
+            assert(!model.component.scales['x']);
         });
     });
     describe('assembleHeaderMarks', function () {
         it('should sort headers in ascending order', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative', format: 'd' }
                 },
@@ -168,12 +165,12 @@ describe('FacetModel', function () {
             var columnHeader = headerMarks.filter(function (d) {
                 return d.name === 'column_header';
             })[0];
-            chai_1.assert.deepEqual(columnHeader.sort, { field: 'datum["a"]', order: 'ascending' });
+            assert.deepEqual(columnHeader.sort, { field: 'datum["a"]', order: 'ascending' });
         });
     });
     describe('assembleGroup', function () {
         it('includes a columns fields in the encode block for facet with column that parent is also a facet.', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative' }
                 },
@@ -192,12 +189,12 @@ describe('FacetModel', function () {
             });
             model.parseData();
             var group = model.child.assembleGroup([]);
-            chai_1.assert.deepEqual(group.encode.update.columns, { field: 'distinct_c' });
+            assert.deepEqual(group.encode.update.columns, { field: 'distinct_c' });
         });
     });
     describe('assembleLayout', function () {
         it('returns a layout with a column signal for facet with column', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative' }
                 },
@@ -209,7 +206,7 @@ describe('FacetModel', function () {
                 }
             });
             var layout = model.assembleLayout();
-            chai_1.assert.deepEqual(layout, {
+            assert.deepEqual(layout, {
                 padding: { row: 10, column: 10 },
                 columns: {
                     signal: "length(data('column_domain'))"
@@ -219,7 +216,7 @@ describe('FacetModel', function () {
             });
         });
         it('returns a layout without a column signal for facet with column that parent is also a facet.', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative' }
                 },
@@ -237,10 +234,10 @@ describe('FacetModel', function () {
                 // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
             });
             var layout = model.child.assembleLayout();
-            chai_1.assert.deepEqual(layout.columns, undefined);
+            assert.deepEqual(layout.columns, undefined);
         });
         it('returns a layout with header band if child spec is also a facet', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
                 data: { url: 'data/cars.json' },
                 facet: { row: { field: 'Origin', type: 'ordinal' } },
@@ -259,12 +256,12 @@ describe('FacetModel', function () {
             model.parseLayoutSize();
             model.parseAxisAndHeader();
             var layout = model.assembleLayout();
-            chai_1.assert.deepEqual(layout.headerBand, { row: 0.5 });
+            assert.deepEqual(layout.headerBand, { row: 0.5 });
         });
     });
     describe('assembleMarks', function () {
         it('should add cross and sort if we facet by multiple dimensions', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'ordinal' },
                     column: { field: 'b', type: 'ordinal' }
@@ -278,14 +275,14 @@ describe('FacetModel', function () {
             });
             model.parse();
             var marks = model.assembleMarks();
-            chai_1.assert(marks[0].from.facet.aggregate.cross);
-            chai_1.assert.deepEqual(marks[0].sort, {
+            assert(marks[0].from.facet.aggregate.cross);
+            assert.deepEqual(marks[0].sort, {
                 field: ['datum["a"]', 'datum["b"]'],
                 order: ['ascending', 'ascending']
             });
         });
         it('should add cross and sort if we facet by multiple dimensions with sort array', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'ordinal', sort: ['a1', 'a2'] },
                     column: { field: 'b', type: 'ordinal', sort: ['b1', 'b2'] }
@@ -299,14 +296,14 @@ describe('FacetModel', function () {
             });
             model.parse();
             var marks = model.assembleMarks();
-            chai_1.assert(marks[0].from.facet.aggregate.cross);
+            assert(marks[0].from.facet.aggregate.cross);
             expect(marks[0].sort).toEqual({
                 field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
                 order: ['ascending', 'ascending']
             });
         });
         it('should add cross and sort if we facet by multiple dimensions with sort fields', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'ordinal', sort: { field: 'd', op: 'median' } },
                     column: { field: 'b', type: 'ordinal', sort: { field: 'e', op: 'median' } }
@@ -332,7 +329,7 @@ describe('FacetModel', function () {
             });
         });
         it('should add calculate cardinality for independent scales', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     row: { field: 'a', type: 'ordinal' }
                 },
@@ -352,14 +349,14 @@ describe('FacetModel', function () {
             });
             model.parse();
             var marks = model.assembleMarks();
-            chai_1.assert.deepEqual(marks[0].from.facet.aggregate, {
+            assert.deepEqual(marks[0].from.facet.aggregate, {
                 fields: ['b', 'c'],
                 ops: ['distinct', 'distinct'],
                 as: ['distinct_b', 'distinct_c']
             });
         });
         it('should add calculate cardinality for child column facet', function () {
-            var model = util_1.parseFacetModelWithScale({
+            var model = parseFacetModelWithScale({
                 facet: {
                     column: { field: 'a', type: 'quantitative' }
                 },
@@ -378,7 +375,7 @@ describe('FacetModel', function () {
             });
             model.parse();
             var marks = model.assembleMarks();
-            chai_1.assert.deepEqual(marks[0].from.facet.aggregate, {
+            assert.deepEqual(marks[0].from.facet.aggregate, {
                 fields: ['c'],
                 ops: ['distinct'],
                 as: ['distinct_c']

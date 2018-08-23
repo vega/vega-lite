@@ -1,16 +1,14 @@
-"use strict";
 /* tslint:disable:quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var chai_1 = require("chai");
-var channel_1 = require("../../../src/channel");
-var mark_1 = require("../../../src/compile/mark/mark");
-var mark_2 = require("../../../src/mark");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS } from '../../../src/channel';
+import { getSort, parseMarkGroup, pathGroupingFields } from '../../../src/compile/mark/mark';
+import { GEOSHAPE } from '../../../src/mark';
+import { parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark', function () {
     describe('parseMarkGroup', function () {
         // PATH
         describe('Multi-series Line', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: { type: 'line', style: 'trend' },
                 encoding: {
                     x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
@@ -19,9 +17,9 @@ describe('Mark', function () {
                 }
             });
             it('should have a facet directive and a nested mark group that uses the faceted data.', function () {
-                var markGroup = mark_1.parseMarkGroup(model)[0];
-                chai_1.assert.equal(markGroup.name, 'pathgroup');
-                chai_1.assert.deepEqual(markGroup.from, {
+                var markGroup = parseMarkGroup(model)[0];
+                assert.equal(markGroup.name, 'pathgroup');
+                assert.deepEqual(markGroup.from, {
                     facet: {
                         name: 'faceted_path_main',
                         data: 'main',
@@ -29,15 +27,15 @@ describe('Mark', function () {
                     }
                 });
                 var submarkGroup = markGroup.marks[0];
-                chai_1.assert.equal(submarkGroup.name, 'marks');
-                chai_1.assert.equal(submarkGroup.type, 'line');
-                chai_1.assert.deepEqual(submarkGroup.style, ['line', 'trend']);
-                chai_1.assert.equal(submarkGroup.from.data, 'faceted_path_main');
+                assert.equal(submarkGroup.name, 'marks');
+                assert.equal(submarkGroup.type, 'line');
+                assert.deepEqual(submarkGroup.style, ['line', 'trend']);
+                assert.equal(submarkGroup.from.data, 'faceted_path_main');
             });
             it('should not have post encoding transform', function () {
-                var markGroup = mark_1.parseMarkGroup(model)[0];
-                chai_1.assert.equal(markGroup.name, 'pathgroup');
-                chai_1.assert.deepEqual(markGroup.from, {
+                var markGroup = parseMarkGroup(model)[0];
+                assert.equal(markGroup.name, 'pathgroup');
+                assert.deepEqual(markGroup.from, {
                     facet: {
                         name: 'faceted_path_main',
                         data: 'main',
@@ -45,11 +43,11 @@ describe('Mark', function () {
                     }
                 });
                 var submarkGroup = markGroup.marks[0];
-                chai_1.assert.isUndefined(submarkGroup.transform);
+                assert.isUndefined(submarkGroup.transform);
             });
         });
         describe('Single Line', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'line',
                 encoding: {
                     x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
@@ -57,19 +55,19 @@ describe('Mark', function () {
                 }
             });
             it('should have mark group with proper data and key', function () {
-                var markGroup = mark_1.parseMarkGroup(model)[0];
-                chai_1.assert.equal(markGroup.name, 'marks');
-                chai_1.assert.equal(markGroup.type, 'line');
-                chai_1.assert.equal(markGroup.from.data, 'main');
+                var markGroup = parseMarkGroup(model)[0];
+                assert.equal(markGroup.name, 'marks');
+                assert.equal(markGroup.type, 'line');
+                assert.equal(markGroup.from.data, 'main');
             });
             it('should not have post encoding transform', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.isUndefined(markGroup[0].transform);
+                var markGroup = parseMarkGroup(model);
+                assert.isUndefined(markGroup[0].transform);
             });
             // NON-PATH
         });
         describe('Points with key', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'date', type: 'temporal', axis: { format: '%Y' } },
@@ -78,18 +76,18 @@ describe('Mark', function () {
                 }
             });
             it('should have mark group with proper data and key', function () {
-                var markGroup = mark_1.parseMarkGroup(model)[0];
-                chai_1.assert.equal(markGroup.type, 'symbol');
-                chai_1.assert.equal(markGroup.key.field, 'k');
-                chai_1.assert.equal(markGroup.from.data, 'main');
+                var markGroup = parseMarkGroup(model)[0];
+                assert.equal(markGroup.type, 'symbol');
+                assert.equal(markGroup.key.field, 'k');
+                assert.equal(markGroup.from.data, 'main');
             });
             it('should not have post encoding transform', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.isUndefined(markGroup[0].transform);
+                var markGroup = parseMarkGroup(model);
+                assert.isUndefined(markGroup[0].transform);
             });
         });
         it('Geoshape should have post encoding transform', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 projection: {
                     type: 'albersUsa'
@@ -103,12 +101,12 @@ describe('Mark', function () {
                 },
                 encoding: {}
             });
-            var markGroup = mark_1.parseMarkGroup(model);
-            chai_1.assert.isDefined(markGroup[0].transform);
-            chai_1.assert.equal(markGroup[0].transform[0].type, mark_2.GEOSHAPE);
+            var markGroup = parseMarkGroup(model);
+            assert.isDefined(markGroup[0].transform);
+            assert.equal(markGroup[0].transform[0].type, GEOSHAPE);
         });
         describe('Aggregated Bar with a color with binned x', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'bar',
                 encoding: {
                     x: { type: 'quantitative', field: 'Cost__Other', aggregate: 'sum' },
@@ -117,17 +115,17 @@ describe('Mark', function () {
                 }
             });
             it('should use main stacked data source', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.equal(markGroup[0].from.data, 'main');
-                chai_1.assert.equal(markGroup[0].style, 'bar');
+                var markGroup = parseMarkGroup(model);
+                assert.equal(markGroup[0].from.data, 'main');
+                assert.equal(markGroup[0].style, 'bar');
             });
             it('should not have post encoding transform', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.isUndefined(markGroup[0].transform);
+                var markGroup = parseMarkGroup(model);
+                assert.isUndefined(markGroup[0].transform);
             });
         });
         describe('Faceted aggregated Bar with a color with binned x', function () {
-            var model = util_1.parseFacetModel({
+            var model = parseFacetModel({
                 facet: {
                     row: { field: 'a', type: 'nominal' }
                 },
@@ -143,18 +141,18 @@ describe('Mark', function () {
             it('should use faceted data source', function () {
                 model.parseScale();
                 model.parseLayoutSize();
-                var markGroup = mark_1.parseMarkGroup(model.child);
-                chai_1.assert.equal(markGroup[0].from.data, 'child_main');
+                var markGroup = parseMarkGroup(model.child);
+                assert.equal(markGroup[0].from.data, 'child_main');
             });
             it('should not have post encoding transform', function () {
                 model.parseScale();
                 model.parseLayoutSize();
-                var markGroup = mark_1.parseMarkGroup(model.child);
-                chai_1.assert.isUndefined(markGroup[0].transform);
+                var markGroup = parseMarkGroup(model.child);
+                assert.isUndefined(markGroup[0].transform);
             });
         });
         describe('Aggregated bar', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'bar',
                 encoding: {
                     x: { type: 'quantitative', field: 'Cost__Other', aggregate: 'sum' },
@@ -162,18 +160,18 @@ describe('Mark', function () {
                 }
             });
             it('should use main aggregated data source', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.equal(markGroup[0].from.data, 'main');
+                var markGroup = parseMarkGroup(model);
+                assert.equal(markGroup[0].from.data, 'main');
             });
             it('should not have post encoding transform', function () {
-                var markGroup = mark_1.parseMarkGroup(model);
-                chai_1.assert.isUndefined(markGroup[0].transform);
+                var markGroup = parseMarkGroup(model);
+                assert.isUndefined(markGroup[0].transform);
             });
         });
     });
     describe('getSort', function () {
         it('should order by order field', function () {
-            var model = util_1.parseUnitModel({
+            var model = parseUnitModel({
                 data: { url: 'data/driving.json' },
                 mark: 'line',
                 encoding: {
@@ -182,13 +180,13 @@ describe('Mark', function () {
                     order: { field: 'year', type: 'temporal' }
                 }
             });
-            chai_1.assert.deepEqual(mark_1.getSort(model), {
+            assert.deepEqual(getSort(model), {
                 field: ['datum["year"]'],
                 order: ['ascending']
             });
         });
         it('should have no sort if order = {value: null}', function () {
-            var model = util_1.parseUnitModel({
+            var model = parseUnitModel({
                 data: { url: 'data/driving.json' },
                 mark: 'line',
                 encoding: {
@@ -197,10 +195,10 @@ describe('Mark', function () {
                     order: { value: null }
                 }
             });
-            chai_1.assert.equal(mark_1.getSort(model), undefined);
+            assert.equal(getSort(model), undefined);
         });
         it('should order by x by default if x is the dimension', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 data: { url: 'data/movies.json' },
                 mark: 'line',
                 encoding: {
@@ -219,13 +217,13 @@ describe('Mark', function () {
                     }
                 }
             });
-            chai_1.assert.deepEqual(mark_1.getSort(model), {
+            assert.deepEqual(getSort(model), {
                 field: 'datum["bin_maxbins_10_IMDB_Rating"]',
                 order: 'descending'
             });
         });
         it('should not order by a missing dimension', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 data: { url: 'data/movies.json' },
                 mark: 'line',
                 encoding: {
@@ -239,32 +237,32 @@ describe('Mark', function () {
                     }
                 }
             });
-            chai_1.assert.deepEqual(mark_1.getSort(model), undefined);
+            assert.deepEqual(getSort(model), undefined);
         });
     });
     describe('pathGroupingFields()', function () {
         it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', function () {
             var _a;
-            for (var _i = 0, _b = [channel_1.DETAIL, channel_1.COLOR, channel_1.SIZE, channel_1.OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                chai_1.assert.deepEqual(mark_1.pathGroupingFields('line', (_a = {}, _a[channel] = { field: 'a', type: 'nominal' }, _a)), ['a']);
+                assert.deepEqual(pathGroupingFields('line', (_a = {}, _a[channel] = { field: 'a', type: 'nominal' }, _a)), ['a']);
             }
         });
         it('should not return a field for size of a trail mark.', function () {
-            chai_1.assert.deepEqual(mark_1.pathGroupingFields('trail', { size: { field: 'a', type: 'nominal' } }), []);
+            assert.deepEqual(pathGroupingFields('trail', { size: { field: 'a', type: 'nominal' } }), []);
         });
         it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', function () {
             var _a;
-            for (var _i = 0, _b = [channel_1.DETAIL, channel_1.COLOR, channel_1.SIZE, channel_1.OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                chai_1.assert.deepEqual(mark_1.pathGroupingFields('line', (_a = {}, _a[channel] = { aggregate: 'mean', field: 'a', type: 'nominal' }, _a)), [], channel);
+                assert.deepEqual(pathGroupingFields('line', (_a = {}, _a[channel] = { aggregate: 'mean', field: 'a', type: 'nominal' }, _a)), [], channel);
             }
         });
         it('should return condition detail fields for color, size, shape', function () {
             var _a;
-            for (var _i = 0, _b = [channel_1.COLOR, channel_1.SIZE, channel_1.OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                chai_1.assert.deepEqual(mark_1.pathGroupingFields('line', (_a = {},
+                assert.deepEqual(pathGroupingFields('line', (_a = {},
                     _a[channel] = {
                         condition: { selection: 'sel', field: 'a', type: 'nominal' }
                     },
@@ -273,14 +271,14 @@ describe('Mark', function () {
         });
         it('should not return errors for all channels', function () {
             var _loop_1 = function (channel) {
-                chai_1.assert.doesNotThrow(function () {
+                assert.doesNotThrow(function () {
                     var _a;
-                    mark_1.pathGroupingFields('line', (_a = {},
+                    pathGroupingFields('line', (_a = {},
                         _a[channel] = { field: 'a', type: 'nominal' },
                         _a));
                 });
             };
-            for (var _i = 0, UNIT_CHANNELS_1 = channel_1.UNIT_CHANNELS; _i < UNIT_CHANNELS_1.length; _i++) {
+            for (var _i = 0, UNIT_CHANNELS_1 = UNIT_CHANNELS; _i < UNIT_CHANNELS_1.length; _i++) {
                 var channel = UNIT_CHANNELS_1[_i];
                 _loop_1(channel);
             }

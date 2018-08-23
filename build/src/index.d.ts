@@ -24,5 +24,5 @@ import * as transform from './transform';
 import * as type from './type';
 import * as util from './util';
 import * as validate from './validate';
-declare const version: string;
+declare const version: any;
 export { aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, facet, fieldDef, header, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate, version };

@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var log = tslib_1.__importStar(require("../log"));
-var spec_1 = require("../spec");
-var util_1 = require("../util");
-var parse_1 = require("./axis/parse");
-var parse_2 = require("./data/parse");
-var assemble_1 = require("./layoutsize/assemble");
-var parse_3 = require("./layoutsize/parse");
-var assemble_2 = require("./legend/assemble");
-var model_1 = require("./model");
-var selection_1 = require("./selection/selection");
-var unit_1 = require("./unit");
+import * as tslib_1 from "tslib";
+import * as log from '../log';
+import { isLayerSpec, isUnitSpec } from '../spec';
+import { flatten, keys } from '../util';
+import { parseLayerAxis } from './axis/parse';
+import { parseData } from './data/parse';
+import { assembleLayoutSignals } from './layoutsize/assemble';
+import { parseLayerLayoutSize } from './layoutsize/parse';
+import { assembleLegends } from './legend/assemble';
+import { Model } from './model';
+import { assembleLayerSelectionMarks } from './selection/selection';
+import { UnitModel } from './unit';
 var LayerModel = /** @class */ (function (_super) {
     tslib_1.__extends(LayerModel, _super);
     function LayerModel(spec, parent, parentGivenName, parentGivenSize, repeater, config, fit) {
@@ -20,25 +18,25 @@ var LayerModel = /** @class */ (function (_super) {
         var layoutSize = tslib_1.__assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {}));
         _this.initSize(layoutSize);
         _this.children = spec.layer.map(function (layer, i) {
-            if (spec_1.isLayerSpec(layer)) {
+            if (isLayerSpec(layer)) {
                 return new LayerModel(layer, _this, _this.getName('layer_' + i), layoutSize, repeater, config, fit);
             }
-            if (spec_1.isUnitSpec(layer)) {
-                return new unit_1.UnitModel(layer, _this, _this.getName('layer_' + i), layoutSize, repeater, config, fit);
+            if (isUnitSpec(layer)) {
+                return new UnitModel(layer, _this, _this.getName('layer_' + i), layoutSize, repeater, config, fit);
             }
             throw new Error(log.message.INVALID_SPEC);
         });
         return _this;
     }
     LayerModel.prototype.parseData = function () {
-        this.component.data = parse_2.parseData(this);
+        this.component.data = parseData(this);
         for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
             var child = _a[_i];
             child.parseData();
         }
     };
     LayerModel.prototype.parseLayoutSize = function () {
-        parse_3.parseLayerLayoutSize(this);
+        parseLayerLayoutSize(this);
     };
     LayerModel.prototype.parseSelection = function () {
         var _this = this;
@@ -48,7 +46,7 @@ var LayerModel = /** @class */ (function (_super) {
         this.component.selection = {};
         var _loop_1 = function (child) {
             child.parseSelection();
-            util_1.keys(child.component.selection).forEach(function (key) {
+            keys(child.component.selection).forEach(function (key) {
                 _this.component.selection[key] = child.component.selection[key];
             });
         };
@@ -64,7 +62,7 @@ var LayerModel = /** @class */ (function (_super) {
         }
     };
     LayerModel.prototype.parseAxisAndHeader = function () {
-        parse_1.parseLayerAxis(this);
+        parseLayerAxis(this);
     };
     LayerModel.prototype.assembleSelectionTopLevelSignals = function (signals) {
         return this.children.reduce(function (sg, child) { return child.assembleSelectionTopLevelSignals(sg); }, signals);
@@ -78,7 +76,7 @@ var LayerModel = /** @class */ (function (_super) {
     LayerModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, assemble_1.assembleLayoutSignals(this));
+        }, assembleLayoutSignals(this));
     };
     LayerModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, data);
@@ -102,16 +100,16 @@ var LayerModel = /** @class */ (function (_super) {
         return null;
     };
     LayerModel.prototype.assembleMarks = function () {
-        return selection_1.assembleLayerSelectionMarks(this, util_1.flatten(this.children.map(function (child) {
+        return assembleLayerSelectionMarks(this, flatten(this.children.map(function (child) {
             return child.assembleMarks();
         })));
     };
     LayerModel.prototype.assembleLegends = function () {
         return this.children.reduce(function (legends, child) {
             return legends.concat(child.assembleLegends());
-        }, assemble_2.assembleLegends(this));
+        }, assembleLegends(this));
     };
     return LayerModel;
-}(model_1.Model));
-exports.LayerModel = LayerModel;
+}(Model));
+export { LayerModel };
 //# sourceMappingURL=layer.js.map

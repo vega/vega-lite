@@ -1,34 +1,30 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var channel_1 = require("../../channel");
-var fielddef_1 = require("../../fielddef");
-var legend_1 = require("../../legend");
-var type_1 = require("../../type");
-var util_1 = require("../../util");
-var common_1 = require("../common");
-var model_1 = require("../model");
-var resolve_1 = require("../resolve");
-var split_1 = require("../split");
-var component_1 = require("./component");
-var encode = tslib_1.__importStar(require("./encode"));
-var properties = tslib_1.__importStar(require("./properties"));
-function parseLegend(model) {
-    if (model_1.isUnitModel(model)) {
+import { COLOR, FILL, OPACITY, SHAPE, SIZE, STROKE } from '../../channel';
+import { isFieldDef, title as fieldDefTitle } from '../../fielddef';
+import { LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
+import { GEOJSON } from '../../type';
+import { deleteNestedProperty, getFirstDefined, keys } from '../../util';
+import { guideEncodeEntry, mergeTitleComponent, numberFormat } from '../common';
+import { isUnitModel } from '../model';
+import { parseGuideResolve } from '../resolve';
+import { defaultTieBreaker, makeImplicit, mergeValuesWithExplicit } from '../split';
+import { LegendComponent } from './component';
+import * as encode from './encode';
+import * as properties from './properties';
+export function parseLegend(model) {
+    if (isUnitModel(model)) {
         model.component.legends = parseUnitLegend(model);
     }
     else {
         model.component.legends = parseNonUnitLegend(model);
     }
 }
-exports.parseLegend = parseLegend;
 function parseUnitLegend(model) {
     var encoding = model.encoding;
-    return [channel_1.COLOR, channel_1.FILL, channel_1.STROKE, channel_1.SIZE, channel_1.SHAPE, channel_1.OPACITY].reduce(function (legendComponent, channel) {
+    return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
         var def = encoding[channel];
         if (model.legend(channel) &&
             model.getScaleComponent(channel) &&
-            !(fielddef_1.isFieldDef(def) && (channel === channel_1.SHAPE && def.type === type_1.GEOJSON))) {
+            !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))) {
             legendComponent[channel] = parseLegendForChannel(model, channel);
         }
         return legendComponent;
@@ -38,14 +34,14 @@ function getLegendDefWithScale(model, channel) {
     var _a;
     // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
     switch (channel) {
-        case channel_1.COLOR:
-            var scale = model.scaleName(channel_1.COLOR);
+        case COLOR:
+            var scale = model.scaleName(COLOR);
             return model.markDef.filled ? { fill: scale } : { stroke: scale };
-        case channel_1.FILL:
-        case channel_1.STROKE:
-        case channel_1.SIZE:
-        case channel_1.SHAPE:
-        case channel_1.OPACITY:
+        case FILL:
+        case STROKE:
+        case SIZE:
+        case SHAPE:
+        case OPACITY:
             return _a = {}, _a[channel] = model.scaleName(channel), _a;
     }
 }
@@ -63,11 +59,11 @@ function isExplicit(value, property, legend, fieldDef) {
     // Otherwise, things are explicit if the returned value matches the specified property
     return value === legend[property];
 }
-function parseLegendForChannel(model, channel) {
+export function parseLegendForChannel(model, channel) {
     var fieldDef = model.fieldDef(channel);
     var legend = model.legend(channel);
-    var legendCmpt = new component_1.LegendComponent({}, getLegendDefWithScale(model, channel));
-    for (var _i = 0, LEGEND_PROPERTIES_1 = legend_1.LEGEND_PROPERTIES; _i < LEGEND_PROPERTIES_1.length; _i++) {
+    var legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
+    for (var _i = 0, LEGEND_PROPERTIES_1 = LEGEND_PROPERTIES; _i < LEGEND_PROPERTIES_1.length; _i++) {
         var property = LEGEND_PROPERTIES_1[_i];
         var value = getProperty(property, legend, channel, model);
         if (value !== undefined) {
@@ -79,34 +75,33 @@ function parseLegendForChannel(model, channel) {
     }
     var legendEncoding = legend.encoding || {};
     var legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(function (e, part) {
-        var legendEncodingPart = common_1.guideEncodeEntry(legendEncoding[part] || {}, model);
+        var legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
         var value = encode[part]
             ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
             : legendEncodingPart; // no rule -- just default values
-        if (value !== undefined && util_1.keys(value).length > 0) {
+        if (value !== undefined && keys(value).length > 0) {
             e[part] = { update: value };
         }
         return e;
     }, {});
-    if (util_1.keys(legendEncode).length > 0) {
+    if (keys(legendEncode).length > 0) {
         legendCmpt.set('encode', legendEncode, !!legend.encoding);
     }
     return legendCmpt;
 }
-exports.parseLegendForChannel = parseLegendForChannel;
 function getProperty(property, specifiedLegend, channel, model) {
     var fieldDef = model.fieldDef(channel);
     switch (property) {
         case 'format':
             // We don't include temporal field here as we apply format in encode block
-            return common_1.numberFormat(fieldDef, specifiedLegend.format, model.config);
+            return numberFormat(fieldDef, specifiedLegend.format, model.config);
         case 'title':
-            return fielddef_1.title(fieldDef, model.config, { allowDisabling: true }) || undefined;
+            return fieldDefTitle(fieldDef, model.config, { allowDisabling: true }) || undefined;
         // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
         // case 'clipHeight':
         //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
         case 'labelOverlap':
-            return util_1.getFirstDefined(specifiedLegend.labelOverlap, properties.labelOverlap(model.getScaleComponent(channel).get('type')));
+            return getFirstDefined(specifiedLegend.labelOverlap, properties.labelOverlap(model.getScaleComponent(channel).get('type')));
         case 'values':
             return properties.values(specifiedLegend, fieldDef);
     }
@@ -117,8 +112,8 @@ function parseNonUnitLegend(model) {
     var _a = model.component, legends = _a.legends, resolve = _a.resolve;
     var _loop_1 = function (child) {
         parseLegend(child);
-        util_1.keys(child.component.legends).forEach(function (channel) {
-            resolve.legend[channel] = resolve_1.parseGuideResolve(model.component.resolve, channel);
+        keys(child.component.legends).forEach(function (channel) {
+            resolve.legend[channel] = parseGuideResolve(model.component.resolve, channel);
             if (resolve.legend[channel] === 'shared') {
                 // If the resolve says shared (and has not been overridden)
                 // We will try to merge and see if there is a conflict
@@ -136,7 +131,7 @@ function parseNonUnitLegend(model) {
         var child = _b[_i];
         _loop_1(child);
     }
-    util_1.keys(legends).forEach(function (channel) {
+    keys(legends).forEach(function (channel) {
         for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
             var child = _a[_i];
             if (!child.component.legends[channel]) {
@@ -151,7 +146,7 @@ function parseNonUnitLegend(model) {
     });
     return legends;
 }
-function mergeLegendComponent(mergedLegend, childLegend) {
+export function mergeLegendComponent(mergedLegend, childLegend) {
     if (!mergedLegend) {
         return childLegend.clone();
     }
@@ -164,35 +159,34 @@ function mergeLegendComponent(mergedLegend, childLegend) {
     }
     var typeMerged = false;
     var _loop_2 = function (prop) {
-        var mergedValueWithExplicit = split_1.mergeValuesWithExplicit(mergedLegend.getWithExplicit(prop), childLegend.getWithExplicit(prop), prop, 'legend', 
+        var mergedValueWithExplicit = mergeValuesWithExplicit(mergedLegend.getWithExplicit(prop), childLegend.getWithExplicit(prop), prop, 'legend', 
         // Tie breaker function
         function (v1, v2) {
             switch (prop) {
                 case 'title':
-                    return common_1.mergeTitleComponent(v1, v2);
+                    return mergeTitleComponent(v1, v2);
                 case 'type':
                     // There are only two types. If we have different types, then prefer symbol over gradient.
                     typeMerged = true;
-                    return split_1.makeImplicit('symbol');
+                    return makeImplicit('symbol');
             }
-            return split_1.defaultTieBreaker(v1, v2, prop, 'legend');
+            return defaultTieBreaker(v1, v2, prop, 'legend');
         });
         mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
     };
     // Otherwise, let's merge
-    for (var _i = 0, VG_LEGEND_PROPERTIES_1 = legend_1.VG_LEGEND_PROPERTIES; _i < VG_LEGEND_PROPERTIES_1.length; _i++) {
+    for (var _i = 0, VG_LEGEND_PROPERTIES_1 = VG_LEGEND_PROPERTIES; _i < VG_LEGEND_PROPERTIES_1.length; _i++) {
         var prop = VG_LEGEND_PROPERTIES_1[_i];
         _loop_2(prop);
     }
     if (typeMerged) {
         if (((mergedLegend.implicit || {}).encode || {}).gradient) {
-            util_1.deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
+            deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
         }
         if (((mergedLegend.explicit || {}).encode || {}).gradient) {
-            util_1.deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
+            deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
         }
     }
     return mergedLegend;
 }
-exports.mergeLegendComponent = mergeLegendComponent;
 //# sourceMappingURL=parse.js.map

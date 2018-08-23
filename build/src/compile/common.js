@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var bin_1 = require("../bin");
-var channel_1 = require("../channel");
-var fielddef_1 = require("../fielddef");
-var scale_1 = require("../scale");
-var timeunit_1 = require("../timeunit");
-var type_1 = require("../type");
-var util_1 = require("../util");
-var mixins_1 = require("./mark/mixins");
-function applyConfig(e, config, // TODO(#1842): consolidate MarkConfig | TextConfig?
+import * as tslib_1 from "tslib";
+import { isArray } from 'vega-util';
+import { isBinning } from '../bin';
+import { isScaleChannel } from '../channel';
+import { isScaleFieldDef, isTimeFieldDef, vgField } from '../fielddef';
+import { ScaleType } from '../scale';
+import { formatExpression } from '../timeunit';
+import { QUANTITATIVE } from '../type';
+import { contains, getFirstDefined, keys, stringify } from '../util';
+import { wrapCondition } from './mark/mixins';
+export function applyConfig(e, config, // TODO(#1842): consolidate MarkConfig | TextConfig?
 propsList) {
     for (var _i = 0, propsList_1 = propsList; _i < propsList_1.length; _i++) {
         var property = propsList_1[_i];
@@ -21,8 +19,7 @@ propsList) {
     }
     return e;
 }
-exports.applyConfig = applyConfig;
-function applyMarkConfig(e, model, propsList) {
+export function applyMarkConfig(e, model, propsList) {
     for (var _i = 0, propsList_2 = propsList; _i < propsList_2.length; _i++) {
         var property = propsList_2[_i];
         var value = getMarkConfig(property, model.markDef, model.config);
@@ -32,18 +29,16 @@ function applyMarkConfig(e, model, propsList) {
     }
     return e;
 }
-exports.applyMarkConfig = applyMarkConfig;
-function getStyles(mark) {
+export function getStyles(mark) {
     return [].concat(mark.type, mark.style || []);
 }
-exports.getStyles = getStyles;
 /**
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-function getMarkConfig(prop, mark, config, _a) {
+export function getMarkConfig(prop, mark, config, _a) {
     var _b = (_a === void 0 ? {} : _a).skipGeneralMarkConfig, skipGeneralMarkConfig = _b === void 0 ? false : _b;
-    return util_1.getFirstDefined(
+    return getFirstDefined(
     // style config has highest precedence
     getStyleConfig(prop, mark, config.style), 
     // then mark-specific config
@@ -51,8 +46,7 @@ function getMarkConfig(prop, mark, config, _a) {
     // then general mark config (if not skipped)
     skipGeneralMarkConfig ? undefined : config.mark[prop]);
 }
-exports.getMarkConfig = getMarkConfig;
-function getStyleConfig(prop, mark, styleConfigIndex) {
+export function getStyleConfig(prop, mark, styleConfigIndex) {
     var styles = getStyles(mark);
     var value;
     for (var _i = 0, styles_1 = styles; _i < styles_1.length; _i++) {
@@ -67,41 +61,39 @@ function getStyleConfig(prop, mark, styleConfigIndex) {
     }
     return value;
 }
-exports.getStyleConfig = getStyleConfig;
-function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
+export function formatSignalRef(fieldDef, specifiedFormat, expr, config) {
     var format = numberFormat(fieldDef, specifiedFormat, config);
-    if (bin_1.isBinning(fieldDef.bin)) {
-        var startField = fielddef_1.vgField(fieldDef, { expr: expr });
-        var endField = fielddef_1.vgField(fieldDef, { expr: expr, binSuffix: 'end' });
+    if (isBinning(fieldDef.bin)) {
+        var startField = vgField(fieldDef, { expr: expr });
+        var endField = vgField(fieldDef, { expr: expr, binSuffix: 'end' });
         return {
             signal: binFormatExpression(startField, endField, format, config)
         };
     }
     else if (fieldDef.type === 'quantitative') {
         return {
-            signal: "" + formatExpr(fielddef_1.vgField(fieldDef, { expr: expr, binSuffix: 'range' }), format)
+            signal: "" + formatExpr(vgField(fieldDef, { expr: expr, binSuffix: 'range' }), format)
         };
     }
-    else if (fielddef_1.isTimeFieldDef(fieldDef)) {
-        var isUTCScale = fielddef_1.isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === scale_1.ScaleType.UTC;
+    else if (isTimeFieldDef(fieldDef)) {
+        var isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
         return {
-            signal: timeFormatExpression(fielddef_1.vgField(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
+            signal: timeFormatExpression(vgField(fieldDef, { expr: expr }), fieldDef.timeUnit, specifiedFormat, config.text.shortTimeLabels, config.timeFormat, isUTCScale, true)
         };
     }
     else {
         return {
-            signal: "''+" + fielddef_1.vgField(fieldDef, { expr: expr })
+            signal: "''+" + vgField(fieldDef, { expr: expr })
         };
     }
 }
-exports.formatSignalRef = formatSignalRef;
 /**
  * Returns number format for a fieldDef
  *
  * @param format explicitly specified format
  */
-function numberFormat(fieldDef, specifiedFormat, config) {
-    if (fieldDef.type === type_1.QUANTITATIVE) {
+export function numberFormat(fieldDef, specifiedFormat, config) {
+    if (fieldDef.type === QUANTITATIVE) {
         // add number format for quantitative type only
         // Specified format in axis/legend has higher precedence than fieldDef.format
         if (specifiedFormat) {
@@ -112,22 +104,19 @@ function numberFormat(fieldDef, specifiedFormat, config) {
     }
     return undefined;
 }
-exports.numberFormat = numberFormat;
 function formatExpr(field, format) {
     return "format(" + field + ", \"" + (format || '') + "\")";
 }
-function numberFormatExpr(field, specifiedFormat, config) {
+export function numberFormatExpr(field, specifiedFormat, config) {
     return formatExpr(field, specifiedFormat || config.numberFormat);
 }
-exports.numberFormatExpr = numberFormatExpr;
-function binFormatExpression(startField, endField, format, config) {
+export function binFormatExpression(startField, endField, format, config) {
     return startField + " === null || isNaN(" + startField + ") ? \"null\" : " + numberFormatExpr(startField, format, config) + " + \" - \" + " + numberFormatExpr(endField, format, config);
 }
-exports.binFormatExpression = binFormatExpression;
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-function timeFormatExpression(field, timeUnit, format, shortTimeLabels, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
+export function timeFormatExpression(field, timeUnit, format, shortTimeLabels, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
 isUTCScale, alwaysReturn) {
     if (alwaysReturn === void 0) { alwaysReturn = false; }
     if (!timeUnit || format) {
@@ -141,28 +130,26 @@ isUTCScale, alwaysReturn) {
         }
     }
     else {
-        return timeunit_1.formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
+        return formatExpression(timeUnit, field, shortTimeLabels, isUTCScale);
     }
 }
-exports.timeFormatExpression = timeFormatExpression;
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-function sortParams(orderDef, fieldRefOption) {
-    return (vega_util_1.isArray(orderDef) ? orderDef : [orderDef]).reduce(function (s, orderChannelDef) {
-        s.field.push(fielddef_1.vgField(orderChannelDef, fieldRefOption));
+export function sortParams(orderDef, fieldRefOption) {
+    return (isArray(orderDef) ? orderDef : [orderDef]).reduce(function (s, orderChannelDef) {
+        s.field.push(vgField(orderChannelDef, fieldRefOption));
         s.order.push(orderChannelDef.sort || 'ascending');
         return s;
     }, { field: [], order: [] });
 }
-exports.sortParams = sortParams;
-function mergeTitleFieldDefs(f1, f2) {
+export function mergeTitleFieldDefs(f1, f2) {
     var merged = f1.slice();
     f2.forEach(function (fdToMerge) {
         for (var _i = 0, merged_1 = merged; _i < merged_1.length; _i++) {
             var fieldDef1 = merged_1[_i];
             // If already exists, no need to append to merged array
-            if (util_1.stringify(fieldDef1) === util_1.stringify(fdToMerge)) {
+            if (stringify(fieldDef1) === stringify(fdToMerge)) {
                 return;
             }
         }
@@ -170,21 +157,19 @@ function mergeTitleFieldDefs(f1, f2) {
     });
     return merged;
 }
-exports.mergeTitleFieldDefs = mergeTitleFieldDefs;
-function mergeTitle(title1, title2) {
+export function mergeTitle(title1, title2) {
     return title1 === title2
         ? title1 // if title is the same just use one of them
         : title1 + ', ' + title2; // join title with comma if different
 }
-exports.mergeTitle = mergeTitle;
-function mergeTitleComponent(v1, v2) {
-    if (vega_util_1.isArray(v1.value) && vega_util_1.isArray(v2.value)) {
+export function mergeTitleComponent(v1, v2) {
+    if (isArray(v1.value) && isArray(v2.value)) {
         return {
             explicit: v1.explicit,
             value: mergeTitleFieldDefs(v1.value, v2.value)
         };
     }
-    else if (!vega_util_1.isArray(v1.value) && !vega_util_1.isArray(v2.value)) {
+    else if (!isArray(v1.value) && !isArray(v2.value)) {
         return {
             explicit: v1.explicit,
             value: mergeTitle(v1.value, v2.value)
@@ -193,25 +178,22 @@ function mergeTitleComponent(v1, v2) {
     /* istanbul ignore next: Condition should not happen -- only for warning in development. */
     throw new Error('It should never reach here');
 }
-exports.mergeTitleComponent = mergeTitleComponent;
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-function binRequiresRange(fieldDef, channel) {
-    if (!bin_1.isBinning(fieldDef.bin)) {
+export function binRequiresRange(fieldDef, channel) {
+    if (!isBinning(fieldDef.bin)) {
         console.warn('Only use this method with binned field defs');
         return false;
     }
     // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
     // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-    return channel_1.isScaleChannel(channel) && util_1.contains(['ordinal', 'nominal'], fieldDef.type);
+    return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
 }
-exports.binRequiresRange = binRequiresRange;
-function guideEncodeEntry(encoding, model) {
-    return util_1.keys(encoding).reduce(function (encode, channel) {
+export function guideEncodeEntry(encoding, model) {
+    return keys(encoding).reduce(function (encode, channel) {
         var valueDef = encoding[channel];
-        return tslib_1.__assign({}, encode, mixins_1.wrapCondition(model, valueDef, channel, function (x) { return ({ value: x.value }); }));
+        return tslib_1.__assign({}, encode, wrapCondition(model, valueDef, channel, function (x) { return ({ value: x.value }); }));
     }, {});
 }
-exports.guideEncodeEntry = guideEncodeEntry;
 //# sourceMappingURL=common.js.map

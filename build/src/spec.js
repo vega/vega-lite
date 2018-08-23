@@ -1,41 +1,30 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vlEncoding = tslib_1.__importStar(require("./encoding"));
-var mark_1 = require("./mark");
-var stack_1 = require("./stack");
-var util_1 = require("./util");
+import * as vlEncoding from './encoding';
+import { isPrimitiveMark } from './mark';
+import { stack } from './stack';
+import { hash, vals } from './util';
 /* Custom type guards */
-function isFacetSpec(spec) {
+export function isFacetSpec(spec) {
     return spec['facet'] !== undefined;
 }
-exports.isFacetSpec = isFacetSpec;
-function isUnitSpec(spec) {
+export function isUnitSpec(spec) {
     return !!spec['mark'];
 }
-exports.isUnitSpec = isUnitSpec;
-function isLayerSpec(spec) {
+export function isLayerSpec(spec) {
     return spec['layer'] !== undefined;
 }
-exports.isLayerSpec = isLayerSpec;
-function isRepeatSpec(spec) {
+export function isRepeatSpec(spec) {
     return spec['repeat'] !== undefined;
 }
-exports.isRepeatSpec = isRepeatSpec;
-function isConcatSpec(spec) {
+export function isConcatSpec(spec) {
     return isVConcatSpec(spec) || isHConcatSpec(spec);
 }
-exports.isConcatSpec = isConcatSpec;
-function isVConcatSpec(spec) {
+export function isVConcatSpec(spec) {
     return spec['vconcat'] !== undefined;
 }
-exports.isVConcatSpec = isVConcatSpec;
-function isHConcatSpec(spec) {
+export function isHConcatSpec(spec) {
     return spec['hconcat'] !== undefined;
 }
-exports.isHConcatSpec = isHConcatSpec;
-var normalize_1 = require("./normalize");
-exports.normalize = normalize_1.normalizeTopLevelSpec;
+export { normalizeTopLevelSpec as normalize } from './normalize';
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 /* Accumulate non-duplicate fieldDefs in a dictionary */
 function accumulate(dict, defs) {
@@ -47,7 +36,7 @@ function accumulate(dict, defs) {
             }
             return f;
         }, {});
-        var key = util_1.hash(pureFieldDef);
+        var key = hash(pureFieldDef);
         dict[key] = dict[key] || fieldDef;
     });
     return dict;
@@ -84,16 +73,14 @@ function fieldDefIndex(spec, dict) {
     return dict;
 }
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
-function fieldDefs(spec) {
-    return util_1.vals(fieldDefIndex(spec));
+export function fieldDefs(spec) {
+    return vals(fieldDefIndex(spec));
 }
-exports.fieldDefs = fieldDefs;
-function isStacked(spec, config) {
+export function isStacked(spec, config) {
     config = config || spec.config;
-    if (mark_1.isPrimitiveMark(spec.mark)) {
-        return stack_1.stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
+    if (isPrimitiveMark(spec.mark)) {
+        return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
     }
     return false;
 }
-exports.isStacked = isStacked;
 //# sourceMappingURL=spec.js.map

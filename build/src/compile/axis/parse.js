@@ -1,42 +1,38 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var axis_1 = require("../../axis");
-var bin_1 = require("../../bin");
-var channel_1 = require("../../channel");
-var fielddef_1 = require("../../fielddef");
-var util_1 = require("../../util");
-var common_1 = require("../common");
-var resolve_1 = require("../resolve");
-var split_1 = require("../split");
-var component_1 = require("./component");
-var config_1 = require("./config");
-var encode = tslib_1.__importStar(require("./encode"));
-var properties = tslib_1.__importStar(require("./properties"));
-function parseUnitAxis(model) {
-    return channel_1.POSITION_SCALE_CHANNELS.reduce(function (axis, channel) {
+import { AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES } from '../../axis';
+import { isBinned } from '../../bin';
+import { POSITION_SCALE_CHANNELS, X, Y } from '../../channel';
+import { toFieldDefBase } from '../../fielddef';
+import { getFirstDefined, keys } from '../../util';
+import { guideEncodeEntry, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat } from '../common';
+import { parseGuideResolve } from '../resolve';
+import { defaultTieBreaker, mergeValuesWithExplicit } from '../split';
+import { AxisComponent } from './component';
+import { getAxisConfig } from './config';
+import * as encode from './encode';
+import * as properties from './properties';
+export function parseUnitAxis(model) {
+    return POSITION_SCALE_CHANNELS.reduce(function (axis, channel) {
         if (model.component.scales[channel] && model.axis(channel)) {
             axis[channel] = [parseAxis(channel, model)];
         }
         return axis;
     }, {});
 }
-exports.parseUnitAxis = parseUnitAxis;
 var OPPOSITE_ORIENT = {
     bottom: 'top',
     top: 'bottom',
     left: 'right',
     right: 'left'
 };
-function parseLayerAxis(model) {
+export function parseLayerAxis(model) {
     var _a = model.component, axes = _a.axes, resolve = _a.resolve;
     var axisCount = { top: 0, bottom: 0, right: 0, left: 0 };
     for (var _i = 0, _b = model.children; _i < _b.length; _i++) {
         var child = _b[_i];
         child.parseAxisAndHeader();
-        for (var _c = 0, _d = util_1.keys(child.component.axes); _c < _d.length; _c++) {
+        for (var _c = 0, _d = keys(child.component.axes); _c < _d.length; _c++) {
             var channel = _d[_c];
-            resolve.axis[channel] = resolve_1.parseGuideResolve(model.component.resolve, channel);
+            resolve.axis[channel] = parseGuideResolve(model.component.resolve, channel);
             if (resolve.axis[channel] === 'shared') {
                 // If the resolve says shared (and has not been overridden)
                 // We will try to merge and see if there is a conflict
@@ -51,7 +47,7 @@ function parseLayerAxis(model) {
         }
     }
     // Move axes to layer's axis component and merge shared axes
-    for (var _e = 0, _f = [channel_1.X, channel_1.Y]; _e < _f.length; _e++) {
+    for (var _e = 0, _f = [X, Y]; _e < _f.length; _e++) {
         var channel = _f[_e];
         for (var _g = 0, _h = model.children; _g < _h.length; _g++) {
             var child = _h[_g];
@@ -82,7 +78,6 @@ function parseLayerAxis(model) {
         }
     }
 }
-exports.parseLayerAxis = parseLayerAxis;
 function mergeAxisComponents(mergedAxisCmpts, childAxisCmpts) {
     if (mergedAxisCmpts) {
         // FIXME: this is a bit wrong once we support multiple axes
@@ -118,23 +113,23 @@ function mergeAxisComponents(mergedAxisCmpts, childAxisCmpts) {
 }
 function mergeAxisComponent(merged, child) {
     var _loop_1 = function (prop) {
-        var mergedValueWithExplicit = split_1.mergeValuesWithExplicit(merged.getWithExplicit(prop), child.getWithExplicit(prop), prop, 'axis', 
+        var mergedValueWithExplicit = mergeValuesWithExplicit(merged.getWithExplicit(prop), child.getWithExplicit(prop), prop, 'axis', 
         // Tie breaker function
         function (v1, v2) {
             switch (prop) {
                 case 'title':
-                    return common_1.mergeTitleComponent(v1, v2);
+                    return mergeTitleComponent(v1, v2);
                 case 'gridScale':
                     return {
                         explicit: v1.explicit,
-                        value: util_1.getFirstDefined(v1.value, v2.value)
+                        value: getFirstDefined(v1.value, v2.value)
                     };
             }
-            return split_1.defaultTieBreaker(v1, v2, prop, 'axis');
+            return defaultTieBreaker(v1, v2, prop, 'axis');
         });
         merged.setWithExplicit(prop, mergedValueWithExplicit);
     };
-    for (var _i = 0, VG_AXIS_PROPERTIES_1 = axis_1.VG_AXIS_PROPERTIES; _i < VG_AXIS_PROPERTIES_1.length; _i++) {
+    for (var _i = 0, VG_AXIS_PROPERTIES_1 = VG_AXIS_PROPERTIES; _i < VG_AXIS_PROPERTIES_1.length; _i++) {
         var prop = VG_AXIS_PROPERTIES_1[_i];
         _loop_1(prop);
     }
@@ -147,7 +142,7 @@ function getFieldDefTitle(model, channel) {
     var title1 = fieldDef ? fieldDef.title : undefined;
     var title2 = fieldDef2 ? fieldDef2.title : undefined;
     if (title1 && title2) {
-        return common_1.mergeTitle(title1, title2);
+        return mergeTitle(title1, title2);
     }
     else if (title1) {
         return title1;
@@ -184,13 +179,13 @@ function isExplicit(value, property, axis, model, channel) {
 }
 function parseAxis(channel, model) {
     var axis = model.axis(channel);
-    var axisComponent = new component_1.AxisComponent();
+    var axisComponent = new AxisComponent();
     // 1.2. Add properties
-    axis_1.VG_AXIS_PROPERTIES.forEach(function (property) {
+    VG_AXIS_PROPERTIES.forEach(function (property) {
         var value = getProperty(property, axis, channel, model);
         if (value !== undefined) {
             var explicit = isExplicit(value, property, axis, model, channel);
-            var configValue = config_1.getAxisConfig(property, model.config, channel, axisComponent.get('orient'), model.getScaleComponent(channel).get('type'));
+            var configValue = getAxisConfig(property, model.config, channel, axisComponent.get('orient'), model.getScaleComponent(channel).get('type'));
             // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
             if (explicit || configValue === undefined) {
                 // Do not apply implicit rule if there is a config value
@@ -204,22 +199,22 @@ function parseAxis(channel, model) {
     });
     // 2) Add guide encode definition groups
     var axisEncoding = axis.encoding || {};
-    var axisEncode = axis_1.AXIS_PARTS.reduce(function (e, part) {
+    var axisEncode = AXIS_PARTS.reduce(function (e, part) {
         if (!axisComponent.hasAxisPart(part)) {
             // No need to create encode for a disabled part.
             return e;
         }
-        var axisEncodingPart = common_1.guideEncodeEntry(axisEncoding[part] || {}, model);
+        var axisEncodingPart = guideEncodeEntry(axisEncoding[part] || {}, model);
         var value = part === 'labels'
             ? encode.labels(model, channel, axisEncodingPart, axisComponent.get('orient'))
             : axisEncodingPart;
-        if (value !== undefined && util_1.keys(value).length > 0) {
+        if (value !== undefined && keys(value).length > 0) {
             e[part] = { update: value };
         }
         return e;
     }, {});
     // FIXME: By having encode as one property, we won't have fine grained encode merging.
-    if (util_1.keys(axisEncode).length > 0) {
+    if (keys(axisEncode).length > 0) {
         axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
     }
     return axisComponent;
@@ -237,22 +232,22 @@ function getProperty(property, specifiedAxis, channel, model) {
             return properties.gridScale(model, channel);
         case 'format':
             // We don't include temporal field here as we apply format in encode block
-            return common_1.numberFormat(fieldDef, specifiedAxis.format, model.config);
+            return numberFormat(fieldDef, specifiedAxis.format, model.config);
         case 'grid': {
-            if (bin_1.isBinned(model.fieldDef(channel).bin)) {
+            if (isBinned(model.fieldDef(channel).bin)) {
                 return false;
             }
             else {
                 var scaleType = model.getScaleComponent(channel).get('type');
-                return util_1.getFirstDefined(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
+                return getFirstDefined(specifiedAxis.grid, properties.grid(scaleType, fieldDef));
             }
         }
         case 'labelAlign':
-            return util_1.getFirstDefined(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
+            return getFirstDefined(specifiedAxis.labelAlign, properties.labelAlign(labelAngle, properties.orient(channel)));
         case 'labelAngle':
             return labelAngle;
         case 'labelBaseline':
-            return util_1.getFirstDefined(specifiedAxis.labelBaseline, properties.labelBaseline(labelAngle, properties.orient(channel)));
+            return getFirstDefined(specifiedAxis.labelBaseline, properties.labelBaseline(labelAngle, properties.orient(channel)));
         case 'labelFlush':
             return properties.labelFlush(fieldDef, channel, specifiedAxis);
         case 'labelOverlap': {
@@ -260,25 +255,25 @@ function getProperty(property, specifiedAxis, channel, model) {
             return properties.labelOverlap(fieldDef, specifiedAxis, channel, scaleType);
         }
         case 'orient':
-            return util_1.getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+            return getFirstDefined(specifiedAxis.orient, properties.orient(channel));
         case 'tickCount': {
             var scaleType = model.getScaleComponent(channel).get('type');
             var scaleName = model.scaleName(channel);
             var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
             var size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-            return util_1.getFirstDefined(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis));
+            return getFirstDefined(specifiedAxis.tickCount, properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis));
         }
         case 'title':
             var channel2 = channel === 'x' ? 'x2' : 'y2';
             var fieldDef2 = model.fieldDef(channel2);
             // Keep undefined so we use default if title is unspecified.
             // For other falsy value, keep them so we will hide the title.
-            return util_1.getFirstDefined(specifiedAxis.title, getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
-            common_1.mergeTitleFieldDefs([fielddef_1.toFieldDefBase(fieldDef)], fieldDef2 ? [fielddef_1.toFieldDefBase(fieldDef2)] : []));
+            return getFirstDefined(specifiedAxis.title, getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+            mergeTitleFieldDefs([toFieldDefBase(fieldDef)], fieldDef2 ? [toFieldDefBase(fieldDef2)] : []));
         case 'values':
             return properties.values(specifiedAxis, model, fieldDef, channel);
     }
     // Otherwise, return specified property.
-    return axis_1.isAxisProperty(property) ? specifiedAxis[property] : undefined;
+    return isAxisProperty(property) ? specifiedAxis[property] : undefined;
 }
 //# sourceMappingURL=parse.js.map

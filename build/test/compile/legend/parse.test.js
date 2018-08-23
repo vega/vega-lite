@@ -1,14 +1,11 @@
-"use strict";
 /* tslint:disable:quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var channel_1 = require("../../../src/channel");
-var legendParse = tslib_1.__importStar(require("../../../src/compile/legend/parse"));
-var parse_1 = require("../../../src/compile/legend/parse");
-var fielddef_1 = require("../../../src/fielddef");
-var type_1 = require("../../../src/type");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { COLOR, OPACITY, SHAPE, SIZE } from '../../../src/channel';
+import * as legendParse from '../../../src/compile/legend/parse';
+import { parseLegend } from '../../../src/compile/legend/parse';
+import { isFieldDef } from '../../../src/fielddef';
+import { GEOJSON } from '../../../src/type';
+import { parseLayerModel, parseUnitModelWithScale } from '../../util';
 describe('compile/legend', function () {
     describe('parseUnitLegend()', function () {
         it("should not produce a Vega legend object on channel 'shape' with type 'geojson'", function () {
@@ -32,35 +29,35 @@ describe('compile/legend', function () {
                     shape: { field: 'geo', type: 'geojson' }
                 }
             };
-            var unitModel = util_1.parseUnitModelWithScale(spec);
-            var channelDef = unitModel.encoding[channel_1.SHAPE];
-            chai_1.assert.isTrue(fielddef_1.isFieldDef(channelDef));
-            if (fielddef_1.isFieldDef(channelDef)) {
-                chai_1.assert.equal(channelDef.type, type_1.GEOJSON);
+            var unitModel = parseUnitModelWithScale(spec);
+            var channelDef = unitModel.encoding[SHAPE];
+            assert.isTrue(isFieldDef(channelDef));
+            if (isFieldDef(channelDef)) {
+                assert.equal(channelDef.type, GEOJSON);
             }
-            parse_1.parseLegend(unitModel);
+            parseLegend(unitModel);
             var legendComp = unitModel.component.legends;
-            chai_1.assert.isUndefined(legendComp[channel_1.SHAPE]);
+            assert.isUndefined(legendComp[SHAPE]);
         });
     });
     describe('parseLegendForChannel()', function () {
         it('should produce a Vega legend object with correct type and scale for color', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' },
                     color: { field: 'a', type: 'quantitative' }
                 }
             });
-            var def = legendParse.parseLegendForChannel(model, channel_1.COLOR).combine();
-            chai_1.assert.isObject(def);
-            chai_1.assert.equal(def.title, 'a');
-            chai_1.assert.equal(def.stroke, 'color');
+            var def = legendParse.parseLegendForChannel(model, COLOR).combine();
+            assert.isObject(def);
+            assert.equal(def.title, 'a');
+            assert.equal(def.stroke, 'color');
         });
         it('should produce no legend title when title is null, "", or false', function () {
             for (var _i = 0, _a = [null, '', false]; _i < _a.length; _i++) {
                 var val = _a[_i];
-                var model = util_1.parseUnitModelWithScale({
+                var model = parseUnitModelWithScale({
                     mark: 'point',
                     encoding: {
                         x: { field: 'a', type: 'nominal' },
@@ -71,12 +68,12 @@ describe('compile/legend', function () {
                         }
                     }
                 });
-                var def = legendParse.parseLegendForChannel(model, channel_1.COLOR).combine();
-                chai_1.assert.doesNotHaveAnyKeys(def, ['title']);
+                var def = legendParse.parseLegendForChannel(model, COLOR).combine();
+                assert.doesNotHaveAnyKeys(def, ['title']);
             }
         });
         it('should store fieldDef.title as explicit', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' },
@@ -87,10 +84,10 @@ describe('compile/legend', function () {
                     }
                 }
             });
-            var def = legendParse.parseLegendForChannel(model, channel_1.COLOR).combine();
-            chai_1.assert.equal(def.title, 'foo');
+            var def = legendParse.parseLegendForChannel(model, COLOR).combine();
+            assert.equal(def.title, 'foo');
         });
-        [channel_1.SIZE, channel_1.SHAPE, channel_1.OPACITY].forEach(function (channel) {
+        [SIZE, SHAPE, OPACITY].forEach(function (channel) {
             it("should produce a Vega legend object with correct type and scale for " + channel, function () {
                 var spec = {
                     mark: 'point',
@@ -99,26 +96,26 @@ describe('compile/legend', function () {
                     }
                 };
                 spec.encoding[channel] = { field: 'a', type: 'nominal' };
-                var model = util_1.parseUnitModelWithScale(spec);
+                var model = parseUnitModelWithScale(spec);
                 var def = legendParse.parseLegendForChannel(model, channel).combine();
                 var channelDef = model.encoding[channel];
-                if (fielddef_1.isFieldDef(channelDef)) {
-                    chai_1.assert.notEqual(channelDef.type, type_1.GEOJSON);
+                if (isFieldDef(channelDef)) {
+                    assert.notEqual(channelDef.type, GEOJSON);
                 }
-                if (channel !== channel_1.OPACITY) {
-                    chai_1.assert.equal(def.encode.symbols.update.opacity.value, 0.7);
+                if (channel !== OPACITY) {
+                    assert.equal(def.encode.symbols.update.opacity.value, 0.7);
                 }
                 else {
-                    chai_1.assert.isUndefined(def.encode.symbols.update.opacity);
+                    assert.isUndefined(def.encode.symbols.update.opacity);
                 }
-                chai_1.assert.isObject(def);
-                chai_1.assert.equal(def.title, 'a');
+                assert.isObject(def);
+                assert.equal(def.title, 'a');
             });
         });
     });
     describe('parseNonUnitLegend()', function () {
         it('should correctly merge orient by favoring explicit orient', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
                 description: "Google's stock price over time.",
                 data: { url: 'data/stocks.csv' },
@@ -143,10 +140,10 @@ describe('compile/legend', function () {
             });
             model.parseScale();
             model.parseLegend();
-            chai_1.assert.equal(model.component.legends.color.explicit.orient, 'left');
+            assert.equal(model.component.legends.color.explicit.orient, 'left');
         });
         it('should correctly merge legend that exists only on one plot', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
                 description: "Google's stock price over time.",
                 data: { url: 'data/stocks.csv' },
@@ -170,9 +167,9 @@ describe('compile/legend', function () {
             });
             model.parseScale();
             model.parseLegend();
-            chai_1.assert.isOk(model.component.legends.color);
-            chai_1.assert.isUndefined(model.children[0].component.legends.color);
-            chai_1.assert.isUndefined(model.children[1].component.legends.color);
+            assert.isOk(model.component.legends.color);
+            assert.isUndefined(model.children[0].component.legends.color);
+            assert.isUndefined(model.children[1].component.legends.color);
         });
     });
 });

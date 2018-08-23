@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var log = tslib_1.__importStar(require("../log"));
-var baseconcat_1 = require("./baseconcat");
-var buildmodel_1 = require("./buildmodel");
-var parse_1 = require("./layoutsize/parse");
+import * as tslib_1 from "tslib";
+import * as log from '../log';
+import { BaseConcatModel } from './baseconcat';
+import { buildModel } from './buildmodel';
+import { parseRepeatLayoutSize } from './layoutsize/parse';
 var RepeatModel = /** @class */ (function (_super) {
     tslib_1.__extends(RepeatModel, _super);
     function RepeatModel(spec, parent, parentGivenName, repeatValues, config) {
@@ -31,13 +29,13 @@ var RepeatModel = /** @class */ (function (_super) {
                     row: rowField,
                     column: columnField
                 };
-                children.push(buildmodel_1.buildModel(spec.spec, this, this.getName('child' + name_1), undefined, childRepeat, config, false));
+                children.push(buildModel(spec.spec, this, this.getName('child' + name_1), undefined, childRepeat, config, false));
             }
         }
         return children;
     };
     RepeatModel.prototype.parseLayoutSize = function () {
-        parse_1.parseRepeatLayoutSize(this);
+        parseRepeatLayoutSize(this);
     };
     RepeatModel.prototype.assembleDefaultLayout = function () {
         return {
@@ -47,6 +45,6 @@ var RepeatModel = /** @class */ (function (_super) {
         };
     };
     return RepeatModel;
-}(baseconcat_1.BaseConcatModel));
-exports.RepeatModel = RepeatModel;
+}(BaseConcatModel));
+export { RepeatModel };
 //# sourceMappingURL=repeat.js.map

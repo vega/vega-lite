@@ -1,16 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SELECTION_ID = '_vgsid_';
-exports.defaultConfig = {
+export var SELECTION_ID = '_vgsid_';
+export var defaultConfig = {
     single: {
         on: 'click',
-        fields: [exports.SELECTION_ID],
+        fields: [SELECTION_ID],
         resolve: 'global',
         empty: 'all'
     },
     multi: {
         on: 'click',
-        fields: [exports.SELECTION_ID],
+        fields: [SELECTION_ID],
         toggle: 'event.shiftKey',
         resolve: 'global',
         empty: 'all'

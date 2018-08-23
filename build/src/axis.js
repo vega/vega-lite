@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var util_1 = require("./util");
-exports.AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
+import * as tslib_1 from "tslib";
+import { flagKeys } from './util';
+export var AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
-exports.AXIS_PROPERTY_TYPE = {
+export var AXIS_PROPERTY_TYPE = {
     grid: 'grid',
     gridColor: 'grid',
     gridDash: 'grid',
@@ -125,11 +123,10 @@ var COMMON_AXIS_PROPERTIES_INDEX = {
 };
 var AXIS_PROPERTIES_INDEX = tslib_1.__assign({}, COMMON_AXIS_PROPERTIES_INDEX, { encoding: 1, labelAngle: 1, tickStep: 1 });
 var VG_AXIS_PROPERTIES_INDEX = tslib_1.__assign({ gridScale: 1, scale: 1 }, COMMON_AXIS_PROPERTIES_INDEX, { encode: 1 });
-function isAxisProperty(prop) {
+export function isAxisProperty(prop) {
     return !!AXIS_PROPERTIES_INDEX[prop];
 }
-exports.isAxisProperty = isAxisProperty;
-exports.VG_AXIS_PROPERTIES = util_1.flagKeys(VG_AXIS_PROPERTIES_INDEX);
+export var VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
 // Export for dependent projects
-exports.AXIS_PROPERTIES = util_1.flagKeys(AXIS_PROPERTIES_INDEX);
+export var AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
 //# sourceMappingURL=axis.js.map

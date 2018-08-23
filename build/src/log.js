@@ -1,14 +1,12 @@
-"use strict";
 /**
  * Vega-Lite's singleton logger utility.
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var vega_util_1 = require("vega-util");
-var util_1 = require("./util");
+import { logger, Warn } from 'vega-util';
+import { stringify } from './util';
 /**
  * Main (default) Vega Logger instance for Vega-Lite
  */
-var main = vega_util_1.logger(vega_util_1.Warn);
+var main = logger(Warn);
 var current = main;
 /**
  * Logger tool for checking if the code throws correct warning
@@ -51,59 +49,53 @@ var LocalLogger = /** @class */ (function () {
     };
     return LocalLogger;
 }());
-exports.LocalLogger = LocalLogger;
-function wrap(f) {
+export { LocalLogger };
+export function wrap(f) {
     return function () {
         current = new LocalLogger();
         f(current);
         reset();
     };
 }
-exports.wrap = wrap;
 /**
  * Set the singleton logger to be a custom logger
  */
-function set(newLogger) {
+export function set(newLogger) {
     current = newLogger;
     return current;
 }
-exports.set = set;
 /**
  * Reset the main logger to use the default Vega Logger
  */
-function reset() {
+export function reset() {
     current = main;
     return current;
 }
-exports.reset = reset;
-function warn() {
+export function warn() {
     var _ = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         _[_i] = arguments[_i];
     }
     current.warn.apply(current, arguments);
 }
-exports.warn = warn;
-function info() {
+export function info() {
     var _ = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         _[_i] = arguments[_i];
     }
     current.info.apply(current, arguments);
 }
-exports.info = info;
-function debug() {
+export function debug() {
     var _ = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         _[_i] = arguments[_i];
     }
     current.debug.apply(current, arguments);
 }
-exports.debug = debug;
 /**
  * Collection of all Vega-Lite Error Messages
  */
-var message;
+export var message;
 (function (message) {
     message.INVALID_SPEC = 'Invalid spec';
     // FIT
@@ -152,7 +144,7 @@ var message;
     message.differentParse = differentParse;
     // TRANSFORMS
     function invalidTransformIgnored(transform) {
-        return "Ignoring an invalid transform: " + util_1.stringify(transform) + ".";
+        return "Ignoring an invalid transform: " + stringify(transform) + ".";
     }
     message.invalidTransformIgnored = invalidTransformIgnored;
     message.NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.';
@@ -163,11 +155,11 @@ var message;
     message.encodingOverridden = encodingOverridden;
     function projectionOverridden(opt) {
         var parentProjection = opt.parentProjection, projection = opt.projection;
-        return "Layer's shared projection " + util_1.stringify(parentProjection) + " is overridden by a child projection " + util_1.stringify(projection) + ".";
+        return "Layer's shared projection " + stringify(parentProjection) + " is overridden by a child projection " + stringify(projection) + ".";
     }
     message.projectionOverridden = projectionOverridden;
     function primitiveChannelDef(channel, type, value) {
-        return "Channel " + channel + " is a " + type + ". Converted to {value: " + util_1.stringify(value) + "}.";
+        return "Channel " + channel + " is a " + type + ". Converted to {value: " + stringify(value) + "}.";
     }
     message.primitiveChannelDef = primitiveChannelDef;
     function invalidFieldType(type) {
@@ -201,7 +193,7 @@ var message;
     }
     message.droppingColor = droppingColor;
     function emptyFieldDef(fieldDef, channel) {
-        return "Dropping " + util_1.stringify(fieldDef) + " from channel \"" + channel + "\" since it does not contain data field or value.";
+        return "Dropping " + stringify(fieldDef) + " from channel \"" + channel + "\" since it does not contain data field or value.";
     }
     message.emptyFieldDef = emptyFieldDef;
     function latLongDeprecated(channel, type, newChannel) {
@@ -243,7 +235,7 @@ var message;
     }
     message.cannotUseScalePropertyWithNonColor = cannotUseScalePropertyWithNonColor;
     function unaggregateDomainHasNoEffectForRawField(fieldDef) {
-        return "Using unaggregated domain with raw field has no effect (" + util_1.stringify(fieldDef) + ").";
+        return "Using unaggregated domain with raw field has no effect (" + stringify(fieldDef) + ").";
     }
     message.unaggregateDomainHasNoEffectForRawField = unaggregateDomainHasNoEffectForRawField;
     function unaggregateDomainWithNonSharedDomainOp(aggregate) {
@@ -251,7 +243,7 @@ var message;
     }
     message.unaggregateDomainWithNonSharedDomainOp = unaggregateDomainWithNonSharedDomainOp;
     function unaggregatedDomainWithLogScale(fieldDef) {
-        return "Unaggregated domain is currently unsupported for log scale (" + util_1.stringify(fieldDef) + ").";
+        return "Unaggregated domain is currently unsupported for log scale (" + stringify(fieldDef) + ").";
     }
     message.unaggregatedDomainWithLogScale = unaggregatedDomainWithLogScale;
     function cannotApplySizeToNonOrientedMark(mark) {
@@ -279,7 +271,7 @@ var message;
     }
     message.scaleTypeNotWorkWithMark = scaleTypeNotWorkWithMark;
     function mergeConflictingProperty(property, propertyOf, v1, v2) {
-        return "Conflicting " + propertyOf.toString() + " property \"" + property.toString() + "\" (" + util_1.stringify(v1) + " and " + util_1.stringify(v2) + ").  Using " + util_1.stringify(v1) + ".";
+        return "Conflicting " + propertyOf.toString() + " property \"" + property.toString() + "\" (" + stringify(v1) + " and " + stringify(v2) + ").  Using " + stringify(v1) + ".";
     }
     message.mergeConflictingProperty = mergeConflictingProperty;
     function independentScaleMeansIndependentGuide(channel) {
@@ -287,7 +279,7 @@ var message;
     }
     message.independentScaleMeansIndependentGuide = independentScaleMeansIndependentGuide;
     function domainSortDropped(sort) {
-        return "Dropping sort property " + util_1.stringify(sort) + " as unioned domains only support boolean or op 'count'.";
+        return "Dropping sort property " + stringify(sort) + " as unioned domains only support boolean or op 'count'.";
     }
     message.domainSortDropped = domainSortDropped;
     message.UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains';
@@ -309,7 +301,7 @@ var message;
     message.stackNonSummativeAggregate = stackNonSummativeAggregate;
     // TIMEUNIT
     function invalidTimeUnit(unitName, value) {
-        return "Invalid " + unitName + ": " + util_1.stringify(value);
+        return "Invalid " + unitName + ": " + stringify(value);
     }
     message.invalidTimeUnit = invalidTimeUnit;
     function dayReplacedWithDate(fullTimeUnit) {
@@ -317,7 +309,7 @@ var message;
     }
     message.dayReplacedWithDate = dayReplacedWithDate;
     function droppedDay(d) {
-        return "Dropping day from datetime " + util_1.stringify(d) + " as day cannot be combined with other units.";
+        return "Dropping day from datetime " + stringify(d) + " as day cannot be combined with other units.";
     }
     message.droppedDay = droppedDay;
     function errorBarCenterAndExtentAreNotNeeded(center, extent) {
@@ -349,5 +341,5 @@ var message;
         return "Domain for " + channel + " is required for threshold scale";
     }
     message.domainRequiredForThresholdScale = domainRequiredForThresholdScale;
-})(message = exports.message || (exports.message = {}));
+})(message || (message = {}));
 //# sourceMappingURL=log.js.map

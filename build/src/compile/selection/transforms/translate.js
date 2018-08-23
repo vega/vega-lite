@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_event_selector_1 = require("vega-event-selector");
-var channel_1 = require("../../../channel");
-var interval_1 = require("../interval");
-var selection_1 = require("../selection");
-var scales_1 = tslib_1.__importStar(require("./scales"));
+import { selector as parseSelector } from 'vega-event-selector';
+import { X, Y } from '../../../channel';
+import { BRUSH as INTERVAL_BRUSH } from '../interval';
+import { channelSignalName, positionalProjections } from '../selection';
+import scalesCompiler, { domain } from './scales';
 var ANCHOR = '_translate_anchor';
 var DELTA = '_translate_delta';
 var translate = {
@@ -14,12 +11,12 @@ var translate = {
     },
     signals: function (model, selCmpt, signals) {
         var name = selCmpt.name;
-        var hasScales = scales_1.default.has(selCmpt);
+        var hasScales = scalesCompiler.has(selCmpt);
         var anchor = name + ANCHOR;
-        var _a = selection_1.positionalProjections(selCmpt), x = _a.x, y = _a.y;
-        var events = vega_event_selector_1.selector(selCmpt.translate, 'scope');
+        var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
+        var events = parseSelector(selCmpt.translate, 'scope');
         if (!hasScales) {
-            events = events.map(function (e) { return ((e.between[0].markname = name + interval_1.BRUSH), e); });
+            events = events.map(function (e) { return ((e.between[0].markname = name + INTERVAL_BRUSH), e); });
         }
         signals.push({
             name: anchor,
@@ -30,11 +27,11 @@ var translate = {
                     update: '{x: x(unit), y: y(unit)' +
                         (x !== null
                             ? ', extent_x: ' +
-                                (hasScales ? scales_1.domain(model, channel_1.X) : "slice(" + selection_1.channelSignalName(selCmpt, 'x', 'visual') + ")")
+                                (hasScales ? domain(model, X) : "slice(" + channelSignalName(selCmpt, 'x', 'visual') + ")")
                             : '') +
                         (y !== null
                             ? ', extent_y: ' +
-                                (hasScales ? scales_1.domain(model, channel_1.Y) : "slice(" + selection_1.channelSignalName(selCmpt, 'y', 'visual') + ")")
+                                (hasScales ? domain(model, Y) : "slice(" + channelSignalName(selCmpt, 'y', 'visual') + ")")
                             : '') +
                         '}'
                 }
@@ -50,27 +47,27 @@ var translate = {
             ]
         });
         if (x !== null) {
-            onDelta(model, selCmpt, channel_1.X, 'width', signals);
+            onDelta(model, selCmpt, X, 'width', signals);
         }
         if (y !== null) {
-            onDelta(model, selCmpt, channel_1.Y, 'height', signals);
+            onDelta(model, selCmpt, Y, 'height', signals);
         }
         return signals;
     }
 };
-exports.default = translate;
+export default translate;
 function onDelta(model, selCmpt, channel, size, signals) {
     var name = selCmpt.name;
-    var hasScales = scales_1.default.has(selCmpt);
+    var hasScales = scalesCompiler.has(selCmpt);
     var signal = signals.filter(function (s) {
-        return s.name === selection_1.channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
+        return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
     })[0];
     var anchor = name + ANCHOR;
     var delta = name + DELTA;
     var sizeSg = model.getSizeSignalRef(size).signal;
     var scaleCmpt = model.getScaleComponent(channel);
     var scaleType = scaleCmpt.get('type');
-    var sign = hasScales && channel === channel_1.X ? '-' : ''; // Invert delta when panning x-scales.
+    var sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
     var extent = anchor + ".extent_" + channel;
     var offset = "" + sign + delta + "." + channel + " / " + (hasScales ? "" + sizeSg : "span(" + extent + ")");
     var panFn = !hasScales

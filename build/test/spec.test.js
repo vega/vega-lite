@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /* tslint:disable:quotemark */
-var chai_1 = require("chai");
-var spec_1 = require("../src/spec");
+import { assert } from 'chai';
+import { fieldDefs } from '../src/spec';
 describe('fieldDefs()', function () {
     it('should get all non-duplicate fieldDefs from an encoding', function () {
         var spec = {
@@ -13,7 +11,7 @@ describe('fieldDefs()', function () {
                 y: { field: 'Miles_per_Gallon', type: 'quantitative' }
             }
         };
-        chai_1.assert.sameDeepMembers(spec_1.fieldDefs(spec), [
+        assert.sameDeepMembers(fieldDefs(spec), [
             { field: 'Horsepower', type: 'quantitative' },
             { field: 'Miles_per_Gallon', type: 'quantitative' }
         ]);
@@ -42,7 +40,7 @@ describe('fieldDefs()', function () {
                 }
             ]
         };
-        chai_1.assert.sameDeepMembers(spec_1.fieldDefs(layerSpec), [
+        assert.sameDeepMembers(fieldDefs(layerSpec), [
             { field: 'date', type: 'temporal' },
             { field: 'price', type: 'quantitative' },
             { field: 'symbol', type: 'nominal' }
@@ -72,7 +70,7 @@ describe('fieldDefs()', function () {
                 }
             ]
         };
-        chai_1.assert.sameDeepMembers(spec_1.fieldDefs(layerSpec), [
+        assert.sameDeepMembers(fieldDefs(layerSpec), [
             { field: 'date', type: 'temporal' },
             { field: 'price', type: 'quantitative' }
         ]);
@@ -89,7 +87,7 @@ describe('fieldDefs()', function () {
                 }
             }
         };
-        chai_1.assert.sameDeepMembers(spec_1.fieldDefs(facetSpec), [
+        assert.sameDeepMembers(fieldDefs(facetSpec), [
             { field: 'MPAA_Rating', type: 'ordinal' },
             { field: 'Worldwide_Gross', type: 'quantitative' },
             { field: 'US_DVD_Sales', type: 'quantitative' }

@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var chai_1 = require("chai");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { parseLayerModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 /* tslint:disable:quotemark */
 describe('src/compile/projection/parse', function () {
     describe('parseUnitProjection', function () {
         it('should create projection from specified projection', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 projection: {
                     type: 'albersUsa'
@@ -21,10 +19,10 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            chai_1.assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should create projection with no props', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -36,10 +34,10 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            chai_1.assert.deepEqual(model.component.projection.explicit, {});
+            assert.deepEqual(model.component.projection.explicit, {});
         });
         it('should create projection from config', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -56,10 +54,10 @@ describe('src/compile/projection/parse', function () {
                 }
             });
             model.parse();
-            chai_1.assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should add data with signal', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 data: {
                     url: 'data/airports.csv',
                     format: {
@@ -82,11 +80,11 @@ describe('src/compile/projection/parse', function () {
                 }
             });
             model.parse();
-            chai_1.assert.isObject(model.component.projection.data[0]);
-            chai_1.assert.property(model.component.projection.data[0], 'signal');
+            assert.isObject(model.component.projection.data[0]);
+            assert.property(model.component.projection.data[0], 'signal');
         });
         it('should add data from main', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -98,14 +96,14 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            chai_1.assert.isString(model.component.projection.data[0]);
-            chai_1.assert.isNotObject(model.component.projection.data[0]);
-            chai_1.assert.notProperty(model.component.projection.data[0], 'signal');
+            assert.isString(model.component.projection.data[0]);
+            assert.isNotObject(model.component.projection.data[0]);
+            assert.notProperty(model.component.projection.data[0], 'signal');
         });
     });
     describe('parseNonUnitProjection', function () {
         it('should merge the same projection', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -143,10 +141,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            chai_1.assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should merge in empty projection to specified projection', function () {
-            var emptyFirst = util_1.parseLayerModel({
+            var emptyFirst = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -181,8 +179,8 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             emptyFirst.parse();
-            chai_1.assert.deepEqual(emptyFirst.component.projection.explicit, { type: 'albersUsa' });
-            var emptyLast = util_1.parseLayerModel({
+            assert.deepEqual(emptyFirst.component.projection.explicit, { type: 'albersUsa' });
+            var emptyLast = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -217,10 +215,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             emptyLast.parse();
-            chai_1.assert.deepEqual(emptyLast.component.projection.explicit, { type: 'albersUsa' });
+            assert.deepEqual(emptyLast.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should merge projections with same size, different data', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -258,10 +256,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            chai_1.assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
         });
         it('should not merge different specified projections', function () {
-            var model = util_1.parseLayerModel({
+            var model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -299,7 +297,7 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            chai_1.assert.isUndefined(model.component.projection);
+            assert.isUndefined(model.component.projection);
         });
     });
 });

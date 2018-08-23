@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
 /* tslint:disable quotemark */
-var chai_1 = require("chai");
-var multi_1 = tslib_1.__importDefault(require("../../../src/compile/selection/multi"));
-var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import multi from '../../../src/compile/selection/multi';
+import * as selection from '../../../src/compile/selection/selection';
+import { parseUnitModelWithScale } from '../../util';
 describe('Multi Selection', function () {
-    var model = util_1.parseUnitModelWithScale({
+    var model = parseUnitModelWithScale({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -26,8 +23,8 @@ describe('Multi Selection', function () {
         }
     }));
     it('builds tuple signals', function () {
-        var oneSg = multi_1.default.signals(model, selCmpts['one']);
-        chai_1.assert.sameDeepMembers(oneSg, [
+        var oneSg = multi.signals(model, selCmpts['one']);
+        assert.sameDeepMembers(oneSg, [
             {
                 name: 'one_tuple',
                 value: {},
@@ -40,8 +37,8 @@ describe('Multi Selection', function () {
                 ]
             }
         ]);
-        var twoSg = multi_1.default.signals(model, selCmpts['two']);
-        chai_1.assert.sameDeepMembers(twoSg, [
+        var twoSg = multi.signals(model, selCmpts['two']);
+        assert.sameDeepMembers(twoSg, [
             {
                 name: 'two_tuple',
                 value: {},
@@ -55,11 +52,11 @@ describe('Multi Selection', function () {
             }
         ]);
         var signals = selection.assembleUnitSelectionSignals(model, []);
-        chai_1.assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+        assert.includeDeepMembers(signals, oneSg.concat(twoSg));
     });
     it('builds unit datasets', function () {
         var data = [];
-        chai_1.assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
+        assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
             { name: 'one_store' },
             { name: 'two_store' }
         ]);
@@ -67,7 +64,7 @@ describe('Multi Selection', function () {
     it('leaves marks alone', function () {
         var marks = [];
         model.component.selection = { one: selCmpts['one'] };
-        chai_1.assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
+        assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
     });
 });
 //# sourceMappingURL=multi.test.js.map

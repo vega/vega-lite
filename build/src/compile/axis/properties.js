@@ -1,32 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var bin_1 = require("../../bin");
-var channel_1 = require("../../channel");
-var fielddef_1 = require("../../fielddef");
-var log = tslib_1.__importStar(require("../../log"));
-var scale_1 = require("../../scale");
-var type_1 = require("../../type");
-var util_1 = require("../../util");
-var config_1 = require("./config");
+import { binToString, isBinning } from '../../bin';
+import { X, Y } from '../../channel';
+import { valueArray } from '../../fielddef';
+import * as log from '../../log';
+import { hasDiscreteDomain, isSelectionDomain } from '../../scale';
+import { NOMINAL, ORDINAL, QUANTITATIVE } from '../../type';
+import { contains } from '../../util';
+import { getAxisConfig } from './config';
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-function grid(scaleType, fieldDef) {
-    return !scale_1.hasDiscreteDomain(scaleType) && !bin_1.isBinning(fieldDef.bin);
+export function grid(scaleType, fieldDef) {
+    return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef.bin);
 }
-exports.grid = grid;
-function gridScale(model, channel) {
+export function gridScale(model, channel) {
     var gridChannel = channel === 'x' ? 'y' : 'x';
     if (model.getScaleComponent(gridChannel)) {
         return model.scaleName(gridChannel);
     }
     return undefined;
 }
-exports.gridScale = gridScale;
-function labelAngle(model, specifiedAxis, channel, fieldDef) {
+export function labelAngle(model, specifiedAxis, channel, fieldDef) {
     // try axis value
     if (specifiedAxis.labelAngle !== undefined) {
         // Make angle within [0,360)
@@ -34,13 +29,13 @@ function labelAngle(model, specifiedAxis, channel, fieldDef) {
     }
     else {
         // try axis config value
-        var angle = config_1.getAxisConfig('labelAngle', model.config, channel, orient(channel), model.getScaleComponent(channel).get('type'));
+        var angle = getAxisConfig('labelAngle', model.config, channel, orient(channel), model.getScaleComponent(channel).get('type'));
         if (angle !== undefined) {
             return ((angle % 360) + 360) % 360;
         }
         else {
             // get default value
-            if (channel === channel_1.X && util_1.contains([type_1.NOMINAL, type_1.ORDINAL], fieldDef.type)) {
+            if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
                 return 270;
             }
             // no default
@@ -48,8 +43,7 @@ function labelAngle(model, specifiedAxis, channel, fieldDef) {
         }
     }
 }
-exports.labelAngle = labelAngle;
-function labelBaseline(angle, axisOrient) {
+export function labelBaseline(angle, axisOrient) {
     if (angle !== undefined) {
         if (axisOrient === 'top' || axisOrient === 'bottom') {
             if (angle <= 45 || 315 <= angle) {
@@ -76,8 +70,7 @@ function labelBaseline(angle, axisOrient) {
     }
     return undefined;
 }
-exports.labelBaseline = labelBaseline;
-function labelAlign(angle, axisOrient) {
+export function labelAlign(angle, axisOrient) {
     if (angle !== undefined) {
         angle = ((angle % 360) + 360) % 360;
         if (axisOrient === 'top' || axisOrient === 'bottom') {
@@ -105,18 +98,16 @@ function labelAlign(angle, axisOrient) {
     }
     return undefined;
 }
-exports.labelAlign = labelAlign;
-function labelFlush(fieldDef, channel, specifiedAxis) {
+export function labelFlush(fieldDef, channel, specifiedAxis) {
     if (specifiedAxis.labelFlush !== undefined) {
         return specifiedAxis.labelFlush;
     }
-    if (channel === 'x' && util_1.contains(['quantitative', 'temporal'], fieldDef.type)) {
+    if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
         return true;
     }
     return undefined;
 }
-exports.labelFlush = labelFlush;
-function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
+export function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
     if (specifiedAxis.labelOverlap !== undefined) {
         return specifiedAxis.labelOverlap;
     }
@@ -129,26 +120,24 @@ function labelOverlap(fieldDef, specifiedAxis, channel, scaleType) {
     }
     return undefined;
 }
-exports.labelOverlap = labelOverlap;
-function orient(channel) {
+export function orient(channel) {
     switch (channel) {
-        case channel_1.X:
+        case X:
             return 'bottom';
-        case channel_1.Y:
+        case Y:
             return 'left';
     }
     /* istanbul ignore next: This should never happen. */
     throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
-exports.orient = orient;
-function tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis) {
-    if (!scale_1.hasDiscreteDomain(scaleType) &&
+export function tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis) {
+    if (!hasDiscreteDomain(scaleType) &&
         scaleType !== 'log' &&
-        !util_1.contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
+        !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)) {
         if (specifiedAxis.tickStep) {
             return { signal: "(domain('" + scaleName + "')[1] - domain('" + scaleName + "')[0]) / " + specifiedAxis.tickStep + " + 1" };
         }
-        else if (bin_1.isBinning(fieldDef.bin)) {
+        else if (isBinning(fieldDef.bin)) {
             // for binned data, we don't want more ticks than maxbins
             return { signal: "ceil(" + size.signal + "/20)" };
         }
@@ -156,20 +145,19 @@ function tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis)
     }
     return undefined;
 }
-exports.tickCount = tickCount;
-function values(specifiedAxis, model, fieldDef, channel) {
+export function values(specifiedAxis, model, fieldDef, channel) {
     var vals = specifiedAxis.values;
     if (vals) {
-        return fielddef_1.valueArray(fieldDef, vals);
+        return valueArray(fieldDef, vals);
     }
-    if (fieldDef.type === type_1.QUANTITATIVE) {
-        if (bin_1.isBinning(fieldDef.bin)) {
+    if (fieldDef.type === QUANTITATIVE) {
+        if (isBinning(fieldDef.bin)) {
             var domain = model.scaleDomain(channel);
-            if (domain && domain !== 'unaggregated' && !scale_1.isSelectionDomain(domain)) {
+            if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
                 // explicit value
                 return vals;
             }
-            var signal = model.getName(bin_1.binToString(fieldDef.bin) + "_" + fieldDef.field + "_bins");
+            var signal = model.getName(binToString(fieldDef.bin) + "_" + fieldDef.field + "_bins");
             return { signal: "sequence(" + signal + ".start, " + signal + ".stop + " + signal + ".step, " + signal + ".step)" };
         }
         else if (specifiedAxis.tickStep) {
@@ -180,5 +168,4 @@ function values(specifiedAxis, model, fieldDef, channel) {
     }
     return undefined;
 }
-exports.values = values;
 //# sourceMappingURL=properties.js.map

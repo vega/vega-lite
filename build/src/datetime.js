@@ -1,15 +1,12 @@
-"use strict";
 // DateTime definition object
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var log = tslib_1.__importStar(require("./log"));
-var util_1 = require("./util");
+import { isNumber } from 'vega-util';
+import * as log from './log';
+import { duplicate, keys } from './util';
 /*
  * A designated year that starts on Sunday.
  */
 var SUNDAY_YEAR = 2006;
-function isDateTime(o) {
+export function isDateTime(o) {
     return (!!o &&
         (!!o.year ||
             !!o.quarter ||
@@ -21,8 +18,7 @@ function isDateTime(o) {
             !!o.seconds ||
             !!o.milliseconds));
 }
-exports.isDateTime = isDateTime;
-exports.MONTHS = [
+export var MONTHS = [
     'january',
     'february',
     'march',
@@ -36,11 +32,11 @@ exports.MONTHS = [
     'november',
     'december'
 ];
-exports.SHORT_MONTHS = exports.MONTHS.map(function (m) { return m.substr(0, 3); });
-exports.DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-exports.SHORT_DAYS = exports.DAYS.map(function (d) { return d.substr(0, 3); });
+export var SHORT_MONTHS = MONTHS.map(function (m) { return m.substr(0, 3); });
+export var DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+export var SHORT_DAYS = DAYS.map(function (d) { return d.substr(0, 3); });
 function normalizeQuarter(q) {
-    if (vega_util_1.isNumber(q)) {
+    if (isNumber(q)) {
         if (q > 4) {
             log.warn(log.message.invalidTimeUnit('quarter', q));
         }
@@ -53,18 +49,18 @@ function normalizeQuarter(q) {
     }
 }
 function normalizeMonth(m) {
-    if (vega_util_1.isNumber(m)) {
+    if (isNumber(m)) {
         // We accept 1-based month, so need to readjust to 0-based month
         return (m - 1).toString();
     }
     else {
         var lowerM = m.toLowerCase();
-        var monthIndex = exports.MONTHS.indexOf(lowerM);
+        var monthIndex = MONTHS.indexOf(lowerM);
         if (monthIndex !== -1) {
             return monthIndex + ''; // 0 for january, ...
         }
         var shortM = lowerM.substr(0, 3);
-        var shortMonthIndex = exports.SHORT_MONTHS.indexOf(shortM);
+        var shortMonthIndex = SHORT_MONTHS.indexOf(shortM);
         if (shortMonthIndex !== -1) {
             return shortMonthIndex + '';
         }
@@ -73,19 +69,19 @@ function normalizeMonth(m) {
     }
 }
 function normalizeDay(d) {
-    if (vega_util_1.isNumber(d)) {
+    if (isNumber(d)) {
         // mod so that this can be both 0-based where 0 = sunday
         // and 1-based where 7=sunday
         return (d % 7) + '';
     }
     else {
         var lowerD = d.toLowerCase();
-        var dayIndex = exports.DAYS.indexOf(lowerD);
+        var dayIndex = DAYS.indexOf(lowerD);
         if (dayIndex !== -1) {
             return dayIndex + ''; // 0 for january, ...
         }
         var shortD = lowerD.substr(0, 3);
-        var shortDayIndex = exports.SHORT_DAYS.indexOf(shortD);
+        var shortDayIndex = SHORT_DAYS.indexOf(shortD);
         if (shortDayIndex !== -1) {
             return shortDayIndex + '';
         }
@@ -98,13 +94,13 @@ function normalizeDay(d) {
  * @param d
  * @param normalize whether to normalize quarter, month, day.
  */
-function dateTimeExpr(d, normalize) {
+export function dateTimeExpr(d, normalize) {
     if (normalize === void 0) { normalize = false; }
     var units = [];
     if (normalize && d.day !== undefined) {
-        if (util_1.keys(d).length > 1) {
+        if (keys(d).length > 1) {
             log.warn(log.message.droppedDay(d));
-            d = util_1.duplicate(d);
+            d = duplicate(d);
             delete d.day;
         }
     }
@@ -159,5 +155,4 @@ function dateTimeExpr(d, normalize) {
         return "datetime(" + units.join(', ') + ")";
     }
 }
-exports.dateTimeExpr = dateTimeExpr;
 //# sourceMappingURL=datetime.js.map

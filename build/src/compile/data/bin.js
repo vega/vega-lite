@@ -1,28 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var bin_1 = require("../../bin");
-var fielddef_1 = require("../../fielddef");
-var util_1 = require("../../util");
-var common_1 = require("../common");
-var model_1 = require("../model");
-var dataflow_1 = require("./dataflow");
+import * as tslib_1 from "tslib";
+import { isString } from 'vega-util';
+import { binToString, isBinning } from '../../bin';
+import { normalizeBin, vgField } from '../../fielddef';
+import { duplicate, flatten, hash, keys, vals } from '../../util';
+import { binFormatExpression, binRequiresRange } from '../common';
+import { isUnitModel } from '../model';
+import { TransformNode } from './dataflow';
 function rangeFormula(model, fieldDef, channel, config) {
-    if (common_1.binRequiresRange(fieldDef, channel)) {
+    if (binRequiresRange(fieldDef, channel)) {
         // read format from axis or legend, if there is no format then use config.numberFormat
-        var guide = model_1.isUnitModel(model) ? model.axis(channel) || model.legend(channel) || {} : {};
-        var startField = fielddef_1.vgField(fieldDef, { expr: 'datum' });
-        var endField = fielddef_1.vgField(fieldDef, { expr: 'datum', binSuffix: 'end' });
+        var guide = isUnitModel(model) ? model.axis(channel) || model.legend(channel) || {} : {};
+        var startField = vgField(fieldDef, { expr: 'datum' });
+        var endField = vgField(fieldDef, { expr: 'datum', binSuffix: 'end' });
         return {
-            formulaAs: fielddef_1.vgField(fieldDef, { binSuffix: 'range', forAs: true }),
-            formula: common_1.binFormatExpression(startField, endField, guide.format, config)
+            formulaAs: vgField(fieldDef, { binSuffix: 'range', forAs: true }),
+            formula: binFormatExpression(startField, endField, guide.format, config)
         };
     }
     return {};
 }
 function binKey(bin, field) {
-    return bin_1.binToString(bin) + "_" + field;
+    return binToString(bin) + "_" + field;
 }
 function getSignalsFromModel(model, key) {
     return {
@@ -36,12 +34,12 @@ function isBinTransform(t) {
 function createBinComponent(t, bin, model) {
     var as;
     if (isBinTransform(t)) {
-        as = vega_util_1.isString(t.as) ? [t.as, t.as + "_end"] : [t.as[0], t.as[1]];
+        as = isString(t.as) ? [t.as, t.as + "_end"] : [t.as[0], t.as[1]];
     }
     else {
-        as = [fielddef_1.vgField(t, { forAs: true }), fielddef_1.vgField(t, { binSuffix: 'end', forAs: true })];
+        as = [vgField(t, { forAs: true }), vgField(t, { binSuffix: 'end', forAs: true })];
     }
-    var normalizedBin = fielddef_1.normalizeBin(bin, undefined) || {};
+    var normalizedBin = normalizeBin(bin, undefined) || {};
     var key = binKey(normalizedBin, t.field);
     var _a = getSignalsFromModel(model, key), signal = _a.signal, extentSignal = _a.extentSignal;
     var binComponent = tslib_1.__assign({ bin: normalizedBin, field: t.field, as: as }, (signal ? { signal: signal } : {}), (extentSignal ? { extentSignal: extentSignal } : {}));
@@ -55,17 +53,17 @@ var BinNode = /** @class */ (function (_super) {
         return _this;
     }
     BinNode.prototype.clone = function () {
-        return new BinNode(null, util_1.duplicate(this.bins));
+        return new BinNode(null, duplicate(this.bins));
     };
     BinNode.makeFromEncoding = function (parent, model) {
         var bins = model.reduceFieldDef(function (binComponentIndex, fieldDef, channel) {
-            if (bin_1.isBinning(fieldDef.bin)) {
+            if (isBinning(fieldDef.bin)) {
                 var _a = createBinComponent(fieldDef, fieldDef.bin, model), key = _a.key, binComponent = _a.binComponent;
                 binComponentIndex[key] = tslib_1.__assign({}, binComponent, binComponentIndex[key], rangeFormula(model, fieldDef, channel, model.config));
             }
             return binComponentIndex;
         }, {});
-        if (util_1.keys(bins).length === 0) {
+        if (keys(bins).length === 0) {
             return null;
         }
         return new BinNode(parent, bins);
@@ -87,23 +85,23 @@ var BinNode = /** @class */ (function (_super) {
     };
     BinNode.prototype.producedFields = function () {
         var out = {};
-        util_1.vals(this.bins).forEach(function (c) {
+        vals(this.bins).forEach(function (c) {
             c.as.forEach(function (f) { return (out[f] = true); });
         });
         return out;
     };
     BinNode.prototype.dependentFields = function () {
         var out = {};
-        util_1.vals(this.bins).forEach(function (c) {
+        vals(this.bins).forEach(function (c) {
             out[c.field] = true;
         });
         return out;
     };
     BinNode.prototype.hash = function () {
-        return "Bin " + util_1.hash(this.bins);
+        return "Bin " + hash(this.bins);
     };
     BinNode.prototype.assemble = function () {
-        return util_1.flatten(util_1.vals(this.bins).map(function (bin) {
+        return flatten(vals(this.bins).map(function (bin) {
             var transform = [];
             var binTrans = tslib_1.__assign({ type: 'bin', field: bin.field, as: bin.as, signal: bin.signal }, bin.bin);
             if (!bin.bin.extent && bin.extentSignal) {
@@ -126,6 +124,6 @@ var BinNode = /** @class */ (function (_super) {
         }));
     };
     return BinNode;
-}(dataflow_1.TransformNode));
-exports.BinNode = BinNode;
+}(TransformNode));
+export { BinNode };
 //# sourceMappingURL=bin.js.map

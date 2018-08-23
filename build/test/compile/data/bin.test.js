@@ -1,18 +1,16 @@
-"use strict";
 /* tslint:disable:quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var chai_1 = require("chai");
-var bin_1 = require("../../../src/compile/data/bin");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { BinNode } from '../../../src/compile/data/bin';
+import { parseUnitModelWithScale } from '../../util';
 function assembleFromEncoding(model) {
-    return bin_1.BinNode.makeFromEncoding(null, model).assemble();
+    return BinNode.makeFromEncoding(null, model).assemble();
 }
 function assembleFromTransform(model, t) {
-    return bin_1.BinNode.makeFromTransform(null, t, model).assemble();
+    return BinNode.makeFromTransform(null, t, model).assemble();
 }
 describe('compile/data/bin', function () {
     it('should add bin transform and correctly apply bin with custom extent', function () {
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             mark: 'point',
             encoding: {
                 y: {
@@ -22,7 +20,7 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        chai_1.assert.deepEqual(assembleFromEncoding(model)[0], {
+        assert.deepEqual(assembleFromEncoding(model)[0], {
             type: 'bin',
             field: 'Acceleration',
             as: ['bin_extent_0_100_maxbins_10_Acceleration', 'bin_extent_0_100_maxbins_10_Acceleration_end'],
@@ -32,7 +30,7 @@ describe('compile/data/bin', function () {
         });
     });
     it('should add bin transform and correctly apply bin for binned field without custom extent', function () {
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             mark: 'point',
             encoding: {
                 y: {
@@ -43,13 +41,13 @@ describe('compile/data/bin', function () {
             }
         });
         var transform = assembleFromEncoding(model);
-        chai_1.assert.deepEqual(transform.length, 2);
-        chai_1.assert.deepEqual(transform[0], {
+        assert.deepEqual(transform.length, 2);
+        assert.deepEqual(transform[0], {
             type: 'extent',
             field: 'Acceleration',
             signal: 'bin_maxbins_10_Acceleration_extent'
         });
-        chai_1.assert.deepEqual(transform[1], {
+        assert.deepEqual(transform[1], {
             type: 'bin',
             field: 'Acceleration',
             as: ['bin_maxbins_10_Acceleration', 'bin_maxbins_10_Acceleration_end'],
@@ -59,7 +57,7 @@ describe('compile/data/bin', function () {
         });
     });
     it('should apply the bin transform only once for a binned field encoded in multiple channels', function () {
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             encoding: {
@@ -76,13 +74,13 @@ describe('compile/data/bin', function () {
             }
         });
         var transform = assembleFromEncoding(model);
-        chai_1.assert.deepEqual(transform.length, 3);
-        chai_1.assert.deepEqual(transform[0], {
+        assert.deepEqual(transform.length, 3);
+        assert.deepEqual(transform[0], {
             type: 'extent',
             field: 'Rotten_Tomatoes_Rating',
             signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'
         });
-        chai_1.assert.deepEqual(transform[1], {
+        assert.deepEqual(transform[1], {
             type: 'bin',
             field: 'Rotten_Tomatoes_Rating',
             as: ['bin_maxbins_10_Rotten_Tomatoes_Rating', 'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
@@ -90,7 +88,7 @@ describe('compile/data/bin', function () {
             maxbins: 10,
             extent: { signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent' }
         });
-        chai_1.assert.deepEqual(transform[2], {
+        assert.deepEqual(transform[2], {
             type: 'formula',
             as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
             expr: "datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\")"
@@ -102,7 +100,7 @@ describe('compile/data/bin', function () {
             field: 'Acceleration',
             as: 'binned_acceleration'
         };
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             transform: [t],
@@ -117,7 +115,7 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        chai_1.assert.deepEqual(assembleFromTransform(model, t)[0], {
+        assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
             maxbins: 10,
@@ -132,7 +130,7 @@ describe('compile/data/bin', function () {
             field: 'Acceleration',
             as: 'binned_acceleration'
         };
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             transform: [t],
@@ -147,7 +145,7 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        chai_1.assert.deepEqual(assembleFromTransform(model, t)[0], {
+        assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
             maxbins: 20,
@@ -162,7 +160,7 @@ describe('compile/data/bin', function () {
             field: 'Acceleration',
             as: 'binned_acceleration'
         };
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             transform: [t],
@@ -177,7 +175,7 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        chai_1.assert.deepEqual(assembleFromTransform(model, t)[0], {
+        assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
             anchor: 6,
@@ -193,7 +191,7 @@ describe('compile/data/bin', function () {
             field: 'Acceleration',
             as: ['binned_acceleration_start', 'binned_acceleration_stop']
         };
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             transform: [t],
@@ -208,7 +206,7 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        chai_1.assert.deepEqual(assembleFromTransform(model, t)[0], {
+        assert.deepEqual(assembleFromTransform(model, t)[0], {
             type: 'bin',
             field: 'Acceleration',
             anchor: 6,
@@ -224,7 +222,7 @@ describe('compile/data/bin', function () {
             field: 'Acceleration',
             as: ['binned_acceleration_start', 'binned_acceleration_stop']
         };
-        var model = util_1.parseUnitModelWithScale({
+        var model = parseUnitModelWithScale({
             data: { url: 'data/movies.json' },
             mark: 'circle',
             transform: [t],
@@ -239,8 +237,8 @@ describe('compile/data/bin', function () {
                 }
             }
         });
-        var binNode = bin_1.BinNode.makeFromTransform(null, t, model);
-        chai_1.assert.deepEqual(binNode.hash(), 'Bin 1594083826');
+        var binNode = BinNode.makeFromTransform(null, t, model);
+        assert.deepEqual(binNode.hash(), 'Bin 1594083826');
     });
 });
 //# sourceMappingURL=bin.test.js.map

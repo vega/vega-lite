@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var util_1 = require("../../util");
-var vega_schema_1 = require("../../vega.schema");
-var mixins = tslib_1.__importStar(require("./mixins"));
-var ref = tslib_1.__importStar(require("./valueref"));
-exports.tick = {
+import * as tslib_1 from "tslib";
+import { getFirstDefined } from '../../util';
+import { isVgRangeStep } from '../../vega.schema';
+import * as mixins from './mixins';
+import * as ref from './valueref';
+export var tick = {
     vgMark: 'rect',
     encodeEntry: function (model) {
         var _a;
@@ -16,7 +14,7 @@ exports.tick = {
         return tslib_1.__assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), mixins.pointPosition('x', model, ref.mid(width), 'xc'), mixins.pointPosition('y', model, ref.mid(height), 'yc'), mixins.nonPosition('size', model, {
             defaultValue: defaultSize(model),
             vgChannel: vgSizeChannel
-        }), (_a = {}, _a[vgThicknessChannel] = { value: util_1.getFirstDefined(markDef.thickness, config.tick.thickness) }, _a));
+        }), (_a = {}, _a[vgThicknessChannel] = { value: getFirstDefined(markDef.thickness, config.tick.thickness) }, _a));
     }
 };
 function defaultSize(model) {
@@ -31,7 +29,7 @@ function defaultSize(model) {
     }
     else {
         var scaleRange = scale ? scale.get('range') : undefined;
-        var rangeStep = scaleRange && vega_schema_1.isVgRangeStep(scaleRange) ? scaleRange.step : config.scale.rangeStep;
+        var rangeStep = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : config.scale.rangeStep;
         if (typeof rangeStep !== 'number') {
             // FIXME consolidate this log
             throw new Error('Function does not handle non-numeric rangeStep');

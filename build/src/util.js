@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var json_stable_stringify_1 = tslib_1.__importDefault(require("json-stable-stringify"));
-var vega_util_1 = require("vega-util");
-var logical_1 = require("./logical");
+import * as tslib_1 from "tslib";
+import stableStringify from 'json-stable-stringify';
+import { isArray, isNumber, isString, splitAccessPath, stringValue } from 'vega-util';
+import { isLogicalAnd, isLogicalNot, isLogicalOr } from './logical';
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -14,7 +12,7 @@ var logical_1 = require("./logical");
  * // → {'a': 1, 'c': 3}
  *
  */
-function pick(obj, props) {
+export function pick(obj, props) {
     var copy = {};
     for (var _i = 0, props_1 = props; _i < props_1.length; _i++) {
         var prop = props_1[_i];
@@ -24,12 +22,11 @@ function pick(obj, props) {
     }
     return copy;
 }
-exports.pick = pick;
 /**
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-function omit(obj, props) {
+export function omit(obj, props) {
     var copy = tslib_1.__assign({}, obj);
     for (var _i = 0, props_2 = props; _i < props_2.length; _i++) {
         var prop = props_2[_i];
@@ -37,19 +34,18 @@ function omit(obj, props) {
     }
     return copy;
 }
-exports.omit = omit;
 /**
  * Converts any object into a string representation that can be consumed by humans.
  */
-exports.stringify = json_stable_stringify_1.default;
+export var stringify = stableStringify;
 /**
  * Converts any object into a string of limited size, or a number.
  */
-function hash(a) {
-    if (vega_util_1.isNumber(a)) {
+export function hash(a) {
+    if (isNumber(a)) {
         return a;
     }
-    var str = vega_util_1.isString(a) ? a : json_stable_stringify_1.default(a);
+    var str = isString(a) ? a : stableStringify(a);
     // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
     if (str.length < 100) {
         return str;
@@ -63,24 +59,20 @@ function hash(a) {
     }
     return h;
 }
-exports.hash = hash;
-function contains(array, item) {
+export function contains(array, item) {
     return array.indexOf(item) > -1;
 }
-exports.contains = contains;
 /** Returns the array without the elements in item */
-function without(array, excludedItems) {
+export function without(array, excludedItems) {
     return array.filter(function (item) { return !contains(excludedItems, item); });
 }
-exports.without = without;
-function union(array, other) {
+export function union(array, other) {
     return array.concat(without(other, array));
 }
-exports.union = union;
 /**
  * Returns true if any item returns true.
  */
-function some(arr, f) {
+export function some(arr, f) {
     var i = 0;
     for (var k = 0; k < arr.length; k++) {
         if (f(arr[k], k, i++)) {
@@ -89,11 +81,10 @@ function some(arr, f) {
     }
     return false;
 }
-exports.some = some;
 /**
  * Returns true if all items return true.
  */
-function every(arr, f) {
+export function every(arr, f) {
     var i = 0;
     for (var k = 0; k < arr.length; k++) {
         if (!f(arr[k], k, i++)) {
@@ -102,15 +93,13 @@ function every(arr, f) {
     }
     return true;
 }
-exports.every = every;
-function flatten(arrays) {
+export function flatten(arrays) {
     return [].concat.apply([], arrays);
 }
-exports.flatten = flatten;
 /**
  * recursively merges src into dest
  */
-function mergeDeep(dest) {
+export function mergeDeep(dest) {
     var src = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         src[_i - 1] = arguments[_i];
@@ -121,7 +110,6 @@ function mergeDeep(dest) {
     }
     return dest;
 }
-exports.mergeDeep = mergeDeep;
 // recursively merges src into dest
 function deepMerge_(dest, src) {
     if (typeof src !== 'object' || src === null) {
@@ -134,11 +122,11 @@ function deepMerge_(dest, src) {
         if (src[p] === undefined) {
             continue;
         }
-        if (typeof src[p] !== 'object' || vega_util_1.isArray(src[p]) || src[p] === null) {
+        if (typeof src[p] !== 'object' || isArray(src[p]) || src[p] === null) {
             dest[p] = src[p];
         }
         else if (typeof dest[p] !== 'object' || dest[p] === null) {
-            dest[p] = mergeDeep(vega_util_1.isArray(src[p].constructor) ? [] : {}, src[p]);
+            dest[p] = mergeDeep(isArray(src[p].constructor) ? [] : {}, src[p]);
         }
         else {
             mergeDeep(dest[p], src[p]);
@@ -146,7 +134,7 @@ function deepMerge_(dest, src) {
     }
     return dest;
 }
-function unique(values, f) {
+export function unique(values, f) {
     var results = [];
     var u = {};
     var v;
@@ -161,11 +149,10 @@ function unique(values, f) {
     }
     return results;
 }
-exports.unique = unique;
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
-function differ(dict, other) {
+export function differ(dict, other) {
     for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
             if (other[key] && dict[key] && other[key] !== dict[key]) {
@@ -175,8 +162,7 @@ function differ(dict, other) {
     }
     return false;
 }
-exports.differ = differ;
-function hasIntersection(a, b) {
+export function hasIntersection(a, b) {
     for (var key in a) {
         if (key in b) {
             return true;
@@ -184,12 +170,10 @@ function hasIntersection(a, b) {
     }
     return false;
 }
-exports.hasIntersection = hasIntersection;
-function isNumeric(num) {
+export function isNumeric(num) {
     return !isNaN(num);
 }
-exports.isNumeric = isNumeric;
-function differArray(array, other) {
+export function differArray(array, other) {
     if (array.length !== other.length) {
         return true;
     }
@@ -202,10 +186,9 @@ function differArray(array, other) {
     }
     return false;
 }
-exports.differArray = differArray;
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-exports.keys = Object.keys;
-function vals(x) {
+export var keys = Object.keys;
+export function vals(x) {
     var _vals = [];
     for (var k in x) {
         if (x.hasOwnProperty(k)) {
@@ -214,48 +197,42 @@ function vals(x) {
     }
     return _vals;
 }
-exports.vals = vals;
-function flagKeys(f) {
-    return exports.keys(f);
+export function flagKeys(f) {
+    return keys(f);
 }
-exports.flagKeys = flagKeys;
-function duplicate(obj) {
+export function duplicate(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
-exports.duplicate = duplicate;
-function isBoolean(b) {
+export function isBoolean(b) {
     return b === true || b === false;
 }
-exports.isBoolean = isBoolean;
 /**
  * Convert a string into a valid variable name
  */
-function varName(s) {
+export function varName(s) {
     // Replace non-alphanumeric characters (anything besides a-zA-Z0-9_) with _
     var alphanumericS = s.replace(/\W/g, '_');
     // Add _ if the string has leading numbers.
     return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
-exports.varName = varName;
-function logicalExpr(op, cb) {
-    if (logical_1.isLogicalNot(op)) {
+export function logicalExpr(op, cb) {
+    if (isLogicalNot(op)) {
         return '!(' + logicalExpr(op.not, cb) + ')';
     }
-    else if (logical_1.isLogicalAnd(op)) {
+    else if (isLogicalAnd(op)) {
         return '(' + op.and.map(function (and) { return logicalExpr(and, cb); }).join(') && (') + ')';
     }
-    else if (logical_1.isLogicalOr(op)) {
+    else if (isLogicalOr(op)) {
         return '(' + op.or.map(function (or) { return logicalExpr(or, cb); }).join(') || (') + ')';
     }
     else {
         return cb(op);
     }
 }
-exports.logicalExpr = logicalExpr;
 /**
  * Delete nested property of an object, and delete the ancestors of the property if they become empty.
  */
-function deleteNestedProperty(obj, orderedProps) {
+export function deleteNestedProperty(obj, orderedProps) {
     if (orderedProps.length === 0) {
         return true;
     }
@@ -265,73 +242,66 @@ function deleteNestedProperty(obj, orderedProps) {
     }
     return Object.keys(obj).length === 0;
 }
-exports.deleteNestedProperty = deleteNestedProperty;
-function titlecase(s) {
+export function titlecase(s) {
     return s.charAt(0).toUpperCase() + s.substr(1);
 }
-exports.titlecase = titlecase;
 /**
  * Converts a path to an access path with datum.
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-function accessPathWithDatum(path, datum) {
+export function accessPathWithDatum(path, datum) {
     if (datum === void 0) { datum = 'datum'; }
-    var pieces = vega_util_1.splitAccessPath(path);
+    var pieces = splitAccessPath(path);
     var prefixes = [];
     for (var i = 1; i <= pieces.length; i++) {
         var prefix = "[" + pieces
             .slice(0, i)
-            .map(vega_util_1.stringValue)
+            .map(stringValue)
             .join('][') + "]";
         prefixes.push("" + datum + prefix);
     }
     return prefixes.join(' && ');
 }
-exports.accessPathWithDatum = accessPathWithDatum;
 /**
  * Return access with datum to the flattened field.
  *
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-function flatAccessWithDatum(path, datum) {
+export function flatAccessWithDatum(path, datum) {
     if (datum === void 0) { datum = 'datum'; }
-    return datum + "[" + vega_util_1.stringValue(vega_util_1.splitAccessPath(path).join('.')) + "]";
+    return datum + "[" + stringValue(splitAccessPath(path).join('.')) + "]";
 }
-exports.flatAccessWithDatum = flatAccessWithDatum;
 /**
  * Replaces path accesses with access to non-nested field.
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
  */
-function replacePathInField(path) {
-    return "" + vega_util_1.splitAccessPath(path)
+export function replacePathInField(path) {
+    return "" + splitAccessPath(path)
         .map(function (p) { return p.replace('.', '\\.'); })
         .join('\\.');
 }
-exports.replacePathInField = replacePathInField;
 /**
  * Remove path accesses with access from field.
  * For example, `foo["bar"].baz` becomes `foo.bar.baz`.
  */
-function removePathFromField(path) {
-    return "" + vega_util_1.splitAccessPath(path).join('.');
+export function removePathFromField(path) {
+    return "" + splitAccessPath(path).join('.');
 }
-exports.removePathFromField = removePathFromField;
 /**
  * Count the depth of the path. Returns 1 for fields that are not nested.
  */
-function accessPathDepth(path) {
+export function accessPathDepth(path) {
     if (!path) {
         return 0;
     }
-    return vega_util_1.splitAccessPath(path).length;
+    return splitAccessPath(path).length;
 }
-exports.accessPathDepth = accessPathDepth;
 /**
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
-function getFirstDefined() {
+export function getFirstDefined() {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
         args[_i] = arguments[_i];
@@ -344,5 +314,4 @@ function getFirstDefined() {
     }
     return undefined;
 }
-exports.getFirstDefined = getFirstDefined;
 //# sourceMappingURL=util.js.map

@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var util_1 = require("./util");
-exports.defaultLegendConfig = {};
+import * as tslib_1 from "tslib";
+import { flagKeys } from './util';
+export var defaultLegendConfig = {};
 var COMMON_LEGEND_PROPERTY_INDEX = {
     clipHeight: 1,
     columnPadding: 1,
@@ -61,6 +59,6 @@ var VG_LEGEND_PROPERTY_INDEX = tslib_1.__assign({}, COMMON_LEGEND_PROPERTY_INDEX
     opacity: 1, shape: 1, stroke: 1, fill: 1, size: 1, 
     // encode
     encode: 1 });
-exports.LEGEND_PROPERTIES = util_1.flagKeys(COMMON_LEGEND_PROPERTY_INDEX);
-exports.VG_LEGEND_PROPERTIES = util_1.flagKeys(VG_LEGEND_PROPERTY_INDEX);
+export var LEGEND_PROPERTIES = flagKeys(COMMON_LEGEND_PROPERTY_INDEX);
+export var VG_LEGEND_PROPERTIES = flagKeys(VG_LEGEND_PROPERTY_INDEX);
 //# sourceMappingURL=legend.js.map

@@ -1,79 +1,64 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var aggregate_1 = require("./aggregate");
-var bin_1 = require("./bin");
-var channel_1 = require("./channel");
-var datetime_1 = require("./datetime");
-var facet_1 = require("./facet");
-var log = tslib_1.__importStar(require("./log"));
-var timeunit_1 = require("./timeunit");
-var type_1 = require("./type");
-var util_1 = require("./util");
-function isConditionalSelection(c) {
+import * as tslib_1 from "tslib";
+import { isArray, isBoolean, isNumber, isString } from 'vega-util';
+import { isAggregateOp, isCountingAggregateOp } from './aggregate';
+import { autoMaxBins, binToString, isBinned, isBinning } from './bin';
+import { POSITION_SCALE_CHANNELS, rangeType } from './channel';
+import { dateTimeExpr, isDateTime } from './datetime';
+import { isFacetFieldDef } from './facet';
+import * as log from './log';
+import { getLocalTimeUnit, getTimeUnitParts, isLocalSingleTimeUnit, isUtcSingleTimeUnit, normalizeTimeUnit } from './timeunit';
+import { getFullName, QUANTITATIVE } from './type';
+import { contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase } from './util';
+export function isConditionalSelection(c) {
     return c['selection'];
 }
-exports.isConditionalSelection = isConditionalSelection;
-function isRepeatRef(field) {
-    return field && !vega_util_1.isString(field) && 'repeat' in field;
+export function isRepeatRef(field) {
+    return field && !isString(field) && 'repeat' in field;
 }
-exports.isRepeatRef = isRepeatRef;
-function toFieldDefBase(fieldDef) {
+export function toFieldDefBase(fieldDef) {
     var field = fieldDef.field, timeUnit = fieldDef.timeUnit, bin = fieldDef.bin, aggregate = fieldDef.aggregate;
     return tslib_1.__assign({}, (timeUnit ? { timeUnit: timeUnit } : {}), (bin ? { bin: bin } : {}), (aggregate ? { aggregate: aggregate } : {}), { field: field });
 }
-exports.toFieldDefBase = toFieldDefBase;
-function isConditionalDef(channelDef) {
+export function isConditionalDef(channelDef) {
     return !!channelDef && !!channelDef.condition;
 }
-exports.isConditionalDef = isConditionalDef;
 /**
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
-function hasConditionalFieldDef(channelDef) {
-    return !!channelDef && !!channelDef.condition && !vega_util_1.isArray(channelDef.condition) && isFieldDef(channelDef.condition);
+export function hasConditionalFieldDef(channelDef) {
+    return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
-exports.hasConditionalFieldDef = hasConditionalFieldDef;
-function hasConditionalValueDef(channelDef) {
-    return !!channelDef && !!channelDef.condition && (vega_util_1.isArray(channelDef.condition) || isValueDef(channelDef.condition));
+export function hasConditionalValueDef(channelDef) {
+    return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isValueDef(channelDef.condition));
 }
-exports.hasConditionalValueDef = hasConditionalValueDef;
-function isFieldDef(channelDef) {
+export function isFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
-exports.isFieldDef = isFieldDef;
-function isStringFieldDef(channelDef) {
-    return isFieldDef(channelDef) && vega_util_1.isString(channelDef.field);
+export function isStringFieldDef(channelDef) {
+    return isFieldDef(channelDef) && isString(channelDef.field);
 }
-exports.isStringFieldDef = isStringFieldDef;
-function isValueDef(channelDef) {
+export function isValueDef(channelDef) {
     return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
 }
-exports.isValueDef = isValueDef;
-function isScaleFieldDef(channelDef) {
+export function isScaleFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
 }
-exports.isScaleFieldDef = isScaleFieldDef;
-function isPositionFieldDef(channelDef) {
+export function isPositionFieldDef(channelDef) {
     return !!channelDef && (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute']);
 }
-exports.isPositionFieldDef = isPositionFieldDef;
-function isMarkPropFieldDef(channelDef) {
+export function isMarkPropFieldDef(channelDef) {
     return !!channelDef && !!channelDef['legend'];
 }
-exports.isMarkPropFieldDef = isMarkPropFieldDef;
-function isTextFieldDef(channelDef) {
+export function isTextFieldDef(channelDef) {
     return !!channelDef && !!channelDef['format'];
 }
-exports.isTextFieldDef = isTextFieldDef;
 function isOpFieldDef(fieldDef) {
     return !!fieldDef['op'];
 }
 /**
  * Get a Vega field reference from a Vega-Lite field def.
  */
-function vgField(fieldDef, opt) {
+export function vgField(fieldDef, opt) {
     if (opt === void 0) { opt = {}; }
     var field = fieldDef.field;
     var prefix = opt.prefix;
@@ -87,8 +72,8 @@ function vgField(fieldDef, opt) {
             if (isOpFieldDef(fieldDef)) {
                 fn = fieldDef.op;
             }
-            else if (bin_1.isBinning(fieldDef.bin)) {
-                fn = bin_1.binToString(fieldDef.bin);
+            else if (isBinning(fieldDef.bin)) {
+                fn = binToString(fieldDef.bin);
                 suffix = opt.binSuffix || '';
             }
             else if (fieldDef.aggregate) {
@@ -113,15 +98,14 @@ function vgField(fieldDef, opt) {
     }
     else if (opt.expr) {
         // Expression to access flattened field. No need to escape dots.
-        return util_1.flatAccessWithDatum(field, opt.expr);
+        return flatAccessWithDatum(field, opt.expr);
     }
     else {
         // We flattened all fields so paths should have become dot.
-        return util_1.replacePathInField(field);
+        return replacePathInField(field);
     }
 }
-exports.vgField = vgField;
-function isDiscrete(fieldDef) {
+export function isDiscrete(fieldDef) {
     switch (fieldDef.type) {
         case 'nominal':
         case 'ordinal':
@@ -134,35 +118,31 @@ function isDiscrete(fieldDef) {
     }
     throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
-exports.isDiscrete = isDiscrete;
-function isContinuous(fieldDef) {
+export function isContinuous(fieldDef) {
     return !isDiscrete(fieldDef);
 }
-exports.isContinuous = isContinuous;
-function isCount(fieldDef) {
+export function isCount(fieldDef) {
     return fieldDef.aggregate === 'count';
 }
-exports.isCount = isCount;
-function verbalTitleFormatter(fieldDef, config) {
+export function verbalTitleFormatter(fieldDef, config) {
     var field = fieldDef.field, bin = fieldDef.bin, timeUnit = fieldDef.timeUnit, aggregate = fieldDef.aggregate;
     if (aggregate === 'count') {
         return config.countTitle;
     }
-    else if (bin_1.isBinning(bin)) {
+    else if (isBinning(bin)) {
         return field + " (binned)";
     }
     else if (timeUnit) {
-        var units = timeunit_1.getTimeUnitParts(timeUnit).join('-');
+        var units = getTimeUnitParts(timeUnit).join('-');
         return field + " (" + units + ")";
     }
     else if (aggregate) {
-        return util_1.titlecase(aggregate) + " of " + field;
+        return titlecase(aggregate) + " of " + field;
     }
     return field;
 }
-exports.verbalTitleFormatter = verbalTitleFormatter;
-function functionalTitleFormatter(fieldDef, config) {
-    var fn = fieldDef.aggregate || fieldDef.timeUnit || (bin_1.isBinning(fieldDef.bin) && 'bin');
+export function functionalTitleFormatter(fieldDef, config) {
+    var fn = fieldDef.aggregate || fieldDef.timeUnit || (isBinning(fieldDef.bin) && 'bin');
     if (fn) {
         return fn.toUpperCase() + '(' + fieldDef.field + ')';
     }
@@ -170,8 +150,7 @@ function functionalTitleFormatter(fieldDef, config) {
         return fieldDef.field;
     }
 }
-exports.functionalTitleFormatter = functionalTitleFormatter;
-exports.defaultTitleFormatter = function (fieldDef, config) {
+export var defaultTitleFormatter = function (fieldDef, config) {
     switch (config.fieldTitle) {
         case 'plain':
             return fieldDef.field;
@@ -181,45 +160,40 @@ exports.defaultTitleFormatter = function (fieldDef, config) {
             return verbalTitleFormatter(fieldDef, config);
     }
 };
-var titleFormatter = exports.defaultTitleFormatter;
-function setTitleFormatter(formatter) {
+var titleFormatter = defaultTitleFormatter;
+export function setTitleFormatter(formatter) {
     titleFormatter = formatter;
 }
-exports.setTitleFormatter = setTitleFormatter;
-function resetTitleFormatter() {
-    setTitleFormatter(exports.defaultTitleFormatter);
+export function resetTitleFormatter() {
+    setTitleFormatter(defaultTitleFormatter);
 }
-exports.resetTitleFormatter = resetTitleFormatter;
-function title(fieldDef, config, _a) {
+export function title(fieldDef, config, _a) {
     var allowDisabling = _a.allowDisabling;
     var guide = getGuide(fieldDef) || {};
     var guideTitle = guide.title;
     if (allowDisabling) {
-        return util_1.getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
+        return getFirstDefined(guideTitle, fieldDef.title, defaultTitle(fieldDef, config));
     }
     else {
         return guideTitle || fieldDef.title || defaultTitle(fieldDef, config);
     }
 }
-exports.title = title;
-function getGuide(fieldDef) {
+export function getGuide(fieldDef) {
     if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
         return fieldDef.axis;
     }
     else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {
         return fieldDef.legend;
     }
-    else if (facet_1.isFacetFieldDef(fieldDef) && fieldDef.header) {
+    else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
         return fieldDef.header;
     }
     return undefined;
 }
-exports.getGuide = getGuide;
-function defaultTitle(fieldDef, config) {
+export function defaultTitle(fieldDef, config) {
     return titleFormatter(fieldDef, config);
 }
-exports.defaultTitle = defaultTitle;
-function format(fieldDef) {
+export function format(fieldDef) {
     if (isTextFieldDef(fieldDef) && fieldDef.format) {
         return fieldDef.format;
     }
@@ -228,15 +202,14 @@ function format(fieldDef) {
         return guide.format;
     }
 }
-exports.format = format;
-function defaultType(fieldDef, channel) {
+export function defaultType(fieldDef, channel) {
     if (fieldDef.timeUnit) {
         return 'temporal';
     }
-    if (bin_1.isBinning(fieldDef.bin)) {
+    if (isBinning(fieldDef.bin)) {
         return 'quantitative';
     }
-    switch (channel_1.rangeType(channel)) {
+    switch (rangeType(channel)) {
         case 'continuous':
             return 'quantitative';
         case 'discrete':
@@ -247,12 +220,11 @@ function defaultType(fieldDef, channel) {
             return 'quantitative';
     }
 }
-exports.defaultType = defaultType;
 /**
  * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
  * @param channelDef
  */
-function getFieldDef(channelDef) {
+export function getFieldDef(channelDef) {
     if (isFieldDef(channelDef)) {
         return channelDef;
     }
@@ -261,13 +233,12 @@ function getFieldDef(channelDef) {
     }
     return undefined;
 }
-exports.getFieldDef = getFieldDef;
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-function normalize(channelDef, channel) {
-    if (vega_util_1.isString(channelDef) || vega_util_1.isNumber(channelDef) || vega_util_1.isBoolean(channelDef)) {
-        var primitiveType = vega_util_1.isString(channelDef) ? 'string' : vega_util_1.isNumber(channelDef) ? 'number' : 'boolean';
+export function normalize(channelDef, channel) {
+    if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+        var primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
         log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
         return { value: channelDef };
     }
@@ -282,34 +253,33 @@ function normalize(channelDef, channel) {
     }
     return channelDef;
 }
-exports.normalize = normalize;
-function normalizeFieldDef(fieldDef, channel) {
+export function normalizeFieldDef(fieldDef, channel) {
     // Drop invalid aggregate
-    if (fieldDef.aggregate && !aggregate_1.isAggregateOp(fieldDef.aggregate)) {
+    if (fieldDef.aggregate && !isAggregateOp(fieldDef.aggregate)) {
         var aggregate = fieldDef.aggregate, fieldDefWithoutAggregate = tslib_1.__rest(fieldDef, ["aggregate"]);
         log.warn(log.message.invalidAggregate(fieldDef.aggregate));
         fieldDef = fieldDefWithoutAggregate;
     }
     // Normalize Time Unit
     if (fieldDef.timeUnit) {
-        fieldDef = tslib_1.__assign({}, fieldDef, { timeUnit: timeunit_1.normalizeTimeUnit(fieldDef.timeUnit) });
+        fieldDef = tslib_1.__assign({}, fieldDef, { timeUnit: normalizeTimeUnit(fieldDef.timeUnit) });
     }
     // Normalize bin
-    if (bin_1.isBinning(fieldDef.bin)) {
+    if (isBinning(fieldDef.bin)) {
         fieldDef = tslib_1.__assign({}, fieldDef, { bin: normalizeBin(fieldDef.bin, channel) });
     }
-    if (bin_1.isBinned(fieldDef.bin) && !util_1.contains(channel_1.POSITION_SCALE_CHANNELS, channel)) {
+    if (isBinned(fieldDef.bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
         log.warn("Channel " + channel + " should not be used with \"binned\" bin");
     }
     // Normalize Type
     if (fieldDef.type) {
-        var fullType = type_1.getFullName(fieldDef.type);
+        var fullType = getFullName(fieldDef.type);
         if (fieldDef.type !== fullType) {
             // convert short type to full type
             fieldDef = tslib_1.__assign({}, fieldDef, { type: fullType });
         }
         if (fieldDef.type !== 'quantitative') {
-            if (aggregate_1.isCountingAggregateOp(fieldDef.aggregate)) {
+            if (isCountingAggregateOp(fieldDef.aggregate)) {
                 log.warn(log.message.invalidFieldTypeForCountAggregate(fieldDef.type, fieldDef.aggregate));
                 fieldDef = tslib_1.__assign({}, fieldDef, { type: 'quantitative' });
             }
@@ -327,21 +297,19 @@ function normalizeFieldDef(fieldDef, channel) {
     }
     return fieldDef;
 }
-exports.normalizeFieldDef = normalizeFieldDef;
-function normalizeBin(bin, channel) {
-    if (vega_util_1.isBoolean(bin)) {
-        return { maxbins: bin_1.autoMaxBins(channel) };
+export function normalizeBin(bin, channel) {
+    if (isBoolean(bin)) {
+        return { maxbins: autoMaxBins(channel) };
     }
     else if (!bin.maxbins && !bin.step) {
-        return tslib_1.__assign({}, bin, { maxbins: bin_1.autoMaxBins(channel) });
+        return tslib_1.__assign({}, bin, { maxbins: autoMaxBins(channel) });
     }
     else {
         return bin;
     }
 }
-exports.normalizeBin = normalizeBin;
 var COMPATIBLE = { compatible: true };
-function channelCompatibility(fieldDef, channel) {
+export function channelCompatibility(fieldDef, channel) {
     var type = fieldDef.type;
     if (type === 'geojson' && channel !== 'shape') {
         return {
@@ -374,7 +342,7 @@ function channelCompatibility(fieldDef, channel) {
         case 'longitude2':
         case 'latitude':
         case 'latitude2':
-            if (type !== type_1.QUANTITATIVE) {
+            if (type !== QUANTITATIVE) {
                 return {
                     compatible: false,
                     warning: "Channel " + channel + " should be used with a quantitative field only, not " + fieldDef.type + " field."
@@ -411,34 +379,31 @@ function channelCompatibility(fieldDef, channel) {
     }
     throw new Error('channelCompatability not implemented for channel ' + channel);
 }
-exports.channelCompatibility = channelCompatibility;
-function isNumberFieldDef(fieldDef) {
-    return fieldDef.type === 'quantitative' || bin_1.isBinning(fieldDef.bin);
+export function isNumberFieldDef(fieldDef) {
+    return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
-exports.isNumberFieldDef = isNumberFieldDef;
-function isTimeFieldDef(fieldDef) {
+export function isTimeFieldDef(fieldDef) {
     return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }
-exports.isTimeFieldDef = isTimeFieldDef;
 /**
  * Getting a value associated with a fielddef.
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
  */
-function valueExpr(v, _a) {
+export function valueExpr(v, _a) {
     var timeUnit = _a.timeUnit, type = _a.type, time = _a.time, undefinedIfExprNotRequired = _a.undefinedIfExprNotRequired;
     var _b;
     var expr;
-    if (datetime_1.isDateTime(v)) {
-        expr = datetime_1.dateTimeExpr(v, true);
+    if (isDateTime(v)) {
+        expr = dateTimeExpr(v, true);
     }
-    else if (vega_util_1.isString(v) || vega_util_1.isNumber(v)) {
+    else if (isString(v) || isNumber(v)) {
         if (timeUnit || type === 'temporal') {
-            if (timeunit_1.isLocalSingleTimeUnit(timeUnit)) {
-                expr = datetime_1.dateTimeExpr((_b = {}, _b[timeUnit] = v, _b), true);
+            if (isLocalSingleTimeUnit(timeUnit)) {
+                expr = dateTimeExpr((_b = {}, _b[timeUnit] = v, _b), true);
             }
-            else if (timeunit_1.isUtcSingleTimeUnit(timeUnit)) {
+            else if (isUtcSingleTimeUnit(timeUnit)) {
                 // FIXME is this really correct?
-                expr = valueExpr(v, { timeUnit: timeunit_1.getLocalTimeUnit(timeUnit) });
+                expr = valueExpr(v, { timeUnit: getLocalTimeUnit(timeUnit) });
             }
             else {
                 // just pass the string to date function (which will call JS Date.parse())
@@ -452,11 +417,10 @@ function valueExpr(v, _a) {
     // number or boolean or normal string
     return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
 }
-exports.valueExpr = valueExpr;
 /**
  * Standardize value array -- convert each value to Vega expression if applicable
  */
-function valueArray(fieldDef, values) {
+export function valueArray(fieldDef, values) {
     var timeUnit = fieldDef.timeUnit, type = fieldDef.type;
     return values.map(function (v) {
         var expr = valueExpr(v, { timeUnit: timeUnit, type: type, undefinedIfExprNotRequired: true });
@@ -468,5 +432,4 @@ function valueArray(fieldDef, values) {
         return v;
     });
 }
-exports.valueArray = valueArray;
 //# sourceMappingURL=fielddef.js.map

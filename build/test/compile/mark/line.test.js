@@ -1,15 +1,12 @@
-"use strict";
 /* tslint:disable quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var channel_1 = require("../../../src/channel");
-var line_1 = require("../../../src/compile/mark/line");
-var log = tslib_1.__importStar(require("../../../src/log"));
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { COLOR, X, Y } from '../../../src/channel';
+import { line } from '../../../src/compile/mark/line';
+import * as log from '../../../src/log';
+import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('Mark: Line', function () {
     describe('with x, y', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             data: { url: 'data/barley.json' },
             mark: 'line',
             encoding: {
@@ -17,16 +14,16 @@ describe('Mark: Line', function () {
                 y: { field: 'yield', type: 'quantitative' }
             }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should have scale for x', function () {
-            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'year' });
+            assert.deepEqual(props.x, { scale: X, field: 'year' });
         });
         it('should have scale for y', function () {
-            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'yield' });
+            assert.deepEqual(props.y, { scale: Y, field: 'yield' });
         });
     });
     describe('with x, y, color', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             data: { url: 'data/barley.json' },
             mark: 'line',
             encoding: {
@@ -35,14 +32,14 @@ describe('Mark: Line', function () {
                 color: { field: 'Acceleration', type: 'quantitative' }
             }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should have scale for color', function () {
-            chai_1.assert.deepEqual(props.stroke, { scale: channel_1.COLOR, field: 'Acceleration' });
+            assert.deepEqual(props.stroke, { scale: COLOR, field: 'Acceleration' });
         });
     });
     describe('with x, y, size', function () {
         it('should have scale for size', function () {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 data: { url: 'data/barley.json' },
                 mark: 'line',
                 encoding: {
@@ -51,11 +48,11 @@ describe('Mark: Line', function () {
                     size: { field: 'variety', type: 'nominal' }
                 }
             });
-            var props = line_1.line.encodeEntry(model);
-            chai_1.assert.deepEqual(props.strokeWidth, { scale: 'size', field: 'variety' });
+            var props = line.encodeEntry(model);
+            assert.deepEqual(props.strokeWidth, { scale: 'size', field: 'variety' });
         });
         it('should drop aggregate size field', log.wrap(function (localLogger) {
-            var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+            var model = parseUnitModelWithScaleAndLayoutSize({
                 data: { url: 'data/barley.json' },
                 mark: 'line',
                 encoding: {
@@ -64,14 +61,14 @@ describe('Mark: Line', function () {
                     size: { field: 'Acceleration', type: 'quantitative', aggregate: 'mean' }
                 }
             });
-            var props = line_1.line.encodeEntry(model);
+            var props = line.encodeEntry(model);
             // If size field is dropped, then strokeWidth only have value
-            chai_1.assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
-            chai_1.assert.equal(localLogger.warns[0], log.message.LINE_WITH_VARYING_SIZE);
+            assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
+            assert.equal(localLogger.warns[0], log.message.LINE_WITH_VARYING_SIZE);
         }));
     });
     describe('with stacked y', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             data: { url: 'data/barley.json' },
             mark: 'line',
             encoding: {
@@ -81,13 +78,13 @@ describe('Mark: Line', function () {
             },
             config: { stack: 'zero' }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should use y_end', function () {
-            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'sum_yield_end' });
+            assert.deepEqual(props.y, { scale: Y, field: 'sum_yield_end' });
         });
     });
     describe('with stacked x', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             data: { url: 'data/barley.json' },
             mark: 'line',
             encoding: {
@@ -97,43 +94,43 @@ describe('Mark: Line', function () {
             },
             config: { stack: 'zero' }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should use x_end', function () {
-            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'sum_yield_end' });
+            assert.deepEqual(props.x, { scale: X, field: 'sum_yield_end' });
         });
     });
     describe('with x', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             mark: 'line',
             encoding: { x: { field: 'year', type: 'ordinal' } },
             data: { url: 'data/barley.json' }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should be centered on y', function () {
-            chai_1.assert.deepEqual(props.y, {
+            assert.deepEqual(props.y, {
                 mult: 0.5,
                 signal: 'height'
             });
         });
         it('should scale on x', function () {
-            chai_1.assert.deepEqual(props.x, { scale: channel_1.X, field: 'year' });
+            assert.deepEqual(props.x, { scale: X, field: 'year' });
         });
     });
     describe('with y', function () {
-        var model = util_1.parseUnitModelWithScaleAndLayoutSize({
+        var model = parseUnitModelWithScaleAndLayoutSize({
             mark: 'line',
             encoding: { y: { field: 'year', type: 'ordinal' } },
             data: { url: 'data/barley.json' }
         });
-        var props = line_1.line.encodeEntry(model);
+        var props = line.encodeEntry(model);
         it('should be centered on x', function () {
-            chai_1.assert.deepEqual(props.x, {
+            assert.deepEqual(props.x, {
                 mult: 0.5,
                 signal: 'width'
             });
         });
         it('should scale on y', function () {
-            chai_1.assert.deepEqual(props.y, { scale: channel_1.Y, field: 'year' });
+            assert.deepEqual(props.y, { scale: Y, field: 'year' });
         });
     });
 });

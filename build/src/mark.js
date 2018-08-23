@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vega_util_1 = require("vega-util");
-var util_1 = require("./util");
-var Mark;
+import { toSet } from 'vega-util';
+import { contains, flagKeys } from './util';
+export var Mark;
 (function (Mark) {
     Mark.AREA = 'area';
     Mark.BAR = 'bar';
@@ -16,19 +14,19 @@ var Mark;
     Mark.CIRCLE = 'circle';
     Mark.SQUARE = 'square';
     Mark.GEOSHAPE = 'geoshape';
-})(Mark = exports.Mark || (exports.Mark = {}));
-exports.AREA = Mark.AREA;
-exports.BAR = Mark.BAR;
-exports.LINE = Mark.LINE;
-exports.POINT = Mark.POINT;
-exports.TEXT = Mark.TEXT;
-exports.TICK = Mark.TICK;
-exports.TRAIL = Mark.TRAIL;
-exports.RECT = Mark.RECT;
-exports.RULE = Mark.RULE;
-exports.GEOSHAPE = Mark.GEOSHAPE;
-exports.CIRCLE = Mark.CIRCLE;
-exports.SQUARE = Mark.SQUARE;
+})(Mark || (Mark = {}));
+export var AREA = Mark.AREA;
+export var BAR = Mark.BAR;
+export var LINE = Mark.LINE;
+export var POINT = Mark.POINT;
+export var TEXT = Mark.TEXT;
+export var TICK = Mark.TICK;
+export var TRAIL = Mark.TRAIL;
+export var RECT = Mark.RECT;
+export var RULE = Mark.RULE;
+export var GEOSHAPE = Mark.GEOSHAPE;
+export var CIRCLE = Mark.CIRCLE;
+export var SQUARE = Mark.SQUARE;
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
 var MARK_INDEX = {
     area: 1,
@@ -44,26 +42,22 @@ var MARK_INDEX = {
     circle: 1,
     square: 1
 };
-function isMark(m) {
+export function isMark(m) {
     return !!MARK_INDEX[m];
 }
-exports.isMark = isMark;
-function isPathMark(m) {
-    return util_1.contains(['line', 'area', 'trail'], m);
+export function isPathMark(m) {
+    return contains(['line', 'area', 'trail'], m);
 }
-exports.isPathMark = isPathMark;
-exports.PRIMITIVE_MARKS = util_1.flagKeys(MARK_INDEX);
-function isMarkDef(mark) {
+export var PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
+export function isMarkDef(mark) {
     return mark['type'];
 }
-exports.isMarkDef = isMarkDef;
-var PRIMITIVE_MARK_INDEX = vega_util_1.toSet(exports.PRIMITIVE_MARKS);
-function isPrimitiveMark(mark) {
+var PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
+export function isPrimitiveMark(mark) {
     var markType = isMarkDef(mark) ? mark.type : mark;
     return markType in PRIMITIVE_MARK_INDEX;
 }
-exports.isPrimitiveMark = isPrimitiveMark;
-exports.STROKE_CONFIG = [
+export var STROKE_CONFIG = [
     'stroke',
     'strokeWidth',
     'strokeDash',
@@ -72,25 +66,25 @@ exports.STROKE_CONFIG = [
     'strokeJoin',
     'strokeMiterLimit'
 ];
-exports.FILL_CONFIG = ['fill', 'fillOpacity'];
-exports.FILL_STROKE_CONFIG = [].concat(exports.STROKE_CONFIG, exports.FILL_CONFIG);
-exports.VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color', 'tooltip'];
-exports.VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+export var FILL_CONFIG = ['fill', 'fillOpacity'];
+export var FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
+export var VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color', 'tooltip'];
+export var VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
     area: ['line', 'point'],
     bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
     line: ['point'],
     text: ['shortTimeLabels'],
     tick: ['bandSize', 'thickness']
 };
-exports.defaultMarkConfig = {
+export var defaultMarkConfig = {
     color: '#4c78a8',
     tooltip: { content: 'encoding' }
 };
-exports.defaultBarConfig = {
+export var defaultBarConfig = {
     binSpacing: 1,
     continuousBandSize: 5
 };
-exports.defaultTickConfig = {
+export var defaultTickConfig = {
     thickness: 1
 };
 //# sourceMappingURL=mark.js.map

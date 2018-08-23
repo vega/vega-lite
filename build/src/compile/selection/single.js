@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vega_util_1 = require("vega-util");
-var multi_1 = require("./multi");
-var selection_1 = require("./selection");
+import { stringValue } from 'vega-util';
+import { signals as multiSignals } from './multi';
+import { STORE, TUPLE, unitName } from './selection';
 var single = {
     predicate: 'vlSingle',
     scaleDomain: 'vlSingleDomain',
-    signals: multi_1.signals,
+    signals: multiSignals,
     topLevelSignals: function (model, selCmpt, signals) {
         var hasSignal = signals.filter(function (s) { return s.name === selCmpt.name; });
-        var data = "data(" + vega_util_1.stringValue(selCmpt.name + selection_1.STORE) + ")";
+        var data = "data(" + stringValue(selCmpt.name + STORE) + ")";
         var values = data + "[0].values";
         return hasSignal.length
             ? signals
@@ -19,9 +17,9 @@ var single = {
             });
     },
     modifyExpr: function (model, selCmpt) {
-        var tpl = selCmpt.name + selection_1.TUPLE;
-        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + selection_1.unitName(model) + "}");
+        var tpl = selCmpt.name + TUPLE;
+        return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: " + unitName(model) + "}");
     }
 };
-exports.default = single;
+export default single;
 //# sourceMappingURL=single.js.map

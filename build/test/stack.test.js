@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
 /* tslint:disable:quotemark */
-var chai_1 = require("chai");
-var channel_1 = require("../src/channel");
-var log = tslib_1.__importStar(require("../src/log"));
-var mark_1 = require("../src/mark");
-var scale_1 = require("../src/scale");
-var spec_1 = require("../src/spec");
-var stack_1 = require("../src/stack");
+import { assert } from 'chai';
+import { DETAIL, X, Y } from '../src/channel';
+import * as log from '../src/log';
+import { AREA, BAR, PRIMITIVE_MARKS, RECT } from '../src/mark';
+import { ScaleType } from '../src/scale';
+import { isStacked } from '../src/spec';
+import { stack, STACK_BY_DEFAULT_MARKS, STACKABLE_MARKS } from '../src/stack';
 describe('stack', function () {
-    var NON_STACKABLE_MARKS = [mark_1.RECT];
+    var NON_STACKABLE_MARKS = [RECT];
     it('should be disabled for non-stackable marks with at least of of the stack channel', function () {
         var _loop_1 = function (stacked) {
             NON_STACKABLE_MARKS.forEach(function (nonStackableMark) {
@@ -26,8 +23,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -36,7 +33,7 @@ describe('stack', function () {
         }
     });
     it('should be allowed for raw plot', function () {
-        stack_1.STACKABLE_MARKS.forEach(function (mark) {
+        STACKABLE_MARKS.forEach(function (mark) {
             var spec = {
                 data: { url: 'data/barley.json' },
                 mark: mark,
@@ -46,13 +43,13 @@ describe('stack', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             };
-            var stackProps = stack_1.stack(spec.mark, spec.encoding, undefined);
-            chai_1.assert.equal(stackProps.fieldChannel, 'x');
-            chai_1.assert.isTrue(spec_1.isStacked(spec));
+            var stackProps = stack(spec.mark, spec.encoding, undefined);
+            assert.equal(stackProps.fieldChannel, 'x');
+            assert.isTrue(isStacked(spec));
         });
     });
     it('should prioritize axis with stack', function () {
-        stack_1.STACKABLE_MARKS.forEach(function (mark) {
+        STACKABLE_MARKS.forEach(function (mark) {
             var spec = {
                 data: { url: 'data/barley.json' },
                 mark: mark,
@@ -62,14 +59,14 @@ describe('stack', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             };
-            var stackProps = stack_1.stack(spec.mark, spec.encoding, undefined);
-            chai_1.assert.equal(stackProps.fieldChannel, 'x');
-            chai_1.assert.isTrue(spec_1.isStacked(spec));
+            var stackProps = stack(spec.mark, spec.encoding, undefined);
+            assert.equal(stackProps.fieldChannel, 'x');
+            assert.isTrue(isStacked(spec));
         });
     });
     it('should always be disabled if there is no stackby channel', function () {
         var _loop_2 = function (stacked) {
-            mark_1.PRIMITIVE_MARKS.forEach(function (mark) {
+            PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: mark,
@@ -81,8 +78,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -92,7 +89,7 @@ describe('stack', function () {
     });
     it('should always be disabled if the stackby channel is aggregated', function () {
         var _loop_3 = function (stacked) {
-            mark_1.PRIMITIVE_MARKS.forEach(function (mark) {
+            PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: mark,
@@ -105,8 +102,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -116,7 +113,7 @@ describe('stack', function () {
     });
     it('should always be disabled if the stackby channel is identical to y', function () {
         var _loop_4 = function (stacked) {
-            mark_1.PRIMITIVE_MARKS.forEach(function (mark) {
+            PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: mark,
@@ -129,8 +126,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -140,7 +137,7 @@ describe('stack', function () {
     });
     it('can enabled if one of the stackby channels is not aggregated', function () {
         var _loop_5 = function (stacked) {
-            var marks = stacked === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+            var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
@@ -155,10 +152,10 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, spec.config.stack);
-                chai_1.assert.isOk(_stack);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
-                chai_1.assert.equal(_stack.stackBy[0].channel, channel_1.DETAIL);
+                var _stack = stack(spec.mark, spec.encoding, spec.config.stack);
+                assert.isOk(_stack);
+                assert.isTrue(isStacked(spec));
+                assert.equal(_stack.stackBy[0].channel, DETAIL);
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize']; _i < _a.length; _i++) {
@@ -168,7 +165,7 @@ describe('stack', function () {
     });
     it('can enabled if one of the stackby channels is not aggregated', function () {
         var _loop_6 = function (stacked) {
-            var marks = stacked === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+            var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
@@ -180,10 +177,10 @@ describe('stack', function () {
                         detail: { field: 'site', type: 'nominal' }
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, undefined);
-                chai_1.assert.isOk(_stack);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
-                chai_1.assert.equal(_stack.stackBy[0].channel, channel_1.DETAIL);
+                var _stack = stack(spec.mark, spec.encoding, undefined);
+                assert.isOk(_stack);
+                assert.isTrue(isStacked(spec));
+                assert.equal(_stack.stackBy[0].channel, DETAIL);
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize']; _i < _a.length; _i++) {
@@ -193,7 +190,7 @@ describe('stack', function () {
     });
     it('should always be disabled if both x and y are aggregate', function () {
         var _loop_7 = function (stacked) {
-            mark_1.PRIMITIVE_MARKS.forEach(function (mark) {
+            PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: mark,
@@ -206,8 +203,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -217,7 +214,7 @@ describe('stack', function () {
     });
     it('should always be disabled if neither x nor y is aggregate or stack', function () {
         var _loop_8 = function (stacked) {
-            mark_1.PRIMITIVE_MARKS.forEach(function (mark) {
+            PRIMITIVE_MARKS.forEach(function (mark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: mark,
@@ -230,8 +227,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize', null, 'none']; _i < _a.length; _i++) {
@@ -241,7 +238,7 @@ describe('stack', function () {
     });
     it('should always be disabled if there is both x and x2', function () {
         var _loop_9 = function (stacked) {
-            var marks = stacked === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+            var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
                     mark: mark,
@@ -255,8 +252,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize']; _i < _a.length; _i++) {
@@ -266,7 +263,7 @@ describe('stack', function () {
     });
     it('should always be disabled if there is both y and y2', function () {
         var _loop_10 = function (stacked) {
-            var marks = stacked === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+            var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
             marks.forEach(function (mark) {
                 var spec = {
                     mark: mark,
@@ -280,8 +277,8 @@ describe('stack', function () {
                         stack: stacked
                     }
                 };
-                chai_1.assert.isNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                chai_1.assert.isFalse(spec_1.isStacked(spec));
+                assert.isNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                assert.isFalse(isStacked(spec));
             });
         };
         for (var _i = 0, _a = [undefined, 'center', 'zero', 'normalize']; _i < _a.length; _i++) {
@@ -291,8 +288,8 @@ describe('stack', function () {
     });
     it('should always be warned if the aggregated axis has non-linear scale', log.wrap(function (localLogger) {
         var _loop_11 = function (stacked) {
-            [scale_1.ScaleType.LOG, scale_1.ScaleType.POW, scale_1.ScaleType.SQRT].forEach(function (scaleType) {
-                var marks = stacked === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+            [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT].forEach(function (scaleType) {
+                var marks = stacked === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
                 marks.forEach(function (mark) {
                     var spec = {
                         data: { url: 'data/barley.json' },
@@ -306,10 +303,10 @@ describe('stack', function () {
                             stack: stacked
                         }
                     };
-                    chai_1.assert.isNotNull(stack_1.stack(spec.mark, spec.encoding, spec.config.stack));
-                    chai_1.assert.isTrue(spec_1.isStacked(spec));
+                    assert.isNotNull(stack(spec.mark, spec.encoding, spec.config.stack));
+                    assert.isTrue(isStacked(spec));
                     var warns = localLogger.warns;
-                    chai_1.assert.equal(warns[warns.length - 1], log.message.cannotStackNonLinearScale(scaleType));
+                    assert.equal(warns[warns.length - 1], log.message.cannotStackNonLinearScale(scaleType));
                 });
             });
         };
@@ -321,7 +318,7 @@ describe('stack', function () {
     it('should throws warning if the aggregated axis has a non-summative aggregate', log.wrap(function (localLogger) {
         var _loop_12 = function (stackOffset) {
             var _loop_13 = function (aggregate) {
-                var marks = stackOffset === undefined ? stack_1.STACK_BY_DEFAULT_MARKS : stack_1.STACKABLE_MARKS;
+                var marks = stackOffset === undefined ? STACK_BY_DEFAULT_MARKS : STACKABLE_MARKS;
                 marks.forEach(function (mark) {
                     var spec = {
                         data: { url: 'data/barley.json' },
@@ -337,9 +334,9 @@ describe('stack', function () {
                             color: { field: 'site', type: 'nominal' }
                         }
                     };
-                    chai_1.assert.isTrue(spec_1.isStacked(spec));
+                    assert.isTrue(isStacked(spec));
                     var warns = localLogger.warns;
-                    chai_1.assert.equal(warns[warns.length - 1], log.message.stackNonSummativeAggregate(aggregate));
+                    assert.equal(warns[warns.length - 1], log.message.stackNonSummativeAggregate(aggregate));
                 });
             };
             for (var _i = 0, _a = ['average', 'variance', 'q3']; _i < _a.length; _i++) {
@@ -354,7 +351,7 @@ describe('stack', function () {
     }));
     describe('stack().groupbyChannel, .fieldChannel', function () {
         it('should be correct for horizontal', function () {
-            [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+            [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: stackableMark,
@@ -364,14 +361,14 @@ describe('stack', function () {
                         color: { field: 'site', type: 'nominal' }
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, undefined);
-                chai_1.assert.equal(_stack.fieldChannel, channel_1.X);
-                chai_1.assert.equal(_stack.groupbyChannel, channel_1.Y);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
+                var _stack = stack(spec.mark, spec.encoding, undefined);
+                assert.equal(_stack.fieldChannel, X);
+                assert.equal(_stack.groupbyChannel, Y);
+                assert.isTrue(isStacked(spec));
             });
         });
         it('should be correct for horizontal (single)', function () {
-            [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+            [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: stackableMark,
@@ -380,14 +377,14 @@ describe('stack', function () {
                         color: { field: 'site', type: 'nominal' }
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, undefined);
-                chai_1.assert.equal(_stack.fieldChannel, channel_1.X);
-                chai_1.assert.equal(_stack.groupbyChannel, null);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
+                var _stack = stack(spec.mark, spec.encoding, undefined);
+                assert.equal(_stack.fieldChannel, X);
+                assert.equal(_stack.groupbyChannel, null);
+                assert.isTrue(isStacked(spec));
             });
         });
         it('should be correct for vertical', function () {
-            [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+            [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: stackableMark,
@@ -397,14 +394,14 @@ describe('stack', function () {
                         color: { field: 'site', type: 'nominal' }
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, undefined);
-                chai_1.assert.equal(_stack.fieldChannel, channel_1.Y);
-                chai_1.assert.equal(_stack.groupbyChannel, channel_1.X);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
+                var _stack = stack(spec.mark, spec.encoding, undefined);
+                assert.equal(_stack.fieldChannel, Y);
+                assert.equal(_stack.groupbyChannel, X);
+                assert.isTrue(isStacked(spec));
             });
         });
         it('should be correct for vertical (single)', function () {
-            [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+            [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: stackableMark,
@@ -413,16 +410,16 @@ describe('stack', function () {
                         color: { field: 'site', type: 'nominal' }
                     }
                 };
-                var _stack = stack_1.stack(spec.mark, spec.encoding, undefined);
-                chai_1.assert.equal(_stack.fieldChannel, channel_1.Y);
-                chai_1.assert.equal(_stack.groupbyChannel, null);
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
+                var _stack = stack(spec.mark, spec.encoding, undefined);
+                assert.equal(_stack.fieldChannel, Y);
+                assert.equal(_stack.groupbyChannel, null);
+                assert.isTrue(isStacked(spec));
             });
         });
     });
     describe('stack().offset', function () {
         it('should be zero for stackable marks with at least of of the stack channel if stacked is unspecified', function () {
-            [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+            [BAR, AREA].forEach(function (stackableMark) {
                 var spec = {
                     data: { url: 'data/barley.json' },
                     mark: stackableMark,
@@ -432,13 +429,13 @@ describe('stack', function () {
                         color: { field: 'site', type: 'nominal' }
                     }
                 };
-                chai_1.assert.equal(stack_1.stack(spec.mark, spec.encoding, undefined).offset, 'zero');
-                chai_1.assert.isTrue(spec_1.isStacked(spec));
+                assert.equal(stack(spec.mark, spec.encoding, undefined).offset, 'zero');
+                assert.isTrue(isStacked(spec));
             });
         });
         it('should be the specified stacked for stackable marks with at least one of the stack channel', function () {
             var _loop_14 = function (stacked) {
-                [mark_1.BAR, mark_1.AREA].forEach(function (stackableMark) {
+                [BAR, AREA].forEach(function (stackableMark) {
                     var spec = {
                         data: { url: 'data/barley.json' },
                         mark: stackableMark,
@@ -451,8 +448,8 @@ describe('stack', function () {
                             stack: stacked
                         }
                     };
-                    chai_1.assert.equal(stack_1.stack(spec.mark, spec.encoding, spec.config.stack).offset, stacked);
-                    chai_1.assert.equal(spec_1.isStacked(spec), true);
+                    assert.equal(stack(spec.mark, spec.encoding, spec.config.stack).offset, stacked);
+                    assert.equal(isStacked(spec), true);
                 });
             };
             for (var _i = 0, _a = ['center', 'zero', 'normalize']; _i < _a.length; _i++) {

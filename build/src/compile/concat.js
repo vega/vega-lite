@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var log = tslib_1.__importStar(require("../log"));
-var spec_1 = require("../spec");
-var baseconcat_1 = require("./baseconcat");
-var buildmodel_1 = require("./buildmodel");
-var parse_1 = require("./layoutsize/parse");
+import * as tslib_1 from "tslib";
+import * as log from '../log';
+import { isVConcatSpec } from '../spec';
+import { BaseConcatModel } from './baseconcat';
+import { buildModel } from './buildmodel';
+import { parseConcatLayoutSize } from './layoutsize/parse';
 var ConcatModel = /** @class */ (function (_super) {
     tslib_1.__extends(ConcatModel, _super);
     function ConcatModel(spec, parent, parentGivenName, repeater, config) {
@@ -14,14 +12,14 @@ var ConcatModel = /** @class */ (function (_super) {
         if (spec.resolve && spec.resolve.axis && (spec.resolve.axis.x === 'shared' || spec.resolve.axis.y === 'shared')) {
             log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
         }
-        _this.isVConcat = spec_1.isVConcatSpec(spec);
-        _this.children = (spec_1.isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map(function (child, i) {
-            return buildmodel_1.buildModel(child, _this, _this.getName('concat_' + i), undefined, repeater, config, false);
+        _this.isVConcat = isVConcatSpec(spec);
+        _this.children = (isVConcatSpec(spec) ? spec.vconcat : spec.hconcat).map(function (child, i) {
+            return buildModel(child, _this, _this.getName('concat_' + i), undefined, repeater, config, false);
         });
         return _this;
     }
     ConcatModel.prototype.parseLayoutSize = function () {
-        parse_1.parseConcatLayoutSize(this);
+        parseConcatLayoutSize(this);
     };
     ConcatModel.prototype.parseAxisGroup = function () {
         return null;
@@ -32,6 +30,6 @@ var ConcatModel = /** @class */ (function (_super) {
             align: 'each' });
     };
     return ConcatModel;
-}(baseconcat_1.BaseConcatModel));
-exports.ConcatModel = ConcatModel;
+}(BaseConcatModel));
+export { ConcatModel };
 //# sourceMappingURL=concat.js.map

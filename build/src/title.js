@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-function extractTitleConfig(titleConfig) {
+import * as tslib_1 from "tslib";
+export function extractTitleConfig(titleConfig) {
     var 
     // These are non-mark title config that need to be hardcoded
     anchor = titleConfig.anchor, frame = titleConfig.frame, offset = titleConfig.offset, orient = titleConfig.orient, 
@@ -13,5 +11,4 @@ function extractTitleConfig(titleConfig) {
     var nonMark = tslib_1.__assign({}, (anchor ? { anchor: anchor } : {}), (offset ? { offset: offset } : {}), (orient ? { orient: orient } : {}));
     return { mark: mark, nonMark: nonMark };
 }
-exports.extractTitleConfig = extractTitleConfig;
 //# sourceMappingURL=title.js.map

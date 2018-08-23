@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
+import * as tslib_1 from "tslib";
 // import {assert} from 'chai';
-var fs = tslib_1.__importStar(require("fs"));
-var mkdirp_1 = require("mkdirp");
-var vega_util_1 = require("vega-util");
-exports.generate = process.env.VL_GENERATE_TESTS;
-exports.output = 'test-runtime/resources';
-exports.selectionTypes = ['single', 'multi', 'interval'];
-exports.compositeTypes = ['repeat', 'facet'];
-exports.resolutions = ['union', 'intersect'];
-exports.bound = 'bound';
-exports.unbound = 'unbound';
-exports.tuples = [
+import * as fs from 'fs';
+import { sync as mkdirp } from 'mkdirp';
+import { stringValue } from 'vega-util';
+export var generate = process.env.VL_GENERATE_TESTS;
+export var output = 'test-runtime/resources';
+export var selectionTypes = ['single', 'multi', 'interval'];
+export var compositeTypes = ['repeat', 'facet'];
+export var resolutions = ['union', 'intersect'];
+export var bound = 'bound';
+export var unbound = 'unbound';
+export var tuples = [
     { a: 0, b: 28, c: 0 },
     { a: 0, b: 55, c: 1 },
     { a: 0, b: 23, c: 2 },
@@ -48,7 +46,7 @@ var unitNames = {
     repeat: ['child_d', 'child_e', 'child_f'],
     facet: ['child_0', 'child_1', 'child_2']
 };
-exports.hits = {
+export var hits = {
     discrete: {
         qq: [8, 19],
         qq_clear: [5, 16],
@@ -74,7 +72,7 @@ exports.hits = {
 };
 function base(iter, sel, opts) {
     if (opts === void 0) { opts = {}; }
-    var data = { values: opts.values || exports.tuples };
+    var data = { values: opts.values || tuples };
     var x = tslib_1.__assign({ field: 'a', type: 'quantitative' }, opts.x);
     var y = tslib_1.__assign({ field: 'b', type: 'quantitative' }, opts.y);
     var color = tslib_1.__assign({ field: 'c', type: 'nominal' }, opts.color);
@@ -118,7 +116,7 @@ function base(iter, sel, opts) {
             ]
         };
 }
-function spec(compose, iter, sel, opts) {
+export function spec(compose, iter, sel, opts) {
     if (opts === void 0) { opts = {}; }
     var _a = base(iter, sel, opts), data = _a.data, specification = tslib_1.__rest(_a, ["data"]);
     var resolve = opts.resolve;
@@ -142,44 +140,37 @@ function spec(compose, iter, sel, opts) {
     }
     return null;
 }
-exports.spec = spec;
-function unitNameRegex(specType, idx) {
+export function unitNameRegex(specType, idx) {
     var name = unitNames[specType][idx].replace('child_', '');
     return new RegExp("child(.*?)_" + name);
 }
-exports.unitNameRegex = unitNameRegex;
-function parentSelector(compositeType, index) {
+export function parentSelector(compositeType, index) {
     return compositeType === 'facet' ? "cell > g:nth-child(" + (index + 1) + ")" : unitNames.repeat[index] + '_group';
 }
-exports.parentSelector = parentSelector;
-function brush(key, idx, parent, targetBrush) {
+export function brush(key, idx, parent, targetBrush) {
     var fn = key.match('_clear') ? 'clear' : 'brush';
-    return "return " + fn + "(" + exports.hits.interval[key][idx].join(', ') + ", " + vega_util_1.stringValue(parent) + ", " + !!targetBrush + ")";
+    return "return " + fn + "(" + hits.interval[key][idx].join(', ') + ", " + stringValue(parent) + ", " + !!targetBrush + ")";
 }
-exports.brush = brush;
-function pt(key, idx, parent) {
+export function pt(key, idx, parent) {
     var fn = key.match('_clear') ? 'clear' : 'pt';
-    return "return " + fn + "(" + exports.hits.discrete[key][idx] + ", " + vega_util_1.stringValue(parent) + ")";
+    return "return " + fn + "(" + hits.discrete[key][idx] + ", " + stringValue(parent) + ")";
 }
-exports.pt = pt;
-function embedFn(browser) {
+export function embedFn(browser) {
     return function (specification) {
         browser.execute(function (_) { return window['embed'](_); }, specification);
     };
 }
-exports.embedFn = embedFn;
-function svg(browser, path, filename) {
+export function svg(browser, path, filename) {
     var xml = browser.executeAsync(function (done) {
         window['view'].runAfter(function (view) { return view.toSVG().then(function (_) { return done(_); }); });
     });
-    if (exports.generate) {
-        mkdirp_1.sync((path = exports.output + "/" + path));
+    if (generate) {
+        mkdirp((path = output + "/" + path));
         fs.writeFileSync(path + "/" + filename + ".svg", xml.value);
     }
     return xml.value;
 }
-exports.svg = svg;
-function testRenderFn(browser, path) {
+export function testRenderFn(browser, path) {
     return function (filename) {
         // const render =
         svg(browser, path, filename);
@@ -187,5 +178,4 @@ function testRenderFn(browser, path) {
         // assert.equal(render, file);
     };
 }
-exports.testRenderFn = testRenderFn;
 //# sourceMappingURL=util.js.map

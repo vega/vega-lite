@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
+import * as tslib_1 from "tslib";
 /* tslint:disable:quotemark */
-var chai_1 = require("chai");
-var fielddef_1 = require("../../src/fielddef");
-var log = tslib_1.__importStar(require("../../src/log"));
-var mark_1 = require("../../src/mark");
-var spec_1 = require("../../src/spec");
-var transform_1 = require("../../src/transform");
-var util_1 = require("../../src/util");
-var config_1 = require(".././../src/config");
+import { assert } from 'chai';
+import { isFieldDef } from '../../src/fielddef';
+import * as log from '../../src/log';
+import { isMarkDef } from '../../src/mark';
+import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
+import { isAggregate, isCalculate } from '../../src/transform';
+import { some } from '../../src/util';
+import { defaultConfig } from '.././../src/config';
 describe('normalizeErrorBar with raw data input', function () {
     it('should produce correct layered specs for mean point and vertical error bar', function () {
-        chai_1.assert.deepEqual(spec_1.normalize({
+        assert.deepEqual(normalize({
             data: {
                 url: 'data/population.json'
             },
@@ -27,7 +25,7 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig), {
+        }, defaultConfig), {
             data: { url: 'data/population.json' },
             transform: [
                 {
@@ -63,8 +61,8 @@ describe('normalizeErrorBar with raw data input', function () {
         });
     });
     it('should produce an error if both axes have aggregate errorbar', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: { url: 'data/population.json' },
                 mark: {
                     type: 'errorbar'
@@ -78,13 +76,13 @@ describe('normalizeErrorBar with raw data input', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Both x and y cannot have aggregate');
     });
     it('should produce a warning if continuous axis has aggregate property', log.wrap(function (localLogger) {
         var aggregate = 'min';
         var mark = 'errorbar';
-        spec_1.normalize({
+        normalize({
             data: { url: 'data/population.json' },
             mark: mark,
             encoding: {
@@ -96,23 +94,23 @@ describe('normalizeErrorBar with raw data input', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, config_1.defaultConfig);
-        chai_1.assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
+        }, defaultConfig);
+        assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
     }));
     it('should produce an error if build 1D errorbar with a discrete axis', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: { url: 'data/population.json' },
                 mark: 'errorbar',
                 encoding: {
                     x: { field: 'age', type: 'ordinal' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Need a valid continuous axis for errorbars');
     });
     it('should produce an error if both axes are discrete', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: { url: 'data/population.json' },
                 mark: {
                     type: 'errorbar'
@@ -125,12 +123,12 @@ describe('normalizeErrorBar with raw data input', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Need a valid continuous axis for errorbars');
     });
     it('should produce an error if in 2D errobar both axes are not valid field definitions', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: { url: 'data/population.json' },
                 mark: {
                     type: 'errorbar'
@@ -142,23 +140,23 @@ describe('normalizeErrorBar with raw data input', function () {
                     },
                     color: { value: 'skyblue' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Need a valid continuous axis for errorbars');
     });
     it('should produce an error if 1D errorbar only axis is discrete', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: { url: 'data/population.json' },
                 mark: 'errorbar',
                 encoding: {
                     x: { field: 'age', type: 'ordinal' },
                     color: { value: 'skyblue' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Need a valid continuous axis for errorbars');
     });
     it('should aggregate y field for vertical errorbar with two quantitative axes and explicit orient', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: {
                 type: 'errorbar',
@@ -174,20 +172,20 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         var aggregateTransform = outputSpec.transform[0];
-        if (transform_1.isAggregate(aggregateTransform)) {
-            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+        if (isAggregate(aggregateTransform)) {
+            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                 return (aggregateFieldDef.field === 'people' &&
                     (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median'));
             }));
         }
         else {
-            chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+            assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
         }
     });
     it('should aggregate x field for horizontal errorbar with two quantitative axes and explicit orient', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: {
                 type: 'errorbar',
@@ -203,19 +201,19 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         var aggregateTransform = outputSpec.transform[0];
-        if (transform_1.isAggregate(aggregateTransform)) {
-            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+        if (isAggregate(aggregateTransform)) {
+            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                 return (aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median'));
             }));
         }
         else {
-            chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+            assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
         }
     });
     it('should aggregate y field for vertical errorbar with two quantitative axes and specify orientation with aggregate', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: 'errorbar',
             encoding: {
@@ -229,20 +227,20 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         var aggregateTransform = outputSpec.transform[0];
-        if (transform_1.isAggregate(aggregateTransform)) {
-            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+        if (isAggregate(aggregateTransform)) {
+            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                 return (aggregateFieldDef.field === 'people' &&
                     (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median'));
             }));
         }
         else {
-            chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+            assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
         }
     });
     it('should aggregate x field for horizontal errorbar with two quantitative axes and specify orientation with aggregate', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: 'errorbar',
             encoding: {
@@ -256,19 +254,19 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         var aggregateTransform = outputSpec.transform[0];
-        if (transform_1.isAggregate(aggregateTransform)) {
-            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+        if (isAggregate(aggregateTransform)) {
+            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                 return (aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median'));
             }));
         }
         else {
-            chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+            assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
         }
     });
     it('should aggregate x field for horizontal errorbar with x as quantitative axis', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: 'errorbar',
             encoding: {
@@ -281,22 +279,22 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'ordinal'
                 }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         var aggregateTransform = outputSpec.transform[0];
-        if (transform_1.isAggregate(aggregateTransform)) {
-            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+        if (isAggregate(aggregateTransform)) {
+            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                 return (aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median'));
             }));
         }
         else {
-            chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+            assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
         }
     });
     it('should produce correct layered specs for veritcal errorbar with ticks', function () {
         var color = 'red';
         var opacity = 0.5;
         var size = 10;
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: {
                 type: 'errorbar',
@@ -316,12 +314,12 @@ describe('normalizeErrorBar with raw data input', function () {
                     type: 'quantitative'
                 }
             }
-        }, config_1.defaultConfig);
-        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
+        }, defaultConfig);
+        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
-                return (spec_1.isUnitSpec(unitSpec) &&
-                    mark_1.isMarkDef(unitSpec.mark) &&
+            assert.isTrue(some(layer, function (unitSpec) {
+                return (isUnitSpec(unitSpec) &&
+                    isMarkDef(unitSpec.mark) &&
                     unitSpec.mark.type === 'tick' &&
                     unitSpec.mark.size === size &&
                     unitSpec.mark.color === color &&
@@ -329,11 +327,11 @@ describe('normalizeErrorBar with raw data input', function () {
             }));
         }
         else {
-            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
+            assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce correct layered specs with customized title', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: {
                 type: 'errorbar',
@@ -350,16 +348,28 @@ describe('normalizeErrorBar with raw data input', function () {
                     title: 'population'
                 }
             }
-        }, config_1.defaultConfig);
-        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
+        }, defaultConfig);
+        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
-                return spec_1.isUnitSpec(unitSpec) && fielddef_1.isFieldDef(unitSpec.encoding.y) && unitSpec.encoding.y.title === 'population';
+            assert.isTrue(some(layer, function (unitSpec) {
+                return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.y) && unitSpec.encoding.y.title === 'population';
             }));
         }
         else {
-            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
+            assert.fail(!layer, false, 'layer should be a part of the spec');
         }
+    });
+    it("should not overwrite transform with errorbar's transfroms", function () {
+        var outputSpec = normalize({
+            data: { url: 'data/population.json' },
+            mark: 'errorbar',
+            transform: [{ calculate: 'age * 2', as: 'age2' }],
+            encoding: { x: { field: 'age', type: 'ordinal' }, y: { field: 'people', type: 'quantitative', title: 'population' } }
+        }, defaultConfig);
+        var transforms = outputSpec.transform;
+        expect(transforms).toBeDefined();
+        expect(transforms).not.toHaveLength(0);
+        expect(transforms[0]).toEqual({ calculate: 'age * 2', as: 'age2' });
     });
 });
 describe('normalizeErrorBar for all possible extents and centers with raw data input', function () {
@@ -418,8 +428,8 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
                     ' that ' +
                     warningMessage[k](center, extent, type);
                 it(testMsg_1, log.wrap(function (localLogger) {
-                    spec_1.normalize(spec, config_1.defaultConfig);
-                    chai_1.assert.equal(warningOutput[k], util_1.some(localLogger.warns, function (message) {
+                    normalize(spec, defaultConfig);
+                    assert.equal(warningOutput[k], some(localLogger.warns, function (message) {
                         return message === warningMessage[k](center, extent, type);
                     }));
                 }));
@@ -427,7 +437,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
             for (var k = 0; k < warningOutput.length; k++) {
                 _loop_3(k);
             }
-            var outputSpec = spec_1.normalize(spec, config_1.defaultConfig);
+            var outputSpec = normalize(spec, defaultConfig);
             var aggregateTransform = outputSpec.transform[0];
             var testMsg = 'should produce a correct layer spec if center is ' +
                 (center ? center : 'not specified') +
@@ -435,45 +445,45 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
                 (extent ? extent : 'not specified') +
                 '.';
             it(testMsg, function () {
-                if (transform_1.isAggregate(aggregateTransform)) {
+                if (isAggregate(aggregateTransform)) {
                     if (extent === 'ci' || extent === 'iqr' || (center === 'median' && !extent)) {
-                        chai_1.assert.isFalse(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                        assert.isFalse(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                             return aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median';
                         }));
                     }
                     else {
                         if (center) {
-                            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return aggregateFieldDef.op === center;
                             }));
                         }
                         else {
-                            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return aggregateFieldDef.op === 'mean';
                             }));
                         }
                         if (extent) {
-                            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return isPartOfExtent(extent, aggregateFieldDef.op);
                             }));
                         }
                         else if (center === 'median') {
-                            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return isPartOfExtent('iqr', aggregateFieldDef.op);
                             }));
-                            chai_1.assert.isFalse(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isFalse(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return aggregateFieldDef.op === 'median';
                             }));
                         }
                         else {
-                            chai_1.assert.isTrue(util_1.some(aggregateTransform.aggregate, function (aggregateFieldDef) {
+                            assert.isTrue(some(aggregateTransform.aggregate, function (aggregateFieldDef) {
                                 return isPartOfExtent('stderr', aggregateFieldDef.op);
                             }));
                         }
                     }
                 }
                 else {
-                    chai_1.assert.fail(transform_1.isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
+                    assert.fail(isAggregate(aggregateTransform), true, 'transform[0] should be an aggregate transform');
                 }
             });
         };
@@ -510,7 +520,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
     };
     var mark = 'errorbar';
     it('should produce correct layered specs for vertical errorbar with aggregated data input', function () {
-        chai_1.assert.deepEqual(spec_1.normalize({
+        assert.deepEqual(normalize({
             data: data,
             mark: 'errorbar',
             encoding: {
@@ -518,7 +528,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 y: { field: 'people', type: 'quantitative' },
                 y2: { field: 'people2', type: 'quantitative' }
             }
-        }, config_1.defaultConfig), {
+        }, defaultConfig), {
             data: data,
             transform: [{ calculate: 'datum.people', as: 'lower_people' }, { calculate: 'datum.people2', as: 'upper_people' }],
             layer: [
@@ -538,7 +548,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
         });
     });
     it('should produce correct layered specs for horizontal errorbar with aggregated data input', function () {
-        var outputSpec = spec_1.normalize({
+        var outputSpec = normalize({
             data: data,
             mark: 'errorbar',
             encoding: {
@@ -546,34 +556,34 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 x: { field: 'people', type: 'quantitative' },
                 x2: { field: 'people2', type: 'quantitative' }
             }
-        }, config_1.defaultConfig);
+        }, defaultConfig);
         for (var i = 0; i < 2; i++) {
             var calculate = outputSpec.transform[i];
-            if (transform_1.isCalculate(calculate)) {
-                chai_1.assert.isTrue((calculate.calculate === 'datum.people' && calculate.as === 'lower_people') ||
+            if (isCalculate(calculate)) {
+                assert.isTrue((calculate.calculate === 'datum.people' && calculate.as === 'lower_people') ||
                     (calculate.calculate === 'datum.people2' && calculate.as === 'upper_people'));
             }
             else {
-                chai_1.assert.fail(transform_1.isCalculate(calculate), true, 'transform[' + i + '] should be an aggregate transform');
+                assert.fail(isCalculate(calculate), true, 'transform[' + i + '] should be an aggregate transform');
             }
         }
-        var layer = spec_1.isLayerSpec(outputSpec) && outputSpec.layer;
+        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
-                return (spec_1.isUnitSpec(unitSpec) && fielddef_1.isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people');
+            assert.isTrue(some(layer, function (unitSpec) {
+                return (isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people');
             }));
-            chai_1.assert.isTrue(util_1.some(layer, function (unitSpec) {
-                return (spec_1.isUnitSpec(unitSpec) && fielddef_1.isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people');
+            assert.isTrue(some(layer, function (unitSpec) {
+                return (isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people');
             }));
         }
         else {
-            chai_1.assert.fail(!layer, false, 'layer should be a part of the spec');
+            assert.fail(!layer, false, 'layer should be a part of the spec');
         }
     });
     it('should produce a warning if data are aggregated but center and/or extent is specified', log.wrap(function (localLogger) {
         var extent = 'stdev';
         var center = 'mean';
-        spec_1.normalize({
+        normalize({
             data: data,
             mark: {
                 type: 'errorbar',
@@ -585,12 +595,12 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 y: { field: 'people', type: 'quantitative' },
                 y2: { field: 'people2', type: 'quantitative' }
             }
-        }, config_1.defaultConfig);
-        chai_1.assert.equal(localLogger.warns[0], log.message.errorBarCenterAndExtentAreNotNeeded(center, extent));
+        }, defaultConfig);
+        assert.equal(localLogger.warns[0], log.message.errorBarCenterAndExtentAreNotNeeded(center, extent));
     }));
     it('should produce an error if data are aggregated and have both x2 and y2 quantiative', function () {
-        chai_1.assert.throws(function () {
-            spec_1.normalize({
+        assert.throws(function () {
+            normalize({
                 data: data,
                 mark: {
                     type: 'errorbar',
@@ -603,12 +613,12 @@ describe('normalizeErrorBar with aggregated data input', function () {
                     y: { field: 'people', type: 'quantitative' },
                     y2: { field: 'people2', type: 'quantitative' }
                 }
-            }, config_1.defaultConfig);
+            }, defaultConfig);
         }, Error, 'Cannot have both x2 and y2 with both are quantiative');
     });
     it('should produce a warning if the second continuous axis has aggregate property', log.wrap(function (localLogger) {
         var aggregate = 'min';
-        spec_1.normalize({
+        normalize({
             data: data,
             mark: mark,
             encoding: {
@@ -616,12 +626,12 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 y: { field: 'people', type: 'quantitative' },
                 y2: { field: 'people2', type: 'quantitative', aggregate: aggregate }
             }
-        }, config_1.defaultConfig);
-        chai_1.assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
+        }, defaultConfig);
+        assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
     }));
     it('should produce a warning if there is an unsupported channel in encoding', log.wrap(function (localLogger) {
         var size = 'size';
-        spec_1.normalize({
+        normalize({
             data: data,
             mark: mark,
             encoding: {
@@ -630,8 +640,8 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 y2: { field: 'people2', type: 'quantitative', aggregate: 'min' },
                 size: { value: 10 }
             }
-        }, config_1.defaultConfig);
-        chai_1.assert.equal(localLogger.warns[0], log.message.incompatibleChannel(size, mark));
+        }, defaultConfig);
+        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(size, mark));
     }));
 });
 //# sourceMappingURL=errorbar.test.js.map

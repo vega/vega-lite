@@ -1,13 +1,10 @@
-"use strict";
 /* tslint:disable quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
-var toggle_1 = tslib_1.__importDefault(require("../../../src/compile/selection/transforms/toggle"));
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import * as selection from '../../../src/compile/selection/selection';
+import toggle from '../../../src/compile/selection/transforms/toggle';
+import { parseUnitModel } from '../../util';
 describe('Toggle Selection Transform', function () {
-    var model = util_1.parseUnitModel({
+    var model = parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -31,16 +28,16 @@ describe('Toggle Selection Transform', function () {
         six: { type: 'interval' }
     }));
     it('identifies transform invocation', function () {
-        chai_1.assert.isNotFalse(toggle_1.default.has(selCmpts['one']));
-        chai_1.assert.isNotFalse(toggle_1.default.has(selCmpts['two']));
-        chai_1.assert.isNotTrue(toggle_1.default.has(selCmpts['three']));
-        chai_1.assert.isNotTrue(toggle_1.default.has(selCmpts['four']));
-        chai_1.assert.isNotTrue(toggle_1.default.has(selCmpts['five']));
-        chai_1.assert.isNotTrue(toggle_1.default.has(selCmpts['six']));
+        assert.isNotFalse(toggle.has(selCmpts['one']));
+        assert.isNotFalse(toggle.has(selCmpts['two']));
+        assert.isNotTrue(toggle.has(selCmpts['three']));
+        assert.isNotTrue(toggle.has(selCmpts['four']));
+        assert.isNotTrue(toggle.has(selCmpts['five']));
+        assert.isNotTrue(toggle.has(selCmpts['six']));
     });
     it('builds toggle signals', function () {
-        var oneSg = toggle_1.default.signals(model, selCmpts['one'], []);
-        chai_1.assert.sameDeepMembers(oneSg, [
+        var oneSg = toggle.signals(model, selCmpts['one'], []);
+        assert.sameDeepMembers(oneSg, [
             {
                 name: 'one_toggle',
                 value: false,
@@ -52,8 +49,8 @@ describe('Toggle Selection Transform', function () {
                 ]
             }
         ]);
-        var twoSg = toggle_1.default.signals(model, selCmpts['two'], []);
-        chai_1.assert.sameDeepMembers(twoSg, [
+        var twoSg = toggle.signals(model, selCmpts['two'], []);
+        assert.sameDeepMembers(twoSg, [
             {
                 name: 'two_toggle',
                 value: false,
@@ -66,15 +63,15 @@ describe('Toggle Selection Transform', function () {
             }
         ]);
         var signals = selection.assembleUnitSelectionSignals(model, []);
-        chai_1.assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+        assert.includeDeepMembers(signals, oneSg.concat(twoSg));
     });
     it('builds modify expr', function () {
-        var oneExpr = toggle_1.default.modifyExpr(model, selCmpts['one'], '');
-        chai_1.assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
-        var twoExpr = toggle_1.default.modifyExpr(model, selCmpts['two'], '');
-        chai_1.assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
+        var oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
+        assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
+        var twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
+        assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
         var signals = selection.assembleUnitSelectionSignals(model, []);
-        chai_1.assert.includeDeepMembers(signals, [
+        assert.includeDeepMembers(signals, [
             {
                 name: 'one_modify',
                 on: [

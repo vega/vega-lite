@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vega_expression_1 = require("vega-expression");
+import { parse } from 'vega-expression';
 function getName(node) {
     var name = [];
     if (node.type === 'Identifier') {
@@ -21,8 +19,8 @@ function startsWithDatum(node) {
     }
     return node.object.name === 'datum';
 }
-function getDependentFields(expression) {
-    var ast = vega_expression_1.parse(expression);
+export function getDependentFields(expression) {
+    var ast = parse(expression);
     var dependents = {};
     ast.visit(function (node) {
         if (node.type === 'MemberExpression' && startsWithDatum(node)) {
@@ -33,5 +31,4 @@ function getDependentFields(expression) {
     });
     return dependents;
 }
-exports.getDependentFields = getDependentFields;
 //# sourceMappingURL=expressions.js.map

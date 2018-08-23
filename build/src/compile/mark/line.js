@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var mixins = tslib_1.__importStar(require("./mixins"));
-var ref = tslib_1.__importStar(require("./valueref"));
-exports.line = {
+import * as tslib_1 from "tslib";
+import * as mixins from './mixins';
+import * as ref from './valueref';
+export var line = {
     vgMark: 'line',
     encodeEntry: function (model) {
         var width = model.width, height = model.height;
@@ -12,7 +10,7 @@ exports.line = {
         }), mixins.defined(model));
     }
 };
-exports.trail = {
+export var trail = {
     vgMark: 'trail',
     encodeEntry: function (model) {
         var width = model.width, height = model.height;

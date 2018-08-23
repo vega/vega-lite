@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var fielddef_1 = require("../../fielddef");
-var transform_1 = require("../../transform");
-var util_1 = require("../../util");
-var mark_1 = require("../mark/mark");
-var dataflow_1 = require("./dataflow");
+import * as tslib_1 from "tslib";
+import { isFieldDef } from '../../fielddef';
+import { isImputeSequence } from '../../transform';
+import { duplicate, hash } from '../../util';
+import { pathGroupingFields } from '../mark/mark';
+import { TransformNode } from './dataflow';
 var ImputeNode = /** @class */ (function (_super) {
     tslib_1.__extends(ImputeNode, _super);
     function ImputeNode(parent, transform) {
@@ -14,7 +12,7 @@ var ImputeNode = /** @class */ (function (_super) {
         return _this;
     }
     ImputeNode.prototype.clone = function () {
-        return new ImputeNode(this.parent, util_1.duplicate(this.transform));
+        return new ImputeNode(this.parent, duplicate(this.transform));
     };
     ImputeNode.prototype.producedFields = function () {
         var _a;
@@ -33,24 +31,24 @@ var ImputeNode = /** @class */ (function (_super) {
         var encoding = model.encoding;
         var xDef = encoding.x;
         var yDef = encoding.y;
-        if (fielddef_1.isFieldDef(xDef) && fielddef_1.isFieldDef(yDef)) {
+        if (isFieldDef(xDef) && isFieldDef(yDef)) {
             var imputedChannel = xDef.impute ? xDef : yDef.impute ? yDef : undefined;
             if (imputedChannel === undefined) {
                 return undefined;
             }
             var keyChannel = xDef.impute ? yDef : yDef.impute ? xDef : undefined;
             var _a = imputedChannel.impute, method = _a.method, value = _a.value, frame = _a.frame, keyvals = _a.keyvals;
-            var groupbyFields = mark_1.pathGroupingFields(model.mark, encoding);
+            var groupbyFields = pathGroupingFields(model.mark, encoding);
             return new ImputeNode(parent, tslib_1.__assign({ impute: imputedChannel.field, key: keyChannel.field }, (method ? { method: method } : {}), (value !== undefined ? { value: value } : {}), (frame ? { frame: frame } : {}), (keyvals !== undefined ? { keyvals: keyvals } : {}), (groupbyFields.length ? { groupby: groupbyFields } : {})));
         }
         return null;
     };
     ImputeNode.prototype.hash = function () {
-        return "Impute " + util_1.hash(this.transform);
+        return "Impute " + hash(this.transform);
     };
     ImputeNode.prototype.assemble = function () {
         var _a = this.transform, impute = _a.impute, key = _a.key, keyvals = _a.keyvals, method = _a.method, groupby = _a.groupby, value = _a.value, _b = _a.frame, frame = _b === void 0 ? [null, null] : _b;
-        var initialImpute = tslib_1.__assign({ type: 'impute', field: impute, key: key }, (keyvals ? { keyvals: transform_1.isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals } : {}), { method: 'value' }, (groupby ? { groupby: groupby } : {}), { value: null });
+        var initialImpute = tslib_1.__assign({ type: 'impute', field: impute, key: key }, (keyvals ? { keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals } : {}), { method: 'value' }, (groupby ? { groupby: groupby } : {}), { value: null });
         var setImputedField;
         if (method && method !== 'value') {
             var deriveNewField = tslib_1.__assign({ type: 'window', as: ["imputed_" + impute + "_value"], ops: [method], fields: [impute], frame: frame, ignorePeers: false }, (groupby ? { groupby: groupby } : {}));
@@ -72,6 +70,6 @@ var ImputeNode = /** @class */ (function (_super) {
         return [initialImpute].concat(setImputedField);
     };
     return ImputeNode;
-}(dataflow_1.TransformNode));
-exports.ImputeNode = ImputeNode;
+}(TransformNode));
+export { ImputeNode };
 //# sourceMappingURL=impute.js.map

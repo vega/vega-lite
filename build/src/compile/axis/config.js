@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-function getAxisConfig(property, config, channel, orient, scaleType) {
+export function getAxisConfig(property, config, channel, orient, scaleType) {
     if (orient === void 0) { orient = ''; }
     // configTypes to loop, starting from higher precedence
     var configTypes = (scaleType === 'band' ? ['axisBand'] : []).concat([
@@ -16,5 +14,4 @@ function getAxisConfig(property, config, channel, orient, scaleType) {
     }
     return undefined;
 }
-exports.getAxisConfig = getAxisConfig;
 //# sourceMappingURL=config.js.map

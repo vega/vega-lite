@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var util_1 = require("../../util");
-var parse_1 = require("./parse");
-function assembleLegends(model) {
+import { flatten, keys, stringify, vals } from '../../util';
+import { mergeLegendComponent } from './parse';
+export function assembleLegends(model) {
     var legendComponentIndex = model.component.legends;
     var legendByDomain = {};
-    for (var _i = 0, _a = util_1.keys(legendComponentIndex); _i < _a.length; _i++) {
+    for (var _i = 0, _a = keys(legendComponentIndex); _i < _a.length; _i++) {
         var channel = _a[_i];
         var scaleComponent = model.getScaleComponent(channel);
-        var domainHash = util_1.stringify(scaleComponent.domains);
+        var domainHash = stringify(scaleComponent.domains);
         if (legendByDomain[domainHash]) {
             for (var _b = 0, _c = legendByDomain[domainHash]; _b < _c.length; _b++) {
                 var mergedLegendComponent = _c[_b];
-                var merged = parse_1.mergeLegendComponent(mergedLegendComponent, legendComponentIndex[channel]);
+                var merged = mergeLegendComponent(mergedLegendComponent, legendComponentIndex[channel]);
                 if (!merged) {
                     // If cannot merge, need to add this legend separately
                     legendByDomain[domainHash].push(legendComponentIndex[channel]);
@@ -23,7 +21,6 @@ function assembleLegends(model) {
             legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
         }
     }
-    return util_1.flatten(util_1.vals(legendByDomain)).map(function (legendCmpt) { return legendCmpt.combine(); });
+    return flatten(vals(legendByDomain)).map(function (legendCmpt) { return legendCmpt.combine(); });
 }
-exports.assembleLegends = assembleLegends;
 //# sourceMappingURL=assemble.js.map

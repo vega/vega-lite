@@ -1,45 +1,43 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var channel_1 = require("../channel");
-var encoding_1 = require("../encoding");
-var fielddef_1 = require("../fielddef");
-var log = tslib_1.__importStar(require("../log"));
-var scale_1 = require("../scale");
-var sort_1 = require("../sort");
-var util_1 = require("../util");
-var vega_schema_1 = require("../vega.schema");
-var assemble_1 = require("./axis/assemble");
-var buildmodel_1 = require("./buildmodel");
-var assemble_2 = require("./data/assemble");
-var calculate_1 = require("./data/calculate");
-var parse_1 = require("./data/parse");
-var index_1 = require("./header/index");
-var parse_2 = require("./layoutsize/parse");
-var model_1 = require("./model");
-var repeater_1 = require("./repeater");
-var resolve_1 = require("./resolve");
-var domain_1 = require("./scale/domain");
-function facetSortFieldName(fieldDef, sort, opt) {
-    return fielddef_1.vgField(sort, tslib_1.__assign({ suffix: "by_" + fielddef_1.vgField(fieldDef) }, (opt || {})));
+import * as tslib_1 from "tslib";
+import { isArray } from 'vega-util';
+import { COLUMN, ROW } from '../channel';
+import { reduce } from '../encoding';
+import { normalize, title as fieldDefTitle, vgField } from '../fielddef';
+import * as log from '../log';
+import { hasDiscreteDomain } from '../scale';
+import { isSortField } from '../sort';
+import { contains } from '../util';
+import { isVgRangeStep } from '../vega.schema';
+import { assembleAxis } from './axis/assemble';
+import { buildModel } from './buildmodel';
+import { assembleFacetData } from './data/assemble';
+import { sortArrayIndexField } from './data/calculate';
+import { parseData } from './data/parse';
+import { getHeaderType } from './header/index';
+import { parseChildrenLayoutSize } from './layoutsize/parse';
+import { ModelWithField } from './model';
+import { replaceRepeaterInFacet } from './repeater';
+import { parseGuideResolve } from './resolve';
+import { assembleDomain, getFieldFromDomain } from './scale/domain';
+import { assembleFacetSignals } from './selection/selection';
+export function facetSortFieldName(fieldDef, sort, opt) {
+    return vgField(sort, tslib_1.__assign({ suffix: "by_" + vgField(fieldDef) }, (opt || {})));
 }
-exports.facetSortFieldName = facetSortFieldName;
 var FacetModel = /** @class */ (function (_super) {
     tslib_1.__extends(FacetModel, _super);
     function FacetModel(spec, parent, parentGivenName, repeater, config) {
         var _this = _super.call(this, spec, parent, parentGivenName, config, repeater, spec.resolve) || this;
         _this.type = 'facet';
-        _this.child = buildmodel_1.buildModel(spec.spec, _this, _this.getName('child'), undefined, repeater, config, false);
+        _this.child = buildModel(spec.spec, _this, _this.getName('child'), undefined, repeater, config, false);
         _this.children = [_this.child];
-        var facet = repeater_1.replaceRepeaterInFacet(spec.facet, repeater);
+        var facet = replaceRepeaterInFacet(spec.facet, repeater);
         _this.facet = _this.initFacet(facet);
         return _this;
     }
     FacetModel.prototype.initFacet = function (facet) {
         // clone to prevent side effect to the original spec
-        return encoding_1.reduce(facet, function (normalizedFacet, fieldDef, channel) {
-            if (!util_1.contains([channel_1.ROW, channel_1.COLUMN], channel)) {
+        return reduce(facet, function (normalizedFacet, fieldDef, channel) {
+            if (!contains([ROW, COLUMN], channel)) {
                 // Drop unsupported channel
                 log.warn(log.message.incompatibleChannel(channel, 'facet'));
                 return normalizedFacet;
@@ -49,7 +47,7 @@ var FacetModel = /** @class */ (function (_super) {
                 return normalizedFacet;
             }
             // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
-            normalizedFacet[channel] = fielddef_1.normalize(fieldDef, channel);
+            normalizedFacet[channel] = normalize(fieldDef, channel);
             return normalizedFacet;
         }, {});
     };
@@ -60,11 +58,11 @@ var FacetModel = /** @class */ (function (_super) {
         return this.facet[channel];
     };
     FacetModel.prototype.parseData = function () {
-        this.component.data = parse_1.parseData(this);
+        this.component.data = parseData(this);
         this.child.parseData();
     };
     FacetModel.prototype.parseLayoutSize = function () {
-        parse_2.parseChildrenLayoutSize(this);
+        parseChildrenLayoutSize(this);
     };
     FacetModel.prototype.parseSelection = function () {
         // As a facet has a single child, the selection components are the same.
@@ -86,7 +84,7 @@ var FacetModel = /** @class */ (function (_super) {
     FacetModel.prototype.parseHeader = function (channel) {
         if (this.channelHasField(channel)) {
             var fieldDef = this.facet[channel];
-            var title = fielddef_1.title(fieldDef, this.config, { allowDisabling: true });
+            var title = fieldDefTitle(fieldDef, this.config, { allowDisabling: true });
             if (this.child.component.layoutHeaders[channel].title) {
                 // merge title with child to produce "Title / Subtitle / Sub-subtitle"
                 title += ' / ' + this.child.component.layoutHeaders[channel].title;
@@ -112,16 +110,16 @@ var FacetModel = /** @class */ (function (_super) {
         var child = this.child;
         if (child.component.axes[channel]) {
             var _a = this.component, layoutHeaders = _a.layoutHeaders, resolve = _a.resolve;
-            resolve.axis[channel] = resolve_1.parseGuideResolve(resolve, channel);
+            resolve.axis[channel] = parseGuideResolve(resolve, channel);
             if (resolve.axis[channel] === 'shared') {
                 // For shared axis, move the axes to facet's header or footer
                 var headerChannel = channel === 'x' ? 'column' : 'row';
                 var layoutHeader = layoutHeaders[headerChannel];
                 for (var _i = 0, _b = child.component.axes[channel]; _i < _b.length; _i++) {
                     var axisComponent = _b[_i];
-                    var headerType = index_1.getHeaderType(axisComponent.get('orient'));
+                    var headerType = getHeaderType(axisComponent.get('orient'));
                     layoutHeader[headerType] = layoutHeader[headerType] || [this.makeHeaderComponent(headerChannel, false)];
-                    var mainAxis = assemble_1.assembleAxis(axisComponent, 'main', this.config, { header: true });
+                    var mainAxis = assembleAxis(axisComponent, 'main', this.config, { header: true });
                     // LayoutHeader no longer keep track of property precedence, thus let's combine.
                     layoutHeader[headerType][0].axes.push(mainAxis);
                     axisComponent.mainExtracted = true;
@@ -200,7 +198,7 @@ var FacetModel = /** @class */ (function (_super) {
                         update: {
                             // TODO(https://github.com/vega/vega-lite/issues/2759):
                             // Correct the signal for facet of concat of facet_column
-                            columns: { field: fielddef_1.vgField(this.facet.column, { prefix: 'distinct' }) }
+                            columns: { field: vgField(this.facet.column, { prefix: 'distinct' }) }
                         }
                     }
                 }
@@ -217,7 +215,7 @@ var FacetModel = /** @class */ (function (_super) {
         var as = [];
         if (this.child instanceof FacetModel) {
             if (this.child.channelHasField('column')) {
-                var field = fielddef_1.vgField(this.child.facet.column);
+                var field = vgField(this.child.facet.column);
                 fields.push(field);
                 ops.push('distinct');
                 as.push("distinct_" + field);
@@ -230,9 +228,9 @@ var FacetModel = /** @class */ (function (_super) {
                 if (childScaleComponent && !childScaleComponent.merged) {
                     var type = childScaleComponent.get('type');
                     var range = childScaleComponent.get('range');
-                    if (scale_1.hasDiscreteDomain(type) && vega_schema_1.isVgRangeStep(range)) {
-                        var domain = domain_1.assembleDomain(this.child, channel);
-                        var field = domain_1.getFieldFromDomain(domain);
+                    if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
+                        var domain = assembleDomain(this.child, channel);
+                        var field = getFieldFromDomain(domain);
                         if (field) {
                             fields.push(field);
                             ops.push('distinct');
@@ -256,9 +254,9 @@ var FacetModel = /** @class */ (function (_super) {
         ['row', 'column'].forEach(function (channel) {
             var fieldDef = _this.facet[channel];
             if (fieldDef) {
-                groupby.push(fielddef_1.vgField(fieldDef));
+                groupby.push(vgField(fieldDef));
                 var sort = fieldDef.sort;
-                if (sort_1.isSortField(sort)) {
+                if (isSortField(sort)) {
                     var field = sort.field, op = sort.op;
                     var outputName = facetSortFieldName(fieldDef, sort);
                     if (row && column) {
@@ -275,8 +273,8 @@ var FacetModel = /** @class */ (function (_super) {
                         as.push(outputName);
                     }
                 }
-                else if (vega_util_1.isArray(sort)) {
-                    var outputName = calculate_1.sortArrayIndexField(fieldDef, channel);
+                else if (isArray(sort)) {
+                    var outputName = sortArrayIndexField(fieldDef, channel);
                     fields.push(outputName);
                     ops.push('max');
                     as.push(outputName);
@@ -296,13 +294,13 @@ var FacetModel = /** @class */ (function (_super) {
         var facet = this.facet;
         var fieldDef = facet[channel];
         if (fieldDef) {
-            if (sort_1.isSortField(fieldDef.sort)) {
+            if (isSortField(fieldDef.sort)) {
                 return [facetSortFieldName(fieldDef, fieldDef.sort, { expr: 'datum' })];
             }
-            else if (vega_util_1.isArray(fieldDef.sort)) {
-                return [calculate_1.sortArrayIndexField(fieldDef, channel, { expr: 'datum' })];
+            else if (isArray(fieldDef.sort)) {
+                return [sortArrayIndexField(fieldDef, channel, { expr: 'datum' })];
             }
-            return [fielddef_1.vgField(fieldDef, { expr: 'datum' })];
+            return [vgField(fieldDef, { expr: 'datum' })];
         }
         return [];
     };
@@ -311,7 +309,7 @@ var FacetModel = /** @class */ (function (_super) {
         var fieldDef = facet[channel];
         if (fieldDef) {
             var sort = fieldDef.sort;
-            var order = (sort_1.isSortField(sort) ? sort.order : !vega_util_1.isArray(sort) && sort) || 'ascending';
+            var order = (isSortField(sort) ? sort.order : !isArray(sort) && sort) || 'ascending';
             return [order];
         }
         return [];
@@ -319,7 +317,7 @@ var FacetModel = /** @class */ (function (_super) {
     FacetModel.prototype.assembleMarks = function () {
         var child = this.child;
         var facetRoot = this.component.data.facetRoot;
-        var data = assemble_2.assembleFacetData(facetRoot);
+        var data = assembleFacetData(facetRoot);
         // If we facet by two dimensions, we need to add a cross operator to the aggregation
         // so that we create all groups
         var layoutSizeEncodeEntry = child.assembleLayoutSize();
@@ -332,13 +330,13 @@ var FacetModel = /** @class */ (function (_super) {
             sort: {
                 field: this.headerSortFields('row').concat(this.headerSortFields('column')),
                 order: this.headerSortOrder('row').concat(this.headerSortOrder('column'))
-            } }, (data.length > 0 ? { data: data } : {}), (layoutSizeEncodeEntry ? { encode: { update: layoutSizeEncodeEntry } } : {}), child.assembleGroup());
+            } }, (data.length > 0 ? { data: data } : {}), (layoutSizeEncodeEntry ? { encode: { update: layoutSizeEncodeEntry } } : {}), child.assembleGroup(assembleFacetSignals(this, [])));
         return [markGroup];
     };
     FacetModel.prototype.getMapping = function () {
         return this.facet;
     };
     return FacetModel;
-}(model_1.ModelWithField));
-exports.FacetModel = FacetModel;
+}(ModelWithField));
+export { FacetModel };
 //# sourceMappingURL=facet.js.map

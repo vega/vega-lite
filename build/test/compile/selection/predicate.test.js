@@ -1,15 +1,12 @@
-"use strict";
 /* tslint:disable quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var mixins_1 = require("../../../src/compile/mark/mixins");
-var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
-var predicate_1 = require("../../../src/predicate");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { nonPosition } from '../../../src/compile/mark/mixins';
+import * as selection from '../../../src/compile/selection/selection';
+import { expression } from '../../../src/predicate';
+import { parseUnitModel } from '../../util';
 var predicate = selection.selectionPredicate;
 describe('Selection Predicate', function () {
-    var model = util_1.parseUnitModel({
+    var model = parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -40,30 +37,30 @@ describe('Selection Predicate', function () {
         four: { type: 'single', empty: 'none' }
     });
     it('generates the predicate expression', function () {
-        chai_1.assert.equal(predicate(model, 'one'), '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
-        chai_1.assert.equal(predicate(model, 'four'), '(vlSingle("four_store", datum))');
-        chai_1.assert.equal(predicate(model, { not: 'one' }), '!(length(data("one_store"))) || (!(vlSingle("one_store", datum)))');
-        chai_1.assert.equal(predicate(model, { not: { and: ['one', 'two'] } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
+        assert.equal(predicate(model, 'one'), '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
+        assert.equal(predicate(model, 'four'), '(vlSingle("four_store", datum))');
+        assert.equal(predicate(model, { not: 'one' }), '!(length(data("one_store"))) || (!(vlSingle("one_store", datum)))');
+        assert.equal(predicate(model, { not: { and: ['one', 'two'] } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
             '(!((vlSingle("one_store", datum)) && ' +
             '(vlMulti("two_store", datum, "union"))))');
-        chai_1.assert.equal(predicate(model, { not: { and: ['one', 'four'] } }), '!(length(data("one_store"))) || ' + '(!((vlSingle("one_store", datum)) && ' + '(vlSingle("four_store", datum))))');
-        chai_1.assert.equal(predicate(model, { and: ['one', 'two', { not: 'thr-ee' }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+        assert.equal(predicate(model, { not: { and: ['one', 'four'] } }), '!(length(data("one_store"))) || ' + '(!((vlSingle("one_store", datum)) && ' + '(vlSingle("four_store", datum))))');
+        assert.equal(predicate(model, { and: ['one', 'two', { not: 'thr-ee' }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
             '((vlSingle("one_store", datum)) && ' +
             '(vlMulti("two_store", datum, "union")) && ' +
             '(!(vlInterval("thr_ee_store", datum, "intersect"))))');
-        chai_1.assert.equal(predicate(model, { or: ['one', { and: ['two', { not: 'thr-ee' }] }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+        assert.equal(predicate(model, { or: ['one', { and: ['two', { not: 'thr-ee' }] }] }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
             '((vlSingle("one_store", datum)) || ' +
             '((vlMulti("two_store", datum, "union")) && ' +
             '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
     });
     it('generates Vega production rules', function () {
-        chai_1.assert.deepEqual(mixins_1.nonPosition('color', model, { vgChannel: 'fill' }), {
+        assert.deepEqual(nonPosition('color', model, { vgChannel: 'fill' }), {
             fill: [
                 { test: '!(length(data("one_store"))) || (vlSingle("one_store", datum))', value: 'grey' },
                 { scale: 'color', field: 'Cylinders' }
             ]
         });
-        chai_1.assert.deepEqual(mixins_1.nonPosition('opacity', model), {
+        assert.deepEqual(nonPosition('opacity', model), {
             opacity: [
                 {
                     test: '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
@@ -77,22 +74,22 @@ describe('Selection Predicate', function () {
         });
     });
     it('generates a selection filter', function () {
-        chai_1.assert.equal(predicate_1.expression(model, { selection: 'one' }), '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
-        chai_1.assert.equal(predicate_1.expression(model, { selection: { not: 'one' } }), '!(length(data("one_store"))) || (!(vlSingle("one_store", datum)))');
-        chai_1.assert.equal(predicate_1.expression(model, { selection: { not: { and: ['one', 'two'] } } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
+        assert.equal(expression(model, { selection: 'one' }), '!(length(data("one_store"))) || (vlSingle("one_store", datum))');
+        assert.equal(expression(model, { selection: { not: 'one' } }), '!(length(data("one_store"))) || (!(vlSingle("one_store", datum)))');
+        assert.equal(expression(model, { selection: { not: { and: ['one', 'two'] } } }), '!(length(data("one_store")) || length(data("two_store"))) || ' +
             '(!((vlSingle("one_store", datum)) && ' +
             '(vlMulti("two_store", datum, "union"))))');
-        chai_1.assert.equal(predicate_1.expression(model, { selection: { and: ['one', 'two', { not: 'thr-ee' }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+        assert.equal(expression(model, { selection: { and: ['one', 'two', { not: 'thr-ee' }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
             '((vlSingle("one_store", datum)) && ' +
             '(vlMulti("two_store", datum, "union")) && ' +
             '(!(vlInterval("thr_ee_store", datum, "intersect"))))');
-        chai_1.assert.equal(predicate_1.expression(model, { selection: { or: ['one', { and: ['two', { not: 'thr-ee' }] }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
+        assert.equal(expression(model, { selection: { or: ['one', { and: ['two', { not: 'thr-ee' }] }] } }), '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
             '((vlSingle("one_store", datum)) || ' +
             '((vlMulti("two_store", datum, "union")) && ' +
             '(!(vlInterval("thr_ee_store", datum, "intersect")))))');
     });
     it('throws an error for unknown selections', function () {
-        chai_1.assert.throws(function () { return predicate(model, 'helloworld'); }, 'Cannot find a selection named "helloworld"');
+        assert.throws(function () { return predicate(model, 'helloworld'); }, 'Cannot find a selection named "helloworld"');
     });
 });
 //# sourceMappingURL=predicate.test.js.map

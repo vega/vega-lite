@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /* tslint:disable:quotemark */
-var chai_1 = require("chai");
-var calculate_1 = require("../../../src/compile/data/calculate");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { CalculateNode } from '../../../src/compile/data/calculate';
+import { parseUnitModel } from '../../util';
 function assembleFromSortArray(model) {
-    var node = calculate_1.CalculateNode.parseAllForSortIndex(null, model);
+    var node = CalculateNode.parseAllForSortIndex(null, model);
     return node.assemble();
 }
 describe('compile/data/calculate', function () {
     describe('makeAllForSortIndex', function () {
         it('produces correct formula transform', function () {
-            var model = util_1.parseUnitModel({
+            var model = parseUnitModel({
                 data: {
                     values: [{ a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }]
                 },
@@ -31,7 +29,7 @@ describe('compile/data/calculate', function () {
     });
     describe('dependentFields and producedFields', function () {
         it('returns the right fields', function () {
-            var node = new calculate_1.CalculateNode(null, {
+            var node = new CalculateNode(null, {
                 calculate: 'datum.foo + 2',
                 as: 'bar'
             });
@@ -41,7 +39,7 @@ describe('compile/data/calculate', function () {
     });
     describe('hash', function () {
         it('should generate the correct hash', function () {
-            var model = util_1.parseUnitModel({
+            var model = parseUnitModel({
                 data: {
                     values: [{ a: 'A', b: 28 }, { a: 'B', b: 55 }, { a: 'C', b: 43 }]
                 },
@@ -51,8 +49,8 @@ describe('compile/data/calculate', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            var node = calculate_1.CalculateNode.parseAllForSortIndex(null, model);
-            chai_1.assert.deepEqual(node.hash(), 'Calculate 1019364572');
+            var node = CalculateNode.parseAllForSortIndex(null, model);
+            assert.deepEqual(node.hash(), 'Calculate 1019364572');
         });
     });
 });

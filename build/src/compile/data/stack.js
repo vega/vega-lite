@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var vega_util_1 = require("vega-util");
-var fielddef_1 = require("../../fielddef");
-var util_1 = require("../../util");
-var common_1 = require("../common");
-var dataflow_1 = require("./dataflow");
+import * as tslib_1 from "tslib";
+import { isArray, isString } from 'vega-util';
+import { isFieldDef, vgField } from '../../fielddef';
+import { duplicate, getFirstDefined, hash } from '../../util';
+import { sortParams } from '../common';
+import { TransformNode } from './dataflow';
 function getStackByFields(model) {
     return model.stack.stackBy.reduce(function (fields, by) {
         var fieldDef = by.fieldDef;
-        var _field = fielddef_1.vgField(fieldDef);
+        var _field = vgField(fieldDef);
         if (_field) {
             fields.push(_field);
         }
@@ -17,7 +15,7 @@ function getStackByFields(model) {
     }, []);
 }
 function isValidAsArray(as) {
-    return vega_util_1.isArray(as) && as.every(function (s) { return vega_util_1.isString(s); }) && as.length > 1;
+    return isArray(as) && as.every(function (s) { return isString(s); }) && as.length > 1;
 }
 var StackNode = /** @class */ (function (_super) {
     tslib_1.__extends(StackNode, _super);
@@ -27,7 +25,7 @@ var StackNode = /** @class */ (function (_super) {
         return _this;
     }
     StackNode.prototype.clone = function () {
-        return new StackNode(null, util_1.duplicate(this._stack));
+        return new StackNode(null, duplicate(this._stack));
     };
     StackNode.makeFromTransform = function (parent, stackTransform) {
         var stack = stackTransform.stack, groupby = stackTransform.groupby, as = stackTransform.as, _a = stackTransform.offset, offset = _a === void 0 ? 'zero' : _a;
@@ -37,7 +35,7 @@ var StackNode = /** @class */ (function (_super) {
             for (var _i = 0, _b = stackTransform.sort; _i < _b.length; _i++) {
                 var sortField = _b[_i];
                 sortFields.push(sortField.field);
-                sortOrder.push(util_1.getFirstDefined(sortField.order, 'ascending'));
+                sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
             }
         }
         var sort = {
@@ -48,7 +46,7 @@ var StackNode = /** @class */ (function (_super) {
         if (isValidAsArray(as)) {
             normalizedAs = as;
         }
-        else if (vega_util_1.isString(as)) {
+        else if (isString(as)) {
             normalizedAs = [as, as + '_end'];
         }
         else {
@@ -75,8 +73,8 @@ var StackNode = /** @class */ (function (_super) {
         var stackby = getStackByFields(model);
         var orderDef = model.encoding.order;
         var sort;
-        if (vega_util_1.isArray(orderDef) || fielddef_1.isFieldDef(orderDef)) {
-            sort = common_1.sortParams(orderDef);
+        if (isArray(orderDef) || isFieldDef(orderDef)) {
+            sort = sortParams(orderDef);
         }
         else {
             // default = descending by stackFields
@@ -117,7 +115,7 @@ var StackNode = /** @class */ (function (_super) {
         this.getGroupbyFields().forEach(function (f) { return (out[f] = true); });
         this._stack.facetby.forEach(function (f) { return (out[f] = true); });
         var field = this._stack.sort.field;
-        vega_util_1.isArray(field) ? field.forEach(function (f) { return (out[f] = true); }) : (out[field] = true);
+        isArray(field) ? field.forEach(function (f) { return (out[f] = true); }) : (out[field] = true);
         return out;
     };
     StackNode.prototype.producedFields = function () {
@@ -127,7 +125,7 @@ var StackNode = /** @class */ (function (_super) {
         }, {});
     };
     StackNode.prototype.hash = function () {
-        return "Stack " + util_1.hash(this._stack);
+        return "Stack " + hash(this._stack);
     };
     StackNode.prototype.getGroupbyFields = function () {
         var _a = this._stack, dimensionFieldDef = _a.dimensionFieldDef, impute = _a.impute, groupby = _a.groupby;
@@ -136,15 +134,15 @@ var StackNode = /** @class */ (function (_super) {
                 if (impute) {
                     // For binned group by field with impute, we calculate bin_mid
                     // as we cannot impute two fields simultaneously
-                    return [fielddef_1.vgField(dimensionFieldDef, { binSuffix: 'mid' })];
+                    return [vgField(dimensionFieldDef, { binSuffix: 'mid' })];
                 }
                 return [
                     // For binned group by field without impute, we need both bin (start) and bin_end
-                    fielddef_1.vgField(dimensionFieldDef, {}),
-                    fielddef_1.vgField(dimensionFieldDef, { binSuffix: 'end' })
+                    vgField(dimensionFieldDef, {}),
+                    vgField(dimensionFieldDef, { binSuffix: 'end' })
                 ];
             }
-            return [fielddef_1.vgField(dimensionFieldDef)];
+            return [vgField(dimensionFieldDef)];
         }
         return groupby || [];
     };
@@ -159,18 +157,18 @@ var StackNode = /** @class */ (function (_super) {
                 transform.push({
                     type: 'formula',
                     expr: '(' +
-                        fielddef_1.vgField(dimensionFieldDef, { expr: 'datum' }) +
+                        vgField(dimensionFieldDef, { expr: 'datum' }) +
                         '+' +
-                        fielddef_1.vgField(dimensionFieldDef, { expr: 'datum', binSuffix: 'end' }) +
+                        vgField(dimensionFieldDef, { expr: 'datum', binSuffix: 'end' }) +
                         ')/2',
-                    as: fielddef_1.vgField(dimensionFieldDef, { binSuffix: 'mid', forAs: true })
+                    as: vgField(dimensionFieldDef, { binSuffix: 'mid', forAs: true })
                 });
             }
             transform.push({
                 type: 'impute',
                 field: field,
                 groupby: stackby,
-                key: fielddef_1.vgField(dimensionFieldDef, { binSuffix: 'mid' }),
+                key: vgField(dimensionFieldDef, { binSuffix: 'mid' }),
                 method: 'value',
                 value: 0
             });
@@ -187,6 +185,6 @@ var StackNode = /** @class */ (function (_super) {
         return transform;
     };
     return StackNode;
-}(dataflow_1.TransformNode));
-exports.StackNode = StackNode;
+}(TransformNode));
+export { StackNode };
 //# sourceMappingURL=stack.js.map

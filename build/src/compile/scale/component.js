@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var split_1 = require("../split");
+import * as tslib_1 from "tslib";
+import { Split } from '../split';
 var ScaleComponent = /** @class */ (function (_super) {
     tslib_1.__extends(ScaleComponent, _super);
     function ScaleComponent(name, typeWithExplicit) {
@@ -14,6 +12,6 @@ var ScaleComponent = /** @class */ (function (_super) {
         return _this;
     }
     return ScaleComponent;
-}(split_1.Split));
-exports.ScaleComponent = ScaleComponent;
+}(Split));
+export { ScaleComponent };
 //# sourceMappingURL=component.js.map

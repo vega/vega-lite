@@ -1,30 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var encoding_1 = require("../encoding");
-var fielddef_1 = require("../fielddef");
-var log = tslib_1.__importStar(require("../log"));
-var mark_1 = require("../mark");
-var util_1 = require("../util");
-var common_1 = require("./common");
-exports.ERRORBAR = 'errorbar';
+import * as tslib_1 from "tslib";
+import { extractTransformsFromEncoding } from '../encoding';
+import { isContinuous, isFieldDef } from '../fielddef';
+import * as log from '../log';
+import { isMarkDef } from '../mark';
+import { keys } from '../util';
+import { compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, makeCompositeAggregatePartFactory } from './common';
+export var ERRORBAR = 'errorbar';
 var ERRORBAR_PART_INDEX = {
     ticks: 1,
     rule: 1
 };
-exports.ERRORBAR_PARTS = util_1.keys(ERRORBAR_PART_INDEX);
-function normalizeErrorBar(spec, config) {
-    var _a = errorBarParams(spec, exports.ERRORBAR, config), transform = _a.transform, continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis, encodingWithoutContinuousAxis = _a.encodingWithoutContinuousAxis, ticksOrient = _a.ticksOrient, markDef = _a.markDef, outerSpec = _a.outerSpec;
-    var makeErrorBarPart = common_1.makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorbar);
+export var ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
+export function normalizeErrorBar(spec, config) {
+    var _a = errorBarParams(spec, ERRORBAR, config), transform = _a.transform, continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis, encodingWithoutContinuousAxis = _a.encodingWithoutContinuousAxis, ticksOrient = _a.ticksOrient, markDef = _a.markDef, outerSpec = _a.outerSpec;
+    var makeErrorBarPart = makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, encodingWithoutContinuousAxis, config.errorbar);
     var tick = { type: 'tick', orient: ticksOrient };
     return tslib_1.__assign({}, outerSpec, { transform: transform, layer: makeErrorBarPart('ticks', tick, 'lower').concat(makeErrorBarPart('ticks', tick, 'upper'), makeErrorBarPart('rule', 'rule', 'lower', 'upper')) });
 }
-exports.normalizeErrorBar = normalizeErrorBar;
 function errorBarOrientAndRange(spec, compositeMark) {
     var encoding = spec.encoding;
-    if (fielddef_1.isFieldDef(encoding.x2) && fielddef_1.isFieldDef(encoding.x) && fielddef_1.isContinuous(encoding.x)) {
+    if (isFieldDef(encoding.x2) && isFieldDef(encoding.x) && isContinuous(encoding.x)) {
         // having x and x2
-        if (fielddef_1.isFieldDef(encoding.y2) && fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
+        if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
             // having both x, x2 and y, y2
             throw new Error('Cannot have both x2 and y2 with both are quantiative');
         }
@@ -33,34 +30,34 @@ function errorBarOrientAndRange(spec, compositeMark) {
             return { orient: 'horizontal', isRangedErrorBar: true };
         }
     }
-    else if (fielddef_1.isFieldDef(encoding.y2) && fielddef_1.isFieldDef(encoding.y) && fielddef_1.isContinuous(encoding.y)) {
+    else if (isFieldDef(encoding.y2) && isFieldDef(encoding.y) && isContinuous(encoding.y)) {
         // having y, y2 but not x, x2
         return { orient: 'vertical', isRangedErrorBar: true };
     }
     return {
-        orient: common_1.compositeMarkOrient(spec, compositeMark),
+        orient: compositeMarkOrient(spec, compositeMark),
         isRangedErrorBar: false
     };
 }
-exports.errorBarSupportedChannels = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
-function errorBarParams(spec, compositeMark, config) {
-    spec = common_1.filterUnsupportedChannels(spec, exports.errorBarSupportedChannels, compositeMark);
+export var errorBarSupportedChannels = ['x', 'y', 'x2', 'y2', 'color', 'detail', 'opacity'];
+export function errorBarParams(spec, compositeMark, config) {
+    spec = filterUnsupportedChannels(spec, errorBarSupportedChannels, compositeMark);
     // TODO: use selection
     var mark = spec.mark, encoding = spec.encoding, selection = spec.selection, _p = spec.projection, outerSpec = tslib_1.__rest(spec, ["mark", "encoding", "selection", "projection"]);
-    var markDef = mark_1.isMarkDef(mark) ? mark : { type: mark };
+    var markDef = isMarkDef(mark) ? mark : { type: mark };
     // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
     if (selection) {
         log.warn(log.message.selectionNotSupported(compositeMark));
     }
     var _a = errorBarOrientAndRange(spec, compositeMark), orient = _a.orient, isRangedErrorBar = _a.isRangedErrorBar;
-    var _b = common_1.compositeMarkContinuousAxis(spec, orient, compositeMark), continuousAxisChannelDef = _b.continuousAxisChannelDef, continuousAxisChannelDef2 = _b.continuousAxisChannelDef2, continuousAxis = _b.continuousAxis;
+    var _b = compositeMarkContinuousAxis(spec, orient, compositeMark), continuousAxisChannelDef = _b.continuousAxisChannelDef, continuousAxisChannelDef2 = _b.continuousAxisChannelDef2, continuousAxis = _b.continuousAxis;
     var _c = errorBarAggregationAndCalculation(markDef, continuousAxisChannelDef, continuousAxisChannelDef2, isRangedErrorBar, compositeMark, config), errorBarSpecificAggregate = _c.errorBarSpecificAggregate, postAggregateCalculates = _c.postAggregateCalculates;
     var _d = continuousAxis, oldContinuousAxisChannelDef = encoding[_d], _e = continuousAxis + '2', oldContinuousAxisChannelDef2 = encoding[_e], oldEncodingWithoutContinuousAxis = tslib_1.__rest(encoding, [typeof _d === "symbol" ? _d : _d + "", typeof _e === "symbol" ? _e : _e + ""]);
-    var _f = encoding_1.extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config), bins = _f.bins, timeUnits = _f.timeUnits, oldAggregate = _f.aggregate, oldGroupBy = _f.groupby, encodingWithoutContinuousAxis = _f.encoding;
+    var _f = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config), bins = _f.bins, timeUnits = _f.timeUnits, oldAggregate = _f.aggregate, oldGroupBy = _f.groupby, encodingWithoutContinuousAxis = _f.encoding;
     var aggregate = oldAggregate.concat(errorBarSpecificAggregate);
     var groupby = isRangedErrorBar ? [] : oldGroupBy;
     return {
-        transform: bins.concat(timeUnits, (!aggregate.length ? [] : [{ aggregate: aggregate, groupby: groupby }]), postAggregateCalculates),
+        transform: (outerSpec.transform || []).concat(bins, timeUnits, (!aggregate.length ? [] : [{ aggregate: aggregate, groupby: groupby }]), postAggregateCalculates),
         groupby: groupby,
         continuousAxisChannelDef: continuousAxisChannelDef,
         continuousAxis: continuousAxis,
@@ -70,7 +67,6 @@ function errorBarParams(spec, compositeMark, config) {
         outerSpec: outerSpec
     };
 }
-exports.errorBarParams = errorBarParams;
 function errorBarAggregationAndCalculation(markDef, continuousAxisChannelDef, continuousAxisChannelDef2, isRangedErrorBar, compositeMark, config) {
     var errorBarSpecificAggregate = [];
     var postAggregateCalculates = [];

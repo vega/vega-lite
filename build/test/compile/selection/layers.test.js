@@ -1,12 +1,10 @@
-"use strict";
 /* tslint:disable quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var selection = tslib_1.__importStar(require("../../../src/compile/selection/selection"));
-var util_1 = require("../../util");
+import * as tslib_1 from "tslib";
+import { assert } from 'chai';
+import * as selection from '../../../src/compile/selection/selection';
+import { parseLayerModel } from '../../util';
 describe('Layered Selections', function () {
-    var layers = util_1.parseLayerModel({
+    var layers = parseLayerModel({
         layer: [
             {
                 selection: {
@@ -36,7 +34,7 @@ describe('Layered Selections', function () {
     layers.parse();
     it('should appropriately name the unit', function () {
         var unit = layers.children[0];
-        chai_1.assert.equal(selection.unitName(unit), '"layer_0"');
+        assert.equal(selection.unitName(unit), '"layer_0"');
     });
     // Selections should augment layered marks together, rather than each
     // mark individually. This ensures correct interleaving of brush marks
@@ -125,7 +123,7 @@ describe('Layered Selections', function () {
     it('should assemble selection marks across layers', function () {
         var child0 = layers.children[0].assembleMarks()[0];
         var child1 = layers.children[1].assembleMarks()[0];
-        chai_1.assert.sameDeepMembers(layers.assembleMarks(), [
+        assert.sameDeepMembers(layers.assembleMarks(), [
             // Background brush mark for "brush" selection.
             {
                 name: 'brush_brush_bg',

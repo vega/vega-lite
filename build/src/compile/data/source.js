@@ -1,18 +1,16 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var data_1 = require("../../data");
-var util_1 = require("../../util");
-var dataflow_1 = require("./dataflow");
+import * as tslib_1 from "tslib";
+import { isInlineData, isNamedData, isUrlData } from '../../data';
+import { contains, hash } from '../../util';
+import { DataFlowNode } from './dataflow';
 var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this, null) || this;
         data = data || { name: 'source' };
-        if (data_1.isInlineData(data)) {
+        if (isInlineData(data)) {
             _this._data = { values: data.values };
         }
-        else if (data_1.isUrlData(data)) {
+        else if (isUrlData(data)) {
             _this._data = { url: data.url };
             if (!data.format) {
                 data.format = {};
@@ -21,14 +19,14 @@ var SourceNode = /** @class */ (function (_super) {
                 // Extract extension from URL using snippet from
                 // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
                 var defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
-                if (!util_1.contains(['json', 'csv', 'tsv', 'dsv', 'topojson'], defaultExtension)) {
+                if (!contains(['json', 'csv', 'tsv', 'dsv', 'topojson'], defaultExtension)) {
                     defaultExtension = 'json';
                 }
                 // defaultExtension has type string but we ensure that it is DataFormatType above
                 data.format.type = defaultExtension;
             }
         }
-        else if (data_1.isNamedData(data)) {
+        else if (isNamedData(data)) {
             _this._data = {};
         }
         // any dataset can be named
@@ -75,15 +73,15 @@ var SourceNode = /** @class */ (function (_super) {
      * Return a unique identifier for this data source.
      */
     SourceNode.prototype.hash = function () {
-        if (data_1.isInlineData(this._data)) {
+        if (isInlineData(this._data)) {
             if (!this._hash) {
                 // Hashing can be expensive for large inline datasets.
-                this._hash = util_1.hash(this._data);
+                this._hash = hash(this._data);
             }
             return this._hash;
         }
-        else if (data_1.isUrlData(this._data)) {
-            return util_1.hash([this._data.url, this._data.format]);
+        else if (isUrlData(this._data)) {
+            return hash([this._data.url, this._data.format]);
         }
         else {
             return this._name;
@@ -93,6 +91,6 @@ var SourceNode = /** @class */ (function (_super) {
         return tslib_1.__assign({ name: this._name }, this._data, { transform: [] });
     };
     return SourceNode;
-}(dataflow_1.DataFlowNode));
-exports.SourceNode = SourceNode;
+}(DataFlowNode));
+export { SourceNode };
 //# sourceMappingURL=source.js.map

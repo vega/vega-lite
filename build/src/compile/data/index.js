@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var split_1 = require("../split");
+import * as tslib_1 from "tslib";
+import { Split } from '../split';
 /**
  * Class to track interesting properties (see https://15721.courses.cs.cmu.edu/spring2016/papers/graefe-ieee1995.pdf)
  * about how fields have been parsed or whether they have been derived in a transform. We use this to not parse the
@@ -25,6 +23,6 @@ var AncestorParse = /** @class */ (function (_super) {
         return clone;
     };
     return AncestorParse;
-}(split_1.Split));
-exports.AncestorParse = AncestorParse;
+}(Split));
+export { AncestorParse };
 //# sourceMappingURL=index.js.map

@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var log = tslib_1.__importStar(require("../../../log"));
-var util_1 = require("../../../util");
-var timeunit_1 = require("../../data/timeunit");
+import * as log from '../../../log';
+import { keys } from '../../../util';
+import { TimeUnitNode } from '../../data/timeunit';
 var project = {
     has: function (selDef) {
         var def = selDef;
@@ -46,10 +43,10 @@ var project = {
         }
         var fields = selCmpt.fields || (selCmpt.fields = {});
         projection.filter(function (p) { return p.channel; }).forEach(function (p) { return (fields[p.channel] = p.field); });
-        if (util_1.keys(timeUnits).length) {
-            selCmpt.timeUnit = new timeunit_1.TimeUnitNode(null, timeUnits);
+        if (keys(timeUnits).length) {
+            selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
         }
     }
 };
-exports.default = project;
+export default project;
 //# sourceMappingURL=project.js.map

@@ -1,32 +1,29 @@
-"use strict";
 /* tslint:disable:quotemark */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var channel_1 = require("../../../src/channel");
-var component_1 = require("../../../src/compile/legend/component");
-var encode = tslib_1.__importStar(require("../../../src/compile/legend/encode"));
-var timeunit_1 = require("../../../src/timeunit");
-var type_1 = require("../../../src/type");
-var util_1 = require("../../util");
+import { assert } from 'chai';
+import { COLOR, SIZE } from '../../../src/channel';
+import { LegendComponent } from '../../../src/compile/legend/component';
+import * as encode from '../../../src/compile/legend/encode';
+import { TimeUnit } from '../../../src/timeunit';
+import { TEMPORAL } from '../../../src/type';
+import { parseUnitModelWithScale } from '../../util';
 describe('compile/legend', function () {
-    var symbolLegend = new component_1.LegendComponent({ type: 'symbol' });
-    var gradientLegend = new component_1.LegendComponent({ type: 'gradient' });
+    var symbolLegend = new LegendComponent({ type: 'symbol' });
+    var gradientLegend = new LegendComponent({ type: 'gradient' });
     describe('encode.symbols', function () {
         it('should not have fill, strokeDash, or strokeDashOffset', function () {
-            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, util_1.parseUnitModelWithScale({
+            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' },
                     color: { field: 'a', type: 'nominal' }
                 }
-            }), channel_1.COLOR, symbolLegend);
-            chai_1.assert.deepEqual(symbol.fill, { value: 'transparent' });
-            chai_1.assert.isUndefined((symbol || {}).strokeDash);
-            chai_1.assert.isUndefined((symbol || {}).strokeDashOffset);
+            }), COLOR, symbolLegend);
+            assert.deepEqual(symbol.fill, { value: 'transparent' });
+            assert.isUndefined((symbol || {}).strokeDash);
+            assert.isUndefined((symbol || {}).strokeDashOffset);
         });
         it('should have fill if a color encoding exists', function () {
-            var symbol = encode.symbols({ field: 'a', type: 'quantitative' }, {}, util_1.parseUnitModelWithScale({
+            var symbol = encode.symbols({ field: 'a', type: 'quantitative' }, {}, parseUnitModelWithScale({
                 mark: {
                     type: 'circle',
                     opacity: 0.3
@@ -36,31 +33,31 @@ describe('compile/legend', function () {
                     color: { field: 'a', type: 'nominal' },
                     size: { field: 'a', type: 'quantitative' }
                 }
-            }), channel_1.SIZE, symbolLegend);
-            chai_1.assert.deepEqual(symbol.fill, { value: 'black' });
-            chai_1.assert.deepEqual(symbol.fillOpacity, { value: 0.3 });
+            }), SIZE, symbolLegend);
+            assert.deepEqual(symbol.fill, { value: 'black' });
+            assert.deepEqual(symbol.fillOpacity, { value: 0.3 });
         });
         it('should return specific symbols.shape.value if user has specified', function () {
-            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, util_1.parseUnitModelWithScale({
+            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' },
                     shape: { value: 'square' }
                 }
-            }), channel_1.COLOR, symbolLegend);
-            chai_1.assert.deepEqual(symbol.shape['value'], 'square');
+            }), COLOR, symbolLegend);
+            assert.deepEqual(symbol.shape['value'], 'square');
         });
         it('should have default opacity', function () {
-            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, util_1.parseUnitModelWithScale({
+            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' }
                 }
-            }), channel_1.COLOR, symbolLegend);
-            chai_1.assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
+            }), COLOR, symbolLegend);
+            assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
         });
         it('should return the maximum value when there is a condition', function () {
-            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, util_1.parseUnitModelWithScale({
+            var symbol = encode.symbols({ field: 'a', type: 'nominal' }, {}, parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'nominal' },
@@ -69,47 +66,47 @@ describe('compile/legend', function () {
                         value: 0
                     }
                 }
-            }), channel_1.COLOR, symbolLegend);
-            chai_1.assert.deepEqual(symbol.opacity['value'], 1);
+            }), COLOR, symbolLegend);
+            assert.deepEqual(symbol.opacity['value'], 1);
         });
     });
     describe('encode.gradient', function () {
         it('should have default opacity', function () {
-            var gradient = encode.gradient({ field: 'a', type: 'quantitative' }, {}, util_1.parseUnitModelWithScale({
+            var gradient = encode.gradient({ field: 'a', type: 'quantitative' }, {}, parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'quantitative' }
                 }
-            }), channel_1.COLOR, gradientLegend);
-            chai_1.assert.deepEqual(gradient.opacity['value'], 0.7); // default opacity is 0.7.
+            }), COLOR, gradientLegend);
+            assert.deepEqual(gradient.opacity['value'], 0.7); // default opacity is 0.7.
         });
     });
     describe('encode.labels', function () {
         it('should return correct expression for the timeUnit: TimeUnit.MONTH', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'temporal' },
                     color: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var fieldDef = { field: 'a', type: type_1.TEMPORAL, timeUnit: timeunit_1.TimeUnit.MONTH };
-            var label = encode.labels(fieldDef, {}, model, channel_1.COLOR, gradientLegend);
+            var fieldDef = { field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH };
+            var label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
             var expected = "timeFormat(datum.value, '%b')";
-            chai_1.assert.deepEqual(label.text.signal, expected);
+            assert.deepEqual(label.text.signal, expected);
         });
         it('should return correct expression for the timeUnit: TimeUnit.QUARTER', function () {
-            var model = util_1.parseUnitModelWithScale({
+            var model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'temporal' },
                     color: { field: 'a', type: 'temporal', timeUnit: 'quarter' }
                 }
             });
-            var fieldDef = { field: 'a', type: type_1.TEMPORAL, timeUnit: timeunit_1.TimeUnit.QUARTER };
-            var label = encode.labels(fieldDef, {}, model, channel_1.COLOR, gradientLegend);
+            var fieldDef = { field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER };
+            var label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
             var expected = "'Q' + quarter(datum.value)";
-            chai_1.assert.deepEqual(label.text.signal, expected);
+            assert.deepEqual(label.text.signal, expected);
         });
     });
 });

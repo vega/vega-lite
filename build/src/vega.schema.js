@@ -1,43 +1,35 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vega_util_1 = require("vega-util");
-var util_1 = require("./util");
-function isSignalRef(o) {
+import { isArray } from 'vega-util';
+import { flagKeys } from './util';
+export function isSignalRef(o) {
     return !!o['signal'];
 }
-exports.isSignalRef = isSignalRef;
-function isVgRangeStep(range) {
+export function isVgRangeStep(range) {
     return !!range['step'];
 }
-exports.isVgRangeStep = isVgRangeStep;
-function isDataRefUnionedDomain(domain) {
-    if (!vega_util_1.isArray(domain)) {
+export function isDataRefUnionedDomain(domain) {
+    if (!isArray(domain)) {
         return 'fields' in domain && !('data' in domain);
     }
     return false;
 }
-exports.isDataRefUnionedDomain = isDataRefUnionedDomain;
-function isFieldRefUnionDomain(domain) {
-    if (!vega_util_1.isArray(domain)) {
+export function isFieldRefUnionDomain(domain) {
+    if (!isArray(domain)) {
         return 'fields' in domain && 'data' in domain;
     }
     return false;
 }
-exports.isFieldRefUnionDomain = isFieldRefUnionDomain;
-function isDataRefDomain(domain) {
-    if (!vega_util_1.isArray(domain)) {
+export function isDataRefDomain(domain) {
+    if (!isArray(domain)) {
         return 'field' in domain && 'data' in domain;
     }
     return false;
 }
-exports.isDataRefDomain = isDataRefDomain;
-function isSignalRefDomain(domain) {
-    if (!vega_util_1.isArray(domain)) {
+export function isSignalRefDomain(domain) {
+    if (!isArray(domain)) {
         return 'signal' in domain;
     }
     return false;
 }
-exports.isSignalRefDomain = isSignalRefDomain;
 var VG_MARK_CONFIG_INDEX = {
     opacity: 1,
     fill: 1,
@@ -84,5 +76,5 @@ var VG_MARK_CONFIG_INDEX = {
     // startAngle: 1,
     // url: 1,
 };
-exports.VG_MARK_CONFIGS = util_1.flagKeys(VG_MARK_CONFIG_INDEX);
+export var VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 //# sourceMappingURL=vega.schema.js.map

@@ -6,6 +6,7 @@ import { Dict } from '../../util';
 import { VgBinding, VgData, VgEventStream } from '../../vega.schema';
 import { DataFlowNode } from '../data/dataflow';
 import { TimeUnitNode } from '../data/timeunit';
+import { FacetModel } from '../facet';
 import { LayerModel } from '../layer';
 import { Model } from '../model';
 import { UnitModel } from '../unit';
@@ -48,6 +49,7 @@ export interface SelectionCompiler {
 }
 export declare function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>): Dict<SelectionComponent>;
 export declare function assembleUnitSelectionSignals(model: UnitModel, signals: any[]): any[];
+export declare function assembleFacetSignals(model: FacetModel, signals: any[]): any[];
 export declare function assembleTopLevelSignals(model: UnitModel, signals: any[]): any[];
 export declare function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgData[];
 export declare function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[];

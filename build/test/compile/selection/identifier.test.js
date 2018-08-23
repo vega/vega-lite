@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var chai_1 = require("chai");
-var assemble_1 = require("../../../src/compile/data/assemble");
-var optimize_1 = require("../../../src/compile/data/optimize");
-var util_1 = require("../../util");
+import * as tslib_1 from "tslib";
+import { assert } from 'chai';
+import { assembleRootData } from '../../../src/compile/data/assemble';
+import { optimizeDataflow } from '../../../src/compile/data/optimize';
+import { parseModel } from '../../util';
 /* tslint:disable:quotemark */
 function getVgData(selection, x, y, mark, enc, transform) {
-    var model = util_1.parseModel({
+    var model = parseModel({
         data: { url: 'data/cars.json' },
         transform: transform,
         selection: selection,
@@ -15,8 +13,8 @@ function getVgData(selection, x, y, mark, enc, transform) {
         encoding: tslib_1.__assign({ x: tslib_1.__assign({ field: 'Horsepower', type: 'quantitative' }, x), y: tslib_1.__assign({ field: 'Miles-per-Gallon', type: 'quantitative' }, y), color: { field: 'Origin', type: 'nominal' } }, enc)
     });
     model.parse();
-    optimize_1.optimizeDataflow(model.component.data);
-    return assemble_1.assembleRootData(model.component.data, {});
+    optimizeDataflow(model.component.data);
+    return assembleRootData(model.component.data, {});
 }
 describe('Identifier transform', function () {
     it('is not unnecessarily added', function () {
@@ -24,7 +22,7 @@ describe('Identifier transform', function () {
             var data = getVgData(selDef);
             for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
                 var d = data_1[_i];
-                chai_1.assert.isNotTrue(d.transform && d.transform.some(function (t) { return t.type === 'identifier'; }));
+                assert.isNotTrue(d.transform && d.transform.some(function (t) { return t.type === 'identifier'; }));
             }
         }
         test();
@@ -37,15 +35,15 @@ describe('Identifier transform', function () {
         for (var _i = 0, _a = ['single', 'multi']; _i < _a.length; _i++) {
             var type = _a[_i];
             var url = getVgData({ pt: { type: type } });
-            chai_1.assert.equal(url[0].transform[0].type, 'identifier');
+            assert.equal(url[0].transform[0].type, 'identifier');
         }
     });
     it('is added immediately after aggregate transforms', function () {
         function test(transform) {
             var aggr = -1;
             transform.some(function (t, i) { return ((aggr = i), t.type === 'aggregate'); });
-            chai_1.assert.isAtLeast(aggr, 0);
-            chai_1.assert.equal(transform[aggr + 1].type, 'identifier');
+            assert.isAtLeast(aggr, 0);
+            assert.equal(transform[aggr + 1].type, 'identifier');
         }
         for (var _i = 0, _a = ['single', 'multi']; _i < _a.length; _i++) {
             var type = _a[_i];
@@ -61,7 +59,7 @@ describe('Identifier transform', function () {
             var data = getVgData({ pt: { type: type } }, null, null, null, null, [{ calculate: 'datum.Horsepower * 2', as: 'foo' }]);
             var calc = -1;
             data[0].transform.some(function (t, i) { return ((calc = i), t.type === 'formula' && t.as === 'foo'); });
-            chai_1.assert.equal(data[0].transform[calc - 1].type, 'identifier');
+            assert.equal(data[0].transform[calc - 1].type, 'identifier');
         };
         for (var _i = 0, _a = ['single', 'multi']; _i < _a.length; _i++) {
             var type = _a[_i];

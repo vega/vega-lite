@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var util_1 = require("../util");
-var parse_1 = require("./data/parse");
-var assemble_1 = require("./layoutsize/assemble");
-var model_1 = require("./model");
+import * as tslib_1 from "tslib";
+import { keys } from '../util';
+import { parseData } from './data/parse';
+import { assembleLayoutSignals } from './layoutsize/assemble';
+import { Model } from './model';
 var BaseConcatModel = /** @class */ (function (_super) {
     tslib_1.__extends(BaseConcatModel, _super);
     function BaseConcatModel(spec, parent, parentGivenName, config, repeater, resolve) {
         return _super.call(this, spec, parent, parentGivenName, config, repeater, resolve) || this;
     }
     BaseConcatModel.prototype.parseData = function () {
-        this.component.data = parse_1.parseData(this);
+        this.component.data = parseData(this);
         this.children.forEach(function (child) {
             child.parseData();
         });
@@ -24,7 +22,7 @@ var BaseConcatModel = /** @class */ (function (_super) {
         this.component.selection = {};
         var _loop_1 = function (child) {
             child.parseSelection();
-            util_1.keys(child.component.selection).forEach(function (key) {
+            keys(child.component.selection).forEach(function (key) {
                 _this.component.selection[key] = child.component.selection[key];
             });
         };
@@ -56,7 +54,7 @@ var BaseConcatModel = /** @class */ (function (_super) {
     BaseConcatModel.prototype.assembleLayoutSignals = function () {
         return this.children.reduce(function (signals, child) {
             return signals.concat(child.assembleLayoutSignals());
-        }, assemble_1.assembleLayoutSignals(this));
+        }, assembleLayoutSignals(this));
     };
     BaseConcatModel.prototype.assembleSelectionData = function (data) {
         return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, data);
@@ -77,6 +75,6 @@ var BaseConcatModel = /** @class */ (function (_super) {
         });
     };
     return BaseConcatModel;
-}(model_1.Model));
-exports.BaseConcatModel = BaseConcatModel;
+}(Model));
+export { BaseConcatModel };
 //# sourceMappingURL=baseconcat.js.map

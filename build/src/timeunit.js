@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = require("tslib");
-var datetime_1 = require("./datetime");
-var log = tslib_1.__importStar(require("./log"));
-var util_1 = require("./util");
-var TimeUnit;
+import * as tslib_1 from "tslib";
+import { dateTimeExpr } from './datetime';
+import * as log from './log';
+import { accessPathWithDatum, flagKeys } from './util';
+export var TimeUnit;
 (function (TimeUnit) {
     TimeUnit.YEAR = 'year';
     TimeUnit.MONTH = 'month';
@@ -52,7 +50,7 @@ var TimeUnit;
     TimeUnit.UTCYEARQUARTER = 'utcyearquarter';
     TimeUnit.UTCQUARTERMONTH = 'utcquartermonth';
     TimeUnit.UTCYEARQUARTERMONTH = 'utcyearquartermonth';
-})(TimeUnit = exports.TimeUnit || (exports.TimeUnit = {}));
+})(TimeUnit || (TimeUnit = {}));
 /** Time Unit that only corresponds to only one part of Date objects. */
 var LOCAL_SINGLE_TIMEUNIT_INDEX = {
     year: 1,
@@ -65,11 +63,10 @@ var LOCAL_SINGLE_TIMEUNIT_INDEX = {
     seconds: 1,
     milliseconds: 1
 };
-exports.TIMEUNIT_PARTS = util_1.flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
-function isLocalSingleTimeUnit(timeUnit) {
+export var TIMEUNIT_PARTS = flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
+export function isLocalSingleTimeUnit(timeUnit) {
     return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
-exports.isLocalSingleTimeUnit = isLocalSingleTimeUnit;
 var UTC_SINGLE_TIMEUNIT_INDEX = {
     utcyear: 1,
     utcquarter: 1,
@@ -81,10 +78,9 @@ var UTC_SINGLE_TIMEUNIT_INDEX = {
     utcseconds: 1,
     utcmilliseconds: 1
 };
-function isUtcSingleTimeUnit(timeUnit) {
+export function isUtcSingleTimeUnit(timeUnit) {
     return !!UTC_SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
-exports.isUtcSingleTimeUnit = isUtcSingleTimeUnit;
 var LOCAL_MULTI_TIMEUNIT_INDEX = {
     yearquarter: 1,
     yearquartermonth: 1,
@@ -116,20 +112,17 @@ var UTC_MULTI_TIMEUNIT_INDEX = {
     utcsecondsmilliseconds: 1
 };
 var UTC_TIMEUNIT_INDEX = tslib_1.__assign({}, UTC_SINGLE_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
-function isUTCTimeUnit(t) {
+export function isUTCTimeUnit(t) {
     return !!UTC_TIMEUNIT_INDEX[t];
 }
-exports.isUTCTimeUnit = isUTCTimeUnit;
-function getLocalTimeUnit(t) {
+export function getLocalTimeUnit(t) {
     return t.substr(3);
 }
-exports.getLocalTimeUnit = getLocalTimeUnit;
 var TIMEUNIT_INDEX = tslib_1.__assign({}, LOCAL_SINGLE_TIMEUNIT_INDEX, UTC_SINGLE_TIMEUNIT_INDEX, LOCAL_MULTI_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
-exports.TIMEUNITS = util_1.flagKeys(TIMEUNIT_INDEX);
-function isTimeUnit(t) {
+export var TIMEUNITS = flagKeys(TIMEUNIT_INDEX);
+export function isTimeUnit(t) {
     return !!TIMEUNIT_INDEX[t];
 }
-exports.isTimeUnit = isTimeUnit;
 var SET_DATE_METHOD = {
     year: 'setFullYear',
     month: 'setMonth',
@@ -147,13 +140,13 @@ var SET_DATE_METHOD = {
  * i.e. ('yearmonth', '2000-12-04 07:58:14') -> '2000-12-01 00:00:00'
  * Note: the base date is Jan 01 1900 00:00:00
  */
-function convert(unit, date) {
+export function convert(unit, date) {
     var isUTC = isUTCTimeUnit(unit);
     var result = isUTC
         ? // start with uniform date
             new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
         : new Date(0, 0, 1, 0, 0, 0, 0);
-    for (var _i = 0, TIMEUNIT_PARTS_1 = exports.TIMEUNIT_PARTS; _i < TIMEUNIT_PARTS_1.length; _i++) {
+    for (var _i = 0, TIMEUNIT_PARTS_1 = TIMEUNIT_PARTS; _i < TIMEUNIT_PARTS_1.length; _i++) {
         var timeUnitPart = TIMEUNIT_PARTS_1[_i];
         if (containsTimeUnit(unit, timeUnitPart)) {
             switch (timeUnitPart) {
@@ -173,34 +166,31 @@ function convert(unit, date) {
     }
     return result;
 }
-exports.convert = convert;
 function dateMethods(singleUnit, isUtc) {
     var rawSetDateMethod = SET_DATE_METHOD[singleUnit];
     var setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
     var getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
     return { setDateMethod: setDateMethod, getDateMethod: getDateMethod };
 }
-function getTimeUnitParts(timeUnit) {
-    return exports.TIMEUNIT_PARTS.reduce(function (parts, part) {
+export function getTimeUnitParts(timeUnit) {
+    return TIMEUNIT_PARTS.reduce(function (parts, part) {
         if (containsTimeUnit(timeUnit, part)) {
             return parts.concat(part);
         }
         return parts;
     }, []);
 }
-exports.getTimeUnitParts = getTimeUnitParts;
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
-function containsTimeUnit(fullTimeUnit, timeUnit) {
+export function containsTimeUnit(fullTimeUnit, timeUnit) {
     var index = fullTimeUnit.indexOf(timeUnit);
     return (index > -1 && (timeUnit !== TimeUnit.SECONDS || index === 0 || fullTimeUnit.charAt(index - 1) !== 'i') // exclude milliseconds
     );
 }
-exports.containsTimeUnit = containsTimeUnit;
 /**
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
-function fieldExpr(fullTimeUnit, field) {
-    var fieldRef = util_1.accessPathWithDatum(field);
+export function fieldExpr(fullTimeUnit, field) {
+    var fieldRef = accessPathWithDatum(field);
     var utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
     function func(timeUnit) {
         if (timeUnit === TimeUnit.QUARTER) {
@@ -211,19 +201,18 @@ function fieldExpr(fullTimeUnit, field) {
             return "" + utc + timeUnit + "(" + fieldRef + ")";
         }
     }
-    var d = exports.TIMEUNIT_PARTS.reduce(function (dateExpr, tu) {
+    var d = TIMEUNIT_PARTS.reduce(function (dateExpr, tu) {
         if (containsTimeUnit(fullTimeUnit, tu)) {
             dateExpr[tu] = func(tu);
         }
         return dateExpr;
     }, {});
-    return datetime_1.dateTimeExpr(d);
+    return dateTimeExpr(d);
 }
-exports.fieldExpr = fieldExpr;
 /**
  * returns the signal expression used for axis labels for a time unit
  */
-function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
+export function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     if (!timeUnit) {
         return undefined;
     }
@@ -285,13 +274,11 @@ function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     // If expression is still an empty string, return undefined instead.
     return expression || undefined;
 }
-exports.formatExpression = formatExpression;
-function normalizeTimeUnit(timeUnit) {
+export function normalizeTimeUnit(timeUnit) {
     if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
         log.warn(log.message.dayReplacedWithDate(timeUnit));
         return timeUnit.replace('day', 'date');
     }
     return timeUnit;
 }
-exports.normalizeTimeUnit = normalizeTimeUnit;
 //# sourceMappingURL=timeunit.js.map
