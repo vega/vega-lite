@@ -5064,7 +5064,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -5341,7 +5341,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
