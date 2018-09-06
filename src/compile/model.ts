@@ -1,5 +1,4 @@
-import {Axis as VgAxis, Legend as VgLegend, SignalRef} from 'vega';
-import {Title as VgTitle} from 'vega';
+import {Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -15,6 +14,7 @@ import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelpro
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
+import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -187,7 +187,8 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
-    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
+    this.layout =
+      isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec as TopLevelFacetSpec);
 
     this.component = {
       data: {

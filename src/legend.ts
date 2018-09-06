@@ -63,7 +63,7 @@ export interface Legend
   /**
    * Explicitly set the visible legend values.
    */
-  values?: number[] | string[] | boolean[] | DateTime[];
+  values?: (number | string | boolean | DateTime)[];
 
   /**
    * The type of the legend. Use `"symbol"` to create a discrete legend and `"gradient"` for a continuous color gradient.
