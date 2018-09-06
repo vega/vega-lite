@@ -21,7 +21,8 @@
     "strictFunctionTypes": false,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "resolveJsonModule": true
   },
   "files": ["src/index.ts"],
   "include": [

@@ -8,9 +8,9 @@ function isFalseOrNull(v: any) {
   return v === false || v === null;
 }
 
-export type AxisComponentProps = Omit<VgAxis, 'title'> & {
+export interface AxisComponentProps extends Omit<VgAxis, 'title'> {
   title: string | FieldDefBase<string>[];
-};
+}
 
 export class AxisComponent extends Split<AxisComponentProps> {
   constructor(
