@@ -70,6 +70,12 @@ AnyMark:
   name: Mark
   link: mark.html
 
+# Axes and Legends
+SymbolShape:
+  name: String
+LabelOverlap:
+  name: String
+
 # Config
 Config:
   link: "config.html"
