@@ -1387,7 +1387,7 @@ commander@1.0.0:
   version "1.0.0"
   resolved "http://registry.npmjs.org/commander/-/commander-1.0.0.tgz#5e6a88e7070ff5908836ead19169548c30f90bcd"
 
-commander@2, commander@^2.12.1:
+commander@2, commander@^2.12.1, commander@~2.18.0:
   version "2.18.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.18.0.tgz#2bf063ddee7c7891176981a2cc798e5754bc6970"
 
@@ -1398,10 +1398,6 @@ commander@2.15.1:
 commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
-
-commander@~2.16.0:
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
 
 commander@~2.17.1:
   version "2.17.1"
@@ -2746,7 +2742,7 @@ glob@7.1.2:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@~7.1.1, glob@~7.1.2:
+glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@~7.1.1, glob@~7.1.3:
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.3.tgz#3960832d3f1574108342dafd3a67b332c0969df1"
   dependencies:
@@ -5897,14 +5893,14 @@ ts-jest@^23.1.4:
     json5 "^0.5.0"
     lodash "^4.17.10"
 
-ts-json-schema-generator@^0.32.0:
-  version "0.32.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.32.0.tgz#dc571b591d497b218666790221afe0de36b082c4"
+ts-json-schema-generator@^0.33.0:
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.33.0.tgz#6793b022f38b65581e75a4dfe1e33c69b20e9445"
   dependencies:
-    commander "~2.16.0"
-    glob "~7.1.2"
+    commander "~2.18.0"
+    glob "~7.1.3"
     json-stable-stringify "^1.0.1"
-    typescript "~3.0.1"
+    typescript next
 
 ts-node@^7.0.1:
   version "7.0.1"
@@ -6006,10 +6002,6 @@ typedarray@^0.0.6:
 typescript@next:
   version "3.1.0-dev.20180907"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.0-dev.20180907.tgz#3a56e9934287224e8dd8d1d0329f5bb65d652436"
-
-typescript@~3.0.1:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.0.3.tgz#4853b3e275ecdaa27f78fda46dc273a7eb7fc1c8"
 
 uglify-es@^3.3.4:
   version "3.3.9"
