@@ -109,12 +109,12 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   return legendCmpt;
 }
 
-function getProperty(
-  property: keyof (VgLegend),
+function getProperty<K extends keyof VgLegend>(
+  property: K,
   specifiedLegend: Legend,
   channel: NonPositionScaleChannel,
   model: UnitModel
-) {
+): VgLegend[K] {
   const fieldDef = model.fieldDef(channel);
 
   switch (property) {
@@ -137,7 +137,7 @@ function getProperty(
   }
 
   // Otherwise, return specified property.
-  return specifiedLegend[property];
+  return (specifiedLegend as VgLegend)[property];
 }
 
 function parseNonUnitLegend(model: Model) {

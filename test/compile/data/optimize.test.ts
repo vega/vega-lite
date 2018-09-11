@@ -30,7 +30,7 @@ describe('compile/data/optimize', () => {
       assert.deepEqual(root.children.length, 1);
       const mergedParseNode = root.children[0] as ParseNode;
       assert.deepEqual(mergedParseNode.parse, {b: 'string', d: 'date'});
-      const children = mergedParseNode.children as [ParseNode];
+      const children = mergedParseNode.children as [ParseNode, ParseNode];
       assert.deepEqual(children[0].parse, {a: 'number'});
       assert.deepEqual(children[1].parse, {a: 'boolean'});
     });

@@ -1270,7 +1270,7 @@
           ]
         },
         "size": {
-          "description": "Size of the box and median tick of a box plot ",
+          "description": "Size of the box and median tick of a box plot",
           "type": "number"
         },
         "ticks": {
@@ -1356,7 +1356,7 @@
           ]
         },
         "size": {
-          "description": "Size of the box and median tick of a box plot ",
+          "description": "Size of the box and median tick of a box plot",
           "type": "number"
         },
         "ticks": {
@@ -1980,7 +1980,7 @@
       "properties": {
         "area": {
           "$ref": "#/definitions/AreaConfig",
-          "description": "Area-Specific Config "
+          "description": "Area-Specific Config"
         },
         "autosize": {
           "anyOf": [
@@ -2031,7 +2031,7 @@
         },
         "bar": {
           "$ref": "#/definitions/BarConfig",
-          "description": "Bar-Specific Config "
+          "description": "Bar-Specific Config"
         },
         "boxplot": {
           "$ref": "#/definitions/BoxPlotConfig",
@@ -2039,7 +2039,7 @@
         },
         "circle": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Circle-Specific Config "
+          "description": "Circle-Specific Config"
         },
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
@@ -2068,7 +2068,7 @@
         },
         "geoshape": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Geoshape-Specific Config "
+          "description": "Geoshape-Specific Config"
         },
         "header": {
           "$ref": "#/definitions/HeaderConfig",
@@ -2091,11 +2091,11 @@
         },
         "line": {
           "$ref": "#/definitions/LineConfig",
-          "description": "Line-Specific Config "
+          "description": "Line-Specific Config"
         },
         "mark": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Mark Config "
+          "description": "Mark Config"
         },
         "numberFormat": {
           "description": "D3 Number format for guide labels and text marks. For example \"s\" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).",
@@ -2107,7 +2107,7 @@
         },
         "point": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Point-Specific Config "
+          "description": "Point-Specific Config"
         },
         "projection": {
           "$ref": "#/definitions/ProjectionConfig",
@@ -2119,11 +2119,11 @@
         },
         "rect": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Rect-Specific Config "
+          "description": "Rect-Specific Config"
         },
         "rule": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Rule-Specific Config "
+          "description": "Rule-Specific Config"
         },
         "scale": {
           "$ref": "#/definitions/ScaleConfig",
@@ -2131,27 +2131,27 @@
         },
         "selection": {
           "$ref": "#/definitions/SelectionConfig",
-          "description": "An object hash for defining default properties for each type of selections. "
+          "description": "An object hash for defining default properties for each type of selections."
         },
         "square": {
           "$ref": "#/definitions/MarkConfig",
-          "description": "Square-Specific Config "
+          "description": "Square-Specific Config"
         },
         "stack": {
           "$ref": "#/definitions/StackOffset",
-          "description": "Default stack offset for stackable mark. "
+          "description": "Default stack offset for stackable mark."
         },
         "style": {
           "$ref": "#/definitions/StyleConfigIndex",
-          "description": "An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config).  "
+          "description": "An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def).  The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config)."
         },
         "text": {
           "$ref": "#/definitions/TextConfig",
-          "description": "Text-Specific Config "
+          "description": "Text-Specific Config"
         },
         "tick": {
           "$ref": "#/definitions/TickConfig",
-          "description": "Tick-Specific Config "
+          "description": "Tick-Specific Config"
         },
         "timeFormat": {
           "description": "Default time format for raw time values (without time units) in text marks, legend labels and header labels.\n\n__Default value:__ `\"%b %d, %Y\"`\n__Note:__ Axes automatically determine format each label automatically so this config would not affect axes.",
@@ -2163,11 +2163,11 @@
         },
         "trail": {
           "$ref": "#/definitions/LineConfig",
-          "description": "Trail-Specific Config "
+          "description": "Trail-Specific Config"
         },
         "view": {
           "$ref": "#/definitions/ViewConfig",
-          "description": "Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). "
+          "description": "Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single)."
         }
       },
       "type": "object"
@@ -2318,7 +2318,7 @@
               "type": "string"
             }
           ],
-          "description": "One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `\"January\"`);  (3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`). "
+          "description": "One of: (1) integer value representing the month from `1`-`12`. `1` represents January;  (2) case-insensitive month name (e.g., `\"January\"`);  (3) case-insensitive, 3-character short month name (e.g., `\"Jan\"`)."
         },
         "quarter": {
           "description": "Integer value representing the quarter of the year (from 1-4).",
@@ -5064,7 +5064,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
         "tickCount": {
           "description": "The desired number of tick values for quantitative legends.",
@@ -5123,33 +5123,24 @@
           "type": "string"
         },
         "values": {
-          "anyOf": [
-            {
-              "items": {
+          "description": "Explicitly set the visible legend values.",
+          "items": {
+            "anyOf": [
+              {
                 "type": "number"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "string"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "boolean"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Explicitly set the visible legend values."
+              }
+            ]
+          },
+          "type": "array"
         },
         "zindex": {
           "description": "A non-positive integer indicating z-index of the legend.\nIf zindex is 0, legend should be drawn behind all chart elements.\nTo put them in front, use zindex = 1.",
@@ -5341,7 +5332,7 @@
         },
         "symbolType": {
           "$ref": "#/definitions/SymbolShape",
-          "description": "Default shape type (such as \"circle\") for legend symbols.\n\n__Default value:__ `\"circle\"`."
+          "description": "Default shape type (such as \"circle\") for legend symbols.\nCan be one of ``\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   * In addition to a set of built-in shapes, custom shapes can be defined using [SVG path strings](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths).\n   *\n   * __Default value:__ `\"circle\"`.\n   *"
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
@@ -9450,7 +9441,7 @@
       ]
     },
     "Type": {
-      "description": "Constants and utilities for data type  \n Data type based on level of measurement ",
+      "description": "Constants and utilities for data type \n Data type based on level of measurement",
       "enum": [
         "quantitative",
         "ordinal",

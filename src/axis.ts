@@ -1,4 +1,4 @@
-import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, SymbolShape, TextBaseline} from 'vega';
+import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, TextBaseline} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
@@ -16,7 +16,6 @@ type BaseAxisNoSignals = AxisMixins &
     Align,
     TextBaseline,
     VgLayoutAlign,
-    SymbolShape,
     LabelOverlap,
     number[]
   >;
