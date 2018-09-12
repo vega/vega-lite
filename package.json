@@ -64,7 +64,7 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.1",
     "@types/chai": "^4.1.4",
     "@types/d3": "^5.0.0",
     "@types/highlight.js": "^9.12.3",
@@ -102,7 +102,7 @@
     "uglify-js": "^3.4.9",
     "vega": "^4.2.0",
     "vega-datasets": "^1.19.0",
-    "vega-embed": "^3.19.2",
+    "vega-embed": "^3.20.0",
     "vega-tooltip": "^0.13.0",
     "wdio-chromedriver-service": "^0.1.3",
     "wdio-dot-reporter": "0.0.9",
@@ -118,7 +118,7 @@
     "json-stringify-pretty-compact": "^1.2.0",
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",
-    "vega-typings": "0.3.45",
+    "vega-typings": "0.3.46",
     "vega-util": "^1.7.0",
     "yargs": "^12.0.2"
   },
