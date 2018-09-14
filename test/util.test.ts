@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {flatAccessWithDatum} from '../src/util';
+import {fieldIntersection, flatAccessWithDatum, stringIntersection} from '../src/util';
 
 import {
   accessPathDepth,
@@ -151,6 +151,26 @@ describe('util', () => {
 
     it('should keep \\.', () => {
       assert.equal(replacePathInField('foo\\.bar'), 'foo\\.bar');
+    });
+  });
+
+  describe('stringIntersection', () => {
+    it('should return the correct value for simple nested field', () => {
+      assert.equal(stringIntersection('a', 'a.b'), true);
+    });
+
+    it('should return the correct value for multilevel nested field', () => {
+      assert.equal(stringIntersection('a.b', 'a.b.c.d'), true);
+    });
+
+    it('should return false when field names are different ', () => {
+      assert.equal(stringIntersection('a.b', 'b.c.d'), false);
+    });
+  });
+
+  describe('fieldIntersection', () => {
+    it('should return the correct value for 2 stringsets', () => {
+      assert.equal(fieldIntersection({'a.b': true, d: true}, {'a[b]': true}), true);
     });
   });
 });

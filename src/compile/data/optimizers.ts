@@ -1,4 +1,4 @@
-import {hasIntersection, keys} from '../../util';
+import {fieldIntersection, keys} from '../../util';
 import {DataFlowNode, isTransformNode, OutputNode, TransformNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
@@ -46,7 +46,7 @@ export function moveParseUp(node: DataFlowNode) {
       parent.merge(node);
     } else {
       // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-      if (hasIntersection(parent.producedFields(), node.dependentFields())) {
+      if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
         return true;
       }
 
