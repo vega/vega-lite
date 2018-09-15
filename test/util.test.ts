@@ -171,10 +171,14 @@ describe('util', () => {
 
   describe('fieldIntersection', () => {
     it('should return the correct value for 2 stringsets', () => {
-      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toEqual(true);
+      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toBe(true);
     });
     it('should return the correct value for 2 nested but different stringsets', () => {
-      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toEqual(true);
+      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toBe(true);
+    });
+
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toBe(false);
     });
   });
 });
