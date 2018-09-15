@@ -156,11 +156,11 @@ describe('util', () => {
 
   describe('prefixGenerator', () => {
     it('should return the correct value for simple nested field', () => {
-      assert.deepEqual(prefixGenerator({'a.b': true}), {a: true, 'a[b]': true});
+      expect(prefixGenerator({'a.b': true})).toEqual({a: true, 'a[b]': true});
     });
 
     it('should return the correct value for multilevel nested field', () => {
-      assert.deepEqual(prefixGenerator({'a[b].c.d': true}), {
+      expect(prefixGenerator({'a[b].c.d': true})).toEqual({
         a: true,
         'a[b]': true,
         'a[b][c]': true,
@@ -171,10 +171,10 @@ describe('util', () => {
 
   describe('fieldIntersection', () => {
     it('should return the correct value for 2 stringsets', () => {
-      assert.equal(fieldIntersection({'a.b': true, d: true}, {'a[b]': true}), true);
+      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toEqual(true);
     });
     it('should return the correct value for 2 nested but different stringsets', () => {
-      assert.equal(fieldIntersection({'a.b.c': true}, {'a.b.d': true}), true);
+      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toEqual(true);
     });
   });
 });

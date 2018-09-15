@@ -187,8 +187,7 @@ export function hasIntersection(a: StringSet, b: StringSet) {
 
 export function prefixGenerator(a: StringSet): StringSet {
   const prefixes = {};
-  // for ... of used to avoid for ... in must be filtered linter warning
-  for (const x of Object.keys(a)) {
+  for (const x of keys(a)) {
     const splitField = splitAccessPath(x);
     // Wrap every element other than the first in `[]`
     const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
