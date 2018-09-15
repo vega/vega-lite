@@ -185,6 +185,22 @@ export function hasIntersection(a: StringSet, b: StringSet) {
   return false;
 }
 
+export function prefixGenerator(a: StringSet): StringSet {
+  const prefixes = {};
+  for (const x of keys(a)) {
+    const splitField = splitAccessPath(x);
+    // Wrap every element other than the first in `[]`
+    const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
+    const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
+    computedPrefixes.forEach(y => (prefixes[y] = true));
+  }
+  return prefixes;
+}
+
+export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+  return hasIntersection(prefixGenerator(a), prefixGenerator(b));
+}
+
 export function isNumeric(num: string | number) {
   return !isNaN(num as any);
 }

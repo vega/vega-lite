@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {flatAccessWithDatum} from '../src/util';
+import {fieldIntersection, flatAccessWithDatum, prefixGenerator} from '../src/util';
 
 import {
   accessPathDepth,
@@ -151,6 +151,34 @@ describe('util', () => {
 
     it('should keep \\.', () => {
       assert.equal(replacePathInField('foo\\.bar'), 'foo\\.bar');
+    });
+  });
+
+  describe('prefixGenerator', () => {
+    it('should return the correct value for simple nested field', () => {
+      expect(prefixGenerator({'a.b': true})).toEqual({a: true, 'a[b]': true});
+    });
+
+    it('should return the correct value for multilevel nested field', () => {
+      expect(prefixGenerator({'a[b].c.d': true})).toEqual({
+        a: true,
+        'a[b]': true,
+        'a[b][c]': true,
+        'a[b][c][d]': true
+      });
+    });
+  });
+
+  describe('fieldIntersection', () => {
+    it('should return the correct value for 2 stringsets', () => {
+      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toBe(true);
+    });
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toBe(true);
+    });
+
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toBe(false);
     });
   });
 });
