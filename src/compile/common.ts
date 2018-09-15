@@ -127,19 +127,19 @@ export function formatSignalRef(
 
 /**
  * Returns number format for a fieldDef
- *
- * @param format explicitly specified format
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
+  if (isTimeFieldDef(fieldDef)) {
+    return undefined;
+  }
+
+  // Specified format in axis/legend has higher precedence than fieldDef.format
+  if (specifiedFormat) {
+    return specifiedFormat;
+  }
+
   if (fieldDef.type === QUANTITATIVE) {
-    // add number format for quantitative type only
-
-    // Specified format in axis/legend has higher precedence than fieldDef.format
-    if (specifiedFormat) {
-      return specifiedFormat;
-    }
-
-    // TODO: need to make this work correctly for numeric ordinal / nominal type
+    // we only apply the default if the field is quantitative
     return config.numberFormat;
   }
   return undefined;
