@@ -185,30 +185,21 @@ export function hasIntersection(a: StringSet, b: StringSet) {
   return false;
 }
 
-export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+export function prefixGenerator(a: StringSet): StringSet {
+  const prefixes = {};
   // for ... of used to avoid for ... in must be filtered linter warning
   for (const x of Object.keys(a)) {
-    for (const y of Object.keys(b)) {
-      if (stringIntersection(x, y)) {
-        return true;
-      }
-    }
+    const splitField = splitAccessPath(x);
+    // Wrap every element other than the first in `[]`
+    const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
+    const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
+    computedPrefixes.forEach(y => (prefixes[y] = true));
   }
-  return false;
+  return prefixes;
 }
 
-export function stringIntersection(a: string, b: string) {
-  const splitA = splitAccessPath(a);
-  const splitB = splitAccessPath(b);
-  // String with the smaller number of accessors can only be the parent
-  const [parent, child] = splitA.length < splitB.length ? [splitA, splitB] : [splitB, splitA];
-  for (const elem of parent) {
-    // Array.prototype.includes not in tslib
-    if (child.indexOf(elem) === -1) {
-      return false;
-    }
-  }
-  return true;
+export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+  return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
 export function isNumeric(num: string | number) {

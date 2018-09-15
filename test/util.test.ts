@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {fieldIntersection, flatAccessWithDatum, stringIntersection} from '../src/util';
+import {fieldIntersection, flatAccessWithDatum, prefixGenerator} from '../src/util';
 
 import {
   accessPathDepth,
@@ -154,23 +154,27 @@ describe('util', () => {
     });
   });
 
-  describe('stringIntersection', () => {
+  describe('prefixGenerator', () => {
     it('should return the correct value for simple nested field', () => {
-      assert.equal(stringIntersection('a', 'a.b'), true);
+      assert.deepEqual(prefixGenerator({'a.b': true}), {a: true, 'a[b]': true});
     });
 
     it('should return the correct value for multilevel nested field', () => {
-      assert.equal(stringIntersection('a.b', 'a.b.c.d'), true);
-    });
-
-    it('should return false when field names are different ', () => {
-      assert.equal(stringIntersection('a.b', 'b.c.d'), false);
+      assert.deepEqual(prefixGenerator({'a[b].c.d': true}), {
+        a: true,
+        'a[b]': true,
+        'a[b][c]': true,
+        'a[b][c][d]': true
+      });
     });
   });
 
   describe('fieldIntersection', () => {
     it('should return the correct value for 2 stringsets', () => {
       assert.equal(fieldIntersection({'a.b': true, d: true}, {'a[b]': true}), true);
+    });
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      assert.equal(fieldIntersection({'a.b.c': true}, {'a.b.d': true}), true);
     });
   });
 });
