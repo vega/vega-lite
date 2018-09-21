@@ -10,12 +10,8 @@
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {"type": "csv"},
-      "transform": [
-        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
+      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}},
+      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
     }
   ],
   "marks": [
