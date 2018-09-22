@@ -11,7 +11,11 @@
       "url": "data/countries.json",
       "format": {
         "type": "json",
-        "parse": {"country": "string", "year": "number"}
+        "parse": {
+          "country": "string",
+          "year": "number",
+          "life_expect": "number"
+        }
       },
       "transform": [
         {
@@ -21,11 +25,6 @@
         {
           "type": "filter",
           "expr": "indexof([1955,2000], datum[\"year\"]) !== -1"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"life_expect\"])",
-          "as": "life_expect"
         }
       ]
     }

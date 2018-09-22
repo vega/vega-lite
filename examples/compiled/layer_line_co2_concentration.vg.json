@@ -9,7 +9,10 @@
     {
       "name": "source_0",
       "url": "data/co2-concentration.csv",
-      "format": {"type": "csv", "parse": {"Date": "utc:'%Y-%m-%d'"}},
+      "format": {
+        "type": "csv",
+        "parse": {"Date": "utc:'%Y-%m-%d'", "CO2": "number"}
+      },
       "transform": [
         {"type": "formula", "expr": "year(datum.Date)", "as": "year"},
         {"type": "formula", "expr": "floor(datum.year / 10)", "as": "decade"},
@@ -35,8 +38,7 @@
           "type": "formula",
           "expr": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
           "as": "end"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"CO2\"])", "as": "CO2"}
+        }
       ]
     },
     {
