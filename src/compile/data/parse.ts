@@ -37,6 +37,7 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {makeWindowFromFacet} from './windowFacet';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
@@ -267,7 +268,7 @@ export function parseData(model: Model): DataComponent {
     // Derive new aggregate (via window) for facet's sort field
     // TODO: use JoinAggregate once we have it
     // augment data source with new fields for crossed facet
-    head = WindowTransformNode.makeFromFacet(head, model.facet) || head;
+    head = makeWindowFromFacet(head, model.facet) || head;
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
