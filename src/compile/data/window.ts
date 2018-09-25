@@ -1,11 +1,8 @@
 import {AggregateOp} from 'vega';
-import {FacetMapping} from '../../facet';
 import {vgField} from '../../fielddef';
-import {isSortField} from '../../sort';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
-import {facetSortFieldName} from '../facet';
 import {StringSet, unique} from './../../util';
 import {DataFlowNode, TransformNode} from './dataflow';
 
@@ -13,32 +10,6 @@ import {DataFlowNode, TransformNode} from './dataflow';
  * A class for the window transform nodes
  */
 export class WindowTransformNode extends TransformNode {
-  public static makeFromFacet(parent: DataFlowNode, facet: FacetMapping<string>): WindowTransformNode {
-    const {row, column} = facet;
-    if (row && column) {
-      let newParent = null;
-      // only need to make one for crossed facet
-      for (const fieldDef of [row, column]) {
-        if (isSortField(fieldDef.sort)) {
-          const {field, op} = fieldDef.sort;
-          parent = newParent = new WindowTransformNode(parent, {
-            window: [
-              {
-                op,
-                field,
-                as: facetSortFieldName(fieldDef, fieldDef.sort, {forAs: true})
-              }
-            ],
-            groupby: [vgField(fieldDef)],
-            frame: [null, null]
-          });
-        }
-      }
-      return newParent;
-    }
-    return null;
-  }
-
   public clone() {
     return new WindowTransformNode(this.parent, duplicate(this.transform));
   }
