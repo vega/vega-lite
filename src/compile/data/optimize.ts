@@ -8,6 +8,7 @@ import {DataComponent} from './index';
 import * as optimizers from './optimizers';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
+import {WindowTransformNode} from './window';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 
@@ -24,7 +25,7 @@ function cloneSubtree(facet: FacetNode) {
         copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;
-      } else if (copy instanceof AggregateNode || copy instanceof StackNode) {
+      } else if (copy instanceof AggregateNode || copy instanceof StackNode || copy instanceof WindowTransformNode) {
         copy.addDimensions(facet.fields);
       }
       flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
@@ -49,7 +50,7 @@ function moveFacetDown(node: DataFlowNode): boolean {
       flag = true;
       const child = node.children[0];
 
-      if (child instanceof AggregateNode || child instanceof StackNode) {
+      if (child instanceof AggregateNode || child instanceof StackNode || child instanceof WindowTransformNode) {
         child.addDimensions(node.fields);
       }
 

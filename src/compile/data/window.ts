@@ -6,6 +6,7 @@ import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
 import {facetSortFieldName} from '../facet';
+import {StringSet, unique} from './../../util';
 import {DataFlowNode, TransformNode} from './dataflow';
 
 /**
@@ -46,7 +47,10 @@ export class WindowTransformNode extends TransformNode {
     super(parent);
   }
 
-  public producedFields() {
+  public addDimensions(fields: string[]) {
+    this.transform.groupby = unique(this.transform.groupby.concat(fields), d => d);
+  }
+  public producedFields(): StringSet {
     const out = {};
     this.transform.window.forEach(windowFieldDef => {
       out[this.getDefaultName(windowFieldDef)] = true;
