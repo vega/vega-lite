@@ -13,6 +13,8 @@ before_install:
   - chmod +x parallel
   - cp parallel sem
   - sudo mv parallel sem /usr/local/bin
+  - git config --global user.email "travis@travis-ci.org"
+  - git config --global user.name "Travis CI"
 
 script:
   - yarn data
