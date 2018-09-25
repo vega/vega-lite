@@ -177,13 +177,13 @@ describe('compile/data/summary', () => {
           {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
           {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
         ],
-        groupby: ['Displacement_mean', 'Acceleration_sum']
+        groupby: ['Group']
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
-        groupby: ['Displacement_mean', 'Acceleration_sum'],
+        groupby: ['Group'],
         ops: ['mean', 'sum'],
         fields: ['Displacement', 'Acceleration'],
         as: ['Displacement_mean', 'Acceleration_sum']
@@ -197,13 +197,13 @@ describe('compile/data/summary', () => {
           {op: 'max', field: 'Displacement', as: 'Displacement_max'},
           {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
         ],
-        groupby: ['Displacement_mean', 'Acceleration_sum']
+        groupby: ['Group']
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
       assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
         type: 'aggregate',
-        groupby: ['Displacement_mean', 'Acceleration_sum'],
+        groupby: ['Group'],
         ops: ['mean', 'max', 'sum'],
         fields: ['Displacement', 'Displacement', 'Acceleration'],
         as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum']
@@ -218,13 +218,14 @@ describe('compile/data/summary', () => {
           {op: 'mean', field: 'Displacement', as: 'AvgDisplacement'},
           {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
         ],
-        groupby: ['AvgDisplacement', 'Acceleration_sum']
+        groupby: ['Group']
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
       expect(agg.producedFields()).toEqual({
         AvgDisplacement: true,
-        Acceleration_sum: true
+        Acceleration_sum: true,
+        Group: true
       });
     });
   });
