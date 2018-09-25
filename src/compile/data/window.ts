@@ -4,12 +4,12 @@ import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
 import {StringSet, unique} from './../../util';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 /**
  * A class for the window transform nodes
  */
-export class WindowTransformNode extends TransformNode {
+export class WindowTransformNode extends DataFlowNode {
   public clone() {
     return new WindowTransformNode(this.parent, duplicate(this.transform));
   }

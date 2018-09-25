@@ -66,7 +66,7 @@ function moveFacetDown(node: DataFlowNode): boolean {
       copy.forEach(c => (c.parent = node.model.component.data.main));
     }
   } else {
-    flag = node.children.map(moveFacetDown).some(x => x === true) || flag;
+    flag = node.children.map(moveFacetDown).some(isTrue) || flag;
   }
   return flag;
 }
@@ -97,7 +97,7 @@ function removeUnnecessaryNodes(node: DataFlowNode): boolean {
     node.remove();
   }
 
-  flag = node.children.map(removeUnnecessaryNodes).some(x => x === true) || flag;
+  flag = node.children.map(removeUnnecessaryNodes).some(isTrue) || flag;
   return flag;
 }
 
@@ -151,39 +151,43 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
   }
-  flag = node.children.map(mergeParse).some(x => x === true) || flag;
+  flag = node.children.map(mergeParse).some(isTrue) || flag;
   return flag;
+}
+
+export function isTrue(x: boolean) {
+  return x;
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent) {
   let roots: SourceNode[] = vals(dataComponent.sources);
   let mutatedFlag = false;
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
-  mutatedFlag = roots.map(removeUnnecessaryNodes).some(x => x === true) || mutatedFlag;
+  mutatedFlag = roots.map(removeUnnecessaryNodes).some(isTrue) || mutatedFlag;
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
   mutatedFlag =
     getLeaves(roots)
       .map(optimizers.iterateFromLeaves(optimizers.removeUnusedSubtrees))
-      .some(x => x === true) || mutatedFlag;
+      .some(isTrue) || mutatedFlag;
 
   roots = roots.filter(r => r.numChildren() > 0);
 
   mutatedFlag =
     getLeaves(roots)
       .map(optimizers.iterateFromLeaves(optimizers.moveParseUp))
-      .some(x => x === true) || mutatedFlag;
+      .some(isTrue) || mutatedFlag;
 
   mutatedFlag =
     getLeaves(roots)
       .map(optimizers.removeDuplicateTimeUnits)
-      .some(x => x === true) || mutatedFlag;
+      .some(isTrue) || mutatedFlag;
 
-  mutatedFlag = roots.map(moveFacetDown).some(x => x === true) || mutatedFlag;
+  mutatedFlag = roots.map(moveFacetDown).some(isTrue) || mutatedFlag;
 
-  mutatedFlag = roots.map(mergeParse).some(x => x === true) || mutatedFlag;
-  mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(x => x === true) || mutatedFlag;
+  mutatedFlag = roots.map(mergeParse).some(isTrue) || mutatedFlag;
+  mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(isTrue) || mutatedFlag;
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
       delete dataComponent.sources[s];

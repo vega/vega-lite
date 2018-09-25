@@ -67,6 +67,10 @@ export class FacetNode extends DataFlowNode {
     this.childModel = model.child;
   }
 
+  public hash() {
+    return `Facet c:${this.column} r:${this.row}`;
+  }
+
   get fields() {
     return [...((this.column && this.column.fields) || []), ...((this.row && this.row.fields) || [])];
   }

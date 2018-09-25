@@ -23,6 +23,16 @@ export class DataFlowNode {
   }
 
   /**
+   * Return a hash of the node.
+   */
+  public hash(): string | number {
+    console.warn('Hash not implemented');
+
+    // NaN !== NaN
+    return NaN;
+  }
+
+  /**
    * Set of fields that are being created by this node.
    */
   public producedFields(): StringSet {
@@ -166,12 +176,4 @@ export class OutputNode extends DataFlowNode {
   public setSource(source: string) {
     this._source = source;
   }
-}
-
-export abstract class TransformNode extends DataFlowNode {
-  public abstract hash(): string | number;
-}
-
-export function isTransformNode(x: DataFlowNode) {
-  return x instanceof TransformNode;
 }

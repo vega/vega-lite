@@ -6,7 +6,7 @@ import {duplicate, getFirstDefined, hash} from '../../util';
 import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce(
@@ -71,7 +71,7 @@ function isValidAsArray(as: string[] | string): as is string[] {
   return isArray(as) && as.every(s => isString(s)) && as.length > 1;
 }
 
-export class StackNode extends TransformNode {
+export class StackNode extends DataFlowNode {
   private _stack: StackComponent;
 
   public clone() {
