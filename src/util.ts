@@ -142,7 +142,7 @@ function deepMerge_(dest: any, src: any) {
 }
 
 export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
-  const results: any[] = [];
+  const results: T[] = [];
   const u = {};
   let v: string | number;
   for (const val of values) {
