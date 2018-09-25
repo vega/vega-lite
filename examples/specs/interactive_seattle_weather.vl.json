@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "title": "Seattle Weather, 2012-2015",
   "data": {
     "url": "data/seattle-weather.csv"

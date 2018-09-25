@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {
     "values": [
       {"ci1": 23.5007, "ci0": 19.6912, "center": 21.5735, "Year": 189302400000},

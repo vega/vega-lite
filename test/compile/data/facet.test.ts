@@ -6,7 +6,7 @@ describe('compile/data/facet', () => {
   describe('assemble', () => {
     it('should calculate column distinct if child has an independent discrete scale with step', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         description: 'A trellis bar chart showing the US population distribution of age groups and gender in 2000.',
         data: {url: 'data/population.json'},
         facet: {column: {field: 'gender', type: 'nominal'}},
@@ -57,7 +57,7 @@ describe('compile/data/facet', () => {
 
     it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: {
           values: [
             {r: 'r1', c: 'c1', a: 'a1', b: 'b1'},
@@ -133,7 +133,7 @@ describe('compile/data/facet', () => {
 
     it('should calculate column and row sort array', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: {
           name: 'a'
         },
@@ -184,7 +184,7 @@ describe('compile/data/facet', () => {
 
     it('should calculate column and row sort field', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: {
           name: 'a'
         },

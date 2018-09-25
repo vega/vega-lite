@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {
     "values": [
       {"date": "Sun, 01 Jan 2012 23:00:01","price": 150},
