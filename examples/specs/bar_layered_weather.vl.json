@@ -2,7 +2,10 @@
   "$schema":
   "https://vega.github.io/schema/vega-lite/v3.json",
   "description": "A layered bar chart with floating bars representing weekly weather data",
-  "title": "Weekly Weather Observations and Predictions",
+  "title": {
+    "text": "Weekly Weather Observations and Predictions",
+    "frame": "bounds"
+  },
   "data":{
     "url": "data/weather.json" },
     "width": 250,
