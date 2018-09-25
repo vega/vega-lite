@@ -4,7 +4,7 @@ import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, vals} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 export interface TimeUnitComponent {
   as: string;
@@ -12,7 +12,7 @@ export interface TimeUnitComponent {
   field: string;
 }
 
-export class TimeUnitNode extends TransformNode {
+export class TimeUnitNode extends DataFlowNode {
   public clone() {
     return new TimeUnitNode(null, duplicate(this.formula));
   }

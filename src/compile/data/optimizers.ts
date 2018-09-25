@@ -1,7 +1,8 @@
-import {fieldIntersection, keys} from '../../util';
-import {DataFlowNode, isTransformNode, OutputNode, TransformNode} from './dataflow';
+import {fieldIntersection, keys, unique} from '../../util';
+import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
+import {isTrue} from './optimize';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
@@ -15,6 +16,7 @@ export interface OptimizerFlags {
    */
   mutatedFlag: boolean;
 }
+
 /**
  * Start optimization path at the leaves. Useful for merging up or removing things.
  *
@@ -43,64 +45,60 @@ export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
  */
 export function moveParseUp(node: DataFlowNode): OptimizerFlags {
   const parent = node.parent;
-  let flag = false;
+  let mutated = false;
   // move parse up by merging or swapping
   if (node instanceof ParseNode) {
     if (parent instanceof SourceNode) {
-      return {continueFlag: false, mutatedFlag: flag};
+      return {continueFlag: false, mutatedFlag: mutated};
     }
 
     if (parent.numChildren() > 1) {
       // don't move parse further up but continue with parent.
-      return {continueFlag: true, mutatedFlag: flag};
+      return {continueFlag: true, mutatedFlag: mutated};
     }
 
     if (parent instanceof ParseNode) {
-      flag = true;
+      mutated = true;
       parent.merge(node);
     } else {
       // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
       if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
-        return {continueFlag: true, mutatedFlag: flag};
+        return {continueFlag: true, mutatedFlag: mutated};
       }
-      flag = true;
+      mutated = true;
       node.swapWithParent();
     }
   }
-  return {continueFlag: true, mutatedFlag: flag};
+  return {continueFlag: true, mutatedFlag: mutated};
 }
 
-function mergeBucket(parent: DataFlowNode, nodes: DataFlowNode[]) {
-  const mergedTransform = nodes.shift();
-  nodes.forEach(x => {
-    parent.removeChild(x);
-    x.parent = mergedTransform;
-    x.remove();
-  });
+export function mergeChildren(node: DataFlowNode) {
+  const children = node.children.map(n => n);
+  const mergedTransform = children.shift();
+  for (const child of children) {
+    node.removeChild(child);
+    child.parent = mergedTransform;
+    child.remove();
+  }
 }
 
+// TODO: extend this to support more than just transform nodes: https://github.com/vega/vega-lite/issues/4180
 /**
  * Merge Identical Transforms at forks by comparing hashes.
+ *
+ * Does not need to iterate from leafs so we implement this with recursion as it's a bit simpler.
  */
 export function mergeIdenticalTransforms(node: DataFlowNode): boolean {
-  let flag = false;
-  const transforms = node.children.filter((x): x is TransformNode => isTransformNode(x));
-  const hashes = transforms.map(x => x.hash());
-  const buckets: {hash?: DataFlowNode[]} = {};
-  for (let i = 0; i < hashes.length; i++) {
-    if (buckets[hashes[i]] === undefined) {
-      buckets[hashes[i]] = [transforms[i]];
-    } else {
-      buckets[hashes[i]].push(transforms[i]);
-    }
+  let mutated = false;
+
+  const hashes = node.children.map(x => x.hash());
+
+  if (unique(hashes, d => d).length === 1) {
+    mergeChildren(node);
+    mutated = true;
   }
-  for (const k of keys(buckets)) {
-    if (buckets[k].length > 1) {
-      flag = true;
-      mergeBucket(node, buckets[k]);
-    }
-  }
-  return node.children.map(mergeIdenticalTransforms).some(x => x === true) || flag;
+
+  return node.children.map(mergeIdenticalTransforms).some(isTrue) || mutated;
 }
 
 /**
@@ -110,15 +108,15 @@ export function mergeIdenticalTransforms(node: DataFlowNode): boolean {
  */
 export function removeUnusedSubtrees(node: DataFlowNode): OptimizerFlags {
   // @ts-ignore
-  let flag = false;
+  let mutated = false;
   if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
     // no need to continue with parent because it is output node or will have children (there was a fork)
-    return {continueFlag: false, mutatedFlag: flag};
+    return {continueFlag: false, mutatedFlag: mutated};
   } else {
-    flag = true;
+    mutated = true;
     node.remove();
   }
-  return {continueFlag: true, mutatedFlag: flag};
+  return {continueFlag: true, mutatedFlag: mutated};
 }
 
 /**
@@ -129,19 +127,19 @@ export function removeUnusedSubtrees(node: DataFlowNode): OptimizerFlags {
 export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
   let fields = {};
   return iterateFromLeaves((node: DataFlowNode) => {
-    let flag = false;
+    let mutated = false;
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
       const dupe = keys(pfields).every(k => !!fields[k]);
 
       if (dupe) {
-        flag = true;
+        mutated = true;
         node.remove();
       } else {
         fields = {...fields, ...pfields};
       }
     }
 
-    return {continueFlag: true, mutatedFlag: flag};
+    return {continueFlag: true, mutatedFlag: mutated};
   })(leaf);
 }

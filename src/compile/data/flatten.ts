@@ -1,12 +1,12 @@
 import {FlattenTransform as VgFlattenTransform} from 'vega';
 import {FlattenTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
 /**
  * A class for flatten transform nodes
  */
-export class FlattenTransformNode extends TransformNode {
+export class FlattenTransformNode extends DataFlowNode {
   public clone() {
     return new FlattenTransformNode(this.parent, duplicate(this.transform));
   }

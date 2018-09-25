@@ -4,10 +4,10 @@ import {LookupTransform} from '../../transform';
 import {hash, StringSet} from '../../util';
 import {VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {DataFlowNode, OutputNode, TransformNode} from './dataflow';
+import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 
-export class LookupNode extends TransformNode {
+export class LookupNode extends DataFlowNode {
   constructor(parent: DataFlowNode, public readonly transform: LookupTransform, public readonly secondary: string) {
     super(parent);
   }
