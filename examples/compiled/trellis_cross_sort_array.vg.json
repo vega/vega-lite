@@ -94,13 +94,8 @@
       "name": "data_2",
       "source": "data_0",
       "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["a", "b"],
-          "ops": ["median"],
-          "fields": ["median_x_by_a"],
-          "as": ["median_median_x_by_a"]
-        }
+        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
+        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
       ]
     },
     {
@@ -111,8 +106,8 @@
           "type": "aggregate",
           "groupby": ["a", "b"],
           "ops": ["median"],
-          "fields": ["median_y_by_b"],
-          "as": ["median_median_y_by_b"]
+          "fields": ["median_x_by_a"],
+          "as": ["median_median_x_by_a"]
         }
       ]
     },
@@ -120,8 +115,13 @@
       "name": "data_4",
       "source": "data_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
-        {"type": "formula", "expr": "toNumber(datum[\"y\"])", "as": "y"}
+        {
+          "type": "aggregate",
+          "groupby": ["a", "b"],
+          "ops": ["median"],
+          "fields": ["median_y_by_b"],
+          "as": ["median_median_y_by_b"]
+        }
       ]
     }
   ],
@@ -394,8 +394,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "x"},
-          {"data": "data_2", "field": "median_median_x_by_a"}
+          {"data": "data_2", "field": "x"},
+          {"data": "data_3", "field": "median_median_x_by_a"}
         ]
       },
       "range": [0, {"signal": "child_width"}],
@@ -407,8 +407,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "y"},
-          {"data": "data_3", "field": "median_median_y_by_b"}
+          {"data": "data_2", "field": "y"},
+          {"data": "data_4", "field": "median_median_y_by_b"}
         ]
       },
       "range": [{"signal": "child_height"}, 0],
