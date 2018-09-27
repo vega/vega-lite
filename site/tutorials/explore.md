@@ -30,7 +30,7 @@ Next, let's look at how precipitation in Seattle changes throughout the year. Ve
 
 This chart shows that in Seattle the precipitation in the winter is, on average, much higher than summer. You can now create similar charts for the other variables on your own!
 
-When looking at precipitation and temperature, we might want to aggregate by year and month (`yearmonth`) rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeUnit.html). We can also set the `aggregate` to `max` in order to see the maximum temperature in each month.
+When looking at precipitation and temperature, we might want to aggregate by year and month (`yearmonth`) rather than just month. This allows us to see seasonal trends but for each year separately. You can find more about [time units in the documentation]({{site.baseurl}}/docs/timeunit.html). We can also set the `aggregate` to `max` in order to see the maximum temperature in each month.
 
 <div class="vl-example" data-name="line_max_year"></div>
 
