@@ -147,7 +147,7 @@ export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
   let v: string | number;
   for (const val of values) {
     v = f(val);
-    if (!(isNumber(v) && isNaN(v)) && v in u) {
+    if (v in u) {
       continue;
     }
     u[v] = 1;

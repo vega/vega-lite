@@ -189,9 +189,6 @@ describe('util', () => {
     it('should collapse the same items with strings', () => {
       expect(unique([1, 2, 'a', 'a'], d => d)).toEqual([1, 2, 'a']);
     });
-    it('should not collapse NaN', () => {
-      expect(unique([1, 2, NaN, NaN, 2, 3], d => d)).toEqual([1, 2, NaN, NaN, 3]);
-    });
   });
 
   describe('entries', () => {

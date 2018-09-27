@@ -1,126 +1,154 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 
 describe('compile/data/dataflow', () => {
-  describe('DataFlowNode', () => {
-    describe('swap', () => {
-      it('should correctly swap two nodes in a simple chain', () => {
-        const a = new DataFlowNode(null, 'a');
-        const b = new DataFlowNode(a, 'b');
+  describe('swap', () => {
+    it('should correctly swap two nodes in a simple chain', () => {
+      const a = new DataFlowNode(null, 'a');
+      const b = new DataFlowNode(a, 'b');
 
-        const c = new DataFlowNode(b, 'c');
+      const c = new DataFlowNode(b, 'c');
 
-        const d = new DataFlowNode(c, 'd');
+      const d = new DataFlowNode(c, 'd');
 
-        c.swapWithParent();
+      c.swapWithParent();
 
-        assert.equal(a.numChildren(), 1);
-        assert.equal(a.children[0].debugName, 'c');
+      expect(a.numChildren()).toBe(1);
+      expect(a.children[0].debugName).toBe('c');
 
-        assert.equal(b.numChildren(), 1);
-        assert.equal(b.children[0].debugName, 'd');
+      expect(b.numChildren()).toBe(1);
+      expect(b.children[0].debugName).toBe('d');
 
-        assert.equal(c.numChildren(), 1);
-        assert.equal(c.children[0].debugName, 'b');
+      expect(c.numChildren()).toBe(1);
+      expect(c.children[0].debugName).toBe('b');
 
-        assert.equal(d.numChildren(), 0);
-      });
-
-      it('should correctly swap two nodes', () => {
-        const root = new DataFlowNode(null, 'root');
-        const parent = new DataFlowNode(root, 'parent');
-
-        const node = new DataFlowNode(parent, 'node');
-
-        const child1 = new DataFlowNode(node, 'child1');
-        const child2 = new DataFlowNode(node, 'child2');
-
-        const parentChild1 = new DataFlowNode(parent, 'parentChild1');
-        const parentChild2 = new DataFlowNode(parent, 'parentChild2');
-
-        node.swapWithParent();
-
-        assert.equal(root.numChildren(), 1);
-        assert.equal(root.children[0].debugName, 'node');
-        assert.equal(node.parent.debugName, 'root');
-
-        assert.equal(node.numChildren(), 1);
-        assert.equal(node.children[0].debugName, 'parent');
-        assert.equal(parent.parent.debugName, 'node');
-
-        assert.equal(parent.numChildren(), 4);
-        parent.children.forEach(c => {
-          assert.equal(c.numChildren(), 0);
-          assert.equal(c.parent.debugName, 'parent');
-        });
-
-        assert.equal(child1.debugName, 'child1');
-        assert.equal(child2.debugName, 'child2');
-        assert.equal(parentChild1.debugName, 'parentChild1');
-        assert.equal(parentChild2.debugName, 'parentChild2');
-      });
+      expect(d.numChildren()).toBe(0);
     });
 
-    describe('remove', () => {
-      it('should remove node from dataflow', () => {
-        const a = new DataFlowNode(null, 'a');
-        const b = new DataFlowNode(a, 'b');
+    it('should correctly swap two nodes', () => {
+      const root = new DataFlowNode(null, 'root');
+      const parent = new DataFlowNode(root, 'parent');
 
-        const c = new DataFlowNode(b, 'c');
+      const node = new DataFlowNode(parent, 'node');
 
-        expect(a.children).toEqual([b]);
-        assert.equal(b.parent, a);
-        assert.equal(c.parent, b);
+      const child1 = new DataFlowNode(node, 'child1');
+      const child2 = new DataFlowNode(node, 'child2');
 
-        b.remove();
+      const parentChild1 = new DataFlowNode(parent, 'parentChild1');
+      const parentChild2 = new DataFlowNode(parent, 'parentChild2');
 
-        expect(a.children).toEqual([c]);
-        assert.equal(c.parent, a);
+      node.swapWithParent();
+
+      expect(root.numChildren()).toBe(1);
+      expect(root.children[0].debugName).toBe('node');
+      expect(node.parent.debugName).toBe('root');
+
+      expect(node.numChildren()).toBe(1);
+      expect(node.children[0].debugName).toBe('parent');
+      expect(parent.parent.debugName).toBe('node');
+
+      expect(parent.numChildren()).toBe(4);
+      parent.children.forEach(c => {
+        expect(c.numChildren()).toBe(0);
+        expect(c.parent.debugName).toBe('parent');
       });
 
-      it('should maintain order', () => {
-        const root = new DataFlowNode(null, 'root');
+      expect(child1.debugName).toBe('child1');
+      expect(child2.debugName).toBe('child2');
+      expect(parentChild1.debugName).toBe('parentChild1');
+      expect(parentChild2.debugName).toBe('parentChild2');
+    });
+  });
 
-        const rootChild1 = new DataFlowNode(root, 'rootChild1');
-        const node = new DataFlowNode(root, 'node');
-        const rootChild2 = new DataFlowNode(root, 'rootChild2');
+  describe('remove', () => {
+    it('should remove node from dataflow', () => {
+      const a = new DataFlowNode(null, 'a');
+      const b = new DataFlowNode(a, 'b');
 
-        const child1 = new DataFlowNode(node, 'child1');
-        const child2 = new DataFlowNode(node, 'child2');
+      const c = new DataFlowNode(b, 'c');
 
-        expect(root.children).toEqual([rootChild1, node, rootChild2]);
-        assert.equal(rootChild1.parent, root);
-        assert.equal(rootChild2.parent, root);
-        assert.equal(node.parent, root);
-        assert.equal(child1.parent, node);
-        assert.equal(child2.parent, node);
+      expect(a.children).toEqual([b]);
+      expect(b.parent).toBe(a);
+      expect(c.parent).toBe(b);
 
-        node.remove();
+      b.remove();
 
-        expect(root.children).toEqual([rootChild1, child1, child2, rootChild2]);
-        assert.equal(rootChild1.parent, root);
-        assert.equal(rootChild2.parent, root);
-        assert.equal(child1.parent, root);
-        assert.equal(child2.parent, root);
-      });
+      expect(a.children).toEqual([c]);
+      expect(c.parent).toBe(a);
     });
 
-    describe('insertAsParentOf', () => {
-      it('should insert node into dataflow', () => {
-        const a = new DataFlowNode(null, 'a');
-        const anotherChild = new DataFlowNode(a, 'a');
-        const b = new DataFlowNode(null, 'b');
-        const c = new DataFlowNode(a, 'c');
+    it('should maintain order', () => {
+      const root = new DataFlowNode(null, 'root');
 
-        b.insertAsParentOf(c);
+      const rootChild1 = new DataFlowNode(root, 'rootChild1');
+      const node = new DataFlowNode(root, 'node');
+      const rootChild2 = new DataFlowNode(root, 'rootChild2');
 
-        assert.sameDeepMembers(a.children, [anotherChild, b]);
-        assert.equal(b.parent, a);
-        assert.equal(c.parent, b);
-        assert.equal(anotherChild.parent, a);
-      });
+      const child1 = new DataFlowNode(node, 'child1');
+      const child2 = new DataFlowNode(node, 'child2');
+
+      expect(root.children).toEqual([rootChild1, node, rootChild2]);
+      expect(rootChild1.parent).toBe(root);
+      expect(rootChild2.parent).toBe(root);
+      expect(node.parent).toBe(root);
+      expect(child1.parent).toBe(node);
+      expect(child2.parent).toBe(node);
+
+      node.remove();
+
+      expect(root.children).toEqual([rootChild1, child1, child2, rootChild2]);
+      expect(rootChild1.parent).toBe(root);
+      expect(rootChild2.parent).toBe(root);
+      expect(child1.parent).toBe(root);
+      expect(child2.parent).toBe(root);
+    });
+  });
+
+  describe('insertAsParentOf', () => {
+    it('should insert node into dataflow', () => {
+      const a = new DataFlowNode(null, 'a');
+      const anotherChild = new DataFlowNode(a, 'a');
+      const b = new DataFlowNode(null, 'b');
+      const c = new DataFlowNode(a, 'c');
+
+      b.insertAsParentOf(c);
+
+      expect(a.children).toEqual(expect.arrayContaining([anotherChild, b]));
+      expect(b.parent).toBe(a);
+      expect(c.parent).toBe(b);
+      expect(anotherChild.parent).toBe(a);
+    });
+  });
+
+  describe('addChild', () => {
+    it('should add child to node', () => {
+      const a = new DataFlowNode(null, 'a');
+      const b = new DataFlowNode(null, 'b');
+
+      a.addChild(b);
+
+      expect(b.parent).toBeNull();
+      expect(a.children).toEqual([b]);
+    });
+
+    it('should not add the same child twice', () => {
+      const a = new DataFlowNode(null, 'a');
+      const b = new DataFlowNode(null, 'b');
+
+      a.addChild(b);
+      a.addChild(b);
+
+      expect(b.parent).toBeNull();
+      expect(a.children).toEqual([b]);
+    });
+  });
+
+  describe('clone', () => {
+    it('should not work', () => {
+      const a = new DataFlowNode(null, 'a');
+
+      expect(a.clone).toThrowError();
     });
   });
 });

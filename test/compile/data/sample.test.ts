@@ -1,9 +1,8 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/sample', () => {
   describe('SampleTransformNode', () => {
