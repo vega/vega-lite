@@ -117,12 +117,6 @@ function makeWalkTree(data: VgData[]) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
     }
 
-    if (node instanceof AggregateNode) {
-      if (!dataSource.name) {
-        dataSource.name = `data_${datasetIndex++}`;
-      }
-    }
-
     if (node instanceof OutputNode) {
       if (dataSource.source && dataSource.transform.length === 0) {
         node.setSource(dataSource.source);
