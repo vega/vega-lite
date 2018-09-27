@@ -1,5 +1,6 @@
 import {assert} from 'chai';
-import {fieldIntersection, flatAccessWithDatum, prefixGenerator} from '../src/util';
+import {entries} from 'd3';
+import {fieldIntersection, flatAccessWithDatum, prefixGenerator, unique} from '../src/util';
 
 import {
   accessPathDepth,
@@ -179,6 +180,24 @@ describe('util', () => {
 
     it('should return the correct value for 2 nested but different stringsets', () => {
       expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toBe(false);
+    });
+  });
+
+  describe('unique', () => {
+    it('should collapse the same numbers', () => {
+      expect(unique([1, 2, 3, 2], d => d)).toEqual([1, 2, 3]);
+    });
+    it('should collapse the same items with strings', () => {
+      expect(unique([1, 2, 'a', 'a'], d => d)).toEqual([1, 2, 'a']);
+    });
+    it('should not collapse NaN', () => {
+      expect(unique([1, 2, NaN, NaN, 2, 3], d => d)).toEqual([1, 2, NaN, NaN, 3]);
+    });
+  });
+
+  describe('entries', () => {
+    it('should return entries', () => {
+      expect(entries({a: 12, b: 42})).toEqual([{key: 'a', value: 12}, {key: 'b', value: 42}]);
     });
   });
 });

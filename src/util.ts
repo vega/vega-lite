@@ -147,7 +147,7 @@ export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
   let v: string | number;
   for (const val of values) {
     v = f(val);
-    if (v in u) {
+    if (!(isNumber(v) && isNaN(v)) && v in u) {
       continue;
     }
     u[v] = 1;
@@ -233,6 +233,19 @@ export function vals<T>(x: {[key: string]: T}): T[] {
     }
   }
   return _vals;
+}
+
+export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
+  const _entries: {key: string; value: T}[] = [];
+  for (const k in x) {
+    if (x.hasOwnProperty(k)) {
+      _entries.push({
+        key: k,
+        value: x[k]
+      });
+    }
+  }
+  return _entries;
 }
 
 // Using mapped type to declare a collect of flags for a string literal type S
