@@ -5,6 +5,7 @@ import {parseTransformArray} from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
 import {VgLookupTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/lookup', () => {
   it('should parse lookup from array', () => {
@@ -113,6 +114,25 @@ describe('compile/data/lookup', () => {
     );
     lookup.assemble();
 
-    assert.equal(lookup.hash(), 'Lookup -848385244');
+    assert.equal(
+      lookup.hash(),
+      'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
+    );
+  });
+
+  it('should never clone parent', () => {
+    const parent = new DataFlowNode(null);
+    const lookup = new LookupNode(
+      parent,
+      {
+        lookup: 'person',
+        from: {
+          data: {url: 'data/lookup_people.csv'},
+          key: 'name'
+        }
+      },
+      null
+    );
+    expect(lookup.clone().parent).toBeNull();
   });
 });

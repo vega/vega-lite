@@ -1,0 +1,107 @@
+import {entries} from 'd3';
+import {keys, uniqueId} from './../../util';
+import {DataFlowNode} from './dataflow';
+
+/**
+ * Print debug information for dataflow tree.
+ */
+export function debug(node: DataFlowNode) {
+  console.log(
+    `${(node.constructor as any).name}${node.debugName ? `(${node.debugName})` : ''} -> ${node.children.map(c => {
+      return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
+    })}`
+  );
+  console.log(node);
+  node.children.forEach(debug);
+}
+
+/**
+ * Print the dataflow tree as graphviz.
+ *
+ * Render the output in http://viz-js.com/.
+ */
+export function draw(roots: DataFlowNode[]) {
+  // check the graph before printing it since the logic below assumes a consistent graph
+  checkLinks(roots);
+
+  const nodes: {[key: string]: {id: string | number; label: string; hash: string | number}} = {};
+  const edges: [string, string][] = [];
+
+  function getId(node: DataFlowNode) {
+    let id = node['__uniqueid'];
+    if (id === undefined) {
+      id = uniqueId();
+      node['__uniqueid'] = id;
+    }
+    return id;
+  }
+
+  function getLabel(node: DataFlowNode) {
+    const out = [(node.constructor as any).name.slice(0, -4)];
+
+    if (node.debugName) {
+      out.push(`<i>${node.debugName}</i>`);
+    }
+
+    const dep = node.dependentFields();
+    if (keys(dep).length) {
+      out.push(`<font color="grey" point-size="10">IN:</font> ${keys(node.dependentFields()).join(', ')}`);
+    }
+    const prod = node.producedFields();
+    if (keys(prod).length) {
+      out.push(`<font color="grey" point-size="10">OUT:</font> ${keys(node.producedFields()).join(', ')}`);
+    }
+    return out.join('<br/>');
+  }
+
+  function collector(node: DataFlowNode) {
+    const id = getId(node);
+    nodes[id] = {
+      id: id,
+      label: getLabel(node),
+      hash: String(node.hash()).replace(/"/g, '')
+    };
+
+    for (const child of node.children) {
+      edges.push([id, getId(child)]);
+      collector(child);
+    }
+  }
+
+  roots.forEach(n => collector(n));
+
+  console.log(`digraph DataFlow {
+  rankdir = TB;
+  node [shape=record]
+  ${entries(nodes)
+    .map(
+      ({key, value}) => `  "${key}" [
+    label = <${value.label}>;
+    tooltip = "[${value.id}]&#010;${value.hash}"
+  ]`
+    )
+    .join('\n')}
+
+  ${edges.map(([source, target]) => `"${source}" -> "${target}"`).join(' ')}
+}`);
+}
+
+/**
+ * Iterates over a dataflow graph and checks whether all links are consistent.
+ */
+export function checkLinks(nodes: DataFlowNode[]): boolean {
+  for (const node of nodes) {
+    for (const child of node.children) {
+      if (child.parent !== node) {
+        console.error('Dataflow graph is inconsistent.', parent, child);
+        return false;
+      }
+    }
+
+    if (!checkLinks(node.children)) {
+      return false;
+    }
+  }
+
+  return true;
+}

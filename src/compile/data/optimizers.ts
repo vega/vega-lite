@@ -1,4 +1,4 @@
-import {fieldIntersection, keys, unique} from '../../util';
+import {fieldIntersection, keys} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
@@ -72,33 +72,42 @@ export function moveParseUp(node: DataFlowNode): OptimizerFlags {
   return {continueFlag: true, mutatedFlag: mutated};
 }
 
-export function mergeChildren(node: DataFlowNode) {
-  const children = node.children.map(n => n);
-  const mergedTransform = children.shift();
-  for (const child of children) {
-    node.removeChild(child);
-    child.parent = mergedTransform;
-    child.remove();
+export function mergeNodes(parent: DataFlowNode, nodes: DataFlowNode[]) {
+  const mergedTransform = nodes.shift();
+  for (const node of nodes) {
+    parent.removeChild(node);
+    node.parent = mergedTransform;
+    node.remove();
   }
 }
 
-// TODO: extend this to support more than just transform nodes: https://github.com/vega/vega-lite/issues/4180
 /**
- * Merge Identical Transforms at forks by comparing hashes.
+ * Merge identical nodes at forks by comparing hashes.
  *
- * Does not need to iterate from leafs so we implement this with recursion as it's a bit simpler.
+ * Does not need to iterate from leaves so we implement this with recursion as it's a bit simpler.
  */
-export function mergeIdenticalTransforms(node: DataFlowNode): boolean {
+export function mergeIdenticalNodes(node: DataFlowNode): boolean {
   let mutated = false;
 
   const hashes = node.children.map(x => x.hash());
+  const buckets: {hash?: DataFlowNode[]} = {};
 
-  if (unique(hashes, d => d).length === 1) {
-    mergeChildren(node);
-    mutated = true;
+  for (let i = 0; i < hashes.length; i++) {
+    if (buckets[hashes[i]] === undefined) {
+      buckets[hashes[i]] = [node.children[i]];
+    } else {
+      buckets[hashes[i]].push(node.children[i]);
+    }
   }
 
-  return node.children.map(mergeIdenticalTransforms).some(isTrue) || mutated;
+  for (const k of keys(buckets)) {
+    if (buckets[k].length > 1) {
+      mutated = true;
+      mergeNodes(node, buckets[k]);
+    }
+  }
+
+  return node.children.map(mergeIdenticalNodes).some(isTrue) || mutated;
 }
 
 /**

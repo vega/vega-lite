@@ -1,6 +1,6 @@
 import {LogicalOperand} from '../../logical';
 import {expression, Predicate} from '../../predicate';
-import {duplicate, hash, StringSet} from '../../util';
+import {duplicate, StringSet} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -13,7 +13,7 @@ export class FilterNode extends DataFlowNode {
     return new FilterNode(null, this.model, duplicate(this.filter));
   }
 
-  constructor(parent: DataFlowNode, private readonly model: Model, private filter: LogicalOperand<Predicate>) {
+  constructor(parent: DataFlowNode, private readonly model: Model, private readonly filter: LogicalOperand<Predicate>) {
     super(parent);
 
     // TODO: refactor this to not take a node and
@@ -35,6 +35,6 @@ export class FilterNode extends DataFlowNode {
   }
 
   public hash() {
-    return `Filter ${hash(this.expr)}`;
+    return `Filter ${this.expr}`;
   }
 }

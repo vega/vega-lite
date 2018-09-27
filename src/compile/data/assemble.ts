@@ -1,5 +1,5 @@
 import {InlineDataset, isUrlData} from '../../data';
-import {Dict, entries, vals} from '../../util';
+import {Dict, vals} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
@@ -22,69 +22,8 @@ import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
 
-/**
- * Print debug information for dataflow tree.
- */
 // @ts-ignore
-function debug(node: DataFlowNode) {
-  console.log(
-    `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
-      return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
-    })}`
-  );
-  console.log(node);
-  node.children.forEach(debug);
-}
-
-/**
- * Print the dataflow tree as graphviz.
- */
-// @ts-ignore
-function draw(roots: DataFlowNode[]) {
-  const nodes = {};
-  const edges: [string, string][] = [];
-
-  let i = 0;
-  function getName(node: DataFlowNode) {
-    let id = node['__uniqueid'];
-    if (id === undefined) {
-      id = i++;
-      node['__uniqueid'] = id;
-    }
-    return `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''}\\n[${id}]`;
-  }
-
-  function collector(node: DataFlowNode) {
-    const name = getName(node);
-    nodes[name] = String(node.hash()).replace(/"/g, '');
-
-    for (const child of node.children) {
-      edges.push([name, getName(child)]);
-      collector(child);
-    }
-  }
-
-  roots.forEach(n => collector(n));
-
-  console.log(`digraph "DataFlow" {
-rankdir = BT;
-node [color = black, fontcolor = black, style = filled, fillcolor = white]
-${entries(nodes)
-    .map(
-      node => `"${node.key}" [
-  tooltip = "${node.value}"
-]`
-    )
-    .join('\n')}
-${edges
-    .map(
-      ([source, target]) => `"${source}" -> "${target}" [
-  color = black
-]`
-    )
-    .join('\n')}
-}`);
-}
+import {debug, draw} from './debug';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources

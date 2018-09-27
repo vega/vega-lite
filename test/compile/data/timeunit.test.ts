@@ -1,3 +1,4 @@
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
@@ -58,6 +59,14 @@ describe('compile/data/timeunit', () => {
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       assert.deepEqual(timeUnitNode.hash(), 'TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+    });
+  });
+
+  describe('clone', () => {
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const timeUnit = new TimeUnitNode(parent, {});
+      expect(timeUnit.clone().parent).toBeNull();
     });
   });
 });

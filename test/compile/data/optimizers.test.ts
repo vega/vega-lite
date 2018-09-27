@@ -1,13 +1,12 @@
 /* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
-import {mergeChildren, mergeIdenticalTransforms} from '../../../src/compile/data/optimizers';
+import {mergeIdenticalNodes, mergeNodes} from '../../../src/compile/data/optimizers';
 import {Transform} from '../../../src/transform';
+import {FilterNode} from './../../../src/compile/data/filter';
 
 describe('compile/data/optimizer', () => {
-  describe('mergeIdenticalTransforms', () => {
+  describe('mergeIdenticalNodes', () => {
     it('should merge two impute nodes with identical transforms', () => {
       const transform: Transform = {
         impute: 'y',
@@ -19,12 +18,12 @@ describe('compile/data/optimizer', () => {
       const transform1 = new ImputeNode(root, transform);
       // @ts-ignore
       const transform2 = new ImputeNode(root, transform);
-      mergeIdenticalTransforms(root);
-      assert.equal(root.children.length, 1);
-      assert.deepEqual(root.children[0], transform1);
+      mergeIdenticalNodes(root);
+      expect(root.children).toHaveLength(1);
+      expect(root.children[0]).toEqual(transform1);
     });
 
-    it('should not merge if only two children have the same transform', () => {
+    it('should merge only the children that have the same transform', () => {
       const transform: Transform = {
         impute: 'y',
         key: 'x',
@@ -32,20 +31,21 @@ describe('compile/data/optimizer', () => {
         value: 200
       };
       const root = new DataFlowNode(null, 'root');
-      // @ts-ignore
       const transform1 = new ImputeNode(root, transform);
       // @ts-ignore
       const transform2 = new ImputeNode(root, transform);
+      const transform3 = new FilterNode(root, null, 'datum.x > 2');
       // @ts-ignore
-      const transform3 = new ImputeNode(root, {filter: 'datum.x > 2'});
+      const transform4 = new FilterNode(root, null, 'datum.x > 2');
 
-      mergeIdenticalTransforms(root);
-      assert.equal(root.children.length, 3);
+      mergeIdenticalNodes(root);
+      expect(root.children).toHaveLength(2);
+      expect(root.children).toEqual([transform1, transform3]);
     });
   });
 
-  describe('mergeChildren', () => {
-    it('should merge children correctly', () => {
+  describe('mergeNodes', () => {
+    it('should merge nodes correctly', () => {
       const parent = new DataFlowNode(null, 'root');
 
       const a = new DataFlowNode(parent, 'a');
@@ -61,7 +61,7 @@ describe('compile/data/optimizer', () => {
       expect(a.children).toHaveLength(2);
       expect(b.children).toHaveLength(2);
 
-      mergeChildren(parent);
+      mergeNodes(parent, [a, b]);
 
       expect(parent.children).toHaveLength(1);
       expect(a.children).toHaveLength(4);

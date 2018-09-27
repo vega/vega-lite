@@ -1,13 +1,17 @@
 import {isString, toSet} from 'vega-util';
 import * as log from '../../log';
 import {LookupTransform} from '../../transform';
-import {hash, StringSet} from '../../util';
+import {duplicate, hash, StringSet} from '../../util';
 import {VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 
 export class LookupNode extends DataFlowNode {
+  public clone() {
+    return new LookupNode(null, duplicate(this.transform), this.secondary);
+  }
+
   constructor(parent: DataFlowNode, public readonly transform: LookupTransform, public readonly secondary: string) {
     super(parent);
   }

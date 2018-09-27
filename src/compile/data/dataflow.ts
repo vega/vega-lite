@@ -1,5 +1,5 @@
 import {DataSourceType} from '../../data';
-import {Dict, StringSet} from '../../util';
+import {Dict, StringSet, uniqueId} from '../../util';
 
 /**
  * A node in the dataflow tree.
@@ -8,6 +8,8 @@ export class DataFlowNode {
   private _children: DataFlowNode[] = [];
 
   private _parent: DataFlowNode = null;
+
+  protected _hash: string | number;
 
   constructor(parent: DataFlowNode, public readonly debugName?: string) {
     if (parent) {
@@ -26,10 +28,11 @@ export class DataFlowNode {
    * Return a hash of the node.
    */
   public hash(): string | number {
-    console.warn('Hash not implemented');
+    if (this._hash === undefined) {
+      this._hash = uniqueId();
+    }
 
-    // NaN !== NaN
-    return NaN;
+    return this._hash;
   }
 
   /**
@@ -64,6 +67,12 @@ export class DataFlowNode {
   }
 
   public addChild(child: DataFlowNode, loc?: number) {
+    // do not add the same child twice
+    if (this._children.indexOf(child) > -1) {
+      console.warn('Attempt to add the same child twice.');
+      return;
+    }
+
     if (loc !== undefined) {
       this._children.splice(loc, 0, child);
     } else {

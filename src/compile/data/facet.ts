@@ -6,6 +6,7 @@ import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
 import {EncodingSortField, isSortField} from '../../sort';
+import {hash} from '../../util';
 import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {Model} from '../model';
@@ -68,7 +69,17 @@ export class FacetNode extends DataFlowNode {
   }
 
   public hash() {
-    return `Facet c:${this.column} r:${this.row}`;
+    let out = `Facet`;
+
+    if (this.column) {
+      out += ` c:${hash(this.column)}`;
+    }
+
+    if (this.row) {
+      out += ` r:${hash(this.row)}`;
+    }
+
+    return out;
   }
 
   get fields() {

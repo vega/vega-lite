@@ -1,3 +1,4 @@
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
@@ -22,6 +23,14 @@ describe('compile/data/sample', () => {
       };
       const sample = new SampleTransformNode(null, transform);
       assert.deepEqual(sample.hash(), 'SampleTransform {"sample":500}');
+    });
+
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const sample = new SampleTransformNode(parent, {
+        sample: 500
+      });
+      expect(sample.clone().parent).toBeNull();
     });
   });
 });
