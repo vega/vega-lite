@@ -3,6 +3,7 @@ import {assert} from 'chai';
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function assembleFromSortArray(model: ModelWithField) {
   const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
@@ -42,6 +43,7 @@ describe('compile/data/calculate', () => {
       expect(node.producedFields()).toEqual({bar: true});
     });
   });
+
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const model = parseUnitModel({
@@ -55,7 +57,18 @@ describe('compile/data/calculate', () => {
         }
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
-      assert.deepEqual(node.hash(), 'Calculate 1019364572');
+      assert.deepEqual(
+        node.hash(),
+        'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
+      );
+    });
+  });
+
+  describe('clone', () => {
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const calculate = new CalculateNode(parent, {calculate: 'foo', as: 'bar'});
+      expect(calculate.clone().parent).toBeNull();
     });
   });
 });

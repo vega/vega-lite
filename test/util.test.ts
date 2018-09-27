@@ -1,6 +1,5 @@
 import {assert} from 'chai';
-import {entries} from 'd3';
-import {fieldIntersection, flatAccessWithDatum, prefixGenerator, unique} from '../src/util';
+import {entries, fieldIntersection, flatAccessWithDatum, prefixGenerator, unique, uniqueId} from '../src/util';
 
 import {
   accessPathDepth,
@@ -198,6 +197,12 @@ describe('util', () => {
   describe('entries', () => {
     it('should return entries', () => {
       expect(entries({a: 12, b: 42})).toEqual([{key: 'a', value: 12}, {key: 'b', value: 42}]);
+    });
+  });
+
+  describe('uniqueId', () => {
+    it('should return new id', () => {
+      expect(uniqueId() === uniqueId()).toBeFalsy();
     });
   });
 });

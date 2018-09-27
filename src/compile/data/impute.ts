@@ -12,13 +12,13 @@ export class ImputeNode extends DataFlowNode {
     return new ImputeNode(null, duplicate(this.transform));
   }
 
+  constructor(parent: DataFlowNode, private transform: ImputeTransform) {
+    super(parent);
+  }
+
   public producedFields() {
     // typescript detects true as boolean type
     return {[this.transform.impute]: true as true};
-  }
-
-  constructor(parent: DataFlowNode, private transform: ImputeTransform) {
-    super(parent);
   }
 
   private processSequence(keyvals: ImputeSequence): SignalRef {

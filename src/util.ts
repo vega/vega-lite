@@ -50,7 +50,7 @@ export function hash(a: any): string | number {
   const str = isString(a) ? a : stableStringify(a);
 
   // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
-  if (str.length < 100) {
+  if (str.length < 250) {
     return str;
   }
 
@@ -373,4 +373,17 @@ export function getFirstDefined<T>(...args: T[]): T {
     }
   }
   return undefined;
+}
+
+// variable used to generate id
+let idCounter = 42;
+
+/**
+ * Returns a new random id every time it gets called.
+ *
+ * Has side effect!
+ */
+export function uniqueId(prefix?: string) {
+  const id = ++idCounter;
+  return prefix ? String(prefix) + id : id;
 }

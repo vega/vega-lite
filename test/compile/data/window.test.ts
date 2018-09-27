@@ -1,3 +1,4 @@
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
@@ -158,6 +159,12 @@ describe('compile/data/window', () => {
     assert.deepEqual(window, window.clone());
   });
 
+  it('should never clone parent', () => {
+    const parent = new DataFlowNode(null);
+    const window = new WindowTransformNode(parent, null);
+    expect(window.clone().parent).toBeNull();
+  });
+
   it('should generate the correct hash', () => {
     const transform: Transform = {
       window: [
@@ -178,6 +185,9 @@ describe('compile/data/window', () => {
     };
     const window = new WindowTransformNode(null, transform);
     const hash = window.hash();
-    assert.deepEqual(hash, 'WindowTransform 1103660051');
+    assert.deepEqual(
+      hash,
+      'WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}'
+    );
   });
 });

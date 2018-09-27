@@ -2,6 +2,7 @@ import {MAIN} from '../../data';
 import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
+import {checkLinks} from './debug';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
@@ -13,7 +14,7 @@ import {WindowTransformNode} from './window';
 export const FACET_SCALE_PREFIX = 'scale_';
 
 /**
- * Clones the subtree and ignores output nodes except for the leafs, which are renamed.
+ * Clones the subtree and ignores output nodes except for the leaves, which are renamed.
  */
 function cloneSubtree(facet: FacetNode) {
   function clone(node: DataFlowNode): DataFlowNode[] {
@@ -42,12 +43,10 @@ function cloneSubtree(facet: FacetNode) {
  * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
  * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
  */
-function moveFacetDown(node: DataFlowNode): boolean {
-  let flag = false;
+function moveFacetDown(node: DataFlowNode) {
   if (node instanceof FacetNode) {
     if (node.numChildren() === 1 && !(node.children[0] instanceof OutputNode)) {
       // move down until we hit a fork or output node
-      flag = true;
       const child = node.children[0];
 
       if (child instanceof AggregateNode || child instanceof StackNode || child instanceof WindowTransformNode) {
@@ -59,31 +58,31 @@ function moveFacetDown(node: DataFlowNode): boolean {
     } else {
       // move main to facet
 
-      flag = moveMainDownToFacet(node.model.component.data.main) || flag;
+      const facetMain = node.model.component.data.main;
+      moveMainDownToFacet(facetMain);
 
       // replicate the subtree and place it before the facet's main node
-      const copy: DataFlowNode[] = flatten(node.children.map(cloneSubtree(node)));
-      copy.forEach(c => (c.parent = node.model.component.data.main));
+      const cloner = cloneSubtree(node);
+      const copy: DataFlowNode[] = flatten(node.children.map(cloner));
+      for (const c of copy) {
+        c.parent = facetMain;
+      }
     }
   } else {
-    flag = node.children.map(moveFacetDown).some(isTrue) || flag;
+    node.children.map(moveFacetDown);
   }
-  return flag;
 }
 
-function moveMainDownToFacet(node: DataFlowNode): boolean {
-  let flag = false;
+function moveMainDownToFacet(node: DataFlowNode) {
   if (node instanceof OutputNode && node.type === MAIN) {
     if (node.numChildren() === 1) {
       const child = node.children[0];
       if (!(child instanceof FacetNode)) {
-        flag = true;
         child.swapWithParent();
         moveMainDownToFacet(node);
       }
     }
   }
-  return flag;
 }
 
 /**
@@ -91,14 +90,14 @@ function moveMainDownToFacet(node: DataFlowNode): boolean {
  */
 function removeUnnecessaryNodes(node: DataFlowNode): boolean {
   // remove output nodes that are not required
-  let flag = false;
+  let mutated = false;
   if (node instanceof OutputNode && !node.isRequired()) {
-    flag = true;
+    mutated = true;
     node.remove();
   }
 
-  flag = node.children.map(removeUnnecessaryNodes).some(isTrue) || flag;
-  return flag;
+  mutated = node.children.map(removeUnnecessaryNodes).some(isTrue) || mutated;
+  return mutated;
 }
 
 /**
@@ -122,7 +121,7 @@ function getLeaves(roots: DataFlowNode[]) {
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
 export function mergeParse(node: DataFlowNode): boolean {
-  let flag = false;
+  let mutated = false;
   const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
   if (parseChildren.length > 1) {
     const commonParse = {};
@@ -137,7 +136,7 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
     if (keys(commonParse).length !== 0) {
-      flag = true;
+      mutated = true;
       const mergedParseNode = new ParseNode(node, commonParse);
       for (const parseNode of parseChildren) {
         for (const key of keys(commonParse)) {
@@ -151,8 +150,8 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
   }
-  flag = node.children.map(mergeParse).some(isTrue) || flag;
-  return flag;
+  mutated = node.children.map(mergeParse).some(isTrue) || mutated;
+  return mutated;
 }
 
 export function isTrue(x: boolean) {
@@ -184,10 +183,8 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
       .map(optimizers.removeDuplicateTimeUnits)
       .some(isTrue) || mutatedFlag;
 
-  mutatedFlag = roots.map(moveFacetDown).some(isTrue) || mutatedFlag;
-
   mutatedFlag = roots.map(mergeParse).some(isTrue) || mutatedFlag;
-  mutatedFlag = roots.map(optimizers.mergeIdenticalTransforms).some(isTrue) || mutatedFlag;
+  mutatedFlag = roots.map(optimizers.mergeIdenticalNodes).some(isTrue) || mutatedFlag;
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
       delete dataComponent.sources[s];
@@ -200,9 +197,24 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
  * Optimizes the dataflow of the passed in data component.
  */
 export function optimizeDataflow(data: DataComponent) {
+  // check before optimizations
+  checkLinks(vals(data.sources));
+
   for (let i = 0; i < 5; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
     }
   }
+
+  // move facets down and make a copy of the subtree so that we can have scales at the top level
+  vals(data.sources).map(moveFacetDown);
+
+  for (let i = 0; i < 5; i++) {
+    if (!optimizationDataflowHelper(data)) {
+      break;
+    }
+  }
+
+  // check after optimizations
+  checkLinks(vals(data.sources));
 }

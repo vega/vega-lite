@@ -8,8 +8,6 @@ export class SourceNode extends DataFlowNode {
 
   private _name: string;
 
-  private _hash: string | number;
-
   constructor(data: Data) {
     super(null); // source cannot have parent
 

@@ -36,7 +36,7 @@ describe('compile/data/filter', () => {
       node = node.children[0];
     }
 
-    assert.deepEqual(parse, {
+    expect(parse).toEqual({
       a: 'date',
       b: 'string',
       c: 'date',
@@ -56,7 +56,15 @@ describe('compile/data/filter', () => {
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const filterNode = new FilterNode(null, null, {field: 'a', equal: {year: 2000}});
-      assert.deepEqual(filterNode.hash(), 'Filter {"equal":{"year":2000},"field":"a"}');
+      expect(filterNode.hash()).toEqual('Filter datum["a"]===time(datetime(2000, 0, 1, 0, 0, 0, 0))');
+    });
+  });
+
+  describe('clone', () => {
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const filter = new FilterNode(parent, null, 'false');
+      expect(filter.clone().parent).toBeNull();
     });
   });
 });

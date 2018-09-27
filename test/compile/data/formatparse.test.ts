@@ -317,4 +317,12 @@ describe('compile/data/formatparse', () => {
       assert.deepEqual(p.producedFields(), {n: true, b: true, 'nested.field': true});
     });
   });
+
+  describe('clone', () => {
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const parse = new ParseNode(parent, {});
+      expect(parse.clone().parent).toBeNull();
+    });
+  });
 });
