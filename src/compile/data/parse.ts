@@ -37,7 +37,7 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
-import {makeWindowFromFacet} from './windowFacet';
+import {makeWindowFromFacet} from './windowfacet';
 
 function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
   if (model.data || !model.parent) {
