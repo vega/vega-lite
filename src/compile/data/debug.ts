@@ -70,7 +70,7 @@ export function draw(roots: DataFlowNode[]) {
 
   roots.forEach(n => collector(n));
 
-  console.log(`digraph DataFlow {
+  const dot = `digraph DataFlow {
   rankdir = TB;
   node [shape=record]
   ${entries(nodes)
@@ -83,7 +83,11 @@ export function draw(roots: DataFlowNode[]) {
     .join('\n')}
 
   ${edges.map(([source, target]) => `"${source}" -> "${target}"`).join(' ')}
-}`);
+}`;
+
+  console.log(dot);
+
+  return dot;
 }
 
 /**

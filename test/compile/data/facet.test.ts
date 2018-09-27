@@ -233,4 +233,32 @@ describe('compile/data/facet', () => {
       });
     });
   });
+
+  describe('hash', () => {
+    it('should generate the correct hash', () => {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        data: {
+          name: 'a'
+        },
+        facet: {
+          row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
+          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'a'}}
+        },
+        spec: {
+          mark: 'rect',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            x: {field: 'a', type: 'quantitative'}
+          }
+        }
+      });
+
+      const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
+
+      expect(facetNode.hash()).toEqual(
+        'Facet c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}} r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}}'
+      );
+    });
+  });
 });
