@@ -11,7 +11,7 @@ import {DataFlowNode} from './dataflow';
  */
 export class WindowTransformNode extends DataFlowNode {
   public clone() {
-    return new WindowTransformNode(this.parent, duplicate(this.transform));
+    return new WindowTransformNode(null, duplicate(this.transform));
   }
 
   constructor(parent: DataFlowNode, private transform: WindowTransform) {

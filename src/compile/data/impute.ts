@@ -9,7 +9,7 @@ import {DataFlowNode} from './dataflow';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {
-    return new ImputeNode(this.parent, duplicate(this.transform));
+    return new ImputeNode(null, duplicate(this.transform));
   }
 
   public producedFields() {
