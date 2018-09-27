@@ -8,7 +8,7 @@ import {DataFlowNode} from './dataflow';
  */
 export class SampleTransformNode extends DataFlowNode {
   public clone() {
-    return new SampleTransformNode(this.parent, duplicate(this.transform));
+    return new SampleTransformNode(null, duplicate(this.transform));
   }
 
   constructor(parent: DataFlowNode, private transform: SampleTransform) {
