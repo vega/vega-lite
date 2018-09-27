@@ -3,7 +3,7 @@ import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 import {assert} from 'chai';
 import {WindowTransformNode} from '../../../src/compile/data/window';
-import {makeWindowFromFacet} from '../../../src/compile/data/windowFacet';
+import {makeWindowFromFacet} from '../../../src/compile/data/windowfacet';
 import {Transform} from '../../../src/transform';
 
 describe('compile/data/window', () => {
