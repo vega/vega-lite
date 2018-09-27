@@ -45,7 +45,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -82,7 +82,7 @@
     },
     {
       "name": "row_domain",
-      "source": "data_1",
+      "source": "data_0",
       "transform": [{"type": "aggregate", "groupby": ["title"]}]
     }
   ],
@@ -119,7 +119,7 @@
       "type": "group",
       "style": "cell",
       "from": {
-        "facet": {"name": "facet", "data": "data_1", "groupby": ["title"]}
+        "facet": {"name": "facet", "data": "data_0", "groupby": ["title"]}
       },
       "sort": {"field": ["datum[\"title\"]"], "order": ["ascending"]},
       "encode": {

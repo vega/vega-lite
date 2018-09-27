@@ -7,24 +7,13 @@
     {
       "name": "source_0",
       "url": "data/population.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"people": "number"}},
       "transform": [
         {"type": "filter", "expr": "datum.year == 2000"},
         {
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
         },
         {
           "type": "aggregate",
@@ -37,7 +26,7 @@
     },
     {
       "name": "column_domain",
-      "source": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -111,7 +100,7 @@
       "from": {
         "facet": {
           "name": "facet",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["gender"],
           "aggregate": {
             "fields": ["age"],
