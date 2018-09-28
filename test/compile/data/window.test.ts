@@ -132,7 +132,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    expect({count_field: true, ordered_row_number: true, sum_field: true, g: true}).toEqual(window.producedFields());
+    expect(window.producedFields()).toEqual({count_field: true, ordered_row_number: true, sum_field: true});
   });
 
   it('should generate the correct dependent fields', () => {

@@ -224,8 +224,7 @@ describe('compile/data/summary', () => {
       const agg = AggregateNode.makeFromTransform(null, t);
       expect(agg.producedFields()).toEqual({
         AvgDisplacement: true,
-        Acceleration_sum: true,
-        Group: true
+        Acceleration_sum: true
       });
     });
   });
