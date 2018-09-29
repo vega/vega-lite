@@ -16,7 +16,7 @@
   }, {
     "mark": "text",
     "encoding": {
-      "text": {"aggregate": "count", "field": "*", "type": "quantitative"},
+      "text": {"aggregate": "count", "type": "quantitative"},
       "color": {
         "condition": {"test": "datum['count_*'] > 100", "value": "black"},
         "value": "white"

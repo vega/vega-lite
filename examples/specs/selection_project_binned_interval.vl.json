@@ -9,7 +9,7 @@
       "mark": "bar",
       "encoding": {
         "x": {"field": "Acceleration", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "field": "*", "type": "quantitative"}
+        "y": {"aggregate": "count", "type": "quantitative"}
       }
     },
     {
@@ -17,7 +17,7 @@
       "mark": "bar",
       "encoding": {
         "x": {"field": "Acceleration", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "field": "*", "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
         "color": {"value": "goldenrod"}
       }
     }
