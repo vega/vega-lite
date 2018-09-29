@@ -8,7 +8,10 @@
   "layer": [{
     "mark": "rect",
     "encoding": {
-      "color":  {"aggregate": "count", "field": "*", "type": "quantitative"}
+      "color":  {
+        "aggregate": "count",
+        "type": "quantitative",
+        "legend": {"direction": "horizontal", "gradientLength": 120}}
     }
   }, {
     "mark": "text",
