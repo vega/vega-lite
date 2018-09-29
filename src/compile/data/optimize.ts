@@ -192,8 +192,9 @@ function runOptimizer(
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent) {
-  let roots: SourceNode[] = vals(dataComponent.sources);
+  let roots: SourceNode[] = dataComponent.sources;
   let mutatedFlag = false;
+
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
   mutatedFlag = runOptimizer(RemoveUnnecessaryNodes, roots, mutatedFlag);
   // remove source nodes that don't have any children because they also don't have output nodes
@@ -211,11 +212,8 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 
   mutatedFlag = runOptimizer(MergeIdenticalNodes, roots, mutatedFlag);
 
-  keys(dataComponent.sources).forEach(s => {
-    if (dataComponent.sources[s].numChildren() === 0) {
-      delete dataComponent.sources[s];
-    }
-  });
+  dataComponent.sources = roots;
+
   return mutatedFlag;
 }
 

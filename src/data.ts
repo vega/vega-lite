@@ -135,7 +135,7 @@ export function isInlineData(data: Partial<Data> | Partial<VgData>): data is Inl
   return !!data['values'];
 }
 
-export function isNamedData(data: Partial<Data>): data is NamedData {
+export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
   return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
 

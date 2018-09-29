@@ -192,7 +192,7 @@ export abstract class Model {
 
     this.component = {
       data: {
-        sources: parent ? parent.component.data.sources : {},
+        sources: parent ? parent.component.data.sources : [],
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined

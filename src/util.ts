@@ -1,6 +1,9 @@
+import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
+
+export const deepEqual = deepEqual_;
 
 /**
  * Creates an object composed of the picked object properties.
