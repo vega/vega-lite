@@ -16,7 +16,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   let labelsSpec: any = {};
 
   // Text
-  if (isTimeFieldDef(fieldDef)) {
+  if (isTimeFieldDef(fieldDef) || axis.formatType === 'time') {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
 
     const expr = timeFormatExpression(

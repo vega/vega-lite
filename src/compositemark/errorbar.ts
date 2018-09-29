@@ -2,7 +2,7 @@ import {AggregateOp, Orientation} from 'vega';
 import {PositionChannel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
-import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import {Encoding} from '../encoding';
 import {
   Field,
   FieldDefWithoutScale,
@@ -23,6 +23,7 @@ import {Flag, keys, titlecase} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
+  compositeMarkExtractTransformsFromEncoding,
   compositeMarkOrient,
   CompositeMarkTooltipSummary,
   GenericCompositeMarkDef,
@@ -366,7 +367,7 @@ export function errorBarParams<
     aggregate: oldAggregate,
     groupby: oldGroupBy,
     encoding: encodingWithoutContinuousAxis
-  } = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
+  } = compositeMarkExtractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
 
   const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorBarSpecificAggregate];
   const groupby: string[] = inputType !== 'raw' ? [] : oldGroupBy;

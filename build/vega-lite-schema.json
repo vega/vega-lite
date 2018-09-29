@@ -422,6 +422,14 @@
           ],
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of axis format to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"

@@ -1,20 +1,26 @@
 import {Orientation} from 'vega';
 import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
-import {Encoding, fieldDefs} from '../encoding';
+import {Config} from '../config';
+import {Encoding, extractTransformsFromEncoding, fieldDefs, forEach} from '../encoding';
 import {
   Field,
   FieldDefBase,
   FieldDefWithoutScale,
   isContinuous,
   isFieldDef,
+  isPositionFieldDef,
+  isTimeFieldDef,
+  isTypedFieldDef,
   PositionFieldDef,
+  RepeatRef,
   SecondaryFieldDef,
   TextFieldDef
 } from '../fielddef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from '../transform';
 import {StandardType} from '../type';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
@@ -119,6 +125,34 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       }
     });
   };
+}
+
+export function compositeMarkExtractTransformsFromEncoding(
+  oldEncoding: Encoding<string | RepeatRef>,
+  config: Config
+): {
+  bins: BinTransform[];
+  timeUnits: TimeUnitTransform[];
+  aggregate: AggregatedFieldDef[];
+  groupby: string[];
+  encoding: Encoding<string>;
+} {
+  const {bins, timeUnits, aggregate, groupby, encoding} = extractTransformsFromEncoding(oldEncoding, config);
+  replaceFormatWithTimeFormatInEncodingWithTimeUnit(oldEncoding, encoding);
+  return {bins, timeUnits, aggregate, groupby, encoding};
+}
+
+export function replaceFormatWithTimeFormatInEncodingWithTimeUnit(
+  oldEncoding: Encoding<string | RepeatRef>,
+  encoding: Encoding<string>
+): void {
+  forEach(encoding, (channelDef, channel) => {
+    const {timeUnit} = oldEncoding[channel];
+    const axis = isPositionFieldDef(channelDef) && channelDef.axis;
+    if (axis && timeUnit && isTypedFieldDef(channelDef) && !isTimeFieldDef(channelDef)) {
+      axis.formatType = 'time';
+    }
+  });
 }
 
 export function partLayerMixins<P extends PartsMixins<any>>(
