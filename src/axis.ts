@@ -101,6 +101,11 @@ export interface Axis extends AxisOrientMixins, BaseAxisNoSignals, Guide {
   tickMinStep?: number;
 
   /**
+   * A type of axis format to be forced to.
+   */
+  formatType?: 'number' | 'time';
+
+  /**
    * Explicitly set the visible axis tick values.
    */
   values?: number[] | string[] | boolean[] | DateTime[];
@@ -303,7 +308,8 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
-  encoding: 1
+  encoding: 1,
+  formatType: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {
