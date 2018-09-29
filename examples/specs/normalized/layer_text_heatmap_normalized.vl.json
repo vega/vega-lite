@@ -11,7 +11,11 @@
       "encoding": {
         "y": {"field": "Origin", "type": "ordinal"},
         "x": {"field": "Cylinders", "type": "ordinal"},
-        "color": {"aggregate": "count", "type": "quantitative"}
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "legend": {"direction": "horizontal", "gradientLength": 120}
+        }
       }
     },
     {
