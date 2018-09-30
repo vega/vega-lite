@@ -106,8 +106,8 @@ export function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean) {
   return true;
 }
 
-export function flatten(arrays: any[]) {
-  return [].concat.apply([], arrays);
+export function flatten<T>(arrays: T[][]): T[] {
+  return ([] as T[]).concat(...arrays);
 }
 
 export function fill<T>(val: T, len: number) {
