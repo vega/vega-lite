@@ -44,11 +44,11 @@ steps:
     ./scripts/check-schema.sh
     ./scripts/check-and-fix.sh
   displayName: 'Check'
-  condition: eq($(node_version), '8.x'))
+  condition: eq($(node_version), '8.x')
 
 - script: bash <(curl -s https://codecov.io/bash)
   displayName: 'Coverage report'
-  condition: eq($(node_version), '8.x'))
+  condition: eq($(node_version), '8.x')
 
 - task: PublishTestResults@2
-  condition: eq($(node_version), '8.x'))
+  condition: eq($(node_version), '8.x')
