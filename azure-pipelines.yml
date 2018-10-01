@@ -26,21 +26,20 @@ steps:
     yarn build
   displayName: 'Build'
 
-
 - script: |
-    yarn jest test/ --ci --reporters=default --reporters=jest-junit --collectCoverage=true
+    JEST_JUNIT_OUTPUT="./TEST-main.xml" yarn jest test/ --ci --reporters=default --reporters=jest-junit --collectCoverage=true
     yarn codecov
-    yarn jest examples/ --ci --reporters=default --reporters=jest-junit 
+    JEST_JUNIT_OUTPUT="./TEST-examples.xml" yarn jest examples/ --ci --reporters=default --reporters=jest-junit 
     yarn test:runtime
-    ./scripts/check-schema.sh
-    ./scripts/check-and-fix.sh
     yarn lint
   displayName: 'Test'
+
+- script: |
+    ./scripts/check-schema.sh
+    ./scripts/check-and-fix.sh
+  displayName: 'Check'
 
 - script: bash <(curl -s https://codecov.io/bash)
   displayName: 'Coverage report'
 
 - task: PublishTestResults@2
-  inputs:
-    testRunner: JUnit
-    testResultsFile: ./test-results.xml
