@@ -19,7 +19,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    apt install parallel
+    sudo apt install parallel
     yarn
   displayName: 'Install dependencies'
 
