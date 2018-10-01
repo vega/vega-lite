@@ -19,7 +19,10 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    sudo apt install parallel
+    wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+    chmod +x parallel
+    cp parallel sem
+    sudo mv parallel sem /usr/local/bin
     yarn
   displayName: 'Install dependencies'
 
