@@ -4,23 +4,43 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+  vmImage: 'Ubuntu-16.04'
+strategy:
+  matrix:
+    node_6_x:
+      node_version: 6.x
+    node_8_x:
+      node_version: 8.x
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '8.x'
+    version: $(node_version)
   displayName: 'Install Node.js'
 
+- script: yarn
+  displayName: 'Install dependencies'
+
 - script: |
-    yarn
     yarn data
     yarn build
+  displayName: 'Build'
+
+
+- script: |
     yarn jest test/ --collectCoverage=true
     yarn codecov
     yarn jest examples/
     yarn test:runtime
     ./scripts/check-schema.sh
-    # ./scripts/check-and-fix.sh
+    ./scripts/check-and-fix.sh
     yarn lint
-  displayName: 'build and test'
+  displayName: 'Test'
+
+- script: bash <(curl -s https://codecov.io/bash)
+ displayName: 'Coverage report'
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: JUnit
+    testResultsFile: ./test-results.xml
