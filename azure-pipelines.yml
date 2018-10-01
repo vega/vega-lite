@@ -6,6 +6,7 @@
 pool:
   vmImage: 'Ubuntu-16.04'
 strategy:
+  maxParallel: 2
   matrix:
     node_6_x:
       node_version: 6.x
