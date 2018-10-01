@@ -82,6 +82,7 @@
     "d3": "^5.7.0",
     "highlight.js": "^9.12.0",
     "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
     "json-stable-stringify": "^1.0.1",
     "mkdirp": "^0.5.1",
     "prettier": "^1.14.3",
@@ -144,6 +145,10 @@
       "src"
     ],
     "coverageDirectory": "./coverage/",
-    "collectCoverage": false
+    "collectCoverage": false,
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
   }
 }
