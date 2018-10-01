@@ -18,7 +18,9 @@ steps:
     version: $(node_version)
   displayName: 'Install Node.js'
 
-- script: yarn
+- script: |
+    apt install parallel
+    yarn
   displayName: 'Install dependencies'
 
 - script: |
