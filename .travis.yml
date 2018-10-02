@@ -6,13 +6,12 @@ language: node_js
 node_js:
   - "6"
   - "8"
-  - "10"
 env:
   LATEST=false
 matrix:
-    include:
-       - node_js: "10"
-         env: LATEST=true
+  include:
+    - node_js: "10"
+      env: LATEST=true
 
 before_install: |
   # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
