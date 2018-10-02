@@ -35,5 +35,5 @@ steps:
     yarn lint
   displayName: 'Build, Test and Lint'
 
-- publishTestResults@2
+- task: publishTestResults@2
   condition: always()
