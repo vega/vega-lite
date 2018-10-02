@@ -23,6 +23,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   <span class="octicon octicon-star"></span> [Tooltips for Vega and Vega-Lite](https://github.com/vega/vega-lite-tooltip)
 -   <span class="octicon octicon-star"></span> [Leaflet Tile Map integration for Vega and Vega-Lite](https://github.com/nyurik/leaflet-vega)
 
+
 ## Bindings for Programming Languages
 
 -   <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
@@ -35,7 +36,13 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 -   [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 -   [oz](https://github.com/metasoarous/oz) Vega & Vega-Lite based visualization toolkit for Clojure & ClojureScript (fork of Vizard).
+-   [Saite](https://github.com/jsa-aerial/saite) Exploratory graphics and ad hoc visualization system. Built on top of [Hanami]((https://github.com/jsa-aerial/hanami).
 -   [to-vega](https://github.com/gjmcn/to-vega) is a simple JavaScript library for creating Vega-Lite specifications.
+
+
+## Frameworks and Libraries utilizing Vega-Lite
+
+-   [Hanami]((https://github.com/jsa-aerial/hanami)  A Clojure(Script) library and framework for creating domain and task specific interactive visualization applications using Vega-Lite and Vega. Built on [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 
 
 ## Programming / Data Science Environment that supports Vega-Lite
