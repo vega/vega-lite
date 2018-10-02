@@ -14,7 +14,7 @@ matrix:
       env: LATEST=true
 
 before_install: |
-  # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
+  # Minimal installation as described in https://github.com/martinda/gnu-parallel
   wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
   chmod +x parallel
   cp parallel sem
