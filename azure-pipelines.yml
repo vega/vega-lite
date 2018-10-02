@@ -1,0 +1,46 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+strategy:
+  matrix:
+    node6:
+      node_version: 6.x
+    node8:
+      node_version: 8.x
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: $(node_version)
+  displayName: 'Install Node.js'
+
+- script: |
+    wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+    chmod +x parallel
+    cp parallel sem
+    sudo mv parallel sem /usr/local/bin
+  displayName: 'Install parallel'
+
+- script: |
+    set -x
+    yarn install
+    yarn data
+    yarn build
+    JEST_JUNIT_OUTPUT="./test-results/junit-test.xml" yarn jest test/ --collectCoverage=true --reporters=default --reporters=jest-junit
+    yarn codecov
+    JEST_JUNIT_OUTPUT="./test-results/junit-examples.xml" yarn jest examples/ --reporters=default --reporters=jest-junit
+    yarn test:runtime
+    yarn lint
+  displayName: 'Build, Test and Lint'
+
+- task: publishTestResults@2
+  inputs:
+    mergeTestResults: true
+    testResultsFiles: "**/test-results/*.xml"
+    testRunner: JUnit
+    testRunTitle: "Node $(node_version) tests"
+  condition: always()
