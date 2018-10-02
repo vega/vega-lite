@@ -22,7 +22,7 @@ before_install: |
 
 script: |
   yarn data
-  if [ $LATEST ]; then
+  if [ $LATEST = true ]; then
     yarn build
     yarn jest test/ --collectCoverage=true
     yarn codecov
