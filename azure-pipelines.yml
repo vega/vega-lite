@@ -1,5 +1,5 @@
 jobs:
-- job: Node6
+- job: Node_6
   pool:
     vmImage: 'Ubuntu-16.04'
 
@@ -64,7 +64,7 @@ jobs:
   - script: bash <(curl -s https://codecov.io/bash)
     displayName: 'Coverage report'
 
-- job: Check and Fix
+- job: Check_Fix
   dependsOn:
     - Build
 
