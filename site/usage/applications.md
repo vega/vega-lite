@@ -36,7 +36,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 -   [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 -   [oz](https://github.com/metasoarous/oz) Vega & Vega-Lite based visualization toolkit for Clojure & ClojureScript (fork of Vizard).
--   [Saite](https://github.com/jsa-aerial/saite) Exploratory graphics and ad hoc visualization system. Built on top of [Hanami]((https://github.com/jsa-aerial/hanami).
+-   [Saite](https://github.com/jsa-aerial/saite) Exploratory graphics and ad hoc visualization system. Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 -   [to-vega](https://github.com/gjmcn/to-vega) is a simple JavaScript library for creating Vega-Lite specifications.
 
 
