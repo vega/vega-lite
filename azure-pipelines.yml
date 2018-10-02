@@ -23,7 +23,42 @@ jobs:
       yarn test:runtime
     displayName: 'Test'
 
-- job: Build
+- job: Test
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: NodeTool@0
+    inputs:
+      version: 8.x
+    displayName: 'Install Node.js'
+
+  - script: |
+      yarn
+    displayName: 'Install dependencies'
+
+  - script: |
+      yarn data
+      yarn build:only
+    displayName: 'Build'
+
+  steps:
+  - script: |
+      JEST_JUNIT_OUTPUT="./TEST-main.xml" yarn jest test/ --ci --reporters=default --reporters=jest-junit --collectCoverage=true
+      yarn codecov
+      JEST_JUNIT_OUTPUT="./TEST-examples.xml" yarn jest examples/ --ci --reporters=default --reporters=jest-junit 
+      yarn test:runtime
+      yarn lint
+    displayName: 'Test'
+
+  - task: PublishTestResults@2
+
+  - script: bash <(curl -s https://codecov.io/bash)
+    displayName: 'Coverage report'
+
+- job: Check_Fix
+  condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
+  
   pool:
     vmImage: 'Ubuntu-16.04'
 
@@ -45,28 +80,6 @@ jobs:
       yarn data
       yarn build
     displayName: 'Build'
-
-- job: Test
-  dependsOn:
-    - Build
-
-  steps:
-  - script: |
-      JEST_JUNIT_OUTPUT="./TEST-main.xml" yarn jest test/ --ci --reporters=default --reporters=jest-junit --collectCoverage=true
-      yarn codecov
-      JEST_JUNIT_OUTPUT="./TEST-examples.xml" yarn jest examples/ --ci --reporters=default --reporters=jest-junit 
-      yarn test:runtime
-      yarn lint
-    displayName: 'Test'
-
-  - task: PublishTestResults@2
-
-  - script: bash <(curl -s https://codecov.io/bash)
-    displayName: 'Coverage report'
-
-- job: Check_Fix
-  dependsOn:
-    - Build
 
   steps:
   - script: |
