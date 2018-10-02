@@ -21,7 +21,7 @@
     "color": {
       "condition": {
         "selection": {"or": ["alex", "morgan"]},
-        "aggregate": "count", "field": "*", "type": "quantitative"
+        "aggregate": "count", "type": "quantitative"
       },
       "value": "grey"
     }

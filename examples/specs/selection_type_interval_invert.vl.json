@@ -13,7 +13,7 @@
         "selection": {"not": "pts"},
         "value": "grey"
       },
-      "aggregate": "count", "field": "*", "type": "quantitative"
+      "aggregate": "count", "type": "quantitative"
     }
   }
 }

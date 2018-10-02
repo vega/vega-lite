@@ -10,7 +10,6 @@
     },
     "y": {
       "aggregate": "count",
-      "field": "*",
       "type": "quantitative"
     }
   }

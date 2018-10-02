@@ -11,7 +11,11 @@
       "encoding": {
         "y": {"field": "Origin", "type": "ordinal"},
         "x": {"field": "Cylinders", "type": "ordinal"},
-        "color": {"aggregate": "count", "field": "*", "type": "quantitative"}
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "legend": {"direction": "horizontal", "gradientLength": 120}
+        }
       }
     },
     {
@@ -19,7 +23,7 @@
       "encoding": {
         "y": {"field": "Origin", "type": "ordinal"},
         "x": {"field": "Cylinders", "type": "ordinal"},
-        "text": {"aggregate": "count", "field": "*", "type": "quantitative"},
+        "text": {"aggregate": "count", "type": "quantitative"},
         "color": {
           "condition": {"test": "datum['count_*'] > 100", "value": "black"},
           "value": "white"
