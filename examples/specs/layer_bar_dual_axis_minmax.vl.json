@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "description": "Barchart for precipitation overlayed with linecharts to show temperature range.",
   "data": {"url": "data/seattle-weather.csv"},
   "layer": [

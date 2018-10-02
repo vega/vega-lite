@@ -273,7 +273,7 @@ describe('FacetModel', () => {
 
     it('returns a layout with header band if child spec is also a facet', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: {url: 'data/cars.json'},
         facet: {row: {field: 'Origin', type: 'ordinal'}},
         spec: {

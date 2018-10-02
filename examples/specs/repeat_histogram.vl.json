@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "repeat": {"column": ["Horsepower","Miles_per_Gallon", "Acceleration"]},
   "spec": {
     "data": {"url": "data/cars.json"},
