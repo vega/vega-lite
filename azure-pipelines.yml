@@ -42,7 +42,6 @@ jobs:
       yarn build:only
     displayName: 'Build'
 
-  steps:
   - script: |
       JEST_JUNIT_OUTPUT="./TEST-main.xml" yarn jest test/ --ci --reporters=default --reporters=jest-junit --collectCoverage=true
       yarn codecov
@@ -58,7 +57,7 @@ jobs:
 
 - job: Check_Fix
   condition: ne(variables['Build.SourceBranch'], 'refs/heads/master')
-  
+
   pool:
     vmImage: 'Ubuntu-16.04'
 
@@ -81,7 +80,6 @@ jobs:
       yarn build
     displayName: 'Build'
 
-  steps:
   - script: |
       ./scripts/check-schema.sh
       ./scripts/check-and-fix.sh
