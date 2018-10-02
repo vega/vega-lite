@@ -42,4 +42,5 @@ steps:
     mergeTestResults: true
     testResultsFiles: "**/test-results/*.xml"
     testRunner: JUnit
+    testRunTitle: "Node $(node_version) tests"
   condition: always()
