@@ -68,6 +68,7 @@ jobs:
   dependsOn:
     - Build
 
+  steps:
   - script: |
       ./scripts/check-schema.sh
       ./scripts/check-and-fix.sh
