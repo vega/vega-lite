@@ -1,5 +1,5 @@
 jobs:
-- job: Node 6
+- job: Node6
   pool:
     vmImage: 'Ubuntu-16.04'
 
