@@ -5,14 +5,37 @@
 
 pool:
   vmImage: 'Ubuntu 16.04'
+strategy:
+  matrix:
+    node6:
+      node_version: 6.x
+    node8:
+      node_version 8.x
 
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '8.x'
+    versionSpec: $(node_version)
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+    chmod +x parallel
+    cp parallel sem
+    sudo mv parallel sem /usr/local/bin
+  displayName: 'Install parallel'
+  
+- script: |
+    yarn data
+    yarn build
+    yarn jest test/ --collectCoverage=true
+    yarn codecov
+    yarn jest examples/
+    yarn test:runtime
+#    ./scripts/check-schema.sh
+#    ./scripts/check-and-fix.sh
+    yarn lint
+  displayName: 'Build, Test and Lint'
+
+- publishTestResults@2
+  condition: always()
