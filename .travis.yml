@@ -6,36 +6,38 @@ language: node_js
 node_js:
   - "6"
   - "8"
+  - "10"
+env:
+  LATEST=false
+matrix:
+    include:
+       - node_js: "10"
+         env: LATEST=true
 
-before_install:
+before_install: |
   # Minimal installation as desdcribed in https://github.com/martinda/gnu-parallel
-  - wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
-  - chmod +x parallel
-  - cp parallel sem
-  - sudo mv parallel sem /usr/local/bin
+  wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+  chmod +x parallel
+  cp parallel sem
+  sudo mv parallel sem /usr/local/bin
 
-script:
-  - yarn data
-  - yarn build
-  - yarn jest test/ --collectCoverage=true
-  - yarn codecov
-  - yarn jest examples/
-  - yarn test:runtime
-  - ./scripts/check-schema.sh
-  - ./scripts/check-and-fix.sh
-  - yarn lint
+script: |
+  yarn data
+  if [ $LATEST ]; then
+    yarn build
+    yarn jest test/ --collectCoverage=true
+    yarn codecov
+    yarn jest examples/
+    yarn test:runtime
+    ./scripts/check-schema.sh
+    ./scripts/check-and-fix.sh
+    yarn lint
+  else
+    yarn build:only
+    yarn jest
+    yarn test:runtime
+  fi
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 cache: yarn
-
-notifications:
-  email: never
-  slack:
-    rooms:
-      - vega-js:eJe5JNgxfucTVcTMbeplKX3v
-    on_success: never
-    on_failure: always
-env:
-  global:
-    secure: I9sReagJiE7B0154AnU3t8WcdPtmZm86vMp+6umKegvzYr46jbypPAmlWW50A09fw4AmTaGOtwpYtvglf0JikkR6saXY0rRquDnO70DRmbdrO2o2WMjjCzkYID58SkGvqsqVJ4HXcu0HdJp6o5L7v7JMdzji6abYKxtsnw2ouk0=
