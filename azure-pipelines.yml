@@ -10,7 +10,7 @@ strategy:
     node6:
       node_version: 6.x
     node8:
-      node_version 8.x
+      node_version: 8.x
 
 steps:
 - task: NodeTool@0
