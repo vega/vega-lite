@@ -42,7 +42,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 ## Frameworks and Libraries utilizing Vega-Lite
 
--   [Hanami]((https://github.com/jsa-aerial/hanami)  A Clojure(Script) library and framework for creating domain and task specific interactive visualization applications using Vega-Lite and Vega. Built on [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
+-   [Hanami](https://github.com/jsa-aerial/hanami)  A Clojure(Script) library and framework for creating domain and task specific interactive visualization applications using Vega-Lite and Vega. Built on [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 
 
 ## Programming / Data Science Environment that supports Vega-Lite
