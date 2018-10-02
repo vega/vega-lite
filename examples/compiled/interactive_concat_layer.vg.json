@@ -263,8 +263,9 @@
         }
       ],
       "legends": [
-        {"title": "All Movies", "fill": "color"},
+        {"direction": "horizontal", "title": "All Movies", "fill": "color"},
         {
+          "direction": "horizontal",
           "title": "In Selected Category",
           "size": "size",
           "encode": {
