@@ -141,7 +141,7 @@ For example, `test/compile/` tests files inside `src/compile/`.
 
 ## Understanding How Vega-Lite Works
 
-- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process.
+- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process. You can [browse the code online with Sourcegraph](https://sourcegraph.com/github.com/vega/vega-lite/-/blob/src/compile/compile.ts).
 
 ## Commands
 
