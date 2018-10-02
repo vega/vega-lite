@@ -26,6 +26,7 @@ steps:
   displayName: 'Install parallel'
   
 - script: |
+    set -x
     yarn install
     yarn data
     yarn build
