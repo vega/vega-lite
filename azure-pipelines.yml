@@ -32,8 +32,6 @@ steps:
     yarn codecov
     yarn jest examples/
     yarn test:runtime
-#    ./scripts/check-schema.sh
-#    ./scripts/check-and-fix.sh
     yarn lint
   displayName: 'Build, Test and Lint'
 
