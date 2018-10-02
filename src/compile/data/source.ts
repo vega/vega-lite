@@ -72,7 +72,7 @@ export class SourceNode extends DataFlowNode {
     throw new Error('Source nodes are roots and cannot be removed.');
   }
 
-  public hash() {
+  public hash(): string | number {
     throw new Error('Cannot hash sources');
   }
 

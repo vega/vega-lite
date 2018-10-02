@@ -1,6 +1,6 @@
 import {MAIN} from '../../data';
 import * as log from '../../log';
-import {flatten, keys, vals} from '../../util';
+import {flatten, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {checkLinks} from './debug';
@@ -8,9 +8,8 @@ import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
 import {DataComponent} from './index';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
-import {MergeIdenticalNodes} from './optimizers';
 import * as optimizers from './optimizers';
-import {SourceNode} from './source';
+import {MergeIdenticalNodes} from './optimizers';
 import {StackNode} from './stack';
 import {WindowTransformNode} from './window';
 
@@ -192,11 +191,12 @@ function runOptimizer(
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent) {
-  let roots: SourceNode[] = dataComponent.sources;
+  let roots = dataComponent.sources;
   let mutatedFlag = false;
 
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
   mutatedFlag = runOptimizer(RemoveUnnecessaryNodes, roots, mutatedFlag);
+
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
@@ -222,7 +222,8 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
  */
 export function optimizeDataflow(data: DataComponent) {
   // check before optimizations
-  checkLinks(vals(data.sources));
+  checkLinks(data.sources);
+
   let firstPassCounter = 0;
   let secondPassCounter = 0;
 
@@ -234,7 +235,7 @@ export function optimizeDataflow(data: DataComponent) {
   }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
-  vals(data.sources).map(moveFacetDown);
+  data.sources.map(moveFacetDown);
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
@@ -244,7 +245,7 @@ export function optimizeDataflow(data: DataComponent) {
   }
 
   // check after optimizations
-  checkLinks(vals(data.sources));
+  checkLinks(data.sources);
 
   if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
     log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);

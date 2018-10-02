@@ -7,7 +7,7 @@ import {SourceNode} from './source';
 
 export interface DataComponent {
   /**
-   * A list on unique sources.
+   * A list of unique sources.
    */
   sources: SourceNode[];
 
