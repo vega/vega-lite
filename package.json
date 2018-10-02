@@ -145,10 +145,6 @@
       "src"
     ],
     "coverageDirectory": "./coverage/",
-    "collectCoverage": false,
-    "reporters": [
-      "default",
-      "jest-junit"
-    ]
+    "collectCoverage": false
   }
 }
