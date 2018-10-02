@@ -24,18 +24,22 @@ steps:
     cp parallel sem
     sudo mv parallel sem /usr/local/bin
   displayName: 'Install parallel'
-  
+
 - script: |
     set -x
     yarn install
     yarn data
     yarn build
-    yarn jest test/ --collectCoverage=true
+    JEST_JUNIT_OUTPUT="./test-results/junit-test.xml" yarn jest test/ --collectCoverage=true --reporters=default --reporters=jest-junit
     yarn codecov
-    yarn jest examples/
+    JEST_JUNIT_OUTPUT="./test-results/junit-examples.xml" yarn jest examples/ --reporters=default --reporters=jest-junit
     yarn test:runtime
     yarn lint
   displayName: 'Build, Test and Lint'
 
 - task: publishTestResults@2
+  inputs:
+    mergeTestResults: true
+    testResultsFiles: "**/test-results/*.xml"
+    testRunner: JUnit
   condition: always()
