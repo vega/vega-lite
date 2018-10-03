@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import {assert} from 'chai';
 
+import {Spec as VgSpec} from 'vega';
 import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
@@ -33,10 +34,10 @@ function validateVL(spec: TopLevelSpec) {
   }
   assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
 
-  assert.equal(spec.$schema.substr(0, 42), 'https://vega.github.io/schema/vega-lite/v3');
+  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v3');
 }
 
-function validateVega(vegaSpec: TopLevelSpec) {
+function validateVega(vegaSpec: VgSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
@@ -60,7 +61,7 @@ describe('Examples', () => {
     describe(
       example,
       log.wrap(localLogger => {
-        const vegaSpec = compile(jsonSpec).spec;
+        const vegaSpec: VgSpec = compile(jsonSpec).spec;
 
         it('should be valid vega-lite with proper $schema', () => {
           if (

@@ -11,7 +11,7 @@ import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TitleParams} from './title';
-import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
+import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {Dict, hash, vals} from './util';
 
@@ -27,6 +27,18 @@ export type TopLevel<S extends BaseSpec> = S &
      * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
      */
     config?: Config;
+
+    /**
+     * A global data store for named datasets. This is a mapping from names to inline datasets.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     */
+    datasets?: Datasets;
+
+    /**
+     * Optional metadata that will be passed to Vega.
+     * This object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.
+     */
+    usermeta?: object;
   };
 
 export type BaseSpec = Partial<DataMixins> & {

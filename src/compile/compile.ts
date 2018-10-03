@@ -1,8 +1,15 @@
+import {Spec as VgSpec} from 'vega';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelSpec} from '../spec';
-import {AutoSizeParams, extractTopLevelProperties, normalizeAutoSize, TopLevelProperties} from '../toplevelprops';
+import {
+  AutoSizeParams,
+  Datasets,
+  extractTopLevelProperties,
+  normalizeAutoSize,
+  TopLevelProperties
+} from '../toplevelprops';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
@@ -90,7 +97,12 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     optimizeDataflow(model.component.data);
 
     // 6. Assemble: convert model components --> Vega Spec.
-    return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
+    return assembleTopLevelModel(
+      model,
+      getTopLevelProperties(inputSpec, config, autosize),
+      inputSpec.datasets,
+      inputSpec.usermeta
+    );
   } finally {
     // Reset the singleton logger if a logger is provided
     if (opt.logger) {
@@ -117,7 +129,12 @@ function getTopLevelProperties(topLevelSpec: TopLevel<any>, config: Config, auto
  * Note: this couldn't be `model.assemble()` since the top-level model
  * needs some special treatment to generate top-level properties.
  */
-function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelProperties & LayoutSizeMixins) {
+function assembleTopLevelModel(
+  model: Model,
+  topLevelProperties: TopLevelProperties & LayoutSizeMixins,
+  datasets: Datasets = {},
+  usermeta: object
+) {
   // TODO: change type to become VgSpec
 
   // Config with Vega-Lite only config removed.
@@ -126,10 +143,8 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
   const data = [].concat(
     model.assembleSelectionData([]),
     // only assemble data in the root
-    assembleRootData(model.component.data, topLevelProperties.datasets || {})
+    assembleRootData(model.component.data, datasets)
   );
-
-  delete topLevelProperties.datasets;
 
   const projections = model.assembleProjections();
   const title = model.assembleTitle();
@@ -146,7 +161,7 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     return true;
   });
 
-  const output = {
+  const output: VgSpec = {
     $schema: 'https://vega.github.io/schema/vega/v4.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
@@ -155,7 +170,8 @@ function assembleTopLevelModel(model: Model, topLevelProperties: TopLevelPropert
     data: data,
     ...(projections.length > 0 ? {projections: projections} : {}),
     ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]),
-    ...(vgConfig ? {config: vgConfig} : {})
+    ...(vgConfig ? {config: vgConfig} : {}),
+    ...(usermeta ? {usermeta} : {})
   };
 
   return {
