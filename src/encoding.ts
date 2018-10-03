@@ -4,6 +4,7 @@ import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, supportMark} from './channel';
 import {Config} from './config';
 import {FacetMapping} from './facet';
+import {isPositionFieldDef} from './fielddef';
 import {
   ChannelDef,
   Field,
@@ -228,7 +229,8 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string>, con
       encoding[channel] = {
         field: vgField(channelDef),
         type: channelDef.type,
-        title: title(channelDef, config, {allowDisabling: true})
+        title: title(channelDef, config, {allowDisabling: true}),
+        ...(isPositionFieldDef(channelDef) ? {axis: channelDef.axis} : {})
       };
     } else {
       // For value def, just copy
