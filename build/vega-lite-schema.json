@@ -1727,9 +1727,7 @@
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
@@ -1963,9 +1961,7 @@
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
@@ -9506,15 +9502,13 @@
     },
     "ValueDef": {
       "additionalProperties": false,
-      "description": "Definition object for a constant value of an encoding channel.",
+      "description": "Definition object for a constant visual value of an encoding channel.",
       "properties": {
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / \"#0099ff\" for color, values between `0` to `1` for opacity).",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
@@ -9548,9 +9542,7 @@
           "description": "A constant value in visual domain.",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
@@ -9581,9 +9573,7 @@
           "description": "A constant value in visual domain.",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
@@ -9614,9 +9604,7 @@
           "description": "A constant value in visual domain.",
           "type": [
             "number",
-            "string",
-            "boolean",
-            "null"
+            "string"
           ]
         }
       },
