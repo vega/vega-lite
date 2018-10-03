@@ -1,10 +1,8 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
-import * as log from '../../src/log';
-
 import {compile} from '../../src/compile/compile';
+import * as log from '../../src/log';
 
 describe('compile/compile', () => {
   it('should throw error for invalid spec', () => {
@@ -89,7 +87,7 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert(spec.autosize.resize);
+    assert((spec.autosize as any).resize);
   });
 
   it('should set autosize to fit and containment if requested', () => {
