@@ -30,23 +30,37 @@ import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
 
-type Value = number | string | boolean | null;
+type VisualValue = number | string;
+type DatumValue = number | string | boolean | DateTime | null;
 
 /**
- * Definition object for a constant value of an encoding channel.
+ * Definition object for a constant visual value of an encoding channel.
  */
 export interface ValueDef {
   /**
    * A constant value in visual domain (e.g., `"red"` / "#0099ff" for color, values between `0` to `1` for opacity).
    */
-  value: Value;
+  value: VisualValue;
+}
+
+/**
+ * Definition object for a constant datum of an encoding channel.
+ */
+export interface DatumDef {
+  /**
+   * A constant value in data domain.
+   */
+  datum: DatumValue;
 }
 
 /**
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type.
  */
-export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
+export type ChannelDefWithCondition<F extends FieldDef<any>> =
+  | FieldDefWithCondition<F>
+  | ValueDefWithCondition<F>
+  | DatumDefWithCondition<F>;
 
 export type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
 
@@ -102,7 +116,19 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
    * A constant value in visual domain.
    */
-  value?: Value;
+  value?: VisualValue;
+}
+
+export interface DatumDefWithCondition<F extends FieldDef<any>> {
+  /**
+   * A field definition or one or more value definition(s) with a selection predicate.
+   */
+  condition?: Conditional<F> | Conditional<DatumDef> | Conditional<DatumDef>[];
+
+  /**
+   * A constant datum in value domain.
+   */
+  datum?: DatumValue;
 }
 
 /**
@@ -317,6 +343,12 @@ export function hasConditionalValueDef<F>(
   return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isValueDef(channelDef.condition));
 }
 
+export function hasConditionalDatumDef<F>(
+  channelDef: ChannelDef<F>
+): channelDef is DatumDef & {condition: Conditional<DatumDef> | Conditional<DatumDef>[]} {
+  return !!channelDef && !!channelDef.condition && (isArray(channelDef.condition) || isDatumDef(channelDef.condition));
+}
+
 export function isFieldDef<F>(
   channelDef: ChannelDef<F>
 ): channelDef is
@@ -335,6 +367,10 @@ export function isStringFieldDef(channelDef: ChannelDef<string | RepeatRef>): ch
 
 export function isValueDef<F>(channelDef: ChannelDef<F>): channelDef is ValueDef {
   return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+}
+
+export function isDatumDef<F>(channelDef: ChannelDef<F>): channelDef is DatumDef {
+  return channelDef && 'datum' in channelDef && channelDef['datum'] !== undefined;
 }
 
 export function isScaleFieldDef<F>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F> {
@@ -569,7 +605,7 @@ export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
 export function normalize(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<any> {
-  if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+  if (isString(channelDef) || isNumber(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
     return {value: channelDef};
