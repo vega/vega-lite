@@ -2,7 +2,7 @@ We intend to create a `Roadmap.md` file. To seed it initially, let's collect som
 
 ## Goals
 
-We want Vega-Lite to become a standard language for decorative Data Visualization across different programming languages. Moreover, we want Vega-Lite together with Vega to be a standard language in the visualization research community. A core principle is the declarative grammar of visualization and interactions and compiling to low level Vega to allow maximum flexibility. To this end, it is important to extend the supported features, refine existing feature and make sure they are complete within our grammar, and improving scalability to larger datasets. 
+We want Vega-Lite to become a standard language for declarative Data Visualization across different programming languages. Moreover, we want Vega-Lite together with Vega to be a standard language in the visualization research community. A core principle is the declarative grammar of visualization and interactions and compiling to low level Vega to allow maximum flexibility. To this end, it is important to extend the supported features, refine existing feature and make sure they are complete within our grammar, and improving scalability to larger datasets. 
 
 ## Have planned design but no bandwidth to implement yet
 
