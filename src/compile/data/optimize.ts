@@ -1,4 +1,5 @@
 import {MAIN} from '../../data';
+import * as log from '../../log';
 import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -206,19 +207,25 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 export function optimizeDataflow(data: DataComponent) {
   // check before optimizations
   checkLinks(vals(data.sources));
-
-  for (let i = 0; i < 5; i++) {
+  let warningFlag = false;
+  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
+    }
+    if (i === MAX_OPTIMIZATION_RUNS - 1) {
+      warningFlag = true;
     }
   }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
   vals(data.sources).map(moveFacetDown);
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
+    }
+    if (warningFlag || i === MAX_OPTIMIZATION_RUNS - 1) {
+      log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
     }
   }
 
