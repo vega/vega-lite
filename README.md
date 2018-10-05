@@ -16,7 +16,7 @@ Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
-Read about future plans in [our roadmap](https://docs.google.com/document/d/1fscSxSJtfkd1m027r1ONCc7O8RdZp1oGABwca2pgV_E/edit#).
+Read about future plans in [our roadmap](https://docs.google.com/document/d/1fscSxSJtfkd1m027r1ONCc7O8RdZp1oGABwca2pgV_E).
 
 ## Team
 
