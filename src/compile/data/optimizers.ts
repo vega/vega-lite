@@ -8,11 +8,11 @@ import {TimeUnitNode} from './timeunit';
 
 export interface OptimizerFlags {
   /**
-   * If true iteration continues
+   * If true, iteration continues
    */
   continueFlag: boolean;
   /**
-   * If true the tree has been mutated by the function
+   * If true, the tree has been mutated by the function
    */
   mutatedFlag: boolean;
 }

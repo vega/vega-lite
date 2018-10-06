@@ -1,4 +1,5 @@
 import {MAIN} from '../../data';
+import * as log from '../../log';
 import {flatten, keys, vals} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -12,6 +13,7 @@ import {StackNode} from './stack';
 import {WindowTransformNode} from './window';
 
 export const FACET_SCALE_PREFIX = 'scale_';
+export const MAX_OPTIMIZATION_RUNS = 5;
 
 /**
  * Clones the subtree and ignores output nodes except for the leaves, which are renamed.
@@ -90,14 +92,13 @@ function moveMainDownToFacet(node: DataFlowNode) {
  */
 function removeUnnecessaryNodes(node: DataFlowNode): boolean {
   // remove output nodes that are not required
-  let mutated = false;
+  let mutatedFlag = false;
   if (node instanceof OutputNode && !node.isRequired()) {
-    mutated = true;
+    mutatedFlag = true;
     node.remove();
   }
-
-  mutated = node.children.map(removeUnnecessaryNodes).some(isTrue) || mutated;
-  return mutated;
+  mutatedFlag = node.children.map(removeUnnecessaryNodes).some(isTrue) || mutatedFlag;
+  return mutatedFlag;
 }
 
 /**
@@ -120,9 +121,11 @@ function getLeaves(roots: DataFlowNode[]) {
 /**
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export function mergeParse(node: DataFlowNode): boolean {
-  let mutated = false;
-  const parseChildren = node.children.filter((x): x is ParseNode => x instanceof ParseNode);
+export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
+  let mutatedFlag = false;
+  const parent = node.parent;
+  const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
+
   if (parseChildren.length > 1) {
     const commonParse = {};
     for (const parseNode of parseChildren) {
@@ -136,13 +139,13 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
     if (keys(commonParse).length !== 0) {
-      mutated = true;
-      const mergedParseNode = new ParseNode(node, commonParse);
+      mutatedFlag = true;
+      const mergedParseNode = new ParseNode(parent, commonParse);
       for (const parseNode of parseChildren) {
         for (const key of keys(commonParse)) {
           delete parseNode.parse[key];
         }
-        node.removeChild(parseNode);
+        parent.removeChild(parseNode);
         parseNode.parent = mergedParseNode;
         if (keys(parseNode.parse).length === 0) {
           parseNode.remove();
@@ -150,8 +153,7 @@ export function mergeParse(node: DataFlowNode): boolean {
       }
     }
   }
-  mutated = node.children.map(mergeParse).some(isTrue) || mutated;
-  return mutated;
+  return {continueFlag: true, mutatedFlag};
 }
 
 export function isTrue(x: boolean) {
@@ -183,7 +185,11 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
       .map(optimizers.removeDuplicateTimeUnits)
       .some(isTrue) || mutatedFlag;
 
-  mutatedFlag = roots.map(mergeParse).some(isTrue) || mutatedFlag;
+  mutatedFlag =
+    getLeaves(roots)
+      .map(optimizers.iterateFromLeaves(mergeParse))
+      .some(isTrue) || mutatedFlag;
+
   mutatedFlag = roots.map(optimizers.mergeIdenticalNodes).some(isTrue) || mutatedFlag;
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {
@@ -199,22 +205,30 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 export function optimizeDataflow(data: DataComponent) {
   // check before optimizations
   checkLinks(vals(data.sources));
+  let firstPassCounter = 0;
+  let secondPassCounter = 0;
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
     }
+    firstPassCounter++;
   }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
   vals(data.sources).map(moveFacetDown);
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
     }
+    secondPassCounter++;
   }
 
   // check after optimizations
   checkLinks(vals(data.sources));
+
+  if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
+    log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
+  }
 }
