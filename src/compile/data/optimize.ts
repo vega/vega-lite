@@ -93,14 +93,14 @@ function moveMainDownToFacet(node: DataFlowNode) {
  * Remove nodes that are not required starting from a root.
  */
 class RemoveUnnecessaryNodes extends TopDownOptimizer {
-  public optimize(node: DataFlowNode): boolean {
+  public run(node: DataFlowNode): boolean {
     // remove output nodes that are not required
     if (node instanceof OutputNode && !node.isRequired()) {
       this.setMutated();
       node.remove();
     }
     for (const child of node.children) {
-      this.optimize(child);
+      this.run(child);
     }
 
     return this.mutatedFlag;
@@ -168,14 +168,24 @@ export function isTrue(x: boolean) {
   return x;
 }
 
-// any type to avoid error of Cannot use 'new' with an expression whose type lacks a call or construct signature.
-function runOptimizer(flag: boolean, nodes: DataFlowNode[], optimizer: any) {
+/**
+ * Run the specified optimizer on the provided nodes.
+ *
+ * @param optimizer The optimizer to run.
+ * @param nodes A set of nodes to optimize.
+ * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
+ */
+function runOptimizer(
+  optimizer: typeof BottomUpOptimizer | typeof TopDownOptimizer,
+  nodes: DataFlowNode[],
+  flag: boolean
+) {
   const flags = nodes.map(node => {
     const optimizerInstance = new optimizer();
     if (optimizerInstance instanceof BottomUpOptimizer) {
       return optimizerInstance.optimizeNextFromLeaves(node);
     } else {
-      return optimizerInstance.optimize(node);
+      return optimizerInstance.run(node);
     }
   });
   return flags.some(isTrue) || flag;
@@ -185,21 +195,21 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
   let roots: SourceNode[] = vals(dataComponent.sources);
   let mutatedFlag = false;
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
-  mutatedFlag = runOptimizer(mutatedFlag, roots, RemoveUnnecessaryNodes);
+  mutatedFlag = runOptimizer(RemoveUnnecessaryNodes, roots, mutatedFlag);
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.RemoveUnusedSubtrees);
+  mutatedFlag = runOptimizer(optimizers.RemoveUnusedSubtrees, getLeaves(roots), mutatedFlag);
 
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.MoveParseUp);
+  mutatedFlag = runOptimizer(optimizers.MoveParseUp, getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), optimizers.RemoveDuplicateTimeUnits);
+  mutatedFlag = runOptimizer(optimizers.RemoveDuplicateTimeUnits, getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(mutatedFlag, getLeaves(roots), MergeParse);
+  mutatedFlag = runOptimizer(MergeParse, getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(mutatedFlag, roots, MergeIdenticalNodes);
+  mutatedFlag = runOptimizer(MergeIdenticalNodes, roots, mutatedFlag);
 
   keys(dataComponent.sources).forEach(s => {
     if (dataComponent.sources[s].numChildren() === 0) {

@@ -91,7 +91,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
     }
   }
 
-  public optimize(node: DataFlowNode): boolean {
+  public run(node: DataFlowNode): boolean {
     const hashes = node.children.map(x => x.hash());
     const buckets: {hash?: DataFlowNode[]} = {};
 
@@ -110,7 +110,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
       }
     }
     for (const child of node.children) {
-      this.optimize(child);
+      this.run(child);
     }
     return this.mutatedFlag;
   }

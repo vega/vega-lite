@@ -62,8 +62,5 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
 }
 
 export abstract class TopDownOptimizer extends OptimizerBase {
-  constructor() {
-    super();
-  }
-  public abstract optimize(node: DataFlowNode): boolean;
+  public abstract run(node: DataFlowNode): boolean;
 }
