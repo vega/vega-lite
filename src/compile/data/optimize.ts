@@ -124,10 +124,8 @@ function getLeaves(roots: DataFlowNode[]) {
 export function mergeParse(node: DataFlowNode): optimizers.OptimizerFlags {
   let mutatedFlag = false;
   const parent = node.parent;
-  if (parent === undefined) {
-    return {continueFlag: false, mutatedFlag: false};
-  }
   const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
+
   if (parseChildren.length > 1) {
     const commonParse = {};
     for (const parseNode of parseChildren) {
@@ -207,14 +205,14 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 export function optimizeDataflow(data: DataComponent) {
   // check before optimizations
   checkLinks(vals(data.sources));
-  let warningFlag = false;
+  let firstPassCounter = 0;
+  let secondPassCounter = 0;
+
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data)) {
       break;
     }
-    if (i === MAX_OPTIMIZATION_RUNS - 1) {
-      warningFlag = true;
-    }
+    firstPassCounter++;
   }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
@@ -224,11 +222,13 @@ export function optimizeDataflow(data: DataComponent) {
     if (!optimizationDataflowHelper(data)) {
       break;
     }
-    if (warningFlag || i === MAX_OPTIMIZATION_RUNS - 1) {
-      log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
-    }
+    secondPassCounter++;
   }
 
   // check after optimizations
   checkLinks(vals(data.sources));
+
+  if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
+    log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
+  }
 }

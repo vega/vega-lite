@@ -37,7 +37,7 @@ describe('compile/data/optimize', () => {
     });
   });
   describe('optimizeDataFlow', () => {
-    it('should push up common parse', () => {
+    it('should move up common parse', () => {
       const source = new SourceNode(null);
       const parseOne = new ParseNode(source, {a: 'time', b: 'number'});
       const parseTwo = new ParseNode(source, {a: 'time', b: 'date'});
