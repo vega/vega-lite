@@ -22,6 +22,7 @@ describe('compile/data/optimizer', () => {
       optimizer.run(root);
       expect(root.children).toHaveLength(1);
       expect(root.children[0]).toEqual(transform1);
+      expect(optimizer.mutatedFlag).toEqual(true);
     });
 
     it('should merge only the children that have the same transform', () => {
@@ -63,7 +64,8 @@ describe('compile/data/optimizer', () => {
       expect(b.children).toHaveLength(2);
       const optimizer = new MergeIdenticalNodes();
       optimizer.mergeNodes(parent, [a, b]);
-
+      optimizer.setMutated();
+      expect(optimizer.mutatedFlag).toEqual(true);
       expect(parent.children).toHaveLength(1);
       expect(a.children).toHaveLength(4);
 

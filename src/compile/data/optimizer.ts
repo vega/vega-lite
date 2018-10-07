@@ -2,12 +2,16 @@ import {DataFlowNode} from './dataflow';
 import {OptimizerFlags} from './optimizers';
 import {SourceNode} from './source';
 
+/**
+ * Abstract base class for BottomUpOptimizer and TopDownOptimizer.
+ * Contains only mutation handling logic. Subclasses need to implement iteration logic.
+ */
 abstract class OptimizerBase {
   private _mutated: boolean;
   constructor() {
     this._mutated = false;
   }
-
+  // Once true, _mutated is never set to false
   public setMutated() {
     this._mutated = true;
   }
@@ -17,6 +21,10 @@ abstract class OptimizerBase {
   }
 }
 
+/**
+ * Starts from a node and runs the optimization function(the "run" method) upwards to the root,
+ * depending on the continueFlag and mutatedFlag values returned by the optimization function.
+ */
 export abstract class BottomUpOptimizer extends OptimizerBase {
   private _continue: boolean;
 
@@ -46,14 +54,14 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
     }
   }
 
-  public abstract optimize(node: DataFlowNode): OptimizerFlags;
+  public abstract run(node: DataFlowNode): OptimizerFlags;
 
   public optimizeNextFromLeaves(node: DataFlowNode): boolean {
     if (node instanceof SourceNode) {
       return false;
     }
     const next = node.parent;
-    const {continueFlag} = this.optimize(node);
+    const {continueFlag} = this.run(node);
     if (continueFlag) {
       this.optimizeNextFromLeaves(next);
     }
@@ -61,6 +69,9 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
   }
 }
 
+/**
+ * The optimizer function( the "run" method), is invoked on the given node and then continues recursively.
+ */
 export abstract class TopDownOptimizer extends OptimizerBase {
   public abstract run(node: DataFlowNode): boolean;
 }

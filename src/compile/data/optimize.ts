@@ -128,7 +128,7 @@ function getLeaves(roots: DataFlowNode[]) {
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
 export class MergeParse extends BottomUpOptimizer {
-  public optimize(node: DataFlowNode): optimizers.OptimizerFlags {
+  public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
     const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
 

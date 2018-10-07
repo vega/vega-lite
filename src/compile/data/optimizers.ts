@@ -44,7 +44,7 @@ export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
  * Move parse nodes up to forks.
  */
 export class MoveParseUp extends BottomUpOptimizer {
-  public optimize(node: DataFlowNode): OptimizerFlags {
+  public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
     // move parse up by merging or swapping
     if (node instanceof ParseNode) {
@@ -122,7 +122,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
  * Facet nodes are needed for the row or column domains.
  */
 export class RemoveUnusedSubtrees extends BottomUpOptimizer {
-  public optimize(node: DataFlowNode): OptimizerFlags {
+  public run(node: DataFlowNode): OptimizerFlags {
     if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
       // no need to continue with parent because it is output node or will have children (there was a fork)
       return this.flags;
@@ -142,7 +142,7 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
 
 export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
   private fields = {};
-  public optimize(node: DataFlowNode): OptimizerFlags {
+  public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
