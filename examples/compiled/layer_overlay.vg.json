@@ -17,9 +17,9 @@
         {
           "type": "aggregate",
           "groupby": ["Cylinders"],
-          "ops": ["min"],
+          "ops": ["max"],
           "fields": ["Horsepower"],
-          "as": ["min_Horsepower"]
+          "as": ["max_Horsepower"]
         }
       ]
     },
@@ -30,9 +30,9 @@
         {
           "type": "aggregate",
           "groupby": ["Cylinders"],
-          "ops": ["max"],
+          "ops": ["min"],
           "fields": ["Horsepower"],
-          "as": ["max_Horsepower"]
+          "as": ["min_Horsepower"]
         }
       ]
     }
@@ -50,7 +50,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
@@ -69,7 +69,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -93,7 +93,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -112,7 +112,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -138,8 +138,8 @@
       "type": "point",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "Cylinders"},
-          {"data": "data_0", "field": "Cylinders"}
+          {"data": "data_0", "field": "Cylinders"},
+          {"data": "data_1", "field": "Cylinders"}
         ],
         "sort": true
       },
@@ -151,8 +151,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "max_Horsepower"},
-          {"data": "data_0", "field": "min_Horsepower"}
+          {"data": "data_0", "field": "max_Horsepower"},
+          {"data": "data_1", "field": "min_Horsepower"}
         ]
       },
       "range": [{"signal": "height"}, 0],
