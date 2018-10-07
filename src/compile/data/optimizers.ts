@@ -2,7 +2,7 @@ import {fieldIntersection, keys} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
-import {isTrue} from './optimize';
+import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
@@ -43,41 +43,36 @@ export function iterateFromLeaves(f: (node: DataFlowNode) => OptimizerFlags) {
 /**
  * Move parse nodes up to forks.
  */
-export function moveParseUp(node: DataFlowNode): OptimizerFlags {
-  const parent = node.parent;
-  let mutated = false;
-  // move parse up by merging or swapping
-  if (node instanceof ParseNode) {
-    if (parent instanceof SourceNode) {
-      return {continueFlag: false, mutatedFlag: mutated};
-    }
-
-    if (parent.numChildren() > 1) {
-      // don't move parse further up but continue with parent.
-      return {continueFlag: true, mutatedFlag: mutated};
-    }
-
-    if (parent instanceof ParseNode) {
-      mutated = true;
-      parent.merge(node);
-    } else {
-      // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
-      if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
-        return {continueFlag: true, mutatedFlag: mutated};
+export class MoveParseUp extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    const parent = node.parent;
+    // move parse up by merging or swapping
+    if (node instanceof ParseNode) {
+      if (parent instanceof SourceNode) {
+        return this.flags;
       }
-      mutated = true;
-      node.swapWithParent();
-    }
-  }
-  return {continueFlag: true, mutatedFlag: mutated};
-}
 
-export function mergeNodes(parent: DataFlowNode, nodes: DataFlowNode[]) {
-  const mergedTransform = nodes.shift();
-  for (const node of nodes) {
-    parent.removeChild(node);
-    node.parent = mergedTransform;
-    node.remove();
+      if (parent.numChildren() > 1) {
+        // don't move parse further up but continue with parent.
+        this.setContinue();
+        return this.flags;
+      }
+
+      if (parent instanceof ParseNode) {
+        this.setMutated();
+        parent.merge(node);
+      } else {
+        // don't swap with nodes that produce something that the parse node depends on (e.g. lookup)
+        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
+          this.setContinue();
+          return this.flags;
+        }
+        this.setMutated();
+        node.swapWithParent();
+      }
+    }
+    this.setContinue();
+    return this.flags;
   }
 }
 
@@ -86,28 +81,39 @@ export function mergeNodes(parent: DataFlowNode, nodes: DataFlowNode[]) {
  *
  * Does not need to iterate from leaves so we implement this with recursion as it's a bit simpler.
  */
-export function mergeIdenticalNodes(node: DataFlowNode): boolean {
-  let mutated = false;
-
-  const hashes = node.children.map(x => x.hash());
-  const buckets: {hash?: DataFlowNode[]} = {};
-
-  for (let i = 0; i < hashes.length; i++) {
-    if (buckets[hashes[i]] === undefined) {
-      buckets[hashes[i]] = [node.children[i]];
-    } else {
-      buckets[hashes[i]].push(node.children[i]);
+export class MergeIdenticalNodes extends TopDownOptimizer {
+  public mergeNodes(parent: DataFlowNode, nodes: DataFlowNode[]) {
+    const mergedNode = nodes.shift();
+    for (const node of nodes) {
+      parent.removeChild(node);
+      node.parent = mergedNode;
+      node.remove();
     }
   }
 
-  for (const k of keys(buckets)) {
-    if (buckets[k].length > 1) {
-      mutated = true;
-      mergeNodes(node, buckets[k]);
-    }
-  }
+  public run(node: DataFlowNode): boolean {
+    const hashes = node.children.map(x => x.hash());
+    const buckets: {hash?: DataFlowNode[]} = {};
 
-  return node.children.map(mergeIdenticalNodes).some(isTrue) || mutated;
+    for (let i = 0; i < hashes.length; i++) {
+      if (buckets[hashes[i]] === undefined) {
+        buckets[hashes[i]] = [node.children[i]];
+      } else {
+        buckets[hashes[i]].push(node.children[i]);
+      }
+    }
+
+    for (const k of keys(buckets)) {
+      if (buckets[k].length > 1) {
+        this.setMutated();
+        this.mergeNodes(node, buckets[k]);
+      }
+    }
+    for (const child of node.children) {
+      this.run(child);
+    }
+    return this.mutatedFlag;
+  }
 }
 
 /**
@@ -115,17 +121,17 @@ export function mergeIdenticalNodes(node: DataFlowNode): boolean {
  * The reason is that we don't need subtrees that don't have any output nodes.
  * Facet nodes are needed for the row or column domains.
  */
-export function removeUnusedSubtrees(node: DataFlowNode): OptimizerFlags {
-  // @ts-ignore
-  let mutated = false;
-  if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
-    // no need to continue with parent because it is output node or will have children (there was a fork)
-    return {continueFlag: false, mutatedFlag: mutated};
-  } else {
-    mutated = true;
-    node.remove();
+export class RemoveUnusedSubtrees extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
+      // no need to continue with parent because it is output node or will have children (there was a fork)
+      return this.flags;
+    } else {
+      this.setMutated();
+      node.remove();
+    }
+    return this.flags;
   }
-  return {continueFlag: true, mutatedFlag: mutated};
 }
 
 /**
@@ -133,22 +139,22 @@ export function removeUnusedSubtrees(node: DataFlowNode): OptimizerFlags {
  * output field) that may be generated due to selections projected over
  * time units.
  */
-export function removeDuplicateTimeUnits(leaf: DataFlowNode) {
-  let fields = {};
-  return iterateFromLeaves((node: DataFlowNode) => {
-    let mutated = false;
+
+export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
+  private fields = {};
+  public run(node: DataFlowNode): OptimizerFlags {
+    this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
-      const dupe = keys(pfields).every(k => !!fields[k]);
+      const dupe = keys(pfields).every(k => !!this.fields[k]);
 
       if (dupe) {
-        mutated = true;
+        this.setMutated();
         node.remove();
       } else {
-        fields = {...fields, ...pfields};
+        this.fields = {...this.fields, ...pfields};
       }
     }
-
-    return {continueFlag: true, mutatedFlag: mutated};
-  })(leaf);
+    return this.flags;
+  }
 }

@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
-import {mergeIdenticalNodes, mergeNodes} from '../../../src/compile/data/optimizers';
+import {MergeIdenticalNodes} from '../../../src/compile/data/optimizers';
 import {Transform} from '../../../src/transform';
 import {FilterNode} from './../../../src/compile/data/filter';
 
@@ -18,9 +18,11 @@ describe('compile/data/optimizer', () => {
       const transform1 = new ImputeNode(root, transform);
       // @ts-ignore
       const transform2 = new ImputeNode(root, transform);
-      mergeIdenticalNodes(root);
+      const optimizer = new MergeIdenticalNodes();
+      optimizer.run(root);
       expect(root.children).toHaveLength(1);
       expect(root.children[0]).toEqual(transform1);
+      expect(optimizer.mutatedFlag).toEqual(true);
     });
 
     it('should merge only the children that have the same transform', () => {
@@ -37,8 +39,8 @@ describe('compile/data/optimizer', () => {
       const transform3 = new FilterNode(root, null, 'datum.x > 2');
       // @ts-ignore
       const transform4 = new FilterNode(root, null, 'datum.x > 2');
-
-      mergeIdenticalNodes(root);
+      const optimizer = new MergeIdenticalNodes();
+      optimizer.run(root);
       expect(root.children).toHaveLength(2);
       expect(root.children).toEqual([transform1, transform3]);
     });
@@ -60,9 +62,10 @@ describe('compile/data/optimizer', () => {
       expect(parent.children).toHaveLength(2);
       expect(a.children).toHaveLength(2);
       expect(b.children).toHaveLength(2);
-
-      mergeNodes(parent, [a, b]);
-
+      const optimizer = new MergeIdenticalNodes();
+      optimizer.mergeNodes(parent, [a, b]);
+      optimizer.setMutated();
+      expect(optimizer.mutatedFlag).toEqual(true);
       expect(parent.children).toHaveLength(1);
       expect(a.children).toHaveLength(4);
 
