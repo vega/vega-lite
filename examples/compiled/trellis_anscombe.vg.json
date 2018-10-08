@@ -7,7 +7,7 @@
     {
       "name": "source_0",
       "url": "data/anscombe.json",
-      "format": {"type": "json", "parse": {"X": "number", "Y": "number"}}
+      "format": {"type": "json"}
     },
     {
       "name": "column_domain",

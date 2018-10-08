@@ -70,11 +70,6 @@
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
-        },
-        {
-          "type": "formula",
           "as": "year_year",
           "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
         }

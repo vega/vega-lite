@@ -7,18 +7,7 @@
   "style": "cell",
   "data": [
     {"name": "grid_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Miles_per_Gallon": "number",
-          "Cylinders": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {

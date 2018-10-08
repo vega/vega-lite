@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}},
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
     }
   ],

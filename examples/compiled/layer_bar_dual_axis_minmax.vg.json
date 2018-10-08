@@ -11,12 +11,7 @@
       "url": "data/seattle-weather.csv",
       "format": {
         "type": "csv",
-        "parse": {
-          "date": "date",
-          "precipitation": "number",
-          "temp_max": "number",
-          "temp_min": "number"
-        }
+        "parse": {"date": "date", "temp_max": "number", "temp_min": "number"}
       },
       "transform": [
         {

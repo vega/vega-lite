@@ -6,21 +6,14 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "values": "a\n1\n2\n3\n4", "format": {"type": "csv"}},
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"}
-      ]
-    }
+    {"name": "source_0", "values": "a\n1\n2\n3\n4", "format": {"type": "csv"}}
   ],
   "marks": [
     {
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -49,7 +42,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "a"},
+      "domain": {"data": "source_0", "field": "a"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

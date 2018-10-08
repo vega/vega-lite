@@ -34,7 +34,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "y": {"title": "variety", "type": "ordinal", "field": "variety"},
+            "y": {"field": "variety", "type": "ordinal"},
             "color": {"value": "#4682b4"}
           }
         },
@@ -51,7 +51,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "y": {"title": "variety", "type": "ordinal", "field": "variety"},
+            "y": {"field": "variety", "type": "ordinal"},
             "color": {"value": "#4682b4"}
           }
         },
@@ -65,7 +65,7 @@
               "scale": {"zero": false}
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
-            "y": {"title": "variety", "type": "ordinal", "field": "variety"},
+            "y": {"field": "variety", "type": "ordinal"},
             "color": {"value": "#4682b4"}
           }
         }

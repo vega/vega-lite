@@ -4,11 +4,7 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/barley.json",
-      "format": {"type": "json", "parse": {"yield": "number"}}
-    },
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
       "name": "trellis_barley_row_domain",
       "source": "source_0",

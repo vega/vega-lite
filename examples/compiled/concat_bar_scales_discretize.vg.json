@@ -17,13 +17,6 @@
         {"a": "H", "b": 87},
         {"a": "I", "b": 52}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
     }
   ],
   "signals": [
@@ -67,7 +60,7 @@
           "name": "concat_0_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -130,7 +123,7 @@
           "name": "concat_1_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -195,7 +188,7 @@
           "name": "concat_2_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -249,47 +242,47 @@
     {
       "name": "concat_0_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_0_color",
       "type": "quantize",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"scheme": "blues", "count": 4},
       "zero": true
     },
     {
       "name": "concat_0_size",
       "type": "quantize",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [9, 126.33333333333333, 243.66666666666666, 361],
       "zero": false
     },
     {
       "name": "concat_1_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"step": {"signal": "concat_1_y_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_1_color",
       "type": "quantile",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"scheme": "magma"}
     },
     {
       "name": "concat_1_size",
       "type": "quantile",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [80, 160, 240, 320, 400]
     },
     {
       "name": "concat_2_y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"step": {"signal": "concat_2_y_step"}},
       "padding": 0.5
     },

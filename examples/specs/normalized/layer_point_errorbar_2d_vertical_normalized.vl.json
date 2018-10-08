@@ -31,7 +31,7 @@
               "scale": {"zero": false}
             },
             "y2": {"field": "upper_yield", "type": "quantitative"},
-            "x": {"title": "variety", "type": "ordinal", "field": "variety"}
+            "x": {"field": "variety", "type": "ordinal"}
           }
         }
       ]

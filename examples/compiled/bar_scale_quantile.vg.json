@@ -19,13 +19,6 @@
         {"a": "H", "b": 87},
         {"a": "I", "b": 52}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
     }
   ],
   "signals": [
@@ -40,7 +33,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -66,20 +59,20 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     },
     {
       "name": "color",
       "type": "quantile",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": {"scheme": "blues", "count": 4}
     },
     {
       "name": "size",
       "type": "quantile",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [9, 126.33333333333333, 243.66666666666666, 361]
     }
   ],

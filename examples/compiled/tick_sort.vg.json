@@ -6,11 +6,7 @@
   "height": 21,
   "style": "cell",
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}}
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "marks": [
     {

@@ -3,14 +3,7 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Acceleration": "number"}
-      }
-    },
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
       "name": "row_domain",
       "source": "source_0",

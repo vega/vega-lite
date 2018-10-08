@@ -17,16 +17,6 @@
       "source": "source_1",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"longitude\"])",
-          "as": "longitude"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"latitude\"])",
-          "as": "latitude"
-        },
-        {
           "type": "geojson",
           "fields": ["longitude", "latitude"],
           "signal": "layer_1_geojson_0"
@@ -42,16 +32,7 @@
     {
       "name": "source_2",
       "url": "data/flights-airport.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "origin": "string",
-          "origin_longitude": "number",
-          "origin_latitude": "number",
-          "dest_longitude": "number",
-          "dest_latitude": "number"
-        }
-      },
+      "format": {"type": "csv", "parse": {"origin": "string"}},
       "transform": [
         {"type": "filter", "expr": "datum[\"origin\"]===\"SEA\""},
         {
