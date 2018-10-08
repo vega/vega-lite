@@ -1,7 +1,7 @@
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet, extractTransformsFromEncoding} from './encoding';
+import {Encoding, EncodingWithFacet, extractTransformsFromEncoding, forEach} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
@@ -357,6 +357,39 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
   return false;
 }
 
+export function selectedFields(spec: NormalizedSpec): string[] {
+  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+    return selectedFieldsSingle(spec);
+  }
+  if (isLayerSpec(spec)) {
+    return selectedFieldsLayered(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return selectedFieldsUnit(spec);
+  }
+  throw new Error(log.message.INVALID_SPEC);
+}
+
+function selectedFieldsUnit(spec: NormalizedUnitSpec): string[] {
+  const fields: string[] = [];
+  forEach(spec.encoding, (fieldDef, channel) => {
+    fields.push(fieldDef.field);
+  });
+  return fields;
+}
+
+function selectedFieldsLayered(spec: NormalizedLayerSpec): string[] {
+  let fields: string[] = [];
+  spec.layer.map(subspec => {
+    fields = fields.concat(selectedFields(subspec));
+  });
+  return fields;
+}
+
+function selectedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
+  return selectedFields(spec.spec);
+}
+
 export function extractTransforms(spec: NormalizedSpec, config: Config): NormalizedSpec {
   if (isFacetSpec(spec) || isRepeatSpec(spec)) {
     return extractTransformsSingle(spec, config);
@@ -366,6 +399,12 @@ export function extractTransforms(spec: NormalizedSpec, config: Config): Normali
   }
   if (isUnitSpec(spec)) {
     return extractTransformsUnit(spec, config);
+  }
+  if (isVConcatSpec(spec)) {
+    return extractTransformsVConcat(spec, config);
+  }
+  if (isHConcatSpec(spec)) {
+    return extractTransformsHConcat(spec, config);
   }
   throw new Error(log.message.INVALID_SPEC);
 }
@@ -379,16 +418,15 @@ function extractTransformsUnit(spec: NormalizedUnitSpec, config: Config): Normal
     );
     return {
       transform: [
+        ...(oldTransforms ? oldTransforms : []),
         ...bins,
         ...timeUnits,
-        ...(!aggregate.length ? [] : [{aggregate, groupby}]),
-        ...(oldTransforms ? oldTransforms : [])
+        ...(!aggregate.length ? [] : [{aggregate, groupby}])
       ],
       ...rest,
       encoding: newEncoding
     };
   } else {
-    // No encoding, so there are no transforms to extract
     return spec;
   }
 }
@@ -409,6 +447,32 @@ function extractTransformsLayered(spec: NormalizedLayerSpec, config: Config): No
   return {
     ...rest,
     layer: layer.map(subspec => {
+      return extractTransforms(subspec, config) as any;
+    })
+  };
+}
+
+function extractTransformsVConcat(
+  spec: GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>,
+  config: Config
+): NormalizedConcatSpec {
+  const {vconcat, ...rest} = spec;
+  return {
+    ...rest,
+    vconcat: vconcat.map(subspec => {
+      return extractTransforms(subspec, config) as any;
+    })
+  };
+}
+
+function extractTransformsHConcat(
+  spec: GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>,
+  config: Config
+): NormalizedConcatSpec {
+  const {hconcat, ...rest} = spec;
+  return {
+    ...rest,
+    hconcat: hconcat.map(subspec => {
       return extractTransforms(subspec, config) as any;
     })
   };

@@ -73,7 +73,7 @@ describe('normalize()', () => {
 
   describe('normalizeFacet', () => {
     it('should produce correct layered specs for mean point and vertical error bar', () => {
-      assert.deepEqual(
+      expect(
         normalize(
           {
             description:
@@ -101,71 +101,70 @@ describe('normalize()', () => {
             }
           },
           defaultConfig
-        ),
-        {
-          description:
-            'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
-          data: {
-            url: 'data/population.json'
-          },
-          transform: [
-            {
-              calculate: "(datum.sex==1) ? 'Men':'Women'",
-              as: 'sex'
-            }
-          ],
-          facet: {
-            row: {
-              field: 'sex',
-              type: 'ordinal'
-            }
-          },
-          spec: {
-            layer: [
-              {
-                transform: [
-                  {
-                    aggregate: [
-                      {op: 'stderr', field: 'people', as: 'extent_people'},
-                      {op: 'mean', field: 'people', as: 'center_people'}
-                    ],
-                    groupby: ['age']
-                  },
-                  {
-                    calculate: 'datum.center_people + datum.extent_people',
-                    as: 'upper_people'
-                  },
-                  {
-                    calculate: 'datum.center_people - datum.extent_people',
-                    as: 'lower_people'
-                  }
-                ],
-                layer: [
-                  {
-                    mark: {type: 'rule', style: 'errorbar-rule'},
-                    encoding: {
-                      y: {
-                        field: 'lower_people',
-                        type: 'quantitative',
-                        title: 'people'
-                      },
-                      y2: {field: 'upper_people', type: 'quantitative'},
-                      x: {field: 'age', type: 'ordinal', title: 'age'}
-                    }
-                  }
-                ]
-              },
-              {
-                mark: {type: 'point', opacity: 1, filled: true},
-                encoding: {
-                  x: {field: 'age', type: 'ordinal'},
-                  y: {field: 'people', type: 'quantitative', aggregate: 'mean'}
-                }
-              }
-            ]
+        )
+      ).toEqual({
+        description:
+          'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
+        data: {
+          url: 'data/population.json'
+        },
+        transform: [
+          {
+            calculate: "(datum.sex==1) ? 'Men':'Women'",
+            as: 'sex'
           }
+        ],
+        facet: {
+          row: {
+            field: 'sex',
+            type: 'ordinal'
+          }
+        },
+        spec: {
+          layer: [
+            {
+              transform: [
+                {
+                  aggregate: [
+                    {op: 'stderr', field: 'people', as: 'extent_people'},
+                    {op: 'mean', field: 'people', as: 'center_people'}
+                  ],
+                  groupby: ['age']
+                },
+                {
+                  calculate: 'datum.center_people + datum.extent_people',
+                  as: 'upper_people'
+                },
+                {
+                  calculate: 'datum.center_people - datum.extent_people',
+                  as: 'lower_people'
+                }
+              ],
+              layer: [
+                {
+                  mark: {type: 'rule', style: 'errorbar-rule'},
+                  encoding: {
+                    y: {
+                      field: 'lower_people',
+                      type: 'quantitative',
+                      title: 'people'
+                    },
+                    y2: {field: 'upper_people', type: 'quantitative'},
+                    x: {field: 'age', type: 'ordinal'}
+                  }
+                }
+              ]
+            },
+            {
+              mark: {type: 'point', opacity: 1, filled: true},
+              encoding: {
+                x: {field: 'age', type: 'ordinal'},
+                y: {field: 'people', type: 'quantitative', aggregate: 'mean'}
+              }
+            }
+          ]
         }
-      );
+      });
     });
   });
 

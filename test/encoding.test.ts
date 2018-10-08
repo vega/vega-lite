@@ -85,7 +85,7 @@ describe('encoding', () => {
             title: 'a (year-month-date-hours-minutes)',
             axis: {format: '%b %d, %Y %H:%M'}
           },
-          y: {field: 'b', type: 'quantitative', title: 'b'}
+          y: {field: 'b', type: 'quantitative'}
         }
       });
     });
@@ -110,7 +110,7 @@ describe('encoding', () => {
         aggregate: [{op: 'max', field: 'b', as: 'max_b'}],
         groupby: ['a'],
         encoding: {
-          x: {field: 'a', type: 'quantitative', title: 'a'},
+          x: {field: 'a', type: 'quantitative'},
           y: {
             field: 'max_b',
             type: 'quantitative',
@@ -136,7 +136,7 @@ describe('encoding', () => {
         aggregate: [{op: 'count', as: 'count_*'}],
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
-          x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)'},
+          x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
           x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
           y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
         }
@@ -159,13 +159,13 @@ describe('encoding', () => {
         ),
         defaultConfig
       );
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         bins: [],
         timeUnits: [],
         aggregate: [{op: 'mean', field: 'b', as: 'mean_b'}],
         groupby: ['a'],
         encoding: {
-          x: {field: 'a', type: 'quantitative', title: 'a'},
+          x: {field: 'a', type: 'quantitative'},
           y: {
             field: 'mean_b',
             type: 'quantitative',

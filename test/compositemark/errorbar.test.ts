@@ -62,7 +62,7 @@ describe('normalizeErrorBar with raw data input', () => {
                 title: 'people'
               },
               y2: {field: 'upper_people', type: 'quantitative'},
-              x: {field: 'age', type: 'ordinal', title: 'age'}
+              x: {field: 'age', type: 'ordinal'}
             }
           }
         ]
@@ -659,7 +659,7 @@ describe('normalizeErrorBar with aggregated data input', () => {
   const mark = 'errorbar';
 
   it('should produce correct layered specs for vertical errorbar with aggregated data input', () => {
-    assert.deepEqual(
+    expect(
       normalize(
         {
           data,
@@ -671,26 +671,25 @@ describe('normalizeErrorBar with aggregated data input', () => {
           }
         },
         defaultConfig
-      ),
-      {
-        data,
-        transform: [{calculate: 'datum.people', as: 'lower_people'}, {calculate: 'datum.people2', as: 'upper_people'}],
-        layer: [
-          {
-            mark: {type: 'rule', style: 'errorbar-rule'},
-            encoding: {
-              y: {
-                field: 'lower_people',
-                type: 'quantitative',
-                title: 'people'
-              },
-              y2: {field: 'upper_people', type: 'quantitative'},
-              x: {field: 'age', type: 'ordinal', title: 'age'}
-            }
+      )
+    ).toEqual({
+      data,
+      transform: [{calculate: 'datum.people', as: 'lower_people'}, {calculate: 'datum.people2', as: 'upper_people'}],
+      layer: [
+        {
+          mark: {type: 'rule', style: 'errorbar-rule'},
+          encoding: {
+            y: {
+              field: 'lower_people',
+              type: 'quantitative',
+              title: 'people'
+            },
+            y2: {field: 'upper_people', type: 'quantitative'},
+            x: {field: 'age', type: 'ordinal'}
           }
-        ]
-      }
-    );
+        }
+      ]
+    });
   });
 
   it('should produce correct layered specs for horizontal errorbar with aggregated data input', () => {

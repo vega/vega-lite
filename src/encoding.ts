@@ -5,7 +5,6 @@ import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} fr
 import {binRequiresRange} from './compile/common';
 import {Config} from './config';
 import {FacetMapping} from './facet';
-import {isPositionFieldDef} from './fielddef';
 import {
   ChannelDef,
   Field,
@@ -13,6 +12,7 @@ import {
   FieldDefWithCondition,
   FieldDefWithoutScale,
   getFieldDef,
+  getGuide,
   hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
@@ -206,13 +206,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
   const encoding: Encoding<string> = {};
 
   forEach(oldEncoding, (channelDef, channel) => {
-    if (isFieldDef(channelDef)) {
-      // Extract potential embedded transformations along with remaining properties
-      const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
-      const isTitleDefined =
-        channelDef['title'] ||
-        (channelDef['axis'] && channelDef['axis']['title']) ||
-        (channelDef['legend'] && channelDef['legend']['title']);
+    // Extract potential embedded transformations along with remaining properties
+    const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
+    if (isFieldDef(channelDef) && (aggOp || timeUnit || bin)) {
+      const guide = getGuide(channelDef);
+      const isTitleDefined = guide && guide.title;
       const newField = vgField(channelDef, {forAs: true});
       const newChannelDef = {
         // Only add title if it doesn't exist
@@ -246,6 +244,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
           };
           encoding[channel + '2'] = secondaryChannel;
         }
+        newChannelDef['bin'] = 'binned';
         newChannelDef.type = Type.QUANTITATIVE;
       } else if (timeUnit) {
         timeUnits.push({timeUnit, field, as: newField});
@@ -265,6 +264,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
       }
       // now the field should refer to post-transformed field instead
       encoding[channel] = newChannelDef;
+    } else if (isFieldDef(channelDef)) {
+      groupby.push(field);
+      encoding[channel] = oldEncoding[channel];
     } else {
       // For value def, just copy
       encoding[channel] = oldEncoding[channel];

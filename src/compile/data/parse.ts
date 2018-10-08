@@ -1,3 +1,4 @@
+import {isMinMaxOp} from '../../aggregate';
 import {Data, isInlineData, isNamedData, isUrlData, MAIN, ParseValue, RAW} from '../../data';
 import * as log from '../../log';
 import {
@@ -14,7 +15,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, keys, mergeDeep} from '../../util';
+import {deepEqual, keys, mergeDeep, StringSet} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
@@ -93,6 +94,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   model.transforms.forEach(t => {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
+    const ignoredFields: StringSet = {};
 
     if (isCalculate(t)) {
       transformNode = head = new CalculateNode(head, t);
@@ -110,6 +112,15 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';
+
+      // min and max aggregates are not necessarily operating on, or outputting, numbers
+      for (const fieldDef of t.aggregate) {
+        if (isMinMaxOp(fieldDef.op)) {
+          for (const field of keys(transformNode.producedFields())) {
+            ignoredFields[field] = true;
+          }
+        }
+      }
 
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
@@ -141,7 +152,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
 
     if (transformNode && derivedType !== undefined) {
       for (const field of keys(transformNode.producedFields())) {
-        ancestorParse.set(field, derivedType, false);
+        if (!ignoredFields[field]) {
+          ancestorParse.set(field, derivedType, false);
+        }
       }
     }
   });
@@ -298,7 +311,6 @@ export function parseData(model: Model): DataComponent {
     outputNodes[facetName] = facetRoot;
     head = facetRoot;
   }
-
   return {
     ...model.component.data,
     outputNodes,
