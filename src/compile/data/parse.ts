@@ -94,7 +94,6 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   model.transforms.forEach(t => {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
-    const ignoredFields: StringSet = {};
 
     if (isCalculate(t)) {
       transformNode = head = new CalculateNode(head, t);
@@ -112,16 +111,6 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';
-
-      // min and max aggregates are not necessarily operating on, or outputting, numbers
-      for (const fieldDef of t.aggregate) {
-        if (isMinMaxOp(fieldDef.op)) {
-          for (const field of keys(transformNode.producedFields())) {
-            ignoredFields[field] = true;
-          }
-        }
-      }
-
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
       }
@@ -152,9 +141,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
 
     if (transformNode && derivedType !== undefined) {
       for (const field of keys(transformNode.producedFields())) {
-        if (!ignoredFields[field]) {
-          ancestorParse.set(field, derivedType, false);
-        }
+        ancestorParse.set(field, derivedType, false);
       }
     }
   });
