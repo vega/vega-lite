@@ -16,6 +16,8 @@ Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
+Read about future plans in [our roadmap](https://docs.google.com/document/d/1fscSxSJtfkd1m027r1ONCc7O8RdZp1oGABwca2pgV_E).
+
 ## Team
 
 The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), [Arvind Satyanarayan](https://twitter.com/arvindsatya1), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu), with significant help from [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Matthew Chun](http://mattwchun.com/), and [Akshat Shrivastava](https://github.com/AkshatSh).
