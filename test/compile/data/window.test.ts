@@ -1,10 +1,9 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {makeWindowFromFacet} from '../../../src/compile/data/windowfacet';
 import {Transform} from '../../../src/transform';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/window', () => {
   it('creates correct window nodes for calculating sort field of crossed facet', () => {
@@ -29,12 +28,11 @@ describe('compile/data/window', () => {
   });
 
   it('does not create any window nodes for crossed facet', () => {
-    assert.deepEqual(
+    expect(
       makeWindowFromFacet(null, {
         row: {field: 'a', type: 'nominal'}
-      }),
-      null
-    );
+      })
+    ).toEqual(null);
   });
 
   it('should return a proper vg transform', () => {
@@ -56,7 +54,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    assert.deepEqual(window.assemble(), {
+    expect(window.assemble()).toEqual({
       type: 'window',
       ops: ['row_number'],
       fields: [null],
@@ -91,7 +89,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    assert.deepEqual(window.assemble(), {
+    expect(window.assemble()).toEqual({
       type: 'window',
       ops: ['row_number'],
       fields: [null],
@@ -130,11 +128,33 @@ describe('compile/data/window', () => {
           order: 'ascending'
         }
       ],
-      groupby: ['f'],
+      groupby: ['g'],
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    assert.deepEqual({count_field: true, ordered_row_number: true, sum_field: true}, window.producedFields());
+    expect(window.producedFields()).toEqual({count_field: true, ordered_row_number: true, sum_field: true});
+  });
+
+  it('should generate the correct dependent fields', () => {
+    const transform: Transform = {
+      window: [
+        {
+          op: 'row_number',
+          as: 'ordered_row_number'
+        }
+      ],
+      ignorePeers: false,
+      sort: [
+        {
+          field: 'f',
+          order: 'ascending'
+        }
+      ],
+      groupby: ['g'],
+      frame: [null, 0]
+    };
+    const window = new WindowTransformNode(null, transform);
+    expect(window.dependentFields()).toEqual({g: true, f: true});
   });
 
   it('should clone to an equivalent version', () => {
@@ -156,7 +176,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    assert.deepEqual(window, window.clone());
+    expect(window).toEqual(window.clone());
   });
 
   it('should never clone parent', () => {
@@ -185,8 +205,7 @@ describe('compile/data/window', () => {
     };
     const window = new WindowTransformNode(null, transform);
     const hash = window.hash();
-    assert.deepEqual(
-      hash,
+    expect(hash).toBe(
       'WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}'
     );
   });
