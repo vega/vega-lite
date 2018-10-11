@@ -58,7 +58,7 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
       {
         name: 'one_tuple',
-        update: 'one__vgsid_ ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
+        update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
       }
     ]);
 
@@ -83,7 +83,7 @@ describe('Inputs Selection Transform', () => {
       {
         name: 'two_tuple',
         update:
-          'two_Cylinders && two_Horsepower ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
+          'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
       }
     ]);
 
@@ -119,7 +119,7 @@ describe('Inputs Selection Transform', () => {
       {
         name: 'three_tuple',
         update:
-          'three_Cylinders && three_Origin ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
+          'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
       }
     ]);
 

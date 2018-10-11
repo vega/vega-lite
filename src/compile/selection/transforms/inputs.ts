@@ -42,9 +42,10 @@ const inputBindings: TransformCompiler = {
     const signal = signals.filter(s => s.name === name + TUPLE)[0];
     const fields = name + TUPLE + TUPLE_FIELDS;
     const values = proj.map(p => varName(`${name}_${p.field}`));
+    const valid = values.map(v => `${v} !== null`).join(' && ');
 
     if (values.length) {
-      signal.update = `${values.join(' && ')} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
+      signal.update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
     }
 
     delete signal.value;
