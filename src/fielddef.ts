@@ -291,7 +291,7 @@ export interface OrderFieldDef<F> extends FieldDefWithoutScale<F> {
 
 export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
-   * The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }
