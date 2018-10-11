@@ -1,5 +1,5 @@
 import {InlineDataset, isUrlData} from '../../data';
-import {Dict, vals} from '../../util';
+import {Dict} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
@@ -199,7 +199,6 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @return modified data array
  */
 export function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[] {
-  const roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
   // roots.forEach(debug);
@@ -209,7 +208,7 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  dataComponent.sources.forEach(root => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

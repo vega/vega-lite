@@ -21,7 +21,7 @@ describe('compile/data/assemble', () => {
 
       const data = assembleRootData(
         {
-          sources: {named: src},
+          sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
           isFaceted: false
@@ -48,7 +48,7 @@ describe('compile/data/assemble', () => {
 
       const data = assembleRootData(
         {
-          sources: {named: src},
+          sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
           isFaceted: false
@@ -110,7 +110,7 @@ describe('compile/data/assemble', () => {
 
       const data = assembleRootData(
         {
-          sources: {named: src},
+          sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
           isFaceted: false
@@ -155,7 +155,7 @@ describe('compile/data/assemble', () => {
 
       const data = assembleRootData(
         {
-          sources: {named: src},
+          sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
           isFaceted: false
