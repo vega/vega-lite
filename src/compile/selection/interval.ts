@@ -82,7 +82,8 @@ const interval: SelectionCompiler = {
       on: [
         {
           events: dataSignals.map(t => ({signal: t})),
-          update: dataSignals.join(' && ') +
+          update:
+            dataSignals.join(' && ') +
             ` ? {unit: ${unitName(model)}, fields: ${fieldsSg}, ` +
             `values: [${dataSignals.join(', ')}]} : null`
         }
@@ -208,16 +209,16 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   return hasScales
     ? [{name: dname, on: []}]
     : [
-      {
-        name: vname,
-        value: [],
-        on: on
-      },
-      {
-        name: dname,
-        on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
-      }
-    ];
+        {
+          name: vname,
+          value: [],
+          on: on
+        },
+        {
+          name: dname,
+          on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
+        }
+      ];
 }
 
 function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {

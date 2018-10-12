@@ -24,7 +24,7 @@ describe('Single Selection', () => {
       nearest: true,
       on: 'mouseover',
       encodings: ['y', 'color'],
-      resolve: "intersect"
+      resolve: 'intersect'
     }
   }));
 

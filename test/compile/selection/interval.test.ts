@@ -179,8 +179,7 @@ describe('Interval Selections', () => {
           on: [
             {
               events: [{signal: 'one_Horsepower'}],
-              update:
-                'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
+              update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
             }
           ]
         }

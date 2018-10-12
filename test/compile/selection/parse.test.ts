@@ -84,7 +84,9 @@ describe('Selection', () => {
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [{field: 'Origin', channel: 'color', type: 'E'}]);
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [
+      {field: 'Origin', channel: 'color', type: 'E'}
+    ]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');
@@ -127,7 +129,9 @@ describe('Selection', () => {
     assert.equal(component.two.name, 'two');
     assert.equal(component.two.type, 'multi');
     assert.equal(component.two.toggle, 'event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [{field: 'Origin', channel: 'color', type: 'E'}]);
+    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [
+      {field: 'Origin', channel: 'color', type: 'E'}
+    ]);
     assert.sameDeepMembers(component['two'].events, parseSelector('mouseover', 'scope'));
 
     assert.equal(component.three.name, 'three');

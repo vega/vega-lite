@@ -9,14 +9,16 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-  const values = proj.map(p => {
-    const fieldDef = model.fieldDef(p.channel);
-    // Binned fields should capture extents, for a range test against the raw field.
-    return fieldDef && fieldDef.bin
-      ? (`[${accessPathWithDatum(model.vgField(p.channel, {}), datum)}, ` +
-        `${accessPathWithDatum(model.vgField(p.channel, {binSuffix: 'end'}), datum)}]`)
-      : `${accessPathWithDatum(p.field, datum)}`;
-  }).join(', ');
+  const values = proj
+    .map(p => {
+      const fieldDef = model.fieldDef(p.channel);
+      // Binned fields should capture extents, for a range test against the raw field.
+      return fieldDef && fieldDef.bin
+        ? `[${accessPathWithDatum(model.vgField(p.channel, {}), datum)}, ` +
+            `${accessPathWithDatum(model.vgField(p.channel, {binSuffix: 'end'}), datum)}]`
+        : `${accessPathWithDatum(p.field, datum)}`;
+    })
+    .join(', ');
 
   // Only add a discrete selection to the store if a datum is present _and_
   // the interaction isn't occurring on a group mark. This guards against
@@ -32,7 +34,8 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
       on: [
         {
           events: selCmpt.events,
-          update: `datum && item().mark.marktype !== 'group' ? ` +
+          update:
+            `datum && item().mark.marktype !== 'group' ? ` +
             `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
           force: true
         }

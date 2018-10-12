@@ -170,8 +170,8 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
     if (!hasSg.length) {
       signals.push({
         name: selCmpt.name,
-        update: `vlSelectionResolve(${store}` +
-          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+        update:
+          `vlSelectionResolve(${store}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
       });
     }
     hasSelections = true;
@@ -256,8 +256,8 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
       stores.push(store);
     }
 
-    return (`vlSelectionTest(${store}, datum` +
-      (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+    return (
+      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 
@@ -292,7 +292,7 @@ export function selectionScaleDomain(model: Model, domainRaw: SignalRef): Signal
       if (selCmpt.project.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-          `Using "field": ${stringValue(field)}.`
+            `Using "field": ${stringValue(field)}.`
         );
       }
     } else if (encoding && !field) {
@@ -301,8 +301,8 @@ export function selectionScaleDomain(model: Model, domainRaw: SignalRef): Signal
         field = selCmpt.project[0].field;
         warn(
           (!encodings.length ? 'No ' : 'Multiple ') +
-          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
-          `Using "field": ${stringValue(field)}.`
+            `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
+            `Using "field": ${stringValue(field)}.`
         );
       } else {
         field = encodings[0].field;
