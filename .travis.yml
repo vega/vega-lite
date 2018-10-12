@@ -6,11 +6,10 @@ language: node_js
 node_js:
   - "6"
   - "8"
-env:
-  LATEST=false
+env: LATEST=false
 matrix:
   include:
-    - node_js: "10"
+    - node_js: "10" # Update version in check-and-fix.sh as well.
       env: LATEST=true
 
 before_install: |
@@ -42,3 +41,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 cache: yarn
+
+env:
+  global:
+    secure: I9sReagJiE7B0154AnU3t8WcdPtmZm86vMp+6umKegvzYr46jbypPAmlWW50A09fw4AmTaGOtwpYtvglf0JikkR6saXY0rRquDnO70DRmbdrO2o2WMjjCzkYID58SkGvqsqVJ4HXcu0HdJp6o5L7v7JMdzji6abYKxtsnw2ouk0=

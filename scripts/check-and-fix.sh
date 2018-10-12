@@ -6,7 +6,7 @@ git checkout $TRAVIS_BRANCH
 
 node_version=$(node --version | cut -d. -f1 | cut -c2-)
 
-if [[ $node_version != '8' ]]; then
+if [[ $node_version != '10' ]]; then
   exit 0;
 fi
 
