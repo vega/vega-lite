@@ -21,6 +21,7 @@ before_install: |
   sudo mv parallel sem /usr/local/bin
 
 script: |
+  set -e
   yarn data
   if [ $LATEST = true ]; then
     yarn build
@@ -36,6 +37,7 @@ script: |
     yarn jest
     yarn test:runtime
   fi
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
