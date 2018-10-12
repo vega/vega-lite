@@ -21,7 +21,7 @@ before_install: |
   sudo mv parallel sem /usr/local/bin
 
 script: |
-  set -e
+  set -ev
   yarn data
   if [ $LATEST = true ]; then
     yarn build
