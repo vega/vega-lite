@@ -29,6 +29,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "view", "update": "vlSelectionResolve(\"view_store\")"},
     {
       "name": "view_income",
       "on": [
@@ -60,9 +61,13 @@
       "on": [
         {
           "events": [{"signal": "view_income"}, {"signal": "view_health"}],
-          "update": "view_income && view_health ? {unit: \"\", intervals: [{encoding: \"x\", field: \"income\", extent: view_income}, {encoding: \"y\", field: \"health\", extent: view_health}]} : null"
+          "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income, view_health]} : null"
         }
       ]
+    },
+    {
+      "name": "view_tuple_fields",
+      "update": "[{\"field\":\"income\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"health\",\"channel\":\"y\",\"type\":\"R\"}]"
     },
     {
       "name": "view_translate_anchor",

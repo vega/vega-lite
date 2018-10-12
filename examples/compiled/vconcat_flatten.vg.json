@@ -67,7 +67,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))"
+          "expr": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))"
         }
       ]
     }
@@ -81,7 +81,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -108,10 +109,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", encodings: [], fields: [\"id\"], values: [datum[\"id\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", fields: pts_tuple_fields, values: [datum[\"id\"]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "pts_tuple_fields",
+          "update": "[{\"field\":\"id\",\"type\":\"E\"}]"
         },
         {
           "name": "pts_toggle",
@@ -148,7 +153,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+                  "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
                   "value": "steelblue"
                 },
                 {"value": "grey"}

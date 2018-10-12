@@ -27,6 +27,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "grid", "update": "vlSelectionResolve(\"grid_store\")"},
     {"name": "grid_Miles_per_Gallon"},
     {"name": "grid_Horsepower"},
     {"name": "grid_Acceleration"}
@@ -82,9 +83,13 @@
                 {"signal": "grid_Miles_per_Gallon"},
                 {"signal": "grid_Horsepower"}
               ],
-              "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]} : null"
+              "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon, grid_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -276,9 +281,13 @@
                 {"signal": "grid_Acceleration"},
                 {"signal": "grid_Horsepower"}
               ],
-              "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child_Horsepower_Acceleration\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]} : null"
+              "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration, grid_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -439,11 +448,11 @@
           "on": [
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
+              "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
-              "update": "zoomLinear(domain(\"child_Horsepower_Horsepower_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+              "update": "zoomLinear(domain(\"child_Horsepower_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
             }
           ],
           "push": "outer"
@@ -453,9 +462,13 @@
           "on": [
             {
               "events": [{"signal": "grid_Horsepower"}],
-              "update": "grid_Horsepower ? {unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: grid_Horsepower}]} : null"
+              "update": "grid_Horsepower ? {unit: \"child_Horsepower_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -463,7 +476,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mousedown"}],
-              "update": "{x: x(unit), y: y(unit), extent_y: domain(\"child_Horsepower_Horsepower_y\")}"
+              "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Horsepower_Horsepower_x\")}"
             }
           ]
         },
@@ -647,9 +660,13 @@
                 {"signal": "grid_Miles_per_Gallon"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]} : null"
+              "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon, grid_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -810,11 +827,11 @@
           "on": [
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
+              "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
-              "update": "zoomLinear(domain(\"child_Acceleration_Acceleration_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+              "update": "zoomLinear(domain(\"child_Acceleration_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
             }
           ],
           "push": "outer"
@@ -824,9 +841,13 @@
           "on": [
             {
               "events": [{"signal": "grid_Acceleration"}],
-              "update": "grid_Acceleration ? {unit: \"child_Acceleration_Acceleration\", intervals: [{encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]} : null"
+              "update": "grid_Acceleration ? {unit: \"child_Acceleration_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -834,7 +855,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mousedown"}],
-              "update": "{x: x(unit), y: y(unit), extent_y: domain(\"child_Acceleration_Acceleration_y\")}"
+              "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Acceleration_Acceleration_x\")}"
             }
           ]
         },
@@ -1018,9 +1039,13 @@
                 {"signal": "grid_Horsepower"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]} : null"
+              "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower, grid_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -1181,11 +1206,11 @@
           "on": [
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
+              "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
-              "update": "zoomLinear(domain(\"child_Miles_per_Gallon_Miles_per_Gallon_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
+              "update": "zoomLinear(domain(\"child_Miles_per_Gallon_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
             }
           ],
           "push": "outer"
@@ -1195,9 +1220,13 @@
           "on": [
             {
               "events": [{"signal": "grid_Miles_per_Gallon"}],
-              "update": "grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\", intervals: [{encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
+              "update": "grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -1205,7 +1234,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mousedown"}],
-              "update": "{x: x(unit), y: y(unit), extent_y: domain(\"child_Miles_per_Gallon_Miles_per_Gallon_y\")}"
+              "update": "{x: x(unit), y: y(unit), extent_x: domain(\"child_Miles_per_Gallon_Miles_per_Gallon_x\")}"
             }
           ]
         },
@@ -1389,9 +1418,13 @@
                 {"signal": "grid_Acceleration"},
                 {"signal": "grid_Miles_per_Gallon"}
               ],
-              "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: grid_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
+              "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration, grid_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -1583,9 +1616,13 @@
                 {"signal": "grid_Horsepower"},
                 {"signal": "grid_Miles_per_Gallon"}
               ],
-              "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
+              "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower, grid_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",

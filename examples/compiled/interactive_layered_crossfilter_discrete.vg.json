@@ -59,7 +59,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -131,7 +131,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -191,7 +191,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlMulti(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -210,7 +210,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -233,10 +234,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", encodings: [\"x\"], fields: [\"distance\"], values: [[datum[\"bin_maxbins_20_distance\"], datum[\"bin_maxbins_20_distance_end\"]]], \"bin_distance\": 1} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_distance\"], datum[\"bin_maxbins_20_distance_end\"]]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"distance\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
         },
         {
           "name": "brush_toggle",
@@ -374,10 +379,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", encodings: [\"x\"], fields: [\"delay\"], values: [[datum[\"bin_maxbins_20_delay\"], datum[\"bin_maxbins_20_delay_end\"]]], \"bin_delay\": 1} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_delay\"], datum[\"bin_maxbins_20_delay_end\"]]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"delay\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
         },
         {
           "name": "brush_toggle",
@@ -515,10 +524,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", encodings: [\"x\"], fields: [\"time\"], values: [[datum[\"bin_maxbins_20_time\"], datum[\"bin_maxbins_20_time_end\"]]], \"bin_time\": 1} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_time\"], datum[\"bin_maxbins_20_time_end\"]]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"time\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
         },
         {
           "name": "brush_toggle",

@@ -59,7 +59,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -131,7 +131,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -191,7 +191,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -210,7 +210,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -291,9 +292,13 @@
           "on": [
             {
               "events": [{"signal": "brush_distance"}],
-              "update": "brush_distance ? {unit: \"child_distance_layer_0\", intervals: [{encoding: \"x\", field: \"distance\", extent: brush_distance}]} : null"
+              "update": "brush_distance ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [brush_distance]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"distance\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -635,9 +640,13 @@
           "on": [
             {
               "events": [{"signal": "brush_delay"}],
-              "update": "brush_delay ? {unit: \"child_delay_layer_0\", intervals: [{encoding: \"x\", field: \"delay\", extent: brush_delay}]} : null"
+              "update": "brush_delay ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [brush_delay]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"delay\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -979,9 +988,13 @@
           "on": [
             {
               "events": [{"signal": "brush_time"}],
-              "update": "brush_time ? {unit: \"child_time_layer_0\", intervals: [{encoding: \"x\", field: \"time\", extent: brush_time}]} : null"
+              "update": "brush_time ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [brush_time]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"time\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",

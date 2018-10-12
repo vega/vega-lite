@@ -28,6 +28,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "region", "update": "vlSelectionResolve(\"region_store\")"},
     {"name": "region_Horsepower"},
     {"name": "region_Miles_per_Gallon"}
   ],
@@ -85,9 +86,13 @@
                 {"signal": "region_Horsepower"},
                 {"signal": "region_Miles_per_Gallon"}
               ],
-              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]} : null"
+              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower, region_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "region_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "region_translate_anchor",

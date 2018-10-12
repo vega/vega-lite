@@ -27,6 +27,11 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
+    {
+      "name": "hoverbrush",
+      "update": "vlSelectionResolve(\"hoverbrush_store\")"
+    },
     {
       "name": "brush_x",
       "value": [],
@@ -149,9 +154,13 @@
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
         }
       ]
+    },
+    {
+      "name": "brush_tuple_fields",
+      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
     },
     {
       "name": "brush_translate_anchor",
@@ -237,10 +246,14 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: hoverbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "hoverbrush_tuple_fields",
+      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
     },
     {
       "name": "hoverbrush_toggle",
@@ -322,11 +335,11 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"hoverbrush_store\"))) || (vlMulti(\"hoverbrush_store\", datum))",
+              "test": "!(length(data(\"hoverbrush_store\"))) || (vlSelectionTest(\"hoverbrush_store\", datum))",
               "value": "blue"
             },
             {
-              "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+              "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
               "value": "skyblue"
             },
             {"value": "grey"}

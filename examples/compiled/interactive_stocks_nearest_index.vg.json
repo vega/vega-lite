@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSingle(\"index_store\", datum)))"
+          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum)))"
         }
       ]
     }
@@ -31,20 +31,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "index",
-      "update": "data(\"index_store\").length && {date: data(\"index_store\")[0].values[0]}"
-    },
+    {"name": "index", "update": "vlSelectionResolve(\"index_store\")"},
     {
       "name": "index_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mousemove"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "index_tuple_fields",
+      "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"E\"}]"
     },
     {
       "name": "index_modify",
