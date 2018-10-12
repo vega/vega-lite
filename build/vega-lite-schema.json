@@ -1689,7 +1689,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "test": {
@@ -1923,7 +1923,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "selection": {
@@ -3413,7 +3413,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -8315,7 +8315,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
