@@ -1,4 +1,4 @@
-import {ScaleChannel, SingleDefChannel} from '../../../channel';
+import {ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {SelectionDef} from '../../../selection';
