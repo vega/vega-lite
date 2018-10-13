@@ -404,7 +404,7 @@
         },
         {
           "name": "xenc_tuple",
-          "update": "xenc_X ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
+          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
         },
         {
           "name": "xenc_tuple_fields",
