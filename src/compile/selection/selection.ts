@@ -119,7 +119,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     const name = selCmpt.name;
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
-    signals.push.apply(signals, selCompiler.signals(model, selCmpt));
+    signals.push(...selCompiler.signals(model, selCmpt));
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.signals) {
@@ -228,11 +228,11 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
-  model.children.forEach(child => {
+  for (const child of model.children) {
     if (isUnitModel(child)) {
       marks = assembleUnitSelectionMarks(child, marks);
     }
-  });
+  }
 
   return marks;
 }

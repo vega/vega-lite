@@ -53,7 +53,7 @@ const interval: SelectionCompiler = {
       const scaleType = model.getScaleComponent(channel).get('type');
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
-      signals.push.apply(signals, cs);
+      signals.push(...cs);
       dataSignals.push(dname);
 
       scaleTriggers.push({

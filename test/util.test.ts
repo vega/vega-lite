@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {entries, fieldIntersection, flatAccessWithDatum, prefixGenerator, unique, uniqueId} from '../src/util';
+import {entries, fieldIntersection, fill, flatAccessWithDatum, prefixGenerator, unique, uniqueId} from '../src/util';
 
 import {
   accessPathDepth,
@@ -200,6 +200,14 @@ describe('util', () => {
   describe('uniqueId', () => {
     it('should return new id', () => {
       expect(uniqueId() === uniqueId()).toBeFalsy();
+    });
+  });
+
+  describe('fill', () => {
+    it('should return array of right length and filled with the right values', () => {
+      const arr = fill(42, 5);
+      expect(arr).toHaveLength(5);
+      expect(arr).toEqual([42, 42, 42, 42, 42]);
     });
   });
 });

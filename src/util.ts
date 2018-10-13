@@ -111,9 +111,9 @@ export function flatten(arrays: any[]) {
 }
 
 export function fill<T>(val: T, len: number) {
-  const arr: T[] = [];
+  const arr = new Array<T>(len);
   for (let i = 0; i < len; ++i) {
-    arr.push(val);
+    arr[i] = val;
   }
   return arr;
 }

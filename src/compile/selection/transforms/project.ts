@@ -1,4 +1,4 @@
-import {ScaleChannel, SingleDefChannel} from '../../../channel';
+import {ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {SelectionDef} from '../../../selection';
@@ -23,10 +23,10 @@ const project: TransformCompiler = {
 
     // TODO: find a possible channel mapping for these fields.
     if (selDef.fields) {
-      p.push.apply(p, selDef.fields.map(field => ({field, type: 'E'})));
+      p.push(...selDef.fields.map<ProjectSelectionComponent>(field => ({field, type: 'E'})));
     }
 
-    (selDef.encodings || []).forEach((channel: SingleDefChannel) => {
+    for (const channel of selDef.encodings || []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;
@@ -67,7 +67,7 @@ const project: TransformCompiler = {
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
-    });
+    }
 
     if (keys(timeUnits).length) {
       selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
