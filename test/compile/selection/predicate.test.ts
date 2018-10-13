@@ -48,7 +48,10 @@ describe('Selection Predicate', () => {
 
     assert.equal(predicate(model, 'four'), '(vlSelectionTest("four_store", datum))');
 
-    assert.equal(predicate(model, {not: 'one'}), '!(length(data("one_store"))) || (!(vlSelectionTest("one_store", datum)))');
+    assert.equal(
+      predicate(model, {not: 'one'}),
+      '!(length(data("one_store"))) || (!(vlSelectionTest("one_store", datum)))'
+    );
 
     assert.equal(
       predicate(model, {not: {and: ['one', 'two']}}),
@@ -59,7 +62,9 @@ describe('Selection Predicate', () => {
 
     assert.equal(
       predicate(model, {not: {and: ['one', 'four']}}),
-      '!(length(data("one_store"))) || ' + '(!((vlSelectionTest("one_store", datum)) && ' + '(vlSelectionTest("four_store", datum))))'
+      '!(length(data("one_store"))) || ' +
+        '(!((vlSelectionTest("one_store", datum)) && ' +
+        '(vlSelectionTest("four_store", datum))))'
     );
 
     assert.equal(

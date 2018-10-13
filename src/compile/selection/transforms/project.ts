@@ -60,7 +60,7 @@ const project: TransformCompiler = {
             type = 'R-RE';
           }
 
-          p.push(f[field] = {field, channel, type});
+          p.push((f[field] = {field, channel, type}));
         }
 
         selCmpt.fields[channel] = field;
@@ -77,9 +77,12 @@ const project: TransformCompiler = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name + TUPLE + TUPLE_FIELDS;
     const hasSignal = signals.filter(s => s.name === name);
-    return hasSignal.length ? signals : signals.concat({
-      name, update: `${JSON.stringify(selCmpt.project)}`
-    });
+    return hasSignal.length
+      ? signals
+      : signals.concat({
+          name,
+          update: `${JSON.stringify(selCmpt.project)}`
+        });
   }
 };
 
