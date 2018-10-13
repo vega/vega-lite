@@ -15,7 +15,7 @@ const inputBindings: TransformCompiler = {
     const bind = selCmpt.bind;
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
-    proj.forEach(p => {
+    for (const p of proj) {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
       if (!hasSignal.length) {
@@ -31,7 +31,7 @@ const inputBindings: TransformCompiler = {
           bind: bind[p.field] || bind[p.channel] || bind
         });
       }
-    });
+    }
 
     return signals;
   },
