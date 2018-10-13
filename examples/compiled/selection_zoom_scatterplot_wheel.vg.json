@@ -28,6 +28,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "grid", "update": "vlSelectionResolve(\"grid_store\")"},
     {
       "name": "grid_Horsepower",
       "on": [
@@ -62,9 +63,13 @@
             {"signal": "grid_Horsepower"},
             {"signal": "grid_Miles_per_Gallon"}
           ],
-          "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: grid_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: grid_Miles_per_Gallon}]} : null"
+          "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", fields: grid_tuple_fields, values: [grid_Horsepower, grid_Miles_per_Gallon]} : null"
         }
       ]
+    },
+    {
+      "name": "grid_tuple_fields",
+      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
     },
     {
       "name": "grid_translate_anchor",
@@ -158,7 +163,7 @@
       "name": "x",
       "type": "linear",
       "domain": [75, 150],
-      "domainRaw": {"signal": "grid_Horsepower"},
+      "domainRaw": {"signal": "grid[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -167,7 +172,7 @@
       "name": "y",
       "type": "linear",
       "domain": [20, 40],
-      "domainRaw": {"signal": "grid_Miles_per_Gallon"},
+      "domainRaw": {"signal": "grid[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": false

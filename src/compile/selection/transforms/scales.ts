@@ -1,9 +1,10 @@
 import {stringValue} from 'vega-util';
-import {Channel, X, Y} from '../../../channel';
+import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
+import {accessPathWithDatum, varName} from '../../../util';
 import {UnitModel} from '../../unit';
-import {channelSignalName} from '../selection';
+import {channelSignalName, VL_SELECTION_RESOLVE} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const scaleBindings: TransformCompiler = {
@@ -12,56 +13,82 @@ const scaleBindings: TransformCompiler = {
   },
 
   parse: (model, selDef, selCmpt) => {
+    const name = varName(selCmpt.name);
     const bound: Channel[] = (selCmpt.scales = []);
 
-    selCmpt.project.forEach(p => {
+    for (const p of selCmpt.project) {
       const channel = p.channel;
+
+      if (!isScaleChannel(channel)) {
+        continue;
+      }
+
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
       if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
         log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
-        return;
+        continue;
       }
 
-      scale.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
+      scale.set('domainRaw', {signal: accessPathWithDatum(p.field, name)}, true);
       bound.push(channel);
 
       // Bind both x/y for diag plot of repeated views.
       if (model.repeater && model.repeater.row === model.repeater.column) {
         const scale2 = model.getScaleComponent(channel === X ? Y : X);
-        scale2.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
+        scale2.set('domainRaw', {signal: accessPathWithDatum(p.field, name)}, true);
       }
-    });
+    }
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
-    // Top-level signals are only needed when coordinating composed views.
-    if (!model.parent) {
+    const channelSignals = selCmpt.scales
+      .filter(channel => {
+        return !signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length;
+      })
+      .map(channel => {
+        return {channel, signal: channelSignalName(selCmpt, channel, 'data')};
+      });
+
+    // Top-level signals are only needed for multiview displays and if this
+    // view's top-level signals haven't already been generated.
+    if (!model.parent || !channelSignals.length) {
       return signals;
     }
 
-    const channels = selCmpt.scales.filter(channel => {
-      return !signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length;
-    });
+    // vlSelectionResolve does not account for the behavior of bound scales in
+    // multiview displays. Each unit view adds a tuple to the store, but the
+    // state of the selection is the unit selection most recently updated. This
+    // state is captured by the top-level signals that we insert and "push
+    // outer" to from within the units. We need to reassemble this state into
+    // the top-level named signal, except no single selCmpt has a global view.
+    const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
+    const update = namedSg.update;
+    if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
+      namedSg.update = '{' + channelSignals.map(cs => `${selCmpt.fields[cs.channel]}: ${cs.signal}`).join(', ') + '}';
+    } else {
+      for (const cs of channelSignals) {
+        const mapping = `, ${selCmpt.fields[cs.channel]}: ${cs.signal}`;
+        if (update.indexOf(mapping) < 0) {
+          namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
+        }
+      }
+    }
 
-    return signals.concat(
-      channels.map(channel => {
-        return {name: channelSignalName(selCmpt, channel, 'data')};
-      })
-    );
+    return signals.concat(channelSignals.map(cs => ({name: cs.signal})));
   },
 
   signals: (model, selCmpt, signals) => {
-    // Nested signals need only push to top-level signals when within composed views.
+    // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent) {
-      selCmpt.scales.forEach(channel => {
+      for (const channel of selCmpt.scales) {
         const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
 
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;
-      });
+      }
     }
 
     return signals;

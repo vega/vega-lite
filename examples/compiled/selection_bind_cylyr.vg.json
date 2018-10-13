@@ -49,13 +49,14 @@
       ],
       "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
     },
-    {
-      "name": "CylYr",
-      "update": "data(\"CylYr_store\").length && {Cylinders: data(\"CylYr_store\")[0].values[0], Year: data(\"CylYr_store\")[0].values[1]}"
-    },
+    {"name": "CylYr", "update": "vlSelectionResolve(\"CylYr_store\")"},
     {
       "name": "CylYr_tuple",
-      "update": "CylYr_Cylinders && CylYr_Year ? {fields: [\"Cylinders\", \"Year\"], values: [CylYr_Cylinders, CylYr_Year]} : null"
+      "update": "CylYr_Cylinders && CylYr_Year ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
+    },
+    {
+      "name": "CylYr_tuple_fields",
+      "update": "[{\"field\":\"Cylinders\",\"type\":\"E\"},{\"field\":\"Year\",\"type\":\"E\"}]"
     },
     {
       "name": "CylYr_modify",
@@ -82,7 +83,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
+              "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
               "scale": "color",
               "field": "Origin"
             },
@@ -95,7 +96,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"CylYr_store\"))) || (vlSingle(\"CylYr_store\", datum))",
+              "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
               "value": 100
             },
             {"value": 50}

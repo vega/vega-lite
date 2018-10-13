@@ -34,8 +34,8 @@ const cmp = (a: number, b: number) => a - b;
 
       if (bind === unbound) {
         const drag = browser.execute(brush(brushKey, idx, parent)).value[0];
-        xold = drag.intervals[0].extent.sort(cmp);
-        yold = encodings.indexOf('y') >= 0 ? drag.intervals[encodings.indexOf('x') + 1].extent.sort(cmp) : null;
+        xold = drag.values[0].sort(cmp);
+        yold = encodings.indexOf('y') >= 0 ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
       } else {
         xold = JSON.parse(browser.execute('return JSON.stringify(view._runtime.scales.x.value.domain())').value);
         yold = browser.execute('return view._runtime.scales.y.value.domain()').value;
@@ -51,8 +51,8 @@ const cmp = (a: number, b: number) => a - b;
         testRender(`${inOut}-0`);
 
         const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
-        const xnew = zoomed.intervals[0].extent.sort(cmp);
-        const ynew = zoomed.intervals[1].extent.sort(cmp);
+        const xnew = zoomed.values[0].sort(cmp);
+        const ynew = zoomed.values[1].sort(cmp);
         testRender(`${inOut}-1`);
         assert[assertExtent[inOut][0]](xnew[0], xold[0]);
         assert[assertExtent[inOut][1]](xnew[1], xold[1]);
@@ -81,7 +81,7 @@ const cmp = (a: number, b: number) => a - b;
         testRender(`bins_${inOut}-0`);
 
         const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];
-        const ynew = zoomed.intervals[0].extent.sort(cmp);
+        const ynew = zoomed.values[0].sort(cmp);
         assert[assertExtent[inOut][0]](ynew[0], yold[0]);
         assert[assertExtent[inOut][1]](ynew[1], yold[1]);
         testRender(`bins_${inOut}-1`);
@@ -98,7 +98,7 @@ const cmp = (a: number, b: number) => a - b;
         testRender(`temporal_${inOut}-0`);
 
         const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
-        const xnew = zoomed.intervals[0].extent.sort(cmp);
+        const xnew = zoomed.values[0].sort(cmp);
         assert[assertExtent[inOut][0]](+xnew[0], +new Date(xold[0]));
         assert[assertExtent[inOut][1]](+xnew[1], +new Date(xold[1]));
         testRender(`temporal_${inOut}-1`);
@@ -122,8 +122,8 @@ const cmp = (a: number, b: number) => a - b;
         testRender(`logpow_${inOut}-0`);
 
         const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
-        const xnew = zoomed.intervals[0].extent.sort(cmp);
-        const ynew = zoomed.intervals[1].extent.sort(cmp);
+        const xnew = zoomed.values[0].sort(cmp);
+        const ynew = zoomed.values[1].sort(cmp);
         assert[assertExtent[inOut][0]](xnew[0], xold[0]);
         assert[assertExtent[inOut][1]](xnew[1], xold[1]);
         assert[assertExtent[inOut][0]](ynew[0], yold[0]);
@@ -150,8 +150,8 @@ const cmp = (a: number, b: number) => a - b;
           testRender(`ord_${inOut}-0`);
 
           const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
-          const xnew = zoomed.intervals[0].extent.sort(cmp);
-          const ynew = zoomed.intervals[1].extent.sort(cmp);
+          const xnew = zoomed.values[0].sort(cmp);
+          const ynew = zoomed.values[1].sort(cmp);
 
           if (inOut === 'in') {
             assert.isAtMost(xnew.length, xold.length);
@@ -172,8 +172,8 @@ const cmp = (a: number, b: number) => a - b;
             const parent = parentSelector(specType, i);
             const {inOut, xold, yold} = setup(specType, i, ['x', 'y'], parent);
             const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];
-            const xnew = zoomed.intervals[0].extent.sort(cmp);
-            const ynew = zoomed.intervals[1].extent.sort(cmp);
+            const xnew = zoomed.values[0].sort(cmp);
+            const ynew = zoomed.values[1].sort(cmp);
             assert[assertExtent[inOut][0]](xnew[0], xold[0]);
             assert[assertExtent[inOut][1]](xnew[1], xold[1]);
             assert[assertExtent[inOut][0]](ynew[0], yold[0]);

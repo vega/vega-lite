@@ -113,7 +113,7 @@ describe('Selection time unit', () => {
     });
 
     data1.forEach((tx, idx) => {
-      if (tx.type === 'filter' && tx.expr.indexOf('vlSingle') >= 0) {
+      if (tx.type === 'filter' && tx.expr.indexOf('vlSelectionTest') >= 0) {
         selIdx = idx;
       }
     });

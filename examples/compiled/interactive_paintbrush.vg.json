@@ -27,15 +27,23 @@
       ]
     },
     {
+      "name": "paintbrush",
+      "update": "vlSelectionResolve(\"paintbrush_store\")"
+    },
+    {
       "name": "paintbrush_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "paintbrush_tuple_fields",
+      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
     },
     {
       "name": "paintbrush_toggle",
@@ -87,7 +95,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"paintbrush_store\"))) || (vlMulti(\"paintbrush_store\", datum))",
+              "test": "!(length(data(\"paintbrush_store\"))) || (vlSelectionTest(\"paintbrush_store\", datum))",
               "value": 300
             },
             {"value": 50}

@@ -179,8 +179,7 @@ describe('Interval Selections', () => {
           on: [
             {
               events: [{signal: 'one_Horsepower'}],
-              update:
-                'one_Horsepower ? {unit: "", intervals: [{encoding: "x", field: "Horsepower", extent: one_Horsepower}]} : null'
+              update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
             }
           ]
         }
@@ -194,7 +193,7 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'two_Miles_per_Gallon'}],
               update:
-                'two_Miles_per_Gallon ? {unit: "", intervals: [{encoding: "y", field: "Miles-per-Gallon", extent: two_Miles_per_Gallon}]} : null'
+                'two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Miles_per_Gallon]} : null'
             }
           ]
         }
@@ -208,7 +207,7 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
               update:
-                'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", intervals: [{encoding: "x", field: "Horsepower", extent: thr_ee_Horsepower}, {encoding: "y", field: "Miles-per-Gallon", extent: thr_ee_Miles_per_Gallon}]} : null'
+                'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower, thr_ee_Miles_per_Gallon]} : null'
             }
           ]
         }
@@ -223,6 +222,8 @@ describe('Interval Selections', () => {
           y: {field: 'y', type: 'quantitative'}
         }
       });
+
+      model2.parseScale();
 
       const selCmpts2 = (model2.component.selection = selection.parseUnitSelection(model2, {
         one: {

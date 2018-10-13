@@ -38,7 +38,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "formula",
@@ -57,7 +57,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -140,9 +141,13 @@
           "on": [
             {
               "events": [{"signal": "brush_seconds_date"}],
-              "update": "brush_seconds_date ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"seconds_date\", extent: brush_seconds_date}]} : null"
+              "update": "brush_seconds_date ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_seconds_date]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"seconds_date\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -290,7 +295,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "value": "goldenrod"
                 },
                 {"value": "steelblue"}

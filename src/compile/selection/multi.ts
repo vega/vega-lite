@@ -1,28 +1,21 @@
-import {stringValue} from 'vega-util';
-
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
+import {TUPLE_FIELDS} from './transforms/project';
 
 export function signals(model: UnitModel, selCmpt: SelectionComponent) {
+  const name = selCmpt.name;
+  const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-  const bins: string[] = [];
-  const encodings = proj
-    .map(p => stringValue(p.channel))
-    .filter(e => e)
-    .join(', ');
-  const fields = proj.map(p => stringValue(p.field)).join(', ');
   const values = proj
     .map(p => {
-      const channel = p.channel;
-      const fieldDef = model.fieldDef(channel);
+      const fieldDef = model.fieldDef(p.channel);
       // Binned fields should capture extents, for a range test against the raw field.
       return fieldDef && fieldDef.bin
-        ? (bins.push(p.field),
-          `[${accessPathWithDatum(model.vgField(channel, {}), datum)}, ` +
-            `${accessPathWithDatum(model.vgField(channel, {binSuffix: 'end'}), datum)}]`)
+        ? `[${accessPathWithDatum(model.vgField(p.channel, {}), datum)}, ` +
+            `${accessPathWithDatum(model.vgField(p.channel, {binSuffix: 'end'}), datum)}]`
         : `${accessPathWithDatum(p.field, datum)}`;
     })
     .join(', ');
@@ -36,17 +29,14 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   // be cleared on the second click).
   return [
     {
-      name: selCmpt.name + TUPLE,
+      name: name + TUPLE,
       value: {},
       on: [
         {
           events: selCmpt.events,
           update:
             `datum && item().mark.marktype !== 'group' ? ` +
-            `{unit: ${unitName(model)}, encodings: [${encodings}], ` +
-            `fields: [${fields}], values: [${values}]` +
-            (bins.length ? ', ' + bins.map(b => `${stringValue('bin_' + b)}: 1`).join(', ') : '') +
-            '} : null',
+            `{unit: ${unitName(model)}, fields: ${fieldsSg}, values: [${values}]} : null`,
           force: true
         }
       ]
@@ -55,9 +45,6 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
 }
 
 const multi: SelectionCompiler = {
-  predicate: 'vlMulti',
-  scaleDomain: 'vlMultiDomain',
-
   signals: signals,
 
   modifyExpr: (model, selCmpt) => {

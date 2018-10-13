@@ -38,6 +38,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_x",
       "value": [],
@@ -147,9 +148,13 @@
       "on": [
         {
           "events": [{"signal": "pts_Cylinders"}, {"signal": "pts_Origin"}],
-          "update": "pts_Cylinders && pts_Origin ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: pts_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: pts_Origin}]} : null"
+          "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders, pts_Origin]} : null"
         }
       ]
+    },
+    {
+      "name": "pts_tuple_fields",
+      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
     },
     {
       "name": "pts_translate_anchor",
@@ -282,7 +287,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"pts_store\"))) || (!(vlInterval(\"pts_store\", datum)))",
+              "test": "!(length(data(\"pts_store\"))) || (!(vlSelectionTest(\"pts_store\", datum)))",
               "value": "grey"
             },
             {"scale": "color", "field": "count_*"}

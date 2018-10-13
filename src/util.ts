@@ -110,6 +110,14 @@ export function flatten(arrays: any[]) {
   return [].concat.apply([], arrays);
 }
 
+export function fill<T>(val: T, len: number) {
+  const arr = new Array<T>(len);
+  for (let i = 0; i < len; ++i) {
+    arr[i] = val;
+  }
+  return arr;
+}
+
 /**
  * recursively merges src into dest
  */

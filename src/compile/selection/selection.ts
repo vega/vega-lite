@@ -1,7 +1,7 @@
 import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
-import {Channel, ScaleChannel, X, Y} from '../../channel';
+import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
@@ -23,13 +23,14 @@ export const STORE = '_store';
 export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
+export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
 export interface SelectionComponent {
   name: string;
   type: SelectionType;
   events: VgEventStream;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | {[key: string]: VgBinding};
+  bind?: 'scales' | VgBinding | Dict<VgBinding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
@@ -37,19 +38,24 @@ export interface SelectionComponent {
   _signalNames: {};
 
   // Transforms
-  project?: ProjectComponent[];
-  fields?: any;
+  project?: ProjectSelectionComponent[];
+  fields?: {[c in SingleDefChannel]?: string};
   timeUnit?: TimeUnitNode;
-  scales?: Channel[];
+  scales?: ScaleChannel[];
   toggle?: any;
   translate?: any;
   zoom?: any;
   nearest?: any;
 }
 
-export interface ProjectComponent {
+// Do the selection tuples hold enumerated or ranged values for a field?
+// Ranged values can be left-right inclusive (R) or left-inclusive, right-exclusive (R-LE).
+export type TupleStoreType = 'E' | 'R' | 'R-RE';
+
+export interface ProjectSelectionComponent {
   field?: string;
-  channel?: ScaleChannel;
+  channel?: SingleDefChannel;
+  type: TupleStoreType;
 }
 
 export interface SelectionCompiler {
@@ -57,8 +63,6 @@ export interface SelectionCompiler {
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
-  predicate: string; // Vega expr string to determine inclusion in selection.
-  scaleDomain: string; // Vega expr string to materialize a scale domain.
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
@@ -98,7 +102,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       ...selDef,
       name: name,
       events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
-    } as SelectionComponent);
+    } as any);
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.parse) {
@@ -115,7 +119,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
     const name = selCmpt.name;
     let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
 
-    signals.push.apply(signals, selCompiler.signals(model, selCmpt));
+    signals.push(...selCompiler.signals(model, selCmpt));
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.signals) {
@@ -159,8 +163,21 @@ export function assembleFacetSignals(model: FacetModel, signals: any[]) {
 }
 
 export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
-  let needsUnit = false;
+  let hasSelections = false;
   forEachSelection(model, (selCmpt, selCompiler) => {
+    const name = selCmpt.name;
+    const store = stringValue(name + STORE);
+    const hasSg = signals.filter(s => s.name === name);
+    if (!hasSg.length) {
+      signals.push({
+        name: selCmpt.name,
+        update:
+          `${VL_SELECTION_RESOLVE}(${store}` +
+          (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      });
+    }
+    hasSelections = true;
+
     if (selCompiler.topLevelSignals) {
       signals = selCompiler.topLevelSignals(model, selCmpt, signals);
     }
@@ -170,11 +187,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: any[]) {
         signals = txCompiler.topLevelSignals(model, selCmpt, signals);
       }
     });
-
-    needsUnit = true;
   });
 
-  if (needsUnit) {
+  if (hasSelections) {
     const hasUnit = signals.filter(s => s.name === 'unit');
     if (!hasUnit.length) {
       signals.unshift({
@@ -213,11 +228,11 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
 }
 
 export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
-  model.children.forEach(child => {
+  for (const child of model.children) {
     if (isUnitModel(child)) {
       marks = assembleUnitSelectionMarks(child, marks);
     }
-  });
+  }
 
   return marks;
 }
@@ -244,9 +259,7 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
     }
 
     return (
-      compiler(selCmpt.type).predicate +
-      `(${store}, datum` +
-      (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
+      `vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
     );
   }
 
@@ -268,28 +281,37 @@ export function isRawSelectionDomain(domainRaw: SignalRef) {
 export function selectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
   const name = varName(selDomain.selection);
+  const encoding = selDomain.encoding;
+  let field = selDomain.field;
 
   let selCmpt = model.component.selection && model.component.selection[name];
   if (selCmpt) {
     warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
   } else {
     selCmpt = model.getSelectionComponent(name, selDomain.selection);
-    if (!selDomain.encoding && !selDomain.field) {
-      selDomain.field = selCmpt.project[0].field;
+    if (!encoding && !field) {
+      field = selCmpt.project[0].field;
       if (selCmpt.project.length > 1) {
         warn(
           'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-            `Using "field": ${stringValue(selDomain.field)}.`
+            `Using "field": ${stringValue(field)}.`
         );
       }
+    } else if (encoding && !field) {
+      const encodings = selCmpt.project.filter(p => p.channel === encoding);
+      if (!encodings.length || encodings.length > 1) {
+        field = selCmpt.project[0].field;
+        warn(
+          (!encodings.length ? 'No ' : 'Multiple ') +
+            `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
+            `Using "field": ${stringValue(field)}.`
+        );
+      } else {
+        field = encodings[0].field;
+      }
     }
-    return {
-      signal:
-        compiler(selCmpt.type).scaleDomain +
-        `(${stringValue(name + STORE)}, ${stringValue(selDomain.encoding || null)}, ` +
-        stringValue(selDomain.field || null) +
-        (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    };
+
+    return {signal: accessPathWithDatum(field, name)};
   }
 
   return {signal: 'null'};
@@ -368,9 +390,9 @@ export function channelSignalName(selCmpt: SelectionComponent, channel: Channel,
 }
 
 export function positionalProjections(selCmpt: SelectionComponent) {
-  let x: ProjectComponent = null;
+  let x: ProjectSelectionComponent = null;
   let xi: number = null;
-  let y: ProjectComponent = null;
+  let y: ProjectSelectionComponent = null;
   let yi: number = null;
 
   selCmpt.project.forEach((p, i) => {

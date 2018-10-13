@@ -131,7 +131,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))"
+          "expr": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -160,10 +160,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "pts",
-      "update": "data(\"pts_store\").length && {Major_Genre: data(\"pts_store\")[0].values[0]}"
-    }
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -315,10 +312,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", encodings: [\"x\"], fields: [\"Major_Genre\"], values: [datum[\"Major_Genre\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: pts_tuple_fields, values: [datum[\"Major_Genre\"]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "pts_tuple_fields",
+          "update": "[{\"field\":\"Major_Genre\",\"channel\":\"x\",\"type\":\"E\"}]"
         },
         {
           "name": "pts_modify",
@@ -344,7 +345,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+                  "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
                   "value": "steelblue"
                 },
                 {"value": "grey"}

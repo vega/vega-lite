@@ -95,42 +95,44 @@ function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | Norm
   const selection = {sel};
   const mark = 'circle';
 
-  return iter % 2 === 0
-    ? {
-        data,
-        selection,
-        mark,
-        encoding: {
-          x,
-          y,
-          size,
-          color: {
-            condition: {selection: 'sel', ...color},
-            value: 'grey'
-          }
+  if (iter % 2 === 0) {
+    return {
+      data,
+      selection,
+      mark,
+      encoding: {
+        x,
+        y,
+        size,
+        color: {
+          condition: {selection: 'sel', ...color},
+          value: 'grey'
         }
       }
-    : {
-        data,
-        layer: [
-          {
-            selection,
-            mark,
-            encoding: {
-              x,
-              y,
-              size,
-              color,
-              opacity: {value: 0.25}
-            }
-          },
-          {
-            transform: [{filter: {selection: 'sel'}}],
-            mark,
-            encoding: {x, y, size, color}
+    };
+  } else {
+    return {
+      data,
+      layer: [
+        {
+          selection,
+          mark,
+          encoding: {
+            x,
+            y,
+            size,
+            color,
+            opacity: {value: 0.25}
           }
-        ]
-      };
+        },
+        {
+          transform: [{filter: {selection: 'sel'}}],
+          mark,
+          encoding: {x, y, size, color}
+        }
+      ]
+    };
+  }
 }
 
 export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
