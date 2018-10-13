@@ -16,7 +16,10 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSingle(\"tooltip_store\", datum))"}
+        {
+          "type": "filter",
+          "expr": "(vlSelectionTest(\"tooltip_store\", datum))"
+        }
       ]
     },
     {
@@ -42,20 +45,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "tooltip",
-      "update": "data(\"tooltip_store\").length && {date: data(\"tooltip_store\")[0].values[0]}"
-    },
+    {"name": "tooltip", "update": "vlSelectionResolve(\"tooltip_store\")"},
     {
       "name": "tooltip_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: tooltip_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "tooltip_tuple_fields",
+      "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"E\"}]"
     },
     {
       "name": "tooltip_modify",
@@ -115,7 +119,7 @@
       "encode": {
         "update": {
           "opacity": [
-            {"test": "(vlSingle(\"tooltip_store\", datum))", "value": 1},
+            {"test": "(vlSelectionTest(\"tooltip_store\", datum))", "value": 1},
             {"value": 0}
           ],
           "fill": [

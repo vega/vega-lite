@@ -24,7 +24,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         }
       ]
     }
@@ -38,7 +38,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -180,9 +181,13 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",

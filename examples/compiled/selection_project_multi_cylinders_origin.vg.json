@@ -24,16 +24,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Cylinders\", \"Origin\"], values: [datum[\"Cylinders\"], datum[\"Origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"Cylinders\"], datum[\"Origin\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "pts_tuple_fields",
+      "update": "[{\"field\":\"Cylinders\",\"type\":\"E\"},{\"field\":\"Origin\",\"type\":\"E\"}]"
     },
     {
       "name": "pts_toggle",
@@ -77,7 +82,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -90,14 +95,14 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "value": 200
             },
             {"value": 50}
           ],
           "shape": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "shape",
               "field": "Origin"
             },

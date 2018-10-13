@@ -26,7 +26,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -165,9 +166,13 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -315,7 +320,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -559,9 +564,13 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Horsepower_Acceleration\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
+              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -709,7 +718,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -832,7 +841,7 @@
       },
       "signals": [
         {
-          "name": "brush_y",
+          "name": "brush_x",
           "value": [],
           "on": [
             {
@@ -843,7 +852,7 @@
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              "update": "[y(unit), y(unit)]"
+              "update": "[x(unit), x(unit)]"
             },
             {
               "events": {
@@ -861,19 +870,19 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_y[0], clamp(y(unit), 0, height)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
-              "update": "[scale(\"child_Horsepower_Horsepower_y\", brush_Horsepower[0]), scale(\"child_Horsepower_Horsepower_y\", brush_Horsepower[1])]"
+              "update": "[scale(\"child_Horsepower_Horsepower_x\", brush_Horsepower[0]), scale(\"child_Horsepower_Horsepower_x\", brush_Horsepower[1])]"
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             }
           ]
         },
@@ -881,23 +890,27 @@
           "name": "brush_Horsepower",
           "on": [
             {
-              "events": {"signal": "brush_y"},
-              "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Horsepower_Horsepower_y\", brush_y)"
+              "events": {"signal": "brush_x"},
+              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Horsepower_Horsepower_x\", brush_x)"
             }
           ]
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Horsepower) || (+invert(\"child_Horsepower_Horsepower_y\", brush_y)[0] === +brush_Horsepower[0] && +invert(\"child_Horsepower_Horsepower_y\", brush_y)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
+          "update": "(!isArray(brush_Horsepower) || (+invert(\"child_Horsepower_Horsepower_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"child_Horsepower_Horsepower_x\", brush_x)[1] === +brush_Horsepower[1])) ? brush_scale_trigger : {}"
         },
         {
           "name": "brush_tuple",
           "on": [
             {
               "events": [{"signal": "brush_Horsepower"}],
-              "update": "brush_Horsepower ? {unit: \"child_Horsepower_Horsepower\", intervals: [{encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
+              "update": "brush_Horsepower ? {unit: \"child_Horsepower_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -911,7 +924,7 @@
                   "markname": "brush_brush"
                 }
               ],
-              "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_y)}"
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
             }
           ]
         },
@@ -996,28 +1009,28 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ]
@@ -1045,7 +1058,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1075,33 +1088,33 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Horsepower_Horsepower\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ],
               "stroke": [
-                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
+                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
                 {"value": null}
               ]
             }
@@ -1286,9 +1299,13 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Acceleration"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Acceleration\", extent: brush_Acceleration}]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -1436,7 +1453,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1559,7 +1576,7 @@
       },
       "signals": [
         {
-          "name": "brush_y",
+          "name": "brush_x",
           "value": [],
           "on": [
             {
@@ -1570,7 +1587,7 @@
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              "update": "[y(unit), y(unit)]"
+              "update": "[x(unit), x(unit)]"
             },
             {
               "events": {
@@ -1588,19 +1605,19 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_y[0], clamp(y(unit), 0, height)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
-              "update": "[scale(\"child_Acceleration_Acceleration_y\", brush_Acceleration[0]), scale(\"child_Acceleration_Acceleration_y\", brush_Acceleration[1])]"
+              "update": "[scale(\"child_Acceleration_Acceleration_x\", brush_Acceleration[0]), scale(\"child_Acceleration_Acceleration_x\", brush_Acceleration[1])]"
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             }
           ]
         },
@@ -1608,23 +1625,27 @@
           "name": "brush_Acceleration",
           "on": [
             {
-              "events": {"signal": "brush_y"},
-              "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Acceleration_Acceleration_y\", brush_y)"
+              "events": {"signal": "brush_x"},
+              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Acceleration_Acceleration_x\", brush_x)"
             }
           ]
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Acceleration) || (+invert(\"child_Acceleration_Acceleration_y\", brush_y)[0] === +brush_Acceleration[0] && +invert(\"child_Acceleration_Acceleration_y\", brush_y)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
+          "update": "(!isArray(brush_Acceleration) || (+invert(\"child_Acceleration_Acceleration_x\", brush_x)[0] === +brush_Acceleration[0] && +invert(\"child_Acceleration_Acceleration_x\", brush_x)[1] === +brush_Acceleration[1])) ? brush_scale_trigger : {}"
         },
         {
           "name": "brush_tuple",
           "on": [
             {
               "events": [{"signal": "brush_Acceleration"}],
-              "update": "brush_Acceleration ? {unit: \"child_Acceleration_Acceleration\", intervals: [{encoding: \"y\", field: \"Acceleration\", extent: brush_Acceleration}]} : null"
+              "update": "brush_Acceleration ? {unit: \"child_Acceleration_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -1638,7 +1659,7 @@
                   "markname": "brush_brush"
                 }
               ],
-              "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_y)}"
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
             }
           ]
         },
@@ -1723,28 +1744,28 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ]
@@ -1772,7 +1793,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1802,33 +1823,33 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Acceleration_Acceleration\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ],
               "stroke": [
-                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
+                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
                 {"value": null}
               ]
             }
@@ -2013,9 +2034,13 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Acceleration"}
               ],
-              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child_Acceleration_Horsepower\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Acceleration\", extent: brush_Acceleration}]} : null"
+              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -2163,7 +2188,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -2286,7 +2311,7 @@
       },
       "signals": [
         {
-          "name": "brush_y",
+          "name": "brush_x",
           "value": [],
           "on": [
             {
@@ -2297,7 +2322,7 @@
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              "update": "[y(unit), y(unit)]"
+              "update": "[x(unit), x(unit)]"
             },
             {
               "events": {
@@ -2315,19 +2340,19 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_y[0], clamp(y(unit), 0, height)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
-              "update": "[scale(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_Miles_per_Gallon[0]), scale(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_Miles_per_Gallon[1])]"
+              "update": "[scale(\"child_Miles_per_Gallon_Miles_per_Gallon_x\", brush_Miles_per_Gallon[0]), scale(\"child_Miles_per_Gallon_Miles_per_Gallon_x\", brush_Miles_per_Gallon[1])]"
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             }
           ]
         },
@@ -2335,23 +2360,27 @@
           "name": "brush_Miles_per_Gallon",
           "on": [
             {
-              "events": {"signal": "brush_y"},
-              "update": "brush_y[0] === brush_y[1] ? null : invert(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_y)"
+              "events": {"signal": "brush_x"},
+              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child_Miles_per_Gallon_Miles_per_Gallon_x\", brush_x)"
             }
           ]
         },
         {
           "name": "brush_scale_trigger",
-          "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child_Miles_per_Gallon_Miles_per_Gallon_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
+          "update": "(!isArray(brush_Miles_per_Gallon) || (+invert(\"child_Miles_per_Gallon_Miles_per_Gallon_x\", brush_x)[0] === +brush_Miles_per_Gallon[0] && +invert(\"child_Miles_per_Gallon_Miles_per_Gallon_x\", brush_x)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
         },
         {
           "name": "brush_tuple",
           "on": [
             {
               "events": [{"signal": "brush_Miles_per_Gallon"}],
-              "update": "brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\", intervals: [{encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+              "update": "brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -2365,7 +2394,7 @@
                   "markname": "brush_brush"
                 }
               ],
-              "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_y)}"
+              "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
             }
           ]
         },
@@ -2450,28 +2479,28 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ]
@@ -2499,7 +2528,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -2529,33 +2558,33 @@
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "value": 0
+                  "signal": "brush_x[0]"
                 },
                 {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "signal": "brush_y[0]"
+                  "value": 0
                 },
                 {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "field": {"group": "width"}
+                  "signal": "brush_x[1]"
                 },
                 {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"child_Miles_per_Gallon_Miles_per_Gallon\"",
-                  "signal": "brush_y[1]"
+                  "field": {"group": "height"}
                 },
                 {"value": 0}
               ],
               "stroke": [
-                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
+                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
                 {"value": null}
               ]
             }
@@ -2740,9 +2769,13 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", intervals: [{encoding: \"x\", field: \"Acceleration\", extent: brush_Acceleration}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -2890,7 +2923,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -3134,9 +3167,13 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -3284,7 +3321,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "Origin"
                 },

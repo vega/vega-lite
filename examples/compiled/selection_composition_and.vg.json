@@ -39,6 +39,8 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "alex", "update": "vlSelectionResolve(\"alex_store\")"},
+    {"name": "morgan", "update": "vlSelectionResolve(\"morgan_store\")"},
     {
       "name": "alex_x",
       "value": [],
@@ -154,9 +156,13 @@
       "on": [
         {
           "events": [{"signal": "alex_Cylinders"}, {"signal": "alex_Origin"}],
-          "update": "alex_Cylinders && alex_Origin ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: alex_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: alex_Origin}]} : null"
+          "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders, alex_Origin]} : null"
         }
       ]
+    },
+    {
+      "name": "alex_tuple_fields",
+      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
     },
     {
       "name": "alex_translate_anchor",
@@ -359,9 +365,13 @@
             {"signal": "morgan_Cylinders"},
             {"signal": "morgan_Origin"}
           ],
-          "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Cylinders\", extent: morgan_Cylinders}, {encoding: \"y\", field: \"Origin\", extent: morgan_Origin}]} : null"
+          "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders, morgan_Origin]} : null"
         }
       ]
+    },
+    {
+      "name": "morgan_tuple_fields",
+      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
     },
     {
       "name": "morgan_translate_anchor",
@@ -537,7 +547,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlInterval(\"alex_store\", datum)) && (vlInterval(\"morgan_store\", datum)))",
+              "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlSelectionTest(\"alex_store\", datum)) && (vlSelectionTest(\"morgan_store\", datum)))",
               "scale": "color",
               "field": "count_*"
             },
