@@ -26,7 +26,7 @@ const project: TransformCompiler = {
       p.push.apply(p, selDef.fields.map(field => ({field, type: 'E'})));
     }
 
-    (selDef.encodings || []).forEach((channel: SingleDefChannel) => {
+    for (const channel of selDef.encodings || []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;
@@ -67,7 +67,7 @@ const project: TransformCompiler = {
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
-    });
+    }
 
     if (keys(timeUnits).length) {
       selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);

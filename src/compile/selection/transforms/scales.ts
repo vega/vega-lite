@@ -1,5 +1,5 @@
 import {stringValue} from 'vega-util';
-import {Channel, ScaleChannel, X, Y} from '../../../channel';
+import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {UnitModel} from '../../unit';
@@ -14,14 +14,19 @@ const scaleBindings: TransformCompiler = {
   parse: (model, selDef, selCmpt) => {
     const bound: Channel[] = (selCmpt.scales = []);
 
-    selCmpt.project.forEach(p => {
-      const channel = p.channel as ScaleChannel;
+    for (const p of selCmpt.project) {
+      const channel = p.channel;
+
+      if (!isScaleChannel(channel)) {
+        continue;
+      }
+
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
       if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
         log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
-        return;
+        continue;
       }
 
       scale.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
@@ -32,7 +37,7 @@ const scaleBindings: TransformCompiler = {
         const scale2 = model.getScaleComponent(channel === X ? Y : X);
         scale2.set('domainRaw', {signal: channelSignalName(selCmpt, channel, 'data')}, true);
       }
-    });
+    }
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
@@ -55,13 +60,13 @@ const scaleBindings: TransformCompiler = {
   signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals when within composed views.
     if (model.parent) {
-      selCmpt.scales.forEach(channel => {
+      for (const channel of selCmpt.scales) {
         const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
 
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;
-      });
+      }
     }
 
     return signals;
