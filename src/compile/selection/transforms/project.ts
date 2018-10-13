@@ -23,7 +23,7 @@ const project: TransformCompiler = {
 
     // TODO: find a possible channel mapping for these fields.
     if (selDef.fields) {
-      p.push.apply(p, selDef.fields.map(field => ({field, type: 'E'})));
+      p.push(...selDef.fields.map<ProjectSelectionComponent>(field => ({field, type: 'E'})));
     }
 
     for (const channel of selDef.encodings || []) {
