@@ -63,7 +63,7 @@
     {"name": "CylYr", "update": "vlSelectionResolve(\"CylYr_store\")"},
     {
       "name": "CylYr_tuple",
-      "update": "CylYr_Cylinders && CylYr_Year ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
+      "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
     },
     {
       "name": "CylYr_tuple_fields",
