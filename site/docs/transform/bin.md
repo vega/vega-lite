@@ -107,7 +107,7 @@ calculation before encoding the data.
 
 If `bin` is `true`, default binning parameters are used. To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
 
-{% include table.html props="base,divide,extent,maxbins,minstep,nice,step,steps" source="BinParams" %}
+{% include table.html props="anchor,base,divide,extent,maxbins,minstep,nice,step,steps" source="BinParams" %}
 
 ### Example: Customizing Max Bins
 
