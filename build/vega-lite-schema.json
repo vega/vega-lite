@@ -1299,6 +1299,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Clip of the marks.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2908,6 +2912,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Clip of the marks.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2983,6 +2991,10 @@
     "ErrorBarDef": {
       "additionalProperties": false,
       "properties": {
+        "clip": {
+          "description": "Clip of the marks.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"

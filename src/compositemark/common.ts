@@ -16,6 +16,11 @@ export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
      * Opacity of the marks.
      */
     opacity?: number;
+
+    /**
+     * Clip of the marks.
+     */
+    clip?: boolean;
   };
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -72,7 +77,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   compositeMarkConfig: P,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
-  const {color, opacity} = markDef;
+  const {clip, color, opacity} = markDef;
 
   const mark = markDef.type;
 
@@ -82,6 +87,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
         ...partBaseSpec,
         mark: {
           ...(compositeMarkConfig[part] as MarkConfig),
+          ...(clip ? {clip} : {}),
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
