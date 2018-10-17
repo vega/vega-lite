@@ -1,6 +1,6 @@
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
+import {assembleInit, SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
 import nearest from './transforms/nearest';
 import {TUPLE_FIELDS} from './transforms/project';
 
@@ -34,7 +34,7 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
       name: name + TUPLE,
       ...(init
         ? {
-            update: `{${update}: ${JSON.stringify(init)}}`,
+            update: `{${update}: ${assembleInit(selCmpt.init)}}`,
             react: false
           }
         : {}),

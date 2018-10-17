@@ -1,10 +1,19 @@
 import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {isString, stringValue} from 'vega-util';
+import {identity, isArray, isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
-import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
+import {
+  BrushConfig,
+  SELECTION_ID,
+  SelectionDef,
+  SelectionInit,
+  SelectionInitArray,
+  SelectionResolution,
+  SelectionType
+} from '../../selection';
 import {accessPathWithDatum, Dict, keys, logicalExpr, varName} from '../../util';
 import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
@@ -28,7 +37,7 @@ export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export interface SelectionComponent {
   name: string;
   type: SelectionType;
-  init?: (number | string | number[] | string[])[];
+  init?: (SelectionInit | SelectionInitArray)[];
   events: VgEventStream;
   // predicate?: string;
   bind?: 'scales' | VgBinding | Dict<VgBinding>;
@@ -401,4 +410,12 @@ export function positionalProjections(selCmpt: SelectionComponent) {
     }
   });
   return {x, xi, y, yi};
+}
+
+export function assembleInit(init: any, wrap: (str: string) => string = identity): string {
+  return isArray(init)
+    ? `[${init.map(v => assembleInit(v, wrap)).join(', ')}]`
+    : isDateTime(init)
+      ? wrap(dateTimeExpr(init))
+      : wrap(JSON.stringify(init));
 }

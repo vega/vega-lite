@@ -6,6 +6,7 @@ import {keys} from '../../util';
 import {VgEventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {
+  assembleInit,
   channelSignalName,
   positionalProjections,
   SelectionCompiler,
@@ -83,7 +84,7 @@ const interval: SelectionCompiler = {
       name: name + TUPLE,
       ...(init
         ? {
-            update: `{${update}: ${JSON.stringify(init)}}`,
+            update: `{${update}: ${assembleInit(selCmpt.init)}}`,
             react: false
           }
         : {}),
@@ -185,15 +186,14 @@ export default interval;
 function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x' | 'y', idx: number): any {
   const vname = channelSignalName(selCmpt, channel, 'visual');
   const dname = channelSignalName(selCmpt, channel, 'data');
-  const init = selCmpt.init && (selCmpt.init[idx] as number[] | string[]);
+  const init = selCmpt.init && selCmpt.init[idx];
   const hasScales = scales.has(selCmpt);
   const scaleName = stringValue(model.scaleName(channel));
   const scale = model.getScaleComponent(channel);
   const scaleType = scale ? scale.get('type') : undefined;
+  const scaled = (str: string) => `scale(${scaleName}, ${str})`;
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
-
-  const scaleStr = (arr: string[]) => '[' + arr.map(s => `scale(${scaleName}, ${s})`) + ']';
 
   const on = events(selCmpt, (def: any[], evt: VgEventStream) => {
     return def.concat(
@@ -208,7 +208,9 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   on.push({
     events: {signal: selCmpt.name + SCALE_TRIGGER},
     update:
-      hasContinuousDomain(scaleType) && !isBinScale(scaleType) ? scaleStr([`${dname}[0]`, `${dname}[1]`]) : `[0, 0]`
+      hasContinuousDomain(scaleType) && !isBinScale(scaleType)
+        ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]`
+        : `[0, 0]`
   });
 
   return hasScales
@@ -216,17 +218,12 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     : [
         {
           name: vname,
-          ...(init
-            ? {
-                update: scaleStr([init[0], init[init.length - 1]].map(x => JSON.stringify(x))),
-                react: false
-              }
-            : {value: []}),
+          ...(init ? {update: assembleInit(init, scaled), react: false} : {value: []}),
           on: on
         },
         {
           name: dname,
-          ...(init ? {value: init} : {}),
+          ...(init ? {update: assembleInit(init)} : {}),
           on: [
             {
               events: {signal: vname},

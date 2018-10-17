@@ -42,6 +42,16 @@ describe('Inputs Selection Transform', () => {
     six: {
       type: 'interval',
       bind: 'scales'
+    },
+    seven: {
+      type: 'single',
+      fields: ['Year'],
+      bind: {
+        Year: {input: 'range', min: 1970, max: 1980, step: 1}
+      },
+      init: {
+        Year: {year: 1970, month: 1, day: 1}
+      }
     }
   });
 
@@ -51,6 +61,7 @@ describe('Inputs Selection Transform', () => {
     assert.isNotFalse(inputs.has(selCmpts['three']));
     assert.isNotTrue(inputs.has(selCmpts['four']));
     assert.isNotTrue(inputs.has(selCmpts['six']));
+    assert.isNotFalse(inputs.has(selCmpts['seven']));
   });
 
   it('adds widget binding for default projection', () => {
@@ -151,6 +162,30 @@ describe('Inputs Selection Transform', () => {
             options: ['Japan', 'USA', 'Europe']
           }
         }
+      }
+    ]);
+  });
+
+  it('respects initialization', () => {
+    model.component.selection = {seven: selCmpts['seven']};
+    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
+      {
+        name: 'seven_tuple',
+        update: 'seven_Year !== null ? {fields: seven_tuple_fields, values: [seven_Year]} : null'
+      }
+    ]);
+
+    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
+      {
+        name: 'seven_Year',
+        update: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
+          }
+        ],
+        bind: {input: 'range', min: 1970, max: 1980, step: 1}
       }
     ]);
   });

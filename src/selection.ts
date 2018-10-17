@@ -1,9 +1,13 @@
 import {SingleDefChannel} from './channel';
+import {DateTime} from './datetime';
 import {VgBinding, VgEventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
+
+export type SelectionInit = boolean | number | string | DateTime;
+export type SelectionInitArray = boolean[] | number[] | string[] | DateTime[];
 
 export interface BaseSelectionDef {
   /**
@@ -42,7 +46,6 @@ export interface BaseSelectionDef {
    * When set to `none`, empty selections contain no data values.
    */
   empty?: 'all' | 'none';
-  init?: {[key: string]: number | string | number[] | string[]};
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
@@ -63,6 +66,11 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
    * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
    */
   nearest?: boolean;
+
+  /**
+   * Initialize the selection with a mapping between field names and initial values.
+   */
+  init?: {[key: string]: SelectionInit};
 }
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
@@ -85,6 +93,12 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
    * See the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.
    */
   nearest?: boolean;
+
+  /**
+   * Initialize the selection with a mapping between field names and an initial
+   * value (or array of values).
+   */
+  init?: {[key: string]: SelectionInit};
 }
 
 export interface BrushConfig {
@@ -163,6 +177,12 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
    * appearance of the mark.
    */
   mark?: BrushConfig;
+
+  /**
+   * Initialize the selection with a mapping between field names and arrays of
+   * initial values.
+   */
+  init?: {[key: string]: SelectionInitArray};
 }
 
 export interface SingleSelection extends SingleSelectionConfig {
