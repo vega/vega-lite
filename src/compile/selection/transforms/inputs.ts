@@ -1,5 +1,5 @@
 import {accessPathWithDatum, varName} from '../../../util';
-import {TUPLE} from '../selection';
+import {assembleInit, TUPLE} from '../selection';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
@@ -22,7 +22,7 @@ const inputBindings: TransformCompiler = {
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,
-          ...(init ? {value: init[i]} : {}),
+          ...(init ? {update: assembleInit(init[i])} : {}),
           on: [
             {
               events: selCmpt.events,
@@ -51,6 +51,7 @@ const inputBindings: TransformCompiler = {
 
     delete signal.value;
     delete signal.on;
+    delete signal.react;
 
     return signals;
   }
