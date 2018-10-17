@@ -54,6 +54,15 @@ describe('Interval Selections', () => {
       translate: false,
       zoom: false,
       init: {x: [50, 60], y: [23, 54]}
+    },
+    six: {
+      type: 'interval',
+      translate: false,
+      zoom: false,
+      encodings: ['x'],
+      init: {
+        x: [{year: 2000, month: 10, day: 5}, {year: 2001, month: 1, day: 13}]
+      }
     }
   }));
 
@@ -76,7 +85,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'one_scale_trigger'},
-                update: '[scale("x", one_Horsepower[0]),scale("x", one_Horsepower[1])]'
+                update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
               }
             ]
           },
@@ -128,7 +137,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'thr_ee_scale_trigger'},
-                update: '[scale("x", thr_ee_Horsepower[0]),scale("x", thr_ee_Horsepower[1])]'
+                update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]'
               }
             ]
           },
@@ -163,7 +172,7 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'thr_ee_scale_trigger'},
-                update: '[scale("y", thr_ee_Miles_per_Gallon[0]),scale("y", thr_ee_Miles_per_Gallon[1])]'
+                update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]'
               }
             ]
           },
@@ -189,7 +198,7 @@ describe('Interval Selections', () => {
         expect.arrayContaining([
           {
             name: 'four_x',
-            update: '[scale("x", 50),scale("x", 70)]',
+            update: '[scale("x", 50), scale("x", 70)]',
             react: false,
             on: [
               {
@@ -202,13 +211,13 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'four_scale_trigger'},
-                update: '[scale("x", four_Horsepower[0]),scale("x", four_Horsepower[1])]'
+                update: '[scale("x", four_Horsepower[0]), scale("x", four_Horsepower[1])]'
               }
             ]
           },
           {
             name: 'four_Horsepower',
-            value: [50, 70],
+            update: '[50, 70]',
             on: [
               {
                 events: {signal: 'four_x'},
@@ -229,7 +238,7 @@ describe('Interval Selections', () => {
         expect.arrayContaining([
           {
             name: 'five_x',
-            update: '[scale("x", 50),scale("x", 60)]',
+            update: '[scale("x", 50), scale("x", 60)]',
             react: false,
             on: [
               {
@@ -242,13 +251,13 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'five_scale_trigger'},
-                update: '[scale("x", five_Horsepower[0]),scale("x", five_Horsepower[1])]'
+                update: '[scale("x", five_Horsepower[0]), scale("x", five_Horsepower[1])]'
               }
             ]
           },
           {
             name: 'five_Horsepower',
-            value: [50, 60],
+            update: '[50, 60]',
             on: [
               {
                 events: {signal: 'five_x'},
@@ -258,7 +267,7 @@ describe('Interval Selections', () => {
           },
           {
             name: 'five_y',
-            update: '[scale("y", 23),scale("y", 54)]',
+            update: '[scale("y", 23), scale("y", 54)]',
             react: false,
             on: [
               {
@@ -271,13 +280,13 @@ describe('Interval Selections', () => {
               },
               {
                 events: {signal: 'five_scale_trigger'},
-                update: '[scale("y", five_Miles_per_Gallon[0]),scale("y", five_Miles_per_Gallon[1])]'
+                update: '[scale("y", five_Miles_per_Gallon[0]), scale("y", five_Miles_per_Gallon[1])]'
               }
             ]
           },
           {
             name: 'five_Miles_per_Gallon',
-            value: [23, 54],
+            update: '[23, 54]',
             on: [
               {
                 events: {signal: 'five_y'},
@@ -289,6 +298,47 @@ describe('Interval Selections', () => {
             name: 'five_scale_trigger',
             update:
               '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}'
+          }
+        ])
+      );
+
+      const sixSg = interval.signals(model, selCmpts['six']);
+      expect(sixSg).toEqual(
+        expect.arrayContaining([
+          {
+            name: 'six_x',
+            update:
+              '[scale("x", datetime(2000, 10, 5+1, 0, 0, 0, 0)), scale("x", datetime(2001, 1, 13+1, 0, 0, 0, 0))]',
+            react: false,
+            on: [
+              {
+                events: parseSelector('mousedown', 'scope')[0],
+                update: '[x(unit), x(unit)]'
+              },
+              {
+                events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                update: '[six_x[0], clamp(x(unit), 0, width)]'
+              },
+              {
+                events: {signal: 'six_scale_trigger'},
+                update: '[scale("x", six_Horsepower[0]), scale("x", six_Horsepower[1])]'
+              }
+            ]
+          },
+          {
+            name: 'six_Horsepower',
+            update: '[datetime(2000, 10, 5+1, 0, 0, 0, 0), datetime(2001, 1, 13+1, 0, 0, 0, 0)]',
+            on: [
+              {
+                events: {signal: 'six_x'},
+                update: 'six_x[0] === six_x[1] ? null : invert("x", six_x)'
+              }
+            ]
+          },
+          {
+            name: 'six_scale_trigger',
+            update:
+              '(!isArray(six_Horsepower) || (+invert("x", six_x)[0] === +six_Horsepower[0] && +invert("x", six_x)[1] === +six_Horsepower[1])) ? six_scale_trigger : {}'
           }
         ])
       );
@@ -332,7 +382,7 @@ describe('Interval Selections', () => {
       const fourSg = interval.signals(model, selCmpts['four']);
       expect(fourSg).toContainEqual({
         name: 'four_tuple',
-        update: '{unit: "", fields: four_tuple_fields, values: [[50,70]]}',
+        update: '{unit: "", fields: four_tuple_fields, values: [[50, 70]]}',
         react: false,
         on: [
           {
@@ -345,7 +395,7 @@ describe('Interval Selections', () => {
       const fiveSg = interval.signals(model, selCmpts['five']);
       expect(fiveSg).toContainEqual({
         name: 'five_tuple',
-        update: '{unit: "", fields: five_tuple_fields, values: [[50,60],[23,54]]}',
+        update: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
         react: false,
         on: [
           {
