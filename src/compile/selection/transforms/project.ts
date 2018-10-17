@@ -1,3 +1,4 @@
+import {array} from 'vega-util';
 import {ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
@@ -75,7 +76,8 @@ const project: TransformCompiler = {
       if (scales.has(selCmpt)) {
         log.warn(log.message.NO_INIT_SCALE_BINDINGS);
       } else {
-        selCmpt.init = proj.map(p => (init[p.channel] !== undefined ? init[p.channel] : init[p.field]));
+        const parseInit = (i: any) => proj.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
+        selCmpt.init = selCmpt.type === 'interval' ? parseInit(init) : array(init).map(parseInit);
       }
     }
 
@@ -91,7 +93,7 @@ const project: TransformCompiler = {
       ? signals
       : signals.concat({
           name,
-          update: `${JSON.stringify(selCmpt.project)}`
+          value: selCmpt.project
         });
   }
 };
