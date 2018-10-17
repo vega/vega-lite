@@ -13,12 +13,12 @@ export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConf
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
   ColorMixins & {
     /**
-     * Opacity of the marks.
+     * The opacity (value between [0,1]) of the mark.
      */
     opacity?: number;
 
     /**
-     * Clip of the marks.
+     * Whether a composite mark be clipped to the enclosing group’s width and height.
      */
     clip?: boolean;
   };
