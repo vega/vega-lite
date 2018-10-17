@@ -1,12 +1,12 @@
+import {stringValue} from 'vega-util';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {assembleInit, SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
+import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
 import {TUPLE_FIELDS} from './transforms/project';
 
-export function signals(model: UnitModel, selCmpt: SelectionComponent) {
+export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
-  const init = selCmpt.init;
   const proj = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
   const values = proj
@@ -28,15 +28,9 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   // whitespace followed by a click in whitespace; the store should only
   // be cleared on the second click).
   const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-  return [
+  const signals: any[] = [
     {
       name: name + TUPLE,
-      ...(init
-        ? {
-            update: `{${update}: ${assembleInit(selCmpt.init)}}`,
-            react: false
-          }
-        : {}),
       on: [
         {
           events: selCmpt.events,
@@ -46,10 +40,21 @@ export function signals(model: UnitModel, selCmpt: SelectionComponent) {
       ]
     }
   ];
+
+  if (selCmpt.init) {
+    const insert = selCmpt.init.map(i => `{${update}: ${assembleInit(i)}}`);
+    signals.push({
+      name: `${name}_init`,
+      update: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`,
+      react: false
+    });
+  }
+
+  return signals;
 }
 
 const multi: SelectionCompiler = {
-  signals: signals,
+  signals: multiSignals,
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;

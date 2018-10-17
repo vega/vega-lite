@@ -71,8 +71,6 @@ describe('Single Selection', () => {
     expect(threeSg).toEqual([
       {
         name: 'thr_ee_tuple',
-        update: '{unit: "", fields: thr_ee_tuple_fields, values: [50]}',
-        react: false,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -81,6 +79,11 @@ describe('Single Selection', () => {
             force: true
           }
         ]
+      },
+      {
+        name: 'thr_ee_init',
+        update: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])',
+        react: false
       }
     ]);
 
@@ -88,8 +91,6 @@ describe('Single Selection', () => {
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
-        update: '{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}',
-        react: false,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -98,6 +99,11 @@ describe('Single Selection', () => {
             force: true
           }
         ]
+      },
+      {
+        name: 'four_init',
+        update: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])',
+        react: false
       }
     ]);
 

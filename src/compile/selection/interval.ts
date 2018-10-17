@@ -84,7 +84,7 @@ const interval: SelectionCompiler = {
       name: name + TUPLE,
       ...(init
         ? {
-            update: `{${update}: ${assembleInit(selCmpt.init)}}`,
+            update: `{${update}: ${assembleInit(init)}}`,
             react: false
           }
         : {}),
