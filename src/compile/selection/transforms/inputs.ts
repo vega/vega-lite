@@ -13,7 +13,7 @@ const inputBindings: TransformCompiler = {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
-    const init = selCmpt.init;
+    const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.forEach((p, i) => {
