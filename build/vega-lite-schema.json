@@ -1300,7 +1300,7 @@
           ]
         },
         "clip": {
-          "description": "Clip of the marks.",
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
           "type": "boolean"
         },
         "color": {
@@ -1332,7 +1332,7 @@
           ]
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -2913,7 +2913,7 @@
           ]
         },
         "clip": {
-          "description": "Clip of the marks.",
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
           "type": "boolean"
         },
         "color": {
@@ -2929,7 +2929,7 @@
           "description": "The line interpolation method for the error band. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -2992,7 +2992,7 @@
       "additionalProperties": false,
       "properties": {
         "clip": {
-          "description": "Clip of the marks.",
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
           "type": "boolean"
         },
         "color": {
@@ -3004,7 +3004,7 @@
           "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
