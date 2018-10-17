@@ -31,6 +31,13 @@ describe('Multi Selection', () => {
       type: 'multi',
       encodings: ['x', 'color'],
       init: {Horsepower: 50, color: 'Japan'}
+    },
+    five: {
+      type: 'multi',
+      fields: ['Year'],
+      init: {
+        Year: {year: 1970, month: 1, day: 1}
+      }
     }
   }));
 
@@ -86,7 +93,7 @@ describe('Multi Selection', () => {
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
-        update: '{unit: "", fields: four_tuple_fields, values: [50,"Japan"]}',
+        update: '{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}',
         react: false,
         on: [
           {
@@ -99,8 +106,25 @@ describe('Multi Selection', () => {
       }
     ]);
 
+    const fiveSg = multi.signals(model, selCmpts['five']);
+    expect(fiveSg).toEqual([
+      {
+        name: 'five_tuple',
+        update: '{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0)]}',
+        react: false,
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg, threeSg, fourSg)));
+    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg, threeSg, fourSg, fiveSg)));
   });
 
   it('builds unit datasets', () => {
@@ -109,7 +133,8 @@ describe('Multi Selection', () => {
       {name: 'one_store'},
       {name: 'two_store'},
       {name: 'thr_ee_store'},
-      {name: 'four_store'}
+      {name: 'four_store'},
+      {name: 'five_store'}
     ]);
   });
 

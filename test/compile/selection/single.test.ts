@@ -88,7 +88,7 @@ describe('Single Selection', () => {
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
-        update: '{unit: "", fields: four_tuple_fields, values: [50,"Japan"]}',
+        update: '{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}',
         react: false,
         on: [
           {
