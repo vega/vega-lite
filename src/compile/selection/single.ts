@@ -1,4 +1,4 @@
-import {signals as multiSignals} from './multi';
+import {multiSignals} from './multi';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 
 const single: SelectionCompiler = {

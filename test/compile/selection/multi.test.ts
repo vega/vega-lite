@@ -36,10 +36,17 @@ describe('Multi Selection', () => {
     },
     five: {
       type: 'multi',
-      fields: ['Year'],
-      init: {
-        Year: {year: 1970, month: 1, day: 1}
-      }
+      fields: ['Year', 'Origin'],
+      init: [
+        {
+          Origin: 'Japan',
+          Year: {year: 1970, month: 1, day: 1}
+        },
+        {
+          Origin: 'USA',
+          Year: {year: 1980, month: 1, day: 1}
+        }
+      ]
     }
   }));
 
@@ -78,8 +85,6 @@ describe('Multi Selection', () => {
     assert.sameDeepMembers(threeSg, [
       {
         name: 'thr_ee_tuple',
-        update: '{unit: "", fields: thr_ee_tuple_fields, values: [50]}',
-        react: false,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -88,6 +93,11 @@ describe('Multi Selection', () => {
             force: true
           }
         ]
+      },
+      {
+        name: 'thr_ee_init',
+        update: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])',
+        react: false
       }
     ]);
 
@@ -95,8 +105,6 @@ describe('Multi Selection', () => {
     assert.sameDeepMembers(fourSg, [
       {
         name: 'four_tuple',
-        update: '{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}',
-        react: false,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -105,6 +113,11 @@ describe('Multi Selection', () => {
             force: true
           }
         ]
+      },
+      {
+        name: 'four_init',
+        update: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])',
+        react: false
       }
     ]);
 
@@ -112,16 +125,20 @@ describe('Multi Selection', () => {
     assert.sameDeepMembers(fiveSg, [
       {
         name: 'five_tuple',
-        update: '{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0)]}',
-        react: false,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [datum["Year"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [datum["Year"], datum["Origin"]]} : null',
             force: true
           }
         ]
+      },
+      {
+        name: 'five_init',
+        update:
+          'modify("five_store", [{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0), "Japan"]},{unit: "", fields: five_tuple_fields, values: [datetime(1980, 1, 1+1, 0, 0, 0, 0), "USA"]}])',
+        react: false
       }
     ]);
 

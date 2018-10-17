@@ -8,6 +8,9 @@ export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = boolean | number | string | DateTime;
 export type SelectionInitArray = boolean[] | number[] | string[] | DateTime[];
+export interface SelectionInitMapping {
+  [key: string]: SelectionInit;
+}
 
 export interface BaseSelectionDef {
   /**
@@ -70,7 +73,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
   /**
    * Initialize the selection with a mapping between field names and initial values.
    */
-  init?: {[key: string]: SelectionInit};
+  init?: SelectionInitMapping;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionDef {
@@ -98,7 +101,7 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
    * Initialize the selection with a mapping between field names and an initial
    * value (or array of values).
    */
-  init?: {[key: string]: SelectionInit};
+  init?: SelectionInitMapping | SelectionInitMapping[];
 }
 
 export interface BrushConfig {
