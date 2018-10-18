@@ -1,5 +1,7 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
+import {NormalizedSpec} from './../src/spec';
+import {FacetedCompositeUnitSpec, TopLevelFacetedUnitSpec, TopLevelSpec} from './../src/spec';
 
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
@@ -10,7 +12,7 @@ import {initConfig} from './../src/config';
 
 describe('fieldDefs()', () => {
   it('should get all non-duplicate fieldDefs from an encoding', () => {
-    const spec: any = {
+    const spec = {
       data: {url: 'data/cars.json'},
       mark: 'point',
       encoding: {
@@ -26,7 +28,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', () => {
-    const layerSpec: any = {
+    const layerSpec = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       layer: [
         {
@@ -58,7 +60,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', () => {
-    const layerSpec: any = {
+    const layerSpec = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       layer: [
         {
@@ -89,7 +91,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', () => {
-    const facetSpec: any = {
+    const facetSpec = {
       data: {url: 'data/movies.json'},
       facet: {row: {field: 'MPAA_Rating', type: 'ordinal'}},
       spec: {
@@ -213,7 +215,7 @@ describe('extractTransforms()', () => {
         const specString = fs.readFileSync(filepath, 'utf8');
 
         const spec = JSON.parse(specString);
-        const config: any = initConfig(spec.config);
+        const config = initConfig(spec.config);
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
         const originalCompiled = compile(spec);
@@ -230,7 +232,7 @@ describe('extractTransforms()', () => {
 
   describe('extractTransformsSingle()', () => {
     it('should extract transforms from faceted spec', () => {
-      const spec: any = {
+      const spec: NormalizedSpec = {
         name: 'faceted',
         description: 'faceted spec',
         data: {url: 'data/movies.json'},
@@ -247,8 +249,8 @@ describe('extractTransforms()', () => {
           }
         }
       };
-      const config = initConfig(spec.config);
-      const output: any = extractTransforms(spec, config);
+      const config = {};
+      const output = extractTransforms(spec, config);
       expect(output).toEqual({
         name: 'faceted',
         description: 'faceted spec',
@@ -276,7 +278,7 @@ describe('extractTransforms()', () => {
   });
   describe('extractTransformsLayered()', () => {
     it('should extract transforms from a layered spec', () => {
-      const spec: any = {
+      const spec: NormalizedSpec = {
         data: {url: 'data/seattle-weather.csv'},
         layer: [
           {
@@ -320,8 +322,8 @@ describe('extractTransforms()', () => {
         ],
         resolve: {scale: {y: 'independent'}}
       };
-      const config: any = initConfig(spec.config);
-      const output: any = extractTransforms(normalize(spec, config), config);
+      const config = {};
+      const output = extractTransforms(normalize(spec, config), config);
       expect(output).toEqual(
         normalize(
           {

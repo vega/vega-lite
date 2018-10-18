@@ -130,7 +130,6 @@ export class ParseNode extends DataFlowNode {
         if (isTimeFieldDef(fieldDef)) {
           implicit[fieldDef.field] = 'date';
         } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
-          // Min and Max can take both numbers and dates as input so keeping track of the input fields type is significant.
           implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
