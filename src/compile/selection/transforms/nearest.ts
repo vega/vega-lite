@@ -1,6 +1,5 @@
 import * as log from '../../../log';
 import {isPathMark} from '../../../mark';
-import {positionalProjections} from '../selection';
 import {TransformCompiler} from './transforms';
 
 const VORONOI = 'voronoi';
@@ -11,7 +10,7 @@ const nearest: TransformCompiler = {
   },
 
   marks: (model, selCmpt, marks) => {
-    const {x, y} = positionalProjections(selCmpt);
+    const {x, y} = selCmpt.project.has;
     const markType = model.mark;
     if (isPathMark(markType)) {
       log.warn(log.message.nearestNotSupportForContinuous(markType));

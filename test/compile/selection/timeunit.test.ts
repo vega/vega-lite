@@ -61,10 +61,10 @@ describe('Selection time unit', () => {
       two: {type: 'single', encodings: ['x', 'y']}
     }));
 
-    assert.isUndefined(selCmpts['one'].timeUnit);
-    assert.instanceOf(selCmpts['two'].timeUnit, TimeUnitNode);
+    assert.isUndefined(selCmpts['one'].project.timeUnit);
+    assert.instanceOf(selCmpts['two'].project.timeUnit, TimeUnitNode);
 
-    const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
+    const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);
     assert.sameDeepMembers(as, ['seconds_date', 'minutes_date']);
   });
 
