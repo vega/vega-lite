@@ -22,7 +22,7 @@ import {Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {assembleFacetSignals} from './selection/selection';
+import {assembleFacetSignals} from './selection/assemble';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,

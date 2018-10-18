@@ -2,7 +2,8 @@
 
 import {assert} from 'chai';
 import {FacetModel} from '../../../src/compile/facet';
-import * as selection from '../../../src/compile/selection/selection';
+import {unitName} from '../../../src/compile/selection';
+import {assembleFacetSignals} from '../../../src/compile/selection/assemble';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseModel} from '../../util';
 
@@ -38,7 +39,7 @@ describe('Faceted Selections', () => {
   const unit = model.children[0].children[1] as UnitModel;
 
   it('should assemble a facet signal', () => {
-    assert.includeDeepMembers(selection.assembleFacetSignals(model as FacetModel, []), [
+    assert.includeDeepMembers(assembleFacetSignals(model as FacetModel, []), [
       {
         name: 'facet',
         value: {},
@@ -53,9 +54,6 @@ describe('Faceted Selections', () => {
   });
 
   it('should name the unit with the facet keys', () => {
-    assert.equal(
-      selection.unitName(unit),
-      `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`
-    );
+    assert.equal(unitName(unit), `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`);
   });
 });

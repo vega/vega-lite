@@ -1,8 +1,12 @@
 /* tslint:disable quotemark */
 import {assert} from 'chai';
-
+import {
+  assembleUnitSelectionData,
+  assembleUnitSelectionMarks,
+  assembleUnitSelectionSignals
+} from '../../../src/compile/selection/assemble';
 import multi from '../../../src/compile/selection/multi';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('Multi Selection', () => {
@@ -15,7 +19,7 @@ describe('Multi Selection', () => {
     }
   });
 
-  const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'multi'},
     two: {
       type: 'multi',
@@ -139,13 +143,13 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg, threeSg, fourSg, fiveSg));
   });
 
   it('builds unit datasets', () => {
     const data: any[] = [];
-    assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
+    assert.sameDeepMembers(assembleUnitSelectionData(model, data), [
       {name: 'one_store'},
       {name: 'two_store'},
       {name: 'thr_ee_store'},
@@ -157,6 +161,6 @@ describe('Multi Selection', () => {
   it('leaves marks alone', () => {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
-    assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
+    assert.equal(assembleUnitSelectionMarks(model, marks), marks);
   });
 });

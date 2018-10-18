@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import nearest from '../../../src/compile/selection/transforms/nearest';
 import * as log from '../../../src/log';
 import {duplicate} from '../../../src/util';
@@ -18,7 +18,7 @@ function getModel(markType: any) {
   });
   model.parseScale();
   model.parseMarkGroup();
-  model.component.selection = selection.parseUnitSelection(model, {
+  model.component.selection = parseUnitSelection(model, {
     one: {type: 'single', nearest: true},
     two: {type: 'multi', nearest: true},
     three: {type: 'interval'},

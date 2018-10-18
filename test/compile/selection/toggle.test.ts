@@ -1,7 +1,8 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import * as selection from '../../../src/compile/selection/selection';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import toggle from '../../../src/compile/selection/transforms/toggle';
 import {parseUnitModel} from '../../util';
 
@@ -16,7 +17,7 @@ describe('Toggle Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'multi'},
     two: {
       type: 'multi',
@@ -69,7 +70,7 @@ describe('Toggle Selection Transform', () => {
       }
     ]);
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg));
   });
 
@@ -83,7 +84,7 @@ describe('Toggle Selection Transform', () => {
       'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null'
     );
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         name: 'one_modify',

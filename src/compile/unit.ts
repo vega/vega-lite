@@ -37,9 +37,9 @@ import {
   assembleTopLevelSignals,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals,
-  parseUnitSelection
-} from './selection/selection';
+  assembleUnitSelectionSignals
+} from './selection/assemble';
+import {parseUnitSelection} from './selection/parse';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
