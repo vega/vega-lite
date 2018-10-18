@@ -247,7 +247,7 @@ describe('extractTransforms()', () => {
           }
         }
       };
-      const config = {};
+      const config = initConfig({});
       const output = extractTransforms(spec, config);
       expect(output).toEqual({
         name: 'faceted',
@@ -320,7 +320,7 @@ describe('extractTransforms()', () => {
         ],
         resolve: {scale: {y: 'independent'}}
       };
-      const config = {};
+      const config = initConfig({});
       const output = extractTransforms(normalize(spec, config), config);
       expect(output).toEqual(
         normalize(
