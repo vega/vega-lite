@@ -22,7 +22,7 @@ const inputBindings: TransformCompiler = {
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,
-          ...(init ? {update: assembleInit(init[i])} : {}),
+          ...(init ? {init: assembleInit(init[i])} : {value: null}),
           on: [
             {
               events: selCmpt.events,
@@ -51,7 +51,6 @@ const inputBindings: TransformCompiler = {
 
     delete signal.value;
     delete signal.on;
-    delete signal.react;
 
     return signals;
   }

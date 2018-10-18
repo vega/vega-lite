@@ -45,8 +45,7 @@ export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
     const insert = selCmpt.init.map(i => `{${update}: ${assembleInit(i)}}`);
     signals.push({
       name: `${name}_init`,
-      update: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`,
-      react: false
+      init: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`
     });
   }
 

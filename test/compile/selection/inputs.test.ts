@@ -72,6 +72,7 @@ describe('Inputs Selection Transform', () => {
 
     expect(selection.assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
+      value: null,
       on: [
         {
           events: [{source: 'scope', type: 'click'}],
@@ -94,6 +95,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'two_Horsepower',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -104,6 +106,7 @@ describe('Inputs Selection Transform', () => {
         },
         {
           name: 'two_Cylinders',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -128,6 +131,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'three_Origin',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -142,6 +146,7 @@ describe('Inputs Selection Transform', () => {
         },
         {
           name: 'three_Cylinders',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -176,7 +181,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'seven_Year',
-          update: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+          init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
           on: [
             {
               events: [{source: 'scope', type: 'click'}],

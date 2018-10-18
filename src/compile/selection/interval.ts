@@ -82,12 +82,7 @@ const interval: SelectionCompiler = {
     const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
     return signals.concat({
       name: name + TUPLE,
-      ...(init
-        ? {
-            update: `{${update}: ${assembleInit(init)}}`,
-            react: false
-          }
-        : {}),
+      ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
       on: [
         {
           events: dataSignals.map(t => ({signal: t})),
@@ -218,12 +213,12 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     : [
         {
           name: vname,
-          ...(init ? {update: assembleInit(init, scaled), react: false} : {value: []}),
+          ...(init ? {init: assembleInit(init, scaled)} : {value: []}),
           on: on
         },
         {
           name: dname,
-          ...(init ? {update: assembleInit(init)} : {}),
+          ...(init ? {init: assembleInit(init)} : {}),
           on: [
             {
               events: {signal: vname},
