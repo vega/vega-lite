@@ -4,7 +4,8 @@ import {stringValue} from 'vega-util';
 import {ScaleChannel, X, Y} from '../../../channel';
 import {UnitModel} from '../../unit';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
-import {channelSignalName, positionalProjections, SelectionComponent} from '../selection';
+import {SelectionComponent} from '../selection';
+import {SelectionProjection} from './project';
 import {default as scalesCompiler, domain} from './scales';
 import {TransformCompiler} from './transforms';
 
@@ -20,7 +21,7 @@ const zoom: TransformCompiler = {
     const name = selCmpt.name;
     const hasScales = scalesCompiler.has(selCmpt);
     const delta = name + DELTA;
-    const {x, y} = positionalProjections(selCmpt);
+    const {x, y} = selCmpt.project.has;
     const sx = stringValue(model.scaleName(X));
     const sy = stringValue(model.scaleName(Y));
     let events = parseSelector(selCmpt.zoom, 'scope');
@@ -57,12 +58,12 @@ const zoom: TransformCompiler = {
       }
     );
 
-    if (x !== null) {
-      onDelta(model, selCmpt, 'x', 'width', signals);
+    if (x !== undefined) {
+      onDelta(model, selCmpt, x, 'width', signals);
     }
 
-    if (y !== null) {
-      onDelta(model, selCmpt, 'y', 'height', signals);
+    if (y !== undefined) {
+      onDelta(model, selCmpt, y, 'height', signals);
     }
 
     return signals;
@@ -74,15 +75,14 @@ export default zoom;
 function onDelta(
   model: UnitModel,
   selCmpt: SelectionComponent,
-  channel: ScaleChannel,
+  proj: SelectionProjection,
   size: 'width' | 'height',
   signals: NewSignal[]
 ) {
   const name = selCmpt.name;
+  const channel = proj.channel as ScaleChannel;
   const hasScales = scalesCompiler.has(selCmpt);
-  const signal = signals.filter(s => {
-    return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
-  })[0];
+  const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt.get('type');

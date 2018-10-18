@@ -60,10 +60,10 @@ describe('Selection time unit', () => {
       two: {type: 'single', encodings: ['x', 'y']}
     }));
 
-    expect(selCmpts['one'].timeUnit).not.toBeDefined();
-    expect(selCmpts['two'].timeUnit).toBeInstanceOf(TimeUnitNode);
+    expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
+    expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
 
-    const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
+    const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);
     expect(as).toEqual(['seconds_date', 'minutes_date']);
   });
 

@@ -1,7 +1,7 @@
 import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, isString, stringValue} from 'vega-util';
-import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {FACET_CHANNELS} from '../../channel';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -17,7 +17,6 @@ import {
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
 import {EventStream, VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
-import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -26,6 +25,7 @@ import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
 import singleCompiler from './single';
+import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
 import {forEachTransform} from './transforms/transforms';
 
 export const STORE = '_store';
@@ -52,27 +52,13 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   empty: 'all' | 'none';
   mark?: BrushConfig;
 
-  _signalNames: {};
-
   // Transforms
-  project?: ProjectSelectionComponent[];
-  fields?: {[c in SingleDefChannel]?: string};
-  timeUnit?: TimeUnitNode;
-  scales?: ScaleChannel[];
+  project?: SelectionProjectionComponent;
+  scales?: SelectionProjection[];
   toggle?: any;
   translate?: any;
   zoom?: any;
   nearest?: any;
-}
-
-// Do the selection tuples hold enumerated or ranged values for a field?
-// Ranged values can be left-right inclusive (R) or left-inclusive, right-exclusive (R-LE).
-export type TupleStoreType = 'E' | 'R' | 'R-RE';
-
-export interface ProjectSelectionComponent {
-  field?: string;
-  channel?: SingleDefChannel;
-  type: TupleStoreType;
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {
@@ -260,9 +246,9 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
     const selCmpt = model.getSelectionComponent(vname, name);
     const store = stringValue(vname + STORE);
 
-    if (selCmpt.timeUnit) {
+    if (selCmpt.project.timeUnit) {
       const child = dfnode || model.component.data.raw;
-      const tunode = selCmpt.timeUnit.clone();
+      const tunode = selCmpt.project.timeUnit.clone();
       if (child.parent) {
         tunode.insertAsParentOf(child);
       } else {
@@ -389,41 +375,6 @@ export function requiresSelectionId(model: Model) {
     identifier = identifier || selCmpt.project.some(proj => proj.field === SELECTION_ID);
   });
   return identifier;
-}
-
-export function channelSignalName(selCmpt: SelectionComponent, channel: Channel, range: 'visual' | 'data') {
-  const sgNames = selCmpt._signalNames || (selCmpt._signalNames = {});
-  if (sgNames[channel] && sgNames[channel][range]) {
-    return sgNames[channel][range];
-  }
-
-  sgNames[channel] = sgNames[channel] || {};
-  const basename = varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
-  let name = basename;
-  let counter = 1;
-  while (sgNames[name]) {
-    name = `${basename}_${counter++}`;
-  }
-
-  return (sgNames[name] = sgNames[channel][range] = name);
-}
-
-export function positionalProjections(selCmpt: SelectionComponent) {
-  let x: ProjectSelectionComponent = null;
-  let xi: number = null;
-  let y: ProjectSelectionComponent = null;
-  let yi: number = null;
-
-  selCmpt.project.forEach((p, i) => {
-    if (p.channel === X) {
-      x = p;
-      xi = i;
-    } else if (p.channel === Y) {
-      y = p;
-      yi = i;
-    }
-  });
-  return {x, xi, y, yi};
 }
 
 export function assembleInit(

@@ -421,8 +421,8 @@ describe('Interval Selections', () => {
       }));
 
       const sg = interval.signals(model, selCmpts2['one']);
-      expect(sg[0].name).toEqual('one_x');
-      expect(sg[1].name).toEqual('one_x_1');
+      expect(sg[0].name).toEqual('one_x_1');
+      expect(sg[1].name).toEqual('one_x');
     });
   });
 

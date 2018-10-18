@@ -7,7 +7,7 @@ import {TUPLE_FIELDS} from './transforms/project';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
-  const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+  const fieldsSg = name + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = '(item().isVoronoi ? datum.datum : datum)';
   const values = proj
