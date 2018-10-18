@@ -272,7 +272,7 @@ export interface VgSignal {
   description?: string;
   on?: VgEventHandler[];
   update?: string;
-  react?: boolean;
+  init?: string;
   value?: string | number | boolean | {} | SignalRef;
   // only for nested signals
   push?: string;

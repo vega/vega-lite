@@ -96,8 +96,7 @@ describe('Multi Selection', () => {
       },
       {
         name: 'thr_ee_init',
-        update: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])',
-        react: false
+        init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
       }
     ]);
 
@@ -116,8 +115,7 @@ describe('Multi Selection', () => {
       },
       {
         name: 'four_init',
-        update: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])',
-        react: false
+        init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
       }
     ]);
 
@@ -136,9 +134,8 @@ describe('Multi Selection', () => {
       },
       {
         name: 'five_init',
-        update:
-          'modify("five_store", [{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0), "Japan"]},{unit: "", fields: five_tuple_fields, values: [datetime(1980, 1, 1+1, 0, 0, 0, 0), "USA"]}])',
-        react: false
+        init:
+          'modify("five_store", [{unit: "", fields: five_tuple_fields, values: [datetime(1970, 1, 1+1, 0, 0, 0, 0), "Japan"]},{unit: "", fields: five_tuple_fields, values: [datetime(1980, 1, 1+1, 0, 0, 0, 0), "USA"]}])'
       }
     ]);
 

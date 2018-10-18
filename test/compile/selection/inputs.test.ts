@@ -76,6 +76,7 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'one__vgsid_',
+        value: null,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -100,6 +101,7 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'two_Horsepower',
+        value: null,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -110,6 +112,7 @@ describe('Inputs Selection Transform', () => {
       },
       {
         name: 'two_Cylinders',
+        value: null,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -134,6 +137,7 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'three_Origin',
+        value: null,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -148,6 +152,7 @@ describe('Inputs Selection Transform', () => {
       },
       {
         name: 'three_Cylinders',
+        value: null,
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
@@ -178,7 +183,7 @@ describe('Inputs Selection Transform', () => {
     assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
       {
         name: 'seven_Year',
-        update: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+        init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
         on: [
           {
             events: [{source: 'scope', type: 'click'}],
