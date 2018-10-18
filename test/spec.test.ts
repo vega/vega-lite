@@ -1,14 +1,12 @@
 /* tslint:disable:quotemark */
 import {assert} from 'chai';
-import {NormalizedSpec} from './../src/spec';
-import {FacetedCompositeUnitSpec, TopLevelFacetedUnitSpec, TopLevelSpec} from './../src/spec';
-
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
 import {Field, FieldDef} from '../src/fielddef';
-import {extractTransforms, fieldDefs, normalize, TopLevelSpec} from '../src/spec';
+import {extractTransforms, fieldDefs, normalize} from '../src/spec';
 import {StringSet} from '../src/util';
 import {initConfig} from './../src/config';
+import {NormalizedSpec, TopLevelSpec} from './../src/spec';
 
 describe('fieldDefs()', () => {
   it('should get all non-duplicate fieldDefs from an encoding', () => {
