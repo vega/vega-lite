@@ -7,7 +7,7 @@ import {TUPLE_FIELDS} from './transforms/project';
 
 export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
   const name = selCmpt.name;
-  const fieldsSg = name + TUPLE + TUPLE_FIELDS;
+  const fieldsSg = name + TUPLE_FIELDS;
   const proj = selCmpt.project;
   const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
   const values = proj

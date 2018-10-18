@@ -1,15 +1,38 @@
 import {array} from 'vega-util';
-import {ScaleChannel} from '../../../channel';
+import {ScaleChannel, SingleDefChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {SelectionDef} from '../../../selection';
-import {Dict, keys} from '../../../util';
+import {Dict, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import {ProjectSelectionComponent, SelectionComponent, TUPLE, TupleStoreType} from '../selection';
+import {SelectionComponent} from '../selection';
 import scales from './scales';
 import {TransformCompiler} from './transforms';
 
-export const TUPLE_FIELDS = '_fields';
+export const TUPLE_FIELDS = '_tuple_fields';
+
+/**
+ * Do the selection tuples hold enumerated or ranged values for a field?
+ * Ranged values can be left-right inclusive (R) or left-inclusive, right-exclusive (R-LE).
+ */
+export type TupleStoreType = 'E' | 'R' | 'R-RE';
+
+export interface SelectionProjection {
+  type: TupleStoreType;
+  field: string;
+  channel?: SingleDefChannel;
+  signals?: {data?: string; visual?: string};
+}
+
+export class SelectionProjectionComponent extends Array<SelectionProjection> {
+  public has: {[key in SingleDefChannel]?: SelectionProjection};
+  public timeUnit?: TimeUnitNode;
+  constructor(...items: SelectionProjection[]) {
+    super(...items);
+    (this as any).__proto__ = SelectionProjectionComponent.prototype;
+    this.has = {};
+  }
+}
 
 const project: TransformCompiler = {
   has: (selDef: SelectionComponent | SelectionDef) => {
@@ -18,15 +41,27 @@ const project: TransformCompiler = {
   },
 
   parse: (model, selDef, selCmpt) => {
-    const timeUnits: Dict<TimeUnitComponent> = {};
-    const f: Dict<ProjectSelectionComponent> = {};
-    const proj = selCmpt.project || (selCmpt.project = []);
+    const name = selCmpt.name;
     const init = selDef.init;
-    selCmpt.fields = {};
+    const proj = selCmpt.project || (selCmpt.project = new SelectionProjectionComponent());
+    const parsed: Dict<SelectionProjection> = {};
+    const timeUnits: Dict<TimeUnitComponent> = {};
+
+    const signals = {};
+    const signalName = (p: SelectionProjection, range: 'data' | 'visual') => {
+      const suffix = range === 'visual' ? p.channel : p.field;
+      let sg = varName(`${name}_${suffix}`);
+      for (let counter = 1; signals[sg]; counter++) {
+        sg = varName(`${name}_${suffix}_${counter}`);
+      }
+      return {[range]: (signals[sg] = sg)};
+    };
 
     // TODO: find a possible channel mapping for these fields.
-    if (selDef.fields) {
-      proj.push(...selDef.fields.map<ProjectSelectionComponent>(field => ({field, type: 'E'})));
+    for (const field of selDef.fields || []) {
+      const p: SelectionProjection = {type: 'E', field};
+      p.signals = {...signalName(p, 'data')};
+      proj.push(p);
     }
 
     for (const channel of selDef.encodings || []) {
@@ -49,7 +84,7 @@ const project: TransformCompiler = {
 
         // Prevent duplicate projections on the same field.
         // TODO: what if the same field is bound to multiple channels (e.g., SPLOM diag).
-        if (!f[field]) {
+        if (!parsed[field]) {
           // Determine whether the tuple will store enumerated or ranged values.
           // Interval selections store ranges for continuous scales, and enumerations otherwise.
           // Single/multi selections store ranges for binned fields, and enumerations otherwise.
@@ -63,10 +98,12 @@ const project: TransformCompiler = {
             type = 'R-RE';
           }
 
-          proj.push((f[field] = {field, channel, type}));
+          const p: SelectionProjection = {field, channel, type};
+          p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
+          proj.push((parsed[field] = p));
         }
 
-        selCmpt.fields[channel] = field;
+        proj.has[channel] = parsed[field];
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
@@ -82,12 +119,12 @@ const project: TransformCompiler = {
     }
 
     if (keys(timeUnits).length) {
-      selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
+      proj.timeUnit = new TimeUnitNode(null, timeUnits);
     }
   },
 
   signals: (model, selCmpt, signals) => {
-    const name = selCmpt.name + TUPLE + TUPLE_FIELDS;
+    const name = selCmpt.name + TUPLE_FIELDS;
     const hasSignal = signals.filter(s => s.name === name);
     return hasSignal.length
       ? signals
