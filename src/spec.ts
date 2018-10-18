@@ -147,7 +147,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
   /**
    * Layer or single view specifications to be layered.
    *
-   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
+   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
    */
   layer: (GenericLayerSpec<U> | U)[];
 
