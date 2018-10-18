@@ -84,8 +84,7 @@ describe('Single Selection', () => {
       },
       {
         name: 'thr_ee_init',
-        update: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])',
-        react: false
+        init: 'modify("thr_ee_store", [{unit: "", fields: thr_ee_tuple_fields, values: [50]}])'
       }
     ]);
 
@@ -104,8 +103,7 @@ describe('Single Selection', () => {
       },
       {
         name: 'four_init',
-        update: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])',
-        react: false
+        init: 'modify("four_store", [{unit: "", fields: four_tuple_fields, values: [50, "Japan"]}])'
       }
     ]);
 

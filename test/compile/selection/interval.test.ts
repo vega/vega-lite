@@ -196,8 +196,7 @@ describe('Interval Selections', () => {
       assert.includeDeepMembers(fourSg, [
         {
           name: 'four_x',
-          update: '[scale("x", 50), scale("x", 70)]',
-          react: false,
+          init: '[scale("x", 50), scale("x", 70)]',
           on: [
             {
               events: parseSelector('mousedown', 'scope')[0],
@@ -215,7 +214,7 @@ describe('Interval Selections', () => {
         },
         {
           name: 'four_Horsepower',
-          update: '[50, 70]',
+          init: '[50, 70]',
           on: [
             {
               events: {signal: 'four_x'},
@@ -234,8 +233,7 @@ describe('Interval Selections', () => {
       assert.includeDeepMembers(fiveSg, [
         {
           name: 'five_x',
-          update: '[scale("x", 50), scale("x", 60)]',
-          react: false,
+          init: '[scale("x", 50), scale("x", 60)]',
           on: [
             {
               events: parseSelector('mousedown', 'scope')[0],
@@ -253,7 +251,7 @@ describe('Interval Selections', () => {
         },
         {
           name: 'five_Horsepower',
-          update: '[50, 60]',
+          init: '[50, 60]',
           on: [
             {
               events: {signal: 'five_x'},
@@ -263,8 +261,7 @@ describe('Interval Selections', () => {
         },
         {
           name: 'five_y',
-          update: '[scale("y", 23), scale("y", 54)]',
-          react: false,
+          init: '[scale("y", 23), scale("y", 54)]',
           on: [
             {
               events: parseSelector('mousedown', 'scope')[0],
@@ -282,7 +279,7 @@ describe('Interval Selections', () => {
         },
         {
           name: 'five_Miles_per_Gallon',
-          update: '[23, 54]',
+          init: '[23, 54]',
           on: [
             {
               events: {signal: 'five_y'},
@@ -301,8 +298,7 @@ describe('Interval Selections', () => {
       assert.includeDeepMembers(sixSg, [
         {
           name: 'six_x',
-          update: '[scale("x", datetime(2000, 10, 5+1, 0, 0, 0, 0)), scale("x", datetime(2001, 1, 13+1, 0, 0, 0, 0))]',
-          react: false,
+          init: '[scale("x", datetime(2000, 10, 5+1, 0, 0, 0, 0)), scale("x", datetime(2001, 1, 13+1, 0, 0, 0, 0))]',
           on: [
             {
               events: parseSelector('mousedown', 'scope')[0],
@@ -320,7 +316,7 @@ describe('Interval Selections', () => {
         },
         {
           name: 'six_Horsepower',
-          update: '[datetime(2000, 10, 5+1, 0, 0, 0, 0), datetime(2001, 1, 13+1, 0, 0, 0, 0)]',
+          init: '[datetime(2000, 10, 5+1, 0, 0, 0, 0), datetime(2001, 1, 13+1, 0, 0, 0, 0)]',
           on: [
             {
               events: {signal: 'six_x'},
@@ -382,8 +378,7 @@ describe('Interval Selections', () => {
       assert.includeDeepMembers(fourSg, [
         {
           name: 'four_tuple',
-          update: '{unit: "", fields: four_tuple_fields, values: [[50, 70]]}',
-          react: false,
+          init: '{unit: "", fields: four_tuple_fields, values: [[50, 70]]}',
           on: [
             {
               events: [{signal: 'four_Horsepower'}],
@@ -397,8 +392,7 @@ describe('Interval Selections', () => {
       assert.includeDeepMembers(fiveSg, [
         {
           name: 'five_tuple',
-          update: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
-          react: false,
+          init: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
           on: [
             {
               events: [{signal: 'five_Horsepower'}, {signal: 'five_Miles_per_Gallon'}],
