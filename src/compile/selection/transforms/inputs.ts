@@ -1,5 +1,6 @@
+import {TUPLE} from '..';
 import {accessPathWithDatum, varName} from '../../../util';
-import {assembleInit, TUPLE} from '../selection';
+import {assembleInit} from '../assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';

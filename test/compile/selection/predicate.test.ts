@@ -2,12 +2,11 @@
 
 import {assert} from 'chai';
 import {nonPosition} from '../../../src/compile/mark/mixins';
-import * as selection from '../../../src/compile/selection/selection';
+import {assembleSelectionPredicate as predicate} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {expression} from '../../../src/predicate';
 import {VgEncodeEntry} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
-
-const predicate = selection.selectionPredicate;
 
 describe('Selection Predicate', () => {
   const model = parseUnitModel({
@@ -36,7 +35,7 @@ describe('Selection Predicate', () => {
 
   model.parseScale();
 
-  model.component.selection = selection.parseUnitSelection(model, {
+  model.component.selection = parseUnitSelection(model, {
     one: {type: 'single'},
     two: {type: 'multi', resolve: 'union'},
     'thr-ee': {type: 'interval', resolve: 'intersect'},

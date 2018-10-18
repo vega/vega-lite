@@ -1,7 +1,7 @@
 import {isArray, isString} from 'vega-util';
 import {DataFlowNode} from './compile/data/dataflow';
 import {Model} from './compile/model';
-import {selectionPredicate} from './compile/selection/selection';
+import {assembleSelectionPredicate} from './compile/selection/assemble';
 import {DateTime} from './datetime';
 import {valueExpr, vgField} from './fielddef';
 import {LogicalOperand} from './logical';
@@ -188,7 +188,7 @@ export function expression(model: Model, filterOp: LogicalOperand<Predicate>, no
     if (isString(predicate)) {
       return predicate;
     } else if (isSelectionPredicate(predicate)) {
-      return selectionPredicate(model, predicate.selection, node);
+      return assembleSelectionPredicate(model, predicate.selection, node);
     } else {
       // Filter Object
       return fieldFilterExpression(predicate);

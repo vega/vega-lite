@@ -1,10 +1,10 @@
 import {stringValue} from 'vega-util';
+import {VL_SELECTION_RESOLVE} from '..';
 import {Channel, isScaleChannel, X, Y} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {accessPathWithDatum, varName} from '../../../util';
 import {UnitModel} from '../../unit';
-import {VL_SELECTION_RESOLVE} from '../selection';
 import {SelectionProjection} from './project';
 import {TransformCompiler} from './transforms';
 

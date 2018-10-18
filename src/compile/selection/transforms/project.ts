@@ -1,11 +1,11 @@
 import {array} from 'vega-util';
+import {SelectionComponent} from '..';
 import {ScaleChannel, SingleDefChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
 import {SelectionDef} from '../../../selection';
 import {Dict, keys, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import {SelectionComponent} from '../selection';
 import scales from './scales';
 import {TransformCompiler} from './transforms';
 

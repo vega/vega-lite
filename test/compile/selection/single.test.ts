@@ -1,7 +1,12 @@
 /* tslint:disable quotemark */
 import {assert} from 'chai';
-
-import * as selection from '../../../src/compile/selection/selection';
+import {
+  assembleTopLevelSignals,
+  assembleUnitSelectionData,
+  assembleUnitSelectionMarks,
+  assembleUnitSelectionSignals
+} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import single from '../../../src/compile/selection/single';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -17,7 +22,7 @@ describe('Single Selection', () => {
 
   model.parseScale();
 
-  const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'single'},
     two: {
       type: 'single',
@@ -107,7 +112,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, oneSg.concat(twoSg, threeSg, fourSg));
   });
 
@@ -118,7 +123,7 @@ describe('Single Selection', () => {
     const twoExpr = single.modifyExpr(model, selCmpts['two']);
     assert.equal(twoExpr, 'two_tuple, {unit: ""}');
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         name: 'one_modify',
@@ -132,7 +137,7 @@ describe('Single Selection', () => {
   });
 
   it('builds top-level signals', () => {
-    const signals = selection.assembleTopLevelSignals(model, []);
+    const signals = assembleTopLevelSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         name: 'one',
@@ -152,7 +157,7 @@ describe('Single Selection', () => {
 
   it('builds unit datasets', () => {
     const data: any[] = [];
-    assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
+    assert.sameDeepMembers(assembleUnitSelectionData(model, data), [
       {name: 'one_store'},
       {name: 'two_store'},
       {name: 'thr_ee_store'},
@@ -163,6 +168,6 @@ describe('Single Selection', () => {
   it('leaves marks alone', () => {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
-    assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
+    assert.equal(assembleUnitSelectionMarks(model, marks), marks);
   });
 });

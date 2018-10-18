@@ -2,9 +2,9 @@
 
 import {assert} from 'chai';
 import {selector as parseSelector} from 'vega-event-selector';
-
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModel} from '../../util';
 
 describe('Interval Selections', () => {
@@ -18,7 +18,7 @@ describe('Interval Selections', () => {
   });
   model.parseScale();
 
-  const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+  const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'interval', encodings: ['x'], translate: false, zoom: false},
     two: {
       type: 'interval',
@@ -415,7 +415,7 @@ describe('Interval Selections', () => {
 
       model2.parseScale();
 
-      const selCmpts2 = (model2.component.selection = selection.parseUnitSelection(model2, {
+      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, {
         one: {
           type: 'interval',
           encodings: ['x'],
@@ -440,7 +440,7 @@ describe('Interval Selections', () => {
     const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
     assert.equal(threeExpr, 'thr_ee_tuple, {unit: ""}');
 
-    const signals = selection.assembleUnitSelectionSignals(model, []);
+    const signals = assembleUnitSelectionSignals(model, []);
     assert.includeDeepMembers(signals, [
       {
         name: 'one_modify',

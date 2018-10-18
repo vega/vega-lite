@@ -1,7 +1,8 @@
 /* tslint:disable quotemark */
 
 import {assert} from 'chai';
-import * as selection from '../../../src/compile/selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/transforms/inputs';
 import {parseUnitModel} from '../../util';
 
@@ -16,7 +17,7 @@ describe('Inputs Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = selection.parseUnitSelection(model, {
+  const selCmpts = parseUnitSelection(model, {
     one: {
       type: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
@@ -66,14 +67,14 @@ describe('Inputs Selection Transform', () => {
 
   it('adds widget binding for default projection', () => {
     model.component.selection = {one: selCmpts['one']};
-    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
+    assert.includeDeepMembers(assembleUnitSelectionSignals(model, []), [
       {
         name: 'one_tuple',
         update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
+    assert.includeDeepMembers(assembleTopLevelSignals(model, []), [
       {
         name: 'one__vgsid_',
         value: null,
@@ -90,7 +91,7 @@ describe('Inputs Selection Transform', () => {
 
   it('adds single widget binding for compound projection', () => {
     model.component.selection = {two: selCmpts['two']};
-    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
+    assert.includeDeepMembers(assembleUnitSelectionSignals(model, []), [
       {
         name: 'two_tuple',
         update:
@@ -98,7 +99,7 @@ describe('Inputs Selection Transform', () => {
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
+    assert.includeDeepMembers(assembleTopLevelSignals(model, []), [
       {
         name: 'two_Horsepower',
         value: null,
@@ -126,7 +127,7 @@ describe('Inputs Selection Transform', () => {
 
   it('adds projection-specific widget bindings', () => {
     model.component.selection = {three: selCmpts['three']};
-    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
+    assert.includeDeepMembers(assembleUnitSelectionSignals(model, []), [
       {
         name: 'three_tuple',
         update:
@@ -134,7 +135,7 @@ describe('Inputs Selection Transform', () => {
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
+    assert.includeDeepMembers(assembleTopLevelSignals(model, []), [
       {
         name: 'three_Origin',
         value: null,
@@ -173,14 +174,14 @@ describe('Inputs Selection Transform', () => {
 
   it('respects initialization', () => {
     model.component.selection = {seven: selCmpts['seven']};
-    assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
+    assert.includeDeepMembers(assembleUnitSelectionSignals(model, []), [
       {
         name: 'seven_tuple',
         update: 'seven_Year !== null ? {fields: seven_tuple_fields, values: [seven_Year]} : null'
       }
     ]);
 
-    assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
+    assert.includeDeepMembers(assembleTopLevelSignals(model, []), [
       {
         name: 'seven_Year',
         init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',

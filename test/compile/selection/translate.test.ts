@@ -2,7 +2,8 @@
 
 import {assert} from 'chai';
 import {selector as parseSelector} from 'vega-event-selector';
-import * as selection from '../../../src/compile/selection/selection';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import translate from '../../../src/compile/selection/transforms/translate';
 import {ScaleType} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
@@ -18,7 +19,7 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   });
 
   model.parseScale();
-  const selCmpts = selection.parseUnitSelection(model, {
+  const selCmpts = parseUnitSelection(model, {
     one: {
       type: 'single'
     },
@@ -66,7 +67,7 @@ describe('Translate Selection Transform', () => {
 
     it('builds them for default invocation', () => {
       model.component.selection = {four: selCmpts['four']};
-      const signals = selection.assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
         {
           name: 'four_translate_anchor',
@@ -93,7 +94,7 @@ describe('Translate Selection Transform', () => {
 
     it('builds them for custom events', () => {
       model.component.selection = {five: selCmpts['five']};
-      const signals = selection.assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
         {
           name: 'five_translate_anchor',
@@ -123,7 +124,7 @@ describe('Translate Selection Transform', () => {
 
     it('builds them for scale-bound intervals', () => {
       model.component.selection = {six: selCmpts['six']};
-      const signals = selection.assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals, [
         {
           name: 'six_translate_anchor',
@@ -153,7 +154,7 @@ describe('Translate Selection Transform', () => {
     it('always builds panLinear exprs for brushes', () => {
       const {model, selCmpts} = getModel();
       model.component.selection = {four: selCmpts['four']};
-      let signals = selection.assembleUnitSelectionSignals(model, []);
+      let signals = assembleUnitSelectionSignals(model, []);
       assert.includeDeepMembers(signals.filter(s => s.name === 'four_x')[0].on, [
         {
           events: {signal: 'four_translate_delta'},
@@ -172,7 +173,7 @@ describe('Translate Selection Transform', () => {
 
       const model2 = getModel('log', 'pow').model;
       model2.component.selection = {four: selCmpts['four']};
-      signals = selection.assembleUnitSelectionSignals(model2, []);
+      signals = assembleUnitSelectionSignals(model2, []);
       assert.includeDeepMembers(signals.filter(s => s.name === 'four_x')[0].on, [
         {
           events: {signal: 'four_translate_delta'},
@@ -193,7 +194,7 @@ describe('Translate Selection Transform', () => {
     it('builds panLinear exprs for scale-bound intervals', () => {
       const {model, selCmpts} = getModel();
       model.component.selection = {six: selCmpts['six']};
-      const signals = selection.assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(model, []);
 
       assert.includeDeepMembers(signals.filter(s => s.name === 'six_Horsepower')[0].on, [
         {
@@ -213,7 +214,7 @@ describe('Translate Selection Transform', () => {
     it('builds panLog/panPow exprs for scale-bound intervals', () => {
       const {model, selCmpts} = getModel('log', 'pow');
       model.component.selection = {six: selCmpts['six']};
-      const signals = selection.assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(model, []);
 
       assert.includeDeepMembers(signals.filter(s => s.name === 'six_Horsepower')[0].on, [
         {

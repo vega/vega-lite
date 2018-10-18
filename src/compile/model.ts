@@ -36,7 +36,7 @@ import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {parseScale} from './scale/parse';
-import {SelectionComponent} from './selection/selection';
+import {SelectionComponent} from './selection';
 import {Split} from './split';
 import {UnitModel} from './unit';
 

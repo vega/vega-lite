@@ -1,7 +1,8 @@
 import {stringValue} from 'vega-util';
+import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
+import {assembleInit} from './assemble';
 import nearest from './transforms/nearest';
 import {TUPLE_FIELDS} from './transforms/project';
 
