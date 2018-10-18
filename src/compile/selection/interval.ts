@@ -1,4 +1,5 @@
 import {stringValue} from 'vega-util';
+import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain} from '../../scale';
@@ -6,7 +7,7 @@ import {SelectionInitArray} from '../../selection';
 import {keys} from '../../util';
 import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
+import {assembleInit} from './assemble';
 import {SelectionProjection, TUPLE_FIELDS} from './transforms/project';
 import scales from './transforms/scales';
 

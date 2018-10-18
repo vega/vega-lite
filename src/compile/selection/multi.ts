@@ -1,8 +1,9 @@
 import {stringValue} from 'vega-util';
+import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {SelectionInit} from '../../selection';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
-import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
+import {assembleInit} from './assemble';
 import {TUPLE_FIELDS} from './transforms/project';
 
 export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {

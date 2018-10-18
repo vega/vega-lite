@@ -1,126 +1,32 @@
-import {Binding, NewSignal, SignalRef} from 'vega';
+import {SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {identity, isArray, isString, stringValue} from 'vega-util';
-import {FACET_CHANNELS} from '../../channel';
+import {identity, isArray, stringValue} from 'vega-util';
+import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
-import {
-  BrushConfig,
-  SELECTION_ID,
-  SelectionDef,
-  SelectionInit,
-  SelectionInitArray,
-  SelectionResolution,
-  SelectionType
-} from '../../selection';
-import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {EventStream, VgData} from '../../vega.schema';
+import {SelectionInit, SelectionInitArray} from '../../selection';
+import {accessPathWithDatum, keys, logicalExpr, varName} from '../../util';
+import {VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
-import {isFacetModel, isUnitModel, Model} from '../model';
+import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
-import intervalCompiler from './interval';
-import multiCompiler from './multi';
-import {SelectionComponent} from './selection';
-import singleCompiler from './single';
-import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
 import {forEachTransform} from './transforms/transforms';
 
-export const STORE = '_store';
-export const TUPLE = '_tuple';
-export const MODIFY = '_modify';
-export const SELECTION_DOMAIN = '_selection_domain_';
-export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
-
-export interface SelectionComponent<T extends SelectionType = SelectionType> {
-  name: string;
-  type: T;
-
-  // Use conditional typing (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html)
-  // so we have stricter type of init (as the type of init depends on selection type)
-  init?: (T extends 'interval'
-    ? SelectionInitArray //
-    : T extends 'single'
-    ? SelectionInit
-    : SelectionInit | SelectionInit[])[]; // multi
-  events: EventStream;
-  // predicate?: string;
-  bind?: 'scales' | Binding | Dict<Binding>;
-  resolve: SelectionResolution;
-  empty: 'all' | 'none';
-  mark?: BrushConfig;
-
-  // Transforms
-  project?: SelectionProjectionComponent;
-  scales?: SelectionProjection[];
-  toggle?: any;
-  translate?: any;
-  zoom?: any;
-  nearest?: any;
-}
-
-export interface SelectionCompiler<T extends SelectionType = SelectionType> {
-  signals: (model: UnitModel, selCmpt: SelectionComponent<T>) => NewSignal[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
-  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent<T>) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent<T>, marks: any[]) => any[];
-}
-
-export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
-  const selectionConfig = model.config.selection;
-
-  if (selDefs) {
-    selDefs = duplicate(selDefs); // duplicate to avoid side effects to original spec
+export function assembleInit(
+  init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit,
+  wrap: (str: string) => string = identity
+): string {
+  if (isArray(init)) {
+    const str = init.map(v => assembleInit(v, wrap)).join(', ');
+    return `[${str}]`;
+  } else if (isDateTime(init)) {
+    return wrap(dateTimeExpr(init));
   }
-
-  for (let name in selDefs) {
-    if (!selDefs.hasOwnProperty(name)) {
-      continue;
-    }
-
-    const selDef = selDefs[name];
-    const cfg = selectionConfig[selDef.type];
-
-    // Set default values from config if a property hasn't been specified,
-    // or if it is true. E.g., "translate": true should use the default
-    // event handlers for translate. However, true may be a valid value for
-    // a property (e.g., "nearest": true).
-    for (const key in cfg) {
-      // A selection should contain either `encodings` or `fields`, only use
-      // default values for these two values if neither of them is specified.
-      if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
-        continue;
-      }
-
-      if (key === 'mark') {
-        selDef[key] = {...cfg[key], ...selDef[key]};
-      }
-
-      if (selDef[key] === undefined || selDef[key] === true) {
-        selDef[key] = cfg[key] || selDef[key];
-      }
-    }
-
-    name = varName(name);
-    const selCmpt = (selCmpts[name] = {
-      ...selDef,
-      name: name,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on
-    } as any);
-
-    forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.parse) {
-        txCompiler.parse(model, selDef, selCmpt);
-      }
-    });
-  }
-
-  return selCmpts;
+  return wrap(JSON.stringify(init));
 }
-
 export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
   forEachSelection(model, (selCmpt, selCompiler) => {
     const name = selCmpt.name;
@@ -239,7 +145,11 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-export function selectionPredicate(model: Model, selections: LogicalOperand<string>, dfnode?: DataFlowNode): string {
+export function assembleSelectionPredicate(
+  model: Model,
+  selections: LogicalOperand<string>,
+  dfnode?: DataFlowNode
+): string {
   const stores: string[] = [];
   function expr(name: string): string {
     const vname = varName(name);
@@ -277,10 +187,7 @@ export function selectionPredicate(model: Model, selections: LogicalOperand<stri
 // selection expression function during scale.assemble. To not pollute the
 // type signatures to account for this setup, the selection domain definition
 // is coerced to a string and appended to SELECTION_DOMAIN.
-export function isRawSelectionDomain(domainRaw: SignalRef) {
-  return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
-}
-export function selectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
+export function assembleSelectionScaleDomain(model: Model, domainRaw: SignalRef): SignalRef {
   const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
   const name = varName(selDomain.selection);
   const encoding = selDomain.encoding;
@@ -317,75 +224,4 @@ export function selectionScaleDomain(model: Model, domainRaw: SignalRef): Signal
   }
 
   return {signal: 'null'};
-}
-
-// Utility functions
-
-function forEachSelection(model: Model, cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void) {
-  const selections = model.component.selection;
-  for (const name in selections) {
-    if (selections.hasOwnProperty(name)) {
-      const sel = selections[name];
-      cb(sel, compiler(sel.type));
-    }
-  }
-}
-
-function compiler(type: SelectionType): SelectionCompiler {
-  switch (type) {
-    case 'single':
-      return singleCompiler;
-    case 'multi':
-      return multiCompiler;
-    case 'interval':
-      return intervalCompiler;
-  }
-  return null;
-}
-
-function getFacetModel(model: Model): FacetModel {
-  let parent = model.parent;
-  while (parent) {
-    if (isFacetModel(parent)) {
-      break;
-    }
-    parent = parent.parent;
-  }
-
-  return parent as FacetModel;
-}
-
-export function unitName(model: Model) {
-  let name = stringValue(model.name);
-  const facetModel = getFacetModel(model);
-  if (facetModel) {
-    const {facet} = facetModel;
-    for (const channel of FACET_CHANNELS) {
-      if (facet[channel]) {
-        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
-      }
-    }
-  }
-  return name;
-}
-
-export function requiresSelectionId(model: Model) {
-  let identifier = false;
-  forEachSelection(model, selCmpt => {
-    identifier = identifier || selCmpt.project.some(proj => proj.field === SELECTION_ID);
-  });
-  return identifier;
-}
-
-export function assembleInit(
-  init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit,
-  wrap: (str: string) => string = identity
-): string {
-  if (isArray(init)) {
-    const str = init.map(v => assembleInit(v, wrap)).join(', ');
-    return `[${str}]`;
-  } else if (isDateTime(init)) {
-    return wrap(dateTimeExpr(init));
-  }
-  return wrap(JSON.stringify(init));
 }

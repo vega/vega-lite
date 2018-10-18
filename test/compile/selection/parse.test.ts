@@ -1,7 +1,7 @@
 /* tslint:disable quotemark */
 
 import {selector as parseSelector} from 'vega-event-selector';
-import * as selection from '../../../src/compile/selection/selection';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {SelectionProjectionComponent} from '../../../src/compile/selection/transforms/project';
 import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
@@ -19,7 +19,7 @@ describe('Selection', () => {
   model.parseScale();
 
   it('parses default selection definitions', () => {
-    const component = selection.parseUnitSelection(model, {
+    const component = parseUnitSelection(model, {
       one: {type: 'single'},
       two: {type: 'multi'},
       three: {type: 'interval'}
@@ -63,7 +63,7 @@ describe('Selection', () => {
   });
 
   it('supports inline default overrides', () => {
-    const component = selection.parseUnitSelection(model, {
+    const component = parseUnitSelection(model, {
       one: {
         type: 'single',
         on: 'dblclick',
@@ -133,7 +133,7 @@ describe('Selection', () => {
       }
     };
 
-    const component = selection.parseUnitSelection(model, {
+    const component = parseUnitSelection(model, {
       one: {type: 'single'},
       two: {type: 'multi'},
       three: {type: 'interval'}
@@ -189,7 +189,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      let c = selection.parseUnitSelection(m, {
+      let c = parseUnitSelection(m, {
         one: {type: 'interval', encodings: ['x']}
       });
 
@@ -209,7 +209,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      c = selection.parseUnitSelection(m, {
+      c = parseUnitSelection(m, {
         one: {type: 'interval', encodings: ['x']}
       });
 
@@ -231,7 +231,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      let c = selection.parseUnitSelection(m, {
+      let c = parseUnitSelection(m, {
         one: {type: 'single', encodings: ['x']}
       });
 
@@ -251,7 +251,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      c = selection.parseUnitSelection(m, {
+      c = parseUnitSelection(m, {
         one: {type: 'multi', encodings: ['x']}
       });
 

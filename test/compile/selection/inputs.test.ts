@@ -1,6 +1,7 @@
 /* tslint:disable quotemark */
 
-import * as selection from '../../../src/compile/selection/selection';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/transforms/inputs';
 import {parseUnitModel} from '../../util';
 
@@ -15,7 +16,7 @@ describe('Inputs Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = selection.parseUnitSelection(model, {
+  const selCmpts = parseUnitSelection(model, {
     one: {
       type: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
@@ -65,12 +66,12 @@ describe('Inputs Selection Transform', () => {
 
   it('adds widget binding for default projection', () => {
     model.component.selection = {one: selCmpts['one']};
-    expect(selection.assembleUnitSelectionSignals(model, [])).toContainEqual({
+    expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'one_tuple',
       update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
     });
 
-    expect(selection.assembleTopLevelSignals(model, [])).toContainEqual({
+    expect(assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
       value: null,
       on: [
@@ -85,13 +86,13 @@ describe('Inputs Selection Transform', () => {
 
   it('adds single widget binding for compound projection', () => {
     model.component.selection = {two: selCmpts['two']};
-    expect(selection.assembleUnitSelectionSignals(model, [])).toContainEqual({
+    expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'two_tuple',
       update:
         'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
     });
 
-    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+    expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
           name: 'two_Horsepower',
@@ -121,13 +122,13 @@ describe('Inputs Selection Transform', () => {
 
   it('adds projection-specific widget bindings', () => {
     model.component.selection = {three: selCmpts['three']};
-    expect(selection.assembleUnitSelectionSignals(model, [])).toContainEqual({
+    expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'three_tuple',
       update:
         'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
     });
 
-    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+    expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
           name: 'three_Origin',
@@ -168,7 +169,7 @@ describe('Inputs Selection Transform', () => {
 
   it('respects initialization', () => {
     model.component.selection = {seven: selCmpts['seven']};
-    expect(selection.assembleUnitSelectionSignals(model, [])).toEqual(
+    expect(assembleUnitSelectionSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
           name: 'seven_tuple',
@@ -177,7 +178,7 @@ describe('Inputs Selection Transform', () => {
       ])
     );
 
-    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+    expect(assembleTopLevelSignals(model, [])).toEqual(
       expect.arrayContaining([
         {
           name: 'seven_Year',
