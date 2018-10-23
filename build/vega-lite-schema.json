@@ -147,8 +147,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -242,8 +242,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -914,8 +914,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -981,8 +981,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -5466,8 +5466,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5550,8 +5550,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -5888,8 +5888,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5955,8 +5955,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6075,8 +6075,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6170,8 +6170,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6548,8 +6548,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6615,8 +6615,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8155,8 +8155,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8226,8 +8226,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8402,8 +8402,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8469,8 +8469,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -9765,8 +9765,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -9828,8 +9828,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
