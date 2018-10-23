@@ -1,7 +1,7 @@
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet, extractTransformsFromEncoding, forEach} from './encoding';
+import {Encoding, EncodingWithFacet, forEach} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
 import * as log from './log';
@@ -357,20 +357,23 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
   return false;
 }
 
-export function selectedFields(spec: NormalizedSpec): string[] {
+/**
+ * Takes a spec and returns a list of fields used in encoding
+ */
+export function usedFields(spec: NormalizedSpec): string[] {
   if (isFacetSpec(spec) || isRepeatSpec(spec)) {
-    return selectedFieldsSingle(spec);
+    return usedFieldsSingle(spec);
   }
   if (isLayerSpec(spec)) {
-    return selectedFieldsLayered(spec);
+    return usedFieldsLayered(spec);
   }
   if (isUnitSpec(spec)) {
-    return selectedFieldsUnit(spec);
+    return usedFieldsUnit(spec);
   }
   throw new Error(log.message.INVALID_SPEC);
 }
 
-function selectedFieldsUnit(spec: NormalizedUnitSpec): string[] {
+function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
   const fields: string[] = [];
   forEach(spec.encoding, (fieldDef, channel) => {
     fields.push(fieldDef.field);
@@ -378,102 +381,14 @@ function selectedFieldsUnit(spec: NormalizedUnitSpec): string[] {
   return fields;
 }
 
-function selectedFieldsLayered(spec: NormalizedLayerSpec): string[] {
+function usedFieldsLayered(spec: NormalizedLayerSpec): string[] {
   let fields: string[] = [];
   spec.layer.map(subspec => {
-    fields = fields.concat(selectedFields(subspec));
+    fields = fields.concat(usedFields(subspec));
   });
   return fields;
 }
 
-function selectedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
-  return selectedFields(spec.spec);
-}
-
-export function extractTransforms(spec: NormalizedSpec, config: Config): NormalizedSpec {
-  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
-    return extractTransformsSingle(spec, config);
-  }
-  if (isLayerSpec(spec)) {
-    return extractTransformsLayered(spec, config);
-  }
-  if (isUnitSpec(spec)) {
-    return extractTransformsUnit(spec, config);
-  }
-  if (isVConcatSpec(spec)) {
-    return extractTransformsVConcat(spec, config);
-  }
-  if (isHConcatSpec(spec)) {
-    return extractTransformsHConcat(spec, config);
-  }
-  throw new Error(log.message.INVALID_SPEC);
-}
-
-function extractTransformsUnit(spec: NormalizedUnitSpec, config: Config): NormalizedUnitSpec {
-  if (spec.encoding) {
-    const {encoding: oldEncoding, transform: oldTransforms, ...rest} = spec;
-    const {bins, timeUnits, aggregate, groupby, encoding: newEncoding} = extractTransformsFromEncoding(
-      oldEncoding,
-      config
-    );
-    return {
-      transform: [
-        ...(oldTransforms ? oldTransforms : []),
-        ...bins,
-        ...timeUnits,
-        ...(!aggregate.length ? [] : [{aggregate, groupby}])
-      ],
-      ...rest,
-      encoding: newEncoding
-    };
-  } else {
-    return spec;
-  }
-}
-
-function extractTransformsSingle(
-  spec: NormalizedFacetSpec | NormalizedRepeatSpec,
-  config: Config
-): NormalizedFacetSpec | NormalizedRepeatSpec {
-  const {spec: subspec, ...rest} = spec;
-  return {
-    ...rest,
-    spec: extractTransforms(subspec, config) as any
-  };
-}
-
-function extractTransformsLayered(spec: NormalizedLayerSpec, config: Config): NormalizedLayerSpec {
-  const {layer, ...rest} = spec;
-  return {
-    ...rest,
-    layer: layer.map(subspec => {
-      return extractTransforms(subspec, config) as any;
-    })
-  };
-}
-
-function extractTransformsVConcat(
-  spec: GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>,
-  config: Config
-): NormalizedConcatSpec {
-  const {vconcat, ...rest} = spec;
-  return {
-    ...rest,
-    vconcat: vconcat.map(subspec => {
-      return extractTransforms(subspec, config) as any;
-    })
-  };
-}
-
-function extractTransformsHConcat(
-  spec: GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>,
-  config: Config
-): NormalizedConcatSpec {
-  const {hconcat, ...rest} = spec;
-  return {
-    ...rest,
-    hconcat: hconcat.map(subspec => {
-      return extractTransforms(subspec, config) as any;
-    })
-  };
+function usedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
+  return usedFields(spec.spec);
 }
