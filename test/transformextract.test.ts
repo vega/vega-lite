@@ -104,7 +104,7 @@ describe('extractTransforms()', () => {
     'vconcat_weather.vl.json': true,
     'window_mean_difference.vl.json': true
   };
-  fs.readdirSync(specsDir).forEach(file => {
+  for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
     if (filepath.slice(-5) === '.json') {
       it(`should${failsList[file] ? ' NOT ' : ' '}compile ${filepath} to the same spec`, () => {
@@ -124,7 +124,7 @@ describe('extractTransforms()', () => {
         }
       });
     }
-  });
+  }
 
   describe('extractTransformsSingle()', () => {
     it('should extract transforms from faceted spec', () => {
