@@ -6,19 +6,7 @@
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Miles_per_Gallon": "number",
-          "Horsepower": "number",
-          "Displacement": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},

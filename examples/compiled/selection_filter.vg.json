@@ -5,19 +5,7 @@
   "width": 200,
   "data": [
     {"name": "brush_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Miles_per_Gallon": "number",
-          "Acceleration": "number",
-          "Displacement": "number"
-        }
-      }
-    },
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",

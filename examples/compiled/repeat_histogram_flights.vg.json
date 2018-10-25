@@ -19,44 +19,6 @@
       "transform": [
         {
           "type": "extent",
-          "field": "time",
-          "signal": "child_time_bin_maxbins_20_time_extent"
-        },
-        {
-          "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child_time_bin_maxbins_20_time_bins",
-          "maxbins": 20,
-          "extent": {"signal": "child_time_bin_maxbins_20_time_extent"}
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"distance\"])",
-          "as": "distance"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"delay\"])", "as": "delay"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "extent",
           "field": "distance",
           "signal": "child_distance_bin_maxbins_20_distance_extent"
         },
@@ -78,8 +40,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -97,6 +59,32 @@
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "extent",
+          "field": "time",
+          "signal": "child_time_bin_maxbins_20_time_extent"
+        },
+        {
+          "type": "bin",
+          "field": "time",
+          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "signal": "child_time_bin_maxbins_20_time_bins",
+          "maxbins": 20,
+          "extent": {"signal": "child_time_bin_maxbins_20_time_extent"}
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
@@ -123,7 +111,7 @@
           "name": "child_distance_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -201,7 +189,7 @@
           "name": "child_delay_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -279,7 +267,7 @@
           "name": "child_time_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -351,7 +339,7 @@
       "name": "child_distance_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
+        "data": "data_0",
         "fields": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"]
       },
       "range": [0, {"signal": "width"}],
@@ -360,7 +348,7 @@
     {
       "name": "child_distance_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -369,7 +357,7 @@
       "name": "child_delay_x",
       "type": "linear",
       "domain": {
-        "data": "data_3",
+        "data": "data_1",
         "fields": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"]
       },
       "range": [0, {"signal": "width"}],
@@ -378,7 +366,7 @@
     {
       "name": "child_delay_y",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "count_*"},
+      "domain": {"data": "data_1", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -387,7 +375,7 @@
       "name": "child_time_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
+        "data": "data_2",
         "fields": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"]
       },
       "range": [0, {"signal": "width"}],
@@ -396,7 +384,7 @@
     {
       "name": "child_time_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_2", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

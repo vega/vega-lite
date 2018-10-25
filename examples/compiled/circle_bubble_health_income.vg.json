@@ -11,14 +11,7 @@
     {
       "name": "source_0",
       "url": "data/gapminder-health-income.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "health": "number",
-          "income": "number",
-          "population": "number"
-        }
-      }
+      "format": {"type": "csv"}
     }
   ],
   "signals": [

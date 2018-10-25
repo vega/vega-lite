@@ -218,6 +218,9 @@ const {
 export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 
+export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
+  return !!NONPOSITION_CHANNEL_INDEX[channel];
+}
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,

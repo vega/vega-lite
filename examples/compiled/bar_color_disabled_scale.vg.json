@@ -13,13 +13,6 @@
         {"color": "green", "b": 55},
         {"color": "blue", "b": 43}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
     }
   ],
   "signals": [
@@ -34,7 +27,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -59,7 +52,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "color", "sort": true},
+      "domain": {"data": "source_0", "field": "color", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -67,7 +60,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

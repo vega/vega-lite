@@ -49,17 +49,6 @@
           "as": "upper_upper_yield"
         }
       ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"center\"])",
-          "as": "center"
-        }
-      ]
     }
   ],
   "signals": [
@@ -97,7 +86,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -125,7 +114,7 @@
         "fields": [
           {"data": "data_1", "field": "lower_upper_yield"},
           {"data": "data_1", "field": "upper_upper_yield"},
-          {"data": "data_2", "field": "center"}
+          {"data": "source_0", "field": "center"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -138,7 +127,7 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "variety"},
-          {"data": "data_2", "field": "variety"}
+          {"data": "source_0", "field": "variety"}
         ],
         "sort": true
       },

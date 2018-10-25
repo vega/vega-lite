@@ -9,10 +9,7 @@
     {
       "name": "source_0",
       "url": "data/co2-concentration.csv",
-      "format": {
-        "type": "csv",
-        "parse": {"Date": "utc:'%Y-%m-%d'", "CO2": "number"}
-      },
+      "format": {"type": "csv", "parse": {"Date": "utc:'%Y-%m-%d'"}},
       "transform": [
         {"type": "formula", "expr": "year(datum.Date)", "as": "year"},
         {"type": "formula", "expr": "floor(datum.year / 10)", "as": "decade"},

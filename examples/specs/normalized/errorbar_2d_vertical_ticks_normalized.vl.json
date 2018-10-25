@@ -33,7 +33,12 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
+        "x": {
+          "title": "Year (year)",
+          "type": "temporal",
+          "field": "year_Year",
+          "axis": {"format": "%Y"}
+        }
       }
     },
     {
@@ -49,7 +54,12 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
+        "x": {
+          "title": "Year (year)",
+          "type": "temporal",
+          "field": "year_Year",
+          "axis": {"format": "%Y"}
+        }
       }
     },
     {
@@ -62,7 +72,12 @@
           "scale": {"zero": false}
         },
         "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
-        "x": {"field": "year_Year", "type": "temporal", "title": "Year (year)"}
+        "x": {
+          "title": "Year (year)",
+          "type": "temporal",
+          "field": "year_Year",
+          "axis": {"format": "%Y"}
+        }
       }
     }
   ]

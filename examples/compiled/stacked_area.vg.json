@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {"type": "json", "parse": {"date": "date", "count": "number"}},
+      "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
         {
           "type": "formula",

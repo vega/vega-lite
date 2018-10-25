@@ -3,14 +3,7 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {
-        "type": "json",
-        "parse": {"Worldwide_Gross": "number", "US_DVD_Sales": "number"}
-      }
-    },
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
       "name": "column_domain",
       "source": "source_0",

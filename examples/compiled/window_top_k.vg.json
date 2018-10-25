@@ -38,11 +38,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"score\"])",
-          "as": "score"
-        },
-        {
           "type": "window",
           "params": [null],
           "as": ["rank"],

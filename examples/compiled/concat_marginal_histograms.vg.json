@@ -3,14 +3,7 @@
   "autosize": "pad",
   "padding": 5,
   "data": [
-    {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {
-        "type": "json",
-        "parse": {"IMDB_Rating": "number", "Rotten_Tomatoes_Rating": "number"}
-      }
-    },
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",

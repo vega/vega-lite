@@ -45,30 +45,13 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"lo\"])", "as": "lo"},
-        {"type": "formula", "expr": "toNumber(datum[\"hi\"])", "as": "hi"},
-        {"type": "formula", "expr": "toNumber(datum[\"mean\"])", "as": "mean"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_1",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"from\"])", "as": "from"},
-        {"type": "formula", "expr": "toNumber(datum[\"to\"])", "as": "to"}
-      ]
-    },
-    {
       "name": "data_2",
-      "source": "data_1",
+      "source": "source_1",
       "transform": [{"type": "filter", "expr": "datum.label === 'PoleStar'"}]
     },
     {
       "name": "data_3",
-      "source": "data_1",
+      "source": "source_1",
       "transform": [{"type": "filter", "expr": "datum.label !== 'PoleStar'"}]
     }
   ],
@@ -103,7 +86,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "stroke": [
@@ -126,7 +109,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 1},
@@ -225,7 +208,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_1"},
+          "from": {"data": "source_1"},
           "encode": {
             "update": {
               "stroke": [
@@ -248,7 +231,7 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "source_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -377,13 +360,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "measure", "sort": true},
+      "domain": {"data": "source_0", "field": "measure", "sort": true},
       "range": ["black", "white"]
     },
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"fields": [[-3, 3], {"data": "data_0", "field": "mean"}]},
+      "domain": {"fields": [[-3, 3], {"data": "source_0", "field": "mean"}]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -391,7 +374,7 @@
     {
       "name": "concat_0_y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "study", "sort": true},
+      "domain": {"data": "source_0", "field": "study", "sort": true},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -401,8 +384,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "from"},
-          {"data": "data_1", "field": "to"},
+          {"data": "source_1", "field": "from"},
+          {"data": "source_1", "field": "to"},
           {"data": "data_2", "field": "from"},
           {"data": "data_3", "field": "from"}
         ]

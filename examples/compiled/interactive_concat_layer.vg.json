@@ -11,35 +11,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": ["Major_Genre"],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"IMDB_Rating\"])",
-          "as": "IMDB_Rating"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Rotten_Tomatoes_Rating\"])",
-          "as": "Rotten_Tomatoes_Rating"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
           "type": "extent",
           "field": "IMDB_Rating",
           "signal": "concat_0_layer_0_bin_maxbins_10_IMDB_Rating_extent"
@@ -90,8 +61,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -146,6 +117,19 @@
           "as": ["count_*"]
         }
       ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Major_Genre"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
+        }
+      ]
     }
   ],
   "signals": [
@@ -184,7 +168,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "rect",
           "style": ["rect"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -220,7 +204,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -335,7 +319,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -400,14 +384,14 @@
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "data_2", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "count_*"},
       "range": "heatmap",
       "zero": false
     },
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "count_*"},
+      "domain": {"data": "data_1", "field": "count_*"},
       "range": [0, 361],
       "zero": true
     },
@@ -416,10 +400,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_2", "field": "bin_maxbins_10_IMDB_Rating_end"},
-          {"data": "data_3", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_3", "field": "bin_maxbins_10_IMDB_Rating_end"}
+          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating"},
+          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating_end"},
+          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating"},
+          {"data": "data_1", "field": "bin_maxbins_10_IMDB_Rating_end"}
         ]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -430,14 +414,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
+          {"data": "data_0", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
           {
-            "data": "data_2",
+            "data": "data_0",
             "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           },
-          {"data": "data_3", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
+          {"data": "data_1", "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"},
           {
-            "data": "data_3",
+            "data": "data_1",
             "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           }
         ]
@@ -448,7 +432,7 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "Major_Genre", "sort": true},
+      "domain": {"data": "data_2", "field": "Major_Genre", "sort": true},
       "range": [0, {"signal": "concat_1_width"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -456,7 +440,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_2", "field": "count_*"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

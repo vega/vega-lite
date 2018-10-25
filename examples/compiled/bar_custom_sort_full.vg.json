@@ -14,7 +14,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"},
         {
           "type": "formula",
           "expr": "datum[\"a\"]===\"B\" ? 0 : datum[\"a\"]===\"A\" ? 1 : datum[\"a\"]===\"C\" ? 2 : 3",

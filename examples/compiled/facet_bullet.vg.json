@@ -50,32 +50,32 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"2\"]",
           "as": "ranges.2"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"1\"]",
           "as": "ranges.1"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"0\"]",
           "as": "ranges.0"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"1\"]",
           "as": "measures.1"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"0\"]",
           "as": "measures.0"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
+          "expr": "datum[\"markers\"] && datum[\"markers\"][\"0\"]",
           "as": "markers.0"
         }
       ]
