@@ -29,7 +29,7 @@ Now that you have loaded the chart in the editor, you can export it with "Export
 
 Unfortunately, LaTeX cannot import SVGs so we must first convert it to PDF. There are many ways to convert SVGs to PDF, including using illustrator, using another image editor, using command line scripts, or printing as PDF in the browser. For this tutorial, we are going to use the printing feature of your browser; from the newly opened SVG image, select "File" and then "Print..." (or use <kbd>Cmd</kbd>+<kbd>P</kbd>) in your Chrome or Firefox browser.
 
-Now make sure that the destination is set to "Save as PDF" (see below). Then save the PDF in the directory of your Latex paper.
+Now make sure that the destination is set to "Save as PDF" (see below). Then save the PDF in the directory of your LaTeX paper.
 
 <img src="{{ site.baseurl }}/site/static/print.png" style="max-width: 700px">
 
