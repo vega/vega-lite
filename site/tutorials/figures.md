@@ -35,7 +35,7 @@ Now make sure that the destination is set to "Save as PDF" (see below). Then sav
 
 ## Crop the PDF
 
-You will notice that there is a lot of white space that we want to remove. To do this, open the PDF file in Mac OS Preview application. The select the "Rectangular Selection" tool and draw a box around the chart. You can adjust the box until it tightly fits the chart. Then click "crop" (or use <kbd>Cmd</kbd>+<kbd>K</kbd>). Make sure to save the file!
+You will notice that there is a lot of white space that we want to remove because the SVG image is saved as a single printer page. To crop the file, open the PDF file in Mac OS Preview application. Select the "Rectangular Selection" tool and draw a box around the chart. You can adjust the box until it tightly fits the chart. Then click "crop" (or use <kbd>Cmd</kbd>+<kbd>K</kbd>). Make sure to save the newly modified file!
 
 <video controls style="max-width: 700px">
   <source src="{{ site.baseurl }}/site/static/crop.mp4" type="video/mp4">
