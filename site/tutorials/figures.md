@@ -5,7 +5,7 @@ title: Create Figures for Papers
 permalink: /tutorials/figures.html
 ---
 
-In this tutorial you will learn how to use Vega-Lite to create charts for figures and embed them in a paper written with Latex. The overall workflow is to open the chart in the editor, export it as SVG, convert the SVG to PDF and crop it, and then embed it in a paper.
+In this tutorial you will learn how to use Vega-Lite to create charts for figures and embed them in a paper written with LaTeX. The overall workflow includes (1) opening a chart in the online editor, (2) exporting a chart as SVG, (3) converting the SVG to PDF, (4) cropping the PDF to remove excessive whitespace, and (5) embedding a chart in a LaTeX paper.
 
 ## Create a Chart in Vega-Lite
 
