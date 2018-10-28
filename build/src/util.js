@@ -364,4 +364,10 @@ export function uniqueId(prefix) {
     var id = ++idCounter;
     return prefix ? String(prefix) + id : id;
 }
+/**
+ * Resets the id counter used in uniqueId. This can be useful for testing.
+ */
+export function resetIdCounter() {
+    idCounter = 42;
+}
 //# sourceMappingURL=util.js.map

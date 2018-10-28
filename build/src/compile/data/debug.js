@@ -1,5 +1,4 @@
-import { entries } from 'd3';
-import { keys, uniqueId } from './../../util';
+import { entries, keys, uniqueId } from './../../util';
 /**
  * Print debug information for dataflow tree.
  */

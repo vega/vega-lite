@@ -121,3 +121,7 @@ export declare function getFirstDefined<T>(...args: T[]): T;
  * Has side effect!
  */
 export declare function uniqueId(prefix?: string): string | number;
+/**
+ * Resets the id counter used in uniqueId. This can be useful for testing.
+ */
+export declare function resetIdCounter(): void;
