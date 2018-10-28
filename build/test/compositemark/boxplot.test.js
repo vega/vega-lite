@@ -86,7 +86,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -104,7 +104,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -123,7 +123,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 5
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -145,7 +145,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 5
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -321,7 +321,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -339,7 +339,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -358,7 +358,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -380,7 +380,7 @@ describe('normalizeBoxMinMax', function () {
                         color: 'white'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -451,7 +451,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -469,7 +469,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -488,7 +488,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -510,7 +510,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -581,7 +581,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -599,7 +599,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -618,7 +618,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -640,7 +640,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -711,7 +711,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -729,7 +729,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -748,7 +748,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -770,7 +770,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'quantitative', title: 'age' },
+                        y: { field: 'age', type: 'quantitative' },
                         x: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -840,7 +840,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'ordinal', title: 'age' },
+                        x: { field: 'age', type: 'ordinal' },
                         y: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -858,7 +858,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'ordinal', title: 'age' },
+                        x: { field: 'age', type: 'ordinal' },
                         y: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -877,7 +877,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        x: { field: 'age', type: 'ordinal', title: 'age' },
+                        x: { field: 'age', type: 'ordinal' },
                         y: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -899,7 +899,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        x: { field: 'age', type: 'ordinal', title: 'age' },
+                        x: { field: 'age', type: 'ordinal' },
                         y: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -969,7 +969,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -987,7 +987,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -1006,7 +1006,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -1028,7 +1028,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -1097,7 +1097,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'lower_whisker_people',
                             type: 'quantitative',
@@ -1115,7 +1115,7 @@ describe('normalizeBoxMinMax', function () {
                         style: 'boxplot-rule'
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'upper_box_people',
                             type: 'quantitative',
@@ -1134,7 +1134,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'lower_box_people',
                             type: 'quantitative',
@@ -1155,7 +1155,7 @@ describe('normalizeBoxMinMax', function () {
                         size: 14
                     },
                     encoding: {
-                        y: { field: 'age', type: 'ordinal', title: 'age' },
+                        y: { field: 'age', type: 'ordinal' },
                         x: {
                             field: 'mid_box_people',
                             type: 'quantitative',
@@ -1428,7 +1428,7 @@ describe('normalizeBoxMinMax', function () {
 });
 describe('normalizeBoxIQR', function () {
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers with boxplot mark type', function () {
-        assert.deepEqual(normalize({
+        expect(normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: 'boxplot',
@@ -1441,7 +1441,7 @@ describe('normalizeBoxIQR', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, defaultConfig)).toEqual({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [
@@ -1497,7 +1497,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_whisker_people',
                                     type: 'quantitative',
@@ -1515,7 +1515,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'upper_box_people',
                                     type: 'quantitative',
@@ -1534,7 +1534,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_box_people',
                                     type: 'quantitative',
@@ -1556,7 +1556,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'mid_box_people',
                                     type: 'quantitative',
@@ -1593,7 +1593,7 @@ describe('normalizeBoxIQR', function () {
                         style: 'boxplot-outliers'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'people',
                             type: 'quantitative'
@@ -1604,7 +1604,7 @@ describe('normalizeBoxIQR', function () {
         });
     });
     it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers', function () {
-        assert.deepEqual(normalize({
+        expect(normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1620,7 +1620,7 @@ describe('normalizeBoxIQR', function () {
                 },
                 color: { value: 'skyblue' }
             }
-        }, defaultConfig), {
+        }, defaultConfig)).toEqual({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [
@@ -1676,7 +1676,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_whisker_people',
                                     type: 'quantitative',
@@ -1694,7 +1694,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'upper_box_people',
                                     type: 'quantitative',
@@ -1713,7 +1713,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_box_people',
                                     type: 'quantitative',
@@ -1735,7 +1735,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'mid_box_people',
                                     type: 'quantitative',
@@ -1772,7 +1772,7 @@ describe('normalizeBoxIQR', function () {
                         style: 'boxplot-outliers'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'people',
                             type: 'quantitative'
@@ -1783,7 +1783,7 @@ describe('normalizeBoxIQR', function () {
         });
     });
     it('should produce correct layered specs for vertical IQR boxplot where color encodes the mean of the people field', function () {
-        assert.deepEqual(normalize({
+        expect(normalize({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             mark: {
@@ -1803,7 +1803,7 @@ describe('normalizeBoxIQR', function () {
                     type: 'quantitative'
                 }
             }
-        }, defaultConfig), {
+        }, defaultConfig)).toEqual({
             description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
             data: { url: 'data/population.json' },
             layer: [
@@ -1864,7 +1864,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_whisker_people',
                                     type: 'quantitative',
@@ -1882,7 +1882,7 @@ describe('normalizeBoxIQR', function () {
                                 style: 'boxplot-rule'
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'upper_box_people',
                                     type: 'quantitative',
@@ -1901,7 +1901,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'lower_box_people',
                                     type: 'quantitative',
@@ -1927,7 +1927,7 @@ describe('normalizeBoxIQR', function () {
                                 size: 14
                             },
                             encoding: {
-                                x: { field: 'age', type: 'quantitative', title: 'age' },
+                                x: { field: 'age', type: 'quantitative' },
                                 y: {
                                     field: 'mid_box_people',
                                     type: 'quantitative',
@@ -1964,7 +1964,7 @@ describe('normalizeBoxIQR', function () {
                         style: 'boxplot-outliers'
                     },
                     encoding: {
-                        x: { field: 'age', type: 'quantitative', title: 'age' },
+                        x: { field: 'age', type: 'quantitative' },
                         y: {
                             field: 'people',
                             type: 'quantitative'

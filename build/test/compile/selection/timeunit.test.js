@@ -101,7 +101,7 @@ describe('Selection time unit', function () {
             }
         });
         data1.forEach(function (tx, idx) {
-            if (tx.type === 'filter' && tx.expr.indexOf('vlSingle') >= 0) {
+            if (tx.type === 'filter' && tx.expr.indexOf('vlSelectionTest') >= 0) {
                 selIdx = idx;
             }
         });

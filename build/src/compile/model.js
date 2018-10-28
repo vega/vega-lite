@@ -99,10 +99,11 @@ var Model = /** @class */ (function () {
         this.data = spec.data;
         this.description = spec.description;
         this.transforms = normalizeTransform(spec.transform || []);
-        this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
+        this.layout =
+            isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
         this.component = {
             data: {
-                sources: parent ? parent.component.data.sources : {},
+                sources: parent ? parent.component.data.sources : [],
                 outputNodes: parent ? parent.component.data.outputNodes : {},
                 outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
                 // data is faceted if the spec is a facet spec or the parent has faceted data and no data is defined

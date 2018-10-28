@@ -1,10 +1,10 @@
 import { FoldTransform as VgFoldTransform } from 'vega';
 import { FoldTransform } from '../../transform';
-import { DataFlowNode, TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 /**
  * A class for flatten transform nodes
  */
-export declare class FoldTransformNode extends TransformNode {
+export declare class FoldTransformNode extends DataFlowNode {
     private transform;
     clone(): FoldTransformNode;
     constructor(parent: DataFlowNode, transform: FoldTransform);

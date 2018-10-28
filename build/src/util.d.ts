@@ -1,5 +1,6 @@
 import stableStringify from 'json-stable-stringify';
 import { LogicalOperand } from './logical';
+export declare const deepEqual: (a: any, b: any) => boolean;
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -37,6 +38,7 @@ export declare function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean
  */
 export declare function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean): boolean;
 export declare function flatten(arrays: any[]): any;
+export declare function fill<T>(val: T, len: number): T[];
 /**
  * recursively merges src into dest
  */
@@ -51,12 +53,20 @@ export declare type StringSet = Dict<true>;
  */
 export declare function differ<T>(dict: Dict<T>, other: Dict<T>): boolean;
 export declare function hasIntersection(a: StringSet, b: StringSet): boolean;
+export declare function prefixGenerator(a: StringSet): StringSet;
+export declare function fieldIntersection(a: StringSet, b: StringSet): boolean;
 export declare function isNumeric(num: string | number): boolean;
 export declare function differArray<T>(array: T[], other: T[]): boolean;
 export declare const keys: <T>(o: T) => Extract<keyof T, string>[];
 export declare function vals<T>(x: {
     [key: string]: T;
 }): T[];
+export declare function entries<T>(x: {
+    [key: string]: T;
+}): {
+    key: string;
+    value: T;
+}[];
 export declare type Flag<S extends string> = {
     [K in S]: 1;
 };
@@ -105,3 +115,9 @@ export declare function accessPathDepth(path: string): number;
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export declare function getFirstDefined<T>(...args: T[]): T;
+/**
+ * Returns a new random id every time it gets called.
+ *
+ * Has side effect!
+ */
+export declare function uniqueId(prefix?: string): string | number;

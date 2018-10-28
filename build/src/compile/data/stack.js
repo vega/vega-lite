@@ -3,7 +3,7 @@ import { isArray, isString } from 'vega-util';
 import { isFieldDef, vgField } from '../../fielddef';
 import { duplicate, getFirstDefined, hash } from '../../util';
 import { sortParams } from '../common';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 function getStackByFields(model) {
     return model.stack.stackBy.reduce(function (fields, by) {
         var fieldDef = by.fieldDef;
@@ -185,6 +185,6 @@ var StackNode = /** @class */ (function (_super) {
         return transform;
     };
     return StackNode;
-}(TransformNode));
+}(DataFlowNode));
 export { StackNode };
 //# sourceMappingURL=stack.js.map

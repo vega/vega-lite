@@ -361,10 +361,10 @@ export function channelCompatibility(fieldDef, channel) {
             }
             return COMPATIBLE;
         case 'shape':
-            if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
+            if (!contains(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
                 return {
                     compatible: false,
-                    warning: 'Shape channel should be used with only either nominal or geojson data'
+                    warning: 'Shape channel should be used with only either discrete or geojson data.'
                 };
             }
             return COMPATIBLE;

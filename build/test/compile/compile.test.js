@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
-import * as log from '../../src/log';
 import { compile } from '../../src/compile/compile';
+import * as log from '../../src/log';
 describe('compile/compile', function () {
     it('should throw error for invalid spec', function () {
         assert.throws(function () {

@@ -3,13 +3,13 @@ import { TimeUnitTransform } from '../../transform';
 import { Dict } from '../../util';
 import { VgFormulaTransform } from '../../vega.schema';
 import { ModelWithField } from '../model';
-import { DataFlowNode, TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 export interface TimeUnitComponent {
     as: string;
     timeUnit: TimeUnit;
     field: string;
 }
-export declare class TimeUnitNode extends TransformNode {
+export declare class TimeUnitNode extends DataFlowNode {
     private formula;
     clone(): TimeUnitNode;
     constructor(parent: DataFlowNode, formula: Dict<TimeUnitComponent>);

@@ -4,6 +4,7 @@ import { LookupNode } from '../../../src/compile/data/lookup';
 import { parseTransformArray } from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
 import { parseUnitModel } from '../../util';
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 describe('compile/data/lookup', function () {
     it('should parse lookup from array', function () {
         var model = parseUnitModel({
@@ -84,7 +85,18 @@ describe('compile/data/lookup', function () {
             }
         }, 'lookup_0');
         lookup.assemble();
-        assert.equal(lookup.hash(), 'Lookup -848385244');
+        assert.equal(lookup.hash(), 'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}');
+    });
+    it('should never clone parent', function () {
+        var parent = new DataFlowNode(null);
+        var lookup = new LookupNode(parent, {
+            lookup: 'person',
+            from: {
+                data: { url: 'data/lookup_people.csv' },
+                key: 'name'
+            }
+        }, null);
+        expect(lookup.clone().parent).toBeNull();
     });
 });
 //# sourceMappingURL=lookup.test.js.map

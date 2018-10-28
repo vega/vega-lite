@@ -151,8 +151,9 @@ export function pathGroupingFields(mark, encoding) {
             // text, shape, shouldn't be a part of line/trail/area
             case 'text':
             case 'shape':
-                return details;
+            // tooltip fields should not be added to group by
             case 'tooltip':
+                return details;
             case 'detail':
             case 'key':
                 var channelDef = encoding[channel];

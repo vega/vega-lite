@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { expression } from '../../predicate';
-import { duplicate, hash } from '../../util';
-import { TransformNode } from './dataflow';
+import { duplicate } from '../../util';
+import { DataFlowNode } from './dataflow';
 import { getDependentFields } from './expressions';
 var FilterNode = /** @class */ (function (_super) {
     tslib_1.__extends(FilterNode, _super);
@@ -9,6 +9,8 @@ var FilterNode = /** @class */ (function (_super) {
         var _this = _super.call(this, parent) || this;
         _this.model = model;
         _this.filter = filter;
+        // TODO: refactor this to not take a node and
+        // then add a static function makeFromOperand and make the constructor take only an expression
         _this.expr = expression(_this.model, _this.filter, _this);
         _this._dependentFields = getDependentFields(_this.expr);
         return _this;
@@ -26,9 +28,9 @@ var FilterNode = /** @class */ (function (_super) {
         };
     };
     FilterNode.prototype.hash = function () {
-        return "Filter " + hash(this.filter);
+        return "Filter " + this.expr;
     };
     return FilterNode;
-}(TransformNode));
+}(DataFlowNode));
 export { FilterNode };
 //# sourceMappingURL=filter.js.map

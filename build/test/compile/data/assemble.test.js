@@ -14,7 +14,7 @@ describe('compile/data/assemble', function () {
             main.parent = src;
             assert.equal(main.getSource(), 'mainOut');
             var data = assembleRootData({
-                sources: { named: src },
+                sources: [src],
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
@@ -34,7 +34,7 @@ describe('compile/data/assemble', function () {
             assert.equal(raw.getSource(), 'rawOut');
             assert.equal(main.getSource(), 'mainOut');
             var data = assembleRootData({
-                sources: { named: src },
+                sources: [src],
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
@@ -89,7 +89,7 @@ describe('compile/data/assemble', function () {
             assert.equal(raw.getSource(), 'rawOut');
             assert.equal(main.getSource(), 'mainOut');
             var data = assembleRootData({
-                sources: { named: src },
+                sources: [src],
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false
@@ -128,7 +128,7 @@ describe('compile/data/assemble', function () {
             var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = src;
             var data = assembleRootData({
-                sources: { named: src },
+                sources: [src],
                 outputNodes: { out: main },
                 outputNodeRefCounts: outputNodeRefCounts,
                 isFaceted: false

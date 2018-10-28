@@ -9,6 +9,7 @@ export declare class ParseNode extends DataFlowNode {
     private _parse;
     clone(): ParseNode;
     constructor(parent: DataFlowNode, parse: Parse);
+    hash(): string;
     /**
      * Creates a parse node from a data.format.parse and updates ancestorParse.
      */

@@ -109,7 +109,7 @@ export interface NamedData extends DataBase {
 }
 export declare function isUrlData(data: Partial<Data> | Partial<VgData>): data is UrlData;
 export declare function isInlineData(data: Partial<Data> | Partial<VgData>): data is InlineData;
-export declare function isNamedData(data: Partial<Data>): data is NamedData;
+export declare function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData;
 export declare type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 export declare const MAIN: 'main';
 export declare const RAW: 'raw';

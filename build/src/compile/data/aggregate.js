@@ -5,7 +5,7 @@ import { vgField } from '../../fielddef';
 import * as log from '../../log';
 import { differ, duplicate, hash, keys, replacePathInField } from '../../util';
 import { binRequiresRange } from '../common';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 function addDimension(dims, channel, fieldDef) {
     if (isBinning(fieldDef.bin)) {
         dims[vgField(fieldDef, {})] = true;
@@ -174,6 +174,6 @@ var AggregateNode = /** @class */ (function (_super) {
         return result;
     };
     return AggregateNode;
-}(TransformNode));
+}(DataFlowNode));
 export { AggregateNode };
 //# sourceMappingURL=aggregate.js.map

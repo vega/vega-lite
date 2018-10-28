@@ -67,13 +67,14 @@ export declare const CHANNELS: import("vega-lite/build/src/channel").Channel[];
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
 export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'row' | 'column' | 'color' | 'fill' | 'stroke' | 'size' | 'shape' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
 export declare function isChannel(str: string): str is Channel;
-export declare const UNIT_CHANNELS: ("color" | "fill" | "opacity" | "order" | "stroke" | "text" | "shape" | "latitude" | "longitude" | "x" | "y" | "x2" | "y2" | "longitude2" | "latitude2" | "size" | "detail" | "key" | "tooltip" | "href")[];
+export declare const UNIT_CHANNELS: ("color" | "fill" | "opacity" | "order" | "stroke" | "text" | "shape" | "x" | "y" | "x2" | "y2" | "longitude" | "latitude" | "longitude2" | "latitude2" | "size" | "detail" | "key" | "tooltip" | "href")[];
 export declare const NONPOSITION_CHANNELS: ("color" | "fill" | "opacity" | "order" | "stroke" | "text" | "shape" | "size" | "detail" | "key" | "tooltip" | "href")[];
 export declare type NonPositionChannel = typeof NONPOSITION_CHANNELS[0];
 export declare const POSITION_SCALE_CHANNELS: ("x" | "y")[];
 export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 export declare const NONPOSITION_SCALE_CHANNELS: ("color" | "fill" | "opacity" | "stroke" | "shape" | "size")[];
 export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
+export declare function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel;
 /** List of channels with scales */
 export declare const SCALE_CHANNELS: ("color" | "fill" | "opacity" | "stroke" | "shape" | "x" | "y" | "size")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];

@@ -7,11 +7,16 @@ export declare class DataFlowNode {
     readonly debugName?: string;
     private _children;
     private _parent;
+    protected _hash: string | number;
     constructor(parent: DataFlowNode, debugName?: string);
     /**
      * Clone this node with a deep copy but don't clone links to children or parents.
      */
     clone(): DataFlowNode;
+    /**
+     * Return a hash of the node.
+     */
+    hash(): string | number;
     /**
      * Set of fields that are being created by this node.
      */
@@ -60,7 +65,3 @@ export declare class OutputNode extends DataFlowNode {
     isRequired(): boolean;
     setSource(source: string): void;
 }
-export declare abstract class TransformNode extends DataFlowNode {
-    abstract hash(): string | number;
-}
-export declare function isTransformNode(x: DataFlowNode): boolean;

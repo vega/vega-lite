@@ -79,8 +79,8 @@ function base(iter, sel, opts) {
     var size = tslib_1.__assign({ value: 100 }, opts.size);
     var selection = { sel: sel };
     var mark = 'circle';
-    return iter % 2 === 0
-        ? {
+    if (iter % 2 === 0) {
+        return {
             data: data,
             selection: selection,
             mark: mark,
@@ -93,8 +93,10 @@ function base(iter, sel, opts) {
                     value: 'grey'
                 }
             }
-        }
-        : {
+        };
+    }
+    else {
+        return {
             data: data,
             layer: [
                 {
@@ -115,6 +117,7 @@ function base(iter, sel, opts) {
                 }
             ]
         };
+    }
 }
 export function spec(compose, iter, sel, opts) {
     if (opts === void 0) { opts = {}; }

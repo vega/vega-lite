@@ -1,25 +1,19 @@
-import { stringValue } from 'vega-util';
 import { accessPathWithDatum } from '../../util';
 import { TUPLE, unitName } from './selection';
 import nearest from './transforms/nearest';
+import { TUPLE_FIELDS } from './transforms/project';
 export function signals(model, selCmpt) {
+    var name = selCmpt.name;
+    var fieldsSg = name + TUPLE + TUPLE_FIELDS;
     var proj = selCmpt.project;
     var datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
-    var bins = [];
-    var encodings = proj
-        .map(function (p) { return stringValue(p.channel); })
-        .filter(function (e) { return e; })
-        .join(', ');
-    var fields = proj.map(function (p) { return stringValue(p.field); }).join(', ');
     var values = proj
         .map(function (p) {
-        var channel = p.channel;
-        var fieldDef = model.fieldDef(channel);
+        var fieldDef = model.fieldDef(p.channel);
         // Binned fields should capture extents, for a range test against the raw field.
         return fieldDef && fieldDef.bin
-            ? (bins.push(p.field),
-                "[" + accessPathWithDatum(model.vgField(channel, {}), datum) + ", " +
-                    (accessPathWithDatum(model.vgField(channel, { binSuffix: 'end' }), datum) + "]"))
+            ? "[" + accessPathWithDatum(model.vgField(p.channel, {}), datum) + ", " +
+                (accessPathWithDatum(model.vgField(p.channel, { binSuffix: 'end' }), datum) + "]")
             : "" + accessPathWithDatum(p.field, datum);
     })
         .join(', ');
@@ -32,16 +26,13 @@ export function signals(model, selCmpt) {
     // be cleared on the second click).
     return [
         {
-            name: selCmpt.name + TUPLE,
+            name: name + TUPLE,
             value: {},
             on: [
                 {
                     events: selCmpt.events,
                     update: "datum && item().mark.marktype !== 'group' ? " +
-                        ("{unit: " + unitName(model) + ", encodings: [" + encodings + "], ") +
-                        ("fields: [" + fields + "], values: [" + values + "]") +
-                        (bins.length ? ', ' + bins.map(function (b) { return stringValue('bin_' + b) + ": 1"; }).join(', ') : '') +
-                        '} : null',
+                        ("{unit: " + unitName(model) + ", fields: " + fieldsSg + ", values: [" + values + "]} : null"),
                     force: true
                 }
             ]
@@ -49,8 +40,6 @@ export function signals(model, selCmpt) {
     ];
 }
 var multi = {
-    predicate: 'vlMulti',
-    scaleDomain: 'vlMultiDomain',
     signals: signals,
     modifyExpr: function (model, selCmpt) {
         var tpl = selCmpt.name + TUPLE;

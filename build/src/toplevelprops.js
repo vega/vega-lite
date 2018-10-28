@@ -21,8 +21,7 @@ export function normalizeAutoSize(topLevelAutosize, configAutosize, isUnitOrLaye
 }
 var TOP_LEVEL_PROPERTIES = [
     'background',
-    'padding',
-    'datasets'
+    'padding'
     // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 export function extractTopLevelProperties(t) {

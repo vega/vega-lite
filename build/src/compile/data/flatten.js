@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { duplicate, hash } from '../../util';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 /**
  * A class for flatten transform nodes
  */
@@ -36,6 +36,6 @@ var FlattenTransformNode = /** @class */ (function (_super) {
         return result;
     };
     return FlattenTransformNode;
-}(TransformNode));
+}(DataFlowNode));
 export { FlattenTransformNode };
 //# sourceMappingURL=flatten.js.map

@@ -6,9 +6,9 @@ import { FacetNode } from './facet';
 import { SourceNode } from './source';
 export interface DataComponent {
     /**
-     * A dictionary of sources indexed by a hash.
+     * A list of unique sources.
      */
-    sources: Dict<SourceNode>;
+    sources: SourceNode[];
     /**
      * Registry of output nodes.
      */

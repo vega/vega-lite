@@ -73,6 +73,7 @@ export declare function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeU
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export declare function fieldExpr(fullTimeUnit: TimeUnit, field: string): string;
+export declare function getDateTimeComponents(timeUnit: TimeUnit, shortTimeLabels: boolean): string[];
 /**
  * returns the signal expression used for axis labels for a time unit
  */

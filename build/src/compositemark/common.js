@@ -28,11 +28,11 @@ export function makeCompositeAggregatePartFactory(compositeMarkDef, continuousAx
     };
 }
 export function partLayerMixins(markDef, part, compositeMarkConfig, partBaseSpec) {
-    var color = markDef.color, opacity = markDef.opacity;
+    var clip = markDef.clip, color = markDef.color, opacity = markDef.opacity;
     var mark = markDef.type;
     if (markDef[part] || (markDef[part] === undefined && compositeMarkConfig[part])) {
         return [
-            tslib_1.__assign({}, partBaseSpec, { mark: tslib_1.__assign({}, compositeMarkConfig[part], (color ? { color: color } : {}), (opacity ? { opacity: opacity } : {}), (isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : { type: partBaseSpec.mark }), { style: mark + "-" + part }, (isBoolean(markDef[part]) ? {} : markDef[part])) })
+            tslib_1.__assign({}, partBaseSpec, { mark: tslib_1.__assign({}, compositeMarkConfig[part], (clip ? { clip: clip } : {}), (color ? { color: color } : {}), (opacity ? { opacity: opacity } : {}), (isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : { type: partBaseSpec.mark }), { style: mark + "-" + part }, (isBoolean(markDef[part]) ? {} : markDef[part])) })
         ];
     }
     return [];

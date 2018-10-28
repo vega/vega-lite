@@ -1,8 +1,9 @@
 import * as tslib_1 from "tslib";
 import { isString, toSet } from 'vega-util';
 import * as log from '../../log';
-import { hash } from '../../util';
-import { OutputNode, TransformNode } from './dataflow';
+import { duplicate, hash } from '../../util';
+import { DataFlowNode, OutputNode } from './dataflow';
+import { findSource } from './parse';
 import { SourceNode } from './source';
 var LookupNode = /** @class */ (function (_super) {
     tslib_1.__extends(LookupNode, _super);
@@ -12,13 +13,15 @@ var LookupNode = /** @class */ (function (_super) {
         _this.secondary = secondary;
         return _this;
     }
+    LookupNode.prototype.clone = function () {
+        return new LookupNode(null, duplicate(this.transform), this.secondary);
+    };
     LookupNode.make = function (parent, model, transform, counter) {
         var sources = model.component.data.sources;
-        var s = new SourceNode(transform.from.data);
-        var fromSource = sources[s.hash()];
+        var fromSource = findSource(transform.from.data, sources);
         if (!fromSource) {
-            sources[s.hash()] = s;
-            fromSource = s;
+            fromSource = new SourceNode(transform.from.data);
+            sources.push(fromSource);
         }
         var fromOutputName = model.getName("lookup_" + counter);
         var fromOutputNode = new OutputNode(fromSource, fromOutputName, 'lookup', model.component.data.outputNodeRefCounts);
@@ -51,6 +54,6 @@ var LookupNode = /** @class */ (function (_super) {
         return tslib_1.__assign({ type: 'lookup', from: this.secondary, key: this.transform.from.key, fields: [this.transform.lookup] }, foreign, (this.transform.default ? { default: this.transform.default } : {}));
     };
     return LookupNode;
-}(TransformNode));
+}(DataFlowNode));
 export { LookupNode };
 //# sourceMappingURL=lookup.js.map

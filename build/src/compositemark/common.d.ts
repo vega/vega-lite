@@ -8,9 +8,13 @@ import { Orient } from '../vega.schema';
 export declare type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 export declare type GenericCompositeMarkDef<T> = GenericMarkDef<T> & ColorMixins & {
     /**
-     * Opacity of the marks.
+     * The opacity (value between [0,1]) of the mark.
      */
     opacity?: number;
+    /**
+     * Whether a composite mark be clipped to the enclosing group’s width and height.
+     */
+    clip?: boolean;
 };
 export declare function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(compositeMarkDef: GenericCompositeMarkDef<any> & P, continuousAxis: 'x' | 'y', continuousAxisChannelDef: PositionFieldDef<string>, sharedEncoding: Encoding<string>, compositeMarkConfig: P): (partName: keyof P, mark: "square" | "area" | "circle" | "line" | "rect" | "text" | "point" | "rule" | "trail" | "geoshape" | "bar" | "tick" | MarkDef, positionPrefix: string, endPositionPrefix?: string, extraEncoding?: Encoding<string>) => GenericUnitSpec<Encoding<string | import("../fielddef").RepeatRef>, "square" | "area" | "circle" | "line" | "rect" | "text" | "point" | "rule" | "trail" | "geoshape" | "bar" | "tick" | MarkDef>[];
 export declare function partLayerMixins<P extends PartsMixins<any>>(markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P, partBaseSpec: NormalizedUnitSpec): NormalizedUnitSpec[];

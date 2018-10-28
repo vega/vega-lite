@@ -209,20 +209,12 @@ export function fieldExpr(fullTimeUnit, field) {
     }, {});
     return dateTimeExpr(d);
 }
-/**
- * returns the signal expression used for axis labels for a time unit
- */
-export function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
+export function getDateTimeComponents(timeUnit, shortTimeLabels) {
     if (!timeUnit) {
         return undefined;
     }
     var dateComponents = [];
-    var expression = '';
     var hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
-    if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
-        // special expression for quarter as prefix
-        expression = "'Q' + quarter(" + field + ")";
-    }
     if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
         // By default use short month name
         dateComponents.push(shortTimeLabels !== false ? '%b' : '%B');
@@ -255,6 +247,21 @@ export function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     }
     if (timeComponents.length > 0) {
         dateTimeComponents.push(timeComponents.join(':'));
+    }
+    return dateTimeComponents;
+}
+/**
+ * returns the signal expression used for axis labels for a time unit
+ */
+export function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
+    if (!timeUnit) {
+        return undefined;
+    }
+    var dateTimeComponents = getDateTimeComponents(timeUnit, shortTimeLabels);
+    var expression = '';
+    if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
+        // special expression for quarter as prefix
+        expression = "'Q' + quarter(" + field + ")";
     }
     if (dateTimeComponents.length > 0) {
         if (expression) {

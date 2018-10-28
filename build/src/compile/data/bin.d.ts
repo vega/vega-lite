@@ -3,7 +3,7 @@ import { BinTransform } from '../../transform';
 import { Dict } from '../../util';
 import { VgTransform } from '../../vega.schema';
 import { Model, ModelWithField } from '../model';
-import { DataFlowNode, TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 export interface BinComponent {
     bin: BinParams;
     field: string;
@@ -13,7 +13,7 @@ export interface BinComponent {
     formula?: string;
     formulaAs?: string;
 }
-export declare class BinNode extends TransformNode {
+export declare class BinNode extends DataFlowNode {
     private bins;
     clone(): BinNode;
     constructor(parent: DataFlowNode, bins: Dict<BinComponent>);

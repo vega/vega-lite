@@ -1,9 +1,8 @@
 import * as tslib_1 from "tslib";
 import { vgField } from '../../fielddef';
-import { isSortField } from '../../sort';
 import { duplicate, hash } from '../../util';
-import { facetSortFieldName } from '../facet';
-import { TransformNode } from './dataflow';
+import { unique } from './../../util';
+import { DataFlowNode } from './dataflow';
 /**
  * A class for the window transform nodes
  */
@@ -14,41 +13,26 @@ var WindowTransformNode = /** @class */ (function (_super) {
         _this.transform = transform;
         return _this;
     }
-    WindowTransformNode.makeFromFacet = function (parent, facet) {
-        var row = facet.row, column = facet.column;
-        if (row && column) {
-            var newParent = null;
-            // only need to make one for crossed facet
-            for (var _i = 0, _a = [row, column]; _i < _a.length; _i++) {
-                var fieldDef = _a[_i];
-                if (isSortField(fieldDef.sort)) {
-                    var _b = fieldDef.sort, field = _b.field, op = _b.op;
-                    parent = newParent = new WindowTransformNode(parent, {
-                        window: [
-                            {
-                                op: op,
-                                field: field,
-                                as: facetSortFieldName(fieldDef, fieldDef.sort, { forAs: true })
-                            }
-                        ],
-                        groupby: [vgField(fieldDef)],
-                        frame: [null, null]
-                    });
-                }
-            }
-            return newParent;
-        }
-        return null;
-    };
     WindowTransformNode.prototype.clone = function () {
-        return new WindowTransformNode(this.parent, duplicate(this.transform));
+        return new WindowTransformNode(null, duplicate(this.transform));
+    };
+    WindowTransformNode.prototype.addDimensions = function (fields) {
+        this.transform.groupby = unique(this.transform.groupby.concat(fields), function (d) { return d; });
+    };
+    WindowTransformNode.prototype.dependentFields = function () {
+        var out = {};
+        this.transform.groupby.forEach(function (f) { return (out[f] = true); });
+        this.transform.sort.forEach(function (m) { return (out[m.field] = true); });
+        this.transform.window
+            .map(function (w) { return w.field; })
+            .filter(function (f) { return f !== undefined; })
+            .forEach(function (f) { return (out[f] = true); });
+        return out;
     };
     WindowTransformNode.prototype.producedFields = function () {
         var _this = this;
         var out = {};
-        this.transform.window.forEach(function (windowFieldDef) {
-            out[_this.getDefaultName(windowFieldDef)] = true;
-        });
+        this.transform.window.forEach(function (windowFieldDef) { return (out[_this.getDefaultName(windowFieldDef)] = true); });
         return out;
     };
     WindowTransformNode.prototype.getDefaultName = function (windowFieldDef) {
@@ -105,6 +89,6 @@ var WindowTransformNode = /** @class */ (function (_super) {
         return result;
     };
     return WindowTransformNode;
-}(TransformNode));
+}(DataFlowNode));
 export { WindowTransformNode };
 //# sourceMappingURL=window.js.map

@@ -5,7 +5,7 @@ import { normalizeBin, vgField } from '../../fielddef';
 import { duplicate, flatten, hash, keys, vals } from '../../util';
 import { binFormatExpression, binRequiresRange } from '../common';
 import { isUnitModel } from '../model';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 function rangeFormula(model, fieldDef, channel, config) {
     if (binRequiresRange(fieldDef, channel)) {
         // read format from axis or legend, if there is no format then use config.numberFormat
@@ -124,6 +124,6 @@ var BinNode = /** @class */ (function (_super) {
         }));
     };
     return BinNode;
-}(TransformNode));
+}(DataFlowNode));
 export { BinNode };
 //# sourceMappingURL=bin.js.map

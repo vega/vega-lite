@@ -3,8 +3,8 @@ import { AggregateTransform } from '../../transform';
 import { Dict, StringSet } from '../../util';
 import { VgAggregateTransform } from '../../vega.schema';
 import { UnitModel } from '../unit';
-import { DataFlowNode, TransformNode } from './dataflow';
-export declare class AggregateNode extends TransformNode {
+import { DataFlowNode } from './dataflow';
+export declare class AggregateNode extends DataFlowNode {
     private dimensions;
     private measures;
     clone(): AggregateNode;

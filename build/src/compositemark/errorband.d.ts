@@ -7,7 +7,7 @@ import { ErrorBarCenter, ErrorBarExtent } from './errorbar';
 export declare const ERRORBAND: 'errorband';
 export declare type ErrorBand = typeof ERRORBAND;
 export declare type ErrorBandPart = 'band' | 'borders';
-export declare const ERRORBAND_PARTS: ErrorBandPart[];
+export declare const ERRORBAND_PARTS: import("vega-lite/build/src/compositemark/errorband").ErrorBandPart[];
 export declare type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 export interface ErrorBandConfig extends ErrorBandPartsMixins {
     /**

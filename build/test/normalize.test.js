@@ -67,7 +67,7 @@ describe('normalize()', function () {
     });
     describe('normalizeFacet', function () {
         it('should produce correct layered specs for mean point and vertical error bar', function () {
-            assert.deepEqual(normalize({
+            expect(normalize({
                 description: 'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
                 transform: [{ calculate: "(datum.sex==1) ? 'Men':'Women'", as: 'sex' }],
@@ -90,7 +90,7 @@ describe('normalize()', function () {
                         }
                     ]
                 }
-            }, defaultConfig), {
+            }, defaultConfig)).toEqual({
                 description: 'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
                 data: {
                     url: 'data/population.json'
@@ -137,7 +137,7 @@ describe('normalize()', function () {
                                             title: 'people'
                                         },
                                         y2: { field: 'upper_people', type: 'quantitative' },
-                                        x: { field: 'age', type: 'ordinal', title: 'age' }
+                                        x: { field: 'age', type: 'ordinal' }
                                     }
                                 }
                             ]

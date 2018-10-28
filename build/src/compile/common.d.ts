@@ -25,8 +25,6 @@ export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFor
 };
 /**
  * Returns number format for a fieldDef
- *
- * @param format explicitly specified format
  */
 export declare function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config): string;
 export declare function numberFormatExpr(field: string, specifiedFormat: string, config: Config): string;

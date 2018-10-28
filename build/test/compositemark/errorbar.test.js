@@ -54,7 +54,7 @@ describe('normalizeErrorBar with raw data input', function () {
                             title: 'people'
                         },
                         y2: { field: 'upper_people', type: 'quantitative' },
-                        x: { field: 'age', type: 'ordinal', title: 'age' }
+                        x: { field: 'age', type: 'ordinal' }
                     }
                 }
             ]
@@ -520,7 +520,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
     };
     var mark = 'errorbar';
     it('should produce correct layered specs for vertical errorbar with aggregated data input', function () {
-        assert.deepEqual(normalize({
+        expect(normalize({
             data: data,
             mark: 'errorbar',
             encoding: {
@@ -528,7 +528,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
                 y: { field: 'people', type: 'quantitative' },
                 y2: { field: 'people2', type: 'quantitative' }
             }
-        }, defaultConfig), {
+        }, defaultConfig)).toEqual({
             data: data,
             transform: [{ calculate: 'datum.people', as: 'lower_people' }, { calculate: 'datum.people2', as: 'upper_people' }],
             layer: [
@@ -541,7 +541,7 @@ describe('normalizeErrorBar with aggregated data input', function () {
                             title: 'people'
                         },
                         y2: { field: 'upper_people', type: 'quantitative' },
-                        x: { field: 'age', type: 'ordinal', title: 'age' }
+                        x: { field: 'age', type: 'ordinal' }
                     }
                 }
             ]

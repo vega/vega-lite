@@ -1,6 +1,5 @@
 import * as tslib_1 from "tslib";
 import { isUrlData } from '../../data';
-import { vals } from '../../util';
 import { AggregateNode } from './aggregate';
 import { BinNode } from './bin';
 import { CalculateNode } from './calculate';
@@ -20,17 +19,6 @@ import { SourceNode } from './source';
 import { StackNode } from './stack';
 import { TimeUnitNode } from './timeunit';
 import { WindowTransformNode } from './window';
-/**
- * Print debug information for dataflow tree.
- */
-// tslint:disable-next-line
-export function debug(node) {
-    console.log("" + node.constructor.name + (node.debugName ? " (" + node.debugName + ")" : '') + " -> " + node.children.map(function (c) {
-        return "" + c.constructor.name + (c.debugName ? " (" + c.debugName + ")" : '');
-    }));
-    console.log(node);
-    node.children.forEach(debug);
-}
 function makeWalkTree(data) {
     // to name datasources
     var datasetIndex = 0;
@@ -96,11 +84,6 @@ function makeWalkTree(data) {
             node instanceof ImputeNode ||
             node instanceof StackNode) {
             dataSource.transform = dataSource.transform.concat(node.assemble());
-        }
-        if (node instanceof AggregateNode) {
-            if (!dataSource.name) {
-                dataSource.name = "data_" + datasetIndex++;
-            }
         }
         if (node instanceof OutputNode) {
             if (dataSource.source && dataSource.transform.length === 0) {
@@ -188,12 +171,12 @@ export function assembleFacetData(root) {
  * @return modified data array
  */
 export function assembleRootData(dataComponent, datasets) {
-    var roots = vals(dataComponent.sources);
     var data = [];
     // roots.forEach(debug);
+    // draw(roots);
     var walkTree = makeWalkTree(data);
     var sourceIndex = 0;
-    roots.forEach(function (root) {
+    dataComponent.sources.forEach(function (root) {
         // assign a name if the source does not have a name yet
         if (!root.hasName()) {
             root.dataName = "source_" + sourceIndex++;

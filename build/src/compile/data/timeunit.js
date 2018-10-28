@@ -2,7 +2,7 @@ import * as tslib_1 from "tslib";
 import { vgField } from '../../fielddef';
 import { fieldExpr } from '../../timeunit';
 import { duplicate, hash, keys, vals } from '../../util';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 var TimeUnitNode = /** @class */ (function (_super) {
     tslib_1.__extends(TimeUnitNode, _super);
     function TimeUnitNode(parent, formula) {
@@ -71,6 +71,6 @@ var TimeUnitNode = /** @class */ (function (_super) {
         });
     };
     return TimeUnitNode;
-}(TransformNode));
+}(DataFlowNode));
 export { TimeUnitNode };
 //# sourceMappingURL=timeunit.js.map

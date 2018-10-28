@@ -1,4 +1,5 @@
 import * as tslib_1 from "tslib";
+import { uniqueId } from '../../util';
 /**
  * A node in the dataflow tree.
  */
@@ -16,6 +17,15 @@ var DataFlowNode = /** @class */ (function () {
      */
     DataFlowNode.prototype.clone = function () {
         throw new Error('Cannot clone node');
+    };
+    /**
+     * Return a hash of the node.
+     */
+    DataFlowNode.prototype.hash = function () {
+        if (this._hash === undefined) {
+            this._hash = uniqueId();
+        }
+        return this._hash;
     };
     /**
      * Set of fields that are being created by this node.
@@ -51,6 +61,11 @@ var DataFlowNode = /** @class */ (function () {
         return this._children.length;
     };
     DataFlowNode.prototype.addChild = function (child, loc) {
+        // do not add the same child twice
+        if (this._children.indexOf(child) > -1) {
+            console.warn('Attempt to add the same child twice.');
+            return;
+        }
         if (loc !== undefined) {
             this._children.splice(loc, 0, child);
         }
@@ -152,15 +167,4 @@ var OutputNode = /** @class */ (function (_super) {
     return OutputNode;
 }(DataFlowNode));
 export { OutputNode };
-var TransformNode = /** @class */ (function (_super) {
-    tslib_1.__extends(TransformNode, _super);
-    function TransformNode() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    return TransformNode;
-}(DataFlowNode));
-export { TransformNode };
-export function isTransformNode(x) {
-    return x instanceof TransformNode;
-}
 //# sourceMappingURL=dataflow.js.map

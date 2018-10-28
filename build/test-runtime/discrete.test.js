@@ -1,4 +1,6 @@
 import { assert } from 'chai';
+import { SELECTION_ID } from '../src/selection';
+import { fill } from '../src/util';
 import { embedFn, hits as hitsMaster, pt, spec, testRenderFn } from './util';
 ['single', 'multi'].forEach(function (type) {
     describe(type + " selections at runtime in unit views", function () {
@@ -10,9 +12,10 @@ import { embedFn, hits as hitsMaster, pt, spec, testRenderFn } from './util';
                 embed(spec('unit', i, { type: type }));
                 var store = browser.execute(pt('qq', i)).value;
                 assert.lengthOf(store, 1);
-                assert.lengthOf(store[0].encodings, 0);
                 assert.lengthOf(store[0].fields, 1);
                 assert.lengthOf(store[0].values, 1);
+                assert.equal(store[0].fields[0].field, SELECTION_ID);
+                assert.equal(store[0].fields[0].type, 'E');
                 testRender("click_" + i);
             }
         });
@@ -25,8 +28,10 @@ import { embedFn, hits as hitsMaster, pt, spec, testRenderFn } from './util';
                     emb(i);
                     var store = browser.execute(pt('qq', i)).value;
                     assert.lengthOf(store, 1);
-                    assert.deepEqual(store[0].encodings, encodings);
-                    assert.deepEqual(store[0].fields, fields);
+                    assert.lengthOf(store[0].fields, fields.length);
+                    assert.lengthOf(store[0].values, fields.length);
+                    assert.deepEqual(store[0].fields.map(function (f) { return f.field; }), fields);
+                    assert.deepEqual(store[0].fields.map(function (f) { return f.type; }), fill('E', fields.length));
                     assert.deepEqual(store[0].values, values[i]);
                     testRender(encodings + "_" + fields + "_" + i);
                 }
@@ -53,17 +58,17 @@ import { embedFn, hits as hitsMaster, pt, spec, testRenderFn } from './util';
         it('should support selecting bins', function () {
             var encodings = ['x', 'color', 'y'];
             var fields = ['a', 'c', 'b'];
+            var types = ['R-RE', 'E', 'R-RE'];
             var values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
             for (var i = 0; i < hits.bins.length; i++) {
                 embed(spec('unit', i, { type: type, encodings: encodings }, { x: { bin: true }, y: { bin: true } }));
                 var store = browser.execute(pt('bins', i)).value;
                 assert.lengthOf(store, 1);
-                assert.sameMembers(store[0].encodings, encodings);
-                assert.sameMembers(store[0].fields, fields);
+                assert.lengthOf(store[0].fields, fields.length);
+                assert.lengthOf(store[0].values, fields.length);
+                assert.sameMembers(store[0].fields.map(function (f) { return f.field; }), fields);
+                assert.sameMembers(store[0].fields.map(function (f) { return f.type; }), types);
                 assert.sameDeepMembers(store[0].values, values[i]);
-                assert.property(store[0], 'bin_a');
-                assert.property(store[0], 'bin_b');
-                assert.notProperty(store[0], 'bin_c');
                 testRender("bins_" + i);
             }
         });

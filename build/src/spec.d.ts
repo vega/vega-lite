@@ -9,11 +9,11 @@ import { Repeat } from './repeat';
 import { Resolve } from './resolve';
 import { SelectionDef } from './selection';
 import { TitleParams } from './title';
-import { ConcatLayout, GenericCompositionLayout, TopLevelProperties } from './toplevelprops';
+import { ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties } from './toplevelprops';
 import { Transform } from './transform';
 export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
     /**
-     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
      * @format uri
      */
     $schema?: string;
@@ -21,6 +21,16 @@ export declare type TopLevel<S extends BaseSpec> = S & TopLevelProperties & {
      * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
      */
     config?: Config;
+    /**
+     * A global data store for named datasets. This is a mapping from names to inline datasets.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     */
+    datasets?: Datasets;
+    /**
+     * Optional metadata that will be passed to Vega.
+     * This object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.
+     */
+    usermeta?: object;
 };
 export declare type BaseSpec = Partial<DataMixins> & {
     /**
@@ -114,7 +124,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
     /**
      * Layer or single view specifications to be layered.
      *
-     * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
+     * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
      */
     layer: (GenericLayerSpec<U> | U)[];
     /**
@@ -199,3 +209,7 @@ export declare function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpe
 export { normalizeTopLevelSpec as normalize } from './normalize';
 export declare function fieldDefs(spec: GenericSpec<any, any>): FieldDef<any>[];
 export declare function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean;
+/**
+ * Takes a spec and returns a list of fields used in encoding
+ */
+export declare function usedFields(spec: NormalizedSpec): string[];

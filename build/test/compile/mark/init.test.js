@@ -386,7 +386,7 @@ describe('compile/mark/init', function () {
                     x: { field: 'a', type: 'ordinal' },
                     y: { field: 'b', type: 'quantitative' },
                     href: {
-                        condition: { selection: 'test', value: 'https://vega.github.io/schema/vega-lite/v2.json' },
+                        condition: { selection: 'test', value: 'https://vega.github.io/schema/vega-lite/v3.json' },
                         field: 'a',
                         type: 'ordinal'
                     }

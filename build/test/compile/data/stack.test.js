@@ -1,3 +1,4 @@
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
 import { StackNode } from '../../../src/compile/data/stack';
@@ -303,7 +304,12 @@ describe('compile/data/stack', function () {
                 }
             });
             var stack = StackNode.makeFromEncoding(null, model);
-            assert.deepEqual(stack.hash(), 'Stack -2072318240');
+            assert.deepEqual(stack.hash(), 'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDef":{"field":"b","type":"nominal"},"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["descending"]},"stackField":"sum_a","stackby":["c"]}');
+        });
+        it('should never clone parent', function () {
+            var parent = new DataFlowNode(null);
+            var stack = new StackNode(parent, null);
+            expect(stack.clone().parent).toBeNull();
         });
     });
 });

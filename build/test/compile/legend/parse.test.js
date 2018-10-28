@@ -116,7 +116,7 @@ describe('compile/legend', function () {
     describe('parseNonUnitLegend()', function () {
         it('should correctly merge orient by favoring explicit orient', function () {
             var model = parseLayerModel({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 description: "Google's stock price over time.",
                 data: { url: 'data/stocks.csv' },
                 layer: [
@@ -144,7 +144,7 @@ describe('compile/legend', function () {
         });
         it('should correctly merge legend that exists only on one plot', function () {
             var model = parseLayerModel({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 description: "Google's stock price over time.",
                 data: { url: 'data/stocks.csv' },
                 layer: [

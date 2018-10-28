@@ -1,13 +1,13 @@
 import * as tslib_1 from "tslib";
 import { isNumber, isString, toSet } from 'vega-util';
-import { isCountingAggregateOp } from '../../aggregate';
+import { isMinMaxOp } from '../../aggregate';
 import { isDateTime } from '../../datetime';
 import { isNumberFieldDef, isScaleFieldDef, isTimeFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { forEachLeaf } from '../../logical';
 import { isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate } from '../../predicate';
 import { isSortField } from '../../sort';
-import { accessPathDepth, accessPathWithDatum, duplicate, keys, removePathFromField } from '../../util';
+import { accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField } from '../../util';
 import { isFacetModel, isUnitModel } from '../model';
 import { Split } from '../split';
 import { DataFlowNode } from './dataflow';
@@ -54,6 +54,9 @@ var ParseNode = /** @class */ (function (_super) {
     }
     ParseNode.prototype.clone = function () {
         return new ParseNode(null, duplicate(this._parse));
+    };
+    ParseNode.prototype.hash = function () {
+        return "Parse " + hash(this._parse);
     };
     /**
      * Creates a parse node from a data.format.parse and updates ancestorParse.
@@ -117,10 +120,8 @@ var ParseNode = /** @class */ (function (_super) {
                 if (isTimeFieldDef(fieldDef)) {
                     implicit[fieldDef.field] = 'date';
                 }
-                else if (isNumberFieldDef(fieldDef)) {
-                    if (!isCountingAggregateOp(fieldDef.aggregate)) {
-                        implicit[fieldDef.field] = 'number';
-                    }
+                else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+                    implicit[fieldDef.field] = 'number';
                 }
                 else if (accessPathDepth(fieldDef.field) > 1) {
                     // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.

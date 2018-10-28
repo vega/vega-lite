@@ -5,18 +5,17 @@ import { warn } from '../../log';
 import { hasContinuousDomain, isBinScale } from '../../scale';
 import { keys } from '../../util';
 import { channelSignalName, positionalProjections, STORE, TUPLE, unitName } from './selection';
+import { TUPLE_FIELDS } from './transforms/project';
 import scales from './transforms/scales';
 export var BRUSH = '_brush';
 export var SCALE_TRIGGER = '_scale_trigger';
 var interval = {
-    predicate: 'vlInterval',
-    scaleDomain: 'vlIntervalDomain',
     signals: function (model, selCmpt) {
         var name = selCmpt.name;
+        var fieldsSg = name + TUPLE + TUPLE_FIELDS;
         var hasScales = scales.has(selCmpt);
         var signals = [];
-        var intervals = [];
-        var tupleTriggers = [];
+        var dataSignals = [];
         var scaleTriggers = [];
         if (selCmpt.translate && !hasScales) {
             var filterExpr_1 = "!event.item || event.item.mark.name !== " + stringValue(name + BRUSH);
@@ -41,8 +40,7 @@ var interval = {
             var scaleType = model.getScaleComponent(channel).get('type');
             var toNum = hasContinuousDomain(scaleType) ? '+' : '';
             signals.push.apply(signals, cs);
-            tupleTriggers.push(dname);
-            intervals.push("{encoding: " + stringValue(channel) + ", " + ("field: " + stringValue(p.field) + ", extent: " + dname + "}"));
+            dataSignals.push(dname);
             scaleTriggers.push({
                 scaleName: model.scaleName(channel),
                 expr: "(!isArray(" + dname + ") || " +
@@ -65,8 +63,10 @@ var interval = {
             name: name + TUPLE,
             on: [
                 {
-                    events: tupleTriggers.map(function (t) { return ({ signal: t }); }),
-                    update: tupleTriggers.join(' && ') + (" ? {unit: " + unitName(model) + ", intervals: [" + intervals.join(', ') + "]} : null")
+                    events: dataSignals.map(function (t) { return ({ signal: t }); }),
+                    update: dataSignals.join(' && ') +
+                        (" ? {unit: " + unitName(model) + ", fields: " + fieldsSg + ", ") +
+                        ("values: [" + dataSignals.join(', ') + "]} : null")
                 }
             ]
         });

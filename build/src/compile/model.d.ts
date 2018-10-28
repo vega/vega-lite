@@ -1,5 +1,4 @@
-import { Axis as VgAxis, Legend as VgLegend, SignalRef } from 'vega';
-import { Title as VgTitle } from 'vega';
+import { Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
 import { Config } from '../config';
 import { Data, DataSourceType } from '../data';

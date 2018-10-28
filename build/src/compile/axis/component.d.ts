@@ -3,9 +3,9 @@ import { Axis, AxisPart } from '../../axis';
 import { FieldDefBase } from '../../fielddef';
 import { Omit } from '../../util';
 import { Split } from '../split';
-export declare type AxisComponentProps = Omit<VgAxis, 'title'> & {
+export interface AxisComponentProps extends Omit<VgAxis, 'title'> {
     title: string | FieldDefBase<string>[];
-};
+}
 export declare class AxisComponent extends Split<AxisComponentProps> {
     readonly explicit: Partial<AxisComponentProps>;
     readonly implicit: Partial<AxisComponentProps>;

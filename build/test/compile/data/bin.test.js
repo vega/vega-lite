@@ -1,3 +1,4 @@
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
 import { BinNode } from '../../../src/compile/data/bin';
@@ -239,6 +240,11 @@ describe('compile/data/bin', function () {
         });
         var binNode = BinNode.makeFromTransform(null, t, model);
         assert.deepEqual(binNode.hash(), 'Bin 1594083826');
+    });
+    it('should never clone parent', function () {
+        var parent = new DataFlowNode(null);
+        var bin = new BinNode(parent, {});
+        expect(bin.clone().parent).toBeNull();
     });
 });
 //# sourceMappingURL=bin.test.js.map

@@ -12,13 +12,15 @@ describe('Single Selection', function () {
             color: { field: 'Origin', type: 'nominal' }
         }
     });
+    model.parseScale();
     var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
         one: { type: 'single' },
         two: {
             type: 'single',
             nearest: true,
             on: 'mouseover',
-            encodings: ['y', 'color']
+            encodings: ['y', 'color'],
+            resolve: 'intersect'
         }
     }));
     it('builds tuple signals', function () {
@@ -30,7 +32,7 @@ describe('Single Selection', function () {
                 on: [
                     {
                         events: selCmpts['one'].events,
-                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: [], fields: ["_vgsid_"], values: [datum["_vgsid_"]]} : null',
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [datum["_vgsid_"]]} : null',
                         force: true
                     }
                 ]
@@ -44,7 +46,7 @@ describe('Single Selection', function () {
                 on: [
                     {
                         events: selCmpts['two'].events,
-                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", encodings: ["y", "color"], fields: ["Miles_per_Gallon", "Origin"], values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]], "bin_Miles_per_Gallon": 1} : null',
+                        update: 'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
                         force: true
                     }
                 ]
@@ -57,7 +59,7 @@ describe('Single Selection', function () {
         var oneExpr = single.modifyExpr(model, selCmpts['one']);
         assert.equal(oneExpr, 'one_tuple, true');
         var twoExpr = single.modifyExpr(model, selCmpts['two']);
-        assert.equal(twoExpr, 'two_tuple, true');
+        assert.equal(twoExpr, 'two_tuple, {unit: ""}');
         var signals = selection.assembleUnitSelectionSignals(model, []);
         assert.includeDeepMembers(signals, [
             {
@@ -81,28 +83,22 @@ describe('Single Selection', function () {
         ]);
     });
     it('builds top-level signals', function () {
-        var oneSg = single.topLevelSignals(model, selCmpts['one'], []);
-        assert.sameDeepMembers(oneSg, [
+        var signals = selection.assembleTopLevelSignals(model, []);
+        assert.includeDeepMembers(signals, [
             {
                 name: 'one',
-                update: 'data("one_store").length && {_vgsid_: data("one_store")[0].values[0]}'
-            }
-        ]);
-        var twoSg = single.topLevelSignals(model, selCmpts['two'], []);
-        assert.sameDeepMembers(twoSg, [
+                update: 'vlSelectionResolve("one_store")'
+            },
             {
                 name: 'two',
-                update: 'data("two_store").length && {Miles_per_Gallon: data("two_store")[0].values[0], Origin: data("two_store")[0].values[1]}'
-            }
-        ]);
-        var signals = selection.assembleTopLevelSignals(model, []);
-        assert.deepEqual(signals, [
+                update: 'vlSelectionResolve("two_store", "intersect")'
+            },
             {
                 name: 'unit',
                 value: {},
                 on: [{ events: 'mousemove', update: 'isTuple(group()) ? group() : unit' }]
             }
-        ].concat(oneSg, twoSg));
+        ]);
     });
     it('builds unit datasets', function () {
         var data = [];

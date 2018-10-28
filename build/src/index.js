@@ -4,6 +4,7 @@ import * as bin from './bin';
 import * as channel from './channel';
 import * as compositeMark from './compositemark';
 export { compile } from './compile/compile';
+export { extractTransforms } from './transformextract';
 import * as config from './config';
 import * as data from './data';
 import * as datetime from './datetime';

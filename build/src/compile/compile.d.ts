@@ -1,3 +1,4 @@
+import { Spec as VgSpec } from 'vega';
 import { Config } from '../config';
 import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
@@ -35,5 +36,5 @@ export interface CompileOptions {
  * Vega spec
  */
 export declare function compile(inputSpec: TopLevelSpec, opt?: CompileOptions): {
-    spec: any;
+    spec: VgSpec;
 };

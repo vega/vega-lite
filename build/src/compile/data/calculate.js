@@ -3,7 +3,7 @@ import { isScaleFieldDef, vgField } from '../../fielddef';
 import { fieldFilterExpression } from '../../predicate';
 import { isSortArray } from '../../sort';
 import { duplicate, hash } from '../../util';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 import { getDependentFields } from './expressions';
 /**
  * We don't know what a calculate node depends on so we should never move it beyond anything that produces fields.
@@ -61,7 +61,7 @@ var CalculateNode = /** @class */ (function (_super) {
         return "Calculate " + hash(this.transform);
     };
     return CalculateNode;
-}(TransformNode));
+}(DataFlowNode));
 export { CalculateNode };
 export function sortArrayIndexField(fieldDef, channel, opt) {
     return vgField(fieldDef, tslib_1.__assign({ prefix: channel, suffix: 'sort_index' }, (opt || {})));

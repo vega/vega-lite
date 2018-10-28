@@ -8,18 +8,6 @@ import * as log from '../../../src/log';
 import { parseFacetModel, parseUnitModel } from '../../util';
 describe('compile/data/formatparse', function () {
     describe('parseUnit', function () {
-        it('should parse binned fields as numbers', function () {
-            var model = parseUnitModel({
-                mark: 'point',
-                encoding: {
-                    x: { field: 'a', type: 'ordinal', bin: true },
-                    y: { field: 'b', type: 'ordinal' }
-                }
-            });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
-                a: 'number'
-            });
-        });
         it('should flatten nested fields that are used to sort domains', function () {
             var model = parseUnitModel({
                 mark: 'point',
@@ -43,11 +31,10 @@ describe('compile/data/formatparse', function () {
                 }
             });
             var ancestorParese = new AncestorParse();
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse, {
-                a: 'number',
+            expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse).toEqual({
                 b: 'date'
             });
-            assert.deepEqual(ParseNode.makeExplicit(null, model, ancestorParese).parse, {
+            expect(ParseNode.makeExplicit(null, model, ancestorParese).parse).toEqual({
                 c: 'number',
                 d: 'date'
             });
@@ -66,10 +53,9 @@ describe('compile/data/formatparse', function () {
             var ancestorParse = new AncestorParse();
             var parent = new DataFlowNode(null);
             parseTransformArray(parent, model, ancestorParse);
-            assert.deepEqual(ancestorParse.combine(), { b2: 'derived' });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
-                a: 'date',
-                b: 'number'
+            expect(ancestorParse.combine()).toEqual({ b2: 'derived' });
+            expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({
+                a: 'date'
             });
         });
         it('should not parse fields with aggregate=missing/valid/distinct', function () {
@@ -151,9 +137,7 @@ describe('compile/data/formatparse', function () {
                     y: { aggregate: 'count', type: 'quantitative' }
                 }
             });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
-                foo: 'number'
-            });
+            expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
         });
         it('should add flatten for nested fields', function () {
             var model = parseUnitModel({
@@ -163,8 +147,8 @@ describe('compile/data/formatparse', function () {
                     y: { field: 'foo.baz', type: 'ordinal' }
                 }
             });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
-                'foo.bar': 'number',
+            expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
+                'foo.bar': 'flatten',
                 'foo.baz': 'flatten'
             });
         });
@@ -189,9 +173,7 @@ describe('compile/data/formatparse', function () {
             assert.deepEqual(ancestorParse.combine(), {
                 b: null
             });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse, {
-                a: 'number'
-            });
+            expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse)).toBeNull();
         });
         it('should not parse if parse is disabled', function () {
             var model = parseUnitModel({
@@ -267,6 +249,13 @@ describe('compile/data/formatparse', function () {
                 'nested.field': 'flatten'
             });
             assert.deepEqual(p.producedFields(), { n: true, b: true, 'nested.field': true });
+        });
+    });
+    describe('clone', function () {
+        it('should never clone parent', function () {
+            var parent = new DataFlowNode(null);
+            var parse = new ParseNode(parent, {});
+            expect(parse.clone().parent).toBeNull();
         });
     });
 });

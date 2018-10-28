@@ -128,8 +128,8 @@ describe('fieldDef', function () {
             it('is compatible with nominal field', function () {
                 assert(channelCompatibility({ field: 'a', type: 'nominal' }, 'shape').compatible);
             });
-            it('is incompatible with ordinal field', function () {
-                assert(!channelCompatibility({ field: 'a', type: 'ordinal' }, 'shape').compatible);
+            it('is compatible with ordinal field', function () {
+                assert(channelCompatibility({ field: 'a', type: 'ordinal' }, 'shape').compatible);
             });
             it('is incompatible with quantitative field', function () {
                 assert(!channelCompatibility({ field: 'a', type: 'quantitative' }, 'shape').compatible);

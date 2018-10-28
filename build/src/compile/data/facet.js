@@ -6,6 +6,7 @@ import { vgField } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain } from '../../scale';
 import { isSortField } from '../../sort';
+import { hash } from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
 import { assembleDomain, getFieldFromDomain } from '../scale/domain';
 import { sortArrayIndexField } from './calculate';
@@ -40,6 +41,16 @@ var FacetNode = /** @class */ (function (_super) {
         _this.childModel = model.child;
         return _this;
     }
+    FacetNode.prototype.hash = function () {
+        var out = "Facet";
+        if (this.column) {
+            out += " c:" + hash(this.column);
+        }
+        if (this.row) {
+            out += " r:" + hash(this.row);
+        }
+        return out;
+    };
     Object.defineProperty(FacetNode.prototype, "fields", {
         get: function () {
             return ((this.column && this.column.fields) || []).concat(((this.row && this.row.fields) || []));

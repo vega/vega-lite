@@ -32,6 +32,9 @@ export var COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
 export function isCountingAggregateOp(aggregate) {
     return aggregate && contains(COUNTING_OPS, aggregate);
 }
+export function isMinMaxOp(aggregate) {
+    return aggregate && contains(['min', 'max'], aggregate);
+}
 /** Additive-based aggregation operations.  These can be applied to stack. */
 export var SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
 /**

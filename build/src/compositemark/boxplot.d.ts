@@ -6,7 +6,7 @@ import { GenericCompositeMarkDef, PartsMixins } from './common';
 export declare const BOXPLOT: 'boxplot';
 export declare type BoxPlot = typeof BOXPLOT;
 export declare type BoxPlotPart = 'box' | 'median' | 'outliers' | 'rule' | 'ticks';
-export declare const BOXPLOT_PARTS: BoxPlotPart[];
+export declare const BOXPLOT_PARTS: import("vega-lite/build/src/compositemark/boxplot").BoxPlotPart[];
 export declare type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 export interface BoxPlotConfig extends BoxPlotPartsMixins {
     /** Size of the box and median tick of a box plot */

@@ -1,8 +1,8 @@
 import * as tslib_1 from "tslib";
-import { MAIN, RAW } from '../../data';
+import { isInlineData, isNamedData, isUrlData, MAIN, RAW } from '../../data';
 import * as log from '../../log';
 import { isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow } from '../../transform';
-import { keys } from '../../util';
+import { deepEqual, keys, mergeDeep } from '../../util';
 import { isFacetModel, isLayerModel, isUnitModel } from '../model';
 import { requiresSelectionId } from '../selection/selection';
 import { AggregateNode } from './aggregate';
@@ -25,18 +25,42 @@ import { SourceNode } from './source';
 import { StackNode } from './stack';
 import { TimeUnitNode } from './timeunit';
 import { WindowTransformNode } from './window';
+import { makeWindowFromFacet } from './windowfacet';
+export function findSource(data, sources) {
+    for (var _i = 0, sources_1 = sources; _i < sources_1.length; _i++) {
+        var other = sources_1[_i];
+        var otherData = other.data;
+        if (isInlineData(data) && isInlineData(otherData)) {
+            var srcVals = data.values;
+            var otherVals = otherData.values;
+            if (deepEqual(srcVals, otherVals)) {
+                return other;
+            }
+        }
+        else if (isUrlData(data) && isUrlData(otherData)) {
+            if (data.url === otherData.url) {
+                return other;
+            }
+        }
+        else if (isNamedData(data) && isNamedData(otherData)) {
+            if (data.name === otherData.name) {
+                return other;
+            }
+        }
+    }
+    return null;
+}
 function parseRoot(model, sources) {
     if (model.data || !model.parent) {
         // if the model defines a data source or is the root, create a source node
-        var source = new SourceNode(model.data);
-        var hash = source.hash();
-        if (hash in sources) {
-            // use a reference if we already have a source
-            return sources[hash];
+        var existingSource = findSource(model.data, sources);
+        if (existingSource) {
+            existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
+            return existingSource;
         }
         else {
-            // otherwise add a new one
-            sources[hash] = source;
+            var source = new SourceNode(model.data);
+            sources.push(source);
             return source;
         }
     }
@@ -53,6 +77,7 @@ function parseRoot(model, sources) {
 export function parseTransformArray(head, model, ancestorParse) {
     var lookupCounter = 0;
     model.transforms.forEach(function (t) {
+        var _a;
         var derivedType = undefined;
         var transformNode;
         if (isCalculate(t)) {
@@ -70,6 +95,12 @@ export function parseTransformArray(head, model, ancestorParse) {
         else if (isTimeUnit(t)) {
             transformNode = head = TimeUnitNode.makeFromTransform(head, t);
             derivedType = 'date';
+            // Create parse node because the input to time unit is always date.
+            var parsedAs = ancestorParse.getWithExplicit(t.field);
+            if (parsedAs.value === undefined) {
+                head = new ParseNode(head, (_a = {}, _a[t.field] = derivedType, _a));
+                ancestorParse.set(t.field, derivedType, false);
+            }
         }
         else if (isAggregate(t)) {
             transformNode = head = AggregateNode.makeFromTransform(head, t);
@@ -110,8 +141,8 @@ export function parseTransformArray(head, model, ancestorParse) {
             return;
         }
         if (transformNode && derivedType !== undefined) {
-            for (var _i = 0, _a = keys(transformNode.producedFields()); _i < _a.length; _i++) {
-                var field = _a[_i];
+            for (var _i = 0, _b = keys(transformNode.producedFields()); _i < _b.length; _i++) {
+                var field = _b[_i];
                 ancestorParse.set(field, derivedType, false);
             }
         }
@@ -243,7 +274,7 @@ export function parseData(model) {
         // Derive new aggregate (via window) for facet's sort field
         // TODO: use JoinAggregate once we have it
         // augment data source with new fields for crossed facet
-        head = WindowTransformNode.makeFromFacet(head, model.facet) || head;
+        head = makeWindowFromFacet(head, model.facet) || head;
         facetRoot = new FacetNode(head, model, facetName, main.getSource());
         outputNodes[facetName] = facetRoot;
         head = facetRoot;

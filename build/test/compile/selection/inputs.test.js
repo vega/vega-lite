@@ -53,7 +53,7 @@ describe('Inputs Selection Transform', function () {
         assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
             {
                 name: 'one_tuple',
-                update: 'one__vgsid_ ? {fields: ["_vgsid_"], values: [one__vgsid_]} : null'
+                update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
             }
         ]);
         assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
@@ -75,7 +75,7 @@ describe('Inputs Selection Transform', function () {
         assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
             {
                 name: 'two_tuple',
-                update: 'two_Cylinders && two_Horsepower ? {fields: ["Cylinders", "Horsepower"], values: [two_Cylinders, two_Horsepower]} : null'
+                update: 'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
             }
         ]);
         assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [
@@ -108,7 +108,7 @@ describe('Inputs Selection Transform', function () {
         assert.includeDeepMembers(selection.assembleUnitSelectionSignals(model, []), [
             {
                 name: 'three_tuple',
-                update: 'three_Cylinders && three_Origin ? {fields: ["Cylinders", "Origin"], values: [three_Cylinders, three_Origin]} : null'
+                update: 'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
             }
         ]);
         assert.includeDeepMembers(selection.assembleTopLevelSignals(model, []), [

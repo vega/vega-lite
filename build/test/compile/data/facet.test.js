@@ -5,7 +5,7 @@ describe('compile/data/facet', function () {
     describe('assemble', function () {
         it('should calculate column distinct if child has an independent discrete scale with step', function () {
             var model = parseFacetModelWithScale({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 description: 'A trellis bar chart showing the US population distribution of age groups and gender in 2000.',
                 data: { url: 'data/population.json' },
                 facet: { column: { field: 'gender', type: 'nominal' } },
@@ -53,7 +53,7 @@ describe('compile/data/facet', function () {
         });
         it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', function () {
             var model = parseFacetModelWithScale({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     values: [
                         { r: 'r1', c: 'c1', a: 'a1', b: 'b1' },
@@ -124,7 +124,7 @@ describe('compile/data/facet', function () {
         });
         it('should calculate column and row sort array', function () {
             var model = parseFacetModelWithScale({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     name: 'a'
                 },
@@ -171,7 +171,7 @@ describe('compile/data/facet', function () {
         });
         it('should calculate column and row sort field', function () {
             var model = parseFacetModelWithScale({
-                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     name: 'a'
                 },
@@ -215,6 +215,29 @@ describe('compile/data/facet', function () {
                     }
                 ]
             });
+        });
+    });
+    describe('hash', function () {
+        it('should generate the correct hash', function () {
+            var model = parseFacetModelWithScale({
+                $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
+                data: {
+                    name: 'a'
+                },
+                facet: {
+                    row: { field: 'r', type: 'nominal', sort: { op: 'median', field: 'b' } },
+                    column: { field: 'c', type: 'nominal', sort: { op: 'median', field: 'a' } }
+                },
+                spec: {
+                    mark: 'rect',
+                    encoding: {
+                        y: { field: 'b', type: 'quantitative' },
+                        x: { field: 'a', type: 'quantitative' }
+                    }
+                }
+            });
+            var facetNode = new FacetNode(null, model, 'facetName', 'dataName');
+            expect(facetNode.hash()).toEqual('Facet c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}} r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}}');
         });
     });
 });

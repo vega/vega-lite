@@ -1,4 +1,6 @@
 import * as vlEncoding from './encoding';
+import { forEach } from './encoding';
+import * as log from './log';
 import { isPrimitiveMark } from './mark';
 import { stack } from './stack';
 import { hash, vals } from './util';
@@ -82,5 +84,37 @@ export function isStacked(spec, config) {
         return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
     }
     return false;
+}
+/**
+ * Takes a spec and returns a list of fields used in encoding
+ */
+export function usedFields(spec) {
+    if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+        return usedFieldsSingle(spec);
+    }
+    if (isLayerSpec(spec)) {
+        return usedFieldsLayered(spec);
+    }
+    if (isUnitSpec(spec)) {
+        return usedFieldsUnit(spec);
+    }
+    throw new Error(log.message.INVALID_SPEC);
+}
+function usedFieldsUnit(spec) {
+    var fields = [];
+    forEach(spec.encoding, function (fieldDef, channel) {
+        fields.push(fieldDef.field);
+    });
+    return fields;
+}
+function usedFieldsLayered(spec) {
+    var fields = [];
+    spec.layer.map(function (subspec) {
+        fields = fields.concat(usedFields(subspec));
+    });
+    return fields;
+}
+function usedFieldsSingle(spec) {
+    return usedFields(spec.spec);
 }
 //# sourceMappingURL=spec.js.map

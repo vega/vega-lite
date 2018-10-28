@@ -33,11 +33,6 @@ export interface TopLevelProperties {
      * __Default value__: `pad`
      */
     autosize?: AutosizeType | AutoSizeParams;
-    /**
-     * A global data store for named datasets. This is a mapping from names to inline datasets.
-     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
-     */
-    datasets?: Datasets;
 }
 export interface BoundsMixins {
     /**

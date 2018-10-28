@@ -1,7 +1,9 @@
 import * as tslib_1 from "tslib";
+import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'json-stable-stringify';
 import { isArray, isNumber, isString, splitAccessPath, stringValue } from 'vega-util';
 import { isLogicalAnd, isLogicalNot, isLogicalOr } from './logical';
+export var deepEqual = deepEqual_;
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -47,7 +49,7 @@ export function hash(a) {
     }
     var str = isString(a) ? a : stableStringify(a);
     // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
-    if (str.length < 100) {
+    if (str.length < 250) {
         return str;
     }
     // from http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
@@ -95,6 +97,13 @@ export function every(arr, f) {
 }
 export function flatten(arrays) {
     return [].concat.apply([], arrays);
+}
+export function fill(val, len) {
+    var arr = new Array(len);
+    for (var i = 0; i < len; ++i) {
+        arr[i] = val;
+    }
+    return arr;
 }
 /**
  * recursively merges src into dest
@@ -170,6 +179,24 @@ export function hasIntersection(a, b) {
     }
     return false;
 }
+export function prefixGenerator(a) {
+    var prefixes = {};
+    var _loop_1 = function (x) {
+        var splitField = splitAccessPath(x);
+        // Wrap every element other than the first in `[]`
+        var wrappedWithAccessors = splitField.map(function (y, i) { return (i === 0 ? y : "[" + y + "]"); });
+        var computedPrefixes = wrappedWithAccessors.map(function (_, i) { return wrappedWithAccessors.slice(0, i + 1).join(''); });
+        computedPrefixes.forEach(function (y) { return (prefixes[y] = true); });
+    };
+    for (var _i = 0, _a = keys(a); _i < _a.length; _i++) {
+        var x = _a[_i];
+        _loop_1(x);
+    }
+    return prefixes;
+}
+export function fieldIntersection(a, b) {
+    return hasIntersection(prefixGenerator(a), prefixGenerator(b));
+}
 export function isNumeric(num) {
     return !isNaN(num);
 }
@@ -196,6 +223,18 @@ export function vals(x) {
         }
     }
     return _vals;
+}
+export function entries(x) {
+    var _entries = [];
+    for (var k in x) {
+        if (x.hasOwnProperty(k)) {
+            _entries.push({
+                key: k,
+                value: x[k]
+            });
+        }
+    }
+    return _entries;
 }
 export function flagKeys(f) {
     return keys(f);
@@ -313,5 +352,16 @@ export function getFirstDefined() {
         }
     }
     return undefined;
+}
+// variable used to generate id
+var idCounter = 42;
+/**
+ * Returns a new random id every time it gets called.
+ *
+ * Has side effect!
+ */
+export function uniqueId(prefix) {
+    var id = ++idCounter;
+    return prefix ? String(prefix) + id : id;
 }
 //# sourceMappingURL=util.js.map

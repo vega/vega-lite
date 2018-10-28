@@ -3,7 +3,7 @@ import { StackOffset } from '../../stack';
 import { StackTransform } from '../../transform';
 import { VgSort, VgTransform } from '../../vega.schema';
 import { UnitModel } from '../unit';
-import { DataFlowNode, TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 export interface StackComponent {
     /**
      * Faceted field.
@@ -40,7 +40,7 @@ export interface StackComponent {
      */
     as: string[];
 }
-export declare class StackNode extends TransformNode {
+export declare class StackNode extends DataFlowNode {
     private _stack;
     clone(): StackNode;
     constructor(parent: DataFlowNode, stack: StackComponent);

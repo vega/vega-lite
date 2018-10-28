@@ -25,10 +25,10 @@ import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelect
                 var drag = browser.execute(brush('drag', i)).value[0];
                 testRender(i + "-0");
                 var translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
-                assert[assertExtent[bind].x[i]](translate.intervals[0].extent[0], drag.intervals[0].extent[0]);
-                assert[assertExtent[bind].x[i]](translate.intervals[0].extent[1], drag.intervals[0].extent[1]);
-                assert[assertExtent[bind].y[i]](translate.intervals[1].extent[0], drag.intervals[1].extent[0]);
-                assert[assertExtent[bind].y[i]](translate.intervals[1].extent[1], drag.intervals[1].extent[1]);
+                assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
+                assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
+                assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
+                assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
                 testRender(i + "-1");
             }
         });
@@ -42,14 +42,14 @@ import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelect
                 var drag = browser.execute(brush('bins', i)).value[0];
                 testRender("bins_" + i + "-0");
                 var translate = browser.execute(brush('bins_translate', i, null, bind === unbound)).value[0];
-                assert[assertExtent[bind].y[i]](translate.intervals[0].extent[0], drag.intervals[0].extent[0]);
-                assert[assertExtent[bind].y[i]](translate.intervals[0].extent[1], drag.intervals[0].extent[1]);
+                assert[assertExtent[bind].y[i]](translate.values[0][0], drag.values[0][0]);
+                assert[assertExtent[bind].y[i]](translate.values[0][1], drag.values[0][1]);
                 testRender("bins_" + i + "-1");
             }
         });
         it('should work with temporal domains', function () {
             var values = tuples.map(function (d) { return (tslib_1.__assign({}, d, { a: new Date(2017, d.a) })); });
-            var toNumber = '[0].intervals[0].extent.map((d) => +d)';
+            var toNumber = '[0].values[0].map((d) => +d)';
             for (var i = 0; i < hits.translate.length; i++) {
                 embed(spec('unit', i, tslib_1.__assign({ type: type }, binding, { encodings: ['x'] }), { values: values, x: { type: 'temporal' } }));
                 var drag = browser.execute(brush('drag', i) + toNumber).value;
@@ -69,10 +69,10 @@ import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelect
                 var drag = browser.execute(brush('drag', i)).value[0];
                 testRender("logpow_" + i + "-0");
                 var translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
-                assert[assertExtent[bind].x[i]](translate.intervals[0].extent[0], drag.intervals[0].extent[0]);
-                assert[assertExtent[bind].x[i]](translate.intervals[0].extent[1], drag.intervals[0].extent[1]);
-                assert[assertExtent[bind].y[i]](translate.intervals[1].extent[0], drag.intervals[1].extent[0]);
-                assert[assertExtent[bind].y[i]](translate.intervals[1].extent[1], drag.intervals[1].extent[1]);
+                assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
+                assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
+                assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
+                assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
                 testRender("logpow_" + i + "-1");
             }
         });
@@ -86,10 +86,10 @@ import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelect
                     var drag = browser.execute(brush('drag', i)).value[0];
                     testRender("ord_" + i + "-0");
                     var translate = browser.execute(brush('translate', i, null, true)).value[0];
-                    assert[assertExtent[bind].x[i]](translate.intervals[0].extent[0], drag.intervals[0].extent[0]);
-                    assert[assertExtent[bind].x[i]](translate.intervals[0].extent[1], drag.intervals[0].extent[1]);
-                    assert[assertExtent[bind].y[i]](translate.intervals[1].extent[0], drag.intervals[1].extent[0]);
-                    assert[assertExtent[bind].y[i]](translate.intervals[1].extent[1], drag.intervals[1].extent[1]);
+                    assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
+                    assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
+                    assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
+                    assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
                     testRender("ord_" + i + "-1");
                 }
             });
@@ -113,10 +113,10 @@ import { bound, brush, compositeTypes, embedFn, hits as hitsMaster, parentSelect
                         var xscale = browser.execute('return view._runtime.scales.x.value.domain()').value;
                         var yscale = browser.execute('return view._runtime.scales.y.value.domain()').value;
                         var drag = browser.execute(brush(specType, i, parent_1)).value[0];
-                        assert[assertExtents[specType].x[i]](drag.intervals[0].extent[0], xscale[0], "iter: " + i);
-                        assert[assertExtents[specType].x[i]](drag.intervals[0].extent[1], xscale[1], "iter: " + i);
-                        assert[assertExtents[specType].y[i]](drag.intervals[1].extent[0], yscale[0], "iter: " + i);
-                        assert[assertExtents[specType].y[i]](drag.intervals[1].extent[1], yscale[1], "iter: " + i);
+                        assert[assertExtents[specType].x[i]](drag.values[0][0], xscale[0], "iter: " + i);
+                        assert[assertExtents[specType].x[i]](drag.values[0][1], xscale[1], "iter: " + i);
+                        assert[assertExtents[specType].y[i]](drag.values[1][0], yscale[0], "iter: " + i);
+                        assert[assertExtents[specType].y[i]](drag.values[1][1], yscale[1], "iter: " + i);
                         testRender(specType + "_" + i);
                     }
                 });

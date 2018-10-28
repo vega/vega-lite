@@ -72,7 +72,7 @@ export function compile(inputSpec, opt) {
         // 5. Optimize the dataflow.  This will modify the data component of the model.
         optimizeDataflow(model.component.data);
         // 6. Assemble: convert model components --> Vega Spec.
-        return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize));
+        return assembleTopLevelModel(model, getTopLevelProperties(inputSpec, config, autosize), inputSpec.datasets, inputSpec.usermeta);
     }
     finally {
         // Reset the singleton logger if a logger is provided
@@ -94,14 +94,14 @@ function getTopLevelProperties(topLevelSpec, config, autosize) {
  * Note: this couldn't be `model.assemble()` since the top-level model
  * needs some special treatment to generate top-level properties.
  */
-function assembleTopLevelModel(model, topLevelProperties) {
+function assembleTopLevelModel(model, topLevelProperties, datasets, usermeta) {
     // TODO: change type to become VgSpec
+    if (datasets === void 0) { datasets = {}; }
     // Config with Vega-Lite only config removed.
     var vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
     var data = [].concat(model.assembleSelectionData([]), 
     // only assemble data in the root
-    assembleRootData(model.component.data, topLevelProperties.datasets || {}));
-    delete topLevelProperties.datasets;
+    assembleRootData(model.component.data, datasets));
     var projections = model.assembleProjections();
     var title = model.assembleTitle();
     var style = model.assembleGroupStyle();
@@ -114,7 +114,7 @@ function assembleTopLevelModel(model, topLevelProperties) {
         }
         return true;
     });
-    var output = tslib_1.__assign({ $schema: 'https://vega.github.io/schema/vega/v4.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title: title } : {}), (style ? { style: style } : {}), { data: data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup(layoutSignals.concat(model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}));
+    var output = tslib_1.__assign({ $schema: 'https://vega.github.io/schema/vega/v4.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title: title } : {}), (style ? { style: style } : {}), { data: data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup(layoutSignals.concat(model.assembleSelectionTopLevelSignals([]))), (vgConfig ? { config: vgConfig } : {}), (usermeta ? { usermeta: usermeta } : {}));
     return {
         spec: output
         // TODO: add warning / errors here

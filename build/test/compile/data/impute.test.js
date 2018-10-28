@@ -1,3 +1,4 @@
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
 import { ImputeNode } from '../../../src/compile/data/impute';
@@ -358,6 +359,20 @@ describe('compile/data/impute', function () {
                     as: 'variety'
                 }
             ]);
+        });
+    });
+    describe('clone', function () {
+        it('should never clone parent', function () {
+            var parent = new DataFlowNode(null);
+            var transform = {
+                impute: 'y',
+                key: 'x',
+                method: 'max',
+                groupby: ['a', 'b'],
+                frame: [-2, 2]
+            };
+            var impute = new ImputeNode(parent, transform);
+            expect(impute.clone().parent).toBeNull();
         });
     });
 });

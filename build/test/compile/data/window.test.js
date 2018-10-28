@@ -1,9 +1,10 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { WindowTransformNode } from '../../../src/compile/data/window';
+import { makeWindowFromFacet } from '../../../src/compile/data/windowfacet';
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 describe('compile/data/window', function () {
     it('creates correct window nodes for calculating sort field of crossed facet', function () {
-        var window = WindowTransformNode.makeFromFacet(null, {
+        var window = makeWindowFromFacet(null, {
             row: { field: 'r', type: 'nominal' },
             column: { field: 'c', type: 'nominal', sort: { op: 'median', field: 'x' } }
         });
@@ -22,9 +23,9 @@ describe('compile/data/window', function () {
         });
     });
     it('does not create any window nodes for crossed facet', function () {
-        assert.deepEqual(WindowTransformNode.makeFromFacet(null, {
+        expect(makeWindowFromFacet(null, {
             row: { field: 'a', type: 'nominal' }
-        }), null);
+        })).toEqual(null);
     });
     it('should return a proper vg transform', function () {
         var transform = {
@@ -45,7 +46,7 @@ describe('compile/data/window', function () {
             frame: [null, 0]
         };
         var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window.assemble(), {
+        expect(window.assemble()).toEqual({
             type: 'window',
             ops: ['row_number'],
             fields: [null],
@@ -79,7 +80,7 @@ describe('compile/data/window', function () {
             frame: [null, 0]
         };
         var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window.assemble(), {
+        expect(window.assemble()).toEqual({
             type: 'window',
             ops: ['row_number'],
             fields: [null],
@@ -117,11 +118,32 @@ describe('compile/data/window', function () {
                     order: 'ascending'
                 }
             ],
-            groupby: ['f'],
+            groupby: ['g'],
             frame: [null, 0]
         };
         var window = new WindowTransformNode(null, transform);
-        assert.deepEqual({ count_field: true, ordered_row_number: true, sum_field: true }, window.producedFields());
+        expect(window.producedFields()).toEqual({ count_field: true, ordered_row_number: true, sum_field: true });
+    });
+    it('should generate the correct dependent fields', function () {
+        var transform = {
+            window: [
+                {
+                    op: 'row_number',
+                    as: 'ordered_row_number'
+                }
+            ],
+            ignorePeers: false,
+            sort: [
+                {
+                    field: 'f',
+                    order: 'ascending'
+                }
+            ],
+            groupby: ['g'],
+            frame: [null, 0]
+        };
+        var window = new WindowTransformNode(null, transform);
+        expect(window.dependentFields()).toEqual({ g: true, f: true });
     });
     it('should clone to an equivalent version', function () {
         var transform = {
@@ -142,7 +164,12 @@ describe('compile/data/window', function () {
             frame: [null, 0]
         };
         var window = new WindowTransformNode(null, transform);
-        assert.deepEqual(window, window.clone());
+        expect(window).toEqual(window.clone());
+    });
+    it('should never clone parent', function () {
+        var parent = new DataFlowNode(null);
+        var window = new WindowTransformNode(parent, null);
+        expect(window.clone().parent).toBeNull();
     });
     it('should generate the correct hash', function () {
         var transform = {
@@ -164,7 +191,7 @@ describe('compile/data/window', function () {
         };
         var window = new WindowTransformNode(null, transform);
         var hash = window.hash();
-        assert.deepEqual(hash, 'WindowTransform 1103660051');
+        expect(hash).toBe('WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}');
     });
 });
 //# sourceMappingURL=window.test.js.map

@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { duplicate, hash } from '../../util';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 /**
  * A class for the sample transform nodes
  */
@@ -12,7 +12,7 @@ var SampleTransformNode = /** @class */ (function (_super) {
         return _this;
     }
     SampleTransformNode.prototype.clone = function () {
-        return new SampleTransformNode(this.parent, duplicate(this.transform));
+        return new SampleTransformNode(null, duplicate(this.transform));
     };
     SampleTransformNode.prototype.hash = function () {
         return "SampleTransform " + hash(this.transform);
@@ -24,6 +24,6 @@ var SampleTransformNode = /** @class */ (function (_super) {
         };
     };
     return SampleTransformNode;
-}(TransformNode));
+}(DataFlowNode));
 export { SampleTransformNode };
 //# sourceMappingURL=sample.js.map

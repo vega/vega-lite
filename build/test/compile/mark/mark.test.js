@@ -19,7 +19,7 @@ describe('Mark', function () {
             it('should have a facet directive and a nested mark group that uses the faceted data.', function () {
                 var markGroup = parseMarkGroup(model)[0];
                 assert.equal(markGroup.name, 'pathgroup');
-                assert.deepEqual(markGroup.from, {
+                expect(markGroup.from).toEqual({
                     facet: {
                         name: 'faceted_path_main',
                         data: 'main',
@@ -29,13 +29,13 @@ describe('Mark', function () {
                 var submarkGroup = markGroup.marks[0];
                 assert.equal(submarkGroup.name, 'marks');
                 assert.equal(submarkGroup.type, 'line');
-                assert.deepEqual(submarkGroup.style, ['line', 'trend']);
+                expect(submarkGroup.style).toEqual(['line', 'trend']);
                 assert.equal(submarkGroup.from.data, 'faceted_path_main');
             });
             it('should not have post encoding transform', function () {
                 var markGroup = parseMarkGroup(model)[0];
                 assert.equal(markGroup.name, 'pathgroup');
-                assert.deepEqual(markGroup.from, {
+                expect(markGroup.from).toEqual({
                     facet: {
                         name: 'faceted_path_main',
                         data: 'main',
@@ -180,7 +180,7 @@ describe('Mark', function () {
                     order: { field: 'year', type: 'temporal' }
                 }
             });
-            assert.deepEqual(getSort(model), {
+            expect(getSort(model)).toEqual({
                 field: ['datum["year"]'],
                 order: ['ascending']
             });
@@ -217,7 +217,7 @@ describe('Mark', function () {
                     }
                 }
             });
-            assert.deepEqual(getSort(model), {
+            expect(getSort(model)).toEqual({
                 field: 'datum["bin_maxbins_10_IMDB_Rating"]',
                 order: 'descending'
             });
@@ -237,7 +237,7 @@ describe('Mark', function () {
                     }
                 }
             });
-            assert.deepEqual(getSort(model), undefined);
+            expect(getSort(model)).toBeUndefined();
         });
     });
     describe('pathGroupingFields()', function () {
@@ -245,28 +245,28 @@ describe('Mark', function () {
             var _a;
             for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                assert.deepEqual(pathGroupingFields('line', (_a = {}, _a[channel] = { field: 'a', type: 'nominal' }, _a)), ['a']);
+                expect(pathGroupingFields('line', (_a = {}, _a[channel] = { field: 'a', type: 'nominal' }, _a))).toEqual(['a']);
             }
         });
         it('should not return a field for size of a trail mark.', function () {
-            assert.deepEqual(pathGroupingFields('trail', { size: { field: 'a', type: 'nominal' } }), []);
+            expect(pathGroupingFields('trail', { size: { field: 'a', type: 'nominal' } })).toEqual([]);
         });
         it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', function () {
             var _a;
             for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                assert.deepEqual(pathGroupingFields('line', (_a = {}, _a[channel] = { aggregate: 'mean', field: 'a', type: 'nominal' }, _a)), [], channel);
+                expect(pathGroupingFields('line', (_a = {}, _a[channel] = { aggregate: 'mean', field: 'a', type: 'nominal' }, _a))).toEqual([]);
             }
         });
         it('should return condition detail fields for color, size, shape', function () {
             var _a;
             for (var _i = 0, _b = [COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
                 var channel = _b[_i];
-                assert.deepEqual(pathGroupingFields('line', (_a = {},
+                expect(pathGroupingFields('line', (_a = {},
                     _a[channel] = {
                         condition: { selection: 'sel', field: 'a', type: 'nominal' }
                     },
-                    _a)), ['a']);
+                    _a))).toEqual(['a']);
             }
         });
         it('should not return errors for all channels', function () {
@@ -282,6 +282,9 @@ describe('Mark', function () {
                 var channel = UNIT_CHANNELS_1[_i];
                 _loop_1(channel);
             }
+        });
+        it('should not include fields from tooltip', function () {
+            expect(pathGroupingFields('line', { tooltip: { field: 'a', type: 'nominal' } })).toEqual([]);
         });
     });
 });

@@ -7,7 +7,7 @@ import { every, some } from '../../src/util';
 import { defaultConfig } from '.././../src/config';
 describe('normalizeErrorBand', function () {
     it('should produce correct layered specs for mean point and vertical error band', function () {
-        assert.deepEqual(normalize({
+        expect(normalize({
             data: {
                 url: 'data/population.json'
             },
@@ -22,7 +22,7 @@ describe('normalizeErrorBand', function () {
                     type: 'quantitative'
                 }
             }
-        }, defaultConfig), {
+        }, defaultConfig)).toEqual({
             data: {
                 url: 'data/population.json'
             },
@@ -70,8 +70,7 @@ describe('normalizeErrorBand', function () {
                         },
                         x: {
                             field: 'age',
-                            type: 'ordinal',
-                            title: 'age'
+                            type: 'ordinal'
                         }
                     }
                 }

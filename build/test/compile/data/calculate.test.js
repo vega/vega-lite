@@ -2,6 +2,7 @@
 import { assert } from 'chai';
 import { CalculateNode } from '../../../src/compile/data/calculate';
 import { parseUnitModel } from '../../util';
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 function assembleFromSortArray(model) {
     var node = CalculateNode.parseAllForSortIndex(null, model);
     return node.assemble();
@@ -50,7 +51,14 @@ describe('compile/data/calculate', function () {
                 }
             });
             var node = CalculateNode.parseAllForSortIndex(null, model);
-            assert.deepEqual(node.hash(), 'Calculate 1019364572');
+            assert.deepEqual(node.hash(), 'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}');
+        });
+    });
+    describe('clone', function () {
+        it('should never clone parent', function () {
+            var parent = new DataFlowNode(null);
+            var calculate = new CalculateNode(parent, { calculate: 'foo', as: 'bar' });
+            expect(calculate.clone().parent).toBeNull();
         });
     });
 });

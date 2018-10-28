@@ -1,7 +1,7 @@
 import { Channel } from './channel';
 import { Config } from './config';
 import { FacetMapping } from './facet';
-import { Field, FieldDef, FieldDefWithCondition, FieldDefWithoutScale, MarkPropFieldDef, OrderFieldDef, PositionFieldDef, TextFieldDef, ValueDef, ValueDefWithCondition } from './fielddef';
+import { Field, FieldDef, FieldDefWithCondition, FieldDefWithoutScale, MarkPropFieldDef, OrderFieldDef, PositionFieldDef, RepeatRef, TextFieldDef, ValueDef, ValueDefWithCondition } from './fielddef';
 import { Mark } from './mark';
 import { AggregatedFieldDef, BinTransform, TimeUnitTransform } from './transform';
 export interface Encoding<F> {
@@ -121,7 +121,7 @@ export interface EncodingWithFacet<F> extends Encoding<F>, FacetMapping<F> {
 }
 export declare function channelHasField<T>(encoding: EncodingWithFacet<T>, channel: Channel): boolean;
 export declare function isAggregate(encoding: EncodingWithFacet<Field>): boolean;
-export declare function extractTransformsFromEncoding(oldEncoding: Encoding<string>, config: Config): {
+export declare function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config): {
     bins: BinTransform[];
     timeUnits: TimeUnitTransform[];
     aggregate: AggregatedFieldDef[];

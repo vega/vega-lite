@@ -3,7 +3,7 @@ import { isFieldDef } from '../../fielddef';
 import { isImputeSequence } from '../../transform';
 import { duplicate, hash } from '../../util';
 import { pathGroupingFields } from '../mark/mark';
-import { TransformNode } from './dataflow';
+import { DataFlowNode } from './dataflow';
 var ImputeNode = /** @class */ (function (_super) {
     tslib_1.__extends(ImputeNode, _super);
     function ImputeNode(parent, transform) {
@@ -12,7 +12,7 @@ var ImputeNode = /** @class */ (function (_super) {
         return _this;
     }
     ImputeNode.prototype.clone = function () {
-        return new ImputeNode(this.parent, duplicate(this.transform));
+        return new ImputeNode(null, duplicate(this.transform));
     };
     ImputeNode.prototype.producedFields = function () {
         var _a;
@@ -70,6 +70,6 @@ var ImputeNode = /** @class */ (function (_super) {
         return [initialImpute].concat(setImputedField);
     };
     return ImputeNode;
-}(TransformNode));
+}(DataFlowNode));
 export { ImputeNode };
 //# sourceMappingURL=impute.js.map

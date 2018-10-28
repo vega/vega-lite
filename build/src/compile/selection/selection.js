@@ -14,6 +14,7 @@ export var STORE = '_store';
 export var TUPLE = '_tuple';
 export var MODIFY = '_modify';
 export var SELECTION_DOMAIN = '_selection_domain_';
+export var VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export function parseUnitSelection(model, selDefs) {
     var selCmpts = {};
     var selectionConfig = model.config.selection;
@@ -95,8 +96,19 @@ export function assembleFacetSignals(model, signals) {
     return signals;
 }
 export function assembleTopLevelSignals(model, signals) {
-    var needsUnit = false;
+    var hasSelections = false;
     forEachSelection(model, function (selCmpt, selCompiler) {
+        var name = selCmpt.name;
+        var store = stringValue(name + STORE);
+        var hasSg = signals.filter(function (s) { return s.name === name; });
+        if (!hasSg.length) {
+            signals.push({
+                name: selCmpt.name,
+                update: VL_SELECTION_RESOLVE + "(" + store +
+                    (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")")
+            });
+        }
+        hasSelections = true;
         if (selCompiler.topLevelSignals) {
             signals = selCompiler.topLevelSignals(model, selCmpt, signals);
         }
@@ -105,9 +117,8 @@ export function assembleTopLevelSignals(model, signals) {
                 signals = txCompiler.topLevelSignals(model, selCmpt, signals);
             }
         });
-        needsUnit = true;
     });
-    if (needsUnit) {
+    if (hasSelections) {
         var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
         if (!hasUnit.length) {
             signals.unshift({
@@ -140,11 +151,12 @@ export function assembleUnitSelectionMarks(model, marks) {
     return marks;
 }
 export function assembleLayerSelectionMarks(model, marks) {
-    model.children.forEach(function (child) {
+    for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
+        var child = _a[_i];
         if (isUnitModel(child)) {
             marks = assembleUnitSelectionMarks(child, marks);
         }
-    });
+    }
     return marks;
 }
 export function selectionPredicate(model, selections, dfnode) {
@@ -166,9 +178,7 @@ export function selectionPredicate(model, selections, dfnode) {
         if (selCmpt.empty !== 'none') {
             stores.push(store);
         }
-        return (compiler(selCmpt.type).predicate +
-            ("(" + store + ", datum") +
-            (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")"));
+        return ("vlSelectionTest(" + store + ", datum" + (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")"));
     }
     var predicateStr = logicalExpr(selections, expr);
     return ((stores.length ? '!(' + stores.map(function (s) { return "length(data(" + s + "))"; }).join(' || ') + ') || ' : '') + ("(" + predicateStr + ")"));
@@ -185,25 +195,34 @@ export function isRawSelectionDomain(domainRaw) {
 export function selectionScaleDomain(model, domainRaw) {
     var selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
     var name = varName(selDomain.selection);
+    var encoding = selDomain.encoding;
+    var field = selDomain.field;
     var selCmpt = model.component.selection && model.component.selection[name];
     if (selCmpt) {
         warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
     }
     else {
         selCmpt = model.getSelectionComponent(name, selDomain.selection);
-        if (!selDomain.encoding && !selDomain.field) {
-            selDomain.field = selCmpt.project[0].field;
+        if (!encoding && !field) {
+            field = selCmpt.project[0].field;
             if (selCmpt.project.length > 1) {
                 warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-                    ("Using \"field\": " + stringValue(selDomain.field) + "."));
+                    ("Using \"field\": " + stringValue(field) + "."));
             }
         }
-        return {
-            signal: compiler(selCmpt.type).scaleDomain +
-                ("(" + stringValue(name + STORE) + ", " + stringValue(selDomain.encoding || null) + ", ") +
-                stringValue(selDomain.field || null) +
-                (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")")
-        };
+        else if (encoding && !field) {
+            var encodings = selCmpt.project.filter(function (p) { return p.channel === encoding; });
+            if (!encodings.length || encodings.length > 1) {
+                field = selCmpt.project[0].field;
+                warn((!encodings.length ? 'No ' : 'Multiple ') +
+                    ("matching " + stringValue(encoding) + " encoding found for selection " + stringValue(selDomain.selection) + ". ") +
+                    ("Using \"field\": " + stringValue(field) + "."));
+            }
+            else {
+                field = encodings[0].field;
+            }
+        }
+        return { signal: accessPathWithDatum(field, name) };
     }
     return { signal: 'null' };
 }

@@ -14,7 +14,7 @@ export declare type ErrorBar = typeof ERRORBAR;
 export declare type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';
 export declare type ErrorBarCenter = 'mean' | 'median';
 export declare type ErrorBarPart = 'ticks' | 'rule';
-export declare const ERRORBAR_PARTS: ErrorBarPart[];
+export declare const ERRORBAR_PARTS: import("vega-lite/build/src/compositemark/errorbar").ErrorBarPart[];
 export declare type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
     /**

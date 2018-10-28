@@ -103,8 +103,7 @@ var UnitModel = /** @class */ (function (_super) {
                 (channel === X && isFieldDef(encoding.x2)) ||
                 (channel === Y && isFieldDef(encoding.y2))) {
                 var axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
-                // We no longer support false in the schema, but we keep false here for backward compatibility.
-                if (axisSpec !== null && axisSpec !== false) {
+                if (axisSpec !== null) {
                     _axis[channel] = tslib_1.__assign({}, axisSpec);
                 }
             }

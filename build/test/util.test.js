@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { flatAccessWithDatum } from '../src/util';
+import { entries, fieldIntersection, fill, flatAccessWithDatum, prefixGenerator, unique, uniqueId } from '../src/util';
 import { accessPathDepth, accessPathWithDatum, deleteNestedProperty, hash, replacePathInField, stringify, varName } from '../src/util';
 describe('util', function () {
     describe('varName', function () {
@@ -119,6 +119,55 @@ describe('util', function () {
         });
         it('should keep \\.', function () {
             assert.equal(replacePathInField('foo\\.bar'), 'foo\\.bar');
+        });
+    });
+    describe('prefixGenerator', function () {
+        it('should return the correct value for simple nested field', function () {
+            expect(prefixGenerator({ 'a.b': true })).toEqual({ a: true, 'a[b]': true });
+        });
+        it('should return the correct value for multilevel nested field', function () {
+            expect(prefixGenerator({ 'a[b].c.d': true })).toEqual({
+                a: true,
+                'a[b]': true,
+                'a[b][c]': true,
+                'a[b][c][d]': true
+            });
+        });
+    });
+    describe('fieldIntersection', function () {
+        it('should return the correct value for 2 stringsets', function () {
+            expect(fieldIntersection({ 'a.b': true, d: true }, { 'a[b]': true })).toBe(true);
+        });
+        it('should return the correct value for 2 nested but different stringsets', function () {
+            expect(fieldIntersection({ 'a.b.c': true }, { 'a.b.d': true })).toBe(true);
+        });
+        it('should return the correct value for 2 nested but different stringsets', function () {
+            expect(fieldIntersection({ 'a.b.c': true }, { 'z.b.c': true })).toBe(false);
+        });
+    });
+    describe('unique', function () {
+        it('should collapse the same numbers', function () {
+            expect(unique([1, 2, 3, 2], function (d) { return d; })).toEqual([1, 2, 3]);
+        });
+        it('should collapse the same items with strings', function () {
+            expect(unique([1, 2, 'a', 'a'], function (d) { return d; })).toEqual([1, 2, 'a']);
+        });
+    });
+    describe('entries', function () {
+        it('should return entries', function () {
+            expect(entries({ a: 12, b: 42 })).toEqual([{ key: 'a', value: 12 }, { key: 'b', value: 42 }]);
+        });
+    });
+    describe('uniqueId', function () {
+        it('should return new id', function () {
+            expect(uniqueId() === uniqueId()).toBeFalsy();
+        });
+    });
+    describe('fill', function () {
+        it('should return array of right length and filled with the right values', function () {
+            var arr = fill(42, 5);
+            expect(arr).toHaveLength(5);
+            expect(arr).toEqual([42, 42, 42, 42, 42]);
         });
     });
 });

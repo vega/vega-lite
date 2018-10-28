@@ -1,3 +1,4 @@
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
 import { AggregateNode } from '../../../src/compile/data/aggregate';
@@ -10,12 +11,17 @@ describe('compile/data/summary', function () {
             var clone = agg.clone();
             assert(clone instanceof AggregateNode);
         });
-        it('should have make a deep copy', function () {
+        it('should have made a deep copy', function () {
             var agg = new AggregateNode(null, { foo: true }, {});
             var clone = agg.clone();
             clone.addDimensions(['bar']);
             assert.deepEqual(clone.dependentFields(), { foo: true, bar: true });
             assert.deepEqual(agg.dependentFields(), { foo: true });
+        });
+        it('should never clone parent', function () {
+            var parent = new DataFlowNode(null);
+            var aggregate = new AggregateNode(parent, {}, {});
+            expect(aggregate.clone().parent).toBeNull();
         });
     });
     describe('hash', function () {
@@ -36,7 +42,7 @@ describe('compile/data/summary', function () {
                 }
             });
             var agg = AggregateNode.makeFromEncoding(null, model);
-            assert.deepEqual(agg.hash(), 'Aggregate -97616516');
+            assert.deepEqual(agg.hash(), 'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"count_*"},"Acceleration":{"sum":"sum_Acceleration"}}}');
         });
     });
     describe('parseUnit', function () {
@@ -148,12 +154,12 @@ describe('compile/data/summary', function () {
                     { op: 'mean', field: 'Displacement', as: 'Displacement_mean' },
                     { op: 'sum', field: 'Acceleration', as: 'Acceleration_sum' }
                 ],
-                groupby: ['Displacement_mean', 'Acceleration_sum']
+                groupby: ['Group']
             };
             var agg = AggregateNode.makeFromTransform(null, t);
             assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
-                groupby: ['Displacement_mean', 'Acceleration_sum'],
+                groupby: ['Group'],
                 ops: ['mean', 'sum'],
                 fields: ['Displacement', 'Acceleration'],
                 as: ['Displacement_mean', 'Acceleration_sum']
@@ -166,12 +172,12 @@ describe('compile/data/summary', function () {
                     { op: 'max', field: 'Displacement', as: 'Displacement_max' },
                     { op: 'sum', field: 'Acceleration', as: 'Acceleration_sum' }
                 ],
-                groupby: ['Displacement_mean', 'Acceleration_sum']
+                groupby: ['Group']
             };
             var agg = AggregateNode.makeFromTransform(null, t);
             assert.deepEqual(agg.assemble(), {
                 type: 'aggregate',
-                groupby: ['Displacement_mean', 'Acceleration_sum'],
+                groupby: ['Group'],
                 ops: ['mean', 'max', 'sum'],
                 fields: ['Displacement', 'Displacement', 'Acceleration'],
                 as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum']
@@ -185,7 +191,7 @@ describe('compile/data/summary', function () {
                     { op: 'mean', field: 'Displacement', as: 'AvgDisplacement' },
                     { op: 'sum', field: 'Acceleration', as: 'Acceleration_sum' }
                 ],
-                groupby: ['AvgDisplacement', 'Acceleration_sum']
+                groupby: ['Group']
             };
             var agg = AggregateNode.makeFromTransform(null, t);
             expect(agg.producedFields()).toEqual({
