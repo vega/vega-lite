@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {numberFormat, timeFormatExpression} from '../../src/compile/common';
+import {mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
 import {vgField} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
@@ -19,7 +18,7 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         false
       );
-      assert.equal(expression, `timeFormat(datum["month_a"], '%b')`);
+      expect(expression).toBe(`timeFormat(datum["month_a"], '%b')`);
     });
 
     it('should get the right time expression for month with shortTimeLabels=false', () => {
@@ -32,7 +31,7 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         false
       );
-      assert.equal(expression, `timeFormat(datum["month_a"], '%B')`);
+      expect(expression).toBe(`timeFormat(datum["month_a"], '%B')`);
     });
 
     it('should get the right time expression for yearmonth with custom format', () => {
@@ -45,7 +44,7 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         false
       );
-      assert.equal(expression, `timeFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`timeFormat(datum["yearmonth_a"], '%Y')`);
     });
 
     it('should get the right time expression for quarter', () => {
@@ -58,7 +57,7 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         false
       );
-      assert.equal(expression, `'Q' + quarter(datum["quarter_a"])`);
+      expect(expression).toBe(`'Q' + quarter(datum["quarter_a"])`);
     });
 
     it('should get the right time expression for yearquarter', () => {
@@ -70,7 +69,7 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         false
       );
-      assert.equal(expression, `'Q' + quarter(datum["data"]) + ' ' + timeFormat(datum["data"], '%y')`);
+      expect(expression).toBe(`'Q' + quarter(datum["data"]) + ' ' + timeFormat(datum["data"], '%y')`);
     });
 
     it('should get the right time expression for yearmonth with custom format and utc scale type', () => {
@@ -83,31 +82,53 @@ describe('Common', () => {
         defaultConfig.timeFormat,
         true
       );
-      assert.equal(expression, `utcFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`utcFormat(datum["yearmonth_a"], '%Y')`);
     });
   });
 
   describe('numberFormat()', () => {
     it('should use number format for quantitative scale', () => {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'}), 'd');
+      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'})).toBe('d');
+    });
+
+    it('should use number format for ordinal and nominal data but don not use config', () => {
+      for (const type of [ORDINAL, NOMINAL]) {
+        expect(numberFormat({field: 'a', type: type}, undefined, {numberFormat: 'd'})).toBeUndefined();
+        expect(numberFormat({field: 'a', type: type}, 'd', {numberFormat: 'd'})).toBe('d');
+      }
     });
 
     it('should support empty number format', () => {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''}), '');
+      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''})).toBe('');
     });
 
     it('should use format if provided', () => {
-      assert.equal(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {}), 'a');
+      expect(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {})).toBe('a');
     });
 
     it('should not use number format for binned quantitative scale', () => {
-      assert.equal(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {}), undefined);
+      expect(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {})).toBeUndefined();
     });
 
-    it('should not use number format for non-quantitative scale', () => {
-      for (const type of [TEMPORAL, NOMINAL, ORDINAL]) {
-        assert.equal(numberFormat({bin: true, field: 'a', type: type}, undefined, {}), undefined);
-      }
+    it('should not use number format for temporal scale', () => {
+      expect(numberFormat({bin: true, field: 'a', type: TEMPORAL}, undefined, {})).toBeUndefined();
+      expect(numberFormat({bin: true, field: 'a', type: ORDINAL, timeUnit: 'month'}, undefined, {})).toBeUndefined();
+    });
+  });
+
+  describe('mergeTitle()', () => {
+    it('should drop falsy title(s) when merged', () => {
+      expect(mergeTitle('title', null)).toBe('title');
+      expect(mergeTitle(null, 'title')).toBe('title');
+      expect(mergeTitle(null, null)).toBe(null);
+    });
+
+    it('should drop one title when both are the same', () => {
+      expect(mergeTitle('title', 'title')).toBe('title');
+    });
+
+    it('should join 2 titles with comma when both titles are not falsy and difference', () => {
+      expect(mergeTitle('title1', 'title2')).toBe('title1, title2');
     });
   });
 });

@@ -10,10 +10,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      },
+      "format": {"type": "json"},
       "transform": [{"type": "identifier", "as": "_vgsid_"}]
     }
   ],
@@ -25,16 +22,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "pts_tuple_fields",
+      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
     },
     {
       "name": "pts_toggle",
@@ -78,7 +80,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -91,7 +93,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlMulti(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "value": 200
             },
             {"value": 50}

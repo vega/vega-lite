@@ -19,7 +19,7 @@
     {
       "name": "source_1",
       "url": "data/londonCentroids.json",
-      "format": {"type": "json", "parse": {"cx": "number", "cy": "number"}},
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "formula",

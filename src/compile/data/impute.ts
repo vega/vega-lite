@@ -5,20 +5,20 @@ import {duplicate, hash} from '../../util';
 import {VgFormulaTransform, VgImputeTransform, VgWindowTransform} from '../../vega.schema';
 import {pathGroupingFields} from '../mark/mark';
 import {UnitModel} from '../unit';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 
-export class ImputeNode extends TransformNode {
+export class ImputeNode extends DataFlowNode {
   public clone() {
-    return new ImputeNode(this.parent, duplicate(this.transform));
+    return new ImputeNode(null, duplicate(this.transform));
+  }
+
+  constructor(parent: DataFlowNode, private readonly transform: ImputeTransform) {
+    super(parent);
   }
 
   public producedFields() {
     // typescript detects true as boolean type
     return {[this.transform.impute]: true as true};
-  }
-
-  constructor(parent: DataFlowNode, private transform: ImputeTransform) {
-    super(parent);
   }
 
   private processSequence(keyvals: ImputeSequence): SignalRef {

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "description": "A line graph showing how the overall average Miles Per Gallon for how the MPG has changed over the years. The red line shows the average, and is layered on top of all the raw data.",
   "data": {"url": "data/cars.json"},
   "transform": [

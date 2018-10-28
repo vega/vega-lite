@@ -8,14 +8,7 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "date": "date",
-          "precipitation": "number",
-          "temp_max": "number"
-        }
-      },
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
           "type": "formula",

@@ -7,14 +7,7 @@
   "style": "cell",
   "data": [
     {"name": "org_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {
@@ -35,13 +28,14 @@
       ],
       "bind": {"input": "select", "options": ["Europe", "Japan", "USA"]}
     },
-    {
-      "name": "org",
-      "update": "data(\"org_store\").length && {Origin: data(\"org_store\")[0].values[0]}"
-    },
+    {"name": "org", "update": "vlSelectionResolve(\"org_store\")"},
     {
       "name": "org_tuple",
-      "update": "org_Origin ? {fields: [\"Origin\"], values: [org_Origin]} : null"
+      "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
+    },
+    {
+      "name": "org_tuple_fields",
+      "update": "[{\"field\":\"Origin\",\"type\":\"E\"}]"
     },
     {
       "name": "org_modify",
@@ -75,7 +69,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"org_store\"))) || (vlSingle(\"org_store\", datum))",
+              "test": "!(length(data(\"org_store\"))) || (vlSelectionTest(\"org_store\", datum))",
               "scale": "color",
               "field": "Cylinders"
             },

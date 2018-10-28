@@ -1,5 +1,5 @@
 import {InlineDataset, isUrlData} from '../../data';
-import {Dict, vals} from '../../util';
+import {Dict} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataComponent} from './';
 import {AggregateNode} from './aggregate';
@@ -22,19 +22,8 @@ import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
 
-/**
- * Print debug information for dataflow tree.
- */
-// tslint:disable-next-line
-export function debug(node: DataFlowNode) {
-  console.log(
-    `${(node.constructor as any).name}${node.debugName ? ` (${node.debugName})` : ''} -> ${node.children.map(c => {
-      return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
-    })}`
-  );
-  console.log(node);
-  node.children.forEach(debug);
-}
+// @ts-ignore
+import {debug, draw} from './debug';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources
@@ -115,12 +104,6 @@ function makeWalkTree(data: VgData[]) {
       node instanceof StackNode
     ) {
       dataSource.transform = dataSource.transform.concat(node.assemble());
-    }
-
-    if (node instanceof AggregateNode) {
-      if (!dataSource.name) {
-        dataSource.name = `data_${datasetIndex++}`;
-      }
     }
 
     if (node instanceof OutputNode) {
@@ -216,16 +199,16 @@ export function assembleFacetData(root: FacetNode): VgData[] {
  * @return modified data array
  */
 export function assembleRootData(dataComponent: DataComponent, datasets: Dict<InlineDataset>): VgData[] {
-  const roots: SourceNode[] = vals(dataComponent.sources);
   const data: VgData[] = [];
 
   // roots.forEach(debug);
+  // draw(roots);
 
   const walkTree = makeWalkTree(data);
 
   let sourceIndex = 0;
 
-  roots.forEach(root => {
+  dataComponent.sources.forEach(root => {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;

@@ -18,13 +18,6 @@
         {"a": "H", "b": "I", "c": 87},
         {"a": "I", "b": "J", "c": 52}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"c\"])", "as": "c"}
-      ]
     }
   ],
   "signals": [
@@ -39,7 +32,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -64,7 +57,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"b\"]", "order": "descending"},
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -82,7 +75,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "fields": ["a", "b"], "sort": true},
+      "domain": {"data": "source_0", "fields": ["a", "b"], "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -90,7 +83,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "c"},
+      "domain": {"data": "source_0", "field": "c"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

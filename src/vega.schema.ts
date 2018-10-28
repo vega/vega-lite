@@ -565,7 +565,7 @@ export interface VgMarkConfig {
    * __Default value:__ (None)
    *
    */
-  fill?: string;
+  fill?: Color;
 
   /**
    * Default Stroke Color.  This has higher precedence than `config.color`
@@ -573,7 +573,7 @@ export interface VgMarkConfig {
    * __Default value:__ (None)
    *
    */
-  stroke?: string;
+  stroke?: Color;
 
   // ---------- Opacity ----------
   /**

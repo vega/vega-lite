@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/sample', () => {
   describe('SampleTransformNode', () => {
@@ -22,6 +22,14 @@ describe('compile/data/sample', () => {
       };
       const sample = new SampleTransformNode(null, transform);
       assert.deepEqual(sample.hash(), 'SampleTransform {"sample":500}');
+    });
+
+    it('should never clone parent', () => {
+      const parent = new DataFlowNode(null);
+      const sample = new SampleTransformNode(parent, {
+        sample: 500
+      });
+      expect(sample.clone().parent).toBeNull();
     });
   });
 });

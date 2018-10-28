@@ -147,8 +147,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -242,8 +242,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -914,8 +914,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -981,8 +981,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -1299,6 +1299,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -1328,7 +1332,7 @@
           ]
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -1689,7 +1693,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "test": {
@@ -1923,7 +1927,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "selection": {
@@ -2044,10 +2048,6 @@
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
           "type": "string"
-        },
-        "datasets": {
-          "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "errorband": {
           "$ref": "#/definitions/ErrorBandConfig",
@@ -2912,6 +2912,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2925,7 +2929,7 @@
           "description": "The line interpolation method for the error band. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -2987,6 +2991,10 @@
     "ErrorBarDef": {
       "additionalProperties": false,
       "properties": {
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2996,7 +3004,7 @@
           "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -3063,7 +3071,7 @@
           "type": "number"
         },
         "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
           "items": {
             "anyOf": [
               {
@@ -3417,7 +3425,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -5458,8 +5466,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5542,8 +5550,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -5880,8 +5888,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5947,8 +5955,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6067,8 +6075,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6162,8 +6170,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6540,8 +6548,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6607,8 +6615,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8147,8 +8155,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8218,8 +8226,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8319,7 +8327,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
-          "description": "The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
+          "description": "The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.",
           "type": "string"
         },
         "timeUnit": {
@@ -8394,8 +8402,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8461,8 +8469,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8693,7 +8701,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -8737,7 +8745,7 @@
           "type": "number"
         },
         "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
           "items": {
             "anyOf": [
               {
@@ -8784,6 +8792,10 @@
           },
           "type": "array"
         },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
+        },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
@@ -8798,7 +8810,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -8885,6 +8897,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
         }
       },
       "required": [
@@ -8896,7 +8912,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -9008,6 +9024,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
         }
       },
       "required": [
@@ -9020,7 +9040,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -9101,6 +9121,10 @@
           },
           "type": "array"
         },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
+        },
         "vconcat": {
           "description": "A list of views that should be concatenated and put into a column.",
           "items": {
@@ -9118,7 +9142,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -9238,6 +9262,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
         }
       },
       "required": [
@@ -9251,7 +9279,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -9334,6 +9362,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
         },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
@@ -9733,8 +9765,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -9796,8 +9828,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",

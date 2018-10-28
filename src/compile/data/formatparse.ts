@@ -1,6 +1,6 @@
 import {isNumber, isString, toSet} from 'vega-util';
 import {AncestorParse} from '.';
-import {isCountingAggregateOp} from '../../aggregate';
+import {isMinMaxOp} from '../../aggregate';
 import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
@@ -9,7 +9,7 @@ import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, keys, removePathFromField, StringSet} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, StringSet} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -54,6 +54,10 @@ export class ParseNode extends DataFlowNode {
     super(parent);
 
     this._parse = parse;
+  }
+
+  public hash() {
+    return `Parse ${hash(this._parse)}`;
   }
 
   /**
@@ -125,10 +129,8 @@ export class ParseNode extends DataFlowNode {
       model.forEachFieldDef(fieldDef => {
         if (isTimeFieldDef(fieldDef)) {
           implicit[fieldDef.field] = 'date';
-        } else if (isNumberFieldDef(fieldDef)) {
-          if (!isCountingAggregateOp(fieldDef.aggregate)) {
-            implicit[fieldDef.field] = 'number';
-          }
+        } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+          implicit[fieldDef.field] = 'number';
         } else if (accessPathDepth(fieldDef.field) > 1) {
           // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
           // (Parsing numbers / dates already flattens numeric and temporal fields.)
@@ -147,7 +149,6 @@ export class ParseNode extends DataFlowNode {
         }
       });
     }
-
     return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
   }
 

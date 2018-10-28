@@ -14,21 +14,19 @@ import {
   TUPLE,
   unitName
 } from './selection';
+import {TUPLE_FIELDS} from './transforms/project';
 import scales from './transforms/scales';
 
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval: SelectionCompiler = {
-  predicate: 'vlInterval',
-  scaleDomain: 'vlIntervalDomain',
-
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
+    const fieldsSg = name + TUPLE + TUPLE_FIELDS;
     const hasScales = scales.has(selCmpt);
     const signals: any[] = [];
-    const intervals: any[] = [];
-    const tupleTriggers: string[] = [];
+    const dataSignals: string[] = [];
     const scaleTriggers: any[] = [];
 
     if (selCmpt.translate && !hasScales) {
@@ -55,9 +53,8 @@ const interval: SelectionCompiler = {
       const scaleType = model.getScaleComponent(channel).get('type');
       const toNum = hasContinuousDomain(scaleType) ? '+' : '';
 
-      signals.push.apply(signals, cs);
-      tupleTriggers.push(dname);
-      intervals.push(`{encoding: ${stringValue(channel)}, ` + `field: ${stringValue(p.field)}, extent: ${dname}}`);
+      signals.push(...cs);
+      dataSignals.push(dname);
 
       scaleTriggers.push({
         scaleName: model.scaleName(channel),
@@ -84,9 +81,11 @@ const interval: SelectionCompiler = {
       name: name + TUPLE,
       on: [
         {
-          events: tupleTriggers.map(t => ({signal: t})),
+          events: dataSignals.map(t => ({signal: t})),
           update:
-            tupleTriggers.join(' && ') + ` ? {unit: ${unitName(model)}, intervals: [${intervals.join(', ')}]} : null`
+            dataSignals.join(' && ') +
+            ` ? {unit: ${unitName(model)}, fields: ${fieldsSg}, ` +
+            `values: [${dataSignals.join(', ')}]} : null`
         }
       ]
     });

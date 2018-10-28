@@ -45,45 +45,45 @@
       ]
     },
     {
-      "name": "row_domain",
-      "source": "source_0",
-      "transform": [{"type": "aggregate", "groupby": ["title"]}]
-    },
-    {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"2\"]",
           "as": "ranges.2"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"1\"]",
           "as": "ranges.1"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"0\"]",
           "as": "ranges.0"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"1\"]",
           "as": "measures.1"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"0\"]",
           "as": "measures.0"
         },
         {
           "type": "formula",
-          "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
+          "expr": "datum[\"markers\"] && datum[\"markers\"][\"0\"]",
           "as": "markers.0"
         }
       ]
+    },
+    {
+      "name": "row_domain",
+      "source": "data_0",
+      "transform": [{"type": "aggregate", "groupby": ["title"]}]
     }
   ],
   "signals": [
@@ -119,47 +119,9 @@
       "type": "group",
       "style": "cell",
       "from": {
-        "facet": {"name": "facet", "data": "source_0", "groupby": ["title"]}
+        "facet": {"name": "facet", "data": "data_0", "groupby": ["title"]}
       },
       "sort": {"field": ["datum[\"title\"]"], "order": ["ascending"]},
-      "data": [
-        {
-          "source": "facet",
-          "name": "data_0",
-          "transform": [
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"2\"])",
-              "as": "ranges.2"
-            },
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"1\"])",
-              "as": "ranges.1"
-            },
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"ranges\"] && datum[\"ranges\"][\"0\"])",
-              "as": "ranges.0"
-            },
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"1\"])",
-              "as": "measures.1"
-            },
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"measures\"] && datum[\"measures\"][\"0\"])",
-              "as": "measures.0"
-            },
-            {
-              "type": "formula",
-              "expr": "toNumber(datum[\"markers\"] && datum[\"markers\"][\"0\"])",
-              "as": "markers.0"
-            }
-          ]
-        }
-      ],
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
@@ -171,7 +133,7 @@
           "name": "child_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "fill": [
@@ -195,7 +157,7 @@
           "name": "child_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "fill": [
@@ -219,7 +181,7 @@
           "name": "child_layer_2_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "fill": [
@@ -243,7 +205,7 @@
           "name": "child_layer_3_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "fill": [
@@ -267,7 +229,7 @@
           "name": "child_layer_4_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "fill": [
@@ -291,7 +253,7 @@
           "name": "child_layer_5_marks",
           "type": "rect",
           "style": ["tick"],
-          "from": {"data": "data_0"},
+          "from": {"data": "facet"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -318,7 +280,7 @@
           "name": "child_x",
           "type": "linear",
           "domain": {
-            "data": "data_0",
+            "data": "facet",
             "fields": [
               "ranges\\.2",
               "ranges\\.1",

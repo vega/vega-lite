@@ -127,19 +127,19 @@ export function formatSignalRef(
 
 /**
  * Returns number format for a fieldDef
- *
- * @param format explicitly specified format
  */
 export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
+  if (isTimeFieldDef(fieldDef)) {
+    return undefined;
+  }
+
+  // Specified format in axis/legend has higher precedence than fieldDef.format
+  if (specifiedFormat) {
+    return specifiedFormat;
+  }
+
   if (fieldDef.type === QUANTITATIVE) {
-    // add number format for quantitative type only
-
-    // Specified format in axis/legend has higher precedence than fieldDef.format
-    if (specifiedFormat) {
-      return specifiedFormat;
-    }
-
-    // TODO: need to make this work correctly for numeric ordinal / nominal type
+    // we only apply the default if the field is quantitative
     return config.numberFormat;
   }
   return undefined;
@@ -222,9 +222,16 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
 }
 
 export function mergeTitle(title1: string, title2: string) {
-  return title1 === title2
-    ? title1 // if title is the same just use one of them
-    : title1 + ', ' + title2; // join title with comma if different
+  if (title1 === title2 || !title2) {
+    // if titles are the same or title2 is falsy
+    return title1;
+  } else if (!title1) {
+    // if title1 is falsy
+    return title2;
+  } else {
+    // join title with comma if they are different
+    return title1 + ', ' + title2;
+  }
 }
 
 export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {

@@ -8,7 +8,7 @@
     {
       "name": "source_0",
       "url": "data/sp500.csv",
-      "format": {"type": "csv", "parse": {"date": "date", "price": "number"}}
+      "format": {"type": "csv", "parse": {"date": "date"}}
     }
   ],
   "signals": [
@@ -20,7 +20,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -186,9 +187,13 @@
           "on": [
             {
               "events": [{"signal": "brush_date"}],
-              "update": "brush_date ? {unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"date\", extent: brush_date}]} : null"
+              "update": "brush_date ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_date]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -421,9 +426,7 @@
       "name": "concat_0_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
-      "domainRaw": {
-        "signal": "vlIntervalDomain(\"brush_store\", null, \"date\")"
-      },
+      "domainRaw": {"signal": "brush[\"date\"]"},
       "range": [0, {"signal": "width"}]
     },
     {

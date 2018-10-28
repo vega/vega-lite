@@ -1,20 +1,23 @@
 import {LogicalOperand} from '../../logical';
 import {expression, Predicate} from '../../predicate';
-import {duplicate, hash, StringSet} from '../../util';
+import {duplicate, StringSet} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
-import {DataFlowNode, TransformNode} from './dataflow';
+import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
 
-export class FilterNode extends TransformNode {
+export class FilterNode extends DataFlowNode {
   private expr: string;
   private _dependentFields: StringSet;
   public clone() {
     return new FilterNode(null, this.model, duplicate(this.filter));
   }
 
-  constructor(parent: DataFlowNode, private readonly model: Model, private filter: LogicalOperand<Predicate>) {
+  constructor(parent: DataFlowNode, private readonly model: Model, private readonly filter: LogicalOperand<Predicate>) {
     super(parent);
+
+    // TODO: refactor this to not take a node and
+    // then add a static function makeFromOperand and make the constructor take only an expression
     this.expr = expression(this.model, this.filter, this);
 
     this._dependentFields = getDependentFields(this.expr);
@@ -32,6 +35,6 @@ export class FilterNode extends TransformNode {
   }
 
   public hash() {
-    return `Filter ${hash(this.filter)}`;
+    return `Filter ${this.expr}`;
   }
 }

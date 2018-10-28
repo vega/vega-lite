@@ -24,7 +24,7 @@ If provided, the `options` argument should be an object with one or more of the 
 
 - [`config`](#config) sets a default config
 - [`logger`](#logging) sets a logger
-- ['fieldTitle`](#field-title) sets a field title formatter
+- [`fieldTitle`](#field-title) sets a field title formatter
 
 {:#config}
 ### Customized Configuration
@@ -51,6 +51,7 @@ interface LoggerInterface {
 }
 ```
 
+{:#field-title}
 ### Customized Field Title Formatter
 
 To customize how Vega-Lite generates axis or legend titles for a [field definition](encoding.html#field-def), you can provide a `titleFormat` function as a property of the `compile` function's `options` argument.

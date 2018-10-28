@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {"url": "data/barley.json"},
   "layer": [
     {
@@ -31,7 +31,7 @@
               "scale": {"zero": false}
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "ordinal", "title": "variety"}
+            "y": {"field": "variety", "type": "ordinal"}
           }
         }
       ]

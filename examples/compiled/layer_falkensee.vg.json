@@ -10,14 +10,6 @@
     {
       "name": "source_0",
       "values": [
-        {"start": "1933", "end": "1945", "event": "Nazi Rule"},
-        {"start": "1948", "end": "1989", "event": "GDR (East Germany)"}
-      ],
-      "format": {}
-    },
-    {
-      "name": "source_1",
-      "values": [
         {"year": "1875", "population": 1309},
         {"year": "1890", "population": 1558},
         {"year": "1910", "population": 4512},
@@ -60,8 +52,32 @@
       "format": {}
     },
     {
+      "name": "source_1",
+      "values": [
+        {"start": "1933", "end": "1945", "event": "Nazi Rule"},
+        {"start": "1948", "end": "1989", "event": "GDR (East Germany)"}
+      ],
+      "format": {}
+    },
+    {
       "name": "data_0",
       "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "timeParse(datum[\"year\"],'%Y')",
+          "as": "year"
+        },
+        {
+          "type": "formula",
+          "as": "year_year",
+          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_1",
       "transform": [
         {
           "type": "formula",
@@ -84,27 +100,6 @@
           "expr": "datetime(year(datum[\"end\"]), 0, 1, 0, 0, 0, 0)"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_1",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "timeParse(datum[\"year\"],'%Y')",
-          "as": "year"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"population\"])",
-          "as": "population"
-        },
-        {
-          "type": "formula",
-          "as": "year_year",
-          "expr": "datetime(year(datum[\"year\"]), 0, 1, 0, 0, 0, 0)"
-        }
-      ]
     }
   ],
   "marks": [
@@ -112,7 +107,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -137,7 +132,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_year\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#333"},
@@ -156,7 +151,7 @@
       "name": "layer_2_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -189,9 +184,9 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "year_start"},
-          {"data": "data_0", "field": "year_end"},
-          {"data": "data_1", "field": "year_year"}
+          {"data": "data_1", "field": "year_start"},
+          {"data": "data_1", "field": "year_end"},
+          {"data": "data_0", "field": "year_year"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -199,13 +194,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "event", "sort": true},
+      "domain": {"data": "data_1", "field": "event", "sort": true},
       "range": "category"
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "population"},
+      "domain": {"data": "data_0", "field": "population"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

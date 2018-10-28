@@ -16,21 +16,10 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSingle(\"tooltip_store\", datum))"}
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "data_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"price\"])", "as": "price"}
+        {
+          "type": "filter",
+          "expr": "(vlSelectionTest(\"tooltip_store\", datum))"
+        }
       ]
     }
   ],
@@ -42,20 +31,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "tooltip",
-      "update": "data(\"tooltip_store\").length && {date: data(\"tooltip_store\")[0].values[0]}"
-    },
+    {"name": "tooltip", "update": "vlSelectionResolve(\"tooltip_store\")"},
     {
       "name": "tooltip_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", encodings: [\"x\"], fields: [\"date\"], values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: tooltip_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "tooltip_tuple_fields",
+      "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"E\"}]"
     },
     {
       "name": "tooltip_modify",
@@ -74,7 +64,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_layer_0_layer_0_main",
-          "data": "data_2",
+          "data": "source_0",
           "groupby": ["symbol"]
         }
       },
@@ -111,11 +101,11 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": [
-            {"test": "(vlSingle(\"tooltip_store\", datum))", "value": 1},
+            {"test": "(vlSelectionTest(\"tooltip_store\", datum))", "value": 1},
             {"value": 0}
           ],
           "fill": [
@@ -188,7 +178,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -217,9 +207,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "date"},
-          {"data": "data_0", "field": "date"},
-          {"data": "data_1", "field": "date"}
+          {"data": "source_0", "field": "date"},
+          {"data": "data_0", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -229,8 +218,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "price"},
-          {"data": "data_1", "field": "price"}
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -242,8 +231,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "symbol"},
-          {"data": "data_1", "field": "symbol"}
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
         ],
         "sort": true
       },

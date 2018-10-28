@@ -6,19 +6,7 @@
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Miles_per_Gallon": "number",
-          "Horsepower": "number",
-          "Displacement": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},
@@ -29,6 +17,11 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
+    {
+      "name": "grid",
+      "update": "{Displacement: grid_Displacement, Acceleration: grid_Acceleration}"
     },
     {"name": "grid_Displacement"},
     {"name": "grid_Acceleration"}
@@ -173,9 +166,13 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}, {encoding: \"y\", field: \"Horsepower\", extent: brush_Horsepower}]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Horsepower]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -473,9 +470,13 @@
                 {"signal": "grid_Displacement"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", intervals: [{encoding: \"x\", field: \"Displacement\", extent: grid_Displacement}, {encoding: \"y\", field: \"Acceleration\", extent: grid_Acceleration}]} : null"
+              "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement, grid_Acceleration]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"Displacement\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -559,7 +560,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "value": "steelblue"
                 },
                 {"value": "red"}
@@ -643,7 +644,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Displacement"},
-      "domainRaw": {"signal": "grid_Displacement"},
+      "domainRaw": {"signal": "grid[\"Displacement\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -652,7 +653,7 @@
       "name": "concat_1_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Acceleration"},
-      "domainRaw": {"signal": "grid_Acceleration"},
+      "domainRaw": {"signal": "grid[\"Acceleration\"]"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

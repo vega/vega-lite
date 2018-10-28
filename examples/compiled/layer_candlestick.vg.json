@@ -219,11 +219,7 @@
           "type": "formula",
           "expr": "timeParse(datum[\"date\"],'%Y-%m-%d')",
           "as": "date"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"low\"])", "as": "low"},
-        {"type": "formula", "expr": "toNumber(datum[\"high\"])", "as": "high"},
-        {"type": "formula", "expr": "toNumber(datum[\"open\"])", "as": "open"},
-        {"type": "formula", "expr": "toNumber(datum[\"close\"])", "as": "close"}
+        }
       ]
     }
   ],

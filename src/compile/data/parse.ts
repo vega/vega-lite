@@ -1,4 +1,4 @@
-import {MAIN, ParseValue, RAW} from '../../data';
+import {Data, isInlineData, isNamedData, isUrlData, MAIN, ParseValue, RAW} from '../../data';
 import * as log from '../../log';
 import {
   isAggregate,
@@ -14,7 +14,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {Dict, keys} from '../../util';
+import {deepEqual, keys, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
@@ -37,18 +37,43 @@ import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
+import {makeWindowFromFacet} from './windowfacet';
 
-function parseRoot(model: Model, sources: Dict<SourceNode>): DataFlowNode {
+export function findSource(data: Data, sources: SourceNode[]) {
+  for (const other of sources) {
+    const otherData = other.data;
+    if (isInlineData(data) && isInlineData(otherData)) {
+      const srcVals = data.values;
+      const otherVals = otherData.values;
+      if (deepEqual(srcVals, otherVals)) {
+        return other;
+      }
+    } else if (isUrlData(data) && isUrlData(otherData)) {
+      if (data.url === otherData.url) {
+        return other;
+      }
+    } else if (isNamedData(data) && isNamedData(otherData)) {
+      if (data.name === otherData.name) {
+        return other;
+      }
+    }
+  }
+  return null;
+}
+
+function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
   if (model.data || !model.parent) {
     // if the model defines a data source or is the root, create a source node
-    const source = new SourceNode(model.data);
-    const hash = source.hash();
-    if (hash in sources) {
-      // use a reference if we already have a source
-      return sources[hash];
+
+    const existingSource = findSource(model.data, sources);
+
+    if (existingSource) {
+      existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
+
+      return existingSource;
     } else {
-      // otherwise add a new one
-      sources[hash] = source;
+      const source = new SourceNode(model.data);
+      sources.push(source);
       return source;
     }
   } else {
@@ -82,10 +107,16 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isTimeUnit(t)) {
       transformNode = head = TimeUnitNode.makeFromTransform(head, t);
       derivedType = 'date';
+
+      // Create parse node because the input to time unit is always date.
+      const parsedAs = ancestorParse.getWithExplicit(t.field);
+      if (parsedAs.value === undefined) {
+        head = new ParseNode(head, {[t.field]: derivedType});
+        ancestorParse.set(t.field, derivedType, false);
+      }
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';
-
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
       }
@@ -267,13 +298,12 @@ export function parseData(model: Model): DataComponent {
     // Derive new aggregate (via window) for facet's sort field
     // TODO: use JoinAggregate once we have it
     // augment data source with new fields for crossed facet
-    head = WindowTransformNode.makeFromFacet(head, model.facet) || head;
+    head = makeWindowFromFacet(head, model.facet) || head;
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
     head = facetRoot;
   }
-
   return {
     ...model.component.data,
     outputNodes,

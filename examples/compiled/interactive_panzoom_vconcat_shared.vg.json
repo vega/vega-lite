@@ -5,18 +5,7 @@
   "width": 200,
   "data": [
     {"name": "region_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Miles_per_Gallon": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},
@@ -27,6 +16,10 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
+    },
+    {
+      "name": "region",
+      "update": "{Horsepower: region_Horsepower, Miles_per_Gallon: region_Miles_per_Gallon}"
     },
     {"name": "region_Horsepower"},
     {"name": "region_Miles_per_Gallon"}
@@ -85,9 +78,13 @@
                 {"signal": "region_Horsepower"},
                 {"signal": "region_Miles_per_Gallon"}
               ],
-              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: region_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: region_Miles_per_Gallon}]} : null"
+              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower, region_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "region_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "region_translate_anchor",
@@ -326,7 +323,7 @@
       "name": "x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
-      "domainRaw": {"signal": "region_Horsepower"},
+      "domainRaw": {"signal": "region[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -335,7 +332,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
-      "domainRaw": {"signal": "region_Miles_per_Gallon"},
+      "domainRaw": {"signal": "region[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true

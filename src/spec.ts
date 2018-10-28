@@ -1,9 +1,10 @@
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet} from './encoding';
+import {Encoding, EncodingWithFacet, forEach} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
+import * as log from './log';
 import {AnyMark, isPrimitiveMark, Mark, MarkDef} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
@@ -11,14 +12,14 @@ import {Resolve} from './resolve';
 import {SelectionDef} from './selection';
 import {stack} from './stack';
 import {TitleParams} from './title';
-import {ConcatLayout, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
+import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
 import {Transform} from './transform';
 import {Dict, hash, vals} from './util';
 
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {
     /**
-     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v2.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
      * @format uri
      */
     $schema?: string;
@@ -27,6 +28,18 @@ export type TopLevel<S extends BaseSpec> = S &
      * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
      */
     config?: Config;
+
+    /**
+     * A global data store for named datasets. This is a mapping from names to inline datasets.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     */
+    datasets?: Datasets;
+
+    /**
+     * Optional metadata that will be passed to Vega.
+     * This object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.
+     */
+    usermeta?: object;
   };
 
 export type BaseSpec = Partial<DataMixins> & {
@@ -135,7 +148,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
   /**
    * Layer or single view specifications to be layered.
    *
-   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
+   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
    */
   layer: (GenericLayerSpec<U> | U)[];
 
@@ -342,4 +355,40 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
     return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
   }
   return false;
+}
+
+/**
+ * Takes a spec and returns a list of fields used in encoding
+ */
+export function usedFields(spec: NormalizedSpec): string[] {
+  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+    return usedFieldsSingle(spec);
+  }
+  if (isLayerSpec(spec)) {
+    return usedFieldsLayered(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return usedFieldsUnit(spec);
+  }
+  throw new Error(log.message.INVALID_SPEC);
+}
+
+function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
+  const fields: string[] = [];
+  forEach(spec.encoding, (fieldDef, channel) => {
+    fields.push(fieldDef.field);
+  });
+  return fields;
+}
+
+function usedFieldsLayered(spec: NormalizedLayerSpec): string[] {
+  let fields: string[] = [];
+  spec.layer.map(subspec => {
+    fields = fields.concat(usedFields(subspec));
+  });
+  return fields;
+}
+
+function usedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
+  return usedFields(spec.spec);
 }

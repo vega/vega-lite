@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
           "type": "formula",
@@ -39,7 +39,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -60,7 +60,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -80,7 +80,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "upper_Miles_per_Gallon"},
@@ -119,6 +119,11 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
+        }
+      },
       "zindex": 1
     },
     {

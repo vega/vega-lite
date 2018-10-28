@@ -12,13 +12,16 @@ describe('interval selections at runtime in unit views', () => {
       embed(spec('unit', i, {type}));
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 2);
-      assert.equal(store[0].intervals[0].encoding, 'x');
-      assert.equal(store[0].intervals[0].field, 'a');
-      assert.equal(store[0].intervals[1].encoding, 'y');
-      assert.equal(store[0].intervals[1].field, 'b');
-      assert.lengthOf(store[0].intervals[0].extent, 2);
-      assert.lengthOf(store[0].intervals[1].extent, 2);
+      assert.lengthOf(store[0].fields, 2);
+      assert.lengthOf(store[0].values, 2);
+      assert.equal(store[0].fields[0].channel, 'x');
+      assert.equal(store[0].fields[0].field, 'a');
+      assert.equal(store[0].fields[0].type, 'R');
+      assert.equal(store[0].fields[1].channel, 'y');
+      assert.equal(store[0].fields[1].field, 'b');
+      assert.equal(store[0].fields[1].type, 'R');
+      assert.lengthOf(store[0].values[0], 2);
+      assert.lengthOf(store[0].values[1], 2);
       testRender(`drag_${i}`);
     }
   });
@@ -28,10 +31,12 @@ describe('interval selections at runtime in unit views', () => {
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 1);
-      assert.equal(store[0].intervals[0].encoding, 'x');
-      assert.equal(store[0].intervals[0].field, 'a');
-      assert.lengthOf(store[0].intervals[0].extent, 2);
+      assert.lengthOf(store[0].fields, 1);
+      assert.lengthOf(store[0].values, 1);
+      assert.equal(store[0].fields[0].channel, 'x');
+      assert.equal(store[0].fields[0].field, 'a');
+      assert.equal(store[0].fields[0].type, 'R');
+      assert.lengthOf(store[0].values[0], 2);
       testRender(`x_${i}`);
     }
 
@@ -39,10 +44,12 @@ describe('interval selections at runtime in unit views', () => {
     for (let i = 0; i < hits.drag.length; i++) {
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 1);
-      assert.equal(store[0].intervals[0].encoding, 'y');
-      assert.equal(store[0].intervals[0].field, 'b');
-      assert.lengthOf(store[0].intervals[0].extent, 2);
+      assert.lengthOf(store[0].fields, 1);
+      assert.lengthOf(store[0].values, 1);
+      assert.equal(store[0].fields[0].channel, 'y');
+      assert.equal(store[0].fields[0].field, 'b');
+      assert.equal(store[0].fields[0].type, 'R');
+      assert.lengthOf(store[0].values[0], 2);
       testRender(`y_${i}`);
     }
   });
@@ -75,9 +82,12 @@ describe('interval selections at runtime in unit views', () => {
     for (let i = 0; i < hits.bins.length; i++) {
       const store = browser.execute(brush('bins', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 1);
-      // length == 2 indicates a quantitative scale was inverted.
-      assert.lengthOf(store[0].intervals[0].extent, 2);
+      assert.lengthOf(store[0].fields, 1);
+      assert.lengthOf(store[0].values, 1);
+      assert.equal(store[0].fields[0].channel, 'y');
+      assert.equal(store[0].fields[0].field, 'b');
+      assert.equal(store[0].fields[0].type, 'R');
+      assert.lengthOf(store[0].values[0], 2);
       testRender(`bins_${i}`);
     }
 
@@ -96,9 +106,16 @@ describe('interval selections at runtime in unit views', () => {
       embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 2);
-      assert.sameMembers(store[0].intervals[0].extent, xextents[i]);
-      assert.sameMembers(store[0].intervals[1].extent, yextents[i]);
+      assert.lengthOf(store[0].fields, 2);
+      assert.lengthOf(store[0].values, 2);
+      assert.equal(store[0].fields[0].channel, 'x');
+      assert.equal(store[0].fields[0].field, 'a');
+      assert.equal(store[0].fields[0].type, 'E');
+      assert.equal(store[0].fields[1].channel, 'y');
+      assert.equal(store[0].fields[1].field, 'b');
+      assert.equal(store[0].fields[1].type, 'E');
+      assert.sameMembers(store[0].values[0], xextents[i]);
+      assert.sameMembers(store[0].values[1], yextents[i]);
       testRender(`ord_${i}`);
     }
 
@@ -108,7 +125,7 @@ describe('interval selections at runtime in unit views', () => {
 
   it('should brush over temporal domains', () => {
     const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
-    const toNumber = '[0].intervals[0].extent.map((d) => +d)';
+    const toNumber = '[0].values[0].map((d) => +d)';
 
     embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [[1485969714000, 1493634384000], [1496346498000, 1504364922000]];
@@ -149,9 +166,10 @@ describe('interval selections at runtime in unit views', () => {
       );
       const store = browser.execute(brush('drag', i)).value;
       assert.lengthOf(store, 1);
-      assert.lengthOf(store[0].intervals, 2);
-      assert.lengthOf(store[0].intervals[0].extent, 2);
-      assert.lengthOf(store[0].intervals[1].extent, 2);
+      assert.lengthOf(store[0].fields, 2);
+      assert.lengthOf(store[0].values, 2);
+      assert.lengthOf(store[0].values[0], 2);
+      assert.lengthOf(store[0].values[1], 2);
       testRender(`logpow_${i}`);
     }
   });

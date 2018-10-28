@@ -40,20 +40,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "pts",
-      "update": "data(\"pts_store\").length && {_vgsid_: data(\"pts_store\")[0].values[0]}"
-    },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"_vgsid_\"], values: [datum[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "pts_tuple_fields",
+      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
     },
     {
       "name": "pts_modify",
@@ -79,7 +80,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",
               "field": "count_*"
             },

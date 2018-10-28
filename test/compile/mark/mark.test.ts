@@ -27,7 +27,7 @@ describe('Mark', () => {
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'pathgroup');
-        assert.deepEqual(markGroup.from, {
+        expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
             data: 'main',
@@ -37,14 +37,14 @@ describe('Mark', () => {
         const submarkGroup = markGroup.marks[0];
         assert.equal(submarkGroup.name, 'marks');
         assert.equal(submarkGroup.type, 'line');
-        assert.deepEqual(submarkGroup.style, ['line', 'trend']);
+        expect(submarkGroup.style).toEqual(['line', 'trend']);
         assert.equal(submarkGroup.from.data, 'faceted_path_main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model)[0];
         assert.equal(markGroup.name, 'pathgroup');
-        assert.deepEqual(markGroup.from, {
+        expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
             data: 'main',
@@ -203,7 +203,7 @@ describe('Mark', () => {
           order: {field: 'year', type: 'temporal'}
         }
       });
-      assert.deepEqual(getSort(model), {
+      expect(getSort(model)).toEqual({
         field: ['datum["year"]'],
         order: ['ascending']
       });
@@ -242,7 +242,7 @@ describe('Mark', () => {
           }
         }
       });
-      assert.deepEqual(getSort(model), {
+      expect(getSort(model)).toEqual({
         field: 'datum["bin_maxbins_10_IMDB_Rating"]',
         order: 'descending'
       });
@@ -263,41 +263,36 @@ describe('Mark', () => {
           }
         }
       });
-      assert.deepEqual(getSort(model), undefined);
+      expect(getSort(model)).toBeUndefined();
     });
   });
 
   describe('pathGroupingFields()', () => {
     it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
-        assert.deepEqual(pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}}), ['a']);
+        expect(pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}})).toEqual(['a']);
       }
     });
 
     it('should not return a field for size of a trail mark.', () => {
-      assert.deepEqual(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}}), []);
+      expect(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
 
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
-        assert.deepEqual(
-          pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}}),
-          [],
-          channel
-        );
+        expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
       }
     });
 
     it('should return condition detail fields for color, size, shape', () => {
       for (const channel of [COLOR, SIZE, OPACITY]) {
-        assert.deepEqual(
+        expect(
           pathGroupingFields('line', {
             [channel]: {
               condition: {selection: 'sel', field: 'a', type: 'nominal'}
             }
-          }),
-          ['a']
-        );
+          })
+        ).toEqual(['a']);
       }
     });
 
@@ -309,6 +304,10 @@ describe('Mark', () => {
           });
         });
       }
+    });
+
+    it('should not include fields from tooltip', () => {
+      expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
   });
 });

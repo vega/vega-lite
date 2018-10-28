@@ -129,6 +129,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "highlight", "update": "vlSelectionResolve(\"highlight_store\")"},
     {
       "name": "highlight_x",
       "value": [],
@@ -242,9 +243,13 @@
       "on": [
         {
           "events": [{"signal": "highlight_col"}, {"signal": "highlight_row"}],
-          "update": "highlight_col && highlight_row ? {unit: \"\", intervals: [{encoding: \"x\", field: \"col\", extent: highlight_col}, {encoding: \"y\", field: \"row\", extent: highlight_row}]} : null"
+          "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col, highlight_row]} : null"
         }
       ]
+    },
+    {
+      "name": "highlight_tuple_fields",
+      "update": "[{\"field\":\"col\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"row\",\"channel\":\"y\",\"type\":\"E\"}]"
     },
     {
       "name": "highlight_translate_anchor",
@@ -378,7 +383,7 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "!(length(data(\"highlight_store\"))) || (vlInterval(\"highlight_store\", datum))",
+              "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
               "value": "rgb(194,81,64)"
             },
             {"value": "rgb(167,165,156)"}

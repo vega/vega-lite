@@ -23,6 +23,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   <span class="octicon octicon-star"></span> [Tooltips for Vega and Vega-Lite](https://github.com/vega/vega-lite-tooltip)
 -   <span class="octicon octicon-star"></span> [Leaflet Tile Map integration for Vega and Vega-Lite](https://github.com/nyurik/leaflet-vega)
 
+
 ## Bindings for Programming Languages
 
 -   <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
@@ -33,9 +34,11 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 -   [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 -   [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
 -   [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
+-   [Hanami](https://github.com/jsa-aerial/hanami)  A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 -   [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 -   [oz](https://github.com/metasoarous/oz) Vega & Vega-Lite based visualization toolkit for Clojure & ClojureScript (fork of Vizard).
 -   [to-vega](https://github.com/gjmcn/to-vega) is a simple JavaScript library for creating Vega-Lite specifications.
+
 
 
 ## Programming / Data Science Environment that supports Vega-Lite
@@ -48,6 +51,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools that use Vega-Lite
 
 -   [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
+-   [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 -   <span class="octicon octicon-star"></span> [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 -   [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
 -   [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).

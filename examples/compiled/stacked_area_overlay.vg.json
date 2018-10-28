@@ -17,11 +17,6 @@
           "as": "gender"
         },
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"people\"])",
-          "as": "people"
-        },
-        {
           "type": "aggregate",
           "groupby": ["age", "gender"],
           "ops": ["sum"],

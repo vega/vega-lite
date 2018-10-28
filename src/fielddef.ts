@@ -291,7 +291,7 @@ export interface OrderFieldDef<F> extends FieldDefWithoutScale<F> {
 
 export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
   /**
-   * The [formatting pattern](https://vega.gFieldDefWithoutBinnedithub.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
+   * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
 }
@@ -723,10 +723,10 @@ export function channelCompatibility(
       return COMPATIBLE;
 
     case 'shape':
-      if (fieldDef.type !== 'nominal' && fieldDef.type !== 'geojson') {
+      if (!contains(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with only either nominal or geojson data'
+          warning: 'Shape channel should be used with only either discrete or geojson data.'
         };
       }
       return COMPATIBLE;

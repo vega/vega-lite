@@ -18,23 +18,6 @@
         {"bin_start": 20, "bin_end": 22, "count": 17},
         {"bin_start": 22, "bin_end": 24, "count": 5}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"bin_start\"])",
-          "as": "bin_start"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"bin_end\"])",
-          "as": "bin_end"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"count\"])", "as": "count"}
-      ]
     }
   ],
   "marks": [
@@ -42,7 +25,7 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -67,14 +50,14 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["bin_start", "bin_end"]},
+      "domain": {"data": "source_0", "fields": ["bin_start", "bin_end"]},
       "range": [0, {"signal": "width"}],
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count"},
+      "domain": {"data": "source_0", "field": "count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

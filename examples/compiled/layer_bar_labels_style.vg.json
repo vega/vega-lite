@@ -9,13 +9,6 @@
     {
       "name": "source_0",
       "values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
     }
   ],
   "signals": [
@@ -30,7 +23,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -54,7 +47,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -78,7 +71,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -86,7 +79,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "a", "sort": true},
+      "domain": {"data": "source_0", "field": "a", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

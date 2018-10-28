@@ -23,7 +23,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -38,20 +38,10 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"precipitation\"])",
-          "as": "precipitation"
-        },
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"temp_max\"])",
-          "as": "temp_max"
-        },
-        {
           "type": "filter",
-          "expr": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))"
+          "expr": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))"
         },
         {
           "type": "formula",
@@ -74,7 +64,9 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
+    {"name": "click", "update": "vlSelectionResolve(\"click_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -158,9 +150,13 @@
           "on": [
             {
               "events": [{"signal": "brush_monthdate_date"}],
-              "update": "brush_monthdate_date ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"monthdate_date\", extent: brush_monthdate_date}]} : null"
+              "update": "brush_monthdate_date ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_monthdate_date]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"monthdate_date\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -308,7 +304,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
                   "scale": "color",
                   "field": "weather"
                 },
@@ -436,10 +432,14 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", encodings: [\"color\"], fields: [\"weather\"], values: [datum[\"weather\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [datum[\"weather\"]]} : null",
               "force": true
             }
           ]
+        },
+        {
+          "name": "click_tuple_fields",
+          "update": "[{\"field\":\"weather\",\"channel\":\"color\",\"type\":\"E\"}]"
         },
         {
           "name": "click_toggle",
@@ -475,7 +475,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"click_store\"))) || (vlMulti(\"click_store\", datum))",
+                  "test": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))",
                   "scale": "color",
                   "field": "weather"
                 },

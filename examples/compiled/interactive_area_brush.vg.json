@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {"type": "json", "parse": {"date": "date", "count": "number"}}
+      "format": {"type": "json", "parse": {"date": "date"}}
     },
     {
       "name": "data_0",
@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "formula",
@@ -61,6 +61,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {
       "name": "brush_x",
       "value": [],
@@ -125,9 +126,13 @@
       "on": [
         {
           "events": [{"signal": "brush_yearmonth_date"}],
-          "update": "brush_yearmonth_date ? {unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"yearmonth_date\", extent: brush_yearmonth_date}]} : null"
+          "update": "brush_yearmonth_date ? {unit: \"layer_0\", fields: brush_tuple_fields, values: [brush_yearmonth_date]} : null"
         }
       ]
+    },
+    {
+      "name": "brush_tuple_fields",
+      "update": "[{\"field\":\"yearmonth_date\",\"channel\":\"x\",\"type\":\"R\"}]"
     },
     {
       "name": "brush_translate_anchor",

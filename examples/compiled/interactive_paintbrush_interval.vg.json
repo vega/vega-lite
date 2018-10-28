@@ -8,14 +8,7 @@
   "style": "cell",
   "data": [
     {"name": "paintbrush_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {
@@ -24,6 +17,10 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
+    },
+    {
+      "name": "paintbrush",
+      "update": "vlSelectionResolve(\"paintbrush_store\")"
     },
     {
       "name": "paintbrush_x",
@@ -147,9 +144,13 @@
             {"signal": "paintbrush_Horsepower"},
             {"signal": "paintbrush_Miles_per_Gallon"}
           ],
-          "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: paintbrush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: paintbrush_Miles_per_Gallon}]} : null"
+          "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower, paintbrush_Miles_per_Gallon]} : null"
         }
       ]
+    },
+    {
+      "name": "paintbrush_tuple_fields",
+      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
     },
     {
       "name": "paintbrush_translate_anchor",
@@ -302,7 +303,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"paintbrush_store\"))) || (vlInterval(\"paintbrush_store\", datum))",
+              "test": "!(length(data(\"paintbrush_store\"))) || (vlSelectionTest(\"paintbrush_store\", datum))",
               "value": 300
             },
             {"value": 50}

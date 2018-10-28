@@ -18,13 +18,6 @@
         {"a": "E", "b": 4},
         {"a": "E", "b": 7}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"b\"])", "as": "b"}
-      ]
     }
   ],
   "signals": [
@@ -39,7 +32,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -70,14 +63,14 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "data_0", "field": "a", "sort": true},
+      "domain": {"data": "source_0", "field": "a", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "source_0", "field": "b"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

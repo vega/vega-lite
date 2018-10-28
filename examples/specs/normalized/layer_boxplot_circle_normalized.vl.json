@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "width": 500,
   "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000 and all raw data on the top.",
   "data": {"url": "data/population.json"},
@@ -39,7 +39,7 @@
               "axis": {"title": "population"}
             },
             "x2": {"field": "lower_box_people", "type": "quantitative"},
-            "y": {"field": "age", "type": "ordinal", "title": "age"}
+            "y": {"field": "age", "type": "ordinal"}
           }
         },
         {
@@ -51,7 +51,7 @@
               "axis": {"title": "population"}
             },
             "x2": {"field": "upper_whisker_people", "type": "quantitative"},
-            "y": {"field": "age", "type": "ordinal", "title": "age"}
+            "y": {"field": "age", "type": "ordinal"}
           }
         },
         {
@@ -63,7 +63,7 @@
               "axis": {"title": "population"}
             },
             "x2": {"field": "upper_box_people", "type": "quantitative"},
-            "y": {"field": "age", "type": "ordinal", "title": "age"}
+            "y": {"field": "age", "type": "ordinal"}
           }
         },
         {
@@ -80,7 +80,7 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "y": {"field": "age", "type": "ordinal", "title": "age"}
+            "y": {"field": "age", "type": "ordinal"}
           }
         }
       ]

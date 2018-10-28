@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {"url": "data/cars.json"},
   "selection": {
     "alex": {
@@ -18,6 +18,6 @@
   "encoding": {
     "y": {"field": "Origin", "type": "ordinal"},
     "x": {"field": "Cylinders", "type": "ordinal"},
-    "color": {"aggregate": "count", "field": "*", "type": "quantitative"}
+    "color": {"aggregate": "count", "type": "quantitative"}
   }
 }

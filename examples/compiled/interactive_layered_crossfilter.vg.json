@@ -20,74 +20,6 @@
       "transform": [
         {
           "type": "extent",
-          "field": "time",
-          "signal": "child_time_layer_0_bin_maxbins_20_time_extent"
-        },
-        {
-          "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child_time_layer_0_bin_maxbins_20_time_bins",
-          "maxbins": 20,
-          "extent": {"signal": "child_time_layer_0_bin_maxbins_20_time_extent"}
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "extent",
-          "field": "time",
-          "signal": "child_time_layer_1_bin_maxbins_20_time_extent"
-        },
-        {
-          "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child_time_layer_1_bin_maxbins_20_time_bins",
-          "maxbins": 20,
-          "extent": {"signal": "child_time_layer_1_bin_maxbins_20_time_extent"}
-        },
-        {
-          "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"distance\"])",
-          "as": "distance"
-        },
-        {"type": "formula", "expr": "toNumber(datum[\"delay\"])", "as": "delay"}
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_2",
-      "transform": [
-        {
-          "type": "extent",
           "field": "distance",
           "signal": "child_distance_layer_0_bin_maxbins_20_distance_extent"
         },
@@ -111,8 +43,8 @@
       ]
     },
     {
-      "name": "data_4",
-      "source": "data_2",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -131,7 +63,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -143,8 +75,8 @@
       ]
     },
     {
-      "name": "data_5",
-      "source": "data_2",
+      "name": "data_2",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -171,8 +103,8 @@
       ]
     },
     {
-      "name": "data_6",
-      "source": "data_2",
+      "name": "data_3",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -191,11 +123,67 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "extent",
+          "field": "time",
+          "signal": "child_time_layer_0_bin_maxbins_20_time_extent"
+        },
+        {
+          "type": "bin",
+          "field": "time",
+          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "signal": "child_time_layer_0_bin_maxbins_20_time_bins",
+          "maxbins": 20,
+          "extent": {"signal": "child_time_layer_0_bin_maxbins_20_time_extent"}
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "ops": ["count"],
+          "fields": ["*"],
+          "as": ["count_*"]
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "extent",
+          "field": "time",
+          "signal": "child_time_layer_1_bin_maxbins_20_time_extent"
+        },
+        {
+          "type": "bin",
+          "field": "time",
+          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "signal": "child_time_layer_1_bin_maxbins_20_time_bins",
+          "maxbins": 20,
+          "extent": {"signal": "child_time_layer_1_bin_maxbins_20_time_extent"}
+        },
+        {
+          "type": "filter",
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
           "ops": ["count"],
           "fields": ["*"],
           "as": ["count_*"]
@@ -210,7 +198,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -291,9 +280,13 @@
           "on": [
             {
               "events": [{"signal": "brush_distance"}],
-              "update": "brush_distance ? {unit: \"child_distance_layer_0\", intervals: [{encoding: \"x\", field: \"distance\", extent: brush_distance}]} : null"
+              "update": "brush_distance ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [brush_distance]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"distance\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -424,7 +417,7 @@
           "name": "child_distance_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": [
@@ -455,7 +448,7 @@
           "name": "child_distance_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -635,9 +628,13 @@
           "on": [
             {
               "events": [{"signal": "brush_delay"}],
-              "update": "brush_delay ? {unit: \"child_delay_layer_0\", intervals: [{encoding: \"x\", field: \"delay\", extent: brush_delay}]} : null"
+              "update": "brush_delay ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [brush_delay]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"delay\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -768,7 +765,7 @@
           "name": "child_delay_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -799,7 +796,7 @@
           "name": "child_delay_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_6"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -979,9 +976,13 @@
           "on": [
             {
               "events": [{"signal": "brush_time"}],
-              "update": "brush_time ? {unit: \"child_time_layer_0\", intervals: [{encoding: \"x\", field: \"time\", extent: brush_time}]} : null"
+              "update": "brush_time ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [brush_time]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"time\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -1112,7 +1113,7 @@
           "name": "child_time_layer_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": [
@@ -1143,7 +1144,7 @@
           "name": "child_time_layer_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_5"},
           "encode": {
             "update": {
               "fill": [
@@ -1258,10 +1259,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_3", "field": "bin_maxbins_20_distance"},
-          {"data": "data_3", "field": "bin_maxbins_20_distance_end"},
-          {"data": "data_4", "field": "bin_maxbins_20_distance"},
-          {"data": "data_4", "field": "bin_maxbins_20_distance_end"}
+          {"data": "data_0", "field": "bin_maxbins_20_distance"},
+          {"data": "data_0", "field": "bin_maxbins_20_distance_end"},
+          {"data": "data_1", "field": "bin_maxbins_20_distance"},
+          {"data": "data_1", "field": "bin_maxbins_20_distance_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -1272,8 +1273,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_3", "field": "count_*"},
-          {"data": "data_4", "field": "count_*"}
+          {"data": "data_0", "field": "count_*"},
+          {"data": "data_1", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -1285,10 +1286,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_5", "field": "bin_maxbins_20_delay"},
-          {"data": "data_5", "field": "bin_maxbins_20_delay_end"},
-          {"data": "data_6", "field": "bin_maxbins_20_delay"},
-          {"data": "data_6", "field": "bin_maxbins_20_delay_end"}
+          {"data": "data_2", "field": "bin_maxbins_20_delay"},
+          {"data": "data_2", "field": "bin_maxbins_20_delay_end"},
+          {"data": "data_3", "field": "bin_maxbins_20_delay"},
+          {"data": "data_3", "field": "bin_maxbins_20_delay_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -1299,8 +1300,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_5", "field": "count_*"},
-          {"data": "data_6", "field": "count_*"}
+          {"data": "data_2", "field": "count_*"},
+          {"data": "data_3", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -1312,10 +1313,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_20_time"},
-          {"data": "data_0", "field": "bin_maxbins_20_time_end"},
-          {"data": "data_1", "field": "bin_maxbins_20_time"},
-          {"data": "data_1", "field": "bin_maxbins_20_time_end"}
+          {"data": "data_4", "field": "bin_maxbins_20_time"},
+          {"data": "data_4", "field": "bin_maxbins_20_time_end"},
+          {"data": "data_5", "field": "bin_maxbins_20_time"},
+          {"data": "data_5", "field": "bin_maxbins_20_time_end"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -1326,8 +1327,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_4", "field": "count_*"},
+          {"data": "data_5", "field": "count_*"}
         ]
       },
       "range": [{"signal": "height"}, 0],

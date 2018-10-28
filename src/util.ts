@@ -1,6 +1,9 @@
+import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
+
+export const deepEqual = deepEqual_;
 
 /**
  * Creates an object composed of the picked object properties.
@@ -50,7 +53,7 @@ export function hash(a: any): string | number {
   const str = isString(a) ? a : stableStringify(a);
 
   // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
-  if (str.length < 100) {
+  if (str.length < 250) {
     return str;
   }
 
@@ -107,6 +110,14 @@ export function flatten(arrays: any[]) {
   return [].concat.apply([], arrays);
 }
 
+export function fill<T>(val: T, len: number) {
+  const arr = new Array<T>(len);
+  for (let i = 0; i < len; ++i) {
+    arr[i] = val;
+  }
+  return arr;
+}
+
 /**
  * recursively merges src into dest
  */
@@ -142,7 +153,7 @@ function deepMerge_(dest: any, src: any) {
 }
 
 export function unique<T>(values: T[], f: (item: T) => string | number): T[] {
-  const results: any[] = [];
+  const results: T[] = [];
   const u = {};
   let v: string | number;
   for (const val of values) {
@@ -185,6 +196,22 @@ export function hasIntersection(a: StringSet, b: StringSet) {
   return false;
 }
 
+export function prefixGenerator(a: StringSet): StringSet {
+  const prefixes = {};
+  for (const x of keys(a)) {
+    const splitField = splitAccessPath(x);
+    // Wrap every element other than the first in `[]`
+    const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
+    const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
+    computedPrefixes.forEach(y => (prefixes[y] = true));
+  }
+  return prefixes;
+}
+
+export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+  return hasIntersection(prefixGenerator(a), prefixGenerator(b));
+}
+
 export function isNumeric(num: string | number) {
   return !isNaN(num as any);
 }
@@ -217,6 +244,19 @@ export function vals<T>(x: {[key: string]: T}): T[] {
     }
   }
   return _vals;
+}
+
+export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
+  const _entries: {key: string; value: T}[] = [];
+  for (const k in x) {
+    if (x.hasOwnProperty(k)) {
+      _entries.push({
+        key: k,
+        value: x[k]
+      });
+    }
+  }
+  return _entries;
 }
 
 // Using mapped type to declare a collect of flags for a string literal type S
@@ -344,4 +384,17 @@ export function getFirstDefined<T>(...args: T[]): T {
     }
   }
   return undefined;
+}
+
+// variable used to generate id
+let idCounter = 42;
+
+/**
+ * Returns a new random id every time it gets called.
+ *
+ * Has side effect!
+ */
+export function uniqueId(prefix?: string) {
+  const id = ++idCounter;
+  return prefix ? String(prefix) + id : id;
 }

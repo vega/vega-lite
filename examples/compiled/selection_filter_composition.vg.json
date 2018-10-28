@@ -5,26 +5,14 @@
   "width": 200,
   "data": [
     {"name": "brush_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Horsepower": "number",
-          "Miles_per_Gallon": "number",
-          "Acceleration": "number",
-          "Displacement": "number"
-        }
-      }
-    },
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum.Weight_in_lbs > 3000) && (!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum)))"
+          "expr": "(datum.Weight_in_lbs > 3000) && (!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum)))"
         }
       ]
     }
@@ -38,7 +26,8 @@
       "on": [
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
-    }
+    },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -180,9 +169,13 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", intervals: [{encoding: \"x\", field: \"Horsepower\", extent: brush_Horsepower}, {encoding: \"y\", field: \"Miles_per_Gallon\", extent: brush_Miles_per_Gallon}]} : null"
+              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",

@@ -9,22 +9,18 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {
-        "type": "csv",
-        "parse": {"date": "date", "precipitation": "number"}
-      },
-      "transform": [
-        {
-          "type": "formula",
-          "as": "month_date",
-          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        }
-      ]
+      "format": {"type": "csv"}
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        },
         {
           "type": "aggregate",
           "groupby": ["month_date"],
@@ -39,8 +35,13 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "as": "month_date",
+          "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
+        },
+        {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))"
+          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "aggregate",
@@ -65,6 +66,7 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
+    {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {
       "name": "brush_x",
       "value": [],
@@ -126,9 +128,13 @@
       "on": [
         {
           "events": [{"signal": "brush_month_date"}],
-          "update": "brush_month_date ? {unit: \"layer_0\", intervals: [{encoding: \"x\", field: \"month_date\", extent: brush_month_date}]} : null"
+          "update": "brush_month_date ? {unit: \"layer_0\", fields: brush_tuple_fields, values: [brush_month_date]} : null"
         }
       ]
+    },
+    {
+      "name": "brush_tuple_fields",
+      "update": "[{\"field\":\"month_date\",\"channel\":\"x\",\"type\":\"E\"}]"
     },
     {
       "name": "brush_translate_anchor",
@@ -264,7 +270,7 @@
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum))",
+              "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
               "value": 1
             },
             {"value": 0.7}

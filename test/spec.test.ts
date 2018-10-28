@@ -5,7 +5,7 @@ import {fieldDefs} from '../src/spec';
 
 describe('fieldDefs()', () => {
   it('should get all non-duplicate fieldDefs from an encoding', () => {
-    const spec: any = {
+    const spec = {
       data: {url: 'data/cars.json'},
       mark: 'point',
       encoding: {
@@ -21,7 +21,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', () => {
-    const layerSpec: any = {
+    const layerSpec = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       layer: [
         {
@@ -53,7 +53,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', () => {
-    const layerSpec: any = {
+    const layerSpec = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       layer: [
         {
@@ -84,7 +84,7 @@ describe('fieldDefs()', () => {
   });
 
   it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', () => {
-    const facetSpec: any = {
+    const facetSpec = {
       data: {url: 'data/movies.json'},
       facet: {row: {field: 'MPAA_Rating', type: 'ordinal'}},
       spec: {

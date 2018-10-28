@@ -9,10 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Year": "date", "Weight_in_lbs": "number"}
-      },
+      "format": {"type": "json", "parse": {"Year": "date"}},
       "transform": [
         {
           "type": "formula",

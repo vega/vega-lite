@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {flatAccessWithDatum} from '../src/util';
+import {entries, fieldIntersection, fill, flatAccessWithDatum, prefixGenerator, unique, uniqueId} from '../src/util';
 
 import {
   accessPathDepth,
@@ -151,6 +151,63 @@ describe('util', () => {
 
     it('should keep \\.', () => {
       assert.equal(replacePathInField('foo\\.bar'), 'foo\\.bar');
+    });
+  });
+
+  describe('prefixGenerator', () => {
+    it('should return the correct value for simple nested field', () => {
+      expect(prefixGenerator({'a.b': true})).toEqual({a: true, 'a[b]': true});
+    });
+
+    it('should return the correct value for multilevel nested field', () => {
+      expect(prefixGenerator({'a[b].c.d': true})).toEqual({
+        a: true,
+        'a[b]': true,
+        'a[b][c]': true,
+        'a[b][c][d]': true
+      });
+    });
+  });
+
+  describe('fieldIntersection', () => {
+    it('should return the correct value for 2 stringsets', () => {
+      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toBe(true);
+    });
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toBe(true);
+    });
+
+    it('should return the correct value for 2 nested but different stringsets', () => {
+      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toBe(false);
+    });
+  });
+
+  describe('unique', () => {
+    it('should collapse the same numbers', () => {
+      expect(unique([1, 2, 3, 2], d => d)).toEqual([1, 2, 3]);
+    });
+    it('should collapse the same items with strings', () => {
+      expect(unique([1, 2, 'a', 'a'], d => d)).toEqual([1, 2, 'a']);
+    });
+  });
+
+  describe('entries', () => {
+    it('should return entries', () => {
+      expect(entries({a: 12, b: 42})).toEqual([{key: 'a', value: 12}, {key: 'b', value: 42}]);
+    });
+  });
+
+  describe('uniqueId', () => {
+    it('should return new id', () => {
+      expect(uniqueId() === uniqueId()).toBeFalsy();
+    });
+  });
+
+  describe('fill', () => {
+    it('should return array of right length and filled with the right values', () => {
+      const arr = fill(42, 5);
+      expect(arr).toHaveLength(5);
+      expect(arr).toEqual([42, 42, 42, 42, 42]);
     });
   });
 });

@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/anscombe.json",
-      "format": {"type": "json", "parse": {"X": "number", "Y": "number"}}
+      "format": {"type": "json"}
     },
     {
       "name": "column_domain",
@@ -39,12 +39,14 @@
       ],
       "bind": {"input": "number"}
     },
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"intersect\")"
+    },
+    {"name": "grid", "update": "{X: grid_X, Y: grid_Y}"},
     {"name": "grid_X"},
     {"name": "grid_Y"},
-    {
-      "name": "xenc",
-      "update": "data(\"xenc_store\").length && {X: data(\"xenc_store\")[0].values[0]}"
-    }
+    {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\")"}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -201,9 +203,13 @@
           "on": [
             {
               "events": [{"signal": "brush_X"}],
-              "update": "brush_X ? {unit: \"child\" + '_' + (facet[\"Series\"]), intervals: [{encoding: \"x\", field: \"X\", extent: brush_X}]} : null"
+              "update": "brush_X ? {unit: \"child\" + '_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
             }
           ]
+        },
+        {
+          "name": "brush_tuple_fields",
+          "update": "[{\"field\":\"X\",\"channel\":\"x\",\"type\":\"R\"}]"
         },
         {
           "name": "brush_translate_anchor",
@@ -321,9 +327,13 @@
           "on": [
             {
               "events": [{"signal": "grid_X"}, {"signal": "grid_Y"}],
-              "update": "grid_X && grid_Y ? {unit: \"child\" + '_' + (facet[\"Series\"]), intervals: [{encoding: \"x\", field: \"X\", extent: grid_X}, {encoding: \"y\", field: \"Y\", extent: grid_Y}]} : null"
+              "update": "grid_X && grid_Y ? {unit: \"child\" + '_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X, grid_Y]} : null"
             }
           ]
+        },
+        {
+          "name": "grid_tuple_fields",
+          "update": "[{\"field\":\"X\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Y\",\"channel\":\"y\",\"type\":\"R\"}]"
         },
         {
           "name": "grid_translate_anchor",
@@ -394,7 +404,11 @@
         },
         {
           "name": "xenc_tuple",
-          "update": "xenc_X ? {fields: [\"X\"], values: [xenc_X]} : null"
+          "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
+        },
+        {
+          "name": "xenc_tuple_fields",
+          "update": "[{\"field\":\"X\",\"type\":\"E\"}]"
         },
         {
           "name": "xenc_modify",
@@ -439,7 +453,7 @@
                   "value": null
                 },
                 {
-                  "test": "!(length(data(\"xenc_store\"))) || (vlSingle(\"xenc_store\", datum))",
+                  "test": "!(length(data(\"xenc_store\"))) || (vlSelectionTest(\"xenc_store\", datum))",
                   "value": "red"
                 },
                 {"value": "steelblue"}
@@ -451,7 +465,7 @@
               "y": {"scale": "y", "field": "Y"},
               "size": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlInterval(\"brush_store\", datum, \"intersect\"))",
+                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"intersect\"))",
                   "value": 250
                 },
                 {"value": 100}
@@ -535,7 +549,7 @@
       "name": "x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "X"},
-      "domainRaw": {"signal": "grid_X"},
+      "domainRaw": {"signal": "grid[\"X\"]"},
       "range": [0, {"signal": "child_width"}],
       "zero": false,
       "nice": true
@@ -544,7 +558,7 @@
       "name": "y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Y"},
-      "domainRaw": {"signal": "grid_Y"},
+      "domainRaw": {"signal": "grid[\"Y\"]"},
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
       "nice": true

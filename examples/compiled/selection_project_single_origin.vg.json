@@ -7,14 +7,7 @@
   "style": "cell",
   "data": [
     {"name": "pts_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {
@@ -24,20 +17,21 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {
-      "name": "pts",
-      "update": "data(\"pts_store\").length && {Origin: data(\"pts_store\")[0].values[0]}"
-    },
+    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", encodings: [], fields: [\"Origin\"], values: [datum[\"Origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"Origin\"]]} : null",
           "force": true
         }
       ]
+    },
+    {
+      "name": "pts_tuple_fields",
+      "update": "[{\"field\":\"Origin\",\"type\":\"E\"}]"
     },
     {
       "name": "pts_modify",
@@ -71,7 +65,7 @@
               "value": null
             },
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -84,14 +78,14 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "value": 200
             },
             {"value": 50}
           ],
           "shape": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSingle(\"pts_store\", datum))",
+              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "shape",
               "field": "Origin"
             },

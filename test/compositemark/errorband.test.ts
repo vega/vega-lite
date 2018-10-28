@@ -9,7 +9,7 @@ import {defaultConfig} from '.././../src/config';
 
 describe('normalizeErrorBand', () => {
   it('should produce correct layered specs for mean point and vertical error band', () => {
-    assert.deepEqual(
+    expect(
       normalize(
         {
           data: {
@@ -28,63 +28,61 @@ describe('normalizeErrorBand', () => {
           }
         },
         defaultConfig
-      ),
-      {
-        data: {
-          url: 'data/population.json'
-        },
-        transform: [
-          {
-            aggregate: [
-              {
-                op: 'stderr',
-                field: 'people',
-                as: 'extent_people'
-              },
-              {
-                op: 'mean',
-                field: 'people',
-                as: 'center_people'
-              }
-            ],
-            groupby: ['age']
-          },
-          {
-            calculate: 'datum.center_people + datum.extent_people',
-            as: 'upper_people'
-          },
-          {
-            calculate: 'datum.center_people - datum.extent_people',
-            as: 'lower_people'
-          }
-        ],
-        layer: [
-          {
-            mark: {
-              opacity: 0.3,
-              type: 'area',
-              style: 'errorband-band'
+      )
+    ).toEqual({
+      data: {
+        url: 'data/population.json'
+      },
+      transform: [
+        {
+          aggregate: [
+            {
+              op: 'stderr',
+              field: 'people',
+              as: 'extent_people'
             },
-            encoding: {
-              y: {
-                field: 'lower_people',
-                type: 'quantitative',
-                title: 'people'
-              },
-              y2: {
-                field: 'upper_people',
-                type: 'quantitative'
-              },
-              x: {
-                field: 'age',
-                type: 'ordinal',
-                title: 'age'
-              }
+            {
+              op: 'mean',
+              field: 'people',
+              as: 'center_people'
+            }
+          ],
+          groupby: ['age']
+        },
+        {
+          calculate: 'datum.center_people + datum.extent_people',
+          as: 'upper_people'
+        },
+        {
+          calculate: 'datum.center_people - datum.extent_people',
+          as: 'lower_people'
+        }
+      ],
+      layer: [
+        {
+          mark: {
+            opacity: 0.3,
+            type: 'area',
+            style: 'errorband-band'
+          },
+          encoding: {
+            y: {
+              field: 'lower_people',
+              type: 'quantitative',
+              title: 'people'
+            },
+            y2: {
+              field: 'upper_people',
+              type: 'quantitative'
+            },
+            x: {
+              field: 'age',
+              type: 'ordinal'
             }
           }
-        ]
-      }
-    );
+        }
+      ]
+    });
   });
 
   it('should produce correct layered specs with rect + rule, instead of area + line, in 1D error band', () => {

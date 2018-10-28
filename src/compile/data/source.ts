@@ -1,5 +1,5 @@
 import {Data, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains, hash} from '../../util';
+import {contains} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
@@ -7,8 +7,6 @@ export class SourceNode extends DataFlowNode {
   private _data: Partial<VgData>;
 
   private _name: string;
-
-  private _hash: string | number;
 
   constructor(data: Data) {
     super(null); // source cannot have parent
@@ -74,21 +72,8 @@ export class SourceNode extends DataFlowNode {
     throw new Error('Source nodes are roots and cannot be removed.');
   }
 
-  /**
-   * Return a unique identifier for this data source.
-   */
-  public hash() {
-    if (isInlineData(this._data)) {
-      if (!this._hash) {
-        // Hashing can be expensive for large inline datasets.
-        this._hash = hash(this._data);
-      }
-      return this._hash;
-    } else if (isUrlData(this._data)) {
-      return hash([this._data.url, this._data.format]);
-    } else {
-      return this._name;
-    }
+  public hash(): string | number {
+    throw new Error('Cannot hash sources');
   }
 
   public assemble(): VgData {
