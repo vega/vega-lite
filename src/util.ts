@@ -398,3 +398,10 @@ export function uniqueId(prefix?: string) {
   const id = ++idCounter;
   return prefix ? String(prefix) + id : id;
 }
+
+/**
+ * Resets the id counter used in uniqueId. This can be useful for testing.
+ */
+export function resetIdCounter() {
+  idCounter = 42;
+}
