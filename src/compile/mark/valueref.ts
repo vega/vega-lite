@@ -2,7 +2,7 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {isArray, isFunction, isString} from 'vega-util';
+import {isArray, isFunction, isString, stringValue} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, X, Y} from '../../channel';
 import {Config} from '../../config';
@@ -210,7 +210,7 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
     const key = title(fieldDef, config, {allowDisabling: false});
     const value = text(fieldDef, config).signal;
     if (!usedKey[key]) {
-      keyValues.push(`"${key}": ${value}`);
+      keyValues.push(`${stringValue(key)}: ${value}`);
     }
     usedKey[key] = true;
   }
