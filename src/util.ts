@@ -121,7 +121,11 @@ export function fill<T>(val: T, len: number) {
 /**
  * Like TS Partial but applies recursively to all properies.
  */
-export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? DeepPartial<U>[]
+    : T[P] extends ReadonlyArray<infer V> ? ReadonlyArray<DeepPartial<V>> : DeepPartial<T[P]>
+};
 
 /**
  * recursively merges src into dest
