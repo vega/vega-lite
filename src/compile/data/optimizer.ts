@@ -3,7 +3,7 @@ import {OptimizerFlags} from './optimizers';
 import {SourceNode} from './source';
 
 /**
- * Abstract base class for BottomUpOptimizer and TopDownOptimizer.
+ * Abstract base class for the Optimizers.
  * Contains only mutation handling logic. Subclasses need to implement iteration logic.
  */
 abstract class OptimizerBase {
@@ -69,8 +69,47 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
   }
 }
 
+export abstract class LevelOrderOptimizer extends OptimizerBase {
+  protected currentLevel: DataFlowNode[] = [];
+  // private hook: typeof BottomUpOptimizer | typeof TopDownOptimizer;
+  public root: SourceNode;
+  public abstract optimize(node: SourceNode): boolean;
+
+  public getTreeHeight(root?: DataFlowNode): number {
+    if (root === undefined) {
+      return 0;
+    } else {
+      return 1 + Math.max(0, ...root.children.map(child => this.getTreeHeight(child)));
+    }
+  }
+  public generateLevel(roots: DataFlowNode[], level: number) {
+    if (roots === []) {
+      return;
+    }
+    if (level === 0) {
+      for (const root of roots) {
+        if (!(root instanceof SourceNode)) {
+          this.currentLevel.push(root);
+        }
+      }
+    } else {
+      for (const root of roots) {
+        this.generateLevel(root.children, level - 1);
+      }
+    }
+  }
+  protected getNodeHeight(node: DataFlowNode, root: SourceNode): number {
+    let level = 0;
+    while (node !== root) {
+      node = node.parent;
+      level++;
+    }
+    return level;
+  }
+  public abstract run(node: DataFlowNode): boolean;
+}
 /**
- * The optimizer function( the "run" method), is invoked on the given node and then continues recursively.
+ * The optimizer function(the "run" method), is invoked on the given node and then continues recursively.
  */
 export abstract class TopDownOptimizer extends OptimizerBase {
   public abstract run(node: DataFlowNode): boolean;

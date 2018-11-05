@@ -2,8 +2,9 @@ import * as log from '../../log';
 import {DataFlowNode} from './dataflow';
 import {checkLinks} from './debug';
 import {DataComponent} from './index';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {BottomUpOptimizer, LevelOrderOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
+import {SourceNode} from './source';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 export const MAX_OPTIMIZATION_RUNS = 5;
@@ -11,7 +12,7 @@ export const MAX_OPTIMIZATION_RUNS = 5;
 /**
  * Return all leaf nodes.
  */
-function getLeaves(roots: DataFlowNode[]) {
+export function getLeaves(roots: DataFlowNode[]) {
   const leaves: DataFlowNode[] = [];
   function append(node: DataFlowNode) {
     if (node.numChildren() === 0) {
@@ -36,8 +37,8 @@ export function isTrue(x: boolean) {
  * @param nodes A set of nodes to optimize.
  * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
  */
-function runOptimizer(
-  optimizer: typeof BottomUpOptimizer | typeof TopDownOptimizer,
+export function runOptimizer(
+  optimizer: typeof BottomUpOptimizer | typeof LevelOrderOptimizer | typeof TopDownOptimizer,
   nodes: DataFlowNode[],
   flag: boolean
 ) {
@@ -45,8 +46,12 @@ function runOptimizer(
     const optimizerInstance = new optimizer();
     if (optimizerInstance instanceof BottomUpOptimizer) {
       return optimizerInstance.optimizeNextFromLeaves(node);
-    } else {
+    } else if (optimizerInstance instanceof TopDownOptimizer) {
       return optimizerInstance.run(node);
+    } else if (optimizerInstance instanceof LevelOrderOptimizer && node instanceof SourceNode) {
+      return optimizerInstance.optimize(node);
+    } else {
+      return false;
     }
   });
   return flags.some(isTrue) || flag;
@@ -70,7 +75,7 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 
   mutatedFlag = runOptimizer(optimizers.RemoveDuplicateTimeUnits, getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(optimizers.MergeParse, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(optimizers.MergeParse, roots, mutatedFlag);
 
   mutatedFlag = runOptimizer(optimizers.MergeAggregateNodes, getLeaves(roots), mutatedFlag);
 

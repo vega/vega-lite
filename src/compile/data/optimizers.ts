@@ -4,9 +4,8 @@ import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {ParseNode} from './formatparse';
-import {FACET_SCALE_PREFIX} from './optimize';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
-import * as optimizers from './optimizers';
+import {FACET_SCALE_PREFIX, runOptimizer} from './optimize';
+import {BottomUpOptimizer, LevelOrderOptimizer, TopDownOptimizer} from './optimizer';
 import {SourceNode} from './source';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
@@ -248,7 +247,6 @@ export class RemoveUnnecessaryNodes extends TopDownOptimizer {
     for (const child of node.children) {
       this.run(child);
     }
-
     return this.mutatedFlag;
   }
 }
@@ -256,11 +254,33 @@ export class RemoveUnnecessaryNodes extends TopDownOptimizer {
 /**
  * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
  */
-export class MergeParse extends BottomUpOptimizer {
-  public run(node: DataFlowNode): optimizers.OptimizerFlags {
+export class MergeParse extends LevelOrderOptimizer {
+  private optimizeLevel(root: SourceNode, level: number) {
+    this.currentLevel = [];
+    this.generateLevel([root], level);
+    for (const node of this.currentLevel) {
+      if (node !== undefined && this.getNodeHeight(node, root) === level) {
+        if (this.run(node)) {
+          runOptimizer(MoveParseUp, [root], this.mutatedFlag);
+        }
+      }
+    }
+  }
+  public optimize(node: SourceNode): boolean {
+    const height = this.getTreeHeight(node);
+    console.log(height);
+    this.root = node;
+    for (let level = 0; level < height; level++) {
+      this.optimizeLevel(node, level);
+    }
+    return this.mutatedFlag;
+  }
+  public run(node: DataFlowNode): boolean {
     const parent = node.parent;
+    if (parent === undefined) {
+      return this.mutatedFlag;
+    }
     const parseChildren = parent.children.filter((x): x is ParseNode => x instanceof ParseNode);
-
     if (parseChildren.length > 1) {
       const commonParse = {};
       for (const parseNode of parseChildren) {
@@ -288,13 +308,15 @@ export class MergeParse extends BottomUpOptimizer {
         }
       }
     }
-    this.setContinue();
-    return this.flags;
+    return this.mutatedFlag;
   }
+  // public runHook(optimizerHelper: typeof BottomUpOptimizer | typeof TopDownOptimizer) {
+  //   runOptimizer(optimizerHelper, getLeaves([this.root]), this.mutatedFlag);
+  // }
 }
 
 export class MergeAggregateNodes extends BottomUpOptimizer {
-  public run(node: DataFlowNode): optimizers.OptimizerFlags {
+  public run(node: DataFlowNode): OptimizerFlags {
     const parent = node.parent;
     const aggChildren = parent.children.filter((x): x is AggregateNode => x instanceof AggregateNode);
 

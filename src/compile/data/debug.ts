@@ -55,10 +55,16 @@ export function draw(roots: DataFlowNode[]) {
 
   function collector(node: DataFlowNode) {
     const id = getId(node);
+    let hash: string;
+    try {
+      hash = String(node.hash()).replace(/"/g, '');
+    } catch (err) {
+      hash = 'SourceNode';
+    }
     nodes[id] = {
       id: id,
       label: getLabel(node),
-      hash: String(node.hash()).replace(/"/g, '')
+      hash
     };
 
     for (const child of node.children) {
