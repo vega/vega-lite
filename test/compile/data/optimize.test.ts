@@ -3,7 +3,8 @@
 import {assert} from 'chai';
 import {DataFlowNode, OutputNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
-import {MergeParse, optimizeDataflow} from '../../../src/compile/data/optimize';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
+import {MergeParse} from '../../../src/compile/data/optimizers';
 import {SourceNode} from '../../../src/compile/data/source';
 
 describe('compile/data/optimize', () => {
