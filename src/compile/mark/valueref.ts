@@ -4,7 +4,7 @@
 import {SignalRef} from 'vega';
 import {isArray, isFunction, isString, stringValue} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, X, Y, X2, Y2} from '../../channel';
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {
   ChannelDef,
