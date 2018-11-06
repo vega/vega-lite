@@ -72,7 +72,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "fill": [
             {
               "test": "datum[\"max_Horsepower\"] === null || isNaN(datum[\"max_Horsepower\"])",
@@ -115,7 +114,6 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "fill": [
             {
               "test": "datum[\"min_Horsepower\"] === null || isNaN(datum[\"min_Horsepower\"])",

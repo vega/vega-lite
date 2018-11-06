@@ -121,7 +121,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "fill": [
             {
               "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
@@ -146,7 +145,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "fill": [
             {
               "test": "datum[\"upper_whisker_people\"] === null || isNaN(datum[\"upper_whisker_people\"])",

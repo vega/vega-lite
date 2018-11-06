@@ -112,7 +112,6 @@
           "from": {"data": "source_0"},
           "encode": {
             "update": {
-              "opacity": {"value": 1},
               "stroke": [
                 {
                   "test": "datum[\"mean\"] === null || isNaN(datum[\"mean\"])",

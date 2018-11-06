@@ -48,7 +48,6 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "fill": [
             {
               "test": "datum[\"x\"] === null || isNaN(datum[\"x\"]) || datum[\"y\"] === null || isNaN(datum[\"y\"])",

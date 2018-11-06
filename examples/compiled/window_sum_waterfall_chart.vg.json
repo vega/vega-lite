@@ -120,7 +120,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 1},
           "strokeWidth": {"value": 2},
           "stroke": [
             {
