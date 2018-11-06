@@ -119,7 +119,7 @@ export function fill<T>(val: T, len: number) {
 }
 
 /**
- * Like TS Partial but applies recursively to all properies.
+ * Like TS Partial but applies recursively to all properties.
  */
 export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
 
