@@ -25,6 +25,10 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
+  if (specifiedOpacity === 1.0) {
+    markDef.opacity = undefined;
+  }
+
   const specifiedFilled = markDef.filled;
   if (specifiedFilled === undefined) {
     markDef.filled = filled(markDef, config);

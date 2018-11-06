@@ -1,6 +1,8 @@
+import {getMarkConfig} from './compile/common';
 import {Config} from './config';
-import {extractTransformsFromEncoding} from './encoding';
+import {extractTransformsFromEncoding, isAggregate} from './encoding';
 import * as log from './log';
+import {CIRCLE, isMarkDef, Mark, MarkDef, POINT, SQUARE, TICK} from './mark';
 import {
   GenericHConcatSpec,
   GenericVConcatSpec,
@@ -17,6 +19,7 @@ import {
   NormalizedSpec,
   NormalizedUnitSpec
 } from './spec';
+import {contains, getFirstDefined} from './util';
 
 /**
  * Modifies spec extracting transformations from encoding and moving them to the transforms array
@@ -42,11 +45,25 @@ export function extractTransforms(spec: NormalizedSpec, config: Config): Normali
 
 function extractTransformsUnit(spec: NormalizedUnitSpec, config: Config): NormalizedUnitSpec {
   if (spec.encoding) {
+    // Hack to make sure that opacity of marks used with aggregates still defaults to 1
+    const mark: Mark | MarkDef = spec.mark;
+    const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
+    if (contains([POINT, TICK, CIRCLE, SQUARE], markDef.type)) {
+      if (isAggregate(spec.encoding)) {
+        const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
+        if (specifiedOpacity === undefined && isAggregate(spec.encoding)) {
+          markDef.opacity = 1;
+          spec.mark = markDef;
+        }
+      }
+    }
+
     const {encoding: oldEncoding, transform: oldTransforms, ...rest} = spec;
     const {bins, timeUnits, aggregate, groupby, encoding: newEncoding} = extractTransformsFromEncoding(
       oldEncoding,
       config
     );
+
     return {
       transform: [
         ...(oldTransforms ? oldTransforms : []),

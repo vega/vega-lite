@@ -24,7 +24,6 @@ describe('extractTransforms()', () => {
     'concat_marginal_histograms.vl.json': true,
     'errorbar_aggregate.vl.json': true,
     'errorbar_horizontal_aggregate.vl.json': true,
-    'facet_independent_scale_layer_broken.vl.json': true,
     'hconcat_weather.vl.json': true,
     'histogram.vl.json': true,
     'histogram_bin_change.vl.json': true,
@@ -58,8 +57,6 @@ describe('extractTransforms()', () => {
     'layer_point_errorbar_2d_horizontal_iqr.vl.json': true,
     'layer_point_errorbar_2d_horizontal_stdev.vl.json': true,
     'layer_point_errorbar_2d_vertical.vl.json': true,
-    'layer_point_errorbar_ci.vl.json': true,
-    'layer_point_errorbar_stdev.vl.json': true,
     'layer_precipitation_mean.vl.json': true,
     'layer_rect_extent.vl.json': true,
     'layer_scatter_errorband_1D_stdev_global_mean.vl.json': true,
@@ -70,12 +67,9 @@ describe('extractTransforms()', () => {
     'line_month.vl.json': true,
     'line_quarter_legend.vl.json': true,
     'line_timeunit_transform.vl.json': true,
-    'point_2d_aggregate.vl.json': true,
     'point_binned_color.vl.json': true,
     'point_binned_opacity.vl.json': true,
     'point_binned_size.vl.json': true,
-    'point_dot_timeunit_color.vl.json': true,
-    'point_aggregate_detail.vl.json': true,
     'rect_binned_heatmap.vl.json': true,
     'rect_heatmap_weather.vl.json': true,
     'rect_lasagna_future.vl.json': true,
@@ -161,7 +155,10 @@ describe('extractTransforms()', () => {
               groupby: ['Worldwide_Gross']
             }
           ],
-          mark: 'point',
+          mark: {
+            type: 'point',
+            opacity: 1
+          },
           width: 123,
           height: 234,
           encoding: {
