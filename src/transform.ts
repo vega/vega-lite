@@ -20,7 +20,8 @@ export interface FilterTransform {
    * [`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),
    * [`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),
    * [`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),
-   * or [`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate).
+   * [`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),
+   * or [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),
    *
    * 3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)
    *
