@@ -12,7 +12,6 @@ import {
   FieldDefWithCondition,
   FieldDefWithoutScale,
   getFieldDef,
-  getGuide,
   hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
@@ -34,7 +33,7 @@ import {Mark} from './mark';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
-import {keys, some} from './util';
+import {keys, some, StringSet} from './util';
 
 export interface Encoding<F> {
   /**
@@ -198,7 +197,11 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
     return false;
   });
 }
-export function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config) {
+export function extractTransformsFromEncoding(
+  oldEncoding: Encoding<string | RepeatRef>,
+  config: Config,
+  channelsWithTitles: StringSet = {}
+) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
@@ -209,9 +212,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
     // Extract potential embedded transformations along with remaining properties
     const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
     if (isFieldDef(channelDef) && (aggOp || timeUnit || bin)) {
-      const guide = getGuide(channelDef);
-      const isTitleDefined = guide && guide.title;
       const newField = vgField(channelDef, {forAs: true});
+      const isTitleDefined = channelsWithTitles[channel];
+
       const newChannelDef = {
         // Only add title if it doesn't exist
         ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),

@@ -392,3 +392,33 @@ function usedFieldsLayered(spec: NormalizedLayerSpec): string[] {
 function usedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
   return usedFields(spec.spec);
 }
+
+export function forEachUnitSpec(spec: NormalizedSpec, f: (unitSpec: NormalizedUnitSpec) => void): void {
+  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+    forEachUnitSpec(spec.spec, f);
+    return;
+  }
+  if (isLayerSpec(spec)) {
+    spec.layer.map(subspec => {
+      forEachUnitSpec(subspec, f);
+    });
+    return;
+  }
+  if (isUnitSpec(spec)) {
+    f(spec);
+    return;
+  }
+  if (isVConcatSpec(spec)) {
+    spec.vconcat.map(subspec => {
+      forEachUnitSpec(subspec, f);
+    });
+    return;
+  }
+  if (isHConcatSpec(spec)) {
+    spec.hconcat.map(subspec => {
+      forEachUnitSpec(subspec, f);
+    });
+    return;
+  }
+  throw new Error(log.message.INVALID_SPEC);
+}
