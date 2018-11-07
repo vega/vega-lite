@@ -99,7 +99,7 @@ function defaultType(
 
         const {domain = undefined, range = undefined} = specifiedScale || {};
         if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
-          // If there are piecewise domain and range specified, use lineaer as default color scale as sequential does not support piecewise domain
+          // If there are piecewise domain and range specified, use linear as default color scale as sequential does not support piecewise domain
           return 'linear';
         }
 

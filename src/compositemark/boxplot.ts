@@ -42,7 +42,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
   /**
    * The extent of the whiskers. Available options include:
    * - `"min-max"`: min and max are the lower and upper whiskers respectively.
-   * - A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
+   * - A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.
    *
    * __Default value:__ `1.5`.
    */
