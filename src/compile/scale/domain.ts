@@ -370,7 +370,7 @@ export function domainSort(
 
 /**
  * Determine if a scale can use unaggregated domain.
- * @return {Boolean} Returns true if all of the following conditions applies:
+ * @return {Boolean} Returns true if all of the following conditions apply:
  * 1. `scale.domain` is `unaggregated`
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
