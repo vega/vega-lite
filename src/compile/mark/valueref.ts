@@ -4,7 +4,7 @@
 import {SignalRef} from 'vega';
 import {isArray, isFunction, isString, stringValue} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, X, Y} from '../../channel';
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {
   ChannelDef,
@@ -169,7 +169,8 @@ export function midPoint(
         if (isFieldDef(channel2Def)) {
           return binMidSignal(scaleName, channelDef, channel2Def);
         } else {
-          log.warn(log.message.channelRequiredForBinned(channel));
+          const channel2 = channel === X ? X2 : Y2;
+          log.warn(log.message.channelRequiredForBinned(channel2));
         }
       }
 
