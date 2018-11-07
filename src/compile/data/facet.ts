@@ -60,8 +60,8 @@ export class FacetNode extends DataFlowNode {
           ...(isSortField(sort)
             ? {sortField: sort}
             : isArray(sort)
-              ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
-              : {})
+            ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
+            : {})
         };
       }
     }

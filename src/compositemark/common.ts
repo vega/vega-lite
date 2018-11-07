@@ -43,8 +43,8 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       axis && axis.title !== undefined
         ? undefined
         : continuousAxisChannelDef.title !== undefined
-          ? continuousAxisChannelDef.title
-          : continuousAxisChannelDef.field;
+        ? continuousAxisChannelDef.title
+        : continuousAxisChannelDef.field;
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
