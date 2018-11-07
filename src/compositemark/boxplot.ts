@@ -52,8 +52,8 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
 export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
   BoxPlotConfig & {
     /**
-     * Type of the mark.  For box plots, this should always be `"box-plot"`.
-     * [boxplot](https://vega.github.io/vega-lite/docs/compositemark.html#boxplot)
+     * Type of the mark.  For box plots, this should always be `"boxplot"`.
+     * [boxplot](https://vega.github.io/vega-lite/docs/boxplot.html)
      */
     type: BoxPlot;
 
