@@ -37,7 +37,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
-  // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
+  // For binned field with continuous scale, use a special scale so we can override the mark props and labels
   switch (channel) {
     case COLOR:
       const scale = model.scaleName(COLOR);
