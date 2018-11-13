@@ -128,7 +128,7 @@ function extractTransformsHConcat(
   };
 }
 
-export function getChannelsWithTitles(spec: NormalizedSpec): StringSet {
+function getChannelsWithTitles(spec: NormalizedSpec): StringSet {
   const channelsWithTitles: StringSet = {};
   forEachUnitSpec(spec, (unit: NormalizedUnitSpec) => {
     if (unit.encoding) {
