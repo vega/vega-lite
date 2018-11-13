@@ -82,6 +82,24 @@ export class MoveParseUp extends BottomUpOptimizer {
   }
 }
 
+export class RemoveUnnecessaryParse extends BottomUpOptimizer {
+  public run(node: DataFlowNode): OptimizerFlags {
+    const parent = node.parent;
+    if (node instanceof ParseNode && !(parent instanceof AggregateNode)) {
+      for (const parsedField of keys(node.producedFields())) {
+        for (const prodField of keys(parent.producedFields())) {
+          if (parsedField.indexOf(prodField) === 0) {
+            this.setMutated();
+            delete node.parse[parsedField];
+          }
+        }
+      }
+    }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
 /**
  * Merge identical nodes at forks by comparing hashes.
  *
