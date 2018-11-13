@@ -45,17 +45,9 @@ export function extractTransforms(spec: NormalizedSpec, config: Config): Normali
 
 function extractTransformsUnit(spec: NormalizedUnitSpec, config: Config): NormalizedUnitSpec {
   if (spec.encoding) {
-    // Hack to make sure that opacity of marks used with aggregates still defaults to 1
-    const mark: Mark | MarkDef = spec.mark;
-    const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
-    if (contains([POINT, TICK, CIRCLE, SQUARE], markDef.type)) {
-      if (isAggregate(spec.encoding)) {
-        const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
-        if (specifiedOpacity === undefined && isAggregate(spec.encoding)) {
-          markDef.opacity = 1;
-          spec.mark = markDef;
-        }
-      }
+    // Hack to ensure that mark's used with aggregates keep opacity of 1.0
+    if (isAggregate(spec.encoding)) {
+      spec.mark = setMarkOpacityForAggregate(spec.mark, config);
     }
 
     const {encoding: oldEncoding, transform: oldTransforms, ...rest} = spec;
@@ -124,4 +116,17 @@ function extractTransformsHConcat(
       return extractTransforms(subspec, config) as any;
     })
   };
+}
+
+/* Set mark's opacity to 1.0 if its opacity is not set elsewhere */
+function setMarkOpacityForAggregate(mark: Mark | MarkDef, config: Config): Mark | MarkDef {
+  const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
+  if (contains([POINT, TICK, CIRCLE, SQUARE], markDef.type)) {
+    const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
+    if (specifiedOpacity === undefined) {
+      markDef.opacity = 1;
+      return markDef;
+    }
+  }
+  return mark;
 }
