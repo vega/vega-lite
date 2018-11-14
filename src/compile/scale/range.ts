@@ -1,5 +1,19 @@
 import {isArray, isNumber} from 'vega-util';
-import {Channel, COLOR, FILL, OPACITY, SCALE_CHANNELS, ScaleChannel, SHAPE, SIZE, STROKE, X, Y} from '../../channel';
+import {
+  Channel,
+  COLOR,
+  FILL,
+  FILLOPACITY,
+  OPACITY,
+  SCALE_CHANNELS,
+  ScaleChannel,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEOPACITY,
+  X,
+  Y
+} from '../../channel';
 import {Config, isVgScheme} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -258,6 +272,8 @@ export function defaultRange(
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }

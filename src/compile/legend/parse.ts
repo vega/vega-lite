@@ -1,5 +1,15 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {COLOR, FILL, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE} from '../../channel';
+import {
+  COLOR,
+  FILL,
+  FILLOPACITY,
+  NonPositionScaleChannel,
+  OPACITY,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEOPACITY
+} from '../../channel';
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
@@ -23,7 +33,7 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce((legendComponent, channel) => {
+  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce((legendComponent, channel) => {
     const def = encoding[channel];
     if (
       model.legend(channel) &&
@@ -47,6 +57,8 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
     case SIZE:
     case SHAPE:
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
       return {[channel]: model.scaleName(channel)};
   }
 }

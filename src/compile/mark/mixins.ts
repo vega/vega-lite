@@ -123,6 +123,8 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...wrapInvalid(model, 'fill', fill),
     ...wrapInvalid(model, 'stroke', stroke),
     ...nonPosition('opacity', model),
+    ...nonPosition('fillOpacity', model),
+    ...nonPosition('strokeOpacity', model),
     ...tooltip(model),
     ...text(model, 'href')
   };

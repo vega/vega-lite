@@ -711,6 +711,8 @@ export function channelCompatibility(
       return COMPATIBLE;
 
     case 'opacity':
+    case 'fillOpacity':
+    case 'strokeOpacity':
     case 'size':
     case 'x2':
     case 'y2':
