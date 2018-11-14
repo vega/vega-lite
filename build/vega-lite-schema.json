@@ -2433,6 +2433,17 @@
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
         },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
         "href": {
           "anyOf": [
             {
@@ -2473,7 +2484,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2524,6 +2535,17 @@
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
         },
         "text": {
           "anyOf": [
@@ -2672,6 +2694,17 @@
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
         },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
         "href": {
           "anyOf": [
             {
@@ -2712,7 +2745,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2767,6 +2800,17 @@
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
         },
         "text": {
           "anyOf": [
@@ -5405,6 +5449,9 @@
         "fill": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fillOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -5415,6 +5462,9 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "stroke": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeOpacity": {
           "$ref": "#/definitions/ResolveMode"
         }
       },
@@ -7639,6 +7689,9 @@
         "fill": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fillOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -7649,6 +7702,9 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "stroke": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeOpacity": {
           "$ref": "#/definitions/ResolveMode"
         },
         "x": {
@@ -7811,6 +7867,8 @@
         "stroke",
         "size",
         "shape",
+        "fillOpacity",
+        "strokeOpacity",
         "opacity",
         "text",
         "tooltip",

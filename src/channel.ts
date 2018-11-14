@@ -38,6 +38,9 @@ export namespace Channel {
   export const SHAPE: 'shape' = 'shape';
   export const SIZE: 'size' = 'size';
   export const OPACITY: 'opacity' = 'opacity';
+  export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
+
+  export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
 
   // Non-scale channel
   export const TEXT: 'text' = 'text';
@@ -74,6 +77,10 @@ export const DETAIL = Channel.DETAIL;
 export const KEY = Channel.KEY;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
+export const FILLOPACITY = Channel.FILLOPACITY;
+
+export const STROKEOPACITY = Channel.STROKEOPACITY;
+
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
@@ -104,6 +111,8 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
 
   // other non-position with scale
   opacity: 1,
+  fillOpacity: 1,
+  strokeOpacity: 1,
   size: 1,
   shape: 1,
 
@@ -165,6 +174,8 @@ export type SingleDefChannel =
   | 'stroke'
   | 'size'
   | 'shape'
+  | 'fillOpacity'
+  | 'strokeOpacity'
   | 'opacity'
   | 'text'
   | 'tooltip'
@@ -275,6 +286,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case HREF:
     case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
     case ROW:
     case COLUMN:
       return {
@@ -345,6 +358,8 @@ export function rangeType(channel: Channel): RangeType {
     case Y:
     case SIZE:
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
     // X2 and Y2 use X and Y scales, so they similarly have continuous range.
     case X2:
     case Y2:

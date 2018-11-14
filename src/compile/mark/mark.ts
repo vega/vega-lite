@@ -211,6 +211,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'fill':
       case 'stroke':
       case 'opacity':
+      case 'fillOpacity':
+      case 'strokeOpacity':
         // TODO strokeDashOffset:
 
         /* tslint:enable */

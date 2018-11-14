@@ -1,6 +1,6 @@
 import {isBoolean, isObject} from 'vega-util';
 import {BinParams} from './bin';
-import {Channel, COLOR, COLUMN, FILL, OPACITY, ROW, SHAPE, SIZE, STROKE} from './channel';
+import {Channel, COLOR, COLUMN, FILL, FILLOPACITY, OPACITY, ROW, SHAPE, SIZE, STROKE, STROKEOPACITY} from './channel';
 import {keys, varName} from './util';
 
 export interface BaseBin {
@@ -99,6 +99,8 @@ export function autoMaxBins(channel: Channel): number {
     case FILL:
     case STROKE:
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
     // Facets and Size shouldn't have too many bins
     // We choose 6 like shape to simplify the rule
     case SHAPE:
