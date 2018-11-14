@@ -8,7 +8,8 @@ import {
   SHAPE,
   SIZE,
   STROKE,
-  STROKEOPACITY
+  STROKEOPACITY,
+  STROKEWIDTH
 } from '../../channel';
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
@@ -33,17 +34,20 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce((legendComponent, channel) => {
-    const def = encoding[channel];
-    if (
-      model.legend(channel) &&
-      model.getScaleComponent(channel) &&
-      !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))
-    ) {
-      legendComponent[channel] = parseLegendForChannel(model, channel);
-    }
-    return legendComponent;
-  }, {});
+  return [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(
+    (legendComponent, channel) => {
+      const def = encoding[channel];
+      if (
+        model.legend(channel) &&
+        model.getScaleComponent(channel) &&
+        !(isFieldDef(def) && (channel === SHAPE && def.type === GEOJSON))
+      ) {
+        legendComponent[channel] = parseLegendForChannel(model, channel);
+      }
+      return legendComponent;
+    },
+    {}
+  );
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
@@ -54,6 +58,7 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
       return model.markDef.filled ? {fill: scale} : {stroke: scale};
     case FILL:
     case STROKE:
+    case STROKEWIDTH:
     case SIZE:
     case SHAPE:
     case OPACITY:

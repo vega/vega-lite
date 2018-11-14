@@ -42,6 +42,8 @@ export namespace Channel {
 
   export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
 
+  export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
+
   // Non-scale channel
   export const TEXT: 'text' = 'text';
   export const ORDER: 'order' = 'order';
@@ -81,6 +83,8 @@ export const FILLOPACITY = Channel.FILLOPACITY;
 
 export const STROKEOPACITY = Channel.STROKEOPACITY;
 
+export const STROKEWIDTH = Channel.STROKEWIDTH;
+
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
@@ -113,6 +117,8 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   opacity: 1,
   fillOpacity: 1,
   strokeOpacity: 1,
+
+  strokeWidth: 1,
   size: 1,
   shape: 1,
 
@@ -172,6 +178,7 @@ export type SingleDefChannel =
   | 'color'
   | 'fill'
   | 'stroke'
+  | 'strokeWidth'
   | 'size'
   | 'shape'
   | 'fillOpacity'
@@ -288,6 +295,7 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:
+    case STROKEWIDTH:
     case ROW:
     case COLUMN:
       return {
@@ -357,6 +365,7 @@ export function rangeType(channel: Channel): RangeType {
     case X:
     case Y:
     case SIZE:
+    case STROKEWIDTH:
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:
