@@ -11,6 +11,7 @@ import {
   SIZE,
   STROKE,
   STROKEOPACITY,
+  STROKEWIDTH,
   X,
   Y
 } from '../../channel';
@@ -247,6 +248,9 @@ export function defaultRange(
       } else {
         return [rangeMin, rangeMax];
       }
+    case STROKEWIDTH:
+      // TODO: support custom rangeMin, rangeMax
+      return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];
     case SHAPE:
       return 'symbol';
     case COLOR:

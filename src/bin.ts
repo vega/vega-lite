@@ -1,6 +1,19 @@
 import {isBoolean, isObject} from 'vega-util';
 import {BinParams} from './bin';
-import {Channel, COLOR, COLUMN, FILL, FILLOPACITY, OPACITY, ROW, SHAPE, SIZE, STROKE, STROKEOPACITY} from './channel';
+import {
+  Channel,
+  COLOR,
+  COLUMN,
+  FILL,
+  FILLOPACITY,
+  OPACITY,
+  ROW,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEOPACITY,
+  STROKEWIDTH
+} from './channel';
 import {keys, varName} from './util';
 
 export interface BaseBin {
@@ -98,6 +111,7 @@ export function autoMaxBins(channel: Channel): number {
     case COLOR:
     case FILL:
     case STROKE:
+    case STROKEWIDTH:
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:

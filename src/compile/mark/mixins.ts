@@ -125,6 +125,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('opacity', model),
     ...nonPosition('fillOpacity', model),
     ...nonPosition('strokeOpacity', model),
+    ...nonPosition('strokeWidth', model),
     ...tooltip(model),
     ...text(model, 'href')
   };
