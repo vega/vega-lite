@@ -490,6 +490,10 @@
   "Interactive": {
     "Interactive Charts": [
       {
+        "name": "interactive_bar_select_highlight",
+        "title": "Bar chart with highlighting on hover and selection on click"
+      },
+      {
         "name": "point_href",
         "title": "Scatterplot with External Links and Tooltips"
       },
