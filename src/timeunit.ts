@@ -252,8 +252,8 @@ export function convert(unit: TimeUnit, date: Date): Date {
   const isUTC = isUTCTimeUnit(unit);
   const result: Date = isUTC
     ? // start with uniform date
-      new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
-    : new Date(0, 0, 1, 0, 0, 0, 0);
+      new Date(Date.UTC(1972, 0, 1, 0, 0, 0, 0)) // 1972 is the first leap year after 1970, the start of unix time
+    : new Date(1972, 0, 1, 0, 0, 0, 0);
   for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
       switch (timeUnitPart) {

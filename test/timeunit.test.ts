@@ -128,32 +128,32 @@ describe('timeUnit', () => {
 
     it('should return expected result for QUARTERMONTH', () => {
       const date: Date = convert(TimeUnit.QUARTERMONTH, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 11, 1, 0, 0, 0, 0).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 11, 1, 0, 0, 0, 0).getTime());
     });
 
     it('should return expected result for HOURSMINUTES', () => {
       const date: Date = convert(TimeUnit.HOURSMINUTES, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 0, 1, 23, 59, 0, 0).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 0, 1, 23, 59, 0, 0).getTime());
     });
 
     it('should return expected result for HOURSMINUTESSECONDS', () => {
       const date: Date = convert(TimeUnit.HOURSMINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 0, 1, 23, 59, 59, 0).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 0, 1, 23, 59, 59, 0).getTime());
     });
 
     it('should return expected result for MINUTESSECONDS', () => {
       const date: Date = convert(TimeUnit.MINUTESSECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 0, 1, 0, 59, 59, 0).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 0, 1, 0, 59, 59, 0).getTime());
     });
 
     it('should return expected result for SECONDSMILLISECONDS', () => {
       const date: Date = convert(TimeUnit.SECONDSMILLISECONDS, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 0, 1, 0, 0, 59, 999).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 0, 1, 0, 0, 59, 999).getTime());
     });
 
     it('should return expected result for MONTHDATE', () => {
       const date: Date = convert(TimeUnit.MONTHDATE, new Date(2000, 11, 2, 23, 59, 59, 999));
-      expect(date.getTime()).toBe(new Date(1900, 11, 2, 0, 0, 0, 0).getTime());
+      expect(date.getTime()).toBe(new Date(1972, 11, 2, 0, 0, 0, 0).getTime());
     });
   });
 
