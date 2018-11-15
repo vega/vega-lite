@@ -58,10 +58,17 @@ If the data is not aggregated yet, Vega-Lite will aggregate the data based on th
 {:#pre-aggregated-usage}
 ## Using Error Band to Visualize Aggregated Data
 
+1) __Data is aggregated with low and high values of the error band__
+
 If the data is already pre-aggregated with low and high values of the error band, you can directly specify `x` and `x2` (or `y` and `y2`) to use error band as a ranged mark.
 
 <div class="vl-example" data-name="layer_line_errorband_pre_aggregated"></div>
 
+2) __Data is aggregated with center and error value(s)__
+
+If the data is already pre-aggregated with center and error values of the error band, you can use `x/y`, `x/yError`, and `x/yError2` as defined in [Error Bar](errorbar.html#pre-aggregated-usage)
+
+**Note** in this case, `extent` is not necessary and will be ignored.
 
 ## Dimension
 Vega-Lite supports both 1D and 2D error bands:

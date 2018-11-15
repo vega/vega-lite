@@ -1,8 +1,19 @@
 import {assert} from 'chai';
-import {isScaleChannel, rangeType, SINGLE_DEF_CHANNELS, supportMark, X2, Y2} from '../src/channel';
+import {
+  isScaleChannel,
+  rangeType,
+  SINGLE_DEF_CHANNELS,
+  supportMark,
+  X2,
+  XERROR,
+  XERROR2,
+  Y2,
+  YERROR,
+  YERROR2
+} from '../src/channel';
 import {CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
 import {Encoding} from '../src/encoding';
-import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
+import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../src/mark';
 import {without} from '../src/util';
 
 describe('channel', () => {
@@ -25,6 +36,10 @@ describe('channel', () => {
         without(UNIT_CHANNELS, [
           'x2',
           'y2',
+          'xError',
+          'yError',
+          'xError2',
+          'yError2',
           'latitude',
           'longitude',
           'latitude2',
@@ -162,6 +177,102 @@ describe('channel', () => {
       assert.isFalse(supportMark(encoding, Y2, POINT));
       assert.isFalse(supportMark(encoding, Y2, SQUARE));
       assert.isFalse(supportMark(encoding, Y2, TICK));
+    });
+
+    it('should not support xError for all marks', () => {
+      const encoding: Encoding<string> = {
+        y: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        x: {
+          field: 'count',
+          type: 'quantitative'
+        },
+        xError: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+
+      for (const m of PRIMITIVE_MARKS) {
+        assert.isFalse(supportMark(encoding, XERROR, m));
+      }
+    });
+
+    it('should not support xError2 for all marks', () => {
+      const encoding: Encoding<string> = {
+        y: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        x: {
+          field: 'count',
+          type: 'quantitative'
+        },
+        xError2: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+
+      for (const m of PRIMITIVE_MARKS) {
+        assert.isFalse(supportMark(encoding, XERROR2, m));
+      }
+    });
+
+    it('should not support yError for all marks', () => {
+      const encoding: Encoding<string> = {
+        x: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        y: {
+          field: 'count',
+          type: 'quantitative'
+        },
+        yError: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+
+      for (const m of PRIMITIVE_MARKS) {
+        assert.isFalse(supportMark(encoding, YERROR, m));
+      }
+    });
+
+    it('should not support yError2 for all marks', () => {
+      const encoding: Encoding<string> = {
+        x: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        y: {
+          field: 'count',
+          type: 'quantitative'
+        },
+        yError2: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+
+      for (const m of PRIMITIVE_MARKS) {
+        assert.isFalse(supportMark(encoding, YERROR2, m));
+      }
     });
   });
 });

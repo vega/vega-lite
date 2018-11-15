@@ -60,6 +60,26 @@ export interface Encoding<F> {
   y2?: FieldDefWithoutScale<F> | ValueDef;
 
   /**
+   * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  xError?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  xError2?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  yError?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  yError2?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
    * Longitude position of geographically projected marks.
    */
   longitude?: FieldDefWithoutScale<F>;
