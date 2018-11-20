@@ -18,7 +18,7 @@
         {
           "type": "aggregate",
           "groupby": ["month_date"],
-          "ops": ["mean", "op"],
+          "ops": ["mean", "mean"],
           "fields": ["precipitation", "temp_max"],
           "as": ["mean_precipitation", "mean_temp_max"]
         }

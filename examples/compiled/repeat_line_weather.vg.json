@@ -18,7 +18,7 @@
         {
           "type": "aggregate",
           "groupby": ["month_date", "location"],
-          "ops": ["mean", "op", "op"],
+          "ops": ["mean", "mean", "mean"],
           "fields": ["temp_max", "precipitation", "wind"],
           "as": ["mean_temp_max", "mean_precipitation", "mean_wind"]
         }
