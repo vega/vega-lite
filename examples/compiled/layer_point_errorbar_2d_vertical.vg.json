@@ -5,18 +5,24 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["variety"],
           "ops": ["stderr", "mean"],
           "fields": ["yield", "yield"],
-          "as": ["extent_yield", "center_yield"]
-        },
+          "as": ["extent_yield", "mean_yield"]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "formula",
           "expr": "datum.center_yield + datum.extent_yield",
@@ -26,19 +32,6 @@
           "type": "formula",
           "expr": "datum.center_yield - datum.extent_yield",
           "as": "lower_yield"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["variety"],
-          "ops": ["mean"],
-          "fields": ["yield"],
-          "as": ["mean_yield"]
         }
       ]
     }
@@ -78,7 +71,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -104,7 +97,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "variety"},
-          {"data": "data_1", "field": "variety"}
+          {"data": "source_0", "field": "variety"}
         ],
         "sort": true
       },
@@ -119,7 +112,7 @@
         "fields": [
           {"data": "data_0", "field": "lower_yield"},
           {"data": "data_0", "field": "upper_yield"},
-          {"data": "data_1", "field": "mean_yield"}
+          {"data": "source_0", "field": "mean_yield"}
         ]
       },
       "range": [{"signal": "height"}, 0],
