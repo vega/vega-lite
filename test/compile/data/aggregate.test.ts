@@ -53,7 +53,7 @@ describe('compile/data/summary', () => {
       const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual(
         agg.hash(),
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"count_*"},"Acceleration":{"sum":"sum_Acceleration"}}}'
+        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
       );
     });
   });

@@ -4,7 +4,7 @@ import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, differ, duplicate, hash, keys, replacePathInField, StringSet} from '../../util';
+import {Dict, duplicate, hash, isEqual, keys, replacePathInField, StringSet} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from '../unit';
@@ -24,7 +24,7 @@ function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldD
   return dims;
 }
 
-function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<Dict<string>>) {
+function mergeMeasures(parentMeasures: Dict<Dict<StringSet>>, childMeasures: Dict<Dict<StringSet>>) {
   for (const field in childMeasures) {
     if (childMeasures.hasOwnProperty(field)) {
       // when we merge a measure, we either have to add an aggregation operator or even a new field
@@ -33,7 +33,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<D
         if (ops.hasOwnProperty(op)) {
           if (field in parentMeasures) {
             // add operator to existing measure field
-            parentMeasures[field][op] = ops[op];
+            parentMeasures[field][op] = {...parentMeasures[field][op], ...ops[op]};
           } else {
             parentMeasures[field] = {[op]: ops[op]};
           }
@@ -55,7 +55,7 @@ export class AggregateNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private dimensions: StringSet,
-    private measures: Dict<{[key in AggregateOp]?: string}>
+    private measures: Dict<{[key in AggregateOp]?: StringSet}>
   ) {
     super(parent);
   }
@@ -81,15 +81,15 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = vgField(fieldDef, {forAs: true});
+          meas['*']['count'] = {[vgField(fieldDef, {forAs: true})]: true};
         } else {
           meas[field] = meas[field] || {};
-          meas[field][aggregate] = vgField(fieldDef, {forAs: true});
+          meas[field][aggregate] = {[vgField(fieldDef, {forAs: true})]: true};
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-            meas[field]['min'] = vgField({field, aggregate: 'min'}, {forAs: true});
-            meas[field]['max'] = vgField({field, aggregate: 'max'}, {forAs: true});
+            meas[field]['min'] = {[vgField({field, aggregate: 'min'}, {forAs: true})]: true};
+            meas[field]['max'] = {[vgField({field, aggregate: 'max'}, {forAs: true})]: true};
           }
         }
       } else {
@@ -113,10 +113,10 @@ export class AggregateNode extends DataFlowNode {
       if (op) {
         if (op === 'count') {
           meas['*'] = meas['*'] || {};
-          meas['*']['count'] = as || vgField(s, {forAs: true});
+          meas['*']['count'] = {[as]: true} || {[vgField(s, {forAs: true})]: true};
         } else {
           meas[field] = meas[field] || {};
-          meas[field][op] = as || vgField(s, {forAs: true});
+          meas[field][op] = {[as]: true} || {[vgField(s, {forAs: true})]: true};
         }
       }
     }
@@ -133,7 +133,7 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public merge(other: AggregateNode): boolean {
-    if (!differ(this.dimensions, other.dimensions)) {
+    if (isEqual(this.dimensions, other.dimensions)) {
       mergeMeasures(this.measures, other.measures);
       return true;
     } else {
@@ -156,11 +156,15 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
+    let out = {};
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        out[this.measures[field][op] || `${op}_${field}`] = true;
+        if (keys(this.measures[field][op]).length === 0) {
+          out[`${op}_${field}`] = true;
+        } else {
+          out = {...out, ...this.measures[field][op]};
+        }
       }
     }
 
@@ -178,9 +182,11 @@ export class AggregateNode extends DataFlowNode {
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        as.push(this.measures[field][op]);
-        ops.push(op);
-        fields.push(replacePathInField(field));
+        for (const alias of keys(this.measures[field][op])) {
+          as.push(alias);
+          ops.push(op);
+          fields.push(replacePathInField(field));
+        }
       }
     }
 
