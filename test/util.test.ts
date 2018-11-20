@@ -1,5 +1,14 @@
 import {assert} from 'chai';
-import {entries, fieldIntersection, fill, flatAccessWithDatum, prefixGenerator, unique, uniqueId} from '../src/util';
+import {
+  entries,
+  fieldIntersection,
+  fill,
+  flatAccessWithDatum,
+  isEqual,
+  prefixGenerator,
+  unique,
+  uniqueId
+} from '../src/util';
 
 import {
   accessPathDepth,
@@ -208,6 +217,17 @@ describe('util', () => {
       const arr = fill(42, 5);
       expect(arr).toHaveLength(5);
       expect(arr).toEqual([42, 42, 42, 42, 42]);
+    });
+  });
+  describe('isEqual', () => {
+    it('should return false when dict is a subset of other', () => {
+      expect(isEqual({a: 1}, {a: 1, b: 2})).toBe(false);
+    });
+    it('should return false when other is a subset of dict', () => {
+      expect(isEqual({a: 1, b: 2}, {a: 1})).toBe(false);
+    });
+    it('should return true when dicts are equal', () => {
+      expect(isEqual({a: 1, b: 2}, {a: 1, b: 2})).toBe(true);
     });
   });
 });

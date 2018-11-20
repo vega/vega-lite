@@ -228,4 +228,22 @@ describe('compile/data/summary', () => {
       });
     });
   });
+
+  describe('merge', () => {
+    it('should not merge AggregateNodes with different dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, {a: true, b: true}, {});
+      const agg2 = new AggregateNode(parent, {a: true}, {});
+
+      expect(agg1.merge(agg2)).toBe(false);
+    });
+    it('should merge AggregateNodes with same dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, {a: true, b: true}, {a: {mean: {a_mean: true}}});
+      const agg2 = new AggregateNode(parent, {a: true, b: true}, {b: {mean: {b_mean: true}}});
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.producedFields()).toEqual({a_mean: true, b_mean: true});
+    });
+  });
 });
