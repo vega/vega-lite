@@ -22,11 +22,10 @@ export function normalizeMarkDef(mark: Mark | MarkDef, encoding: Encoding<string
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
   if (specifiedOpacity === undefined) {
-    markDef.opacity = opacity(markDef.type, encoding);
-  }
-
-  if (specifiedOpacity === 1.0) {
-    markDef.opacity = undefined;
+    markDef.opacity = opacity(markDef, encoding);
+  } else if (specifiedOpacity === 1.0) {
+    // Vega's default opacity is 1.0 so it's safe to delete the opacity in this case
+    delete markDef.opacity;
   }
 
   const specifiedFilled = markDef.filled;
@@ -50,8 +49,8 @@ function cursor(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   return markDef.cursor;
 }
 
-function opacity(mark: Mark, encoding: Encoding<string>) {
-  if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
+function opacity(markDef: MarkDef, encoding: Encoding<string>) {
+  if (contains([POINT, TICK, CIRCLE, SQUARE], markDef.type)) {
     // point-based marks
     if (!isAggregate(encoding)) {
       return 0.7;

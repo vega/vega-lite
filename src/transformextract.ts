@@ -118,7 +118,11 @@ function extractTransformsHConcat(
   };
 }
 
-/* Set mark's opacity to 1.0 if its opacity is not set elsewhere */
+/**
+ * Set mark's opacity to 1.0 if it's not explicitly defined. This is done in order to ensure
+ * that channels with aggregates don't get their opacity set to 0.7 when normalizeMarkDefs is
+ * called because they've had their aggregation extracted
+ */
 function setMarkOpacityForAggregate(mark: Mark | MarkDef, config: Config): Mark | MarkDef {
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
   if (contains([POINT, TICK, CIRCLE, SQUARE], markDef.type)) {
