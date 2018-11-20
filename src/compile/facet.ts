@@ -4,7 +4,15 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetFieldDef, FacetMapping} from '../facet';
-import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {
+  defaultTitle,
+  FieldDef,
+  FieldDefBase,
+  FieldRefOption,
+  normalize,
+  title as fieldDefTitle,
+  vgField
+} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -23,6 +31,13 @@ import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/selection';
+
+function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
+  if (isArray(title)) {
+    return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
+  }
+  return title;
+}
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -132,7 +147,7 @@ export class FacetModel extends ModelWithField {
       }
 
       this.component.layoutHeaders[channel] = {
-        title,
+        title: assembleTitle(title, this.config),
         facetFieldDef: fieldDef,
         // TODO: support adding label to footer as well
         header: [this.makeHeaderComponent(channel, true)]

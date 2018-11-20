@@ -206,6 +206,19 @@ export function sortParams(
 
 export type AxisTitleComponent = AxisComponentProps['title'];
 
+export function mergeTitleStrings(title1: string, title2: string): string {
+  if (title1 === title2 || !title2) {
+    // if titles are the same or title2 is falsy
+    return title1;
+  } else if (!title1) {
+    // if title1 is falsy
+    return title2;
+  } else {
+    // join title with comma if they are different
+    return title1 + ', ' + title2;
+  }
+}
+
 export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]) {
   const merged = [...f1];
 
@@ -221,33 +234,20 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
   return merged;
 }
 
-export function mergeTitle(title1: string, title2: string) {
-  if (title1 === title2 || !title2) {
-    // if titles are the same or title2 is falsy
-    return title1;
-  } else if (!title1) {
-    // if title1 is falsy
-    return title2;
-  } else {
-    // join title with comma if they are different
-    return title1 + ', ' + title2;
+export function mergeTitle(title1: string | FieldDefBase<string>[], title2: string | FieldDefBase<string>[]) {
+  if (isArray(title1) && isArray(title2)) {
+    return mergeTitleFieldDefs(title1, title2);
+  } else if (!isArray(title1) && !isArray(title2)) {
+    return mergeTitleStrings(title1, title2);
   }
+  throw new Error('It should never reach here');
 }
 
 export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explicit<AxisTitleComponent>) {
-  if (isArray(v1.value) && isArray(v2.value)) {
-    return {
-      explicit: v1.explicit,
-      value: mergeTitleFieldDefs(v1.value, v2.value)
-    };
-  } else if (!isArray(v1.value) && !isArray(v2.value)) {
-    return {
-      explicit: v1.explicit, // keep the old explicit
-      value: mergeTitle(v1.value, v2.value)
-    };
-  }
-  /* istanbul ignore next: Condition should not happen -- only for warning in development. */
-  throw new Error('It should never reach here');
+  return {
+    explicit: v1.explicit,
+    value: mergeTitle(v1.value, v2.value)
+  };
 }
 
 /**

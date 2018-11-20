@@ -23,7 +23,7 @@ import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
-import {contains, some} from '../../util';
+import {contains, keys, some, StringSet} from '../../util';
 import {VgValueRef} from '../../vega.schema';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
@@ -205,17 +205,13 @@ export function midPoint(
 }
 
 export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: Config) {
-  const keyValues: string[] = [];
-  const usedKey = {};
+  const keyValues: StringSet = {};
   for (const fieldDef of channelDefs) {
     const key = title(fieldDef, config, {allowDisabling: false});
     const value = text(fieldDef, config).signal;
-    if (!usedKey[key]) {
-      keyValues.push(`${stringValue(key)}: ${value}`);
-    }
-    usedKey[key] = true;
+    keyValues[`${stringValue(key)}: ${value}`] = true;
   }
-  return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
+  return keys(keyValues).length ? {signal: `{${keys(keyValues).join(', ')}}`} : undefined;
 }
 
 export function text(channelDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {

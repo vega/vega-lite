@@ -1,4 +1,4 @@
-import {ConditionValueDefMixins, ValueDef} from './fielddef';
+import {ConditionValueDefMixins, FieldDefBase, ValueDef} from './fielddef';
 import {VgEncodeChannel} from './vega.schema';
 
 export interface TitleMixins {
@@ -13,7 +13,7 @@ export interface TitleMixins {
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
-  title?: string | null;
+  title?: string | FieldDefBase<string>[];
 }
 
 export interface Guide extends TitleMixins {
