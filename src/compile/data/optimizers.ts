@@ -303,15 +303,16 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
       const agg1 = aggChildren[i];
       for (let j = 0; j < aggChildren.length; j++) {
         const agg2 = aggChildren[j];
-        if (i === j || agg1 == null || agg2 === null) {
+        if (i === j || agg1 === null || agg2 === null) {
           continue;
         }
         if (agg1.merge(agg2)) {
-          this.setMutated();
           parent.removeChild(agg2);
           agg2.parent = agg1;
           agg2.remove();
           aggChildren[j] = null;
+
+          this.setMutated();
         }
       }
     }

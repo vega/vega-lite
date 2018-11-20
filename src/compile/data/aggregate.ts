@@ -25,17 +25,17 @@ function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldD
 }
 
 function mergeMeasures(parentMeasures: Dict<Dict<string>>, childMeasures: Dict<Dict<string>>) {
-  for (const f in childMeasures) {
-    if (childMeasures.hasOwnProperty(f)) {
+  for (const field in childMeasures) {
+    if (childMeasures.hasOwnProperty(field)) {
       // when we merge a measure, we either have to add an aggregation operator or even a new field
-      const ops = childMeasures[f];
+      const ops = childMeasures[field];
       for (const op in ops) {
         if (ops.hasOwnProperty(op)) {
-          if (f in parentMeasures) {
+          if (field in parentMeasures) {
             // add operator to existing measure field
-            parentMeasures[f][op] = ops[op];
+            parentMeasures[field][op] = ops[op];
           } else {
-            parentMeasures[f] = {op: ops[op]};
+            parentMeasures[field] = {[op]: ops[op]};
           }
         }
       }
