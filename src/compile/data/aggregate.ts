@@ -132,12 +132,13 @@ export class AggregateNode extends DataFlowNode {
     return new AggregateNode(parent, dims, meas);
   }
 
-  public merge(other: AggregateNode) {
+  public merge(other: AggregateNode): boolean {
     if (!differ(this.dimensions, other.dimensions)) {
       mergeMeasures(this.measures, other.measures);
-      other.remove();
+      return true;
     } else {
       log.debug('different dimensions, cannot merge');
+      return false;
     }
   }
 
