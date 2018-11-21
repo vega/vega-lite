@@ -19,8 +19,8 @@ export class GeoPointNode extends DataFlowNode {
     }
 
     [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates: GeoPositionChannel[]) => {
-      const pair = coordinates.map(
-        channel => (model.channelHasField(channel) ? model.fieldDef(channel).field : undefined)
+      const pair = coordinates.map(channel =>
+        model.channelHasField(channel) ? model.fieldDef(channel).field : undefined
       );
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';

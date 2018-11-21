@@ -181,8 +181,8 @@ export class UnitModel extends ModelWithField {
         const legend = isFieldDef(channelDef)
           ? channelDef.legend
           : hasConditionalFieldDef(channelDef)
-            ? channelDef.condition['legend']
-            : null;
+          ? channelDef.condition['legend']
+          : null;
 
         if (legend !== null && legend !== false) {
           _legend[channel] = {...legend};
