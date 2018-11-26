@@ -43,7 +43,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"intersect\")"
     },
-    {"name": "grid", "update": "{X: grid_X, Y: grid_Y}"},
+    {"name": "grid", "update": "{\"X\": grid_X, \"Y\": grid_Y}"},
     {"name": "grid_X"},
     {"name": "grid_Y"},
     {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\")"}
