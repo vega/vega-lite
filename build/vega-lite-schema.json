@@ -1046,6 +1046,24 @@
       },
       "type": "object"
     },
+    "BaseBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "VgTitleConfig": {
       "additionalProperties": false,
       "properties": {
@@ -1205,6 +1223,119 @@
         "as"
       ],
       "type": "object"
+    },
+    "BindCheckbox": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "checkbox"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "type": "object"
+    },
+    "BindRadioSelect": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "radio",
+            "select"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "options": {
+          "items": {
+          },
+          "type": "array"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "options"
+      ],
+      "type": "object"
+    },
+    "BindRange": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "range"
+          ],
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "step": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "type": "object"
+    },
+    "Binding": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BaseBinding"
+        },
+        {
+          "$ref": "#/definitions/BindCheckbox"
+        },
+        {
+          "$ref": "#/definitions/BindRadioSelect"
+        },
+        {
+          "$ref": "#/definitions/BindRange"
+        }
+      ]
     },
     "BoxPlot": {
       "enum": [
@@ -2393,6 +2524,9 @@
         "delimiter"
       ],
       "type": "object"
+    },
+    "Element": {
+      "type": "string"
     },
     "Encoding": {
       "additionalProperties": false,
@@ -7913,11 +8047,11 @@
         "bind": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VgBinding"
+              "$ref": "#/definitions/Binding"
             },
             {
               "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
+                "$ref": "#/definitions/Binding"
               },
               "type": "object"
             }
@@ -7976,11 +8110,11 @@
         "bind": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VgBinding"
+              "$ref": "#/definitions/Binding"
             },
             {
               "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
+                "$ref": "#/definitions/Binding"
               },
               "type": "object"
             }
@@ -9743,43 +9877,6 @@
       },
       "type": "object"
     },
-    "VgBinding": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/VgCheckboxBinding"
-        },
-        {
-          "$ref": "#/definitions/VgRadioBinding"
-        },
-        {
-          "$ref": "#/definitions/VgSelectBinding"
-        },
-        {
-          "$ref": "#/definitions/VgRangeBinding"
-        },
-        {
-          "$ref": "#/definitions/VgGenericBinding"
-        }
-      ]
-    },
-    "VgCheckboxBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "checkbox"
-          ],
-          "type": "string"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
-    },
     "VgComparatorOrder": {
       "enum": [
         "ascending",
@@ -9788,21 +9885,6 @@
       "type": "string"
     },
     "VgEventStream": {
-    },
-    "VgGenericBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
     },
     "VgLayoutAlign": {
       "enum": [
@@ -9992,58 +10074,6 @@
       ],
       "type": "string"
     },
-    "VgRadioBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "radio"
-          ],
-          "type": "string"
-        },
-        "options": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "input",
-        "options"
-      ],
-      "type": "object"
-    },
-    "VgRangeBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "range"
-          ],
-          "type": "string"
-        },
-        "max": {
-          "type": "number"
-        },
-        "min": {
-          "type": "number"
-        },
-        "step": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
-    },
     "VgScheme": {
       "additionalProperties": false,
       "properties": {
@@ -10062,31 +10092,6 @@
       },
       "required": [
         "scheme"
-      ],
-      "type": "object"
-    },
-    "VgSelectBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "select"
-          ],
-          "type": "string"
-        },
-        "options": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "input",
-        "options"
       ],
       "type": "object"
     },
