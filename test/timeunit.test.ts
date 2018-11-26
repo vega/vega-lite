@@ -5,25 +5,25 @@ describe('timeUnit', () => {
     it('should return true for quarter given quarter', () => {
       const fullTimeUnit = TimeUnit.QUARTER;
       const timeUnit = TimeUnit.QUARTER;
-      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBeTruthy();
+      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBe(true);
     });
 
     it('should return true for yearquarter given quarter', () => {
       const fullTimeUnit = TimeUnit.YEARQUARTER;
       const timeUnit = TimeUnit.QUARTER;
-      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBeTruthy();
+      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBe(true);
     });
 
     it('should return true for SECONDS and MILLISECONDS given SECONDSMILLISECONDS', () => {
       const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
       const timeUnit = TimeUnit.SECONDS;
-      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBeTruthy();
+      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBe(true);
     });
 
     it('should return true for MILLISECONDS given SECONDSMILLISECONDS', () => {
       const fullTimeUnit = TimeUnit.SECONDSMILLISECONDS;
       const timeUnit = TimeUnit.MILLISECONDS;
-      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBeTruthy();
+      expect(containsTimeUnit(fullTimeUnit, timeUnit)).toBe(true);
     });
 
     it('should return false for quarter given year', () => {
