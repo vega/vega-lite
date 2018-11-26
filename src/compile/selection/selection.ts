@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {Binding, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
@@ -6,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, keys, logicalExpr, varName} from '../../util';
-import {VgBinding, VgData, VgEventStream} from '../../vega.schema';
+import {VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -30,7 +30,7 @@ export interface SelectionComponent {
   type: SelectionType;
   events: VgEventStream;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | Dict<VgBinding>;
+  bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;
