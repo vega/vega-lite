@@ -1602,6 +1602,87 @@
       "$ref": "#/definitions/CompositeUnitSpecAlias",
       "description": "Unit spec that can have a composite mark."
     },
+    "ConditionOnlyDef<FieldDef>": {
+      "additionalProperties": false,
+      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionOnlyDef<MarkPropFieldDef>": {
+      "additionalProperties": false,
+      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
+    "ConditionOnlyDef<TextFieldDef>": {
+      "additionalProperties": false,
+      "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
+      "properties": {
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalTextFieldDef"
+            },
+            {
+              "$ref": "#/definitions/ConditionalValueDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A field definition or one or more value definition(s) with a selection predicate."
+        }
+      },
+      "required": [
+        "condition"
+      ],
+      "type": "object"
+    },
     "ConditionalFieldDef": {
       "anyOf": [
         {
@@ -9779,8 +9860,41 @@
       "type": "object"
     },
     "ValueDefWithCondition": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<FieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<FieldDef>"
+        }
+      ],
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
+    },
+    "MarkPropValueDefWithCondition": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef>"
+        }
+      ],
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
+    },
+    "TextValueDefWithCondition": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<TextFieldDef>"
+        },
+        {
+          "$ref": "#/definitions/ConditionOnlyDef<TextFieldDef>"
+        }
+      ],
+      "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
+    },
+    "ValueDefWithOptionalCondition<FieldDef>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
@@ -9809,11 +9923,14 @@
           ]
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
-    "MarkPropValueDefWithCondition": {
+    "ValueDefWithOptionalCondition<MarkPropFieldDef>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
@@ -9842,11 +9959,14 @@
           ]
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
-    "TextValueDefWithCondition": {
+    "ValueDefWithOptionalCondition<TextFieldDef>": {
       "additionalProperties": false,
-      "description": "A ValueDef with Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
+      "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
@@ -9875,6 +9995,9 @@
           ]
         }
       },
+      "required": [
+        "value"
+      ],
       "type": "object"
     },
     "VgComparatorOrder": {
