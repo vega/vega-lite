@@ -66,7 +66,8 @@ const scaleBindings: TransformCompiler = {
     const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
     const update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-      namedSg.update = '{' + channelSignals.map(cs => `${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`).join(', ') + '}';
+      namedSg.update =
+        '{' + channelSignals.map(cs => `${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`).join(', ') + '}';
     } else {
       for (const cs of channelSignals) {
         const mapping = `, ${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`;
