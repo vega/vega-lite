@@ -18,8 +18,9 @@ export namespace TimeUnit {
   export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' =
     'yearmonthdatehoursminutesseconds';
 
-  // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+  // MONTHDATE and MONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
   export const MONTHDATE: 'monthdate' = 'monthdate';
+  export const MONTHDATEHOURS: 'monthdatehours' = 'monthdatehours';
   export const HOURSMINUTES: 'hoursminutes' = 'hoursminutes';
   export const HOURSMINUTESSECONDS: 'hoursminutesseconds' = 'hoursminutesseconds';
   export const MINUTESSECONDS: 'minutesseconds' = 'minutesseconds';
@@ -43,8 +44,9 @@ export namespace TimeUnit {
   export const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds' =
     'utcyearmonthdatehoursminutesseconds';
 
-  // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+  // UTCMONTHDATE and UTCMONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
   export const UTCMONTHDATE: 'utcmonthdate' = 'utcmonthdate';
+  export const UTCMONTHDATEHOURS: 'utcmonthdatehours' = 'utcmonthdatehours';
   export const UTCHOURSMINUTES: 'utchoursminutes' = 'utchoursminutes';
   export const UTCHOURSMINUTESSECONDS: 'utchoursminutesseconds' = 'utchoursminutesseconds';
   export const UTCMINUTESSECONDS: 'utcminutesseconds' = 'utcminutesseconds';
@@ -125,6 +127,7 @@ export type LocalMultiTimeUnit =
   | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS
   | typeof TimeUnit.QUARTERMONTH
   | typeof TimeUnit.MONTHDATE
+  | typeof TimeUnit.MONTHDATEHOURS
   | typeof TimeUnit.HOURSMINUTES
   | typeof TimeUnit.HOURSMINUTESSECONDS
   | typeof TimeUnit.MINUTESSECONDS
@@ -143,6 +146,7 @@ const LOCAL_MULTI_TIMEUNIT_INDEX: Flag<LocalMultiTimeUnit> = {
   quartermonth: 1,
 
   monthdate: 1,
+  monthdatehours: 1,
 
   hoursminutes: 1,
   hoursminutesseconds: 1,
@@ -162,6 +166,7 @@ export type UtcMultiTimeUnit =
   | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS
   | typeof TimeUnit.UTCQUARTERMONTH
   | typeof TimeUnit.UTCMONTHDATE
+  | typeof TimeUnit.UTCMONTHDATEHOURS
   | typeof TimeUnit.UTCHOURSMINUTES
   | typeof TimeUnit.UTCHOURSMINUTESSECONDS
   | typeof TimeUnit.UTCMINUTESSECONDS
@@ -180,6 +185,7 @@ const UTC_MULTI_TIMEUNIT_INDEX: Flag<UtcMultiTimeUnit> = {
   utcquartermonth: 1,
 
   utcmonthdate: 1,
+  utcmonthdatehours: 1,
 
   utchoursminutes: 1,
   utchoursminutesseconds: 1,
@@ -246,8 +252,8 @@ export function convert(unit: TimeUnit, date: Date): Date {
   const isUTC = isUTCTimeUnit(unit);
   const result: Date = isUTC
     ? // start with uniform date
-      new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
-    : new Date(0, 0, 1, 0, 0, 0, 0);
+      new Date(Date.UTC(1972, 0, 1, 0, 0, 0, 0)) // 1972 is the first leap year after 1970, the start of unix time
+    : new Date(1972, 0, 1, 0, 0, 0, 0);
   for (const timeUnitPart of TIMEUNIT_PARTS) {
     if (containsTimeUnit(unit, timeUnitPart)) {
       switch (timeUnitPart) {
