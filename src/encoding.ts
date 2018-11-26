@@ -7,6 +7,7 @@ import {Config} from './config';
 import {FacetMapping} from './facet';
 import {
   ChannelDef,
+  ChannelDefWithCondition,
   Field,
   FieldDef,
   FieldDefWithCondition,
@@ -90,7 +91,7 @@ export interface Encoding<F> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  color?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Fill color of the marks.
@@ -98,7 +99,7 @@ export interface Encoding<F> {
    *
    * _Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`).
    */
-  fill?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  fill?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Stroke color of the marks.
@@ -106,34 +107,34 @@ export interface Encoding<F> {
    *
    * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
-  stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  stroke?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
   /**
    * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
    */
-  opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  opacity?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Fill opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property.
    */
-  fillOpacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  fillOpacity?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Stroke opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property.
    */
-  strokeOpacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  strokeOpacity?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Stroke width of the marks.
    *
    * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property.
    */
-  strokeWidth?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  strokeWidth?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Size of the mark.
@@ -142,7 +143,7 @@ export interface Encoding<F> {
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
-  size?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+  size?: ChannelDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * For `point` marks the supported values are
@@ -152,7 +153,7 @@ export interface Encoding<F> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property.
    */
-  shape?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
+  shape?: ChannelDefWithCondition<MarkPropFieldDef<F>>; // TODO: maybe distinguish ordinal-only
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.

@@ -46,7 +46,10 @@ export interface ValueDef {
  * Generic type for conditional channelDef.
  * F defines the underlying FieldDef type.
  */
-export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
+export type ChannelDefWithCondition<F extends FieldDef<any>> =
+  | FieldDefWithCondition<F>
+  | ValueDefWithCondition<F>
+  | ConditionWithoutAnyValue<F>;
 
 export type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
 
@@ -102,7 +105,20 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
    * A constant value in visual domain.
    */
-  value?: Value;
+  value: Value;
+}
+
+/**
+ * A Condition<ValueDef | FieldDef>
+ * {
+ *   condition: {field: ...} | {value: ...}
+ * }
+ */
+export interface ConditionWithoutAnyValue<F extends FieldDef<any>> {
+  /**
+   * A field definition or one or more value definition(s) with a selection predicate.
+   */
+  condition?: Conditional<F> | Conditional<ValueDef> | Conditional<ValueDef>[];
 }
 
 /**

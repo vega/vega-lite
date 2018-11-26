@@ -4,13 +4,11 @@ import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../cha
 import {
   Conditional,
   FieldDef,
-  FieldDefWithCondition,
   hasConditionalValueDef,
   isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
-  ValueDef,
-  ValueDefWithCondition
+  ValueDef
 } from '../../fielddef';
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
@@ -18,6 +16,7 @@ import {getFirstDefined, keys} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {ChannelDefWithCondition} from './../../fielddef';
 import {LegendComponent} from './component';
 
 export function symbols(
@@ -182,22 +181,18 @@ export function labels(
   return keys(out).length > 0 ? out : undefined;
 }
 
-function getMaxValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
-) {
+function getMaxValue(channelDef: ChannelDefWithCondition<MarkPropFieldDef<string>>) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
-function getFirstConditionValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
-) {
+function getFirstConditionValue(channelDef: ChannelDefWithCondition<MarkPropFieldDef<string>>) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => {
     return getFirstDefined(v, conditionalDef.value);
   });
 }
 
 function getConditionValue<T>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
+  channelDef: ChannelDefWithCondition<MarkPropFieldDef<string>>,
   reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
 ): T {
   if (hasConditionalValueDef(channelDef)) {
