@@ -21,7 +21,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {
       "name": "grid",
-      "update": "{Displacement: grid_Displacement, Acceleration: grid_Acceleration}"
+      "update": "{\"Displacement\": grid_Displacement, \"Acceleration\": grid_Acceleration}"
     },
     {"name": "grid_Displacement"},
     {"name": "grid_Acceleration"}
