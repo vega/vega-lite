@@ -1,10 +1,12 @@
 import {assert} from 'chai';
 import {
+  differArray,
   entries,
   fieldIntersection,
   fill,
   flatAccessWithDatum,
   isEqual,
+  isNumeric,
   prefixGenerator,
   unique,
   uniqueId
@@ -228,6 +230,40 @@ describe('util', () => {
     });
     it('should return true when dicts are equal', () => {
       expect(isEqual({a: 1, b: 2}, {a: 1, b: 2})).toBe(true);
+    });
+    it('should return false when key values differ', () => {
+      expect(isEqual({a: 1}, {a: 2})).toBe(false);
+    });
+  });
+  describe('differArray', () => {
+    it('should return false when both arrays are empty', () => {
+      expect(differArray([], [])).toBe(false);
+    });
+    it('should return true when lengths differ', () => {
+      const a = [1, 2, 3];
+      const b = [1, 2];
+      expect(differArray(a, b)).toBe(true);
+    });
+    it('should return false when arrays are same sorted', () => {
+      const a = [3, 2, 1];
+      const b = [1, 2, 3];
+      expect(differArray(a, b)).toBe(false);
+    });
+  });
+  describe('isNumeric', () => {
+    it('should return true for integers', () => {
+      expect(isNumeric(1)).toBe(true);
+      expect(isNumeric(-1)).toBe(true);
+    });
+    it('should be true for real numbers', () => {
+      expect(isNumeric(0.0)).toBe(true);
+      expect(isNumeric(3.14)).toBe(true);
+    });
+    it('should return false for NaN', () => {
+      expect(isNumeric(NaN)).toBe(false);
+    });
+    it('should return false for text', () => {
+      expect(isNumeric('foo')).toBe(false);
     });
   });
 });
