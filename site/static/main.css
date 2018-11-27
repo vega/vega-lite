@@ -172,7 +172,7 @@ code, tt {
 pre code {
   margin: 0;
   padding: 0;
-  white-space: pre-wrap;
+  white-space: pre;
   border: none;
   background: transparent;
   font-family: monospace;
@@ -182,6 +182,7 @@ pre {
   background: #F9F9F9;
   border: 1px solid #eee;
   padding: 8px 10px;
+  overflow: scroll;
 }
 .hljs {
   padding: 0;
