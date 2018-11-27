@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, extend} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
@@ -160,14 +160,14 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public producedFields() {
-    let out = {};
+    const out = {};
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
         if (keys(this.measures[field][op]).length === 0) {
           out[`${op}_${field}`] = true;
         } else {
-          out = {...out, ...this.measures[field][op]};
+          extend(out, this.measures[field][op]);
         }
       }
     }
