@@ -6,7 +6,7 @@
   "height": 400,
   "style": "cell",
   "data": [
-    {"name": "tooltip_store"},
+    {"name": "label_store"},
     {
       "name": "source_0",
       "url": "data/stocks.csv",
@@ -16,10 +16,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "(vlSelectionTest(\"tooltip_store\", datum))"
-        }
+        {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
       ]
     }
   ],
@@ -31,28 +28,28 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "tooltip", "update": "vlSelectionResolve(\"tooltip_store\")"},
+    {"name": "label", "update": "vlSelectionResolve(\"label_store\")"},
     {
-      "name": "tooltip_tuple",
+      "name": "label_tuple",
       "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: tooltip_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_1\", fields: label_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         }
       ]
     },
     {
-      "name": "tooltip_tuple_fields",
+      "name": "label_tuple_fields",
       "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"E\"}]"
     },
     {
-      "name": "tooltip_modify",
+      "name": "label_modify",
       "on": [
         {
-          "events": {"signal": "tooltip_tuple"},
-          "update": "modify(\"tooltip_store\", tooltip_tuple, true)"
+          "events": {"signal": "label_tuple"},
+          "update": "modify(\"label_store\", label_tuple, true)"
         }
       ]
     }
@@ -105,7 +102,7 @@
       "encode": {
         "update": {
           "opacity": [
-            {"test": "(vlSelectionTest(\"tooltip_store\", datum))", "value": 1},
+            {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
             {"value": 0}
           ],
           "fill": [
@@ -175,7 +172,34 @@
       }
     },
     {
-      "name": "layer_1_layer_1_marks",
+      "name": "layer_1_layer_1_layer_0_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
+              "value": null
+            },
+            {"value": "white"}
+          ],
+          "strokeWidth": {"value": 2},
+          "align": {"value": "left"},
+          "dx": {"value": 5},
+          "dy": {"value": -5},
+          "tooltip": {
+            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {"signal": "format(datum[\"price\"], \"\")"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_0"},
@@ -189,7 +213,7 @@
               "test": "datum[\"date\"] === null || isNaN(datum[\"date\"]) || datum[\"price\"] === null || isNaN(datum[\"price\"])",
               "value": null
             },
-            {"scale": "color", "field": "symbol"}
+            {"scale": "fill", "field": "symbol"}
           ],
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
@@ -229,13 +253,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],
@@ -294,8 +318,12 @@
         "symbols": {
           "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
         }
-      },
-      "fill": "color"
+      }
+    },
+    {
+      "fill": "fill",
+      "title": "symbol",
+      "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

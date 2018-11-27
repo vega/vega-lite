@@ -524,9 +524,9 @@
         "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval"
       },
       {
-        "name": "interactive_multi_line_tooltip",
-        "title": "Multi Series Line Chart with Tooltips",
-        "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+        "name": "interactive_multi_line_label",
+        "title": "Multi Series Line Chart with Labels",
+        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
       },
       {
         "name": "isotype_grid",
