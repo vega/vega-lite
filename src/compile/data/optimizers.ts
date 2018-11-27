@@ -314,9 +314,6 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
       groupedAggregates[groupBys].push(agg);
     }
 
-    if (keys(groupedAggregates).length > 1) {
-      console.log(groupedAggregates);
-    }
     // Merge aggregateNodes with same key in groupedAggregates
     for (const group of keys(groupedAggregates)) {
       const mergeableAggs = groupedAggregates[group];
@@ -330,8 +327,6 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
             agg.remove();
 
             this.setMutated();
-          } else {
-            throw Error('MERGING ERROR???');
           }
         }
       }
