@@ -8,14 +8,31 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}},
+      "format": {"type": "json", "parse": {"Horsepower": "number"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
           "groupby": ["Cylinders"],
-          "ops": ["max", "min"],
-          "fields": ["Horsepower", "Horsepower"],
-          "as": ["max_Horsepower", "min_Horsepower"]
+          "ops": ["max"],
+          "fields": ["Horsepower"],
+          "as": ["max_Horsepower"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Cylinders"],
+          "ops": ["min"],
+          "fields": ["Horsepower"],
+          "as": ["min_Horsepower"]
         }
       ]
     }
@@ -33,7 +50,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
@@ -52,7 +69,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -76,7 +93,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]", "order": "descending"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -95,7 +112,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -119,7 +136,13 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Cylinders"},
+          {"data": "data_1", "field": "Cylinders"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
@@ -127,8 +150,10 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": ["max_Horsepower", "min_Horsepower"]
+        "fields": [
+          {"data": "data_0", "field": "max_Horsepower"},
+          {"data": "data_1", "field": "min_Horsepower"}
+        ]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
