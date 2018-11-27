@@ -22,7 +22,7 @@
         "mark": "line"
       },{
         "selection": {
-          "tooltip": {
+          "label": {
             "type": "single",
             "nearest": true,
             "on": "mouseover",
@@ -36,7 +36,7 @@
         "encoding": {
           "opacity": {
             "condition": {
-              "selection": "tooltip",
+              "selection": "label",
               "value": 1
             },
             "value": 0
@@ -48,7 +48,7 @@
       "transform": [
         {
           "filter": {
-            "selection": "tooltip"
+            "selection": "label"
           }
         }
       ],
@@ -64,20 +64,10 @@
           }
         }
       }, {
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "dx": 5,
-          "dy": -5
-        },
         "encoding": {
           "text": {
             "type": "quantitative",
             "field": "price"
-          },
-          "color": {
-            "type": "nominal",
-            "field": "symbol"
           },
           "x": {
             "type": "temporal",
@@ -87,7 +77,30 @@
             "type": "quantitative",
             "field": "price"
           }
-        }
+        },
+        "layer": [{
+          "mark": {
+            "type": "text",
+            "stroke": "white",
+            "strokeWidth": 2,
+            "align": "left",
+            "dx": 5,
+            "dy": -5
+          }
+        }, {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 5,
+            "dy": -5
+          },
+          "encoding": {
+            "fill": {
+              "type": "nominal",
+              "field": "symbol"
+            }
+          }
+        }]
       }]
    }
  ]
