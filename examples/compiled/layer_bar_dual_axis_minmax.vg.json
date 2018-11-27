@@ -18,45 +18,13 @@
           "type": "formula",
           "as": "month_date",
           "expr": "datetime(0, month(datum[\"date\"]), 1, 0, 0, 0, 0)"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "aggregate",
           "groupby": ["month_date"],
-          "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["month_date"],
-          "ops": ["max"],
-          "fields": ["temp_max"],
-          "as": ["max_temp_max"]
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["month_date"],
-          "ops": ["min"],
-          "fields": ["temp_min"],
-          "as": ["min_temp_min"]
+          "ops": ["mean", "max", "min"],
+          "fields": ["precipitation", "temp_max", "temp_min"],
+          "as": ["mean_precipitation", "max_temp_max", "min_temp_min"]
         }
       ]
     }
@@ -73,7 +41,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": [
@@ -98,7 +66,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
@@ -118,7 +86,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"month_date\"]", "order": "descending"},
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
@@ -138,14 +106,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "month_date"},
-          {"data": "data_1", "field": "month_date"},
-          {"data": "data_2", "field": "month_date"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -153,7 +114,7 @@
     {
       "name": "layer_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "mean_precipitation"},
+      "domain": {"data": "source_0", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -162,10 +123,8 @@
       "name": "layer_1_y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "max_temp_max"},
-          {"data": "data_2", "field": "min_temp_min"}
-        ]
+        "data": "source_0",
+        "fields": ["max_temp_max", "min_temp_min"]
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,
