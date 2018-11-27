@@ -1,5 +1,5 @@
 import {MAIN} from '../../data';
-import {fieldIntersection, flatten, keys} from '../../util';
+import {Dict, fieldIntersection, flatten, keys, stringify} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
@@ -299,24 +299,37 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
   public run(node: DataFlowNode): optimizers.OptimizerFlags {
     const parent = node.parent;
     const aggChildren = parent.children.filter((x): x is AggregateNode => x instanceof AggregateNode);
-    for (let i = 0; i < aggChildren.length; i++) {
-      const agg1 = aggChildren[i];
-      for (let j = 0; j < aggChildren.length; j++) {
-        const agg2 = aggChildren[j];
-        if (i === j || agg1 === null || agg2 === null) {
-          continue;
-        }
-        if (agg1.merge(agg2)) {
-          parent.removeChild(agg2);
-          agg2.parent = agg1;
-          agg2.remove();
-          aggChildren[j] = null;
 
-          this.setMutated();
+    // Object which we'll use to map the fields which an aggregate is grouped by to
+    // the set of aggregates with that grouping. This is useful as only aggregates
+    // with the same group by can be merged
+    const groupedAggregates: Dict<AggregateNode[]> = {};
+
+    // Build groupedAggregates
+    for (const agg of aggChildren) {
+      const groupBys = stringify(agg.groupBy);
+      if (!(groupBys in groupedAggregates)) {
+        groupedAggregates[groupBys] = [];
+      }
+      groupedAggregates[groupBys].push(agg);
+    }
+
+    // Merge aggregateNodes with same key in groupedAggregates
+    for (const group of keys(groupedAggregates)) {
+      const mergeableAggs = groupedAggregates[group];
+      if (mergeableAggs.length > 1) {
+        const mergedAggs = new AggregateNode(parent, {}, {});
+        for (const agg of mergeableAggs) {
+          if (mergedAggs.merge(agg)) {
+            parent.removeChild(agg);
+            agg.parent = mergedAggs;
+            agg.remove();
+
+            this.setMutated();
+          }
         }
       }
     }
-
     this.setContinue();
     return this.flags;
   }

@@ -60,6 +60,10 @@ export class AggregateNode extends DataFlowNode {
     super(parent);
   }
 
+  get groupBy(): StringSet {
+    return this.dimensions;
+  }
+
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode {
     let isAggregate = false;
     model.forEachFieldDef(fd => {
