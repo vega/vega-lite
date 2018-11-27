@@ -307,25 +307,31 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 
     // Build groupedAggregates
     for (const agg of aggChildren) {
-      const groupBys = stringify(agg.groupBy);
+      const groupBys = stringify(keys(agg.groupBy).sort());
       if (!(groupBys in groupedAggregates)) {
         groupedAggregates[groupBys] = [];
       }
       groupedAggregates[groupBys].push(agg);
     }
 
+    if (keys(groupedAggregates).length > 1) {
+      console.log(groupedAggregates);
+    }
     // Merge aggregateNodes with same key in groupedAggregates
     for (const group of keys(groupedAggregates)) {
       const mergeableAggs = groupedAggregates[group];
       if (mergeableAggs.length > 1) {
-        const mergedAggs = new AggregateNode(parent, {}, {});
-        for (const agg of mergeableAggs) {
+        const mergedAggs = mergeableAggs[0];
+        for (let i = 1; i < mergeableAggs.length; i++) {
+          const agg = mergeableAggs[i];
           if (mergedAggs.merge(agg)) {
             parent.removeChild(agg);
             agg.parent = mergedAggs;
             agg.remove();
 
             this.setMutated();
+          } else {
+            throw Error('MERGING ERROR???');
           }
         }
       }
