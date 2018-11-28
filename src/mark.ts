@@ -338,12 +338,12 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef
   extends GenericMarkDef<Mark>,
-  BarBinSpacingMixins,
-  MarkConfig,
-  PointOverlayMixins,
-  LineOverlayMixins,
-  TickThicknessMixins,
-  MarkDefMixins {
+    BarBinSpacingMixins,
+    MarkConfig,
+    PointOverlayMixins,
+    LineOverlayMixins,
+    TickThicknessMixins,
+    MarkDefMixins {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
