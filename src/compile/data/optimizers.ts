@@ -1,5 +1,5 @@
 import {MAIN} from '../../data';
-import {Dict, fieldIntersection, flatten, keys, stringify} from '../../util';
+import {Dict, fieldIntersection, flatten, hash, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
@@ -307,7 +307,7 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 
     // Build groupedAggregates
     for (const agg of aggChildren) {
-      const groupBys = stringify(keys(agg.groupBy).sort());
+      const groupBys = hash(keys(agg.groupBy).sort());
       if (!(groupBys in groupedAggregates)) {
         groupedAggregates[groupBys] = [];
       }
@@ -318,9 +318,8 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
     for (const group of keys(groupedAggregates)) {
       const mergeableAggs = groupedAggregates[group];
       if (mergeableAggs.length > 1) {
-        const mergedAggs = mergeableAggs[0];
-        for (let i = 1; i < mergeableAggs.length; i++) {
-          const agg = mergeableAggs[i];
+        const mergedAggs = mergeableAggs.pop();
+        for (const agg of mergeableAggs) {
           if (mergedAggs.merge(agg)) {
             parent.removeChild(agg);
             agg.parent = mergedAggs;

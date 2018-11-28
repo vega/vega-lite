@@ -188,9 +188,6 @@ export function isEqual<T>(dict: Dict<T>, other: Dict<T>) {
     return false;
   }
   for (const key of dictKeys) {
-    if (!contains(otherKeys, key)) {
-      return false;
-    }
     if (dict[key] !== other[key]) {
       return false;
     }
