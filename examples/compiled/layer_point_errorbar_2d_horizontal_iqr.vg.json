@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["q1", "q3", "median"],
+          "ops": ["median", "q1", "q3"],
           "fields": ["yield", "yield", "yield"],
-          "as": ["lower_yield", "upper_yield", "median_yield"]
+          "as": ["median_yield", "lower_yield", "upper_yield"]
         }
       ]
     }

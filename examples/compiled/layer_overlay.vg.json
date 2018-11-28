@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["Cylinders"],
-          "ops": ["max", "min"],
+          "ops": ["min", "max"],
           "fields": ["Horsepower", "Horsepower"],
-          "as": ["max_Horsepower", "min_Horsepower"]
+          "as": ["min_Horsepower", "max_Horsepower"]
         }
       ]
     }

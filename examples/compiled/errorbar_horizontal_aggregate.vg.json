@@ -37,9 +37,9 @@
         {
           "type": "aggregate",
           "groupby": ["age"],
-          "ops": ["min", "max"],
+          "ops": ["max", "min"],
           "fields": ["people", "people"],
-          "as": ["min_people", "max_people"]
+          "as": ["max_people", "min_people"]
         }
       ]
     }

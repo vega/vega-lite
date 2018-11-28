@@ -15,16 +15,16 @@
         {
           "type": "aggregate",
           "groupby": [],
-          "ops": ["stdev", "mean", "mean"],
+          "ops": ["mean", "mean", "stdev"],
           "fields": [
             "Miles_per_Gallon",
             "Miles_per_Gallon",
             "Miles_per_Gallon"
           ],
           "as": [
-            "extent_Miles_per_Gallon",
+            "mean_Miles_per_Gallon",
             "center_Miles_per_Gallon",
-            "mean_Miles_per_Gallon"
+            "extent_Miles_per_Gallon"
           ]
         }
       ]

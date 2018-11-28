@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["stderr", "mean", "mean"],
+          "ops": ["mean", "mean", "stderr"],
           "fields": ["yield", "yield", "yield"],
-          "as": ["extent_yield", "center_yield", "mean_yield"]
+          "as": ["mean_yield", "center_yield", "extent_yield"]
         }
       ]
     },

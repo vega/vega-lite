@@ -20,9 +20,9 @@
         {
           "type": "aggregate",
           "groupby": [],
-          "ops": ["min", "max"],
+          "ops": ["max", "min"],
           "fields": ["Miles_per_Gallon", "Miles_per_Gallon"],
-          "as": ["min_Miles_per_Gallon", "max_Miles_per_Gallon"]
+          "as": ["max_Miles_per_Gallon", "min_Miles_per_Gallon"]
         }
       ]
     }

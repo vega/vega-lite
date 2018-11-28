@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["mean", "ci0", "ci1"],
+          "ops": ["ci0", "ci1", "mean"],
           "fields": ["yield", "yield", "yield"],
-          "as": ["mean_yield", "lower_yield", "upper_yield"]
+          "as": ["lower_yield", "upper_yield", "mean_yield"]
         }
       ]
     }

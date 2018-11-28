@@ -22,9 +22,9 @@
         {
           "type": "aggregate",
           "groupby": ["month_date"],
-          "ops": ["mean", "max", "min"],
-          "fields": ["precipitation", "temp_max", "temp_min"],
-          "as": ["mean_precipitation", "max_temp_max", "min_temp_min"]
+          "ops": ["min", "mean", "max"],
+          "fields": ["temp_min", "precipitation", "temp_max"],
+          "as": ["min_temp_min", "mean_precipitation", "max_temp_max"]
         }
       ]
     }

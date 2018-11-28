@@ -98,8 +98,8 @@
           "type": "aggregate",
           "groupby": ["a", "b"],
           "ops": ["median", "median"],
-          "fields": ["median_x_by_a", "median_y_by_b"],
-          "as": ["median_median_x_by_a", "median_median_y_by_b"]
+          "fields": ["median_y_by_b", "median_x_by_a"],
+          "as": ["median_median_y_by_b", "median_median_x_by_a"]
         }
       ]
     }
@@ -223,8 +223,8 @@
               "type": "aggregate",
               "groupby": [],
               "ops": ["median", "median"],
-              "fields": ["median_x_by_a", "median_y_by_b"],
-              "as": ["median_median_x_by_a", "median_median_y_by_b"]
+              "fields": ["median_y_by_b", "median_x_by_a"],
+              "as": ["median_median_y_by_b", "median_median_x_by_a"]
             }
           ]
         }
