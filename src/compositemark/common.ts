@@ -2,7 +2,7 @@ import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
 import {Encoding, reduce} from '../encoding';
-import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {Field, FieldDef, FieldDefWithoutScale, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
@@ -104,44 +104,50 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   orient: Orient,
   compositeMark: M
-) {
+): {
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxisChannelDef2: FieldDef<string>;
+  continuousAxisChannelDefError: FieldDef<string>;
+  continuousAxisChannelDefError2: FieldDef<string>;
+  continuousAxis: 'x' | 'y';
+} {
   const {encoding} = spec;
 
   let continuousAxisChannelDef: PositionFieldDef<string>;
-  let continuousAxisChannelDef2: PositionFieldDef<string>;
+  let continuousAxisChannelDef2: FieldDefWithoutScale<string>;
+  let continuousAxisChannelDefError: FieldDefWithoutScale<string>;
+  let continuousAxisChannelDefError2: FieldDefWithoutScale<string>;
   let continuousAxis: 'x' | 'y';
 
-  if (orient === 'vertical') {
-    continuousAxis = 'y';
-    continuousAxisChannelDef = encoding.y as FieldDef<string>; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
-    continuousAxisChannelDef2 = encoding.y2 ? (encoding.y2 as FieldDef<string>) : undefined;
-  } else {
-    continuousAxis = 'x';
-    continuousAxisChannelDef = encoding.x as FieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-    continuousAxisChannelDef2 = encoding.x2 ? (encoding.x2 as FieldDef<string>) : undefined;
-  }
+  continuousAxis = orient === 'vertical' ? 'y' : 'x';
 
-  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+  continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
+  continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as FieldDefWithoutScale<string>;
+  continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
+  continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
+
+  return {
+    continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
+    continuousAxisChannelDef2: filterAggregateFromChannelDef(continuousAxisChannelDef2, compositeMark),
+    continuousAxisChannelDefError: filterAggregateFromChannelDef(continuousAxisChannelDefError, compositeMark),
+    continuousAxisChannelDefError2: filterAggregateFromChannelDef(continuousAxisChannelDefError2, compositeMark),
+    continuousAxis
+  };
+}
+
+function filterAggregateFromChannelDef<M extends CompositeMark>(
+  continuousAxisChannelDef: FieldDef<string>,
+  compositeMark: M
+): FieldDef<string> {
+  if (isFieldDef(continuousAxisChannelDef) && continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
       log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
     }
-    continuousAxisChannelDef = continuousAxisWithoutAggregate;
+    return continuousAxisWithoutAggregate;
+  } else {
+    return continuousAxisChannelDef;
   }
-
-  if (continuousAxisChannelDef2 && continuousAxisChannelDef2.aggregate) {
-    const {aggregate, ...continuousAxisWithoutAggregate2} = continuousAxisChannelDef2;
-    if (aggregate !== compositeMark) {
-      log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
-    }
-    continuousAxisChannelDef2 = continuousAxisWithoutAggregate2;
-  }
-
-  return {
-    continuousAxisChannelDef,
-    continuousAxisChannelDef2,
-    continuousAxis
-  };
 }
 
 export function compositeMarkOrient<M extends CompositeMark>(
