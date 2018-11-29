@@ -20,21 +20,21 @@
           "groupby": ["month_date", "weather"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         },
         {
           "type": "stack",
           "groupby": ["month_date"],
-          "field": "count_*",
+          "field": "__count",
           "sort": {"field": ["weather"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
+          "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
       ]
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 20},
+    {"name": "x_step", "value": 21},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -50,18 +50,18 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"scale": "color", "field": "weather"}
           ],
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
           },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
-          "y": {"scale": "y", "field": "count_*_end"},
-          "y2": {"scale": "y", "field": "count_*_start"}
+          "y": {"scale": "y", "field": "__count_end"},
+          "y2": {"scale": "y", "field": "__count_start"}
         }
       }
     }
@@ -80,7 +80,7 @@
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "fields": ["count_*_start", "count_*_end"]
+        "fields": ["__count_start", "__count_end"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
@@ -114,7 +114,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Count of Records",
+      "title": "Number of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1
@@ -136,7 +136,6 @@
   "legends": [
     {
       "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "weather",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

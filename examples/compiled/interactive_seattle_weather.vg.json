@@ -30,7 +30,7 @@
           "groupby": ["weather"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -53,7 +53,7 @@
   ],
   "signals": [
     {"name": "concat_0_height", "value": 300},
-    {"name": "concat_1_y_step", "value": 20},
+    {"name": "concat_1_y_step", "value": 21},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
@@ -311,7 +311,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
+                "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
@@ -432,7 +432,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"weather\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [datum[\"weather\"]]} : null",
               "force": true
             }
           ]
@@ -471,7 +471,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {
@@ -482,9 +482,9 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"Number of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
               },
-              "x": {"scale": "concat_1_x", "field": "count_*"},
+              "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
               "height": {"scale": "concat_1_y", "band": true}
@@ -497,7 +497,7 @@
           "scale": "concat_1_x",
           "orient": "bottom",
           "grid": false,
-          "title": "Count of Records",
+          "title": "Number of Records",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},
@@ -557,7 +557,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -575,7 +575,6 @@
     {
       "title": "Weather",
       "stroke": "color",
-      "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
       "encode": {
         "symbols": {
           "update": {
@@ -588,7 +587,6 @@
     },
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
       "title": "precipitation",
       "encode": {
         "symbols": {

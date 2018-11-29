@@ -56,7 +56,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -114,7 +114,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -127,7 +127,7 @@
           "groupby": ["Major_Genre"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     }
@@ -173,13 +173,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
-                {"scale": "color", "field": "count_*"}
+                {"scale": "color", "field": "__count"}
               ],
               "tooltip": {
-                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"All Movies\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"All Movies\": format(datum[\"__count\"], \"\")}"
               },
               "x2": {
                 "scale": "concat_0_x",
@@ -209,20 +209,20 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "transparent"}
               ],
               "stroke": [
                 {
-                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) || datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "#666"}
               ],
               "tooltip": {
-                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"In Selected Category\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"In Selected Category\": format(datum[\"__count\"], \"\")}"
               },
               "x": {
                 "signal": "scale(\"concat_0_x\", (datum[\"bin_maxbins_10_IMDB_Rating\"] + datum[\"bin_maxbins_10_IMDB_Rating_end\"]) / 2)"
@@ -230,7 +230,7 @@
               "y": {
                 "signal": "scale(\"concat_0_y\", (datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] + datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"]) / 2)"
               },
-              "size": {"scale": "size", "field": "count_*"}
+              "size": {"scale": "size", "field": "__count"}
             }
           }
         }
@@ -243,7 +243,7 @@
           "title": "IMDB_Rating (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/10)"},
+          "tickCount": {"signal": "ceil(concat_0_width/20)"},
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
           },
@@ -255,7 +255,7 @@
           "grid": false,
           "title": "Rotten_Tomatoes_Rating (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/10)"},
+          "tickCount": {"signal": "ceil(concat_0_height/20)"},
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)"
           },
@@ -263,16 +263,10 @@
         }
       ],
       "legends": [
-        {
-          "direction": "horizontal",
-          "gradientLength": 120,
-          "title": "All Movies",
-          "fill": "color"
-        },
+        {"title": "All Movies", "fill": "color"},
         {
           "title": "In Selected Category",
           "size": "size",
-          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "encode": {
             "symbols": {
               "update": {
@@ -301,7 +295,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Major_Genre\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: pts_tuple_fields, values: [datum[\"Major_Genre\"]]} : null",
               "force": true
             }
           ]
@@ -330,7 +324,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {
@@ -340,11 +334,11 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Number of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {"scale": "concat_1_x", "field": "Major_Genre"},
               "width": {"scale": "concat_1_x", "band": true},
-              "y": {"scale": "concat_1_y", "field": "count_*"},
+              "y": {"scale": "concat_1_y", "field": "__count"},
               "y2": {"scale": "concat_1_y", "value": 0}
             }
           }
@@ -365,7 +359,7 @@
           "scale": "concat_1_y",
           "orient": "left",
           "grid": false,
-          "title": "Count of Records",
+          "title": "Number of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 1
@@ -390,20 +384,15 @@
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": "heatmap",
       "zero": false
     },
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "count_*"},
-      "range": [
-        0,
-        {
-          "signal": "pow(0.95 * min(concat_0_width / ((concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.step), concat_0_height / ((concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)), 2)"
-        }
-      ],
+      "domain": {"data": "data_1", "field": "__count"},
+      "range": [0, 361],
       "zero": true
     },
     {
@@ -451,7 +440,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "count_*"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

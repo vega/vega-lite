@@ -33,7 +33,7 @@
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -60,7 +60,7 @@
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     }
@@ -75,17 +75,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1},
           "x": {"scale": "x", "field": "bin_maxbins_10_distance_end"},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -99,17 +99,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "goldenrod"}
           ],
           "tooltip": {
-            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1},
           "x": {"scale": "x", "field": "bin_maxbins_10_distance_end"},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -135,8 +135,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -152,7 +152,7 @@
       "title": "distance (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/10)"},
+      "tickCount": {"signal": "ceil(width/20)"},
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
       },
@@ -162,7 +162,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Count of Records",
+      "title": "Number of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

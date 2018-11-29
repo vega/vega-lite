@@ -30,7 +30,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -82,7 +82,7 @@
           "scale": "y",
           "orient": "left",
           "grid": false,
-          "title": "Count of Records",
+          "title": "Number of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "zindex": 1
@@ -102,7 +102,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/10)"},
+          "tickCount": {"signal": "ceil(child_width/20)"},
           "values": {
             "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
           },
@@ -134,13 +134,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x2": {
                 "scale": "x",
@@ -148,7 +148,7 @@
                 "offset": 1
               },
               "x": {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"},
-              "y": {"scale": "y", "field": "count_*"},
+              "y": {"scale": "y", "field": "__count"},
               "y2": {"scale": "y", "value": 0}
             }
           }
@@ -185,7 +185,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true

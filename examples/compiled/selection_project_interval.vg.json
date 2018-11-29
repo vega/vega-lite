@@ -15,18 +15,21 @@
           "groupby": ["Origin", "Cylinders"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 20},
-    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
-    {"name": "y_step", "value": 20},
+    {"name": "x_step", "value": 21},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {"name": "y_step", "value": 21},
     {
       "name": "height",
-      "update": "bandspace(domain('y').length, 0, 0) * y_step"
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
     },
     {
       "name": "unit",
@@ -280,18 +283,18 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {
               "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
               "scale": "color",
-              "field": "count_*"
+              "field": "__count"
             },
             {"value": "grey"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -352,21 +355,21 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0,
-      "paddingOuter": 0
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
     },
     {
       "name": "y",
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0,
-      "paddingOuter": 0
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
     },
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": "heatmap",
       "zero": false
     }
@@ -392,12 +395,6 @@
       "zindex": 1
     }
   ],
-  "legends": [
-    {
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "title": "Count of Records"
-    }
-  ],
+  "legends": [{"fill": "color", "title": "Number of Records"}],
   "config": {"axisY": {"minExtent": 30}}
 }
