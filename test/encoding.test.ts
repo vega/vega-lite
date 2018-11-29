@@ -4,6 +4,7 @@ import {Encoding, extractTransformsFromEncoding, markChannelCompatible, normaliz
 import {isPositionFieldDef} from '../src/fielddef';
 import * as log from '../src/log';
 import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
+import {internalField} from '../src/util';
 
 describe('encoding', () => {
   describe('normalizeEncoding', () => {
@@ -134,12 +135,12 @@ describe('encoding', () => {
       expect(output).toEqual({
         bins: [{bin: {maxbins: 10}, field: 'a', as: 'bin_maxbins_10_a'}],
         timeUnits: [],
-        aggregate: [{op: 'count', as: 'count_*'}],
+        aggregate: [{op: 'count', as: internalField('count')}],
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
           x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
           x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
-          y: {field: 'count_*', type: 'quantitative', title: 'Count of Records'}
+          y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
         }
       });
     });

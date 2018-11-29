@@ -1,5 +1,6 @@
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {AggregateTransform} from '../../../src/transform';
+import {internalField} from '../../../src/util';
 import {parseUnitModel} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
@@ -47,7 +48,9 @@ describe('compile/data/summary', () => {
 
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.hash()).toBe(
-        'Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"count_*\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}'
+        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"${internalField(
+          'count'
+        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`
       );
     });
   });
@@ -76,7 +79,7 @@ describe('compile/data/summary', () => {
         groupby: ['Origin'],
         ops: ['sum', 'count'],
         fields: ['Acceleration', '*'],
-        as: ['sum_Acceleration', 'count_*']
+        as: ['sum_Acceleration', internalField('count')]
       });
     });
 
@@ -161,7 +164,7 @@ describe('compile/data/summary', () => {
         ],
         ops: ['count'],
         fields: ['*'],
-        as: ['count_*']
+        as: [internalField('count')]
       });
     });
 
