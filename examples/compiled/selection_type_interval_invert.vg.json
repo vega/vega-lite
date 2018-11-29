@@ -15,7 +15,7 @@
           "groupby": ["Origin", "Cylinders"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     }
@@ -283,17 +283,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {
               "test": "!(length(data(\"pts_store\"))) || (!(vlSelectionTest(\"pts_store\", datum)))",
               "value": "grey"
             },
-            {"scale": "color", "field": "count_*"}
+            {"scale": "color", "field": "__count"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -368,7 +368,7 @@
     {
       "name": "color",
       "type": "sequential",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": "heatmap",
       "zero": false
     }

@@ -30,7 +30,7 @@
           "groupby": ["weather"],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -471,7 +471,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {
@@ -482,9 +482,9 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"Number of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
               },
-              "x": {"scale": "concat_1_x", "field": "count_*"},
+              "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
               "height": {"scale": "concat_1_y", "band": true}
@@ -557,7 +557,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
