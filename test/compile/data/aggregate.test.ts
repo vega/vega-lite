@@ -4,7 +4,7 @@ import {DataFlowNode} from './../../../src/compile/data/dataflow';
 import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {AggregateTransform} from '../../../src/transform';
-import {StringSet} from '../../../src/util';
+import {internalField, StringSet} from '../../../src/util';
 import {VgAggregateTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
 
@@ -53,7 +53,9 @@ describe('compile/data/summary', () => {
       const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual(
         agg.hash(),
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"count_*"},"Acceleration":{"sum":"sum_Acceleration"}}}'
+        `Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"${internalField(
+          'count'
+        )}"},"Acceleration":{"sum":"sum_Acceleration"}}}`
       );
     });
   });
@@ -82,7 +84,7 @@ describe('compile/data/summary', () => {
         groupby: ['Origin'],
         ops: ['sum', 'count'],
         fields: ['Acceleration', '*'],
-        as: ['sum_Acceleration', 'count_*']
+        as: ['sum_Acceleration', internalField('count')]
       });
     });
 
@@ -167,7 +169,7 @@ describe('compile/data/summary', () => {
         ],
         ops: ['count'],
         fields: ['*'],
-        as: ['count_*']
+        as: [internalField('count')]
       });
     });
 

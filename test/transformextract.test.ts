@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
 import {normalize} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
-import {StringSet} from '../src/util';
+import {internalField, StringSet} from '../src/util';
 import {initConfig} from './../src/config';
 import {NormalizedSpec, TopLevelSpec} from './../src/spec';
 
@@ -157,7 +157,7 @@ describe('extractTransforms()', () => {
         spec: {
           transform: [
             {
-              aggregate: [{op: 'count', as: 'count_*'}],
+              aggregate: [{op: 'count', as: internalField('count')}],
               groupby: ['Worldwide_Gross']
             }
           ],
@@ -166,7 +166,7 @@ describe('extractTransforms()', () => {
           height: 234,
           encoding: {
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
+            y: {field: internalField('count'), type: 'quantitative', title: 'Number of Records'}
           }
         }
       });

@@ -410,3 +410,11 @@ export function uniqueId(prefix?: string) {
 export function resetIdCounter() {
   idCounter = 42;
 }
+
+export function internalField(name: string) {
+  return isInternalField(name) ? name : `__${name}`;
+}
+
+export function isInternalField(name: string) {
+  return name.indexOf('__') === 0;
+}

@@ -7,6 +7,7 @@ import {Config} from '../../../src/config';
 import {Encoding} from '../../../src/encoding';
 import {defaultMarkConfig} from '../../../src/mark';
 import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
+import {internalField} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Point', () => {
@@ -147,7 +148,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have scale for size', () => {
-      assert.deepEqual(props.size, {scale: SIZE, field: 'count_*'});
+      assert.deepEqual(props.size, {scale: SIZE, field: internalField('count')});
     });
   });
 

@@ -5,6 +5,7 @@ import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
 import {NormalizedUnitSpec} from '../../../src/spec';
+import {internalField} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Area', () => {
@@ -86,7 +87,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
+      assert.deepEqual(props.y, {scale: Y, field: internalField('count')});
     });
 
     it('should have the correct value for y2', () => {
@@ -103,7 +104,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
+      assert.deepEqual(props.y, {scale: Y, field: internalField('count')});
     });
 
     it('should have the correct value for y2', () => {
@@ -121,8 +122,8 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for y and y2', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'count_*_end'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'count_*_start'});
+      assert.deepEqual(props.y, {scale: 'y', field: internalField('count_end')});
+      assert.deepEqual(props.y2, {scale: 'y', field: internalField('count_start')});
     });
 
     it('should have correct orient', () => {
@@ -155,7 +156,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'count_*'});
+      assert.deepEqual(props.x, {scale: X, field: internalField('count')});
     });
 
     it('should have the correct value for x2', () => {
@@ -215,8 +216,8 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for x and x2', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'count_*_end'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'count_*_start'});
+      assert.deepEqual(props.x, {scale: 'x', field: internalField('count_end')});
+      assert.deepEqual(props.x2, {scale: 'x', field: internalField('count_start')});
     });
 
     it('should have correct orient', () => {

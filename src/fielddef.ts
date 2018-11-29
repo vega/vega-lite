@@ -28,7 +28,7 @@ import {
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, Type} from './type';
-import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
 type Value = number | string | boolean | null;
 
@@ -389,7 +389,7 @@ export function vgField(
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    field = 'count_*';
+    field = internalField('count');
   } else {
     let fn: string;
 
