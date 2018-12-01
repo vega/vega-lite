@@ -244,8 +244,8 @@
           "update": {
             "fill": {"value": "#4c78a8"},
             "shape": {"value": "circle"},
-            "stroke": {"value": "transparent"},
-            "opacity": {"value": 0.7}
+            "opacity": {"value": 0.7},
+            "stroke": {"value": "transparent"}
           }
         }
       }
