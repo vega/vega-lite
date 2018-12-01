@@ -53,7 +53,7 @@ describe('compile/data/summary', () => {
       const agg = AggregateNode.makeFromEncoding(null, model);
       assert.deepEqual(
         agg.hash(),
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":"count_*"},"Acceleration":{"sum":"sum_Acceleration"}}}'
+        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
       );
     });
   });
@@ -226,6 +226,24 @@ describe('compile/data/summary', () => {
         AvgDisplacement: true,
         Acceleration_sum: true
       });
+    });
+  });
+
+  describe('merge', () => {
+    it('should not merge AggregateNodes with different dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, {a: true, b: true}, {});
+      const agg2 = new AggregateNode(parent, {a: true}, {});
+
+      expect(agg1.merge(agg2)).toBe(false);
+    });
+    it('should merge AggregateNodes with same dimensions', () => {
+      const parent = new DataFlowNode(null);
+      const agg1 = new AggregateNode(parent, {a: true, b: true}, {a: {mean: {a_mean: true}}});
+      const agg2 = new AggregateNode(parent, {a: true, b: true}, {b: {mean: {b_mean: true}}});
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.producedFields()).toEqual({a_mean: true, b_mean: true});
     });
   });
 });

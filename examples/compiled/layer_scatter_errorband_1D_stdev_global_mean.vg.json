@@ -15,10 +15,24 @@
         {
           "type": "aggregate",
           "groupby": [],
-          "ops": ["stdev", "mean"],
-          "fields": ["Miles_per_Gallon", "Miles_per_Gallon"],
-          "as": ["extent_Miles_per_Gallon", "center_Miles_per_Gallon"]
-        },
+          "ops": ["mean", "mean", "stdev"],
+          "fields": [
+            "Miles_per_Gallon",
+            "Miles_per_Gallon",
+            "Miles_per_Gallon"
+          ],
+          "as": [
+            "mean_Miles_per_Gallon",
+            "center_Miles_per_Gallon",
+            "extent_Miles_per_Gallon"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "type": "formula",
           "expr": "datum.center_Miles_per_Gallon + datum.extent_Miles_per_Gallon",
@@ -28,19 +42,6 @@
           "type": "formula",
           "expr": "datum.center_Miles_per_Gallon - datum.extent_Miles_per_Gallon",
           "as": "lower_Miles_per_Gallon"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["mean"],
-          "fields": ["Miles_per_Gallon"],
-          "as": ["mean_Miles_per_Gallon"]
         }
       ]
     }
@@ -80,7 +81,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["rect", "errorband-band"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.2},
@@ -105,7 +106,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": [
@@ -140,9 +141,9 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "Miles_per_Gallon"},
-          {"data": "data_0", "field": "lower_Miles_per_Gallon"},
-          {"data": "data_0", "field": "upper_Miles_per_Gallon"},
-          {"data": "data_1", "field": "mean_Miles_per_Gallon"}
+          {"data": "data_1", "field": "lower_Miles_per_Gallon"},
+          {"data": "data_1", "field": "upper_Miles_per_Gallon"},
+          {"data": "data_0", "field": "mean_Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],

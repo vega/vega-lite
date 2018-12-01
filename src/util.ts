@@ -181,15 +181,18 @@ export type StringSet = Dict<true>;
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
-export function differ<T>(dict: Dict<T>, other: Dict<T>) {
-  for (const key in dict) {
-    if (dict.hasOwnProperty(key)) {
-      if (other[key] && dict[key] && other[key] !== dict[key]) {
-        return true;
-      }
+export function isEqual<T>(dict: Dict<T>, other: Dict<T>) {
+  const dictKeys = keys(dict);
+  const otherKeys = keys(other);
+  if (dictKeys.length !== otherKeys.length) {
+    return false;
+  }
+  for (const key of dictKeys) {
+    if (dict[key] !== other[key]) {
+      return false;
     }
   }
-  return false;
+  return true;
 }
 
 export function hasIntersection(a: StringSet, b: StringSet) {

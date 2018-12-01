@@ -1,5 +1,5 @@
 import {MAIN} from '../../data';
-import {fieldIntersection, flatten, keys} from '../../util';
+import {Dict, fieldIntersection, flatten, hash, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
@@ -286,6 +286,46 @@ export class MergeParse extends BottomUpOptimizer {
           parseNode.parent = mergedParseNode;
           if (keys(parseNode.parse).length === 0) {
             parseNode.remove();
+          }
+        }
+      }
+    }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
+export class MergeAggregateNodes extends BottomUpOptimizer {
+  public run(node: DataFlowNode): optimizers.OptimizerFlags {
+    const parent = node.parent;
+    const aggChildren = parent.children.filter((x): x is AggregateNode => x instanceof AggregateNode);
+
+    // Object which we'll use to map the fields which an aggregate is grouped by to
+    // the set of aggregates with that grouping. This is useful as only aggregates
+    // with the same group by can be merged
+    const groupedAggregates: Dict<AggregateNode[]> = {};
+
+    // Build groupedAggregates
+    for (const agg of aggChildren) {
+      const groupBys = hash(keys(agg.groupBy).sort());
+      if (!(groupBys in groupedAggregates)) {
+        groupedAggregates[groupBys] = [];
+      }
+      groupedAggregates[groupBys].push(agg);
+    }
+
+    // Merge aggregateNodes with same key in groupedAggregates
+    for (const group of keys(groupedAggregates)) {
+      const mergeableAggs = groupedAggregates[group];
+      if (mergeableAggs.length > 1) {
+        const mergedAggs = mergeableAggs.pop();
+        for (const agg of mergeableAggs) {
+          if (mergedAggs.merge(agg)) {
+            parent.removeChild(agg);
+            agg.parent = mergedAggs;
+            agg.remove();
+
+            this.setMutated();
           }
         }
       }

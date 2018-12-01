@@ -33,45 +33,13 @@
           "type": "formula",
           "expr": "toNumber(datum[\"people\"])",
           "as": "people"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
+        },
         {
           "type": "aggregate",
           "groupby": ["age"],
-          "ops": ["min", "max"],
+          "ops": ["max", "min"],
           "fields": ["people", "people"],
-          "as": ["min_people", "max_people"]
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["min"],
-          "fields": ["people"],
-          "as": ["min_people"]
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_1",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["age"],
-          "ops": ["max"],
-          "fields": ["people"],
-          "as": ["max_people"]
+          "as": ["max_people", "min_people"]
         }
       ]
     }
@@ -88,7 +56,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -111,7 +79,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -135,7 +103,7 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": [
@@ -192,10 +160,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "min_people"},
-          {"data": "data_2", "field": "max_people"},
-          {"data": "data_3", "field": "min_people"},
-          {"data": "data_4", "field": "max_people"},
+          {"data": "data_1", "field": "min_people"},
+          {"data": "data_1", "field": "max_people"},
           {"data": "data_0", "field": "mean_people"}
         ]
       },
@@ -208,9 +174,7 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "age"},
-          {"data": "data_3", "field": "age"},
-          {"data": "data_4", "field": "age"},
+          {"data": "data_1", "field": "age"},
           {"data": "data_0", "field": "age"}
         ],
         "sort": true
