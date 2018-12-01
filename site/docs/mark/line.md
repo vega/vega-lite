@@ -77,7 +77,7 @@ The same method can be used to group lines for a ranged dot plot.
 
 ### Line Chart with Point Markers
 
-By setting the `point` property of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `"red"` and set the line color to `"green"`.
+By setting the `point` property of the mark definition to `true` or an object defining a property of the overlaying point marks, we can overlay point markers on top of line.
 
 <span class="vl-example" data-name="line_overlay"></span>
 
@@ -86,6 +86,10 @@ This is equilvalent to adding another layer of filled point marks.
 <span class="vl-example" data-name="normalized/line_overlay_normalized"></span>
 
 Note that the overlay point marks have `opacity` = 1 by default (instead of semi-transparent like normal point marks).
+
+Here we create stroked points by setting their `\"filled\"` to `false` and their `fill` to `\"white\"`.
+
+<span class="vl-example" data-name="line_overlay_stroked"></span>
 
 ### Line Chart with Invalid Values
 

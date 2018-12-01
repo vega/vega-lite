@@ -12,7 +12,7 @@
       }
     },
     {
-      "mark": {"type": "point", "opacity": 1, "filled": true},
+      "mark": {"type": "point", "opacity": 1, "filled": false, "fill": "white"},
       "encoding": {
         "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
         "y": {"aggregate": "mean", "field": "price", "type": "quantitative"},

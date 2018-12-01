@@ -4,7 +4,10 @@
   "data": {"url": "data/stocks.csv"},
   "mark": {
     "type": "line",
-    "point": true
+    "point": {
+      "filled": false,
+      "fill": "white"
+    }
   },
   "encoding": {
     "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
