@@ -80,6 +80,13 @@
               "test": "datum[\"year_date\"] === null || isNaN(datum[\"year_date\"]) || datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
               "value": null
             },
+            {"value": "white"}
+          ],
+          "stroke": [
+            {
+              "test": "datum[\"year_date\"] === null || isNaN(datum[\"year_date\"]) || datum[\"mean_price\"] === null || isNaN(datum[\"mean_price\"])",
+              "value": null
+            },
             {"scale": "color", "field": "symbol"}
           ],
           "tooltip": {
@@ -169,8 +176,15 @@
     {
       "stroke": "color",
       "title": "symbol",
-      "fill": "color",
-      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "white"},
+            "stroke": {"value": "transparent"},
+            "opacity": {"value": 1}
+          }
+        }
+      }
     }
   ],
   "config": {"axisY": {"minExtent": 30}}
