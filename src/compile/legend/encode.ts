@@ -104,11 +104,6 @@ export function symbols(
     }
   }
 
-  if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke) {
-    // for non color channel's legend, we need to override symbol stroke config from Vega config
-    out.stroke = {value: 'transparent'};
-  }
-
   if (channel !== SHAPE) {
     const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
     if (shape) {
