@@ -90,10 +90,10 @@ function onDelta(
   const panFn = !hasScales
     ? 'panLinear'
     : scaleType === 'log'
-      ? 'panLog'
-      : scaleType === 'pow'
-        ? 'panPow'
-        : 'panLinear';
+    ? 'panLog'
+    : scaleType === 'pow'
+    ? 'panPow'
+    : 'panLinear';
   const update =
     `${panFn}(${extent}, ${offset}` +
     (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +

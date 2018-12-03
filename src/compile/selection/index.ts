@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {Binding, SignalRef} from 'vega';
 import {stringValue} from 'vega-util';
 import {
   BrushConfig,
@@ -9,7 +9,7 @@ import {
   SelectionType
 } from '../../selection';
 import {accessPathWithDatum, Dict} from '../../util';
-import {VgBinding, VgEventStream} from '../../vega.schema';
+import {VgEventStream} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -31,7 +31,7 @@ export interface SelectionComponent {
   init?: (SelectionInit | SelectionInitArray)[];
   events: VgEventStream;
   // predicate?: string;
-  bind?: 'scales' | VgBinding | Dict<VgBinding>;
+  bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
   empty: 'all' | 'none';
   mark?: BrushConfig;

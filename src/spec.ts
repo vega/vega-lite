@@ -1,9 +1,10 @@
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet} from './encoding';
+import {Encoding, EncodingWithFacet, forEach} from './encoding';
 import {FacetMapping} from './facet';
 import {Field, FieldDef, RepeatRef} from './fielddef';
+import * as log from './log';
 import {AnyMark, isPrimitiveMark, Mark, MarkDef} from './mark';
 import {Projection} from './projection';
 import {Repeat} from './repeat';
@@ -147,7 +148,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
   /**
    * Layer or single view specifications to be layered.
    *
-   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.
+   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
    */
   layer: (GenericLayerSpec<U> | U)[];
 
@@ -354,4 +355,40 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
     return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
   }
   return false;
+}
+
+/**
+ * Takes a spec and returns a list of fields used in encoding
+ */
+export function usedFields(spec: NormalizedSpec): string[] {
+  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
+    return usedFieldsSingle(spec);
+  }
+  if (isLayerSpec(spec)) {
+    return usedFieldsLayered(spec);
+  }
+  if (isUnitSpec(spec)) {
+    return usedFieldsUnit(spec);
+  }
+  throw new Error(log.message.INVALID_SPEC);
+}
+
+function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
+  const fields: string[] = [];
+  forEach(spec.encoding, (fieldDef, channel) => {
+    fields.push(fieldDef.field);
+  });
+  return fields;
+}
+
+function usedFieldsLayered(spec: NormalizedLayerSpec): string[] {
+  let fields: string[] = [];
+  spec.layer.map(subspec => {
+    fields = fields.concat(usedFields(subspec));
+  });
+  return fields;
+}
+
+function usedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
+  return usedFields(spec.spec);
 }

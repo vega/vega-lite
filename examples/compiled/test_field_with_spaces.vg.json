@@ -20,14 +20,6 @@
         {"a b": 0.6009825566170259, "c d": 0.2648775327299746},
         {"a b": 0.7457746080337384, "c d": 0.15435369511584507}
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"a b\"])", "as": "a b"},
-        {"type": "formula", "expr": "toNumber(datum[\"c d\"])", "as": "c d"}
-      ]
     }
   ],
   "marks": [
@@ -35,7 +27,7 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -66,7 +58,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "a b"},
+      "domain": {"data": "source_0", "field": "a b"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -74,7 +66,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "c d"},
+      "domain": {"data": "source_0", "field": "c d"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

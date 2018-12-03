@@ -147,8 +147,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -242,8 +242,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -914,8 +914,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -981,8 +981,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -1042,6 +1042,24 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+        }
+      },
+      "type": "object"
+    },
+    "BaseBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
         }
       },
       "type": "object"
@@ -1206,6 +1224,119 @@
       ],
       "type": "object"
     },
+    "BindCheckbox": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "checkbox"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "type": "object"
+    },
+    "BindRadioSelect": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "radio",
+            "select"
+          ],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "options": {
+          "items": {
+          },
+          "type": "array"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "options"
+      ],
+      "type": "object"
+    },
+    "BindRange": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element"
+        },
+        "input": {
+          "enum": [
+            "range"
+          ],
+          "type": "string"
+        },
+        "max": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "step": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "type": "object"
+    },
+    "Binding": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/BaseBinding"
+        },
+        {
+          "$ref": "#/definitions/BindCheckbox"
+        },
+        {
+          "$ref": "#/definitions/BindRadioSelect"
+        },
+        {
+          "$ref": "#/definitions/BindRange"
+        }
+      ]
+    },
     "BoxPlot": {
       "enum": [
         "boxplot"
@@ -1237,7 +1368,7 @@
               "type": "number"
             }
           ],
-          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
         },
         "median": {
           "anyOf": [
@@ -1299,6 +1430,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -1315,7 +1450,7 @@
               "type": "number"
             }
           ],
-          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. the product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
         },
         "median": {
           "anyOf": [
@@ -1328,7 +1463,7 @@
           ]
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -2390,6 +2525,9 @@
       ],
       "type": "object"
     },
+    "Element": {
+      "type": "string"
+    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
@@ -2428,6 +2566,17 @@
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
+        },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
         },
         "href": {
           "anyOf": [
@@ -2469,7 +2618,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2520,6 +2669,28 @@
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
         },
         "text": {
           "anyOf": [
@@ -2668,6 +2839,17 @@
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
         },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
         "href": {
           "anyOf": [
             {
@@ -2708,7 +2890,7 @@
               "$ref": "#/definitions/MarkPropValueDefWithCondition"
             }
           ],
-          "description": "Opacity of the marks – either can be a value or a range.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -2763,6 +2945,28 @@
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkPropFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/MarkPropValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
         },
         "text": {
           "anyOf": [
@@ -2908,6 +3112,10 @@
             }
           ]
         },
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2921,7 +3129,7 @@
           "description": "The line interpolation method for the error band. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -2983,6 +3191,10 @@
     "ErrorBarDef": {
       "additionalProperties": false,
       "properties": {
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "color": {
           "description": "Default color.  Note that `fill` and `stroke` have higher precedence than `color` and will override `color`.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
           "type": "string"
@@ -2992,7 +3204,7 @@
           "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "opacity": {
-          "description": "Opacity of the marks.",
+          "description": "The opacity (value between [0,1]) of the mark.",
           "type": "number"
         },
         "orient": {
@@ -3059,7 +3271,7 @@
           "type": "number"
         },
         "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
           "items": {
             "anyOf": [
               {
@@ -3768,7 +3980,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/LogicalOperand<Predicate>",
-          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\nor [`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate).\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a logical operand that combines (1), (2), or (3)."
+          "description": "The `filter` property must be one of the predicate definitions:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string,\nwhere `datum` can be used to refer to the current data object\n\n2) one of the field predicates: [`equal`](https://vega.github.io/vega-lite/docs/filter.html#equal-predicate),\n[`lt`](https://vega.github.io/vega-lite/docs/filter.html#lt-predicate),\n[`lte`](https://vega.github.io/vega-lite/docs/filter.html#lte-predicate),\n[`gt`](https://vega.github.io/vega-lite/docs/filter.html#gt-predicate),\n[`gte`](https://vega.github.io/vega-lite/docs/filter.html#gte-predicate),\n[`range`](https://vega.github.io/vega-lite/docs/filter.html#range-predicate),\n[`oneOf`](https://vega.github.io/vega-lite/docs/filter.html#one-of-predicate),\nor [`valid`](https://vega.github.io/vega-lite/docs/filter.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/filter.html#selection-predicate)\n\n4) a logical operand that combines (1), (2), or (3)."
         }
       },
       "required": [
@@ -5393,6 +5605,9 @@
         "fill": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fillOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -5403,6 +5618,12 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "stroke": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeWidth": {
           "$ref": "#/definitions/ResolveMode"
         }
       },
@@ -5454,8 +5675,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5538,8 +5759,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -5614,6 +5835,7 @@
         "yearmonthdatehoursminutesseconds",
         "quartermonth",
         "monthdate",
+        "monthdatehours",
         "hoursminutes",
         "hoursminutesseconds",
         "minutesseconds",
@@ -5876,8 +6098,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -5943,8 +6165,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6063,8 +6285,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6158,8 +6380,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -6544,8 +6766,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -6611,8 +6833,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -7635,6 +7857,9 @@
         "fill": {
           "$ref": "#/definitions/ResolveMode"
         },
+        "fillOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
         "opacity": {
           "$ref": "#/definitions/ResolveMode"
         },
@@ -7645,6 +7870,12 @@
           "$ref": "#/definitions/ResolveMode"
         },
         "stroke": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeOpacity": {
+          "$ref": "#/definitions/ResolveMode"
+        },
+        "strokeWidth": {
           "$ref": "#/definitions/ResolveMode"
         },
         "x": {
@@ -7805,8 +8036,11 @@
         "color",
         "fill",
         "stroke",
+        "strokeWidth",
         "size",
         "shape",
+        "fillOpacity",
+        "strokeOpacity",
         "opacity",
         "text",
         "tooltip",
@@ -7821,11 +8055,11 @@
         "bind": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VgBinding"
+              "$ref": "#/definitions/Binding"
             },
             {
               "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
+                "$ref": "#/definitions/Binding"
               },
               "type": "object"
             }
@@ -7888,11 +8122,11 @@
         "bind": {
           "anyOf": [
             {
-              "$ref": "#/definitions/VgBinding"
+              "$ref": "#/definitions/Binding"
             },
             {
               "additionalProperties": {
-                "$ref": "#/definitions/VgBinding"
+                "$ref": "#/definitions/Binding"
               },
               "type": "object"
             }
@@ -8159,8 +8393,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8230,8 +8464,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8406,8 +8640,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -8473,8 +8707,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -8749,7 +8983,7 @@
           "type": "number"
         },
         "layer": {
-          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed.",
+          "description": "Layer or single view specifications to be layered.\n\n__Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.",
           "items": {
             "anyOf": [
               {
@@ -9519,6 +9753,7 @@
         "utcyearmonthdatehoursminutesseconds",
         "utcquartermonth",
         "utcmonthdate",
+        "utcmonthdatehours",
         "utchoursminutes",
         "utchoursminutesseconds",
         "utcminutesseconds",
@@ -9658,43 +9893,6 @@
       },
       "type": "object"
     },
-    "VgBinding": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/VgCheckboxBinding"
-        },
-        {
-          "$ref": "#/definitions/VgRadioBinding"
-        },
-        {
-          "$ref": "#/definitions/VgSelectBinding"
-        },
-        {
-          "$ref": "#/definitions/VgRangeBinding"
-        },
-        {
-          "$ref": "#/definitions/VgGenericBinding"
-        }
-      ]
-    },
-    "VgCheckboxBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "checkbox"
-          ],
-          "type": "string"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
-    },
     "VgComparatorOrder": {
       "enum": [
         "ascending",
@@ -9703,21 +9901,6 @@
       "type": "string"
     },
     "VgEventStream": {
-    },
-    "VgGenericBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
     },
     "VgLayoutAlign": {
       "enum": [
@@ -9769,8 +9952,8 @@
           "type": "string"
         },
         "fill": {
-          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Fill Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -9832,8 +10015,8 @@
           "type": "number"
         },
         "stroke": {
-          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)",
-          "type": "string"
+          "$ref": "#/definitions/Color",
+          "description": "Default Stroke Color.  This has higher precedence than `config.color`\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -9907,58 +10090,6 @@
       ],
       "type": "string"
     },
-    "VgRadioBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "radio"
-          ],
-          "type": "string"
-        },
-        "options": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "input",
-        "options"
-      ],
-      "type": "object"
-    },
-    "VgRangeBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "range"
-          ],
-          "type": "string"
-        },
-        "max": {
-          "type": "number"
-        },
-        "min": {
-          "type": "number"
-        },
-        "step": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "input"
-      ],
-      "type": "object"
-    },
     "VgScheme": {
       "additionalProperties": false,
       "properties": {
@@ -9977,31 +10108,6 @@
       },
       "required": [
         "scheme"
-      ],
-      "type": "object"
-    },
-    "VgSelectBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "element": {
-          "type": "string"
-        },
-        "input": {
-          "enum": [
-            "select"
-          ],
-          "type": "string"
-        },
-        "options": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "input",
-        "options"
       ],
       "type": "object"
     },

@@ -1,6 +1,7 @@
+import {Binding} from 'vega';
 import {SingleDefChannel} from './channel';
 import {DateTime} from './datetime';
-import {VgBinding, VgEventStream} from './vega.schema';
+import {VgEventStream} from './vega.schema';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
@@ -66,7 +67,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
    *
    * See the [bind transform](https://vega.github.io/vega-lite/docs/bind.html) documentation for more information.
    */
-  bind?: VgBinding | {[key: string]: VgBinding};
+  bind?: Binding | {[key: string]: Binding};
 
   /**
    * When true, an invisible voronoi diagram is computed to accelerate discrete

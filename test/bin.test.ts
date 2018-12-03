@@ -1,11 +1,25 @@
 import {assert} from 'chai';
 import {autoMaxBins, binToString, isBinParams} from '../src/bin';
-import {COLOR, COLUMN, OPACITY, ROW, SHAPE} from '../src/channel';
+import {
+  COLOR,
+  COLUMN,
+  FILL,
+  FILLOPACITY,
+  OPACITY,
+  ROW,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEOPACITY,
+  STROKEWIDTH
+} from '../src/channel';
 
 describe('autoMaxBins', () => {
   it('should assign generate correct defaults for different channels', () => {
     // Not testing case for 10 because it's already tested
-    [COLOR, OPACITY, SHAPE, ROW, COLUMN].forEach(a => assert.deepEqual(autoMaxBins(a), 6));
+    [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, SHAPE, ROW, COLUMN].forEach(a =>
+      assert.deepEqual(autoMaxBins(a), 6)
+    );
   });
 });
 

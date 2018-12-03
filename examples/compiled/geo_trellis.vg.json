@@ -11,7 +11,7 @@
     {
       "name": "source_0",
       "url": "data/income.json",
-      "format": {"type": "json", "parse": {"pct": "number"}},
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "lookup",

@@ -8,7 +8,7 @@
     {
       "name": "source_0",
       "url": "data/barley.json",
-      "format": {"type": "json", "parse": {"yield": "number"}},
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "formula",

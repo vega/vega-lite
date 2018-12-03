@@ -6,19 +6,7 @@
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Miles_per_Gallon": "number",
-          "Horsepower": "number",
-          "Displacement": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {"name": "concat_0_height", "value": 200},
@@ -33,7 +21,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {
       "name": "grid",
-      "update": "{Displacement: grid_Displacement, Acceleration: grid_Acceleration}"
+      "update": "{\"Displacement\": grid_Displacement, \"Acceleration\": grid_Acceleration}"
     },
     {"name": "grid_Displacement"},
     {"name": "grid_Acceleration"}

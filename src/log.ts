@@ -186,8 +186,8 @@ export namespace message {
     const scaleText = opt.scaleType
       ? `${opt.scaleType} scale`
       : opt.zeroFalse
-        ? 'scale with zero=false'
-        : 'scale with custom domain that excludes zero';
+      ? 'scale with zero=false'
+      : 'scale with custom domain that excludes zero';
 
     return `A ${scaleText} is used to encode ${mark}'s ${channel}. This can be misleading as the ${
       channel === 'x' ? 'width' : 'height'

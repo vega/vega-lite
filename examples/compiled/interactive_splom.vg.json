@@ -7,18 +7,7 @@
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
-    {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "Miles_per_Gallon": "number",
-          "Horsepower": "number",
-          "Acceleration": "number"
-        }
-      }
-    }
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
     {
@@ -34,7 +23,7 @@
     },
     {
       "name": "grid",
-      "update": "{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower, Acceleration: grid_Acceleration}"
+      "update": "{\"Miles_per_Gallon\": grid_Miles_per_Gallon, \"Horsepower\": grid_Horsepower, \"Acceleration\": grid_Acceleration}"
     },
     {"name": "grid_Miles_per_Gallon"},
     {"name": "grid_Horsepower"},

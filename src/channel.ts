@@ -38,6 +38,11 @@ export namespace Channel {
   export const SHAPE: 'shape' = 'shape';
   export const SIZE: 'size' = 'size';
   export const OPACITY: 'opacity' = 'opacity';
+  export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
+
+  export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
+
+  export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
 
   // Non-scale channel
   export const TEXT: 'text' = 'text';
@@ -74,6 +79,12 @@ export const DETAIL = Channel.DETAIL;
 export const KEY = Channel.KEY;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
+export const FILLOPACITY = Channel.FILLOPACITY;
+
+export const STROKEOPACITY = Channel.STROKEOPACITY;
+
+export const STROKEWIDTH = Channel.STROKEWIDTH;
+
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
@@ -104,6 +115,10 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
 
   // other non-position with scale
   opacity: 1,
+  fillOpacity: 1,
+  strokeOpacity: 1,
+
+  strokeWidth: 1,
   size: 1,
   shape: 1,
 
@@ -163,8 +178,11 @@ export type SingleDefChannel =
   | 'color'
   | 'fill'
   | 'stroke'
+  | 'strokeWidth'
   | 'size'
   | 'shape'
+  | 'fillOpacity'
+  | 'strokeOpacity'
   | 'opacity'
   | 'text'
   | 'tooltip'
@@ -218,6 +236,9 @@ const {
 export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 
+export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
+  return !!NONPOSITION_CHANNEL_INDEX[channel];
+}
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
@@ -272,6 +293,9 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case HREF:
     case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
     case ROW:
     case COLUMN:
       return {
@@ -341,7 +365,10 @@ export function rangeType(channel: Channel): RangeType {
     case X:
     case Y:
     case SIZE:
+    case STROKEWIDTH:
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
     // X2 and Y2 use X and Y scales, so they similarly have continuous range.
     case X2:
     case Y2:

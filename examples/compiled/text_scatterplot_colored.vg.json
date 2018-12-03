@@ -9,10 +9,7 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json",
-        "parse": {"Horsepower": "number", "Miles_per_Gallon": "number"}
-      },
+      "format": {"type": "json"},
       "transform": [
         {"type": "formula", "expr": "datum.Origin[0]", "as": "OriginInitial"}
       ]

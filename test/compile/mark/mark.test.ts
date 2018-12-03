@@ -1,7 +1,16 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS} from '../../../src/channel';
+import {
+  COLOR,
+  DETAIL,
+  FILLOPACITY,
+  OPACITY,
+  SIZE,
+  STROKEOPACITY,
+  STROKEWIDTH,
+  UNIT_CHANNELS
+} from '../../../src/channel';
 import {getSort, parseMarkGroup, pathGroupingFields} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
@@ -269,7 +278,7 @@ describe('Mark', () => {
 
   describe('pathGroupingFields()', () => {
     it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', () => {
-      for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {field: 'a', type: 'nominal'}})).toEqual(['a']);
       }
     });
@@ -279,13 +288,13 @@ describe('Mark', () => {
     });
 
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
-      for (const channel of [DETAIL, COLOR, SIZE, OPACITY]) {
+      for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
       }
     });
 
     it('should return condition detail fields for color, size, shape', () => {
-      for (const channel of [COLOR, SIZE, OPACITY]) {
+      for (const channel of [COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(
           pathGroupingFields('line', {
             [channel]: {

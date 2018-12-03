@@ -419,8 +419,8 @@ function redirectConfig(
     prop === 'title'
       ? extractTitleConfig(config.title).mark
       : compositeMarkPart
-        ? config[prop][compositeMarkPart]
-        : config[prop];
+      ? config[prop][compositeMarkPart]
+      : config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"

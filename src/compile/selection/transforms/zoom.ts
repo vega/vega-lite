@@ -92,10 +92,10 @@ function onDelta(
   const zoomFn = !hasScales
     ? 'zoomLinear'
     : scaleType === 'log'
-      ? 'zoomLog'
-      : scaleType === 'pow'
-        ? 'zoomPow'
-        : 'zoomLinear';
+    ? 'zoomLog'
+    : scaleType === 'pow'
+    ? 'zoomPow'
+    : 'zoomLinear';
   const update =
     `${zoomFn}(${base}, ${anchor}, ${delta}` +
     (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +

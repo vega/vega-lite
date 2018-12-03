@@ -119,9 +119,14 @@ export function fill<T>(val: T, len: number) {
 }
 
 /**
+ * Like TS Partial but applies recursively to all properties.
+ */
+export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
+
+/**
  * recursively merges src into dest
  */
-export function mergeDeep<T>(dest: T, ...src: Partial<T>[]): T {
+export function mergeDeep<T>(dest: T, ...src: DeepPartial<T>[]): T {
   for (const s of src) {
     dest = deepMerge_(dest, s);
   }
@@ -397,4 +402,11 @@ let idCounter = 42;
 export function uniqueId(prefix?: string) {
   const id = ++idCounter;
   return prefix ? String(prefix) + id : id;
+}
+
+/**
+ * Resets the id counter used in uniqueId. This can be useful for testing.
+ */
+export function resetIdCounter() {
+  idCounter = 42;
 }

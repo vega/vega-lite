@@ -36,22 +36,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Horsepower\"])",
-          "as": "Horsepower"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Miles_per_Gallon\"])",
-          "as": "Miles_per_Gallon"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_1",
-      "transform": [
-        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["mean"],
@@ -66,7 +50,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -121,7 +105,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -145,7 +129,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Horsepower"},
+      "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -155,10 +139,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "Miles_per_Gallon"},
+          {"data": "source_0", "field": "Miles_per_Gallon"},
           {"data": "data_0", "field": "lower_Miles_per_Gallon"},
           {"data": "data_0", "field": "upper_Miles_per_Gallon"},
-          {"data": "data_2", "field": "mean_Miles_per_Gallon"}
+          {"data": "data_1", "field": "mean_Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],

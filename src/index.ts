@@ -6,6 +6,7 @@ import * as compositeMark from './compositemark';
 export {TopLevelSpec} from './spec';
 export {compile} from './compile/compile';
 export {Config} from './config';
+export {extractTransforms} from './transformextract';
 import * as config from './config';
 import * as data from './data';
 import * as datetime from './datetime';

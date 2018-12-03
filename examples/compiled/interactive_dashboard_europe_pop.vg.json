@@ -308,22 +308,6 @@
           "Population_ages_65_and_above_of_total": 12.3228189427425
         }
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Population_ages_15_64_of_total\"])",
-          "as": "Population_ages_15_64_of_total"
-        },
-        {
-          "type": "formula",
-          "expr": "toNumber(datum[\"Population_ages_65_and_above_of_total\"])",
-          "as": "Population_ages_65_and_above_of_total"
-        }
-      ]
     }
   ],
   "signals": [
@@ -557,7 +541,7 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "fill": [
@@ -870,7 +854,7 @@
           "name": "concat_1_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "fill": [
@@ -1244,7 +1228,7 @@
           "name": "concat_2_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "source_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1379,7 +1363,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Population_ages_15_64_of_total"},
+      "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -1388,7 +1372,7 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "data_0",
+        "data": "source_0",
         "field": "Country",
         "sort": {
           "op": "min",
@@ -1404,7 +1388,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
+        "data": "source_0",
         "field": "Population_ages_65_and_above_of_total"
       },
       "range": [0, {"signal": "concat_1_width"}],
@@ -1415,7 +1399,7 @@
       "name": "concat_1_y",
       "type": "band",
       "domain": {
-        "data": "data_0",
+        "data": "source_0",
         "field": "Country",
         "sort": {
           "op": "min",
@@ -1431,7 +1415,7 @@
       "name": "concat_2_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
+        "data": "source_0",
         "field": "Population_ages_65_and_above_of_total"
       },
       "range": [0, {"signal": "concat_2_width"}],
@@ -1441,7 +1425,7 @@
     {
       "name": "concat_2_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Population_ages_15_64_of_total"},
+      "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
       "range": [{"signal": "concat_2_height"}, 0],
       "zero": false,
       "nice": true

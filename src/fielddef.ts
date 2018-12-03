@@ -366,7 +366,7 @@ export interface FieldRefOption {
   suffix?: string;
   /**
    * Use the field name for `as` in a transform.
-   * We will not escape nested acceses because Vega transform outputs cannot be nested.
+   * We will not escape nested accesses because Vega transform outputs cannot be nested.
    */
   forAs?: boolean;
 }
@@ -711,6 +711,9 @@ export function channelCompatibility(
       return COMPATIBLE;
 
     case 'opacity':
+    case 'fillOpacity':
+    case 'strokeOpacity':
+    case 'strokeWidth':
     case 'size':
     case 'x2':
     case 'y2':

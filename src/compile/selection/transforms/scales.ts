@@ -61,10 +61,10 @@ const scaleBindings: TransformCompiler = {
     const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
     const update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-      namedSg.update = `{${bound.map(proj => `${proj.field}: ${proj.signals.data}`).join(', ')}}`;
+      namedSg.update = `{${bound.map(proj => `${stringValue(proj.field)}: ${proj.signals.data}`).join(', ')}}`;
     } else {
       for (const proj of bound) {
-        const mapping = `, ${proj.field}: ${proj.signals.data}`;
+        const mapping = `, ${stringValue(proj.field)}: ${proj.signals.data}`;
         if (update.indexOf(mapping) < 0) {
           namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
         }

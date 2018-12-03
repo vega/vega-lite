@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {numberFormat, timeFormatExpression} from '../../src/compile/common';
+import {mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
 import {vgField} from '../../src/fielddef';
 import {TimeUnit} from '../../src/timeunit';
@@ -113,6 +113,22 @@ describe('Common', () => {
     it('should not use number format for temporal scale', () => {
       expect(numberFormat({bin: true, field: 'a', type: TEMPORAL}, undefined, {})).toBeUndefined();
       expect(numberFormat({bin: true, field: 'a', type: ORDINAL, timeUnit: 'month'}, undefined, {})).toBeUndefined();
+    });
+  });
+
+  describe('mergeTitle()', () => {
+    it('should drop falsy title(s) when merged', () => {
+      expect(mergeTitle('title', null)).toBe('title');
+      expect(mergeTitle(null, 'title')).toBe('title');
+      expect(mergeTitle(null, null)).toBe(null);
+    });
+
+    it('should drop one title when both are the same', () => {
+      expect(mergeTitle('title', 'title')).toBe('title');
+    });
+
+    it('should join 2 titles with comma when both titles are not falsy and difference', () => {
+      expect(mergeTitle('title1', 'title2')).toBe('title1, title2');
     });
   });
 });

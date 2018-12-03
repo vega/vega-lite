@@ -264,10 +264,10 @@ function errorBarAggregationAndCalculation<
     const center: ErrorBarCenter = markDef.center
       ? markDef.center
       : markDef.extent
-        ? markDef.extent === 'iqr'
-          ? 'median'
-          : 'mean'
-        : config.errorbar.center;
+      ? markDef.extent === 'iqr'
+        ? 'median'
+        : 'mean'
+      : config.errorbar.center;
     const extent: ErrorBarExtent = markDef.extent ? markDef.extent : center === 'mean' ? 'stderr' : 'iqr';
 
     if ((center === 'median') !== (extent === 'iqr')) {

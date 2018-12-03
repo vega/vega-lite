@@ -101,9 +101,8 @@ const project: TransformCompiler = {
           const p: SelectionProjection = {field, channel, type};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.push((parsed[field] = p));
+          proj.has[channel] = parsed[field];
         }
-
-        proj.has[channel] = parsed[field];
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }

@@ -11,11 +11,7 @@
       "url": "data/countries.json",
       "format": {
         "type": "json",
-        "parse": {
-          "country": "string",
-          "year": "number",
-          "life_expect": "number"
-        }
+        "parse": {"country": "string", "year": "number"}
       },
       "transform": [
         {

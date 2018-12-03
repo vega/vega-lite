@@ -107,10 +107,16 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     } else if (isTimeUnit(t)) {
       transformNode = head = TimeUnitNode.makeFromTransform(head, t);
       derivedType = 'date';
+
+      // Create parse node because the input to time unit is always date.
+      const parsedAs = ancestorParse.getWithExplicit(t.field);
+      if (parsedAs.value === undefined) {
+        head = new ParseNode(head, {[t.field]: derivedType});
+        ancestorParse.set(t.field, derivedType, false);
+      }
     } else if (isAggregate(t)) {
       transformNode = head = AggregateNode.makeFromTransform(head, t);
       derivedType = 'number';
-
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);
       }
@@ -298,7 +304,6 @@ export function parseData(model: Model): DataComponent {
     outputNodes[facetName] = facetRoot;
     head = facetRoot;
   }
-
   return {
     ...model.component.data,
     outputNodes,

@@ -82,7 +82,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 4 Parse: Model --> Model with components
 
     // Note that components = intermediate representations that are equivalent to Vega specs.
-    // We need these intermediate representation because we need to merge many visualizaiton "components" like projections, scales, axes, and legends.
+    // We need these intermediate representation because we need to merge many visualization "components" like projections, scales, axes, and legends.
     // We will later convert these components into actual Vega specs in the assemble phase.
 
     // In this phase, we do a bottom-up traversal over the whole tree to

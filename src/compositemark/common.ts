@@ -13,9 +13,14 @@ export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConf
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
   ColorMixins & {
     /**
-     * Opacity of the marks.
+     * The opacity (value between [0,1]) of the mark.
      */
     opacity?: number;
+
+    /**
+     * Whether a composite mark be clipped to the enclosing group’s width and height.
+     */
+    clip?: boolean;
   };
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -38,8 +43,8 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       axis && axis.title !== undefined
         ? undefined
         : continuousAxisChannelDef.title !== undefined
-          ? continuousAxisChannelDef.title
-          : continuousAxisChannelDef.field;
+        ? continuousAxisChannelDef.title
+        : continuousAxisChannelDef.field;
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
@@ -72,7 +77,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   compositeMarkConfig: P,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
-  const {color, opacity} = markDef;
+  const {clip, color, opacity} = markDef;
 
   const mark = markDef.type;
 
@@ -82,6 +87,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
         ...partBaseSpec,
         mark: {
           ...(compositeMarkConfig[part] as MarkConfig),
+          ...(clip ? {clip} : {}),
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),

@@ -32,9 +32,10 @@
             },
             "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
             "x": {
-              "field": "year_Year",
+              "title": "Year (year)",
               "type": "temporal",
-              "title": "Year (year)"
+              "field": "year_Year",
+              "axis": {"format": "%Y"}
             }
           }
         }
