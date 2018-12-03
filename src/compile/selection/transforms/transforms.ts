@@ -15,6 +15,7 @@ export interface TransformCompiler {
 }
 
 import inputs from './inputs';
+import legend from './legend';
 import nearest from './nearest';
 import project from './project';
 import scales from './scales';
@@ -28,7 +29,8 @@ const compilers: Dict<TransformCompiler> = {
   translate,
   zoom,
   inputs,
-  nearest
+  nearest,
+  legend
 };
 
 export function forEachTransform(selCmpt: SelectionComponent, cb: (tx: TransformCompiler) => void) {

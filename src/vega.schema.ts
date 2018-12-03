@@ -259,7 +259,7 @@ export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
 }
 
 export interface VgEventHandler {
-  events: string[] | SignalRef;
+  events: string | string[] | SignalRef;
   update?: string;
   encode?: string;
   force?: boolean;
@@ -405,6 +405,12 @@ export interface VgIdentifierTransform {
   as: string;
 }
 
+export interface VgProjectTransform {
+  type: 'project';
+  fields: string[];
+  as: string[];
+}
+
 export type VgTransform =
   | VgBinTransform
   | VgExtentTransform
@@ -421,6 +427,7 @@ export type VgTransform =
   | VgGeoJSONTransform
   | VgWindowTransform
   | VgFoldTransform
+  | VgProjectTransform
   | VgSampleTransform;
 
 export interface VgGeoPointTransform {

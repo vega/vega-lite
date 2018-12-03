@@ -7,6 +7,7 @@ import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
 import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
+import {assembleLegendSelection} from '../selection/assemble';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
@@ -19,6 +20,38 @@ export function parseLegend(model: Model) {
   } else {
     model.component.legends = parseNonUnitLegend(model);
   }
+}
+
+// export function wrapLegendCondition(
+//   model: UnitModel,
+//   channelDef: ChannelDef<string>,
+//   vgChannel: string,
+//   refFn: (cDef: ChannelDef<string>) => VgValueRef
+// ): VgEncodeEntry {
+//   const condition = channelDef && channelDef.condition;
+//   const valueRef = refFn(channelDef);
+//   if (condition) {
+//     const conditions = isArray(condition) ? condition : [condition];
+//     const vgConditions = conditions.map(c => {
+//       const conditionValueRef = refFn(c);
+//       const test = isConditionalSelection(c)
+//         ? assembleSelectionPredicate(model, c.selection)
+//         : expression(model, c.test);
+//       return {
+//         test,
+//         ...conditionValueRef
+//       };
+//     });
+//     return {
+//       [vgChannel]: [...vgConditions, ...(valueRef !== undefined ? [valueRef] : [])]
+//     };
+//   } else {
+//     return valueRef !== undefined ? {[vgChannel]: valueRef} : {};
+//   }
+// }
+
+export function wrapLegendCondition() {
+  console.log('Heyya new func coming up');
 }
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
@@ -91,16 +124,38 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendEncode = ['labels', 'legend', 'title', 'symbols', 'gradient'].reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] || {}, model);
-      const value = encode[part]
+      let value = encode[part]
         ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
+
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {update: value};
       }
+      // Hacky for now
+      if (part === 'labels' || (part === 'symbols' && assembleLegendSelection(model))) {
+        if (!value) {
+          value = {opacity: {value: 1}};
+        }
+        e[part] = {name: `${part}_legend`, interactive: true, update: value};
+      }
+      console.log('PART is', part, e[part], value);
       return e;
     },
     {} as LegendEncode
   );
+  // Corresponding channel has a condition
+  // const selectionName = model['encoding'][channel]['condition']['selection'];
+  // if (selectionName) {
+  //   // const test = assembleSelectionPredicate(model, selectionName);
+  //   const test = `!(length(data("${selectionName}_legend_store"))) || indata("${selectionName}_legend_store", \'value\', datum.value)`;
+  //   const opacityPredicate = {test, value: 0.7};
+  //   const defaultValue = {value: 0.15};
+  //   const newOp = [opacityPredicate, defaultValue];
+  //   // const opacityUpdate = legendEncode.symbols.update.opacity;
+  //   // legendEncode.symbols.update.opacity = isArray(opacityUpdate) ? opacityUpdate : [opacityUpdate];
+  //   legendEncode.symbols.update.opacity = newOp;
+  //   console.log(newOp, legendEncode.symbols.update.opacity);
+  // }
 
   if (keys(legendEncode).length > 0) {
     legendCmpt.set('encode', legendEncode, !!legend.encoding);

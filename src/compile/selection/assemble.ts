@@ -1,6 +1,6 @@
 import {identity, isArray, SignalRef, stringValue} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {forEachSelection, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
+import {forEachSelection, LEGEND_STORE, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -11,6 +11,7 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
+// import {Legend} from './transforms/legend';
 import {forEachTransform} from './transforms/transforms';
 
 export function assembleInit(init: any, wrap: (str: string) => string = identity): string {
@@ -110,6 +111,20 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
     if (!contains.length) {
       data.push({name: selCmpt.name + STORE});
     }
+    const containsLegend = data.filter(d => d.name === selCmpt.name + LEGEND_STORE);
+    if (!containsLegend.length && selCmpt.legend) {
+      data.push({
+        name: selCmpt.name + LEGEND_STORE,
+        source: selCmpt.name + STORE,
+        transform: [
+          {
+            type: 'project',
+            fields: ['values[0]'],
+            as: ['value']
+          }
+        ]
+      });
+    }
   });
 
   return data;
@@ -136,6 +151,16 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   }
 
   return marks;
+}
+
+export function assembleLegendSelection(model: Model) {
+  let hasLegend = 0;
+  forEachSelection(model, selCmpt => {
+    if (selCmpt.legend) {
+      hasLegend = 1;
+    }
+  });
+  return hasLegend;
 }
 
 export function assembleSelectionPredicate(
