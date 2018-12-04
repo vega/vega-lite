@@ -83,7 +83,9 @@ export interface Legend
   zindex?: number;
 
   /**
-   * The direction of the legend, one of `"vertical"` (default) or `"horizontal"`.
+   * The direction of the legend, one of `"vertical"` or `"horizontal"`.
+   *
+   * __Default value:__ "vertical"`
    */
   direction?: Orientation;
 
@@ -98,7 +100,7 @@ export interface Legend
 // Change comments to be Vega-Lite specific
 interface LegendMixins {
   /**
-   * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
+   * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
    *
    * __Default value:__ `"greedy"` for `log scales otherwise `true`.
    */
