@@ -1,7 +1,7 @@
 import {isObject} from 'vega-util';
 import {AxisConfigMixins} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {VL_ONLY_GUIDE_CONFIG} from './guide';
+import {VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfig} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
@@ -359,6 +359,10 @@ export function stripAndRedirectConfig(config: Config) {
   }
   if (config.legend) {
     for (const prop of VL_ONLY_GUIDE_CONFIG) {
+      delete config.legend[prop];
+    }
+
+    for (const prop of VL_ONLY_LEGEND_CONFIG) {
       delete config.legend[prop];
     }
   }

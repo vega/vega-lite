@@ -28,7 +28,43 @@ export type LegendConfig = LegendMixins &
     VgLayoutAlign,
     LabelOverlap,
     SymbolShape
-  >;
+  > & {
+    /**
+     * Max legend length for a vertical gradient.
+     *
+     * __Default value:__ `200`
+     */
+    gradientVerticalMaxLength?: number;
+
+    /**
+     * Min legend length for a vertical gradient.
+     *
+     * __Default value:__ `100`
+     */
+    gradientVerticalMinLength?: number;
+
+    /**
+     * Max legend length for a horizontal gradient.
+     *
+     * __Default value:__ `200`
+     */
+    gradientHorizontalMaxLength?: number;
+
+    /**
+     * Min legend length for a horizontal gradient.
+     *
+     * __Default value:__ `100`
+     */
+    gradientHorizontalMinLength?: number;
+
+    /**
+     * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
+     *
+     * @minimum 0
+     */
+    // TODO: write about default
+    gradientLength?: number;
+  };
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
@@ -135,7 +171,12 @@ export interface LegendEncoding {
   gradient?: GuideEncodingEntry;
 }
 
-export const defaultLegendConfig: LegendConfig = {};
+export const defaultLegendConfig: LegendConfig = {
+  gradientHorizontalMaxLength: 200,
+  gradientHorizontalMinLength: 100,
+  gradientVerticalMaxLength: 200,
+  gradientVerticalMinLength: 100
+};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   clipHeight: 1,
