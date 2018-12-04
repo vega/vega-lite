@@ -22,7 +22,8 @@
             "type": "quantitative",
             "legend": {
               "title": "All Movies",
-              "direction": "horizontal"
+              "direction": "horizontal",
+              "gradientLength": 120
             }
           }
         }
@@ -46,8 +47,7 @@
             "aggregate": "count",
             "type": "quantitative",
             "legend": {
-              "title": "In Selected Category",
-              "direction": "horizontal"
+              "title": "In Selected Category"
             }
           },
           "color": {
