@@ -1,4 +1,4 @@
-import {Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
+import {AnchorValue, Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -381,6 +381,10 @@ export abstract class Model {
           log.warn(log.message.cannotSetTitleAnchor(this.type));
         }
         title.anchor = 'start';
+      }
+
+      if (contains<AnchorValue>(['middle', undefined], title.anchor) && title.frame === undefined) {
+        title.frame = 'group';
       }
 
       return keys(title).length > 0 ? title : undefined;

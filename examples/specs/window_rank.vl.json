@@ -1,6 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "title": "World Cup 2018: Group F Rankings",
+  "title": {
+    "text": "World Cup 2018: Group F Rankings",
+    "frame": "bounds"
+  },
   "data": {
     "values": [
       {"team": "Germany", "matchday": 1, "point": 0, "diff": -1},

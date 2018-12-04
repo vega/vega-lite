@@ -5,7 +5,10 @@
   "padding": 5,
   "width": 250,
   "height": 200,
-  "title": {"text": "Weekly Weather Observations and Predictions"},
+  "title": {
+    "text": "Weekly Weather Observations and Predictions",
+    "frame": "bounds"
+  },
   "style": "cell",
   "data": [
     {
