@@ -135,7 +135,9 @@ export interface LegendEncoding {
   gradient?: GuideEncodingEntry;
 }
 
-export const defaultLegendConfig: LegendConfig = {};
+export const defaultLegendConfig: LegendConfig = {
+  gradientLength: 185
+};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   clipHeight: 1,
