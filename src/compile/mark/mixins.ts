@@ -214,12 +214,15 @@ export function nonPosition(
   model: UnitModel,
   opt: {defaultValue?: number | string | boolean; vgChannel?: string; defaultRef?: VgValueRef} = {}
 ): VgEncodeEntry {
-  const {defaultValue, vgChannel} = opt;
+  const {markDef, encoding} = model;
+  const {vgChannel = channel} = opt;
+
+  const {defaultValue = markDef[vgChannel]} = opt;
   const defaultRef = opt.defaultRef || (defaultValue !== undefined ? {value: defaultValue} : undefined);
 
-  const channelDef = model.encoding[channel];
+  const channelDef = encoding[channel];
 
-  return wrapCondition(model, channelDef, vgChannel || channel, cDef => {
+  return wrapCondition(model, channelDef, vgChannel, cDef => {
     return ref.midPoint(
       channel,
       cDef,
