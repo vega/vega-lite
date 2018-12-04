@@ -90,7 +90,7 @@
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Sky position"},
+      "title": {"text": "Sky position", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {
@@ -216,7 +216,7 @@
     {
       "type": "group",
       "name": "concat_1_group",
-      "title": {"text": "Light curve"},
+      "title": {"text": "Light curve", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {

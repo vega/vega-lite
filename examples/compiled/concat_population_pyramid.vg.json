@@ -91,7 +91,7 @@
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Female"},
+      "title": {"text": "Female", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {
@@ -183,7 +183,7 @@
     {
       "type": "group",
       "name": "concat_2_group",
-      "title": {"text": "Male"},
+      "title": {"text": "Male", "frame": "group"},
       "style": "cell",
       "encode": {
         "update": {

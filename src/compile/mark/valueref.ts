@@ -2,9 +2,9 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {isArray, isFunction, isString} from 'vega-util';
+import {isArray, isFunction, isString, stringValue} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, X, Y} from '../../channel';
+import {Channel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {
   ChannelDef,
@@ -169,7 +169,8 @@ export function midPoint(
         if (isFieldDef(channel2Def)) {
           return binMidSignal(scaleName, channelDef, channel2Def);
         } else {
-          log.warn(log.message.channelRequiredForBinned(channel));
+          const channel2 = channel === X ? X2 : Y2;
+          log.warn(log.message.channelRequiredForBinned(channel2));
         }
       }
 
@@ -210,7 +211,7 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
     const key = title(fieldDef, config, {allowDisabling: false});
     const value = text(fieldDef, config).signal;
     if (!usedKey[key]) {
-      keyValues.push(`"${key}": ${value}`);
+      keyValues.push(`${stringValue(key)}: ${value}`);
     }
     usedKey[key] = true;
   }

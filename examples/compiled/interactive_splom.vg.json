@@ -23,7 +23,7 @@
     },
     {
       "name": "grid",
-      "update": "{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower, Acceleration: grid_Acceleration}"
+      "update": "{\"Miles_per_Gallon\": grid_Miles_per_Gallon, \"Horsepower\": grid_Horsepower, \"Acceleration\": grid_Acceleration}"
     },
     {"name": "grid_Miles_per_Gallon"},
     {"name": "grid_Horsepower"},

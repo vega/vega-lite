@@ -102,7 +102,7 @@ dd {
   margin-bottom: 0;
 }
 
-/* Table with proeprty definitons */
+/* Table with property definitions */
 
 .doc-table td:nth-child(2), .doc-table th:nth-child(2) {
   text-align: center;
@@ -172,7 +172,7 @@ code, tt {
 pre code {
   margin: 0;
   padding: 0;
-  white-space: pre;
+  white-space: pre-wrap;
   border: none;
   background: transparent;
   font-family: monospace;

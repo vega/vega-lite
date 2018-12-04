@@ -441,8 +441,8 @@
           "update": {
             "fill": {"value": "grey"},
             "shape": {"value": "circle"},
-            "stroke": {"value": "transparent"},
-            "opacity": {"value": 0.7}
+            "opacity": {"value": 0.7},
+            "stroke": {"value": "transparent"}
           }
         }
       }

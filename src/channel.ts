@@ -21,6 +21,10 @@ export namespace Channel {
   export const Y: 'y' = 'y';
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
+  export const XERROR: 'xError' = 'xError';
+  export const YERROR: 'yError' = 'yError';
+  export const XERROR2: 'xError2' = 'xError2';
+  export const YERROR2: 'yError2' = 'yError2';
 
   // Geo Position
   export const LATITUDE: 'latitude' = 'latitude';
@@ -38,6 +42,11 @@ export namespace Channel {
   export const SHAPE: 'shape' = 'shape';
   export const SIZE: 'size' = 'size';
   export const OPACITY: 'opacity' = 'opacity';
+  export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
+
+  export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
+
+  export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
 
   // Non-scale channel
   export const TEXT: 'text' = 'text';
@@ -55,6 +64,10 @@ export const X = Channel.X;
 export const Y = Channel.Y;
 export const X2 = Channel.X2;
 export const Y2 = Channel.Y2;
+export const XERROR = Channel.XERROR;
+export const YERROR = Channel.YERROR;
+export const XERROR2 = Channel.XERROR2;
+export const YERROR2 = Channel.YERROR2;
 
 export const LATITUDE = Channel.LATITUDE;
 export const LATITUDE2 = Channel.LATITUDE2;
@@ -74,6 +87,12 @@ export const DETAIL = Channel.DETAIL;
 export const KEY = Channel.KEY;
 export const ORDER = Channel.ORDER;
 export const OPACITY = Channel.OPACITY;
+export const FILLOPACITY = Channel.FILLOPACITY;
+
+export const STROKEOPACITY = Channel.STROKEOPACITY;
+
+export const STROKEWIDTH = Channel.STROKEWIDTH;
+
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
 
@@ -94,6 +113,10 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   y: 1,
   x2: 1,
   y2: 1,
+  xError: 1,
+  yError: 1,
+  xError2: 1,
+  yError2: 1,
 
   ...GEOPOSITION_CHANNEL_INDEX,
 
@@ -104,6 +127,10 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
 
   // other non-position with scale
   opacity: 1,
+  fillOpacity: 1,
+  strokeOpacity: 1,
+
+  strokeWidth: 1,
   size: 1,
   shape: 1,
 
@@ -154,6 +181,10 @@ export type SingleDefChannel =
   | 'y'
   | 'x2'
   | 'y2'
+  | 'xError'
+  | 'yError'
+  | 'xError2'
+  | 'yError2'
   | 'longitude'
   | 'latitude'
   | 'longitude2'
@@ -163,8 +194,11 @@ export type SingleDefChannel =
   | 'color'
   | 'fill'
   | 'stroke'
+  | 'strokeWidth'
   | 'size'
   | 'shape'
+  | 'fillOpacity'
+  | 'strokeOpacity'
   | 'opacity'
   | 'text'
   | 'tooltip'
@@ -185,6 +219,10 @@ const {
   // x2 and y2 share the same scale as x and y
   x2: _x2,
   y2: _y2,
+  xError: _xError,
+  yError: _yError,
+  xError2: _xError2,
+  yError2: _yError2,
   latitude: _latitude,
   longitude: _longitude,
   latitude2: _latitude2,
@@ -275,6 +313,9 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case HREF:
     case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
     case ROW:
     case COLUMN:
       return {
@@ -336,6 +377,11 @@ export function getSupportedMark(channel: Channel): SupportedMark {
       return {point: true, geoshape: true};
     case TEXT:
       return {text: true};
+    case XERROR:
+    case YERROR:
+    case XERROR2:
+    case YERROR2:
+      return {};
   }
 }
 
@@ -344,10 +390,17 @@ export function rangeType(channel: Channel): RangeType {
     case X:
     case Y:
     case SIZE:
+    case STROKEWIDTH:
     case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
     // X2 and Y2 use X and Y scales, so they similarly have continuous range.
     case X2:
     case Y2:
+    case XERROR:
+    case YERROR:
+    case XERROR2:
+    case YERROR2:
       return 'continuous';
 
     case ROW:

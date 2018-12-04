@@ -171,6 +171,10 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'href':
       case 'x2':
       case 'y2':
+      case 'xError':
+      case 'yError':
+      case 'xError2':
+      case 'yError2':
 
       case 'latitude':
       case 'longitude':
@@ -211,6 +215,9 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'fill':
       case 'stroke':
       case 'opacity':
+      case 'fillOpacity':
+      case 'strokeOpacity':
+      case 'strokeWidth':
         // TODO strokeDashOffset:
 
         /* tslint:enable */

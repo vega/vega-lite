@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-import {COLOR, OPACITY, SHAPE, SIZE} from '../../../src/channel';
+import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
 import * as legendParse from '../../../src/compile/legend/parse';
 import {parseLegend} from '../../../src/compile/legend/parse';
 import {isFieldDef} from '../../../src/fielddef';
@@ -97,7 +97,7 @@ describe('compile/legend', () => {
       assert.equal(def.title, 'foo');
     });
 
-    [SIZE, SHAPE, OPACITY].forEach(channel => {
+    [SIZE, STROKEWIDTH, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
           mark: 'point',

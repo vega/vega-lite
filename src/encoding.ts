@@ -60,6 +60,26 @@ export interface Encoding<F> {
   y2?: FieldDefWithoutScale<F> | ValueDef;
 
   /**
+   * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  xError?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  xError2?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  yError?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
+   * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  yError2?: FieldDefWithoutScale<F> | ValueDef;
+
+  /**
    * Longitude position of geographically projected marks.
    */
   longitude?: FieldDefWithoutScale<F>;
@@ -107,13 +127,33 @@ export interface Encoding<F> {
    * _Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`).
    */
   stroke?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
-
   /**
-   * Opacity of the marks – either can be a value or a range.
+   * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
    */
   opacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+  /**
+   * Fill opacity of the marks.
+   *
+   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property.
+   */
+  fillOpacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+  /**
+   * Stroke opacity of the marks.
+   *
+   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property.
+   */
+  strokeOpacity?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
+
+  /**
+   * Stroke width of the marks.
+   *
+   * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property.
+   */
+  strokeWidth?: FieldDefWithCondition<MarkPropFieldDef<F>> | ValueDefWithCondition<MarkPropFieldDef<F>>;
 
   /**
    * Size of the mark.

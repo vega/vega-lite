@@ -215,7 +215,7 @@ describe('Selection + Scales', () => {
       assert.lengthOf(hp, 1);
       assert.lengthOf(mpg, 1);
       assert.lengthOf(named, 1);
-      assert.equal(named[0].update, '{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower}');
+      assert.equal(named[0].update, '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
 
       const signals2 = assembleTopLevelSignals(model.children[1] as UnitModel, signals);
       const acc = signals2.filter(s => s.name === 'grid_Acceleration');
@@ -225,7 +225,7 @@ describe('Selection + Scales', () => {
       assert.lengthOf(named, 1);
       assert.equal(
         named[0].update,
-        '{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower, Acceleration: grid_Acceleration}'
+        '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}'
       );
     });
   });

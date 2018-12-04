@@ -42,7 +42,7 @@
   },
   "vconcat": [
     {
-      "title": "Mean of Subject Ratings (95% CIs)",
+      "title": {"text": "Mean of Subject Ratings (95% CIs)", "frame": "bounds"},
       "layer": [
         {
           "mark": "rule",

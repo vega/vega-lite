@@ -470,38 +470,6 @@ export interface VgImputeTransform {
   value?: any;
 }
 
-export interface VgCheckboxBinding {
-  input: 'checkbox';
-  element?: string;
-}
-
-export interface VgRadioBinding {
-  input: 'radio';
-  options: string[];
-  element?: string;
-}
-
-export interface VgSelectBinding {
-  input: 'select';
-  options: string[];
-  element?: string;
-}
-
-export interface VgRangeBinding {
-  input: 'range';
-  min?: number;
-  max?: number;
-  step?: number;
-  element?: string;
-}
-
-export interface VgGenericBinding {
-  input: string;
-  element?: string;
-}
-
-export type VgBinding = VgCheckboxBinding | VgRadioBinding | VgSelectBinding | VgRangeBinding | VgGenericBinding;
-
 export type Interpolate =
   | 'linear'
   | 'linear-closed'

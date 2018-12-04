@@ -29,7 +29,7 @@ describe('compile/compile', () => {
     assert.equal(spec.autosize, 'pad');
     assert.equal(spec.width, 21);
     assert.equal(spec.height, 21);
-    assert.deepEqual(spec.title, {text: 'test'});
+    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
 
     assert.equal(spec.data.length, 1); // just source
     assert.equal(spec.marks.length, 1); // just the root group
@@ -164,7 +164,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test'});
+    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
   });
 
   it('should return title (string) for a layered spec.', () => {
@@ -180,7 +180,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test'});
+    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
   });
 
   it('should return title from a child of a layer spec if parent has no title.', () => {
@@ -196,7 +196,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test'});
+    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
   });
 
   it(

@@ -125,9 +125,15 @@
       },
       {
         "name": "line_overlay",
-        "title": "Line Chart with Overlaying Point Markers",
+        "title": "Line Chart with Point Markers",
         "style": "background-size: auto 105%; background-position: center center !important;",
-        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we set the point color to `\"red\"` and set the line color to `\"green\"`. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
+        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
+      },
+      {
+        "name": "line_overlay_stroked",
+        "title": "Line Chart with Stroked Point Markers",
+        "style": "background-size: auto 105%; background-position: center center !important;",
+        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we create stroked points by setting their `\"filled\"` to `false` and their `fill` to `\"white\"`. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
       },
       {
         "name": "line_color",
@@ -490,6 +496,10 @@
   "Interactive": {
     "Interactive Charts": [
       {
+        "name": "interactive_bar_select_highlight",
+        "title": "Bar chart with highlighting on hover and selection on click"
+      },
+      {
         "name": "point_href",
         "title": "Scatterplot with External Links and Tooltips"
       },
@@ -520,9 +530,14 @@
         "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval"
       },
       {
+        "name": "interactive_multi_line_label",
+        "title": "Multi Series Line Chart with Labels",
+        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+      },
+      {
         "name": "interactive_multi_line_tooltip",
-        "title": "Multi Series Line Chart with Tooltips",
-        "description": "The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+        "title": "Multi Series Line Chart with Tooltip",
+        "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements."
       },
       {
         "name": "isotype_grid",

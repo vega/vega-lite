@@ -28,6 +28,9 @@ The `encoding` property of a single view specification represents the mapping be
     // Mark Properties Channels
     "color": ...,
     "opacity": ...,
+    "fillOpacity": ...,
+    "strokeOpacity": ...,
+    "strokeWidth": ...,
     "size": ...,
     "shape": ...,
 
@@ -62,7 +65,7 @@ The keys in the `encoding` object are encoding channels.  Vega-lite supports the
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
-- [Mark Property Channels](#mark-prop): `color`, `opacity`, `shape`, `size`
+- [Mark Property Channels](#mark-prop): `color`, `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
 - [Level of Detail Channel](#detail): `detail`
@@ -185,7 +188,7 @@ In addition, definitions of mark property channels can include the `condition` p
 
 Here are the list of mark property channels:
 
-{% include table.html props="color,fill,stroke,opacity,shape,size" source="Encoding" %}
+{% include table.html props="color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeWidth" source="Encoding" %}
 
 {:#mark-prop-field-def}
 ### Mark Property Field Definition

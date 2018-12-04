@@ -61,7 +61,7 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
 
 function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
   const allPropertiesShared = every(PROJECTION_PROPERTIES, prop => {
-    // neither has the poperty
+    // neither has the property
     if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
       return true;
     }

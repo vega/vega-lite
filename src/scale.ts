@@ -772,7 +772,10 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case Channel.Y:
       return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
     case Channel.SIZE: // TODO: size and opacity can support ordinal with more modification
+    case Channel.STROKEWIDTH:
     case Channel.OPACITY:
+    case Channel.FILLOPACITY:
+    case Channel.STROKEOPACITY:
       // Although it generally doesn't make sense to use band with size and opacity,
       // it can also work since we use band: 0.5 to get midpoint.
       return (

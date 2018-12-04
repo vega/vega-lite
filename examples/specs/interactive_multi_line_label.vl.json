@@ -1,0 +1,107 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
+  "data": {
+    "url": "data/stocks.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "date": "date"
+      }
+    }
+  },
+  "width": 800,
+  "height": 400,
+  "layer": [
+    {
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
+      },
+      "layer": [{
+        "mark": "line"
+      },{
+        "selection": {
+          "label": {
+            "type": "single",
+            "nearest": true,
+            "on": "mouseover",
+            "encodings": [
+              "x"
+            ],
+            "empty": "none"
+          }
+        },
+        "mark": "point",
+        "encoding": {
+          "opacity": {
+            "condition": {
+              "selection": "label",
+              "value": 1
+            },
+            "value": 0
+          }
+        }
+      }]
+    },
+    {
+      "transform": [
+        {
+          "filter": {
+            "selection": "label"
+          }
+        }
+      ],
+      "layer": [{
+        "mark": {
+         "type": "rule",
+         "color": "gray"
+        },
+        "encoding": {
+          "x": {
+            "type": "temporal",
+            "field": "date"
+          }
+        }
+      }, {
+        "encoding": {
+          "text": {
+            "type": "quantitative",
+            "field": "price"
+          },
+          "x": {
+            "type": "temporal",
+            "field": "date"
+          },
+          "y": {
+            "type": "quantitative",
+            "field": "price"
+          }
+        },
+        "layer": [{
+          "mark": {
+            "type": "text",
+            "stroke": "white",
+            "strokeWidth": 2,
+            "align": "left",
+            "dx": 5,
+            "dy": -5
+          }
+        }, {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": 5,
+            "dy": -5
+          },
+          "encoding": {
+            "fill": {
+              "type": "nominal",
+              "field": "symbol"
+            }
+          }
+        }]
+      }]
+   }
+ ]
+}

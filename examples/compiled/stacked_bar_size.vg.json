@@ -143,8 +143,8 @@
           "update": {
             "fill": {"value": "#4c78a8"},
             "shape": {"value": "square"},
-            "stroke": {"value": "transparent"},
-            "opacity": {"value": 0.5}
+            "opacity": {"value": 0.5},
+            "stroke": {"value": "transparent"}
           }
         }
       }

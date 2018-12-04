@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-
 import {assert} from 'chai';
 import {AncestorParse} from '../../../src/compile/data';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
@@ -11,12 +10,13 @@ import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {ImputeNode} from '../../../src/compile/data/impute';
-import {parseTransformArray} from '../../../src/compile/data/parse';
+import {findSource, parseTransformArray} from '../../../src/compile/data/parse';
 import {SampleTransformNode} from '../../../src/compile/data/sample';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
+import {SourceNode} from './../../../src/compile/data/source';
 
 describe('compile/data/parse', () => {
   describe('parseTransformArray()', () => {
@@ -315,6 +315,32 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       assert.isTrue(root.children[0] instanceof ImputeNode);
       assert.isTrue(result instanceof ImputeNode);
+    });
+  });
+
+  describe('findSource', () => {
+    const values = new SourceNode({values: [1, 2, 3]});
+    const named = new SourceNode({name: 'foo'});
+    const url = new SourceNode({url: 'foo.csv'});
+
+    it('should find named source', () => {
+      const actual = findSource({name: 'foo'}, [values, named, url]);
+      expect(actual).toBe(named);
+    });
+
+    it('should find value source', () => {
+      const actual = findSource({values: [1, 2, 3]}, [values, named, url]);
+      expect(actual).toBe(values);
+    });
+
+    it('should find url source', () => {
+      const actual = findSource({url: 'foo.csv'}, [values, named, url]);
+      expect(actual).toBe(url);
+    });
+
+    it('should not find new data source', () => {
+      const actual = findSource({url: 'bar.csv'}, [values, named, url]);
+      expect(actual).toBeNull();
     });
   });
 });
