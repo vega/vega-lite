@@ -4,7 +4,7 @@
   "autosize": "pad",
   "padding": 5,
   "height": 200,
-  "title": {"text": "A Simple Bar Chart"},
+  "title": {"text": "A Simple Bar Chart", "frame": "group"},
   "style": "cell",
   "data": [
     {

@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "autosize": "pad",
   "padding": 5,
-  "title": {"text": "World Cup 2018: Group F Rankings"},
+  "title": {"text": "World Cup 2018: Group F Rankings", "frame": "bounds"},
   "style": "cell",
   "data": [
     {

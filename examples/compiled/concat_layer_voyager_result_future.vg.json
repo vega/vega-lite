@@ -73,7 +73,7 @@
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Mean of Subject Ratings (95% CIs)"},
+      "title": {"text": "Mean of Subject Ratings (95% CIs)", "frame": "bounds"},
       "style": "cell",
       "encode": {
         "update": {
