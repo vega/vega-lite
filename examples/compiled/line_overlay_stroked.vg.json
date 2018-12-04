@@ -178,11 +178,7 @@
       "title": "symbol",
       "encode": {
         "symbols": {
-          "update": {
-            "fill": {"value": "white"},
-            "stroke": {"value": "transparent"},
-            "opacity": {"value": 1}
-          }
+          "update": {"fill": {"value": "white"}, "opacity": {"value": 1}}
         }
       }
     }

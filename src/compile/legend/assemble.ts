@@ -24,5 +24,16 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
   }
 
-  return flatten(vals(legendByDomain)).map((legendCmpt: LegendComponent) => legendCmpt.combine());
+  return flatten(vals(legendByDomain)).map((legendCmpt: LegendComponent) => {
+    const legend = legendCmpt.combine();
+    // For non color channel's legend, we need to override symbol stroke config from Vega config
+    if (legend.encode && legend.encode.symbols) {
+      const out = legend.encode.symbols.update;
+      if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+        // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
+        out.stroke = {value: 'transparent'};
+      }
+    }
+    return legend;
+  });
 }
