@@ -154,5 +154,5 @@
     }
   ],
   "legends": [{"fill": "color", "title": "Number of Records"}],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {"axisY": {"minExtent": 30}, "legend": {"gradientLength": 185}}
 }

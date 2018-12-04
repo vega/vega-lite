@@ -243,6 +243,7 @@
   "config": {
     "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
     "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
     "style": {"cell": {"stroke": ""}}
   }
 }

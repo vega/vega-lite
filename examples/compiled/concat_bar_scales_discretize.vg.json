@@ -299,5 +299,5 @@
       "range": [80, 200, 320]
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {"axisY": {"minExtent": 30}, "legend": {"gradientLength": 185}}
 }

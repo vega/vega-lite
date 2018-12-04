@@ -152,5 +152,9 @@
       ]
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"stroke": ""}}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
+    "style": {"cell": {"stroke": ""}}
+  }
 }

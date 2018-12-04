@@ -177,6 +177,7 @@
   "config": {
     "axis": {"domainWidth": 1},
     "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
     "style": {"cell": {"stroke": "transparent"}}
   }
 }

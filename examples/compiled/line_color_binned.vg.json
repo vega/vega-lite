@@ -158,5 +158,5 @@
     }
   ],
   "legends": [{"stroke": "color", "title": "Acceleration (binned)"}],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {"axisY": {"minExtent": 30}, "legend": {"gradientLength": 185}}
 }

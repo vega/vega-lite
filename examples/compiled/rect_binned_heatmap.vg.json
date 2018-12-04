@@ -159,6 +159,7 @@
   "legends": [{"fill": "color", "title": "Number of Records"}],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
     "style": {"cell": {"stroke": "transparent"}},
     "range": {"heatmap": {"scheme": "greenblue"}}
   }

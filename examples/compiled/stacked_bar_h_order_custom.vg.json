@@ -132,5 +132,5 @@
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {"axisY": {"minExtent": 30}, "legend": {"gradientLength": 185}}
 }

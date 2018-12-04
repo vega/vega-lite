@@ -248,5 +248,9 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"fill": "yellow"}}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
+    "style": {"cell": {"fill": "yellow"}}
+  }
 }

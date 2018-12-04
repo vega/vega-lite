@@ -397,6 +397,7 @@
   ],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientLength": 185},
     "style": {
       "arrow-label": {"dy": 16, "fontSize": 9.5},
       "arrow-label2": {"dy": 28, "fontSize": 9.5},
