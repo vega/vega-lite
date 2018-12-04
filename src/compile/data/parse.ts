@@ -52,8 +52,8 @@ export function findSource(data: Data, sources: SourceNode[]) {
       if (data.url === otherData.url) {
         return other;
       }
-    } else if (isNamedData(data) && isNamedData(otherData)) {
-      if (data.name === otherData.name) {
+    } else if (isNamedData(data)) {
+      if (data.name === other.dataName) {
         return other;
       }
     }

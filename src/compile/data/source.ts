@@ -1,5 +1,5 @@
 import {Data, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains} from '../../util';
+import {contains, keys} from '../../util';
 import {VgData} from '../../vega.schema';
 import {DataFlowNode} from './dataflow';
 
@@ -77,6 +77,11 @@ export class SourceNode extends DataFlowNode {
   }
 
   public assemble(): VgData {
+    // remove empty format
+    if (this._data.format && keys(this._data.format).length === 0) {
+      delete this._data.format;
+    }
+
     return {
       name: this._name,
       ...this._data,

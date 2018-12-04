@@ -48,16 +48,14 @@
         {"year": "2012", "population": 40905},
         {"year": "2013", "population": 41258},
         {"year": "2014", "population": 41777}
-      ],
-      "format": {}
+      ]
     },
     {
       "name": "source_1",
       "values": [
         {"start": "1933", "end": "1945", "event": "Nazi Rule"},
         {"start": "1948", "end": "1989", "event": "GDR (East Germany)"}
-      ],
-      "format": {}
+      ]
     },
     {
       "name": "data_0",
