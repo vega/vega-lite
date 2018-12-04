@@ -1,18 +1,12 @@
 import {SelectionComponent} from '..';
 import {LEGEND, TUPLE} from '..';
 import {SelectionDef} from '../../../selection';
-// import {varName} from '../../../util';
-// import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
 
 const legend: TransformCompiler = {
   has: (selDef: SelectionComponent | SelectionDef) => {
     const def = selDef as SelectionDef;
     return def.fields !== undefined && selDef.type !== 'interval' && selDef.legend;
-  },
-
-  parse: (model, selDef, selCmpt) => {
-    console.log('This works TADAAA');
   },
 
   signals: (model, selCmpt, signals) => {
@@ -24,7 +18,7 @@ const legend: TransformCompiler = {
       signal.on[0].update
     }`;
     signal.on.push({
-      events: '@symbols_legend:click, @labels_legend:click',
+      events: `@symbols${LEGEND}:click, @labels${LEGEND}:click`,
       update: '{unit: "", fields: CylYr_tuple_fields, values: [datum.value]}'
     });
 
