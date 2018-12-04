@@ -1,4 +1,5 @@
-import {AggregateOp, extend} from 'vega';
+import {AggregateOp} from 'vega';
+import {extend} from 'vega-util';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
