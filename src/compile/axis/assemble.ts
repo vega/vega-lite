@@ -6,7 +6,7 @@ import {defaultTitle, FieldDefBase} from '../../fielddef';
 import {getFirstDefined, keys} from '../../util';
 import {AxisComponent, AxisComponentIndex} from './component';
 
-function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
+export function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
   if (isArray(title)) {
     return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }

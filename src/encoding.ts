@@ -5,6 +5,7 @@ import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} fr
 import {binRequiresRange} from './compile/common';
 import {Config} from './config';
 import {FacetMapping} from './facet';
+import {toFieldDefBase} from './fielddef';
 import {
   ChannelDef,
   Field,
@@ -24,7 +25,6 @@ import {
   PositionFieldDef,
   RepeatRef,
   TextFieldDef,
-  title,
   ValueDef,
   ValueDefWithCondition,
   vgField
@@ -234,7 +234,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
       const newField = vgField(channelDef, {forAs: true});
       const newChannelDef = {
         // Only add title if it doesn't exist
-        ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
+        ...(isTitleDefined ? [] : {title: [toFieldDefBase(channelDef)]}),
         ...remaining,
         // Always overwrite field
         field: newField

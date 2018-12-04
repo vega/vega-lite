@@ -4,22 +4,14 @@ import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import {FacetFieldDef, FacetMapping} from '../facet';
-import {
-  defaultTitle,
-  FieldDef,
-  FieldDefBase,
-  FieldRefOption,
-  normalize,
-  title as fieldDefTitle,
-  vgField
-} from '../fielddef';
+import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
-import {assembleAxis} from './axis/assemble';
+import {assembleAxis, assembleTitle} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
@@ -31,13 +23,6 @@ import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {parseGuideResolve} from './resolve';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/selection';
-
-function assembleTitle(title: string | FieldDefBase<string>[], config: Config) {
-  if (isArray(title)) {
-    return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
-  }
-  return title;
-}
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,

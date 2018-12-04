@@ -237,8 +237,15 @@ export function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase
 export function mergeTitle(title1: string | FieldDefBase<string>[], title2: string | FieldDefBase<string>[]) {
   if (isArray(title1) && isArray(title2)) {
     return mergeTitleFieldDefs(title1, title2);
-  } else if (!isArray(title1) && !isArray(title2)) {
+  }
+  if (!isArray(title1) && !isArray(title2)) {
     return mergeTitleStrings(title1, title2);
+  }
+  if (!isArray(title1)) {
+    return title1;
+  }
+  if (!isArray(title2)) {
+    return title2;
   }
   throw new Error('It should never reach here');
 }

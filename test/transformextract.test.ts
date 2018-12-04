@@ -62,7 +62,6 @@ describe('extractTransforms()', () => {
     'layer_point_errorbar_stdev.vl.json': true,
     'layer_precipitation_mean.vl.json': true,
     'layer_rect_extent.vl.json': true,
-    'layer_scatter_errorband_1D_stdev_global_mean.vl.json': true,
     'line_calculate.vl.json': true,
     'line_color_binned.vl.json': true,
     'line_max_year.vl.json': true,
@@ -98,11 +97,8 @@ describe('extractTransforms()', () => {
     'trellis_barley.vl.json': true,
     'trellis_barley_layer_median.vl.json': true,
     'trellis_column_year.vl.json': true,
-    'trellis_cross_sort.vl.json': true,
-    'trellis_cross_sort_array.vl.json': true,
     'trellis_line_quarter.vl.json': true,
-    'vconcat_weather.vl.json': true,
-    'window_mean_difference.vl.json': true
+    'vconcat_weather.vl.json': true
   };
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;

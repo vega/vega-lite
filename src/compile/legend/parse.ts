@@ -15,6 +15,7 @@ import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {assembleTitle} from '../axis/assemble';
 import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -139,7 +140,7 @@ function getProperty<K extends keyof VgLegend>(
       // We don't include temporal field here as we apply format in encode block
       return numberFormat(fieldDef, specifiedLegend.format, model.config);
     case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+      return assembleTitle(fieldDefTitle(fieldDef, model.config, {allowDisabling: true}), model.config) || undefined;
 
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':

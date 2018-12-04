@@ -25,6 +25,7 @@ import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, keys, some, StringSet} from '../../util';
 import {VgValueRef} from '../../vega.schema';
+import {assembleTitle} from '../axis/assemble';
 import {binRequiresRange, formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
@@ -207,7 +208,7 @@ export function midPoint(
 export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: Config) {
   const keyValues: StringSet = {};
   for (const fieldDef of channelDefs) {
-    const key = title(fieldDef, config, {allowDisabling: false});
+    const key = assembleTitle(title(fieldDef, config, {allowDisabling: false}), config);
     const value = text(fieldDef, config).signal;
     keyValues[`${stringValue(key)}: ${value}`] = true;
   }
