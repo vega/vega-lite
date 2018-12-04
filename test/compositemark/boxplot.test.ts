@@ -2091,7 +2091,12 @@ describe('normalizeBoxIQR', () => {
                 },
                 color: {
                   field: 'mean_people',
-                  title: 'Mean of people',
+                  title: [
+                    {
+                      field: 'people',
+                      aggregate: 'mean'
+                    }
+                  ],
                   type: 'quantitative'
                 }
               }

@@ -162,7 +162,7 @@ describe('extractTransforms()', () => {
           height: 234,
           encoding: {
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
+            y: {field: 'count_*', type: 'quantitative', title: [{aggregate: 'count'}]}
           }
         }
       });
@@ -234,13 +234,23 @@ describe('extractTransforms()', () => {
                   x: {
                     field: 'month_date',
                     type: 'ordinal',
-                    title: 'date (month)',
+                    title: [
+                      {
+                        field: 'date',
+                        timeUnit: 'month'
+                      }
+                    ],
                     axis: {format: '%b'}
                   },
                   y: {
                     field: 'mean_precipitation',
                     type: 'quantitative',
-                    title: 'Mean of precipitation',
+                    title: [
+                      {
+                        field: 'precipitation',
+                        aggregate: 'mean'
+                      }
+                    ],
                     axis: {
                       grid: false
                     }
@@ -260,13 +270,23 @@ describe('extractTransforms()', () => {
                   x: {
                     field: 'month_date',
                     type: 'ordinal',
-                    title: 'date (month)',
+                    title: [
+                      {
+                        field: 'date',
+                        timeUnit: 'month'
+                      }
+                    ],
                     axis: {format: '%b'}
                   },
                   y: {
                     field: 'mean_temp_max',
                     type: 'quantitative',
-                    title: 'Mean of temp_max',
+                    title: [
+                      {
+                        field: 'temp_max',
+                        aggregate: 'mean'
+                      }
+                    ],
                     axis: {
                       grid: false
                     },

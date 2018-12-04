@@ -82,7 +82,12 @@ describe('encoding', () => {
           x: {
             field: 'yearmonthdatehoursminutes_a',
             type: 'temporal',
-            title: 'a (year-month-date-hours-minutes)',
+            title: [
+              {
+                field: 'a',
+                timeUnit: 'yearmonthdatehoursminutes'
+              }
+            ],
             axis: {format: '%b %d, %Y %H:%M'}
           },
           y: {field: 'b', type: 'quantitative'}
@@ -104,7 +109,7 @@ describe('encoding', () => {
         ),
         defaultConfig
       );
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         bins: [],
         timeUnits: [],
         aggregate: [{op: 'max', field: 'b', as: 'max_b'}],
@@ -114,7 +119,12 @@ describe('encoding', () => {
           y: {
             field: 'max_b',
             type: 'quantitative',
-            title: 'Max of b'
+            title: [
+              {
+                field: 'b',
+                aggregate: 'max'
+              }
+            ]
           }
         }
       });
@@ -130,15 +140,20 @@ describe('encoding', () => {
         ),
         defaultConfig
       );
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         bins: [{bin: {maxbins: 10}, field: 'a', as: 'bin_maxbins_10_a'}],
         timeUnits: [],
         aggregate: [{op: 'count', as: 'count_*'}],
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
-          x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
+          x: {
+            field: 'bin_maxbins_10_a',
+            type: 'quantitative',
+            title: [{field: 'a', bin: {maxbins: 10}}],
+            bin: 'binned'
+          },
           x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
-          y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
+          y: {field: 'count_*', type: 'quantitative', title: [{aggregate: 'count'}]}
         }
       });
     });
