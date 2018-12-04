@@ -1,5 +1,5 @@
 import {SelectionComponent} from '..';
-import {TUPLE} from '..';
+import {LEGEND, TUPLE} from '..';
 import {SelectionDef} from '../../../selection';
 // import {varName} from '../../../util';
 // import {TUPLE_FIELDS} from './project';
@@ -20,7 +20,7 @@ const legend: TransformCompiler = {
     const signal = signals.filter(s => s.name === name + TUPLE)[0];
 
     // Disable main update when clicked on legend marks
-    signal.on[0].update = `item().mark.name !== 'symbols_legend' && item().mark.name !== 'labels_legend' && ${
+    signal.on[0].update = `item().mark.name !== 'symbols${LEGEND}' && item().mark.name !== 'labels${LEGEND}' && ${
       signal.on[0].update
     }`;
     signal.on.push({

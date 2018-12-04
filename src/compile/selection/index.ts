@@ -21,9 +21,9 @@ import {SelectionProjection, SelectionProjectionComponent} from './transforms/pr
 export const STORE = '_store';
 export const TUPLE = '_tuple';
 export const MODIFY = '_modify';
-export const LEGEND_STORE = '_legend_store';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
+export const LEGEND = '_legend';
 
 export interface SelectionComponent {
   name: string;
