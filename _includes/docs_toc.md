@@ -15,7 +15,7 @@
         - [Documentation Overview]({{site.baseurl}}/docs/size.html#documentation-overview)
         - [Width and Height of Single and Layered Plots]({{site.baseurl}}/docs/size.html#width-and-height-of-single-and-layered-plots)
         - [Width and Height of Multi-View Displays]({{site.baseurl}}/docs/size.html#width-and-height-of-multi-view-displays)
-- [Data]({{site.baseurl}}/docs/data.html)
+- [Data / Datasets]({{site.baseurl}}/docs/data.html)
     - [Documentation Overview]({{site.baseurl}}/docs/data.html#documentation-overview)
     - [Types of Data Sources]({{site.baseurl}}/docs/data.html#types-of-data-sources)
     - [Format]({{site.baseurl}}/docs/data.html#format)
