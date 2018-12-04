@@ -223,6 +223,7 @@
   ],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
   }
 }

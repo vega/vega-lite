@@ -272,6 +272,7 @@
   "legends": [{"stroke": "color", "title": "symbol"}],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
   }
 }

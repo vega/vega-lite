@@ -165,6 +165,7 @@
   "config": {
     "axis": {"domainWidth": 1},
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "style": {"cell": {"stroke": "transparent"}}
   }
 }

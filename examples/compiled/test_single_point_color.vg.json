@@ -23,5 +23,8 @@
       }
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100}
+  }
 }

@@ -449,6 +449,7 @@
   ],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "range": {"heatmap": {"scheme": "greenblue"}}
   }
 }

@@ -82,6 +82,7 @@
   ],
   "config": {
     "axis": {"domain": false, "grid": false},
-    "axisY": {"minExtent": 30}
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100}
   }
 }

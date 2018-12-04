@@ -124,6 +124,7 @@
   "legends": [{"title": "Price", "fill": "color"}],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "range": {"heatmap": {"scheme": "viridis", "extent": [1, 0]}}
   }
 }

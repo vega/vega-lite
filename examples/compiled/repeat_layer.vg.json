@@ -584,5 +584,8 @@
       "encode": {"symbols": {"update": {"opacity": {"value": 0.2}}}}
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100}
+  }
 }

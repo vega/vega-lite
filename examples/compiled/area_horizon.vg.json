@@ -160,6 +160,7 @@
   ],
   "config": {
     "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
     "style": {"area": {"interpolate": "monotone"}}
   }
 }

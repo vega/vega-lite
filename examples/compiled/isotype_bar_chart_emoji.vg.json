@@ -151,5 +151,9 @@
       "padding": 0.5
     }
   ],
-  "config": {"axisY": {"minExtent": 30}, "style": {"cell": {"stroke": ""}}}
+  "config": {
+    "axisY": {"minExtent": 30},
+    "legend": {"gradientDirection": "horizontal", "gradientLength": 100},
+    "style": {"cell": {"stroke": ""}}
+  }
 }
