@@ -535,6 +535,11 @@
         "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
       },
       {
+        "name": "interactive_multi_line_tooltip",
+        "title": "Multi Series Line Chart with Tooltip",
+        "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements."
+      },
+      {
         "name": "isotype_grid",
         "title": "Isotype Grid",
         "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
