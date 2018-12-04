@@ -10,7 +10,7 @@ export declare function parseDomainForChannel(model: UnitModel, channel: ScaleCh
 export declare function domainSort(model: UnitModel, channel: ScaleChannel, scaleType: ScaleType): true | EncodingSortField<string>;
 /**
  * Determine if a scale can use unaggregated domain.
- * @return {Boolean} Returns true if all of the following conditons applies:
+ * @return {Boolean} Returns true if all of the following conditions apply:
  * 1. `scale.domain` is `unaggregated`
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.

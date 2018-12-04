@@ -161,15 +161,19 @@ export function unique(values, f) {
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
-export function differ(dict, other) {
-    for (var key in dict) {
-        if (dict.hasOwnProperty(key)) {
-            if (other[key] && dict[key] && other[key] !== dict[key]) {
-                return true;
-            }
+export function isEqual(dict, other) {
+    var dictKeys = keys(dict);
+    var otherKeys = keys(other);
+    if (dictKeys.length !== otherKeys.length) {
+        return false;
+    }
+    for (var _i = 0, dictKeys_1 = dictKeys; _i < dictKeys_1.length; _i++) {
+        var key = dictKeys_1[_i];
+        if (dict[key] !== other[key]) {
+            return false;
         }
     }
-    return false;
+    return true;
 }
 export function hasIntersection(a, b) {
     for (var key in a) {

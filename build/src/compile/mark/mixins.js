@@ -78,7 +78,7 @@ export function color(model) {
 }
 export function baseEncodeEntry(model, ignore) {
     var _a = color(model), fill = _a.fill, stroke = _a.stroke;
-    return tslib_1.__assign({}, markDefProperties(model.markDef, ignore), wrapInvalid(model, 'fill', fill), wrapInvalid(model, 'stroke', stroke), nonPosition('opacity', model), tooltip(model), text(model, 'href'));
+    return tslib_1.__assign({}, markDefProperties(model.markDef, ignore), wrapInvalid(model, 'fill', fill), wrapInvalid(model, 'stroke', stroke), nonPosition('opacity', model), nonPosition('fillOpacity', model), nonPosition('strokeOpacity', model), nonPosition('strokeWidth', model), tooltip(model), text(model, 'href'));
 }
 function wrapInvalid(model, channel, valueRef) {
     var _a, _b;
@@ -154,10 +154,12 @@ export function defined(model) {
  */
 export function nonPosition(channel, model, opt) {
     if (opt === void 0) { opt = {}; }
-    var defaultValue = opt.defaultValue, vgChannel = opt.vgChannel;
+    var markDef = model.markDef, encoding = model.encoding;
+    var _a = opt.vgChannel, vgChannel = _a === void 0 ? channel : _a;
+    var _b = opt.defaultValue, defaultValue = _b === void 0 ? markDef[vgChannel] : _b;
     var defaultRef = opt.defaultRef || (defaultValue !== undefined ? { value: defaultValue } : undefined);
-    var channelDef = model.encoding[channel];
-    return wrapCondition(model, channelDef, vgChannel || channel, function (cDef) {
+    var channelDef = encoding[channel];
+    return wrapCondition(model, channelDef, vgChannel, function (cDef) {
         return ref.midPoint(channel, cDef, undefined, model.scaleName(channel), model.getScaleComponent(channel), null, // No need to provide stack for non-position as it does not affect mid point
         defaultRef);
     });

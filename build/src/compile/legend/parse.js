@@ -1,4 +1,4 @@
-import { COLOR, FILL, OPACITY, SHAPE, SIZE, STROKE } from '../../channel';
+import { COLOR, FILL, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from '../../channel';
 import { isFieldDef, title as fieldDefTitle } from '../../fielddef';
 import { LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
 import { GEOJSON } from '../../type';
@@ -20,7 +20,7 @@ export function parseLegend(model) {
 }
 function parseUnitLegend(model) {
     var encoding = model.encoding;
-    return [COLOR, FILL, STROKE, SIZE, SHAPE, OPACITY].reduce(function (legendComponent, channel) {
+    return [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(function (legendComponent, channel) {
         var def = encoding[channel];
         if (model.legend(channel) &&
             model.getScaleComponent(channel) &&
@@ -32,16 +32,19 @@ function parseUnitLegend(model) {
 }
 function getLegendDefWithScale(model, channel) {
     var _a;
-    // For binned field with continuous scale, use a special scale so we can overrride the mark props and labels
+    // For binned field with continuous scale, use a special scale so we can override the mark props and labels
     switch (channel) {
         case COLOR:
             var scale = model.scaleName(COLOR);
             return model.markDef.filled ? { fill: scale } : { stroke: scale };
         case FILL:
         case STROKE:
+        case STROKEWIDTH:
         case SIZE:
         case SHAPE:
         case OPACITY:
+        case FILLOPACITY:
+        case STROKEOPACITY:
             return _a = {}, _a[channel] = model.scaleName(channel), _a;
     }
 }

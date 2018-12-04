@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
-import { isArray, isFunction, isString } from 'vega-util';
+import { isArray, isFunction, isString, stringValue } from 'vega-util';
 import { isBinned, isBinning } from '../../bin';
-import { X, Y } from '../../channel';
+import { X, X2, Y, Y2 } from '../../channel';
 import { format, isFieldDef, isValueDef, title, vgField } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain, ScaleType } from '../../scale';
@@ -100,7 +100,8 @@ export function midPoint(channel, channelDef, channel2Def, scaleName, scale, sta
                     return binMidSignal(scaleName, channelDef, channel2Def);
                 }
                 else {
-                    log.warn(log.message.channelRequiredForBinned(channel));
+                    var channel2 = channel === X ? X2 : Y2;
+                    log.warn(log.message.channelRequiredForBinned(channel2));
                 }
             }
             if (scale) {
@@ -138,7 +139,7 @@ export function tooltipForChannelDefs(channelDefs, config) {
         var key = title(fieldDef, config, { allowDisabling: false });
         var value = text(fieldDef, config).signal;
         if (!usedKey[key]) {
-            keyValues.push("\"" + key + "\": " + value);
+            keyValues.push(stringValue(key) + ": " + value);
         }
         usedKey[key] = true;
     }

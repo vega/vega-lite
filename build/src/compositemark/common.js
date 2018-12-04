@@ -41,36 +41,33 @@ export function compositeMarkContinuousAxis(spec, orient, compositeMark) {
     var encoding = spec.encoding;
     var continuousAxisChannelDef;
     var continuousAxisChannelDef2;
+    var continuousAxisChannelDefError;
+    var continuousAxisChannelDefError2;
     var continuousAxis;
-    if (orient === 'vertical') {
-        continuousAxis = 'y';
-        continuousAxisChannelDef = encoding.y; // Safe to cast because if y is not continuous fielddef, the orient would not be vertical.
-        continuousAxisChannelDef2 = encoding.y2 ? encoding.y2 : undefined;
-    }
-    else {
-        continuousAxis = 'x';
-        continuousAxisChannelDef = encoding.x; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-        continuousAxisChannelDef2 = encoding.x2 ? encoding.x2 : undefined;
-    }
-    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+    continuousAxis = orient === 'vertical' ? 'y' : 'x';
+    continuousAxisChannelDef = encoding[continuousAxis]; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
+    continuousAxisChannelDef2 = encoding[continuousAxis + '2'];
+    continuousAxisChannelDefError = encoding[continuousAxis + 'Error'];
+    continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'];
+    return {
+        continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
+        continuousAxisChannelDef2: filterAggregateFromChannelDef(continuousAxisChannelDef2, compositeMark),
+        continuousAxisChannelDefError: filterAggregateFromChannelDef(continuousAxisChannelDefError, compositeMark),
+        continuousAxisChannelDefError2: filterAggregateFromChannelDef(continuousAxisChannelDefError2, compositeMark),
+        continuousAxis: continuousAxis
+    };
+}
+function filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark) {
+    if (isFieldDef(continuousAxisChannelDef) && continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
         var aggregate = continuousAxisChannelDef.aggregate, continuousAxisWithoutAggregate = tslib_1.__rest(continuousAxisChannelDef, ["aggregate"]);
         if (aggregate !== compositeMark) {
             log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
         }
-        continuousAxisChannelDef = continuousAxisWithoutAggregate;
+        return continuousAxisWithoutAggregate;
     }
-    if (continuousAxisChannelDef2 && continuousAxisChannelDef2.aggregate) {
-        var aggregate = continuousAxisChannelDef2.aggregate, continuousAxisWithoutAggregate2 = tslib_1.__rest(continuousAxisChannelDef2, ["aggregate"]);
-        if (aggregate !== compositeMark) {
-            log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
-        }
-        continuousAxisChannelDef2 = continuousAxisWithoutAggregate2;
+    else {
+        return continuousAxisChannelDef;
     }
-    return {
-        continuousAxisChannelDef: continuousAxisChannelDef,
-        continuousAxisChannelDef2: continuousAxisChannelDef2,
-        continuousAxis: continuousAxis
-    };
 }
 export function compositeMarkOrient(spec, compositeMark) {
     var mark = spec.mark, encoding = spec.encoding;

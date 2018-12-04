@@ -27,7 +27,7 @@ describe('compile/data/assemble', function () {
             var outputNodeRefCounts = {};
             var raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
             raw.parent = src;
-            var agg = new AggregateNode(null, { a: true }, { b: { count: 'count_*' } });
+            var agg = new AggregateNode(null, { a: true }, { b: { count: { 'count_*': true } } });
             agg.parent = raw;
             var main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
             main.parent = agg;

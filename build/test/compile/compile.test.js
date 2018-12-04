@@ -21,7 +21,7 @@ describe('compile/compile', function () {
         assert.equal(spec.autosize, 'pad');
         assert.equal(spec.width, 21);
         assert.equal(spec.height, 21);
-        assert.deepEqual(spec.title, { text: 'test' });
+        assert.deepEqual(spec.title, { text: 'test', frame: 'group' });
         assert.equal(spec.data.length, 1); // just source
         assert.equal(spec.marks.length, 1); // just the root group
     });
@@ -135,7 +135,7 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        assert.deepEqual(spec.title, { text: 'test', frame: 'group' });
     });
     it('should return title (string) for a layered spec.', function () {
         var spec = compile({
@@ -150,7 +150,7 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        assert.deepEqual(spec.title, { text: 'test', frame: 'group' });
     });
     it('should return title from a child of a layer spec if parent has no title.', function () {
         var spec = compile({
@@ -165,7 +165,7 @@ describe('compile/compile', function () {
                 }
             ]
         }).spec;
-        assert.deepEqual(spec.title, { text: 'test' });
+        assert.deepEqual(spec.title, { text: 'test', frame: 'group' });
     });
     it('should return a title for a concat spec, throw warning if anchor is set to other values than "start" and automatically set anchor to "start".', log.wrap(function (localLogger) {
         var spec = compile({

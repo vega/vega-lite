@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isInlineData, isNamedData, isUrlData } from '../../data';
-import { contains } from '../../util';
+import { contains, keys } from '../../util';
 import { DataFlowNode } from './dataflow';
 var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
@@ -73,6 +73,10 @@ var SourceNode = /** @class */ (function (_super) {
         throw new Error('Cannot hash sources');
     };
     SourceNode.prototype.assemble = function () {
+        // remove empty format
+        if (this._data.format && keys(this._data.format).length === 0) {
+            delete this._data.format;
+        }
         return tslib_1.__assign({ name: this._name }, this._data, { transform: [] });
     };
     return SourceNode;

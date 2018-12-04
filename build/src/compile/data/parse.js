@@ -42,8 +42,8 @@ export function findSource(data, sources) {
                 return other;
             }
         }
-        else if (isNamedData(data) && isNamedData(otherData)) {
-            if (data.name === otherData.name) {
+        else if (isNamedData(data)) {
+            if (data.name === other.dataName) {
                 return other;
             }
         }

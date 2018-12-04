@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isArray, isNumber } from 'vega-util';
-import { COLOR, FILL, OPACITY, SCALE_CHANNELS, SHAPE, SIZE, STROKE, X, Y } from '../../channel';
+import { COLOR, FILL, FILLOPACITY, OPACITY, SCALE_CHANNELS, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH, X, Y } from '../../channel';
 import { isVgScheme } from '../../config';
 import * as log from '../../log';
 import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
@@ -152,6 +152,9 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
             else {
                 return [rangeMin, rangeMax];
             }
+        case STROKEWIDTH:
+            // TODO: support custom rangeMin, rangeMax
+            return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];
         case SHAPE:
             return 'symbol';
         case COLOR:
@@ -178,6 +181,8 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
                 return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
             }
         case OPACITY:
+        case FILLOPACITY:
+        case STROKEOPACITY:
             // TODO: support custom rangeMin, rangeMax
             return [config.scale.minOpacity, config.scale.maxOpacity];
     }

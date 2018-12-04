@@ -1,5 +1,6 @@
 import { DataFlowNode } from './dataflow';
 import { BottomUpOptimizer, TopDownOptimizer } from './optimizer';
+import * as optimizers from './optimizers';
 export interface OptimizerFlags {
     /**
      * If true, iteration continues
@@ -47,4 +48,24 @@ export declare class RemoveUnusedSubtrees extends BottomUpOptimizer {
 export declare class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
     private fields;
     run(node: DataFlowNode): OptimizerFlags;
+}
+/**
+ * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
+ * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
+ */
+export declare function moveFacetDown(node: DataFlowNode): void;
+/**
+ * Remove nodes that are not required starting from a root.
+ */
+export declare class RemoveUnnecessaryNodes extends TopDownOptimizer {
+    run(node: DataFlowNode): boolean;
+}
+/**
+ * Inserts an Intermediate ParseNode containing all non-conflicting Parse fields and removes the empty ParseNodes
+ */
+export declare class MergeParse extends BottomUpOptimizer {
+    run(node: DataFlowNode): optimizers.OptimizerFlags;
+}
+export declare class MergeAggregateNodes extends BottomUpOptimizer {
+    run(node: DataFlowNode): optimizers.OptimizerFlags;
 }

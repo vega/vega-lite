@@ -10,11 +10,12 @@ import { FlattenTransformNode } from '../../../src/compile/data/flatten';
 import { FoldTransformNode } from '../../../src/compile/data/fold';
 import { ParseNode } from '../../../src/compile/data/formatparse';
 import { ImputeNode } from '../../../src/compile/data/impute';
-import { parseTransformArray } from '../../../src/compile/data/parse';
+import { findSource, parseTransformArray } from '../../../src/compile/data/parse';
 import { SampleTransformNode } from '../../../src/compile/data/sample';
 import { TimeUnitNode } from '../../../src/compile/data/timeunit';
 import { WindowTransformNode } from '../../../src/compile/data/window';
 import { parseUnitModel } from '../../util';
+import { SourceNode } from './../../../src/compile/data/source';
 describe('compile/data/parse', function () {
     describe('parseTransformArray()', function () {
         it('should return a CalculateNode and a FilterNode', function () {
@@ -297,6 +298,27 @@ describe('compile/data/parse', function () {
             var result = parseTransformArray(root, model, new AncestorParse());
             assert.isTrue(root.children[0] instanceof ImputeNode);
             assert.isTrue(result instanceof ImputeNode);
+        });
+    });
+    describe('findSource', function () {
+        var values = new SourceNode({ values: [1, 2, 3] });
+        var named = new SourceNode({ name: 'foo' });
+        var url = new SourceNode({ url: 'foo.csv' });
+        it('should find named source', function () {
+            var actual = findSource({ name: 'foo' }, [values, named, url]);
+            expect(actual).toBe(named);
+        });
+        it('should find value source', function () {
+            var actual = findSource({ values: [1, 2, 3] }, [values, named, url]);
+            expect(actual).toBe(values);
+        });
+        it('should find url source', function () {
+            var actual = findSource({ url: 'foo.csv' }, [values, named, url]);
+            expect(actual).toBe(url);
+        });
+        it('should not find new data source', function () {
+            var actual = findSource({ url: 'bar.csv' }, [values, named, url]);
+            expect(actual).toBeNull();
         });
     });
 });

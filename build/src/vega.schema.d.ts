@@ -260,32 +260,6 @@ export interface VgImputeTransform {
     method?: ImputeMethod;
     value?: any;
 }
-export interface VgCheckboxBinding {
-    input: 'checkbox';
-    element?: string;
-}
-export interface VgRadioBinding {
-    input: 'radio';
-    options: string[];
-    element?: string;
-}
-export interface VgSelectBinding {
-    input: 'select';
-    options: string[];
-    element?: string;
-}
-export interface VgRangeBinding {
-    input: 'range';
-    min?: number;
-    max?: number;
-    step?: number;
-    element?: string;
-}
-export interface VgGenericBinding {
-    input: string;
-    element?: string;
-}
-export declare type VgBinding = VgCheckboxBinding | VgRadioBinding | VgSelectBinding | VgRangeBinding | VgGenericBinding;
 export declare type Interpolate = 'linear' | 'linear-closed' | 'step' | 'step-before' | 'step-after' | 'basis' | 'basis-open' | 'basis-closed' | 'cardinal' | 'cardinal-open' | 'cardinal-closed' | 'bundle' | 'monotone';
 export declare type Orient = 'horizontal' | 'vertical';
 export declare type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'help' | 'pointer' | 'progress' | 'wait' | 'cell' | 'crosshair' | 'text' | 'vertical-text' | 'alias' | 'copy' | 'move' | 'no-drop' | 'not-allowed' | 'e-resize' | 'n-resize' | 'ne-resize' | 'nw-resize' | 's-resize' | 'se-resize' | 'sw-resize' | 'w-resize' | 'ew-resize' | 'ns-resize' | 'nesw-resize' | 'nwse-resize' | 'col-resize' | 'row-resize' | 'all-scroll' | 'zoom-in' | 'zoom-out' | 'grab' | 'grabbing';

@@ -1,7 +1,7 @@
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
 import { X, Y } from '../../../src/channel';
-import { binPosition, color, pointPosition, tooltip } from '../../../src/compile/mark/mixins';
+import { binPosition, color, nonPosition, pointPosition, tooltip } from '../../../src/compile/mark/mixins';
 import * as log from '../../../src/log';
 import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 describe('compile/mark/mixins', function () {
@@ -308,6 +308,26 @@ describe('compile/mark/mixins', function () {
                 var mixins = pointPosition(channel, model, 'zeroOrMin');
                 assert.equal(mixins[channel].field, model.getName(channel));
             });
+        });
+    });
+    describe('nonPosition', function () {
+        it('respects default value for a particular channel', function () {
+            var model = parseUnitModelWithScaleAndLayoutSize({
+                data: { url: 'data/cars.json' },
+                mark: 'point',
+                encoding: {
+                    x: {
+                        field: 'Acceleration',
+                        type: 'quantitative'
+                    },
+                    y: {
+                        field: 'Horsepower',
+                        type: 'quantitative'
+                    }
+                }
+            });
+            var mixins = nonPosition('opacity', model);
+            expect(mixins.opacity).toEqual({ value: 0.7 });
         });
     });
     describe('binPosition', function () {

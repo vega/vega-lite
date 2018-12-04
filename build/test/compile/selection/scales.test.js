@@ -193,13 +193,13 @@ describe('Selection + Scales', function () {
             assert.lengthOf(hp, 1);
             assert.lengthOf(mpg, 1);
             assert.lengthOf(named, 1);
-            assert.equal(named[0].update, '{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower}');
+            assert.equal(named[0].update, '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
             var signals2 = assembleTopLevelSignals(model.children[1], signals);
             var acc = signals2.filter(function (s) { return s.name === 'grid_Acceleration'; });
             named = signals2.filter(function (s) { return s.name === 'grid'; });
             assert.lengthOf(acc, 1);
             assert.lengthOf(named, 1);
-            assert.equal(named[0].update, '{Miles_per_Gallon: grid_Miles_per_Gallon, Horsepower: grid_Horsepower, Acceleration: grid_Acceleration}');
+            assert.equal(named[0].update, '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}');
         });
     });
     it('should not bind for unavailable/unsupported scales', log.wrap(function (localLogger) {

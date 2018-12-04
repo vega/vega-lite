@@ -40,9 +40,15 @@ export declare function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolea
 export declare function flatten(arrays: any[]): any;
 export declare function fill<T>(val: T, len: number): T[];
 /**
+ * Like TS Partial but applies recursively to all properties.
+ */
+export declare type DeepPartial<T> = {
+    [P in keyof T]?: DeepPartial<T[P]>;
+};
+/**
  * recursively merges src into dest
  */
-export declare function mergeDeep<T>(dest: T, ...src: Partial<T>[]): T;
+export declare function mergeDeep<T>(dest: T, ...src: DeepPartial<T>[]): T;
 export declare function unique<T>(values: T[], f: (item: T) => string | number): T[];
 export interface Dict<T> {
     [key: string]: T;
@@ -51,7 +57,7 @@ export declare type StringSet = Dict<true>;
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
-export declare function differ<T>(dict: Dict<T>, other: Dict<T>): boolean;
+export declare function isEqual<T>(dict: Dict<T>, other: Dict<T>): boolean;
 export declare function hasIntersection(a: StringSet, b: StringSet): boolean;
 export declare function prefixGenerator(a: StringSet): StringSet;
 export declare function fieldIntersection(a: StringSet, b: StringSet): boolean;

@@ -17,8 +17,9 @@ export var TimeUnit;
     TimeUnit.YEARMONTHDATEHOURS = 'yearmonthdatehours';
     TimeUnit.YEARMONTHDATEHOURSMINUTES = 'yearmonthdatehoursminutes';
     TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS = 'yearmonthdatehoursminutesseconds';
-    // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+    // MONTHDATE and MONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
     TimeUnit.MONTHDATE = 'monthdate';
+    TimeUnit.MONTHDATEHOURS = 'monthdatehours';
     TimeUnit.HOURSMINUTES = 'hoursminutes';
     TimeUnit.HOURSMINUTESSECONDS = 'hoursminutesseconds';
     TimeUnit.MINUTESSECONDS = 'minutesseconds';
@@ -40,8 +41,9 @@ export var TimeUnit;
     TimeUnit.UTCYEARMONTHDATEHOURS = 'utcyearmonthdatehours';
     TimeUnit.UTCYEARMONTHDATEHOURSMINUTES = 'utcyearmonthdatehoursminutes';
     TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS = 'utcyearmonthdatehoursminutesseconds';
-    // MONTHDATE always include 29 February since we use year 0th (which is a leap year);
+    // UTCMONTHDATE and UTCMONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
     TimeUnit.UTCMONTHDATE = 'utcmonthdate';
+    TimeUnit.UTCMONTHDATEHOURS = 'utcmonthdatehours';
     TimeUnit.UTCHOURSMINUTES = 'utchoursminutes';
     TimeUnit.UTCHOURSMINUTESSECONDS = 'utchoursminutesseconds';
     TimeUnit.UTCMINUTESSECONDS = 'utcminutesseconds';
@@ -91,6 +93,7 @@ var LOCAL_MULTI_TIMEUNIT_INDEX = {
     yearmonthdatehoursminutesseconds: 1,
     quartermonth: 1,
     monthdate: 1,
+    monthdatehours: 1,
     hoursminutes: 1,
     hoursminutesseconds: 1,
     minutesseconds: 1,
@@ -106,6 +109,7 @@ var UTC_MULTI_TIMEUNIT_INDEX = {
     utcyearmonthdatehoursminutesseconds: 1,
     utcquartermonth: 1,
     utcmonthdate: 1,
+    utcmonthdatehours: 1,
     utchoursminutes: 1,
     utchoursminutesseconds: 1,
     utcminutesseconds: 1,
@@ -144,8 +148,8 @@ export function convert(unit, date) {
     var isUTC = isUTCTimeUnit(unit);
     var result = isUTC
         ? // start with uniform date
-            new Date(Date.UTC(0, 0, 1, 0, 0, 0, 0))
-        : new Date(0, 0, 1, 0, 0, 0, 0);
+            new Date(Date.UTC(1972, 0, 1, 0, 0, 0, 0)) // 1972 is the first leap year after 1970, the start of unix time
+        : new Date(1972, 0, 1, 0, 0, 0, 0);
     for (var _i = 0, TIMEUNIT_PARTS_1 = TIMEUNIT_PARTS; _i < TIMEUNIT_PARTS_1.length; _i++) {
         var timeUnitPart = TIMEUNIT_PARTS_1[_i];
         if (containsTimeUnit(unit, timeUnitPart)) {

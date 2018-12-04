@@ -17,6 +17,10 @@ export var Channel;
     Channel.Y = 'y';
     Channel.X2 = 'x2';
     Channel.Y2 = 'y2';
+    Channel.XERROR = 'xError';
+    Channel.YERROR = 'yError';
+    Channel.XERROR2 = 'xError2';
+    Channel.YERROR2 = 'yError2';
     // Geo Position
     Channel.LATITUDE = 'latitude';
     Channel.LONGITUDE = 'longitude';
@@ -29,6 +33,9 @@ export var Channel;
     Channel.SHAPE = 'shape';
     Channel.SIZE = 'size';
     Channel.OPACITY = 'opacity';
+    Channel.FILLOPACITY = 'fillOpacity';
+    Channel.STROKEOPACITY = 'strokeOpacity';
+    Channel.STROKEWIDTH = 'strokeWidth';
     // Non-scale channel
     Channel.TEXT = 'text';
     Channel.ORDER = 'order';
@@ -41,6 +48,10 @@ export var X = Channel.X;
 export var Y = Channel.Y;
 export var X2 = Channel.X2;
 export var Y2 = Channel.Y2;
+export var XERROR = Channel.XERROR;
+export var YERROR = Channel.YERROR;
+export var XERROR2 = Channel.XERROR2;
+export var YERROR2 = Channel.YERROR2;
 export var LATITUDE = Channel.LATITUDE;
 export var LATITUDE2 = Channel.LATITUDE2;
 export var LONGITUDE = Channel.LONGITUDE;
@@ -57,6 +68,9 @@ export var DETAIL = Channel.DETAIL;
 export var KEY = Channel.KEY;
 export var ORDER = Channel.ORDER;
 export var OPACITY = Channel.OPACITY;
+export var FILLOPACITY = Channel.FILLOPACITY;
+export var STROKEOPACITY = Channel.STROKEOPACITY;
+export var STROKEWIDTH = Channel.STROKEWIDTH;
 export var TOOLTIP = Channel.TOOLTIP;
 export var HREF = Channel.HREF;
 export var GEOPOSITION_CHANNEL_INDEX = {
@@ -68,11 +82,11 @@ export var GEOPOSITION_CHANNEL_INDEX = {
 export var GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
 var UNIT_CHANNEL_INDEX = tslib_1.__assign({ 
     // position
-    x: 1, y: 1, x2: 1, y2: 1 }, GEOPOSITION_CHANNEL_INDEX, { 
+    x: 1, y: 1, x2: 1, y2: 1, xError: 1, yError: 1, xError2: 1, yError2: 1 }, GEOPOSITION_CHANNEL_INDEX, { 
     // color
     color: 1, fill: 1, stroke: 1, 
     // other non-position with scale
-    opacity: 1, size: 1, shape: 1, 
+    opacity: 1, fillOpacity: 1, strokeOpacity: 1, strokeWidth: 1, size: 1, shape: 1, 
     // channels without scales
     order: 1, text: 1, detail: 1, key: 1, tooltip: 1, href: 1 });
 export function isColorChannel(channel) {
@@ -102,9 +116,9 @@ export var UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 var _x = UNIT_CHANNEL_INDEX.x, _y = UNIT_CHANNEL_INDEX.y, 
 // x2 and y2 share the same scale as x and y
-_x2 = UNIT_CHANNEL_INDEX.x2, _y2 = UNIT_CHANNEL_INDEX.y2, _latitude = UNIT_CHANNEL_INDEX.latitude, _longitude = UNIT_CHANNEL_INDEX.longitude, _latitude2 = UNIT_CHANNEL_INDEX.latitude2, _longitude2 = UNIT_CHANNEL_INDEX.longitude2, 
+_x2 = UNIT_CHANNEL_INDEX.x2, _y2 = UNIT_CHANNEL_INDEX.y2, _xError = UNIT_CHANNEL_INDEX.xError, _yError = UNIT_CHANNEL_INDEX.yError, _xError2 = UNIT_CHANNEL_INDEX.xError2, _yError2 = UNIT_CHANNEL_INDEX.yError2, _latitude = UNIT_CHANNEL_INDEX.latitude, _longitude = UNIT_CHANNEL_INDEX.longitude, _latitude2 = UNIT_CHANNEL_INDEX.latitude2, _longitude2 = UNIT_CHANNEL_INDEX.longitude2, 
 // The rest of unit channels then have scale
-NONPOSITION_CHANNEL_INDEX = tslib_1.__rest(UNIT_CHANNEL_INDEX, ["x", "y", "x2", "y2", "latitude", "longitude", "latitude2", "longitude2"]);
+NONPOSITION_CHANNEL_INDEX = tslib_1.__rest(UNIT_CHANNEL_INDEX, ["x", "y", "x2", "y2", "xError", "yError", "xError2", "yError2", "latitude", "longitude", "latitude2", "longitude2"]);
 export var NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
 // POSITION_SCALE_CHANNELS = X and Y;
 var POSITION_SCALE_CHANNEL_INDEX = { x: 1, y: 1 };
@@ -166,6 +180,9 @@ export function getSupportedMark(channel) {
         case HREF:
         case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
         case OPACITY:
+        case FILLOPACITY:
+        case STROKEOPACITY:
+        case STROKEWIDTH:
         case ROW:
         case COLUMN:
             return {
@@ -227,6 +244,11 @@ export function getSupportedMark(channel) {
             return { point: true, geoshape: true };
         case TEXT:
             return { text: true };
+        case XERROR:
+        case YERROR:
+        case XERROR2:
+        case YERROR2:
+            return {};
     }
 }
 export function rangeType(channel) {
@@ -234,10 +256,17 @@ export function rangeType(channel) {
         case X:
         case Y:
         case SIZE:
+        case STROKEWIDTH:
         case OPACITY:
+        case FILLOPACITY:
+        case STROKEOPACITY:
         // X2 and Y2 use X and Y scales, so they similarly have continuous range.
         case X2:
         case Y2:
+        case XERROR:
+        case YERROR:
+        case XERROR2:
+        case YERROR2:
             return 'continuous';
         case ROW:
         case COLUMN:

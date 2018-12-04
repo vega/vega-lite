@@ -1,9 +1,9 @@
-import { SignalRef } from 'vega';
+import { Binding, SignalRef } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
 import { Dict } from '../../util';
-import { VgBinding, VgData, VgEventStream } from '../../vega.schema';
+import { VgData, VgEventStream } from '../../vega.schema';
 import { DataFlowNode } from '../data/dataflow';
 import { TimeUnitNode } from '../data/timeunit';
 import { FacetModel } from '../facet';
@@ -20,7 +20,7 @@ export interface SelectionComponent {
     name: string;
     type: SelectionType;
     events: VgEventStream;
-    bind?: 'scales' | VgBinding | Dict<VgBinding>;
+    bind?: 'scales' | Binding | Dict<Binding>;
     resolve: SelectionResolution;
     empty: 'all' | 'none';
     mark?: BrushConfig;

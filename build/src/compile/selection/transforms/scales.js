@@ -54,12 +54,13 @@ var scaleBindings = {
         var namedSg = signals.filter(function (s) { return s.name === selCmpt.name; })[0];
         var update = namedSg.update;
         if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-            namedSg.update = '{' + channelSignals.map(function (cs) { return selCmpt.fields[cs.channel] + ": " + cs.signal; }).join(', ') + '}';
+            namedSg.update =
+                '{' + channelSignals.map(function (cs) { return stringValue(selCmpt.fields[cs.channel]) + ": " + cs.signal; }).join(', ') + '}';
         }
         else {
             for (var _i = 0, channelSignals_1 = channelSignals; _i < channelSignals_1.length; _i++) {
                 var cs = channelSignals_1[_i];
-                var mapping = ", " + selCmpt.fields[cs.channel] + ": " + cs.signal;
+                var mapping = ", " + stringValue(selCmpt.fields[cs.channel]) + ": " + cs.signal;
                 if (update.indexOf(mapping) < 0) {
                     namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
                 }

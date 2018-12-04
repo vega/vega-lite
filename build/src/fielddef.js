@@ -350,6 +350,9 @@ export function channelCompatibility(fieldDef, channel) {
             }
             return COMPATIBLE;
         case 'opacity':
+        case 'fillOpacity':
+        case 'strokeOpacity':
+        case 'strokeWidth':
         case 'size':
         case 'x2':
         case 'y2':

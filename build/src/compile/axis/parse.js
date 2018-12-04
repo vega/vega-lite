@@ -70,7 +70,7 @@ export function parseLayerAxis(model) {
                         }
                     }
                     axisCount[orient]++;
-                    // TODO(https://github.com/vega/vega-lite/issues/2634): automaticaly add extra offset?
+                    // TODO(https://github.com/vega/vega-lite/issues/2634): automatically add extra offset?
                 }
             }
             // After merging, make sure to remove axes from child

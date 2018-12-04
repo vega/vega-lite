@@ -74,7 +74,7 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
                 }
                 var _a = specifiedScale || {}, _b = _a.domain, domain = _b === void 0 ? undefined : _b, _c = _a.range, range = _c === void 0 ? undefined : _c;
                 if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
-                    // If there are piecewise domain and range specified, use lineaer as default color scale as sequential does not support piecewise domain
+                    // If there are piecewise domain and range specified, use linear as default color scale as sequential does not support piecewise domain
                     return 'linear';
                 }
                 // Use `sequential` as the default color scale for continuous data

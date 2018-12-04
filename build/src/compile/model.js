@@ -242,6 +242,9 @@ var Model = /** @class */ (function () {
                 }
                 title.anchor = 'start';
             }
+            if (contains(['middle', undefined], title.anchor) && title.frame === undefined) {
+                title.frame = 'group';
+            }
             return keys(title).length > 0 ? title : undefined;
         }
         return undefined;

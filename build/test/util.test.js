@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { entries, fieldIntersection, fill, flatAccessWithDatum, prefixGenerator, unique, uniqueId } from '../src/util';
+import { differArray, entries, fieldIntersection, fill, flatAccessWithDatum, isEqual, isNumeric, prefixGenerator, unique, uniqueId } from '../src/util';
 import { accessPathDepth, accessPathWithDatum, deleteNestedProperty, hash, replacePathInField, stringify, varName } from '../src/util';
 describe('util', function () {
     describe('varName', function () {
@@ -168,6 +168,51 @@ describe('util', function () {
             var arr = fill(42, 5);
             expect(arr).toHaveLength(5);
             expect(arr).toEqual([42, 42, 42, 42, 42]);
+        });
+    });
+    describe('isEqual', function () {
+        it('should return false when dict is a subset of other', function () {
+            expect(isEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+        });
+        it('should return false when other is a subset of dict', function () {
+            expect(isEqual({ a: 1, b: 2 }, { a: 1 })).toBe(false);
+        });
+        it('should return true when dicts are equal', function () {
+            expect(isEqual({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
+        });
+        it('should return false when key values differ', function () {
+            expect(isEqual({ a: 1 }, { a: 2 })).toBe(false);
+        });
+    });
+    describe('differArray', function () {
+        it('should return false when both arrays are empty', function () {
+            expect(differArray([], [])).toBe(false);
+        });
+        it('should return true when lengths differ', function () {
+            var a = [1, 2, 3];
+            var b = [1, 2];
+            expect(differArray(a, b)).toBe(true);
+        });
+        it('should return false when arrays are same sorted', function () {
+            var a = [3, 2, 1];
+            var b = [1, 2, 3];
+            expect(differArray(a, b)).toBe(false);
+        });
+    });
+    describe('isNumeric', function () {
+        it('should return true for integers', function () {
+            expect(isNumeric(1)).toBe(true);
+            expect(isNumeric(-1)).toBe(true);
+        });
+        it('should be true for real numbers', function () {
+            expect(isNumeric(0.0)).toBe(true);
+            expect(isNumeric(3.14)).toBe(true);
+        });
+        it('should return false for NaN', function () {
+            expect(isNumeric(NaN)).toBe(false);
+        });
+        it('should return false for text', function () {
+            expect(isNumeric('foo')).toBe(false);
         });
     });
 });

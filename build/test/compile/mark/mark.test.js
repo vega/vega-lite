@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 import { assert } from 'chai';
-import { COLOR, DETAIL, OPACITY, SIZE, UNIT_CHANNELS } from '../../../src/channel';
+import { COLOR, DETAIL, FILLOPACITY, OPACITY, SIZE, STROKEOPACITY, STROKEWIDTH, UNIT_CHANNELS } from '../../../src/channel';
 import { getSort, parseMarkGroup, pathGroupingFields } from '../../../src/compile/mark/mark';
 import { GEOSHAPE } from '../../../src/mark';
 import { parseFacetModel, parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize } from '../../util';
@@ -243,7 +243,7 @@ describe('Mark', function () {
     describe('pathGroupingFields()', function () {
         it('should return fields for unaggregate detail, color, size, opacity fieldDefs.', function () {
             var _a;
-            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]; _i < _b.length; _i++) {
                 var channel = _b[_i];
                 expect(pathGroupingFields('line', (_a = {}, _a[channel] = { field: 'a', type: 'nominal' }, _a))).toEqual(['a']);
             }
@@ -253,14 +253,14 @@ describe('Mark', function () {
         });
         it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', function () {
             var _a;
-            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]; _i < _b.length; _i++) {
                 var channel = _b[_i];
                 expect(pathGroupingFields('line', (_a = {}, _a[channel] = { aggregate: 'mean', field: 'a', type: 'nominal' }, _a))).toEqual([]);
             }
         });
         it('should return condition detail fields for color, size, shape', function () {
             var _a;
-            for (var _i = 0, _b = [COLOR, SIZE, OPACITY]; _i < _b.length; _i++) {
+            for (var _i = 0, _b = [COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]; _i < _b.length; _i++) {
                 var channel = _b[_i];
                 expect(pathGroupingFields('line', (_a = {},
                     _a[channel] = {

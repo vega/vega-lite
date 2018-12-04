@@ -1,13 +1,13 @@
 ---
 layout: page
-description: The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)
-title: Multi Series Line Chart with Tooltips
+description: This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements.
+title: Multi Series Line Chart with Tooltip
 menu: examples
 permalink: /examples/interactive_multi_line_tooltip.html
 image: /examples/compiled/interactive_multi_line_tooltip.png
 edit_path: _data/examples.json
 ---
 
-The plot displays tooltips for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)
+This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements.
 
 {% include example.html spec='interactive_multi_line_tooltip'%}

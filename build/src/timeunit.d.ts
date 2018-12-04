@@ -13,6 +13,7 @@ export declare namespace TimeUnit {
     const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes';
     const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds';
     const MONTHDATE: 'monthdate';
+    const MONTHDATEHOURS: 'monthdatehours';
     const HOURSMINUTES: 'hoursminutes';
     const HOURSMINUTESSECONDS: 'hoursminutesseconds';
     const MINUTESSECONDS: 'minutesseconds';
@@ -35,6 +36,7 @@ export declare namespace TimeUnit {
     const UTCYEARMONTHDATEHOURSMINUTES: 'utcyearmonthdatehoursminutes';
     const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds';
     const UTCMONTHDATE: 'utcmonthdate';
+    const UTCMONTHDATEHOURS: 'utcmonthdatehours';
     const UTCHOURSMINUTES: 'utchoursminutes';
     const UTCHOURSMINUTESSECONDS: 'utchoursminutesseconds';
     const UTCMINUTESSECONDS: 'utcminutesseconds';
@@ -50,15 +52,15 @@ export declare function isLocalSingleTimeUnit(timeUnit: string): timeUnit is Loc
 export declare type UtcSingleTimeUnit = typeof TimeUnit.UTCYEAR | typeof TimeUnit.UTCQUARTER | typeof TimeUnit.UTCMONTH | typeof TimeUnit.UTCDAY | typeof TimeUnit.UTCDATE | typeof TimeUnit.UTCHOURS | typeof TimeUnit.UTCMINUTES | typeof TimeUnit.UTCSECONDS | typeof TimeUnit.UTCMILLISECONDS;
 export declare function isUtcSingleTimeUnit(timeUnit: string): timeUnit is UtcSingleTimeUnit;
 export declare type SingleTimeUnit = LocalSingleTimeUnit | UtcSingleTimeUnit;
-export declare type LocalMultiTimeUnit = typeof TimeUnit.YEARQUARTER | typeof TimeUnit.YEARQUARTERMONTH | typeof TimeUnit.YEARMONTH | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.MONTHDATE | typeof TimeUnit.HOURSMINUTES | typeof TimeUnit.HOURSMINUTESSECONDS | typeof TimeUnit.MINUTESSECONDS | typeof TimeUnit.SECONDSMILLISECONDS;
-export declare type UtcMultiTimeUnit = typeof TimeUnit.UTCYEARQUARTER | typeof TimeUnit.UTCYEARQUARTERMONTH | typeof TimeUnit.UTCYEARMONTH | typeof TimeUnit.UTCYEARMONTHDATE | typeof TimeUnit.UTCYEARMONTHDATEHOURS | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTES | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.UTCQUARTERMONTH | typeof TimeUnit.UTCMONTHDATE | typeof TimeUnit.UTCHOURSMINUTES | typeof TimeUnit.UTCHOURSMINUTESSECONDS | typeof TimeUnit.UTCMINUTESSECONDS | typeof TimeUnit.UTCSECONDSMILLISECONDS;
+export declare type LocalMultiTimeUnit = typeof TimeUnit.YEARQUARTER | typeof TimeUnit.YEARQUARTERMONTH | typeof TimeUnit.YEARMONTH | typeof TimeUnit.YEARMONTHDATE | typeof TimeUnit.YEARMONTHDATEHOURS | typeof TimeUnit.YEARMONTHDATEHOURSMINUTES | typeof TimeUnit.YEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.QUARTERMONTH | typeof TimeUnit.MONTHDATE | typeof TimeUnit.MONTHDATEHOURS | typeof TimeUnit.HOURSMINUTES | typeof TimeUnit.HOURSMINUTESSECONDS | typeof TimeUnit.MINUTESSECONDS | typeof TimeUnit.SECONDSMILLISECONDS;
+export declare type UtcMultiTimeUnit = typeof TimeUnit.UTCYEARQUARTER | typeof TimeUnit.UTCYEARQUARTERMONTH | typeof TimeUnit.UTCYEARMONTH | typeof TimeUnit.UTCYEARMONTHDATE | typeof TimeUnit.UTCYEARMONTHDATEHOURS | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTES | typeof TimeUnit.UTCYEARMONTHDATEHOURSMINUTESSECONDS | typeof TimeUnit.UTCQUARTERMONTH | typeof TimeUnit.UTCMONTHDATE | typeof TimeUnit.UTCMONTHDATEHOURS | typeof TimeUnit.UTCHOURSMINUTES | typeof TimeUnit.UTCHOURSMINUTESSECONDS | typeof TimeUnit.UTCMINUTESSECONDS | typeof TimeUnit.UTCSECONDSMILLISECONDS;
 export declare type MultiTimeUnit = LocalMultiTimeUnit | UtcMultiTimeUnit;
 export declare type LocalTimeUnit = LocalSingleTimeUnit | LocalMultiTimeUnit;
 export declare type UtcTimeUnit = UtcSingleTimeUnit | UtcMultiTimeUnit;
 export declare function isUTCTimeUnit(t: string): t is UtcTimeUnit;
 export declare function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit;
 export declare type TimeUnit = SingleTimeUnit | MultiTimeUnit;
-export declare const TIMEUNITS: import("vega-lite/build/src/timeunit").TimeUnit[];
+export declare const TIMEUNITS: TimeUnit[];
 export declare function isTimeUnit(t: string): t is TimeUnit;
 /**
  * Converts a date to only have the measurements relevant to the specified unit

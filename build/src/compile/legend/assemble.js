@@ -21,6 +21,17 @@ export function assembleLegends(model) {
             legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
         }
     }
-    return flatten(vals(legendByDomain)).map(function (legendCmpt) { return legendCmpt.combine(); });
+    return flatten(vals(legendByDomain)).map(function (legendCmpt) {
+        var legend = legendCmpt.combine();
+        // For non color channel's legend, we need to override symbol stroke config from Vega config
+        if (legend.encode && legend.encode.symbols) {
+            var out = legend.encode.symbols.update;
+            if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+                // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
+                out.stroke = { value: 'transparent' };
+            }
+        }
+        return legend;
+    });
 }
 //# sourceMappingURL=assemble.js.map

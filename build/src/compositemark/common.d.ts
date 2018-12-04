@@ -1,7 +1,7 @@
 import { CompositeMark, CompositeMarkDef } from '.';
 import { Channel } from '../channel';
 import { Encoding } from '../encoding';
-import { Field, PositionFieldDef } from '../fielddef';
+import { Field, FieldDef, PositionFieldDef } from '../fielddef';
 import { ColorMixins, GenericMarkDef, MarkConfig, MarkDef } from '../mark';
 import { GenericUnitSpec, NormalizedUnitSpec } from '../spec';
 import { Orient } from '../vega.schema';
@@ -20,8 +20,10 @@ export declare function makeCompositeAggregatePartFactory<P extends PartsMixins<
 export declare function partLayerMixins<P extends PartsMixins<any>>(markDef: GenericCompositeMarkDef<any> & P, part: keyof P, compositeMarkConfig: P, partBaseSpec: NormalizedUnitSpec): NormalizedUnitSpec[];
 export declare function compositeMarkContinuousAxis<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>, orient: Orient, compositeMark: M): {
     continuousAxisChannelDef: PositionFieldDef<string>;
-    continuousAxisChannelDef2: PositionFieldDef<string>;
-    continuousAxis: "x" | "y";
+    continuousAxisChannelDef2: FieldDef<string>;
+    continuousAxisChannelDefError: FieldDef<string>;
+    continuousAxisChannelDefError2: FieldDef<string>;
+    continuousAxis: 'x' | 'y';
 };
 export declare function compositeMarkOrient<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>, compositeMark: M): Orient;
 export declare function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(spec: GenericUnitSpec<Encoding<string>, M | MD>, supportedChannels: Channel[], compositeMark: M): GenericUnitSpec<Encoding<string>, M | MD>;

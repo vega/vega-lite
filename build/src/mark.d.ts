@@ -50,9 +50,7 @@ export interface MarkConfig extends ColorMixins, VgMarkConfig {
     /**
      * Whether the mark's color should be used as fill color instead of stroke color.
      *
-     * __Default value:__ `true` for all marks except `point` and `false` for `point`.
-     *
-     * __Applicable for:__ `bar`, `point`, `circle`, `square`, and `area` marks.
+     * __Default value:__ `false` for `point`, `line` and `rule`; otherwise, `true`.
      *
      * __Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
      *

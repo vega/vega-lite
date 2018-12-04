@@ -44,7 +44,7 @@ function parseUnitProjection(model) {
 }
 function mergeIfNoConflict(first, second) {
     var allPropertiesShared = every(PROJECTION_PROPERTIES, function (prop) {
-        // neither has the poperty
+        // neither has the property
         if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
             return true;
         }
