@@ -105,6 +105,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
       "title": "key",
       "encode": {
         "symbols": {

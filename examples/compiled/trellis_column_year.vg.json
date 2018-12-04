@@ -211,6 +211,12 @@
       "range": "category"
     }
   ],
-  "legends": [{"stroke": "color", "title": "symbol"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
+      "title": "symbol"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

@@ -277,6 +277,9 @@
   "legends": [
     {
       "stroke": "trellis_barley_color",
+      "gradientLength": {
+        "signal": "min(max(trellis_barley_child_height, 100), 200)"
+      },
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

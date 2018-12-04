@@ -132,9 +132,14 @@
     }
   ],
   "legends": [
-    {"fill": "color", "title": "symbol"},
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "symbol"
+    },
     {
       "size": "size",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
       "title": "price",
       "encode": {
         "symbols": {

@@ -269,7 +269,13 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "symbol"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "symbol"
+    }
+  ],
   "config": {
     "axisY": {"minExtent": 30},
     "style": {"text": {"align": "right", "dx": -5, "dy": 5}}

@@ -291,6 +291,7 @@
   "legends": [
     {
       "size": "size",
+      "gradientLength": {"signal": "min(max(concat_1_height, 100), 200)"},
       "title": "Number of Records",
       "encode": {
         "symbols": {

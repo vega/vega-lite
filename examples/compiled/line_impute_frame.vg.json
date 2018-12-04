@@ -159,6 +159,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "c"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "c"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

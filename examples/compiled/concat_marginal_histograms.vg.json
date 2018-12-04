@@ -430,7 +430,13 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "Number of Records"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "min(max(concat_1_height, 100), 200)"},
+      "title": "Number of Records"
+    }
+  ],
   "config": {
     "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}},

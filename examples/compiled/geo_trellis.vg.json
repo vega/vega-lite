@@ -129,6 +129,12 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "pct"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
+      "title": "pct"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

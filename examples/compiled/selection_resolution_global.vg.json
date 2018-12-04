@@ -3580,6 +3580,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {

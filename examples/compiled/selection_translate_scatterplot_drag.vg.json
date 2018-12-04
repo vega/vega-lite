@@ -224,6 +224,7 @@
   "legends": [
     {
       "size": "size",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {

@@ -109,6 +109,7 @@
   "legends": [
     {
       "opacity": "opacity",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
       "title": "Miles_per_Gallon",
       "encode": {
         "symbols": {

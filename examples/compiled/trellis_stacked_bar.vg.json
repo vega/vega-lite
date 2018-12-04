@@ -189,6 +189,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
       "title": "site",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

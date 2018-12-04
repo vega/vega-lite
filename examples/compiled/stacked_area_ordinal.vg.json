@@ -163,6 +163,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "title": "Cylinders"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "Cylinders"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

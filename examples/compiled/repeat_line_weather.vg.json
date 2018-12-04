@@ -386,6 +386,12 @@
       "zero": true
     }
   ],
-  "legends": [{"stroke": "color", "title": "location"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "location"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

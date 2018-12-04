@@ -102,6 +102,12 @@
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color", "title": "Mean of Horsepower"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "title": "Mean of Horsepower"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

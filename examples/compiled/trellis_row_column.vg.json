@@ -222,6 +222,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -234,6 +235,7 @@
     },
     {
       "shape": "shape",
+      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {
