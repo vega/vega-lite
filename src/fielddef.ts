@@ -48,6 +48,15 @@ export interface ValueDef {
  */
 export type ChannelDefWithCondition<F extends FieldDef<any>> = FieldDefWithCondition<F> | ValueDefWithCondition<F>;
 
+/**
+ * A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.
+ * {
+ *   condition: {field: ...} | {value: ...},
+ *   value: ...,
+ * }
+ */
+export type ValueDefWithCondition<F extends FieldDef<any>> = ValueDefWithOptionalCondition<F> | ConditionOnlyDef<F>;
+
 export type Conditional<T> = ConditionalPredicate<T> | ConditionalSelection<T>;
 
 export type ConditionalPredicate<T> = {
@@ -87,13 +96,13 @@ export interface ConditionValueDefMixins {
 export type FieldDefWithCondition<F extends FieldDef<any>> = F & ConditionValueDefMixins;
 
 /**
- * A ValueDef with Condition<ValueDef | FieldDef>
+ * A ValueDef with optional Condition<ValueDef | FieldDef>
  * {
  *   condition: {field: ...} | {value: ...},
  *   value: ...,
  * }
  */
-export interface ValueDefWithCondition<F extends FieldDef<any>> {
+export interface ValueDefWithOptionalCondition<F extends FieldDef<any>> {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -102,7 +111,20 @@ export interface ValueDefWithCondition<F extends FieldDef<any>> {
   /**
    * A constant value in visual domain.
    */
-  value?: Value;
+  value: Value;
+}
+
+/**
+ * A Condition<ValueDef | FieldDef> only definition.
+ * {
+ *   condition: {field: ...} | {value: ...}
+ * }
+ */
+export interface ConditionOnlyDef<F extends FieldDef<any>> {
+  /**
+   * A field definition or one or more value definition(s) with a selection predicate.
+   */
+  condition: Conditional<F> | Conditional<ValueDef> | Conditional<ValueDef>[];
 }
 
 /**
