@@ -5,22 +5,22 @@ describe('Model', () => {
   describe('NameMap', () => {
     it('should rename correctly', () => {
       const map = new NameMap();
-      expect(map.get('a')).toEqual('a');
+      expect(map.get('a')).toBe('a');
 
       map.rename('a', 'b');
-      expect(map.get('a')).toEqual('b');
-      expect(map.get('b')).toEqual('b');
+      expect(map.get('a')).toBe('b');
+      expect(map.get('b')).toBe('b');
 
       map.rename('b', 'c');
-      expect(map.get('a')).toEqual('c');
-      expect(map.get('b')).toEqual('c');
-      expect(map.get('c')).toEqual('c');
+      expect(map.get('a')).toBe('c');
+      expect(map.get('b')).toBe('c');
+      expect(map.get('c')).toBe('c');
 
       map.rename('z', 'a');
-      expect(map.get('a')).toEqual('c');
-      expect(map.get('b')).toEqual('c');
-      expect(map.get('c')).toEqual('c');
-      expect(map.get('z')).toEqual('c');
+      expect(map.get('a')).toBe('c');
+      expect(map.get('b')).toBe('c');
+      expect(map.get('c')).toBe('c');
+      expect(map.get('z')).toBe('c');
     });
   });
 

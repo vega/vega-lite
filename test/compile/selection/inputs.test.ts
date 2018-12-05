@@ -45,11 +45,11 @@ describe('Inputs Selection Transform', () => {
   });
 
   it('identifies transform invocation', () => {
-    expect(inputs.has(selCmpts['one'])).not.toBe(false);
-    expect(inputs.has(selCmpts['two'])).not.toBe(false);
-    expect(inputs.has(selCmpts['three'])).not.toBe(false);
-    expect(inputs.has(selCmpts['four'])).not.toBe(true);
-    expect(inputs.has(selCmpts['six'])).not.toBe(true);
+    expect(inputs.has(selCmpts['one'])).toBeTruthy();
+    expect(inputs.has(selCmpts['two'])).toBeTruthy();
+    expect(inputs.has(selCmpts['three'])).toBeTruthy();
+    expect(inputs.has(selCmpts['four'])).toBeFalsy();
+    expect(inputs.has(selCmpts['six'])).toBeFalsy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -80,29 +80,32 @@ describe('Inputs Selection Transform', () => {
         'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
     });
 
-    const signals = selection.assembleTopLevelSignals(model, []);
-    expect(signals).toContainEqual({
-      name: 'two_Horsepower',
-      value: '',
-      on: [
+    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
         {
-          events: [{source: 'scope', type: 'click'}],
-          update: 'datum && item().mark.marktype !== \'group\' ? datum["Horsepower"] : null'
-        }
-      ],
-      bind: {input: 'range', min: 0, max: 10, step: 1}
-    });
-    expect(signals).toContainEqual({
-      name: 'two_Cylinders',
-      value: '',
-      on: [
+          name: 'two_Horsepower',
+          value: '',
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["Horsepower"] : null'
+            }
+          ],
+          bind: {input: 'range', min: 0, max: 10, step: 1}
+        },
         {
-          events: [{source: 'scope', type: 'click'}],
-          update: 'datum && item().mark.marktype !== \'group\' ? datum["Cylinders"] : null'
+          name: 'two_Cylinders',
+          value: '',
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["Cylinders"] : null'
+            }
+          ],
+          bind: {input: 'range', min: 0, max: 10, step: 1}
         }
-      ],
-      bind: {input: 'range', min: 0, max: 10, step: 1}
-    });
+      ])
+    );
   });
 
   it('adds projection-specific widget bindings', () => {
@@ -113,39 +116,42 @@ describe('Inputs Selection Transform', () => {
         'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
     });
 
-    const signals = selection.assembleTopLevelSignals(model, []);
-    expect(signals).toContainEqual({
-      name: 'three_Origin',
-      value: '',
-      on: [
+    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
         {
-          events: [{source: 'scope', type: 'click'}],
-          update:
-            'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Origin"] : null'
-        }
-      ],
-      bind: {
-        input: 'select',
-        options: ['Japan', 'USA', 'Europe']
-      }
-    });
-    expect(signals).toContainEqual({
-      name: 'three_Cylinders',
-      value: '',
-      on: [
+          name: 'three_Origin',
+          value: '',
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update:
+                'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Origin"] : null'
+            }
+          ],
+          bind: {
+            input: 'select',
+            options: ['Japan', 'USA', 'Europe']
+          }
+        },
         {
-          events: [{source: 'scope', type: 'click'}],
-          update:
-            'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Cylinders"] : null'
+          name: 'three_Cylinders',
+          value: '',
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update:
+                'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["Cylinders"] : null'
+            }
+          ],
+          bind: {
+            Horsepower: {input: 'range', min: 0, max: 10, step: 1},
+            Origin: {
+              input: 'select',
+              options: ['Japan', 'USA', 'Europe']
+            }
+          }
         }
-      ],
-      bind: {
-        Horsepower: {input: 'range', min: 0, max: 10, step: 1},
-        Origin: {
-          input: 'select',
-          options: ['Japan', 'USA', 'Europe']
-        }
-      }
-    });
+      ])
+    );
   });
 });

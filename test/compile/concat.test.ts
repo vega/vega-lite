@@ -1,5 +1,4 @@
 import * as log from '../../src/log';
-import {VgLayout} from '../../src/vega.schema';
 import {parseConcatModel} from '../util';
 
 describe('Concat', () => {

@@ -31,12 +31,12 @@ describe('Toggle Selection Transform', () => {
   }));
 
   it('identifies transform invocation', () => {
-    expect(toggle.has(selCmpts['one'])).not.toBe(false);
-    expect(toggle.has(selCmpts['two'])).not.toBe(false);
-    expect(toggle.has(selCmpts['three'])).not.toBe(true);
-    expect(toggle.has(selCmpts['four'])).not.toBe(true);
-    expect(toggle.has(selCmpts['five'])).not.toBe(true);
-    expect(toggle.has(selCmpts['six'])).not.toBe(true);
+    expect(toggle.has(selCmpts['one'])).toBeTruthy();
+    expect(toggle.has(selCmpts['two'])).toBeTruthy();
+    expect(toggle.has(selCmpts['three'])).toBeFalsy();
+    expect(toggle.has(selCmpts['four'])).toBeFalsy();
+    expect(toggle.has(selCmpts['five'])).toBeFalsy();
+    expect(toggle.has(selCmpts['six'])).toBeFalsy();
   });
 
   it('builds toggle signals', () => {
@@ -69,14 +69,12 @@ describe('Toggle Selection Transform', () => {
     ]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
   });
 
   it('builds modify expr', () => {
     const oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
-    expect(oneExpr).toEqual(
-      'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null'
-    );
+    expect(oneExpr).toEqual('one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
 
     const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
     expect(twoExpr).toEqual(
@@ -84,25 +82,27 @@ describe('Toggle Selection Transform', () => {
     );
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        name: 'one_modify',
-        on: [
-          {
-            events: {signal: 'one_tuple'},
-            update: `modify(\"one_store\", ${oneExpr})`
-          }
-        ]
-      },
-      {
-        name: 'two_modify',
-        on: [
-          {
-            events: {signal: 'two_tuple'},
-            update: `modify(\"two_store\", ${twoExpr})`
-          }
-        ]
-      }
-    ]);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_modify',
+          on: [
+            {
+              events: {signal: 'one_tuple'},
+              update: `modify(\"one_store\", ${oneExpr})`
+            }
+          ]
+        },
+        {
+          name: 'two_modify',
+          on: [
+            {
+              events: {signal: 'two_tuple'},
+              update: `modify(\"two_store\", ${twoExpr})`
+            }
+          ]
+        }
+      ])
+    );
   });
 });

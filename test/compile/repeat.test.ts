@@ -1,5 +1,4 @@
 import {replaceRepeaterInEncoding} from '../../src/compile/repeater';
-import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
 import {keys} from '../../src/util';
 import {parseRepeatModel} from '../util';
@@ -15,7 +14,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual(resolved, {
+      expect(resolved).toEqual({
         x: {field: 'foo', type: 'quantitative'},
         y: {field: 'bar', type: 'quantitative'}
       });
@@ -47,7 +46,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual(resolved, {
+      expect(resolved).toEqual({
         detail: [{field: 'foo', type: 'quantitative'}, {field: 'bar', type: 'quantitative'}]
       });
     });
@@ -60,7 +59,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual(resolved, {
+      expect(resolved).toEqual({
         x: {field: 'bar', type: 'quantitative', sort: {field: 'foo', op: 'min'}}
       });
     });
@@ -76,7 +75,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual(resolved, {
+      expect(resolved).toEqual({
         color: {
           condition: {selection: 'test', field: 'foo', type: 'quantitative'},
           value: 'red'
@@ -96,7 +95,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual(resolved, {
+      expect(resolved).toEqual({
         color: {
           condition: {selection: 'test', value: 'red'},
           field: 'foo',

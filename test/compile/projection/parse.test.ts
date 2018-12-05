@@ -84,7 +84,7 @@ describe('src/compile/projection/parse', () => {
       });
       model.parse();
       expect(typeof model.component.projection.data[0]).toBe('object');
-      expect('signal' in model.component.projection.data[0]).toBeTruthy();
+      expect(model.component.projection.data[0]).toHaveProperty('signal');
     });
 
     it('should add data from main', () => {
@@ -102,7 +102,7 @@ describe('src/compile/projection/parse', () => {
       model.parse();
       expect(typeof model.component.projection.data[0]).toBe('string');
       expect(typeof model.component.projection.data[0]).not.toBe('object');
-      expect('signal' in model.component.projection.data[0]).toBeFalsy();
+      expect(model.component.projection.data[0]).not.toHaveProperty('signal');
     });
   });
 

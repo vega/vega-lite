@@ -1,6 +1,6 @@
 /* tslint:disable quotemark */
 
-import { selector as parseSelector } from 'vega-event-selector';
+import {selector as parseSelector} from 'vega-event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import {keys} from '../../../src/util';
 import {parseUnitModel} from '../../util';
@@ -26,26 +26,30 @@ describe('Selection', () => {
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
-    expect(component.one.name).toEqual('one');
-    expect(component.one.type).toEqual('single');
+    expect(component.one.name).toBe('one');
+    expect(component.one.type).toBe('single');
     expect(component['one'].project).toEqual([{field: '_vgsid_', type: 'E'}]);
     expect(component['one'].events).toEqual(parseSelector('click', 'scope'));
 
-    expect(component.two.name).toEqual('two');
-    expect(component.two.type).toEqual('multi');
+    expect(component.two.name).toBe('two');
+    expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toEqual('event.shiftKey');
     expect(component['two'].project).toEqual([{field: '_vgsid_', type: 'E'}]);
     expect(component['two'].events).toEqual(parseSelector('click', 'scope'));
 
-    expect(component.three.name).toEqual('three');
-    expect(component.three.type).toEqual('interval');
+    expect(component.three.name).toBe('three');
+    expect(component.three.type).toBe('interval');
     expect(component.three.translate).toEqual('[mousedown, window:mouseup] > window:mousemove!');
     expect(component.three.zoom).toEqual('wheel!');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
-      {field: 'Horsepower', channel: 'x', type: 'R'},
-      {field: 'Miles_per_Gallon', channel: 'y', type: 'R'}
-    ]);
-    expect(component['three'].events).toEqual(parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
+    expect(component['three'].project).toEqual(
+      expect.arrayContaining([
+        {field: 'Horsepower', channel: 'x', type: 'R'},
+        {field: 'Miles_per_Gallon', channel: 'y', type: 'R'}
+      ])
+    );
+    expect(component['three'].events).toEqual(
+      parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')
+    );
   });
 
   it('supports inline default overrides', () => {
@@ -72,26 +76,24 @@ describe('Selection', () => {
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
-    expect(component.one.name).toEqual('one');
-    expect(component.one.type).toEqual('single');
+    expect(component.one.name).toBe('one');
+    expect(component.one.type).toBe('single');
     expect(component['one'].project).toEqual([{field: 'Cylinders', type: 'E'}]);
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
-    expect(component.two.name).toEqual('two');
-    expect(component.two.type).toEqual('multi');
+    expect(component.two.name).toBe('two');
+    expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toEqual('event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [
-      {field: 'Origin', channel: 'color', type: 'E'}
-    ]);
+    expect(component['two'].project).toEqual(expect.arrayContaining([{field: 'Origin', channel: 'color', type: 'E'}]));
     expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
 
-    expect(component.three.name).toEqual('three');
-    expect(component.three.type).toEqual('interval');
+    expect(component.three.name).toBe('three');
+    expect(component.three.type).toBe('interval');
     expect(component.three.translate).toEqual(false);
     expect(component.three.zoom).toEqual('wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
-      {field: 'Miles_per_Gallon', channel: 'y', type: 'R'}
-    ]);
+    expect(component['three'].project).toEqual(
+      expect.arrayContaining([{field: 'Miles_per_Gallon', channel: 'y', type: 'R'}])
+    );
     expect(component['three'].events).toEqual(
       parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope')
     );
@@ -116,26 +118,24 @@ describe('Selection', () => {
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
-    expect(component.one.name).toEqual('one');
-    expect(component.one.type).toEqual('single');
+    expect(component.one.name).toBe('one');
+    expect(component.one.type).toBe('single');
     expect(component['one'].project).toEqual([{field: 'Cylinders', type: 'E'}]);
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
-    expect(component.two.name).toEqual('two');
-    expect(component.two.type).toEqual('multi');
+    expect(component.two.name).toBe('two');
+    expect(component.two.type).toBe('multi');
     expect(component.two.toggle).toEqual('event.ctrlKey');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['two'].project, [
-      {field: 'Origin', channel: 'color', type: 'E'}
-    ]);
+    expect(component['two'].project).toEqual(expect.arrayContaining([{field: 'Origin', channel: 'color', type: 'E'}]));
     expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
 
-    expect(component.three.name).toEqual('three');
-    expect(component.three.type).toEqual('interval');
+    expect(component.three.name).toBe('three');
+    expect(component.three.type).toBe('interval');
     expect(!component.three.translate).toBeTruthy();
     expect(component.three.zoom).toEqual('wheel[event.altKey]');
-    assert.sameDeepMembers<selection.ProjectSelectionComponent>(component['three'].project, [
-      {field: 'Miles_per_Gallon', channel: 'y', type: 'R'}
-    ]);
+    expect(component['three'].project).toEqual(
+      expect.arrayContaining([{field: 'Miles_per_Gallon', channel: 'y', type: 'R'}])
+    );
     expect(component['three'].events).toEqual(
       parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope')
     );

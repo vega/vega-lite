@@ -21,7 +21,7 @@ describe('compile/projection/assemble', () => {
     model.parse();
 
     it('should not be empty', () => {
-      assert.isNotEmpty(assembleProjectionForModel(model));
+      expect(assembleProjectionForModel(model).length).toBeGreaterThan(0);
     });
 
     it('should have properties of right type', () => {
