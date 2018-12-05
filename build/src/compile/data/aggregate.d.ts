@@ -1,0 +1,27 @@
+import { AggregateOp } from 'vega';
+import { AggregateTransform } from '../../transform';
+import { Dict, StringSet } from '../../util';
+import { VgAggregateTransform } from '../../vega.schema';
+import { UnitModel } from '../unit';
+import { DataFlowNode } from './dataflow';
+export declare class AggregateNode extends DataFlowNode {
+    private dimensions;
+    private measures;
+    clone(): AggregateNode;
+    /**
+     * @param dimensions string set for dimensions
+     * @param measures dictionary mapping field name => dict of aggregation functions and names to use
+     */
+    constructor(parent: DataFlowNode, dimensions: StringSet, measures: Dict<{
+        [key in AggregateOp]?: StringSet;
+    }>);
+    readonly groupBy: StringSet;
+    static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode;
+    static makeFromTransform(parent: DataFlowNode, t: AggregateTransform): AggregateNode;
+    merge(other: AggregateNode): boolean;
+    addDimensions(fields: string[]): void;
+    dependentFields(): {};
+    producedFields(): {};
+    hash(): string;
+    assemble(): VgAggregateTransform;
+}

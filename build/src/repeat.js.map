@@ -1,0 +1,1 @@
+{"version":3,"file":"repeat.js","sourceRoot":"","sources":["../../src/repeat.ts"],"names":[],"mappings":"","sourcesContent":["export interface Repeat {\n  /**\n   * Vertical repeated views.\n   */\n  row?: string[];\n\n  /**\n   * Horizontal repeated views.\n   */\n  column?: string[];\n}\n"]}
