@@ -46,7 +46,7 @@ export function defaultGradientLength(model: Model, legend: Legend, legendConfig
 
 function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: number, max: number) {
   const sizeSignal = model.getSizeSignalRef(sizeType).signal;
-  return {signal: `min(max(${sizeSignal}, ${min}), ${max})`};
+  return {signal: `clamp(${sizeSignal}, ${min}, ${max})`};
 }
 
 export function labelOverlap(scaleType: ScaleType): LabelOverlap {
