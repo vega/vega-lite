@@ -23,7 +23,6 @@ Gemfile
 Gemfile.lock
 tsconfig.json
 tslint.json
-vl.sublime-project
 wdio.conf.js
 npm-debug.log*
 yarn-debug.log*
