@@ -36,30 +36,20 @@ export function color(model: UnitModel): VgEncodeEntry {
     ? 'transparent'
     : undefined;
 
-  const defaultValue = {
-    fill: getFirstDefined(
-      markDef.fill,
-      configValue.fill,
-      // If there is no fill, always fill symbols, bar, geoshape
-      // with transparent fills https://github.com/vega/vega-lite/issues/1316
-      transparentIfNeeded
-    ),
-    stroke: getFirstDefined(markDef.stroke, configValue.stroke)
-  };
+  const defaultFill = getFirstDefined(
+    markDef.fill,
+    configValue.fill,
+    // If there is no fill, always fill symbols, bar, geoshape
+    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    transparentIfNeeded
+  );
+  const defaultStroke = getFirstDefined(markDef.stroke, configValue.stroke);
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
 
   const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
-    ...(defaultValue.fill
-      ? {
-          fill: {value: defaultValue.fill}
-        }
-      : {}),
-    ...(defaultValue.stroke
-      ? {
-          stroke: {value: defaultValue.stroke}
-        }
-      : {})
+    ...(defaultFill ? {fill: {value: defaultFill}} : {}),
+    ...(defaultStroke ? {stroke: {value: defaultStroke}} : {})
   };
 
   if (encoding.fill || encoding.stroke) {
@@ -70,8 +60,8 @@ export function color(model: UnitModel): VgEncodeEntry {
     }
 
     return {
-      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultValue.fill, transparentIfNeeded)}),
-      ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
+      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultFill, transparentIfNeeded)}),
+      ...nonPosition('stroke', model, {defaultValue: defaultStroke})
     };
   } else if (encoding.color) {
     return {
