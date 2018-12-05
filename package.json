@@ -99,7 +99,7 @@
     "tslint-config-prettier": "^1.16.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint": "5.11.0",
-    "typescript": "^3.1.6",
+    "typescript": "^3.2.1",
     "vega-datasets": "^1.20.0",
     "vega-embed": "^3.24.1",
     "vega-tooltip": "^0.13.0",
