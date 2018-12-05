@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import inputs from '../../../src/compile/selection/transforms/inputs';
 import {parseUnitModel} from '../../util';
@@ -46,11 +45,11 @@ describe('Inputs Selection Transform', () => {
   });
 
   it('identifies transform invocation', () => {
-    assert.isNotFalse(inputs.has(selCmpts['one']));
-    assert.isNotFalse(inputs.has(selCmpts['two']));
-    assert.isNotFalse(inputs.has(selCmpts['three']));
-    assert.isNotTrue(inputs.has(selCmpts['four']));
-    assert.isNotTrue(inputs.has(selCmpts['six']));
+    expect(inputs.has(selCmpts['one'])).not.toBe(false);
+    expect(inputs.has(selCmpts['two'])).not.toBe(false);
+    expect(inputs.has(selCmpts['three'])).not.toBe(false);
+    expect(inputs.has(selCmpts['four'])).not.toBe(true);
+    expect(inputs.has(selCmpts['six'])).not.toBe(true);
   });
 
   it('adds widget binding for default projection', () => {

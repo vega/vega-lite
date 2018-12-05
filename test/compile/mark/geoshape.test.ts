@@ -1,7 +1,6 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {geoshape} from '../../../src/compile/mark/geoshape';
+import { geoshape } from '../../../src/compile/mark/geoshape';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Geoshape', () => {
@@ -30,17 +29,14 @@ describe('Mark: Geoshape', () => {
         config: {mark: {tooltip: null}}
       });
       const props = geoshape.encodeEntry(model);
-      assert.deepEqual(
-        {
-          fill: {
-            value: 'black'
-          },
-          opacity: {
-            value: 0.8
-          }
+      expect({
+        fill: {
+          value: 'black'
         },
-        props
-      );
+        opacity: {
+          value: 0.8
+        }
+      }).toEqual(props);
     });
   });
 });

@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-import {Field, FieldDef} from '../src/fielddef';
+import { Field, FieldDef } from '../src/fielddef';
 import {fieldDefs} from '../src/spec';
 
 describe('fieldDefs()', () => {

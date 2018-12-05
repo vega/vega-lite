@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {assembleAxis} from '../../../src/compile/axis/assemble';
+import { assembleAxis } from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
 import {defaultConfig} from '../../../src/config';
 
@@ -17,7 +16,7 @@ describe('compile/axis/assemble', () => {
         }
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
-      assert.isUndefined(axis.encode.labels);
+      expect(axis.encode.labels).not.toBeDefined();
     });
 
     it('outputs grid axis with custom zindex', () => {
@@ -27,7 +26,7 @@ describe('compile/axis/assemble', () => {
         zindex: 3
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
-      assert.equal(axis.zindex, 3);
+      expect(axis.zindex).toEqual(3);
     });
 
     it('outputs main axis without grid encode blocks', () => {
@@ -39,7 +38,7 @@ describe('compile/axis/assemble', () => {
         }
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      assert.isUndefined(axis.encode.grid);
+      expect(axis.encode.grid).not.toBeDefined();
     });
 
     it('correctly assemble title fieldDefs', () => {
@@ -48,7 +47,7 @@ describe('compile/axis/assemble', () => {
         title: [{aggregate: 'max', field: 'a'}, {aggregate: 'min', field: 'b'}]
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      assert.equal(axis.title, 'Max of a, Min of b');
+      expect(axis.title).toEqual('Max of a, Min of b');
     });
   });
 });

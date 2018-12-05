@@ -1,7 +1,6 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {bar} from '../../../src/compile/mark/bar';
+import { bar } from '../../../src/compile/mark/bar';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
@@ -20,11 +19,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar, with y from zero to field value and with band value for x/width ', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {scale: 'x', band: true});
-      assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
-      assert.deepEqual(props.y2, {scale: 'y', value: 0});
-      assert.isUndefined(props.height);
+      expect(props.x).toEqual({scale: 'x', field: 'Origin'});
+      expect(props.width).toEqual({scale: 'x', band: true});
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -39,11 +38,11 @@ describe('Mark: Bar', () => {
       }
     });
     const props = bar.encodeEntry(model);
-    assert.deepEqual(props.x, {scale: 'x', field: 'bin_start'});
-    assert.deepEqual(props.x2, {scale: 'x', field: 'bin_end'});
-    assert.deepEqual(props.y, {scale: 'y', field: 'Acceleration'});
-    assert.deepEqual(props.y2, {scale: 'y', value: 0});
-    assert.isUndefined(props.height);
+    expect(props.x).toEqual({scale: 'x', field: 'bin_start'});
+    expect(props.x2).toEqual({scale: 'x', field: 'bin_end'});
+    expect(props.y).toEqual({scale: 'y', field: 'Acceleration'});
+    expect(props.y2).toEqual({scale: 'y', value: 0});
+    expect(props.height).not.toBeDefined();
   });
 
   it('should draw vertical bar, with y from zero to field value and with band value for x/width when domain that includes zero is specified', () => {
@@ -57,11 +56,11 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
-    assert.deepEqual(props.width, {scale: 'x', band: true});
-    assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
-    assert.deepEqual(props.y2, {scale: 'y', value: 0});
-    assert.isUndefined(props.height);
+    expect(props.x).toEqual({scale: 'x', field: 'Origin'});
+    expect(props.width).toEqual({scale: 'x', band: true});
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({scale: 'y', value: 0});
+    expect(props.height).not.toBeDefined();
   });
 
   it(
@@ -77,11 +76,11 @@ describe('Mark: Bar', () => {
       });
       const props = bar.encodeEntry(model);
 
-      assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
-      assert.isUndefined(props.height);
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.height).not.toBeDefined();
 
-      assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: false}));
+      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: false}));
     })
   );
 
@@ -98,11 +97,11 @@ describe('Mark: Bar', () => {
       });
       const props = bar.encodeEntry(model);
 
-      assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
-      assert.isUndefined(props.height);
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.height).not.toBeDefined();
 
-      assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: true}));
+      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: true}));
     })
   );
 
@@ -119,11 +118,11 @@ describe('Mark: Bar', () => {
       });
       const props = bar.encodeEntry(model);
 
-      assert.deepEqual(props.y, {scale: 'y', field: 'mean_Acceleration'});
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
-      assert.isUndefined(props.height);
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.height).not.toBeDefined();
 
-      assert.equal(logger.warns[0], log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {scaleType: 'log'}));
+      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {scaleType: 'log'}));
     })
   );
 
@@ -139,11 +138,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar from zero to field value and with band value for x/width', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'Origin'});
-      assert.deepEqual(props.height, {scale: 'y', band: true});
-      assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-      assert.isUndefined(props.width);
+      expect(props.y).toEqual({scale: 'y', field: 'Origin'});
+      expect(props.height).toEqual({scale: 'y', band: true});
+      expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -158,11 +157,11 @@ describe('Mark: Bar', () => {
       }
     });
     const props = bar.encodeEntry(model);
-    assert.deepEqual(props.y, {scale: 'y', field: 'bin_start'});
-    assert.deepEqual(props.y2, {scale: 'y', field: 'bin_end'});
-    assert.deepEqual(props.x, {scale: 'x', field: 'Acceleration'});
-    assert.deepEqual(props.x2, {scale: 'x', value: 0});
-    assert.isUndefined(props.height);
+    expect(props.y).toEqual({scale: 'y', field: 'bin_start'});
+    expect(props.y2).toEqual({scale: 'y', field: 'bin_end'});
+    expect(props.x).toEqual({scale: 'x', field: 'Acceleration'});
+    expect(props.x2).toEqual({scale: 'x', value: 0});
+    expect(props.height).not.toBeDefined();
   });
 
   describe('simple horizontal with point scale', () => {
@@ -177,11 +176,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar from zero to field value and y with center position and height = rangeStep - 1', () => {
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin'});
-      assert.deepEqual(props.height, {value: defaultScaleConfig.rangeStep - 1});
-      assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-      assert.isUndefined(props.width);
+      expect(props.yc).toEqual({scale: 'y', field: 'Origin'});
+      expect(props.height).toEqual({value: defaultScaleConfig.rangeStep - 1});
+      expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -198,8 +197,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should set height to 5 and center y', () => {
-      assert.deepEqual(props.height, {value: 5});
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
+      expect(props.height).toEqual({value: 5});
+      expect(props.yc).toEqual({scale: 'y', field: 'Origin', band: 0.5});
     });
   });
 
@@ -215,8 +214,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should set height to 5 and center y', () => {
-      assert.deepEqual(props.height, {value: 5});
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
+      expect(props.height).toEqual({value: 5});
+      expect(props.yc).toEqual({scale: 'y', field: 'Origin', band: 0.5});
     });
   });
 
@@ -233,11 +232,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar from zero to field value and with band value for x/width', () => {
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Origin', band: 0.5});
-      assert.deepEqual(props.height, {scale: 'size', field: 'mean_Horsepower'});
-      assert.deepEqual(props.x, {scale: 'x', field: 'mean_Acceleration'});
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-      assert.isUndefined(props.width);
+      expect(props.yc).toEqual({scale: 'y', field: 'Origin', band: 0.5});
+      expect(props.height).toEqual({scale: 'size', field: 'mean_Horsepower'});
+      expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -253,13 +252,13 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower'});
-      assert.deepEqual(props.y, {
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower'});
+      expect(props.y).toEqual({
         scale: 'y',
         field: 'bin_maxbins_10_Horsepower_end',
         offset: defaultBarConfig.binSpacing
       });
-      assert.isUndefined(props.height);
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -275,9 +274,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
-      assert.isUndefined(props.height);
+      expect(props.y2).toEqual(
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
+      );
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -293,9 +294,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
-      assert.isUndefined(props.height);
+      expect(props.y2).toEqual(
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
+      );
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -311,9 +314,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
-      assert.isUndefined(props.width);
+      expect(props.x2).toEqual(
+        {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
+      );
+      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -329,13 +334,13 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower'});
-      assert.deepEqual(props.x, {
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower'});
+      expect(props.x).toEqual({
         scale: 'x',
         field: 'bin_maxbins_10_Horsepower_end',
         offset: defaultBarConfig.binSpacing
       });
-      assert.isUndefined(props.width);
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -351,8 +356,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_range'});
-      assert.deepEqual(props.height, {scale: 'y', band: true});
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_range'});
+      expect(props.height).toEqual({scale: 'y', band: true});
     });
   });
 
@@ -368,8 +373,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_range'});
-      assert.deepEqual(props.width, {scale: 'x', band: true});
+      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_range'});
+      expect(props.width).toEqual({scale: 'x', band: true});
     });
   });
 
@@ -386,9 +391,9 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', field: 'bin_maxbins_10_Horsepower'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
-      assert.isUndefined(props.height);
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower'});
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -405,9 +410,9 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x', field: 'bin_maxbins_10_Horsepower'});
-      assert.deepEqual(props.x, {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
-      assert.isUndefined(props.width);
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower'});
+      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -424,10 +429,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', () => {
-      assert.deepEqual(props.yc, {
+      expect(props.yc).toEqual({
         signal: 'scale("y", (datum["bin_maxbins_10_Horsepower"] + datum["bin_maxbins_10_Horsepower_end"]) / 2)'
       });
-      assert.deepEqual(props.height, {scale: 'size', field: 'mean_Acceleration'});
+      expect(props.height).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
   });
 
@@ -444,10 +449,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', () => {
-      assert.deepEqual(props.xc, {
+      expect(props.xc).toEqual({
         signal: 'scale("x", (datum["bin_maxbins_10_Horsepower"] + datum["bin_maxbins_10_Horsepower_end"]) / 2)'
       });
-      assert.deepEqual(props.width, {scale: 'size', field: 'mean_Acceleration'});
+      expect(props.width).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
   });
 
@@ -463,8 +468,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should end on axis and has no height', () => {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
-      assert.isUndefined(props.height);
+      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -481,8 +486,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should end on axis and has no width', () => {
-      assert.deepEqual(props.x2, {value: 0});
-      assert.isUndefined(props.width);
+      expect(props.x2).toEqual({value: 0});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -500,11 +505,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should use x and with band true', () => {
-      assert.deepEqual(props.x, {
+      expect(props.x).toEqual({
         scale: 'x',
         field: 'Origin'
       });
-      assert.deepEqual(props.width, {
+      expect(props.width).toEqual({
         scale: 'x',
         band: true
       });
@@ -525,11 +530,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should use y with band true', () => {
-      assert.deepEqual(props.y, {
+      expect(props.y).toEqual({
         scale: 'y',
         field: 'Origin'
       });
-      assert.deepEqual(props.height, {
+      expect(props.height).toEqual({
         scale: 'y',
         band: true
       });
@@ -548,8 +553,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should end on axis nad have no height', () => {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
-      assert.isUndefined(props.height);
+      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -565,8 +570,8 @@ describe('Mark: Bar', () => {
 
     const props = bar.encodeEntry(model);
     it('should end on axis and have no width', () => {
-      assert.deepEqual(props.x2, {value: 0});
-      assert.isUndefined(props.width);
+      expect(props.x2).toEqual({value: 0});
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -579,10 +584,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have y end on axis, have no-height and have x-offset', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'sum_US_Gross'});
-      assert.deepEqual(props.y2, {scale: 'y', value: 0});
-      assert.isUndefined(props.height);
-      assert.deepEqual(props.xc, {
+      expect(props.y).toEqual({scale: 'y', field: 'sum_US_Gross'});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
+      expect(props.height).not.toBeDefined();
+      expect(props.xc).toEqual({
         mult: 0.5,
         signal: 'width'
       });
@@ -601,7 +606,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      assert.deepEqual(props.width, {value: 5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 
@@ -619,7 +624,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      assert.deepEqual(props.width, {value: 20});
+      expect(props.width).toEqual({value: 20});
     });
   });
 
@@ -637,7 +642,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      assert.deepEqual(props.width, {value: 5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 
@@ -656,7 +661,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      assert.deepEqual(props.width, {value: 5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 
@@ -690,7 +695,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      assert.deepEqual(props.width, {value: 5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 
@@ -708,7 +713,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should have width = 5', () => {
-      assert.deepEqual(props.width, {value: 5});
+      expect(props.width).toEqual({value: 5});
     });
   });
 
@@ -721,10 +726,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should end on axis, have no width, and have y-offset', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'sum_US_Gross'});
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-      assert.isUndefined(props.width);
-      assert.deepEqual(props.yc, {
+      expect(props.x).toEqual({scale: 'x', field: 'sum_US_Gross'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.width).not.toBeDefined();
+      expect(props.yc).toEqual({
         mult: 0.5,
         signal: 'height'
       });
@@ -749,10 +754,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should produce horizontal bar using x, x2', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'Acceleration'});
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
-      assert.deepEqual(props.yc, {scale: 'y', field: 'Horsepower'});
-      assert.deepEqual(props.height, {value: defaultBarConfig.continuousBandSize});
+      expect(props.x).toEqual({scale: 'x', field: 'Acceleration'});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.yc).toEqual({scale: 'y', field: 'Horsepower'});
+      expect(props.height).toEqual({value: defaultBarConfig.continuousBandSize});
     });
   });
 
@@ -774,10 +779,10 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should produce horizontal bar using x, x2', () => {
-      assert.deepEqual(props.xc, {scale: 'x', field: 'Acceleration'});
-      assert.deepEqual(props.width, {value: defaultBarConfig.continuousBandSize});
-      assert.deepEqual(props.y, {scale: 'y', field: 'Horsepower'});
-      assert.deepEqual(props.y2, {scale: 'y', value: 0});
+      expect(props.xc).toEqual({scale: 'x', field: 'Acceleration'});
+      expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
+      expect(props.y).toEqual({scale: 'y', field: 'Horsepower'});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
     });
   });
 
@@ -795,10 +800,10 @@ describe('Mark: Bar', () => {
       });
       const props = bar.encodeEntry(model);
 
-      assert.deepEqual(props.x, {scale: 'x', field: 'Origin'});
-      assert.deepEqual(props.width, {scale: 'x', band: true});
-      assert.deepEqual(props.y, {scale: 'y', field: 'Cylinders'});
-      assert.deepEqual(props.height, {scale: 'y', band: true});
+      expect(props.x).toEqual({scale: 'x', field: 'Origin'});
+      expect(props.width).toEqual({scale: 'x', band: true});
+      expect(props.y).toEqual({scale: 'y', field: 'Cylinders'});
+      expect(props.height).toEqual({scale: 'y', band: true});
     });
   });
 
@@ -819,9 +824,9 @@ describe('Mark: Bar', () => {
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.x, {scale: 'x', field: 'age'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'q1_people'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'q3_people'});
+      expect(props.x).toEqual({scale: 'x', field: 'age'});
+      expect(props.y).toEqual({scale: 'y', field: 'q1_people'});
+      expect(props.y2).toEqual({scale: 'y', field: 'q3_people'});
     });
 
     it('horizontal bars should work with aggregate', () => {
@@ -836,9 +841,9 @@ describe('Mark: Bar', () => {
       });
 
       const props = bar.encodeEntry(model);
-      assert.deepEqual(props.y, {scale: 'y', field: 'age'});
-      assert.deepEqual(props.x, {scale: 'x', field: 'q1_people'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'q3_people'});
+      expect(props.y).toEqual({scale: 'y', field: 'age'});
+      expect(props.x).toEqual({scale: 'x', field: 'q1_people'});
+      expect(props.x2).toEqual({scale: 'x', field: 'q3_people'});
     });
   });
 
@@ -868,11 +873,11 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with x and x2', () => {
-        assert.deepEqual(props.x2, {scale: 'x', field: 'bin_start', offset: 1});
-        assert.deepEqual(props.x, {scale: 'x', field: 'bin_end', offset: 0});
-        assert.deepEqual(props.y, {scale: 'y', field: 'count'});
-        assert.deepEqual(props.y2, {scale: 'y', value: 0});
-        assert.isUndefined(props.width);
+        expect(props.x2).toEqual({scale: 'x', field: 'bin_start', offset: 1});
+        expect(props.x).toEqual({scale: 'x', field: 'bin_end', offset: 0});
+        expect(props.y).toEqual({scale: 'y', field: 'count'});
+        expect(props.y2).toEqual({scale: 'y', value: 0});
+        expect(props.width).not.toBeDefined();
       });
     });
 
@@ -901,11 +906,11 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with x and x2', () => {
-        assert.deepEqual(props.x2, {scale: 'x', field: 'bin_start', offset: 10});
-        assert.deepEqual(props.x, {scale: 'x', field: 'bin_end', offset: 0});
-        assert.deepEqual(props.y, {scale: 'y', field: 'count'});
-        assert.deepEqual(props.y2, {scale: 'y', value: 0});
-        assert.isUndefined(props.width);
+        expect(props.x2).toEqual({scale: 'x', field: 'bin_start', offset: 10});
+        expect(props.x).toEqual({scale: 'x', field: 'bin_end', offset: 0});
+        expect(props.y).toEqual({scale: 'y', field: 'count'});
+        expect(props.y2).toEqual({scale: 'y', value: 0});
+        expect(props.width).not.toBeDefined();
       });
     });
   });
@@ -936,11 +941,11 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with y and y2', () => {
-        assert.deepEqual(props.y2, {scale: 'y', field: 'bin_start', offset: 0});
-        assert.deepEqual(props.y, {scale: 'y', field: 'bin_end', offset: 1});
-        assert.deepEqual(props.x, {scale: 'x', field: 'count'});
-        assert.deepEqual(props.x2, {scale: 'x', value: 0});
-        assert.isUndefined(props.width);
+        expect(props.y2).toEqual({scale: 'y', field: 'bin_start', offset: 0});
+        expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 1});
+        expect(props.x).toEqual({scale: 'x', field: 'count'});
+        expect(props.x2).toEqual({scale: 'x', value: 0});
+        expect(props.width).not.toBeDefined();
       });
     });
 
@@ -969,11 +974,11 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with y and y2', () => {
-        assert.deepEqual(props.y2, {scale: 'y', field: 'bin_start', offset: 0});
-        assert.deepEqual(props.y, {scale: 'y', field: 'bin_end', offset: 10});
-        assert.deepEqual(props.x, {scale: 'x', field: 'count'});
-        assert.deepEqual(props.x2, {scale: 'x', value: 0});
-        assert.isUndefined(props.width);
+        expect(props.y2).toEqual({scale: 'y', field: 'bin_start', offset: 0});
+        expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 10});
+        expect(props.x).toEqual({scale: 'x', field: 'count'});
+        expect(props.x2).toEqual({scale: 'x', value: 0});
+        expect(props.width).not.toBeDefined();
       });
     });
   });

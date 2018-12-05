@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
 import {
   parseConcatModel,
@@ -32,7 +31,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      assert.equal(scales.length, 3);
+      expect(scales.length).toEqual(3);
     });
 
     it('includes all scales from children for layer, both shared and independent', () => {
@@ -62,7 +61,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      assert.equal(scales.length, 3); // 2 x, 1 y
+      expect(scales.length).toEqual(3); // 2 x, 1 y
     });
 
     it('includes all scales for repeat', () => {
@@ -80,7 +79,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      assert.equal(scales.length, 2);
+      expect(scales.length).toEqual(2);
     });
 
     it('includes shared scales, but not independent scales (as they are nested) for facet.', () => {
@@ -101,8 +100,8 @@ describe('compile/scale/assemble', () => {
       });
 
       const scales = assembleScales(model);
-      assert.equal(scales.length, 1);
-      assert.equal(scales[0].name, 'y');
+      expect(scales.length).toEqual(1);
+      expect(scales[0].name).toEqual('y');
     });
   });
 
@@ -115,7 +114,7 @@ describe('compile/scale/assemble', () => {
         }
       });
 
-      assert.deepEqual(assembleScaleRange({step: 21}, 'x', model, 'x'), {step: {signal: 'x_step'}});
+      expect(assembleScaleRange({step: 21}, 'x', model, 'x')).toEqual({step: {signal: 'x_step'}});
     });
 
     it('updates width signal when renamed.', () => {
@@ -129,7 +128,7 @@ describe('compile/scale/assemble', () => {
       // mock renaming
       model.renameLayoutSize('width', 'new_width');
 
-      assert.deepEqual(assembleScaleRange([0, {signal: 'width'}], 'x', model, 'x'), [0, {signal: 'new_width'}]);
+      expect(assembleScaleRange([0, {signal: 'width'}], 'x', model, 'x')).toEqual([0, {signal: 'new_width'}]);
     });
 
     it('updates height signal when renamed.', () => {
@@ -143,7 +142,7 @@ describe('compile/scale/assemble', () => {
       // mock renaming
       model.renameLayoutSize('height', 'new_height');
 
-      assert.deepEqual(assembleScaleRange([0, {signal: 'height'}], 'x', model, 'x'), [0, {signal: 'new_height'}]);
+      expect(assembleScaleRange([0, {signal: 'height'}], 'x', model, 'x')).toEqual([0, {signal: 'new_height'}]);
     });
   });
 });

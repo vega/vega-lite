@@ -1,94 +1,75 @@
-import {assert} from 'chai';
 import {AREA, BAR, LINE, TEXT} from '../src/mark';
 import {getEncodingMappingError} from '../src/validate';
 
 describe('vl.validate', () => {
   describe('getEncodingMappingError()', () => {
     it('should return no error for valid specs', () => {
-      assert.isNull(
-        getEncodingMappingError({
-          mark: BAR,
-          encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: BAR,
+        encoding: {
+          x: {field: 'a', type: 'quantitative'}
+        }
+      })).toBeNull();
 
-      assert.isNull(
-        getEncodingMappingError({
-          mark: LINE,
-          encoding: {
-            x: {field: 'b', type: 'quantitative'},
-            y: {field: 'a', type: 'quantitative'}
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: LINE,
+        encoding: {
+          x: {field: 'b', type: 'quantitative'},
+          y: {field: 'a', type: 'quantitative'}
+        }
+      })).toBeNull();
 
-      assert.isNull(
-        getEncodingMappingError({
-          mark: AREA,
-          encoding: {
-            x: {field: 'a', type: 'quantitative'},
-            y: {field: 'b', type: 'quantitative'}
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: AREA,
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      })).toBeNull();
     });
 
     it('should return error for invalid specs', () => {
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: LINE,
-          encoding: {
-            x: {field: 'b', type: 'quantitative'} // missing y
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: LINE,
+        encoding: {
+          x: {field: 'b', type: 'quantitative'} // missing y
+        }
+      })).not.toBeNull();
 
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: AREA,
-          encoding: {
-            y: {field: 'b', type: 'quantitative'} // missing x
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: AREA,
+        encoding: {
+          y: {field: 'b', type: 'quantitative'} // missing x
+        }
+      })).not.toBeNull();
 
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: TEXT,
-          encoding: {
-            y: {field: 'b', type: 'quantitative'} // missing text
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: TEXT,
+        encoding: {
+          y: {field: 'b', type: 'quantitative'} // missing text
+        }
+      })).not.toBeNull();
 
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: LINE,
-          encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with line
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: LINE,
+        encoding: {
+          shape: {field: 'b', type: 'quantitative'} // using shape with line
+        }
+      })).not.toBeNull();
 
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: AREA,
-          encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with area
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: AREA,
+        encoding: {
+          shape: {field: 'b', type: 'quantitative'} // using shape with area
+        }
+      })).not.toBeNull();
 
-      assert.isNotNull(
-        getEncodingMappingError({
-          mark: BAR,
-          encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with bar
-          }
-        })
-      );
+      expect(getEncodingMappingError({
+        mark: BAR,
+        encoding: {
+          shape: {field: 'b', type: 'quantitative'} // using shape with bar
+        }
+      })).not.toBeNull();
     });
   });
 });

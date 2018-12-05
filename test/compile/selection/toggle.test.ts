@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import toggle from '../../../src/compile/selection/transforms/toggle';
 import {parseUnitModel} from '../../util';
@@ -32,17 +31,17 @@ describe('Toggle Selection Transform', () => {
   }));
 
   it('identifies transform invocation', () => {
-    assert.isNotFalse(toggle.has(selCmpts['one']));
-    assert.isNotFalse(toggle.has(selCmpts['two']));
-    assert.isNotTrue(toggle.has(selCmpts['three']));
-    assert.isNotTrue(toggle.has(selCmpts['four']));
-    assert.isNotTrue(toggle.has(selCmpts['five']));
-    assert.isNotTrue(toggle.has(selCmpts['six']));
+    expect(toggle.has(selCmpts['one'])).not.toBe(false);
+    expect(toggle.has(selCmpts['two'])).not.toBe(false);
+    expect(toggle.has(selCmpts['three'])).not.toBe(true);
+    expect(toggle.has(selCmpts['four'])).not.toBe(true);
+    expect(toggle.has(selCmpts['five'])).not.toBe(true);
+    expect(toggle.has(selCmpts['six'])).not.toBe(true);
   });
 
   it('builds toggle signals', () => {
     const oneSg = toggle.signals(model, selCmpts['one'], []);
-    assert.sameDeepMembers(oneSg, [
+    expect(oneSg).toEqual([
       {
         name: 'one_toggle',
         value: false,
@@ -56,7 +55,7 @@ describe('Toggle Selection Transform', () => {
     ]);
 
     const twoSg = toggle.signals(model, selCmpts['two'], []);
-    assert.sameDeepMembers(twoSg, [
+    expect(twoSg).toEqual([
       {
         name: 'two_toggle',
         value: false,
@@ -75,11 +74,12 @@ describe('Toggle Selection Transform', () => {
 
   it('builds modify expr', () => {
     const oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
-    assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
+    expect(oneExpr).toEqual(
+      'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null'
+    );
 
     const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
-    assert.equal(
-      twoExpr,
+    expect(twoExpr).toEqual(
       'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null'
     );
 

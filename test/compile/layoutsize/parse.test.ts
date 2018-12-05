@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
@@ -12,8 +11,8 @@ describe('compile/layout', () => {
         config: {scale: {textXRangeStep: 91}}
       });
 
-      assert.deepEqual(model.component.layoutSize.explicit.width, 123);
-      assert.deepEqual(model.component.layoutSize.explicit.height, 456);
+      expect(model.component.layoutSize.explicit.width).toEqual(123);
+      expect(model.component.layoutSize.explicit.height).toEqual(456);
     });
 
     it('should have width = default textXRangeStep for text mark without x', () => {
@@ -23,7 +22,7 @@ describe('compile/layout', () => {
         config: {scale: {textXRangeStep: 91}}
       });
 
-      assert.deepEqual(model.component.layoutSize.implicit.width, 91);
+      expect(model.component.layoutSize.implicit.width).toEqual(91);
     });
 
     it('should have width/height = config.scale.rangeStep  for non-text mark without x,y', () => {
@@ -33,8 +32,8 @@ describe('compile/layout', () => {
         config: {scale: {rangeStep: 23}}
       });
 
-      assert.deepEqual(model.component.layoutSize.implicit.width, 23);
-      assert.deepEqual(model.component.layoutSize.implicit.height, 23);
+      expect(model.component.layoutSize.implicit.width).toEqual(23);
+      expect(model.component.layoutSize.implicit.height).toEqual(23);
     });
 
     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
@@ -47,8 +46,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.implicit.width, 123);
-      assert.deepEqual(model.component.layoutSize.implicit.height, 456);
+      expect(model.component.layoutSize.implicit.width).toEqual(123);
+      expect(model.component.layoutSize.implicit.height).toEqual(456);
     });
 
     it('should have width/height = config.view.width/height for geoshape', () => {
@@ -58,8 +57,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.implicit.width, 123);
-      assert.deepEqual(model.component.layoutSize.implicit.height, 456);
+      expect(model.component.layoutSize.implicit.width).toEqual(123);
+      expect(model.component.layoutSize.implicit.height).toEqual(456);
     });
 
     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
@@ -72,8 +71,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.implicit.width, 123);
-      assert.deepEqual(model.component.layoutSize.implicit.height, 456);
+      expect(model.component.layoutSize.implicit.width).toEqual(123);
+      expect(model.component.layoutSize.implicit.height).toEqual(456);
     });
 
     it('should have width/height = undefined for non-ordinal x,y', () => {
@@ -86,8 +85,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      assert.deepEqual(model.component.layoutSize.get('width'), 'range-step');
-      assert.deepEqual(model.component.layoutSize.get('height'), 'range-step');
+      expect(model.component.layoutSize.get('width')).toEqual('range-step');
+      expect(model.component.layoutSize.get('height')).toEqual('range-step');
     });
   });
 });

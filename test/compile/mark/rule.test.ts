@@ -1,7 +1,6 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {COLOR, X, Y} from '../../../src/channel';
+import { COLOR, X, Y } from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -15,8 +14,8 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should not show anything', () => {
-      assert.isUndefined(props.x);
-      assert.isUndefined(props.y);
+      expect(props.x).not.toBeDefined();
+      expect(props.y).not.toBeDefined();
     });
   });
 
@@ -29,9 +28,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create vertical rule that fits height', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
-      assert.deepEqual(props.y, {field: {group: 'height'}});
-      assert.deepEqual(props.y2, {value: 0});
+      expect(props.x).toEqual({scale: X, field: 'a'});
+      expect(props.y).toEqual({field: {group: 'height'}});
+      expect(props.y2).toEqual({value: 0});
     });
   });
 
@@ -44,9 +43,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that fits height', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'a'});
-      assert.deepEqual(props.x, {value: 0});
-      assert.deepEqual(props.x2, {field: {group: 'width'}});
+      expect(props.y).toEqual({scale: Y, field: 'a'});
+      expect(props.x).toEqual({value: 0});
+      expect(props.x2).toEqual({field: {group: 'width'}});
     });
   });
 
@@ -62,9 +61,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rule on the axis', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
-      assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, {
+      expect(props.x).toEqual({scale: X, field: 'a'});
+      expect(props.x2).toEqual({scale: X, field: 'a2'});
+      expect(props.y).toEqual({
         mult: 0.5,
         signal: 'height'
       });
@@ -83,9 +82,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rules on the axis', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'a'});
-      assert.deepEqual(props.y2, {scale: Y, field: 'a2'});
-      assert.deepEqual(props.x, {
+      expect(props.y).toEqual({scale: Y, field: 'a'});
+      expect(props.y2).toEqual({scale: Y, field: 'a2'});
+      expect(props.x).toEqual({
         mult: 0.5,
         signal: 'width'
       });
@@ -105,9 +104,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rules', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
-      assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, {scale: Y, field: 'b'});
+      expect(props.x).toEqual({scale: X, field: 'a'});
+      expect(props.x2).toEqual({scale: X, field: 'a2'});
+      expect(props.y).toEqual({scale: Y, field: 'b'});
     });
   });
 
@@ -125,10 +124,10 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create oblique rules', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
-      assert.deepEqual(props.x2, {scale: X, field: 'a2'});
-      assert.deepEqual(props.y, {scale: Y, field: 'b'});
-      assert.deepEqual(props.y2, {scale: Y, field: 'b2'});
+      expect(props.x).toEqual({scale: X, field: 'a'});
+      expect(props.x2).toEqual({scale: X, field: 'a2'});
+      expect(props.y).toEqual({scale: Y, field: 'b'});
+      expect(props.y2).toEqual({scale: Y, field: 'b2'});
     });
   });
 
@@ -144,8 +143,8 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create oblique rules', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'a'});
-      assert.deepEqual(props.y, {scale: Y, field: 'b'});
+      expect(props.x).toEqual({scale: X, field: 'a'});
+      expect(props.y).toEqual({scale: Y, field: 'b'});
     });
   });
 
@@ -162,9 +161,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create vertical rules', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'a'});
-      assert.deepEqual(props.y2, {scale: Y, field: 'a2'});
-      assert.deepEqual(props.x, {scale: X, field: 'b'});
+      expect(props.y).toEqual({scale: Y, field: 'a'});
+      expect(props.y2).toEqual({scale: Y, field: 'a2'});
+      expect(props.x).toEqual({scale: X, field: 'b'});
     });
   });
 
@@ -180,11 +179,11 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create vertical rule that emulates bar chart', () => {
-      assert.equal(model.markDef.orient, 'vertical');
+      expect(model.markDef.orient).toEqual('vertical');
 
-      assert.deepEqual(props.x, {scale: X, field: 'a', band: 0.5});
-      assert.deepEqual(props.y, {scale: Y, field: 'b'});
-      assert.deepEqual(props.y2, {scale: Y, value: 0});
+      expect(props.x).toEqual({scale: X, field: 'a', band: 0.5});
+      expect(props.y).toEqual({scale: Y, field: 'b'});
+      expect(props.y2).toEqual({scale: Y, value: 0});
     });
   });
 
@@ -200,11 +199,11 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should create horizontal rule that emulates bar chart', () => {
-      assert.equal(model.markDef.orient, 'horizontal');
+      expect(model.markDef.orient).toEqual('horizontal');
 
-      assert.deepEqual(props.x, {scale: X, field: 'b'});
-      assert.deepEqual(props.x2, {scale: X, value: 0});
-      assert.deepEqual(props.y, {scale: Y, field: 'a', band: 0.5});
+      expect(props.x).toEqual({scale: X, field: 'b'});
+      expect(props.x2).toEqual({scale: X, value: 0});
+      expect(props.y).toEqual({scale: Y, field: 'a', band: 0.5});
     });
   });
 
@@ -225,9 +224,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should have the correct value for x, x2, and color', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'sum_b_end'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'sum_b_start'});
-      assert.deepEqual(props.stroke, {scale: COLOR, field: 'Origin'});
+      expect(props.x).toEqual({scale: 'x', field: 'sum_b_end'});
+      expect(props.x2).toEqual({scale: 'x', field: 'sum_b_start'});
+      expect(props.stroke).toEqual({scale: COLOR, field: 'Origin'});
     });
   });
 
@@ -248,9 +247,9 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should have the correct value for y, y2, and color', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'sum_b_end'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'sum_b_start'});
-      assert.deepEqual(props.stroke, {scale: COLOR, field: 'Origin'});
+      expect(props.y).toEqual({scale: 'y', field: 'sum_b_end'});
+      expect(props.y2).toEqual({scale: 'y', field: 'sum_b_start'});
+      expect(props.stroke).toEqual({scale: COLOR, field: 'Origin'});
     });
   });
 });

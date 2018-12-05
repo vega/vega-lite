@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {parseUnitModelWithScale} from '../../util';
+import { parseUnitModelWithScale } from '../../util';
 
 describe('legend/assemble', () => {
   it('merges legend of the same field with the default type.', () => {
@@ -20,11 +19,11 @@ describe('legend/assemble', () => {
     model.parseLegend();
 
     const legends = model.assembleLegends();
-    assert.equal(legends.length, 1);
+    expect(legends.length).toEqual(1);
 
-    assert.equal(legends[0].title, 'Origin');
-    assert.equal(legends[0].stroke, 'color');
-    assert.equal(legends[0].shape, 'shape');
+    expect(legends[0].title).toEqual('Origin');
+    expect(legends[0].stroke).toEqual('color');
+    expect(legends[0].shape).toEqual('shape');
   });
 
   it('merges legend of the same field and favor symbol legend over gradient', () => {
@@ -42,9 +41,9 @@ describe('legend/assemble', () => {
     model.parseLegend();
 
     const legends = model.assembleLegends();
-    assert.equal(legends.length, 1);
-    assert.equal(legends[0].title, 'b');
-    assert.equal(legends[0].fill, 'color');
-    assert.equal(legends[0].size, 'size');
+    expect(legends.length).toEqual(1);
+    expect(legends[0].title).toEqual('b');
+    expect(legends[0].fill).toEqual('color');
+    expect(legends[0].size).toEqual('size');
   });
 });

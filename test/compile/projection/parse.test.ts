@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 /* tslint:disable:quotemark */
 
@@ -20,7 +19,7 @@ describe('src/compile/projection/parse', () => {
         encoding: {}
       });
       model.parse();
-      assert.deepEqual(model.component.projection.explicit, {type: 'albersUsa'});
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
     it('should create projection with no props', () => {
@@ -36,7 +35,7 @@ describe('src/compile/projection/parse', () => {
         encoding: {}
       });
       model.parse();
-      assert.deepEqual(model.component.projection.explicit, {});
+      expect(model.component.projection.explicit).toEqual({});
     });
 
     it('should create projection from config', () => {
@@ -57,7 +56,7 @@ describe('src/compile/projection/parse', () => {
         }
       });
       model.parse();
-      assert.deepEqual(model.component.projection.explicit, {type: 'albersUsa'});
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
     it('should add data with signal', () => {
@@ -84,8 +83,8 @@ describe('src/compile/projection/parse', () => {
         }
       });
       model.parse();
-      assert.isObject(model.component.projection.data[0]);
-      assert.property(model.component.projection.data[0], 'signal');
+      expect(typeof model.component.projection.data[0]).toBe('object');
+      expect('signal' in model.component.projection.data[0]).toBeTruthy();
     });
 
     it('should add data from main', () => {
@@ -101,9 +100,9 @@ describe('src/compile/projection/parse', () => {
         encoding: {}
       });
       model.parse();
-      assert.isString(model.component.projection.data[0]);
-      assert.isNotObject(model.component.projection.data[0]);
-      assert.notProperty(model.component.projection.data[0], 'signal');
+      expect(typeof model.component.projection.data[0]).toBe('string');
+      expect(typeof model.component.projection.data[0]).not.toBe('object');
+      expect('signal' in model.component.projection.data[0]).toBeFalsy();
     });
   });
 
@@ -147,7 +146,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       model.parse();
-      assert.deepEqual(model.component.projection.explicit, {type: 'albersUsa'});
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
     it('should merge in empty projection to specified projection', () => {
@@ -186,7 +185,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       emptyFirst.parse();
-      assert.deepEqual(emptyFirst.component.projection.explicit, {type: 'albersUsa'});
+      expect(emptyFirst.component.projection.explicit).toEqual({type: 'albersUsa'});
       const emptyLast = parseLayerModel({
         layer: [
           {
@@ -222,7 +221,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       emptyLast.parse();
-      assert.deepEqual(emptyLast.component.projection.explicit, {type: 'albersUsa'});
+      expect(emptyLast.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
     it('should merge projections with same size, different data', () => {
@@ -264,7 +263,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       model.parse();
-      assert.deepEqual(model.component.projection.explicit, {type: 'albersUsa'});
+      expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
     it('should not merge different specified projections', () => {
@@ -306,7 +305,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       model.parse();
-      assert.isUndefined(model.component.projection);
+      expect(model.component.projection).not.toBeDefined();
     });
   });
 });

@@ -1,5 +1,3 @@
-import {assert} from 'chai';
-
 import {replaceRepeaterInEncoding} from '../../src/compile/repeater';
 import {Encoding} from '../../src/encoding';
 import * as log from '../../src/log';
@@ -34,8 +32,8 @@ describe('Repeat', () => {
           {column: 'foo'}
         );
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
+        expect(localLogger.warns[0]).toEqual(log.message.noSuchRepeatedValue('row'));
+        expect(resolved).toEqual({
           y: {field: 'bar', type: 'quantitative'}
         });
       })
@@ -120,8 +118,8 @@ describe('Repeat', () => {
           {column: 'foo'}
         );
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
+        expect(localLogger.warns[0]).toEqual(log.message.noSuchRepeatedValue('row'));
+        expect(resolved).toEqual({
           color: {value: 'red'}
         });
       })
@@ -141,8 +139,8 @@ describe('Repeat', () => {
           {column: 'foo'}
         );
 
-        assert.equal(localLogger.warns[0], log.message.noSuchRepeatedValue('row'));
-        assert.deepEqual(resolved, {
+        expect(localLogger.warns[0]).toEqual(log.message.noSuchRepeatedValue('row'));
+        expect(resolved).toEqual({
           color: {
             condition: {selection: 'test', value: 'red'}
           }
@@ -165,7 +163,7 @@ describe('Repeat', () => {
         }
       });
 
-      assert.equal(model.children.length, 2);
+      expect(model.children.length).toEqual(2);
     });
 
     it('should create n*m models if row and column are specified', () => {
@@ -183,7 +181,7 @@ describe('Repeat', () => {
         }
       });
 
-      assert.equal(model.children.length, 6);
+      expect(model.children.length).toEqual(6);
     });
 
     it('should union color scales and legends', () => {
@@ -205,11 +203,11 @@ describe('Repeat', () => {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      assert.deepEqual(colorScale.domains.length, 4);
+      expect(colorScale.domains.length).toEqual(4);
 
       model.parseLegend();
 
-      assert.equal(keys(model.component.legends).length, 1);
+      expect(keys(model.component.legends).length).toEqual(1);
     });
   });
 
@@ -229,7 +227,7 @@ describe('Repeat', () => {
             }
           }
         });
-        assert.equal(localLogger.warns[0], log.message.REPEAT_CANNOT_SHARE_AXIS);
+        expect(localLogger.warns[0]).toEqual(log.message.REPEAT_CANNOT_SHARE_AXIS);
       })
     );
   });

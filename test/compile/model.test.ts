@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {NameMap} from '../../src/compile/model';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
@@ -6,22 +5,22 @@ describe('Model', () => {
   describe('NameMap', () => {
     it('should rename correctly', () => {
       const map = new NameMap();
-      assert.equal(map.get('a'), 'a');
+      expect(map.get('a')).toEqual('a');
 
       map.rename('a', 'b');
-      assert.equal(map.get('a'), 'b');
-      assert.equal(map.get('b'), 'b');
+      expect(map.get('a')).toEqual('b');
+      expect(map.get('b')).toEqual('b');
 
       map.rename('b', 'c');
-      assert.equal(map.get('a'), 'c');
-      assert.equal(map.get('b'), 'c');
-      assert.equal(map.get('c'), 'c');
+      expect(map.get('a')).toEqual('c');
+      expect(map.get('b')).toEqual('c');
+      expect(map.get('c')).toEqual('c');
 
       map.rename('z', 'a');
-      assert.equal(map.get('a'), 'c');
-      assert.equal(map.get('b'), 'c');
-      assert.equal(map.get('c'), 'c');
-      assert.equal(map.get('z'), 'c');
+      expect(map.get('a')).toEqual('c');
+      expect(map.get('b')).toEqual('c');
+      expect(map.get('c')).toEqual('c');
+      expect(map.get('z')).toEqual('c');
     });
   });
 
@@ -36,7 +35,7 @@ describe('Model', () => {
           }
         }
       });
-      assert(model.hasDescendantWithFieldOnChannel('x'));
+      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return true if a descendant plot has x', () => {
@@ -59,7 +58,7 @@ describe('Model', () => {
           ]
         }
       });
-      assert(model.hasDescendantWithFieldOnChannel('x'));
+      expect(model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return false if no descendant plot has a field on x', () => {
@@ -72,7 +71,7 @@ describe('Model', () => {
           }
         }
       });
-      assert(!model.hasDescendantWithFieldOnChannel('x'));
+      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
 
     it('should return false if no descendant plot has a field on x', () => {
@@ -95,7 +94,7 @@ describe('Model', () => {
           ]
         }
       });
-      assert(!model.hasDescendantWithFieldOnChannel('x'));
+      expect(!model.hasDescendantWithFieldOnChannel('x')).toBeTruthy();
     });
   });
 
@@ -122,7 +121,7 @@ describe('Model', () => {
         }
       });
 
-      assert.deepEqual(model.child.getSizeSignalRef('width'), {
+      expect(model.child.getSizeSignalRef('width')).toEqual({
         signal: `bandspace(datum[\"distinct_b\"], 1, 0.345) * child_x_step`
       });
     });

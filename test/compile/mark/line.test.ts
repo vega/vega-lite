@@ -1,7 +1,6 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
-import {COLOR, X, Y} from '../../../src/channel';
+import { COLOR, X, Y } from '../../../src/channel';
 import {line} from '../../../src/compile/mark/line';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -19,11 +18,11 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should have scale for x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year'});
+      expect(props.x).toEqual({scale: X, field: 'year'});
     });
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'yield'});
+      expect(props.y).toEqual({scale: Y, field: 'yield'});
     });
   });
 
@@ -40,7 +39,7 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should have scale for color', () => {
-      assert.deepEqual(props.stroke, {scale: COLOR, field: 'Acceleration'});
+      expect(props.stroke).toEqual({scale: COLOR, field: 'Acceleration'});
     });
   });
 
@@ -57,7 +56,7 @@ describe('Mark: Line', () => {
       });
       const props = line.encodeEntry(model);
 
-      assert.deepEqual(props.strokeWidth, {scale: 'size', field: 'variety'});
+      expect(props.strokeWidth).toEqual({scale: 'size', field: 'variety'});
     });
 
     it(
@@ -75,8 +74,8 @@ describe('Mark: Line', () => {
         const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
-        assert.isNotOk(props.strokeWidth && props.strokeWidth['scale']);
-        assert.equal(localLogger.warns[0], log.message.LINE_WITH_VARYING_SIZE);
+        expect(props.strokeWidth && props.strokeWidth['scale']).toBeFalsy();
+        expect(localLogger.warns[0]).toEqual(log.message.LINE_WITH_VARYING_SIZE);
       })
     );
   });
@@ -95,7 +94,7 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should use y_end', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'sum_yield_end'});
+      expect(props.y).toEqual({scale: Y, field: 'sum_yield_end'});
     });
   });
 
@@ -113,7 +112,7 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should use x_end', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'sum_yield_end'});
+      expect(props.x).toEqual({scale: X, field: 'sum_yield_end'});
     });
   });
 
@@ -127,14 +126,14 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should be centered on y', () => {
-      assert.deepEqual(props.y, {
+      expect(props.y).toEqual({
         mult: 0.5,
         signal: 'height'
       });
     });
 
     it('should scale on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year'});
+      expect(props.x).toEqual({scale: X, field: 'year'});
     });
   });
 
@@ -148,14 +147,14 @@ describe('Mark: Line', () => {
     const props = line.encodeEntry(model);
 
     it('should be centered on x', () => {
-      assert.deepEqual(props.x, {
+      expect(props.x).toEqual({
         mult: 0.5,
         signal: 'width'
       });
     });
 
     it('should scale on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'year'});
+      expect(props.y).toEqual({scale: Y, field: 'year'});
     });
   });
 });

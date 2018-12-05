@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import * as log from '../../src/log';
 import {VgLayout} from '../../src/vega.schema';
 import {parseConcatModel} from '../util';
@@ -24,8 +23,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.equal(model.children.length, 2);
-      assert(model.isVConcat);
+      expect(model.children.length).toEqual(2);
+      expect(model.isVConcat).toBeTruthy();
     });
 
     it('should instantiate all children in hconcat', () => {
@@ -47,8 +46,8 @@ describe('Concat', () => {
         ]
       });
 
-      assert.equal(model.children.length, 2);
-      assert(!model.isVConcat);
+      expect(model.children.length).toEqual(2);
+      expect(!model.isVConcat).toBeTruthy();
     });
 
     it('should create correct layout for vconcat', () => {
@@ -107,7 +106,7 @@ describe('Concat', () => {
             }
           }
         });
-        assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+        expect(localLogger.warns[0]).toEqual(log.message.CONCAT_CANNOT_SHARE_AXIS);
       })
     );
   });

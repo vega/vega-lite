@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import * as properties from '../../../src/compile/legend/properties';
 
 describe('compile/legend', () => {
@@ -8,7 +7,7 @@ describe('compile/legend', () => {
     it('should return correct timestamp values for DateTimes', () => {
       const values = properties.values({values: [{year: 1970}, {year: 1980}]}, {field: 'a', type: 'temporal'});
 
-      assert.deepEqual(values, [
+      expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
         {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}
       ]);
@@ -17,36 +16,36 @@ describe('compile/legend', () => {
     it('should simply return values for non-DateTime', () => {
       const values = properties.values({values: [1, 2, 3, 4]}, {field: 'a', type: 'quantitative'});
 
-      assert.deepEqual(values, [1, 2, 3, 4]);
+      expect(values).toEqual([1, 2, 3, 4]);
     });
   });
 
   describe('clipHeight()', () => {
     it('should return clip height for continuous domain', () => {
       const height = properties.clipHeight('linear');
-      assert.equal(height, 20);
+      expect(height).toEqual(20);
     });
 
     it('should simply return for discrete domain', () => {
       const height = properties.clipHeight('ordinal');
-      assert.isUndefined(height);
+      expect(height).not.toBeDefined();
     });
   });
 
   describe('labelOverlap()', () => {
     it('should return undefined for linear', () => {
       const overlap = properties.labelOverlap('linear');
-      assert.isUndefined(overlap);
+      expect(overlap).not.toBeDefined();
     });
 
     it('should return greedy for log', () => {
       const overlap = properties.labelOverlap('log');
-      assert.equal(overlap, 'greedy');
+      expect(overlap).toEqual('greedy');
     });
 
     it('should return greedy for threshold', () => {
       const overlap = properties.labelOverlap('threshold');
-      assert.equal(overlap, 'greedy');
+      expect(overlap).toEqual('greedy');
     });
   });
 });
