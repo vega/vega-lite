@@ -22,6 +22,10 @@ import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
 
+function isVisible(c: string) {
+  return c !== 'transparent' && c !== null && c !== undefined;
+}
+
 export function color(model: UnitModel): VgEncodeEntry {
   const {markDef, encoding, config} = model;
   const {filled, type: markType} = markDef;
@@ -36,30 +40,21 @@ export function color(model: UnitModel): VgEncodeEntry {
     ? 'transparent'
     : undefined;
 
-  const defaultValue = {
-    fill: getFirstDefined(
-      markDef.fill,
-      configValue.fill,
-      // If there is no fill, always fill symbols, bar, geoshape
-      // with transparent fills https://github.com/vega/vega-lite/issues/1316
-      transparentIfNeeded
-    ),
-    stroke: getFirstDefined(markDef.stroke, configValue.stroke)
-  };
+  const defaultFill = getFirstDefined(
+    markDef.fill,
+    configValue.fill,
+    // If there is no fill, always fill symbols, bar, geoshape
+    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    transparentIfNeeded
+  );
+
+  const defaultStroke = getFirstDefined(markDef.stroke, configValue.stroke);
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
 
   const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
-    ...(defaultValue.fill
-      ? {
-          fill: {value: defaultValue.fill}
-        }
-      : {}),
-    ...(defaultValue.stroke
-      ? {
-          stroke: {value: defaultValue.stroke}
-        }
-      : {})
+    ...(defaultFill ? {fill: {value: defaultFill}} : {}),
+    ...(defaultStroke ? {stroke: {value: defaultStroke}} : {})
   };
 
   if (encoding.fill || encoding.stroke) {
@@ -70,8 +65,8 @@ export function color(model: UnitModel): VgEncodeEntry {
     }
 
     return {
-      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultValue.fill, transparentIfNeeded)}),
-      ...nonPosition('stroke', model, {defaultValue: defaultValue.stroke})
+      ...nonPosition('fill', model, {defaultValue: getFirstDefined(defaultFill, transparentIfNeeded)}),
+      ...nonPosition('stroke', model, {defaultValue: defaultStroke})
     };
   } else if (encoding.color) {
     return {
@@ -89,8 +84,8 @@ export function color(model: UnitModel): VgEncodeEntry {
         )
       })
     };
-  } else if (markDef.fill !== undefined || markDef.stroke !== undefined) {
-    // Ignore markDef.color, config.color
+  } else if (isVisible(markDef.fill) || isVisible(markDef.stroke)) {
+    // Ignore markDef.color
     if (markDef.color) {
       log.warn(log.message.droppingColor('property', {fill: 'fill' in markDef, stroke: 'stroke' in markDef}));
     }
@@ -102,7 +97,7 @@ export function color(model: UnitModel): VgEncodeEntry {
       // override config with markDef.color
       [colorVgChannel]: {value: markDef.color}
     };
-  } else if (configValue.fill !== undefined || configValue.stroke !== undefined) {
+  } else if (isVisible(configValue.fill) || isVisible(configValue.stroke)) {
     // ignore config.color
     return fillStrokeMarkDefAndConfig;
   } else if (configValue.color) {

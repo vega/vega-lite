@@ -256,6 +256,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "title": "event"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "event"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

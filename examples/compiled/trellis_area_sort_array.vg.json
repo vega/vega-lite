@@ -220,6 +220,12 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "title": "symbol"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "title": "symbol"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

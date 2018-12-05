@@ -5,6 +5,7 @@ import {Spec as VgSpec} from 'vega';
 import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
+import {duplicate} from '../src/util';
 
 const inspect = require('util').inspect;
 const fs = require('fs');
@@ -57,11 +58,16 @@ describe('Examples', () => {
       return;
     }
     const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
+    const originalSpec = duplicate(jsonSpec);
 
     describe(
       example,
       log.wrap(localLogger => {
         const vegaSpec: VgSpec = compile(jsonSpec).spec;
+
+        it('should not cause any side effects', () => {
+          expect(jsonSpec).toEqual(originalSpec);
+        });
 
         it('should be valid vega-lite with proper $schema', () => {
           if (

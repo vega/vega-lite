@@ -426,6 +426,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -435,6 +436,7 @@
     },
     {
       "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {

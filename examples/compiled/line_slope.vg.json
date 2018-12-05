@@ -127,6 +127,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "site"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "site"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

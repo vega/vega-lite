@@ -90,6 +90,7 @@
     {
       "title": "Quantile",
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "labelOverlap": "greedy",
       "encode": {
         "symbols": {

@@ -5307,7 +5307,7 @@
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
-          "description": "The direction of the legend, one of `\"vertical\"` (default) or `\"horizontal\"`."
+          "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__ \"vertical\"`\n   *"
         },
         "fillColor": {
           "$ref": "#/definitions/Color",
@@ -5554,6 +5554,14 @@
           "$ref": "#/definitions/Orientation",
           "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends.\n\n__Default value:__ `\"vertical\"`."
         },
+        "gradientHorizontalMaxLength": {
+          "description": "Max legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "gradientHorizontalMinLength": {
+          "description": "Min legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `100`",
+          "type": "number"
+        },
         "gradientLabelLimit": {
           "description": "The maximum allowed length in pixels of color ramp gradient labels.",
           "type": "number"
@@ -5583,6 +5591,14 @@
         "gradientThickness": {
           "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
           "minimum": 0,
+          "type": "number"
+        },
+        "gradientVerticalMaxLength": {
+          "description": "Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "gradientVerticalMinLength": {
+          "description": "Min legend length for a vertical gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `100`",
           "type": "number"
         },
         "gridAlign": {
@@ -5628,7 +5644,7 @@
         },
         "labelOverlap": {
           "$ref": "#/definitions/LabelOverlap",
-          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`.\n   *"
+          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`.\n   *"
         },
         "labelPadding": {
           "description": "Padding in pixels between the legend and legend labels.",

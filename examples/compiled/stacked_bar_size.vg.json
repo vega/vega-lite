@@ -137,6 +137,7 @@
   "legends": [
     {
       "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "weather",
       "encode": {
         "symbols": {

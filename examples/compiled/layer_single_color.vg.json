@@ -122,6 +122,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "symbol"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "symbol"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }
