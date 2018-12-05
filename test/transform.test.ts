@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import * as log from '../src/log';
 import {LogicalOperand} from '../src/logical';
 import {Predicate} from '../src/predicate';
@@ -16,14 +15,14 @@ describe('normalizeTransform()', () => {
         ]
       };
       const transform: Transform[] = [{filter}];
-      assert.deepEqual(normalizeTransform(transform), [
+      expect(normalizeTransform(transform)).toEqual([
         {
           filter: {
             and: [{not: {timeUnit: 'yearmonthdate', field: 'd', equal: {year: 2008}}}, {or: [{field: 'a', equal: 5}]}]
           }
         }
       ]);
-      assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
+      expect(localLogger.warns[0]).toBe(log.message.dayReplacedWithDate('yearmonthday'));
     })
   );
 });

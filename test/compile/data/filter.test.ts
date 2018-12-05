@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {AncestorParse} from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {FilterNode} from '../../../src/compile/data/filter';
@@ -32,7 +31,7 @@ describe('compile/data/filter', () => {
       if (node instanceof ParseNode) {
         parse = {...parse, ...node.parse};
       }
-      assert.equal(node.numChildren(), 1);
+      expect(node.numChildren()).toBe(1);
       node = node.children[0];
     }
 
