@@ -175,7 +175,7 @@ export const defaultLegendConfig: LegendConfig = {
   gradientHorizontalMaxLength: 200,
   gradientHorizontalMinLength: 100,
   gradientVerticalMaxLength: 200,
-  gradientVerticalMinLength: 100
+  gradientVerticalMinLength: 64 // This is the Vega's minimum.
 };
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
