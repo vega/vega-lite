@@ -95,12 +95,16 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
-      })).toBe(true);
-      expect(some(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
+        })
+      ).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -121,12 +125,16 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
-      })).toBe(true);
-      expect(some(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
+        })
+      ).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -147,9 +155,11 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(every(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
-      })).toBe(true);
+      expect(
+        every(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -169,9 +179,11 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(every(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
-      })).toBe(true);
+      expect(
+        every(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }

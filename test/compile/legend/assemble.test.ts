@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { parseUnitModelWithScale } from '../../util';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('legend/assemble', () => {
   it('merges legend of the same field with the default type.', () => {

@@ -1,6 +1,6 @@
 /* tslint:disable quotemark */
 
-import { bar } from '../../../src/compile/mark/bar';
+import {bar} from '../../../src/compile/mark/bar';
 import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {defaultScaleConfig} from '../../../src/scale';
@@ -274,9 +274,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.height).toBeUndefined();
     });
@@ -294,9 +292,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.height).toBeUndefined();
     });
@@ -314,9 +310,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual(
-        {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.width).toBeUndefined();
     });

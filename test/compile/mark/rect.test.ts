@@ -1,5 +1,5 @@
 /* tslint:disable quotemark */
-import { rect } from '../../../src/compile/mark/rect';
+import {rect} from '../../../src/compile/mark/rect';
 import * as log from '../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

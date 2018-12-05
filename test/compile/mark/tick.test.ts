@@ -6,7 +6,7 @@
 //
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
-import { SIZE, X, Y } from '../../../src/channel';
+import {SIZE, X, Y} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 

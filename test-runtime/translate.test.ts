@@ -1,3 +1,4 @@
+import {assert} from 'chai';
 import {
   bound,
   brush,

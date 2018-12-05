@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { parseFacetModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
+import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import {X} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layoutsize/assemble';

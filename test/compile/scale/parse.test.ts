@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { toSet } from 'vega-util';
+import {toSet} from 'vega-util';
 import {parseScale, parseScaleCore} from '../../../src/compile/scale/parse';
 import {SELECTION_DOMAIN} from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
@@ -453,7 +453,9 @@ describe('src/compile', () => {
         expect(xScale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
 
         expect('domainRaw' in yscale.explicit).toBeTruthy();
-        expect(yscale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}');
+        expect(yscale.explicit.domainRaw['signal']).toBe(
+          SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}'
+        );
       });
     });
   });

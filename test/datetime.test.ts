@@ -29,12 +29,14 @@ describe('datetime', () => {
     it(
       'should log warning for quarter > 4',
       log.wrap(localLogger => {
-        expect(dateTimeExpr(
-          {
-            quarter: 5
-          },
-          true
-        )).toEqual('datetime(0, 4*3, 1, 0, 0, 0, 0)');
+        expect(
+          dateTimeExpr(
+            {
+              quarter: 5
+            },
+            true
+          )
+        ).toEqual('datetime(0, 4*3, 1, 0, 0, 0, 0)');
         expect(localLogger.warns[0]).toEqual(log.message.invalidTimeUnit('quarter', 5));
       })
     );
@@ -56,30 +58,38 @@ describe('datetime', () => {
     });
 
     it('should normalize month name correctly', () => {
-      expect(dateTimeExpr(
-        {
-          month: 'January'
-        },
-        true
-      )).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          month: 'january'
-        },
-        true
-      )).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          month: 'Jan'
-        },
-        true
-      )).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          month: 'jan'
-        },
-        true
-      )).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            month: 'January'
+          },
+          true
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            month: 'january'
+          },
+          true
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            month: 'Jan'
+          },
+          true
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            month: 'jan'
+          },
+          true
+        )
+      ).toEqual('datetime(0, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid month', () => {
@@ -89,45 +99,57 @@ describe('datetime', () => {
     });
 
     it('should normalize numeric day (of week) correctly', () => {
-      expect(dateTimeExpr(
-        {
-          day: 0
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          day: 7
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 0
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 7
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should normalize day name correctly and use year 2006 to ensure correct', () => {
-      expect(dateTimeExpr(
-        {
-          day: 'Sunday'
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          day: 'sunday'
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          day: 'Sun'
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
-      expect(dateTimeExpr(
-        {
-          day: 'sun'
-        },
-        true
-      )).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 'Sunday'
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 'sunday'
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 'Sun'
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
+      expect(
+        dateTimeExpr(
+          {
+            day: 'sun'
+          },
+          true
+        )
+      ).toEqual('datetime(2006, 0, 0+1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid day', () => {
