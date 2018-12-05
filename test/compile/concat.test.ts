@@ -64,7 +64,7 @@ describe('Concat', () => {
         ]
       });
 
-      assert.deepEqual<VgLayout>(model.assembleLayout(), {
+      expect(model.assembleLayout()).toEqual({
         padding: {row: 10, column: 10},
         columns: 1,
         bounds: 'full',
@@ -86,7 +86,7 @@ describe('Concat', () => {
         ]
       });
 
-      assert.deepEqual<VgLayout>(model.assembleLayout(), {
+      expect(model.assembleLayout()).toEqual({
         padding: {row: 10, column: 10},
         bounds: 'full',
         align: 'each'
