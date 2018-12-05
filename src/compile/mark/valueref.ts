@@ -14,7 +14,6 @@ import {
   format,
   isFieldDef,
   isValueDef,
-  TextFieldDef,
   title,
   vgField
 } from '../../fielddef';
@@ -218,7 +217,7 @@ export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: C
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-export function text(channelDef: ChannelDefWithCondition<TextFieldDef<string>>, config: Config): VgValueRef {
+export function text(channelDef: ChannelDefWithCondition<FieldDef<string>>, config: Config): VgValueRef {
   // text
   if (channelDef) {
     if (isValueDef(channelDef)) {

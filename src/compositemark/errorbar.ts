@@ -309,9 +309,9 @@ export function errorBarParams<
 
   const {
     [continuousAxis]: oldContinuousAxisChannelDef,
-    [continuousAxis + '2']: oldContinuousAxisChannelDef2,
-    [continuousAxis + 'Error']: oldContinuousAxisChannelDefError,
-    [continuousAxis + 'Error2']: oldContinuousAxisChannelDefError2,
+    [continuousAxis === 'x' ? 'x2' : 'y2']: oldContinuousAxisChannelDef2,
+    [continuousAxis === 'x' ? 'xError' : 'yError']: oldContinuousAxisChannelDefError,
+    [continuousAxis === 'x' ? 'xError2' : 'yError2']: oldContinuousAxisChannelDefError2,
     ...oldEncodingWithoutContinuousAxis
   } = encoding;
 
