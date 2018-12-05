@@ -140,7 +140,7 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 100, 200)"},
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Acceleration (binned)",
       "encode": {
         "symbols": {

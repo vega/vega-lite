@@ -165,7 +165,7 @@
     {
       "title": "site",
       "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 100, 200)"},
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }
   ],

@@ -166,7 +166,7 @@
   "legends": [
     {
       "stroke": "color",
-      "gradientLength": {"signal": "clamp(height, 100, 200)"},
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {

@@ -278,7 +278,7 @@
     {
       "stroke": "trellis_barley_color",
       "gradientLength": {
-        "signal": "clamp(trellis_barley_child_height, 100, 200)"
+        "signal": "clamp(trellis_barley_child_height, 64, 200)"
       },
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
