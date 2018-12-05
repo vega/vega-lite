@@ -1,3 +1,4 @@
+import {assert} from 'chai';
 import {
   brush,
   compositeTypes,
@@ -35,13 +36,13 @@ selectionTypes.forEach(type => {
             embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
             const store = browser.execute(fn(specType, i, parent)).value;
-            expect(store.length).toBe(1);
-            expect(store[0].unit).toMatch(unitNameRegex(specType, i));
+            assert.lengthOf(store, 1);
+            assert.match(store[0].unit, unitNameRegex(specType, i));
             testRender(`global_${i}`);
 
             if (i === hits[specType].length - 1) {
               const cleared = browser.execute(fn(`${specType}_clear`, 0, parent)).value;
-              expect(cleared.length).toBe(0);
+              assert.lengthOf(cleared, 0);
               testRender(`global_clear_${i}`);
             }
           }
@@ -62,8 +63,8 @@ selectionTypes.forEach(type => {
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
               const store = browser.execute(fn(specType, i, parent)).value;
-              expect(store.length).toBe(i + 1);
-              expect(store[i].unit).toMatch(unitNameRegex(specType, i));
+              assert.lengthOf(store, i + 1);
+              assert.match(store[i].unit, unitNameRegex(specType, i));
               testRender(`${resolve}_${i}`);
             }
 
@@ -76,9 +77,9 @@ selectionTypes.forEach(type => {
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
               const parent = parentSelector(specType, i);
               const store = browser.execute(fn(`${specType}_clear`, i, parent)).value;
-              expect(store.length).toBe(i);
+              assert.lengthOf(store, i);
               if (i > 0) {
-                expect(store[i - 1].unit).toMatch(unitNameRegex(specType, i - 1));
+                assert.match(store[i - 1].unit, unitNameRegex(specType, i - 1));
               }
               testRender(`${resolve}_clear_${i}`);
             }
