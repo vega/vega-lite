@@ -12,7 +12,7 @@ import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
 import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, keys, varName} from '../util';
+import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
 import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
@@ -205,7 +205,7 @@ export abstract class Model {
         scale: {},
         axis: {},
         legend: {},
-        ...(resolve || {})
+        ...(resolve ? duplicate(resolve) : {})
       },
       selection: null,
       scales: null,

@@ -1,6 +1,7 @@
 import {Data, DataFormatType, isInlineData, isNamedData, isUrlData} from '../../data';
-import {contains, keys} from '../../util';
+import {contains, keys, omit} from '../../util';
 import {VgData} from '../../vega.schema';
+import {DataFormat} from './../../data';
 import {DataFlowNode} from './dataflow';
 
 export class SourceNode extends DataFlowNode {
@@ -12,17 +13,14 @@ export class SourceNode extends DataFlowNode {
     super(null); // source cannot have parent
 
     data = data || {name: 'source'};
+    const format = data.format ? {...omit(data.format, ['parse'])} : ({} as DataFormat);
 
     if (isInlineData(data)) {
       this._data = {values: data.values};
     } else if (isUrlData(data)) {
       this._data = {url: data.url};
 
-      if (!data.format) {
-        data.format = {};
-      }
-
-      if (!data.format || !data.format.type) {
+      if (!format.type) {
         // Extract extension from URL using snippet from
         // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
         let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
@@ -31,7 +29,7 @@ export class SourceNode extends DataFlowNode {
         }
 
         // defaultExtension has type string but we ensure that it is DataFormatType above
-        data.format.type = defaultExtension as DataFormatType;
+        format.type = defaultExtension as DataFormatType;
       }
     } else if (isNamedData(data)) {
       this._data = {};
@@ -42,8 +40,7 @@ export class SourceNode extends DataFlowNode {
       this._name = data.name;
     }
 
-    if (data.format) {
-      const {parse = null, ...format} = data.format;
+    if (format && keys(format).length > 0) {
       this._data.format = format;
     }
   }
@@ -77,11 +74,6 @@ export class SourceNode extends DataFlowNode {
   }
 
   public assemble(): VgData {
-    // remove empty format
-    if (this._data.format && keys(this._data.format).length === 0) {
-      delete this._data.format;
-    }
-
     return {
       name: this._name,
       ...this._data,
