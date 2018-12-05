@@ -34,10 +34,10 @@ export function defaultGradientLength(model: Model, legend: Legend, legendConfig
 
   if (direction === 'horizontal') {
     const orient = getFirstDefined(legend.orient, legendConfig.orient);
-    if (orient === 'left' || orient === 'right') {
-      return gradientHorizontalMinLength;
-    } else {
+    if (orient === 'top' || orient === 'bottom') {
       return gradientLengthSignal(model, 'width', gradientHorizontalMinLength, gradientHorizontalMaxLength);
+    } else {
+      return gradientHorizontalMinLength;
     }
   } else {
     return gradientLengthSignal(model, 'height', gradientVerticalMinLength, gradientVerticalMaxLength);
