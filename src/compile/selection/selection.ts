@@ -5,7 +5,7 @@ import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
-import {accessPathWithDatum, Dict, keys, logicalExpr, varName} from '../../util';
+import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
 import {VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
@@ -68,6 +68,10 @@ export interface SelectionCompiler {
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent> = {};
   const selectionConfig = model.config.selection;
+
+  if (selDefs) {
+    selDefs = duplicate(selDefs); // duplicate to avoid side effects to original spec
+  }
 
   for (let name in selDefs) {
     if (!selDefs.hasOwnProperty(name)) {

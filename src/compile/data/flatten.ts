@@ -13,6 +13,7 @@ export class FlattenTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: FlattenTransform) {
     super(parent);
+    this.transform = duplicate(transform); // duplicate to prevent side effects
     const {flatten, as = []} = this.transform;
     this.transform.as = flatten.map((f, i) => as[i] || f);
   }

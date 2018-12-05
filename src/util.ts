@@ -8,8 +8,6 @@ export const deepEqual = deepEqual_;
 /**
  * Creates an object composed of the picked object properties.
  *
- * Example:  (from lodash)
- *
  * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
