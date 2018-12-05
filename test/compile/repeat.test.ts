@@ -15,7 +15,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual<Encoding<string>>(resolved, {
+      assert.deepEqual(resolved, {
         x: {field: 'foo', type: 'quantitative'},
         y: {field: 'bar', type: 'quantitative'}
       });
@@ -47,7 +47,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual<Encoding<string>>(resolved, {
+      assert.deepEqual(resolved, {
         detail: [{field: 'foo', type: 'quantitative'}, {field: 'bar', type: 'quantitative'}]
       });
     });
@@ -60,7 +60,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual<Encoding<string>>(resolved, {
+      assert.deepEqual(resolved, {
         x: {field: 'bar', type: 'quantitative', sort: {field: 'foo', op: 'min'}}
       });
     });
@@ -76,7 +76,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual<Encoding<string>>(resolved, {
+      assert.deepEqual(resolved, {
         color: {
           condition: {selection: 'test', field: 'foo', type: 'quantitative'},
           value: 'red'
@@ -96,7 +96,7 @@ describe('Repeat', () => {
         {row: 'foo'}
       );
 
-      assert.deepEqual<Encoding<string>>(resolved, {
+      assert.deepEqual(resolved, {
         color: {
           condition: {selection: 'test', value: 'red'},
           field: 'foo',
