@@ -388,7 +388,7 @@ export function isRanged(encoding: EncodingWithFacet<any>) {
 
 export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
   const arr: FieldDef<T>[] = [];
-  CHANNELS.forEach(channel => {
+  for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach(def => {
@@ -399,7 +399,7 @@ export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
         }
       });
     }
-  });
+  }
   return arr;
 }
 
