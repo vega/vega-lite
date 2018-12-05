@@ -23,6 +23,7 @@ import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
+import {direction} from './properties';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -128,44 +129,52 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
 function getProperty<K extends keyof VgLegend>(
   property: K,
-  specifiedLegend: Legend,
+  legend: Legend,
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
   const fieldDef = model.fieldDef(channel);
+  const legendConfig = model.config.legend;
 
   switch (property) {
     case 'format':
       // We don't include temporal field here as we apply format in encode block
-      return numberFormat(fieldDef, specifiedLegend.format, model.config);
+      return numberFormat(fieldDef, legend.format, model.config);
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
+
+    case 'direction':
+      return direction({legend, legendConfig, channel, scaleType: model.getScaleComponent(channel).get('type')});
 
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
     case 'labelOverlap':
       return getFirstDefined(
-        specifiedLegend.labelOverlap,
+        legend.labelOverlap,
         properties.labelOverlap(model.getScaleComponent(channel).get('type'))
       );
     case 'gradientLength':
-      const legendConfig = model.config.legend;
-
       return getFirstDefined<number | SignalRef>(
         // do specified gradientLength first
-        specifiedLegend.gradientLength,
+        legend.gradientLength,
         legendConfig.gradientLength,
         // Otherwise, use smart default based on plot height
-        properties.defaultGradientLength(model, specifiedLegend, legendConfig)
+        properties.defaultGradientLength({
+          model,
+          legend,
+          legendConfig,
+          channel,
+          scaleType: model.getScaleComponent(channel).get('type')
+        })
       );
 
     case 'values':
-      return properties.values(specifiedLegend, fieldDef);
+      return properties.values(legend, fieldDef);
   }
 
   // Otherwise, return specified property.
-  return (specifiedLegend as VgLegend)[property];
+  return (legend as VgLegend)[property];
 }
 
 function parseNonUnitLegend(model: Model) {
