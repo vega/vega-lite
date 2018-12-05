@@ -229,7 +229,7 @@ describe('src/compile', () => {
         });
         parseScale(model);
         expect(model.getScaleComponent('y').explicit.range).toEqual({step: 17});
-        expect(logger.warns.length).toEqual(0);
+        expect(logger.warns).toHaveLength(0);
       })
     );
 

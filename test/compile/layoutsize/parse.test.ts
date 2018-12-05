@@ -11,8 +11,8 @@ describe('compile/layout', () => {
         config: {scale: {textXRangeStep: 91}}
       });
 
-      expect(model.component.layoutSize.explicit.width).toEqual(123);
-      expect(model.component.layoutSize.explicit.height).toEqual(456);
+      expect(model.component.layoutSize.explicit.width).toBe(123);
+      expect(model.component.layoutSize.explicit.height).toBe(456);
     });
 
     it('should have width = default textXRangeStep for text mark without x', () => {
@@ -22,7 +22,7 @@ describe('compile/layout', () => {
         config: {scale: {textXRangeStep: 91}}
       });
 
-      expect(model.component.layoutSize.implicit.width).toEqual(91);
+      expect(model.component.layoutSize.implicit.width).toBe(91);
     });
 
     it('should have width/height = config.scale.rangeStep  for non-text mark without x,y', () => {
@@ -32,8 +32,8 @@ describe('compile/layout', () => {
         config: {scale: {rangeStep: 23}}
       });
 
-      expect(model.component.layoutSize.implicit.width).toEqual(23);
-      expect(model.component.layoutSize.implicit.height).toEqual(23);
+      expect(model.component.layoutSize.implicit.width).toBe(23);
+      expect(model.component.layoutSize.implicit.height).toBe(23);
     });
 
     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
@@ -46,8 +46,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      expect(model.component.layoutSize.implicit.width).toEqual(123);
-      expect(model.component.layoutSize.implicit.height).toEqual(456);
+      expect(model.component.layoutSize.implicit.width).toBe(123);
+      expect(model.component.layoutSize.implicit.height).toBe(456);
     });
 
     it('should have width/height = config.view.width/height for geoshape', () => {
@@ -57,8 +57,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      expect(model.component.layoutSize.implicit.width).toEqual(123);
-      expect(model.component.layoutSize.implicit.height).toEqual(456);
+      expect(model.component.layoutSize.implicit.width).toBe(123);
+      expect(model.component.layoutSize.implicit.height).toBe(456);
     });
 
     it('should have width/height = config.view.width/height for non-ordinal x,y', () => {
@@ -71,8 +71,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      expect(model.component.layoutSize.implicit.width).toEqual(123);
-      expect(model.component.layoutSize.implicit.height).toEqual(456);
+      expect(model.component.layoutSize.implicit.width).toBe(123);
+      expect(model.component.layoutSize.implicit.height).toBe(456);
     });
 
     it('should have width/height = undefined for non-ordinal x,y', () => {
@@ -85,8 +85,8 @@ describe('compile/layout', () => {
         config: {view: {width: 123, height: 456}}
       });
 
-      expect(model.component.layoutSize.get('width')).toEqual('range-step');
-      expect(model.component.layoutSize.get('height')).toEqual('range-step');
+      expect(model.component.layoutSize.get('width')).toBe('range-step');
+      expect(model.component.layoutSize.get('height')).toBe('range-step');
     });
   });
 });

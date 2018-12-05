@@ -162,7 +162,7 @@ describe('Repeat', () => {
         }
       });
 
-      expect(model.children.length).toEqual(2);
+      expect(model.children).toHaveLength(2);
     });
 
     it('should create n*m models if row and column are specified', () => {
@@ -180,7 +180,7 @@ describe('Repeat', () => {
         }
       });
 
-      expect(model.children.length).toEqual(6);
+      expect(model.children).toHaveLength(6);
     });
 
     it('should union color scales and legends', () => {
@@ -202,11 +202,11 @@ describe('Repeat', () => {
       model.parseScale();
       const colorScale = model.component.scales['color'];
 
-      expect(colorScale.domains.length).toEqual(4);
+      expect(colorScale.domains).toHaveLength(4);
 
       model.parseLegend();
 
-      expect(keys(model.component.legends).length).toEqual(1);
+      expect(keys(model.component.legends)).toHaveLength(1);
     });
   });
 

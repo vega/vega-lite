@@ -23,7 +23,7 @@ describe('compile/legend', () => {
   describe('clipHeight()', () => {
     it('should return clip height for continuous domain', () => {
       const height = properties.clipHeight('linear');
-      expect(height).toEqual(20);
+      expect(height).toBe(20);
     });
 
     it('should simply return for discrete domain', () => {

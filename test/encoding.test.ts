@@ -56,7 +56,7 @@ describe('encoding', () => {
       expect(x).toBeDefined();
       if (isPositionFieldDef(x)) {
         expect(x.axis).toBeDefined();
-        expect(x.axis.labelAngle).toEqual(15);
+        expect(x.axis.labelAngle).toBe(15);
       } else {
         expect(false).toBe(true);
       }

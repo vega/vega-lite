@@ -19,7 +19,7 @@ describe('Layer', () => {
           }
         ]
       });
-      expect(model.children.length).toEqual(2);
+      expect(model.children).toHaveLength(2);
       model.parseScale();
 
       expect(model.component.scales['x'].domains).toEqual([
@@ -89,7 +89,7 @@ describe('Layer', () => {
       }
     });
 
-    expect(model.children.length).toEqual(2);
+    expect(model.children).toHaveLength(2);
 
     it('should leave scales in children when set to be independent', () => {
       model.parseScale();
@@ -112,7 +112,7 @@ describe('Layer', () => {
     it('should create second axis on top', () => {
       model.parseAxisAndHeader();
 
-      expect(model.component.axes['x'].length).toEqual(2);
+      expect(model.component.axes['x']).toHaveLength(2);
       expect(model.component.axes['x'][1].implicit.orient).toEqual('top');
     });
   });

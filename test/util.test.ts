@@ -24,47 +24,47 @@ import {
 describe('util', () => {
   describe('varName', () => {
     it('replaces all non-alphanumeric characters with _', () => {
-      expect(varName('bin-mpg$!@#%_+1')).toEqual('bin_mpg_______1');
+      expect(varName('bin-mpg$!@#%_+1')).toBe('bin_mpg_______1');
     });
 
     it('prepends _ if the string starts with number', () => {
-      expect(varName('1a')).toEqual('_1a');
+      expect(varName('1a')).toBe('_1a');
     });
   });
 
   describe('stringify', () => {
     it('stringifies numbers', () => {
-      expect(stringify(12)).toEqual('12');
+      expect(stringify(12)).toBe('12');
     });
 
     it('stringifies booleans', () => {
-      expect(stringify(true)).toEqual('true');
+      expect(stringify(true)).toBe('true');
     });
 
     it('stringifies strings', () => {
-      expect(stringify('foo')).toEqual('"foo"');
+      expect(stringify('foo')).toBe('"foo"');
     });
 
     it('stringifies objects', () => {
-      expect(stringify({foo: 42})).toEqual('{"foo":42}');
+      expect(stringify({foo: 42})).toBe('{"foo":42}');
     });
   });
 
   describe('hash', () => {
     it('hashes numbers as numbers', () => {
-      expect(hash(12)).toEqual(12);
+      expect(hash(12)).toBe(12);
     });
 
     it('hashes booleans as strings so that they can be used as keys', () => {
-      expect(hash(true)).toEqual('true');
+      expect(hash(true)).toBe('true');
     });
 
     it('hashes strings as strings', () => {
-      expect(hash('foo')).toEqual('foo');
+      expect(hash('foo')).toBe('foo');
     });
 
     it('hashes objects', () => {
-      expect(hash({foo: 42})).toEqual('{"foo":42}');
+      expect(hash({foo: 42})).toBe('{"foo":42}');
     });
   });
   describe('deleteNestedProperty', () => {
@@ -79,7 +79,7 @@ describe('util', () => {
         property3: {property6: 'value3', property7: 'value4'}
       };
       deleteNestedProperty(originalObject, ['property1']);
-      expect(stringify(originalObject)).toEqual(stringify(newObject));
+      expect(stringify(originalObject)).toBe(stringify(newObject));
     });
 
     it('removes nested properties', () => {
@@ -93,7 +93,7 @@ describe('util', () => {
         property3: {property6: 'value3', property7: 'value4'}
       };
       deleteNestedProperty(originalObject, ['property1', 'property4']);
-      expect(stringify(originalObject)).toEqual(stringify(newObject));
+      expect(stringify(originalObject)).toBe(stringify(newObject));
     });
 
     it('stops when it does not empty the last element', () => {
@@ -108,59 +108,59 @@ describe('util', () => {
         property3: {property6: 'value3'}
       };
       deleteNestedProperty(originalObject, ['property3', 'property7']);
-      expect(stringify(originalObject)).toEqual(stringify(newObject));
+      expect(stringify(originalObject)).toBe(stringify(newObject));
     });
   });
 
   describe('accessPathWithDatum', () => {
     it('should parse foo', () => {
-      expect(accessPathWithDatum('foo')).toEqual('datum["foo"]');
+      expect(accessPathWithDatum('foo')).toBe('datum["foo"]');
     });
 
     it('should parse foo.bar', () => {
-      expect(accessPathWithDatum('foo.bar')).toEqual('datum["foo"] && datum["foo"]["bar"]');
+      expect(accessPathWithDatum('foo.bar')).toBe('datum["foo"] && datum["foo"]["bar"]');
     });
 
     it('should support cusotom datum', () => {
-      expect(accessPathWithDatum('foo', 'parent')).toEqual('parent["foo"]');
+      expect(accessPathWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
   });
 
   describe('flatAccessWithDatum', () => {
     it('should parse foo.bar', () => {
-      expect(flatAccessWithDatum('foo.bar')).toEqual('datum["foo.bar"]');
+      expect(flatAccessWithDatum('foo.bar')).toBe('datum["foo.bar"]');
     });
 
     it('should return string value of field name', () => {
-      expect(flatAccessWithDatum('foo["bar"].baz')).toEqual('datum["foo.bar.baz"]');
+      expect(flatAccessWithDatum('foo["bar"].baz')).toBe('datum["foo.bar.baz"]');
     });
 
     it('should support cusotom datum', () => {
-      expect(flatAccessWithDatum('foo', 'parent')).toEqual('parent["foo"]');
+      expect(flatAccessWithDatum('foo', 'parent')).toBe('parent["foo"]');
     });
   });
 
   describe('accessPathDepth', () => {
     it('should return 1 if the field is not nested', () => {
-      expect(accessPathDepth('foo')).toEqual(1);
+      expect(accessPathDepth('foo')).toBe(1);
     });
 
     it('should return 1 if . is escaped', () => {
-      expect(accessPathDepth('foo\\.bar')).toEqual(1);
+      expect(accessPathDepth('foo\\.bar')).toBe(1);
     });
 
     it('should return 2 for foo.bar', () => {
-      expect(accessPathDepth('foo.bar')).toEqual(2);
+      expect(accessPathDepth('foo.bar')).toBe(2);
     });
   });
 
   describe('removePathFromField', () => {
     it('should convert nested accesses to \\.', () => {
-      expect(replacePathInField('foo["bar"].baz')).toEqual('foo\\.bar\\.baz');
+      expect(replacePathInField('foo["bar"].baz')).toBe('foo\\.bar\\.baz');
     });
 
     it('should keep \\.', () => {
-      expect(replacePathInField('foo\\.bar')).toEqual('foo\\.bar');
+      expect(replacePathInField('foo\\.bar')).toBe('foo\\.bar');
     });
   });
 
@@ -181,14 +181,14 @@ describe('util', () => {
 
   describe('fieldIntersection', () => {
     it('should return the correct value for 2 stringsets', () => {
-      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toBe(true);
+      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toEqual(true);
     });
     it('should return the correct value for 2 nested but different stringsets', () => {
-      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toBe(true);
+      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toEqual(true);
     });
 
     it('should return the correct value for 2 nested but different stringsets', () => {
-      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toBe(false);
+      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toEqual(false);
     });
   });
 

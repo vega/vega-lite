@@ -19,7 +19,7 @@ describe('legend/assemble', () => {
     model.parseLegend();
 
     const legends = model.assembleLegends();
-    expect(legends.length).toEqual(1);
+    expect(legends).toHaveLength(1);
 
     expect(legends[0].title).toEqual('Origin');
     expect(legends[0].stroke).toEqual('color');
@@ -41,7 +41,7 @@ describe('legend/assemble', () => {
     model.parseLegend();
 
     const legends = model.assembleLegends();
-    expect(legends.length).toEqual(1);
+    expect(legends).toHaveLength(1);
     expect(legends[0].title).toEqual('b');
     expect(legends[0].fill).toEqual('color');
     expect(legends[0].size).toEqual('size');

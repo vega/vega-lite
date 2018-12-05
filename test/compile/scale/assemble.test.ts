@@ -31,7 +31,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      expect(scales.length).toEqual(3);
+      expect(scales).toHaveLength(3);
     });
 
     it('includes all scales from children for layer, both shared and independent', () => {
@@ -61,7 +61,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      expect(scales.length).toEqual(3); // 2 x, 1 y
+      expect(scales).toHaveLength(3); // 2 x, 1 y
     });
 
     it('includes all scales for repeat', () => {
@@ -79,7 +79,7 @@ describe('compile/scale/assemble', () => {
 
       model.parseScale();
       const scales = assembleScales(model);
-      expect(scales.length).toEqual(2);
+      expect(scales).toHaveLength(2);
     });
 
     it('includes shared scales, but not independent scales (as they are nested) for facet.', () => {
@@ -100,7 +100,7 @@ describe('compile/scale/assemble', () => {
       });
 
       const scales = assembleScales(model);
-      expect(scales.length).toEqual(1);
+      expect(scales).toHaveLength(1);
       expect(scales[0].name).toEqual('y');
     });
   });
