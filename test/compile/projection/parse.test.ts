@@ -305,7 +305,7 @@ describe('src/compile/projection/parse', () => {
         ]
       });
       model.parse();
-      expect(model.component.projection).not.toBeDefined();
+      expect(model.component.projection).toBeUndefined();
     });
   });
 });

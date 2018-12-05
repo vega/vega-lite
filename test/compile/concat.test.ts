@@ -22,7 +22,7 @@ describe('Concat', () => {
         ]
       });
 
-      expect(model.children.length).toEqual(2);
+      expect(model.children).toHaveLength(2);
       expect(model.isVConcat).toBeTruthy();
     });
 

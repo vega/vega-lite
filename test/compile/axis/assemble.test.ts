@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { assembleAxis } from '../../../src/compile/axis/assemble';
+import {assembleAxis} from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
 import {defaultConfig} from '../../../src/config';
 
@@ -16,7 +16,7 @@ describe('compile/axis/assemble', () => {
         }
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
-      expect(axis.encode.labels).not.toBeDefined();
+      expect(axis.encode.labels).toBeUndefined();
     });
 
     it('outputs grid axis with custom zindex', () => {
@@ -38,7 +38,7 @@ describe('compile/axis/assemble', () => {
         }
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      expect(axis.encode.grid).not.toBeDefined();
+      expect(axis.encode.grid).toBeUndefined();
     });
 
     it('correctly assemble title fieldDefs', () => {

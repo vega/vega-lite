@@ -28,14 +28,14 @@ describe('compile/legend', () => {
 
     it('should simply return for discrete domain', () => {
       const height = properties.clipHeight('ordinal');
-      expect(height).not.toBeDefined();
+      expect(height).toBeUndefined();
     });
   });
 
   describe('labelOverlap()', () => {
     it('should return undefined for linear', () => {
       const overlap = properties.labelOverlap('linear');
-      expect(overlap).not.toBeDefined();
+      expect(overlap).toBeUndefined();
     });
 
     it('should return greedy for log', () => {

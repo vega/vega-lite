@@ -20,7 +20,7 @@ describe('Mark: Rect', () => {
       expect(props.width).toEqual({scale: 'x', band: true});
       expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
-      expect(props.height).not.toBeDefined();
+      expect(props.height).toBeUndefined();
     });
   });
 
@@ -40,7 +40,7 @@ describe('Mark: Rect', () => {
       expect(props.height).toEqual({scale: 'y', band: true});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 
@@ -62,7 +62,7 @@ describe('Mark: Rect', () => {
         expect(props.height).toEqual({scale: 'y', band: true});
         expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
         expect(props.x2).toEqual({scale: 'x', value: 0});
-        expect(props.width).not.toBeDefined();
+        expect(props.width).toBeUndefined();
       });
 
       it('should throw warning', () => {
@@ -85,7 +85,7 @@ describe('Mark: Rect', () => {
     it('should draw bar with y and y2', () => {
       expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower'});
       expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
-      expect(props.height).not.toBeDefined();
+      expect(props.height).toBeUndefined();
     });
   });
 
@@ -103,7 +103,7 @@ describe('Mark: Rect', () => {
     it('should draw bar with x and x2', () => {
       expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower'});
       expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 
@@ -177,7 +177,7 @@ describe('Mark: Rect', () => {
       expect(props.x).toEqual({scale: 'x', field: 'bin_end', offset: 0});
       expect(props.y).toEqual({scale: 'y', field: 'count'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 
@@ -210,7 +210,7 @@ describe('Mark: Rect', () => {
       expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 0});
       expect(props.x).toEqual({scale: 'x', field: 'count'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 });

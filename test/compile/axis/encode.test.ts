@@ -13,7 +13,7 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
-      expect(labels.angle).not.toBeDefined();
+      expect(labels.angle).toBeUndefined();
     });
 
     it('should do not rotate label for temporal field if labelAngle is specified in axis config', () => {
@@ -25,7 +25,7 @@ describe('compile/axis/encode', () => {
         config: {axisX: {labelAngle: 90}}
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
-      expect(labels.angle).not.toBeDefined();
+      expect(labels.angle).toBeUndefined();
     });
 
     it('should have correct text.signal for quarter timeUnits', () => {

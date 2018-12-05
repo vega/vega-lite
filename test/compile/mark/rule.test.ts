@@ -14,8 +14,8 @@ describe('Mark: Rule', () => {
     const props = rule.encodeEntry(model);
 
     it('should not show anything', () => {
-      expect(props.x).not.toBeDefined();
-      expect(props.y).not.toBeDefined();
+      expect(props.x).toBeUndefined();
+      expect(props.y).toBeUndefined();
     });
   });
 

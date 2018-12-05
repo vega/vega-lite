@@ -168,8 +168,8 @@ describe('src/compile', () => {
         }
       });
       parseScaleCore(model);
-      expect(model.getScaleComponent('x')).not.toBeDefined();
-      expect(model.getScaleComponent('y')).not.toBeDefined();
+      expect(model.getScaleComponent('x')).toBeUndefined();
+      expect(model.getScaleComponent('y')).toBeUndefined();
     });
 
     it('correctly ignores shape when geojson', () => {
@@ -194,7 +194,7 @@ describe('src/compile', () => {
         }
       });
       parseScaleCore(model);
-      expect(model.getScaleComponent('shape')).not.toBeDefined();
+      expect(model.getScaleComponent('shape')).toBeUndefined();
     });
   });
 
@@ -256,8 +256,8 @@ describe('src/compile', () => {
       });
       const scale = model.getScaleComponent('x');
       expect(scale.explicit.padding).toEqual(0.6);
-      expect(scale.get('paddingInner')).not.toBeDefined();
-      expect(scale.get('paddingOuter')).not.toBeDefined();
+      expect(scale.get('paddingInner')).toBeUndefined();
+      expect(scale.get('paddingOuter')).toBeUndefined();
     });
 
     it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', () => {
@@ -273,7 +273,7 @@ describe('src/compile', () => {
       const scale = model.getScaleComponent('x');
       expect(scale.implicit.paddingInner).toEqual(0.3);
       expect(scale.implicit.paddingOuter).toEqual(0.15);
-      expect(scale.get('padding')).not.toBeDefined();
+      expect(scale.get('padding')).toBeUndefined();
     });
 
     describe('nominal with color', () => {
