@@ -10,29 +10,29 @@ describe('compile/axis', () => {
   describe('grid()', () => {
     it('should return true by default for continuous scale that is not binned', () => {
       const grid = properties.grid('linear', {field: 'a', type: 'quantitative'});
-      assert.deepEqual(grid, true);
+      expect(grid).toBe(true);
     });
 
     it('should return false by default for binned field', () => {
       const grid = properties.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
-      assert.deepEqual(grid, false);
+      expect(grid).toBe(false);
     });
 
     it('should return false by default for a discrete scale', () => {
       const grid = properties.grid('point', {field: 'a', type: 'quantitative'});
-      assert.deepEqual(grid, false);
+      expect(grid).toBe(false);
     });
   });
 
   describe('orient()', () => {
     it('should return bottom for x by default', () => {
       const orient = properties.orient('x');
-      assert.deepEqual(orient, 'bottom');
+      expect(orient).toBe('bottom');
     });
 
     it('should return left for y by default', () => {
       const orient = properties.orient('y');
-      assert.deepEqual(orient, 'left');
+      expect(orient).toBe('left');
     });
   });
 
@@ -46,7 +46,7 @@ describe('compile/axis', () => {
         undefined,
         {}
       );
-      assert.deepEqual(tickCount, {signal: 'ceil(a/20)'});
+      expect(tickCount).toEqual({signal: 'ceil(a/20)'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
@@ -72,12 +72,12 @@ describe('compile/axis', () => {
         undefined,
         {}
       );
-      assert.deepEqual(tickCount, {signal: 'ceil(a/40)'});
+      expect(tickCount).toEqual({signal: 'ceil(a/40)'});
     });
 
     it('should return undefined by default for log scale', () => {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined, undefined, {});
-      assert.deepEqual(tickCount, undefined);
+      expect(tickCount).toBeUndefined();
     });
 
     it('should return undefined by default for point scale', () => {
@@ -89,14 +89,14 @@ describe('compile/axis', () => {
         undefined,
         {}
       );
-      assert.deepEqual(tickCount, undefined);
+      expect(tickCount).toBeUndefined();
     });
 
     it('should return prebin step signal for axis with tickStep', () => {
       const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', undefined, 'x', {
         tickStep: 3
       });
-      assert.deepEqual(tickCount, {signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1"});
+      expect(tickCount).toEqual({signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1"});
     });
   });
 
@@ -109,7 +109,7 @@ describe('compile/axis', () => {
         'x'
       );
 
-      assert.deepEqual(values, [
+      expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
         {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}
       ]);
@@ -117,7 +117,7 @@ describe('compile/axis', () => {
 
     it('should simply return values for non-DateTime', () => {
       const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'}, 'x');
-      assert.deepEqual(values, [1, 2, 3, 4]);
+      expect(values).toEqual([1, 2, 3, 4]);
     });
 
     it('should simply drop values when domain is specified', () => {
@@ -135,7 +135,7 @@ describe('compile/axis', () => {
       });
       const values = properties.values({}, model1, model1.fieldDef('y'), 'y');
 
-      assert.deepEqual(values, undefined);
+      expect(values).toBeUndefined();
     });
 
     it('should return value signal for axis with tickStep', () => {
@@ -150,7 +150,7 @@ describe('compile/axis', () => {
         data: {url: 'data/movies.json'}
       });
       const values = properties.values({tickStep: 3}, model, {type: 'quantitative'}, 'x');
-      assert.deepEqual(values, {signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)"});
+      expect(values).toEqual({signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)"});
     });
   });
 
@@ -233,23 +233,23 @@ describe('compile/axis', () => {
     });
 
     it('should return the correct labelAngle from the axis definition', () => {
-      assert.deepEqual(240, labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.fieldDef('y')));
+      expect(240).toEqual(labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.fieldDef('y')));
     });
 
     it('should return the correct labelAngle from the axis config definition', () => {
-      assert.deepEqual(140, labelAngle(configModel, configModel.axis('y'), 'y', configModel.fieldDef('y')));
+      expect(140).toEqual(labelAngle(configModel, configModel.axis('y'), 'y', configModel.fieldDef('y')));
     });
 
     it('should return the correct default labelAngle when not specified', () => {
-      assert.deepEqual(270, labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.fieldDef('x')));
+      expect(270).toEqual(labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.fieldDef('x')));
     });
 
     it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
-      assert.deepEqual(240, labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.fieldDef('y')));
+      expect(240).toEqual(labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.fieldDef('y')));
     });
 
     it('should return undefined when there is no default and no specified labelAngle', () => {
-      assert.deepEqual(undefined, labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.fieldDef('y')));
+      expect(undefined).toEqual(labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.fieldDef('y')));
     });
   });
 

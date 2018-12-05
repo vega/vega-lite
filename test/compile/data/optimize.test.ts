@@ -51,12 +51,12 @@ describe('compile/data/optimize', () => {
 
       optimizeDataflow({sources: [source]} as any);
 
-      expect(source.children.length).toEqual(1);
+      expect(source.children).toHaveLength(1);
       expect(source.children[0]).toBeInstanceOf(ParseNode);
 
       const commonParse = source.children[0] as ParseNode;
       expect(commonParse.parse).toEqual({a: 'time'});
-      expect(commonParse.children.length).toEqual(2);
+      expect(commonParse.children).toHaveLength(2);
 
       expect(commonParse.children[0]).toBeInstanceOf(ParseNode);
       expect(commonParse.children[0]).toMatchObject(parseOne);
@@ -76,13 +76,13 @@ describe('compile/data/optimize', () => {
 
       optimizeDataflow({sources: [source]} as any);
 
-      expect(source.children.length).toEqual(1);
+      expect(source.children).toHaveLength(1);
       expect(source.children[0]).toBeInstanceOf(ParseNode);
 
       const commonParse = source.children[0] as ParseNode;
       expect(commonParse.parse).toEqual({b: 'number'});
 
-      expect(commonParse.children.length).toEqual(2);
+      expect(commonParse.children).toHaveLength(2);
       expect(commonParse.children[0]).toBeInstanceOf(ParseNode);
       expect(commonParse.children[1]).toBeInstanceOf(ParseNode);
 

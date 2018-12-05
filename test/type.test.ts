@@ -1,28 +1,27 @@
-import {assert} from 'chai';
 import * as type from '../src/type';
 
 describe('type', () => {
   describe('getFullName()', () => {
     it('should return correct lowercase, full type names.', () => {
       for (const t of ['q', 'Q', 'quantitative', 'QUANTITATIVE']) {
-        assert.equal(type.getFullName(t), 'quantitative');
+        expect(type.getFullName(t)).toEqual('quantitative');
       }
       for (const t of ['t', 'T', 'temporal', 'TEMPORAL']) {
-        assert.equal(type.getFullName(t), 'temporal');
+        expect(type.getFullName(t)).toEqual('temporal');
       }
       for (const t of ['o', 'O', 'ordinal', 'ORDINAL']) {
-        assert.equal(type.getFullName(t), 'ordinal');
+        expect(type.getFullName(t)).toEqual('ordinal');
       }
       for (const t of ['n', 'N', 'nominal', 'NOMINAL']) {
-        assert.equal(type.getFullName(t), 'nominal');
+        expect(type.getFullName(t)).toEqual('nominal');
       }
       for (const t of ['geojson', 'GEOJSON']) {
-        assert.equal(type.getFullName(t), 'geojson');
+        expect(type.getFullName(t)).toEqual('geojson');
       }
     });
 
     it('should return undefined for invalid type', () => {
-      assert.equal(type.getFullName('haha'), undefined);
+      expect(type.getFullName('haha')).toEqual(undefined);
     });
   });
 });

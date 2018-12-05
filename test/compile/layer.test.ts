@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {parseLayerModel} from '../util';
 
 describe('Layer', () => {
@@ -20,10 +19,10 @@ describe('Layer', () => {
           }
         ]
       });
-      assert.equal(model.children.length, 2);
+      expect(model.children).toHaveLength(2);
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].domains, [
+      expect(model.component.scales['x'].domains).toEqual([
         {
           data: 'layer_0_main',
           field: 'a',
@@ -56,7 +55,7 @@ describe('Layer', () => {
       });
       model.parseScale();
 
-      assert.deepEqual(model.component.scales['x'].domains, [
+      expect(model.component.scales['x'].domains).toEqual([
         [1, 2, 3],
         {
           data: 'layer_1_main',
@@ -90,19 +89,19 @@ describe('Layer', () => {
       }
     });
 
-    assert.equal(model.children.length, 2);
+    expect(model.children).toHaveLength(2);
 
     it('should leave scales in children when set to be independent', () => {
       model.parseScale();
 
-      assert.equal(model.component.scales['x'], undefined);
-      assert.deepEqual(model.children[0].component.scales['x'].domains, [
+      expect(model.component.scales['x']).toEqual(undefined);
+      expect(model.children[0].component.scales['x'].domains).toEqual([
         {
           data: 'layer_0_main',
           field: 'a'
         }
       ]);
-      assert.deepEqual(model.children[1].component.scales['x'].domains, [
+      expect(model.children[1].component.scales['x'].domains).toEqual([
         {
           data: 'layer_1_main',
           field: 'b'
@@ -113,8 +112,8 @@ describe('Layer', () => {
     it('should create second axis on top', () => {
       model.parseAxisAndHeader();
 
-      assert.equal(model.component.axes['x'].length, 2);
-      assert.equal(model.component.axes['x'][1].implicit.orient, 'top');
+      expect(model.component.axes['x']).toHaveLength(2);
+      expect(model.component.axes['x'][1].implicit.orient).toEqual('top');
     });
   });
 });

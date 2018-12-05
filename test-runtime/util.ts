@@ -1,4 +1,3 @@
-// import {assert} from 'chai';
 import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
 import {stringValue} from 'vega-util';
@@ -203,6 +202,6 @@ export function testRenderFn(browser: WebdriverIO.Client<void>, path: string) {
     // const render =
     svg(browser, path, filename);
     // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
-    // assert.equal(render, file);
+    // expect(render).toEqual(file);
   };
 }

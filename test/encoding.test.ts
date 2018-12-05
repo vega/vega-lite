@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {defaultConfig} from '../src/config';
 import {extractTransformsFromEncoding, normalizeEncoding} from '../src/encoding';
 import {isPositionFieldDef} from '../src/fielddef';
@@ -17,10 +16,10 @@ describe('encoding', () => {
           'rule'
         );
 
-        assert.deepEqual(encoding, {
+        expect(encoding).toEqual({
           fill: {field: 'b', type: 'quantitative'}
         });
-        assert.equal(logger.warns[0], log.message.droppingColor('encoding', {fill: true}));
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {fill: true}));
       })
     );
 
@@ -35,10 +34,10 @@ describe('encoding', () => {
           'rule'
         );
 
-        assert.deepEqual(encoding, {
+        expect(encoding).toEqual({
           stroke: {field: 'b', type: 'quantitative'}
         });
-        assert.equal(logger.warns[0], log.message.droppingColor('encoding', {stroke: true}));
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {stroke: true}));
       })
     );
   });
@@ -57,9 +56,9 @@ describe('encoding', () => {
       expect(x).toBeDefined();
       if (isPositionFieldDef(x)) {
         expect(x.axis).toBeDefined();
-        expect(x.axis.labelAngle).toEqual(15);
+        expect(x.axis.labelAngle).toBe(15);
       } else {
-        assert.fail(null, null, 'encoding x is not PositionFieldDef');
+        expect(false).toBe(true);
       }
     });
     it('should extract time unit from encoding field definition and add axis format', () => {
@@ -104,7 +103,7 @@ describe('encoding', () => {
         ),
         defaultConfig
       );
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         bins: [],
         timeUnits: [],
         aggregate: [{op: 'max', field: 'b', as: 'max_b'}],
@@ -130,7 +129,7 @@ describe('encoding', () => {
         ),
         defaultConfig
       );
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         bins: [{bin: {maxbins: 10}, field: 'a', as: 'bin_maxbins_10_a'}],
         timeUnits: [],
         aggregate: [{op: 'count', as: 'count_*'}],

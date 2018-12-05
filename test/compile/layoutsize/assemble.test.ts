@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 import {X} from '../../../src/channel';
@@ -18,7 +17,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [
+      expect(size).toEqual([
         {
           name: 'x_step',
           value: 21
@@ -39,7 +38,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [
+      expect(size).toEqual([
         {
           name: 'x_step',
           value: 21
@@ -60,7 +59,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [
+      expect(size).toEqual([
         {
           name: 'x_step',
           value: 21
@@ -91,7 +90,7 @@ describe('compile/layout', () => {
       model.parseLayoutSize();
 
       const size = sizeSignals(model.child, 'width');
-      assert.deepEqual(size, [
+      expect(size).toEqual([
         {
           name: 'child_x_step',
           value: 21
@@ -108,7 +107,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [{name: 'width', value: 200}]);
+      expect(size).toEqual([{name: 'width', value: 200}]);
     });
 
     it('should return static view size for ordinal y-scale with null', () => {
@@ -120,7 +119,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'height');
-      assert.deepEqual(size, [{name: 'height', value: 200}]);
+      expect(size).toEqual([{name: 'height', value: 200}]);
     });
 
     it('should return static view size for ordinal scale with top-level width', () => {
@@ -133,7 +132,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [{name: 'width', value: 205}]);
+      expect(size).toEqual([{name: 'width', value: 205}]);
     });
 
     it(
@@ -148,8 +147,8 @@ describe('compile/layout', () => {
         });
 
         const size = sizeSignals(model, 'width');
-        assert.deepEqual(size, [{name: 'width', value: 205}]);
-        assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
+        expect(size).toEqual([{name: 'width', value: 205}]);
+        expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped(X));
       })
     );
 
@@ -162,7 +161,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [{name: 'width', value: 200}]);
+      expect(size).toEqual([{name: 'width', value: 200}]);
     });
 
     it('should return static view size for non-ordinal y-scale', () => {
@@ -174,7 +173,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'height');
-      assert.deepEqual(size, [{name: 'height', value: 200}]);
+      expect(size).toEqual([{name: 'height', value: 200}]);
     });
 
     it('should return default rangeStep if axis is not mapped', () => {
@@ -184,7 +183,7 @@ describe('compile/layout', () => {
         config: {scale: {rangeStep: 17}}
       });
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [{name: 'width', value: 17}]);
+      expect(size).toEqual([{name: 'width', value: 17}]);
     });
 
     it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
@@ -194,7 +193,7 @@ describe('compile/layout', () => {
         config: {scale: {textXRangeStep: 91}}
       });
       const size = sizeSignals(model, 'width');
-      assert.deepEqual(size, [{name: 'width', value: 91}]);
+      expect(size).toEqual([{name: 'width', value: 91}]);
     });
   });
 });

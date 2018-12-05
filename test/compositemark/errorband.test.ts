@@ -1,6 +1,4 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
@@ -97,18 +95,18 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
         })
-      );
-      assert.isTrue(
+      ).toBe(true);
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -127,18 +125,18 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
         })
-      );
-      assert.isTrue(
+      ).toBe(true);
+      expect(
         some(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -157,13 +155,13 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         every(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -181,13 +179,13 @@ describe('normalizeErrorBand', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      assert.isTrue(
+      expect(
         every(layer, unitSpec => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
         })
-      );
+      ).toBe(true);
     } else {
-      assert.fail(!layer, false, 'layer should be a part of the spec');
+      expect(false).toBe(true);
     }
   });
 
@@ -205,7 +203,7 @@ describe('normalizeErrorBand', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+      expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('interpolate'));
     })
   );
 
@@ -223,7 +221,7 @@ describe('normalizeErrorBand', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
+      expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('tension'));
     })
   );
 });

@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import * as encode from '../../../src/compile/axis/encode';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -14,7 +13,7 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
-      assert.isUndefined(labels.angle);
+      expect(labels.angle).toBeUndefined();
     });
 
     it('should do not rotate label for temporal field if labelAngle is specified in axis config', () => {
@@ -26,7 +25,7 @@ describe('compile/axis/encode', () => {
         config: {axisX: {labelAngle: 90}}
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
-      assert.isUndefined(labels.angle);
+      expect(labels.angle).toBeUndefined();
     });
 
     it('should have correct text.signal for quarter timeUnits', () => {
@@ -38,7 +37,7 @@ describe('compile/axis/encode', () => {
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
       const expected = "'Q' + quarter(datum.value)";
-      assert.equal(labels.text.signal, expected);
+      expect(labels.text.signal).toEqual(expected);
     });
 
     it('should have correct text.signal for yearquartermonth timeUnits', () => {
@@ -50,7 +49,7 @@ describe('compile/axis/encode', () => {
       });
       const labels = encode.labels(model, 'x', {}, 'bottom');
       const expected = "'Q' + quarter(datum.value) + ' ' + timeFormat(datum.value, '%b %Y')";
-      assert.equal(labels.text.signal, expected);
+      expect(labels.text.signal).toEqual(expected);
     });
   });
 });

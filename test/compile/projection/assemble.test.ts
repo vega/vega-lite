@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {assembleProjectionForModel} from '../../../src/compile/projection/assemble';
 import {isSignalRef} from '../../../src/vega.schema';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -22,17 +21,17 @@ describe('compile/projection/assemble', () => {
     model.parse();
 
     it('should not be empty', () => {
-      assert.isNotEmpty(assembleProjectionForModel(model));
+      expect(assembleProjectionForModel(model).length).toBeGreaterThan(0);
     });
 
     it('should have properties of right type', () => {
       const projection = assembleProjectionForModel(model)[0];
-      assert.isDefined(projection.name);
-      assert.isString(projection.name);
-      assert.isDefined(projection.size);
-      assert.isTrue(isSignalRef(projection.size));
-      assert.isDefined(projection.fit);
-      assert.isTrue(isSignalRef(projection.fit));
+      expect(projection.name).toBeDefined();
+      expect(typeof projection.name).toBe('string');
+      expect(projection.size).toBeDefined();
+      expect(isSignalRef(projection.size)).toBe(true);
+      expect(projection.fit).toBeDefined();
+      expect(isSignalRef(projection.fit)).toBe(true);
     });
   });
 });

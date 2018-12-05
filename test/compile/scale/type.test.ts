@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import {defaultConfig} from '../../../src/config';
@@ -14,8 +13,7 @@ const defaultScaleConfig = defaultConfig.scale;
 describe('compile/scale', () => {
   describe('type()', () => {
     it('should return null for channel without scale', () => {
-      assert.deepEqual(
-        scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig),
+      expect(scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig)).toEqual(
         null
       );
     });
@@ -23,12 +21,10 @@ describe('compile/scale', () => {
     it(
       'should show warning if users try to override the scale and use bin',
       log.wrap(localLogger => {
-        assert.deepEqual(
-          scaleType({type: 'point'}, 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
-          ScaleType.BIN_ORDINAL
-        );
-        assert.equal(
-          localLogger.warns[0],
+        expect(
+          scaleType({type: 'point'}, 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig)
+        ).toEqual(ScaleType.BIN_ORDINAL);
+        expect(localLogger.warns[0]).toEqual(
           log.message.scaleTypeNotWorkWithFieldDef(ScaleType.POINT, ScaleType.BIN_ORDINAL)
         );
       })
@@ -37,30 +33,28 @@ describe('compile/scale', () => {
     describe('nominal/ordinal', () => {
       describe('color', () => {
         it('should return ordinal scale for nominal data by default.', () => {
-          assert.equal(scaleType({}, 'color', {type: 'nominal'}, 'point', defaultScaleConfig), ScaleType.ORDINAL);
+          expect(scaleType({}, 'color', {type: 'nominal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.ORDINAL);
         });
 
         it('should return ordinal scale for ordinal data.', () => {
-          assert.equal(scaleType({}, 'color', {type: 'nominal'}, 'point', defaultScaleConfig), ScaleType.ORDINAL);
+          expect(scaleType({}, 'color', {type: 'nominal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.ORDINAL);
         });
       });
 
       describe('discrete channel (shape)', () => {
         it('should return ordinal for nominal field', () => {
-          assert.deepEqual(scaleType({}, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig), ScaleType.ORDINAL);
+          expect(scaleType({}, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.ORDINAL);
         });
 
         it(
           'should return ordinal even if other type is specified',
           log.wrap(localLogger => {
             [ScaleType.LINEAR, ScaleType.BAND, ScaleType.POINT].forEach(badScaleType => {
-              assert.deepEqual(
-                scaleType({type: badScaleType}, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig),
+              expect(scaleType({type: badScaleType}, 'shape', {type: 'nominal'}, 'point', defaultScaleConfig)).toEqual(
                 ScaleType.ORDINAL
               );
               const warns = localLogger.warns;
-              assert.equal(
-                warns[warns.length - 1],
+              expect(warns[warns.length - 1]).toEqual(
                 log.message.scaleTypeNotWorkWithChannel('shape', badScaleType, 'ordinal')
               );
             });
@@ -70,8 +64,8 @@ describe('compile/scale', () => {
         it(
           'should return ordinal for an ordinal field and throw a warning.',
           log.wrap(localLogger => {
-            assert.deepEqual(scaleType({}, 'shape', {type: 'ordinal'}, 'point', defaultScaleConfig), ScaleType.ORDINAL);
-            assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'ordinal'));
+            expect(scaleType({}, 'shape', {type: 'ordinal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.ORDINAL);
+            expect(localLogger.warns[0]).toEqual(log.message.discreteChannelCannotEncode('shape', 'ordinal'));
           })
         );
       });
@@ -85,7 +79,7 @@ describe('compile/scale', () => {
 
             [ORDINAL, NOMINAL].forEach(t => {
               [X, Y].forEach(channel => {
-                assert.equal(scaleType({}, channel, {type: t}, mark, defaultScaleConfig), ScaleType.POINT);
+                expect(scaleType({}, channel, {type: t}, mark, defaultScaleConfig)).toEqual(ScaleType.POINT);
               });
             });
           });
@@ -95,7 +89,7 @@ describe('compile/scale', () => {
           [ORDINAL, NOMINAL].forEach(t => {
             [X, Y].forEach(channel => {
               ['bar', 'rule', 'rect'].forEach(mark => {
-                assert.equal(scaleType({}, channel, {type: t}, 'rect', defaultScaleConfig), ScaleType.BAND);
+                expect(scaleType({}, channel, {type: t}, 'rect', defaultScaleConfig)).toEqual(ScaleType.BAND);
               });
             });
           });
@@ -104,7 +98,7 @@ describe('compile/scale', () => {
         it('should return point scale for X,Y when mark is point', () => {
           [ORDINAL, NOMINAL].forEach(t => {
             [X, Y].forEach(channel => {
-              assert.equal(scaleType({}, channel, {type: t}, 'point', defaultScaleConfig), ScaleType.POINT);
+              expect(scaleType({}, channel, {type: t}, 'point', defaultScaleConfig)).toEqual(ScaleType.POINT);
             });
           });
         });
@@ -114,13 +108,11 @@ describe('compile/scale', () => {
           log.wrap(localLogger => {
             [ORDINAL, NOMINAL].forEach(t => {
               [X, Y].forEach(channel => {
-                assert.equal(
-                  scaleType({type: 'ordinal'}, channel, {type: t}, 'point', defaultScaleConfig),
+                expect(scaleType({type: 'ordinal'}, channel, {type: t}, 'point', defaultScaleConfig)).toEqual(
                   ScaleType.POINT
                 );
                 const warns = localLogger.warns;
-                assert.equal(
-                  warns[warns.length - 1],
+                expect(warns[warns.length - 1]).toEqual(
                   log.message.scaleTypeNotWorkWithChannel(channel, 'ordinal', 'point')
                 );
               });
@@ -135,11 +127,7 @@ describe('compile/scale', () => {
           PRIMITIVE_MARKS.forEach(mark => {
             [ORDINAL, NOMINAL].forEach(t => {
               OTHER_CONTINUOUS_CHANNELS.forEach(channel => {
-                assert.equal(
-                  scaleType({}, channel, {type: t}, mark, defaultScaleConfig),
-                  ScaleType.POINT,
-                  `${channel}, ${mark}, ${t} ` + scaleType({}, channel, {type: t}, mark, defaultScaleConfig)
-                );
+                expect(scaleType({}, channel, {type: t}, mark, defaultScaleConfig)).toEqual(ScaleType.POINT);
               });
             });
           });
@@ -149,24 +137,22 @@ describe('compile/scale', () => {
 
     describe('temporal', () => {
       it('should return sequential scale for temporal color field by default.', () => {
-        assert.equal(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig), ScaleType.SEQUENTIAL);
+        expect(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.SEQUENTIAL);
       });
 
       it(
         'should return ordinal for temporal field and throw a warning.',
         log.wrap(localLogger => {
-          assert.deepEqual(
-            scaleType({}, 'shape', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig),
-            ScaleType.ORDINAL
-          );
-          assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'temporal'));
+          expect(
+            scaleType({}, 'shape', {type: 'temporal', timeUnit: 'yearmonth'}, 'point', defaultScaleConfig)
+          ).toEqual(ScaleType.ORDINAL);
+          expect(localLogger.warns[0]).toEqual(log.message.discreteChannelCannotEncode('shape', 'temporal'));
         })
       );
 
       it('should return time for all time units.', () => {
         for (const timeUnit of TIMEUNITS) {
-          assert.deepEqual(
-            scaleType({}, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', defaultScaleConfig),
+          expect(scaleType({}, Y, {type: 'temporal', timeUnit: timeUnit}, 'point', defaultScaleConfig)).toEqual(
             ScaleType.TIME
           );
         }
@@ -174,25 +160,25 @@ describe('compile/scale', () => {
     });
     describe('quantitative', () => {
       it('should return sequential scale for quantitative color field by default.', () => {
-        assert.equal(scaleType({}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig), ScaleType.SEQUENTIAL);
+        expect(scaleType({}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual(
+          ScaleType.SEQUENTIAL
+        );
       });
 
       it('should return linear scale for piecewise quantitative color field by default.', () => {
-        assert.equal(
+        expect(
           scaleType(
             {domain: [1, 2, 3], range: ['red', 'green', 'blue']},
             'color',
             {type: 'quantitative'},
             'point',
             defaultScaleConfig
-          ),
-          ScaleType.LINEAR
-        );
+          )
+        ).toEqual(ScaleType.LINEAR);
       });
 
       it('should return ordinal bin scale for quantitative color field with binning.', () => {
-        assert.equal(
-          scaleType({}, 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
+        expect(scaleType({}, 'color', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.BIN_ORDINAL
         );
       });
@@ -200,28 +186,25 @@ describe('compile/scale', () => {
       it(
         'should return ordinal for encoding quantitative field with a discrete channel and throw a warning.',
         log.wrap(localLogger => {
-          assert.deepEqual(
-            scaleType({}, 'shape', {type: 'quantitative'}, 'point', defaultScaleConfig),
+          expect(scaleType({}, 'shape', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual(
             ScaleType.ORDINAL
           );
-          assert.equal(localLogger.warns[0], log.message.discreteChannelCannotEncode('shape', 'quantitative'));
+          expect(localLogger.warns[0]).toEqual(log.message.discreteChannelCannotEncode('shape', 'quantitative'));
         })
       );
 
       it('should return linear scale for quantitative by default.', () => {
-        assert.equal(scaleType({}, 'x', {type: 'quantitative'}, 'point', defaultScaleConfig), ScaleType.LINEAR);
+        expect(scaleType({}, 'x', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual(ScaleType.LINEAR);
       });
 
       it('should return bin linear scale for quantitative by default.', () => {
-        assert.equal(
-          scaleType({}, 'opacity', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
+        expect(scaleType({}, 'opacity', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.BIN_LINEAR
         );
       });
 
       it('should return linear scale for quantitative x and y.', () => {
-        assert.equal(
-          scaleType({}, 'x', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig),
+        expect(scaleType({}, 'x', {type: 'quantitative', bin: true}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.LINEAR
         );
       });
@@ -229,61 +212,53 @@ describe('compile/scale', () => {
 
     describe('dataTypeMatchScaleType()', () => {
       it('should return specified value if datatype is ordinal or nominal and specified scale type is the ordinal or nominal', () => {
-        assert.equal(
-          scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'ordinal'}, 'point', defaultScaleConfig),
+        expect(scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'ordinal'}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.ORDINAL
         );
       });
 
       it('should return default scale type if data type is temporal but specified scale type is not time or utc', () => {
-        assert.equal(
-          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig),
-          ScaleType.TIME
-        );
+        expect(
+          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig)
+        ).toEqual(ScaleType.TIME);
 
-        assert.equal(
+        expect(
           scaleType(
             {type: ScaleType.LINEAR},
             'color',
             {type: 'temporal', timeUnit: 'year'},
             'point',
             defaultScaleConfig
-          ),
-          ScaleType.SEQUENTIAL
-        );
+          )
+        ).toEqual(ScaleType.SEQUENTIAL);
       });
 
       it('should return time if data type is temporal but specified scale type is discrete', () => {
-        assert.equal(
-          scaleType({type: ScaleType.POINT}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig),
-          ScaleType.TIME
-        );
+        expect(
+          scaleType({type: ScaleType.POINT}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig)
+        ).toEqual(ScaleType.TIME);
       });
 
       it('should return default scale type if data type is temporal but specified scale type is time or utc or any discrete type', () => {
-        assert.equal(
-          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig),
-          ScaleType.TIME
-        );
+        expect(
+          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', timeUnit: 'year'}, 'point', defaultScaleConfig)
+        ).toEqual(ScaleType.TIME);
       });
 
       it('should return default scale type if data type is quantative but scale type do not support quantative', () => {
-        assert.equal(
-          scaleType({type: ScaleType.TIME}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig),
+        expect(scaleType({type: ScaleType.TIME}, 'color', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.SEQUENTIAL
         );
       });
 
       it('should return default scale type if data type is quantative and scale type supports quantative', () => {
-        assert.equal(
-          scaleType({type: ScaleType.TIME}, 'x', {type: 'quantitative'}, 'point', defaultScaleConfig),
+        expect(scaleType({type: ScaleType.TIME}, 'x', {type: 'quantitative'}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.LINEAR
         );
       });
 
       it('should return default scale type if data type is quantative and scale type supports quantative', () => {
-        assert.equal(
-          scaleType({type: ScaleType.TIME}, 'x', {type: 'temporal'}, 'point', defaultScaleConfig),
+        expect(scaleType({type: ScaleType.TIME}, 'x', {type: 'temporal'}, 'point', defaultScaleConfig)).toEqual(
           ScaleType.TIME
         );
       });

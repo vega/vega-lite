@@ -1,6 +1,4 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-import {Field, FieldDef} from '../src/fielddef';
 import {fieldDefs} from '../src/spec';
 
 describe('fieldDefs()', () => {
@@ -14,10 +12,12 @@ describe('fieldDefs()', () => {
       }
     };
 
-    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(spec), [
-      {field: 'Horsepower', type: 'quantitative'},
-      {field: 'Miles_per_Gallon', type: 'quantitative'}
-    ]);
+    expect(fieldDefs(spec)).toEqual(
+      expect.arrayContaining([
+        {field: 'Horsepower', type: 'quantitative'},
+        {field: 'Miles_per_Gallon', type: 'quantitative'}
+      ])
+    );
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', () => {
@@ -45,11 +45,13 @@ describe('fieldDefs()', () => {
       ]
     };
 
-    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(layerSpec), [
-      {field: 'date', type: 'temporal'},
-      {field: 'price', type: 'quantitative'},
-      {field: 'symbol', type: 'nominal'}
-    ]);
+    expect(fieldDefs(layerSpec)).toEqual(
+      expect.arrayContaining([
+        {field: 'date', type: 'temporal'},
+        {field: 'price', type: 'quantitative'},
+        {field: 'symbol', type: 'nominal'}
+      ])
+    );
   });
 
   it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', () => {
@@ -77,10 +79,9 @@ describe('fieldDefs()', () => {
       ]
     };
 
-    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(layerSpec), [
-      {field: 'date', type: 'temporal'},
-      {field: 'price', type: 'quantitative'}
-    ]);
+    expect(fieldDefs(layerSpec)).toEqual(
+      expect.arrayContaining([{field: 'date', type: 'temporal'}, {field: 'price', type: 'quantitative'}])
+    );
   });
 
   it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', () => {
@@ -96,10 +97,12 @@ describe('fieldDefs()', () => {
       }
     };
 
-    assert.sameDeepMembers<FieldDef<Field>>(fieldDefs(facetSpec), [
-      {field: 'MPAA_Rating', type: 'ordinal'},
-      {field: 'Worldwide_Gross', type: 'quantitative'},
-      {field: 'US_DVD_Sales', type: 'quantitative'}
-    ]);
+    expect(fieldDefs(facetSpec)).toEqual(
+      expect.arrayContaining([
+        {field: 'MPAA_Rating', type: 'ordinal'},
+        {field: 'Worldwide_Gross', type: 'quantitative'},
+        {field: 'US_DVD_Sales', type: 'quantitative'}
+      ])
+    );
   });
 });

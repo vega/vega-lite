@@ -6,7 +6,6 @@
 //
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
-import {assert} from 'chai';
 import {SIZE, X, Y} from '../../../src/channel';
 import {tick} from '../../../src/compile/mark/tick';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -28,7 +27,7 @@ describe('Mark: Tick', () => {
     const props = tick.encodeEntry(model);
 
     it('should use stack_end on x', () => {
-      assert.deepEqual(props.xc, {scale: X, field: 'sum_a_end'});
+      expect(props.xc).toEqual({scale: X, field: 'sum_a_end'});
     });
   });
 
@@ -48,7 +47,7 @@ describe('Mark: Tick', () => {
     const props = tick.encodeEntry(model);
 
     it('should use stack_end on y', () => {
-      assert.deepEqual(props.yc, {scale: Y, field: 'sum_a_end'});
+      expect(props.yc).toEqual({scale: Y, field: 'sum_a_end'});
     });
   });
 
@@ -61,18 +60,18 @@ describe('Mark: Tick', () => {
 
     const props = tick.encodeEntry(model);
     it('should be centered on y', () => {
-      assert.deepEqual(props.yc, {
+      expect(props.yc).toEqual({
         mult: 0.5,
         signal: 'height'
       });
     });
 
     it('should scale on x', () => {
-      assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
+      expect(props.xc).toEqual({scale: X, field: 'Horsepower'});
     });
 
     it('width should tick thickness with orient vertical', () => {
-      assert.deepEqual(props.width, {value: 1});
+      expect(props.width).toEqual({value: 1});
     });
   });
 
@@ -85,18 +84,18 @@ describe('Mark: Tick', () => {
 
     const props = tick.encodeEntry(model);
     it('should be centered on x', () => {
-      assert.deepEqual(props.xc, {
+      expect(props.xc).toEqual({
         mult: 0.5,
         signal: 'width'
       });
     });
 
     it('should scale on y', () => {
-      assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+      expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
     });
 
     it('height should tick thickness with orient horizontal', () => {
-      assert.deepEqual(props.height, {value: 1});
+      expect(props.height).toEqual({value: 1});
     });
   });
 
@@ -112,19 +111,19 @@ describe('Mark: Tick', () => {
     const props = tick.encodeEntry(model);
 
     it('should scale on x', () => {
-      assert.deepEqual(props.xc, {scale: X, field: 'Horsepower'});
+      expect(props.xc).toEqual({scale: X, field: 'Horsepower'});
     });
 
     it('should scale on y', () => {
-      assert.deepEqual(props.yc, {scale: Y, field: 'Cylinders'});
+      expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
     });
 
     it('wiidth should be tick thickness with default orient vertical', () => {
-      assert.deepEqual(props.width, {value: 1});
+      expect(props.width).toEqual({value: 1});
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      assert.deepEqual(props.height, {value: 14});
+      expect(props.height).toEqual({value: 14});
     });
   });
 
@@ -141,7 +140,7 @@ describe('Mark: Tick', () => {
     });
     const props = tick.encodeEntry(model);
     it('maps size to height', () => {
-      assert.deepEqual(props.height, {field: 'Acceleration', scale: SIZE});
+      expect(props.height).toEqual({field: 'Acceleration', scale: SIZE});
     });
   });
 
@@ -156,7 +155,7 @@ describe('Mark: Tick', () => {
     });
     const props = tick.encodeEntry(model);
     it('maps size to height in Vega', () => {
-      assert.deepEqual(props.height, {value: 5});
+      expect(props.height).toEqual({value: 5});
     });
   });
 
@@ -172,7 +171,7 @@ describe('Mark: Tick', () => {
     });
     const props = tick.encodeEntry(model);
     it('maps size to height in Vega', () => {
-      assert.deepEqual(props.height, {field: 'Acceleration', scale: SIZE});
+      expect(props.height).toEqual({field: 'Acceleration', scale: SIZE});
     });
   });
 });

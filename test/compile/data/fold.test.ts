@@ -1,9 +1,8 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {FoldTransformNode} from '../../../src/compile/data/fold';
 import {Transform} from '../../../src/transform';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/fold', () => {
   it('should return a proper vg transform', () => {
@@ -12,7 +11,7 @@ describe('compile/data/fold', () => {
       as: ['a', 'b']
     };
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.assemble(), {
+    expect(fold.assemble()).toEqual({
       type: 'fold',
       fields: ['a', 'b'],
       as: ['a', 'b']
@@ -25,7 +24,7 @@ describe('compile/data/fold', () => {
     };
 
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.assemble(), {
+    expect(fold.assemble()).toEqual({
       type: 'fold',
       fields: ['a', 'b'],
       as: ['key', 'value']
@@ -38,7 +37,7 @@ describe('compile/data/fold', () => {
       as: ['A'] as any
     };
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.assemble(), {
+    expect(fold.assemble()).toEqual({
       type: 'fold',
       fields: ['a', 'b'],
       as: ['A', 'value']
@@ -50,7 +49,7 @@ describe('compile/data/fold', () => {
       fold: ['a', 'b']
     };
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.producedFields(), {key: true, value: true});
+    expect(fold.producedFields()).toEqual({key: true, value: true});
   });
 
   it('should return proper produced fields for complete "as"', () => {
@@ -59,7 +58,7 @@ describe('compile/data/fold', () => {
       as: ['A', 'B']
     };
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.producedFields(), {A: true, B: true});
+    expect(fold.producedFields()).toEqual({A: true, B: true});
   });
 
   it('should generate the correct hash', () => {
@@ -68,7 +67,7 @@ describe('compile/data/fold', () => {
       as: ['A', 'B']
     };
     const fold = new FoldTransformNode(null, transform);
-    assert.deepEqual(fold.hash(), 'FoldTransform {"as":["A","B"],"fold":["a","b"]}');
+    expect(fold.hash()).toEqual('FoldTransform {"as":["A","B"],"fold":["a","b"]}');
   });
 
   describe('clone', () => {

@@ -1,5 +1,4 @@
 import Ajv from 'ajv';
-import {assert} from 'chai';
 
 import {Spec as VgSpec} from 'vega';
 import {compile} from '../src/compile/compile';
@@ -33,7 +32,9 @@ function validateVL(spec: TopLevelSpec) {
   if (!valid) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
+
+  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(valid).toBe(true);
 
   expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v3');
 }
@@ -44,7 +45,9 @@ function validateVega(vegaSpec: VgSpec) {
   if (!valid) {
     console.log(inspect(errors, {depth: 10, colors: true}));
   }
-  assert(valid, errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', '));
+
+  expect(errors && errors.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeNull();
+  expect(valid).toBe(true);
 }
 
 const futureSuffixLength = '_future.vl.json'.length;
