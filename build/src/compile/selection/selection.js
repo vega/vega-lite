@@ -4,7 +4,7 @@ import { isString, stringValue } from 'vega-util';
 import { X, Y } from '../../channel';
 import { warn } from '../../log';
 import { SELECTION_ID } from '../../selection';
-import { accessPathWithDatum, keys, logicalExpr, varName } from '../../util';
+import { accessPathWithDatum, duplicate, keys, logicalExpr, varName } from '../../util';
 import { isFacetModel, isUnitModel } from '../model';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
@@ -18,6 +18,9 @@ export var VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export function parseUnitSelection(model, selDefs) {
     var selCmpts = {};
     var selectionConfig = model.config.selection;
+    if (selDefs) {
+        selDefs = duplicate(selDefs); // duplicate to avoid side effects to original spec
+    }
     var _loop_1 = function (name_1) {
         if (!selDefs.hasOwnProperty(name_1)) {
             return "continue";

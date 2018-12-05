@@ -9,6 +9,7 @@ var FoldTransformNode = /** @class */ (function (_super) {
     function FoldTransformNode(parent, transform) {
         var _this = _super.call(this, parent) || this;
         _this.transform = transform;
+        _this.transform = duplicate(transform); // duplicate to prevent side effects
         var specifiedAs = _this.transform.as || [undefined, undefined];
         _this.transform.as = [specifiedAs[0] || 'key', specifiedAs[1] || 'value'];
         return _this;

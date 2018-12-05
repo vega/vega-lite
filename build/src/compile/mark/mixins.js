@@ -13,6 +13,9 @@ import { VG_MARK_CONFIGS } from '../../vega.schema';
 import { getMarkConfig } from '../common';
 import { selectionPredicate } from '../selection/selection';
 import * as ref from './valueref';
+function isVisible(c) {
+    return c !== 'transparent' && c !== null && c !== undefined;
+}
 export function color(model) {
     var _a, _b;
     var markDef = model.markDef, encoding = model.encoding, config = model.config;
@@ -25,30 +28,20 @@ export function color(model) {
     var transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType)
         ? 'transparent'
         : undefined;
-    var defaultValue = {
-        fill: getFirstDefined(markDef.fill, configValue.fill, 
-        // If there is no fill, always fill symbols, bar, geoshape
-        // with transparent fills https://github.com/vega/vega-lite/issues/1316
-        transparentIfNeeded),
-        stroke: getFirstDefined(markDef.stroke, configValue.stroke)
-    };
+    var defaultFill = getFirstDefined(markDef.fill, configValue.fill, 
+    // If there is no fill, always fill symbols, bar, geoshape
+    // with transparent fills https://github.com/vega/vega-lite/issues/1316
+    transparentIfNeeded);
+    var defaultStroke = getFirstDefined(markDef.stroke, configValue.stroke);
     var colorVgChannel = filled ? 'fill' : 'stroke';
-    var fillStrokeMarkDefAndConfig = tslib_1.__assign({}, (defaultValue.fill
-        ? {
-            fill: { value: defaultValue.fill }
-        }
-        : {}), (defaultValue.stroke
-        ? {
-            stroke: { value: defaultValue.stroke }
-        }
-        : {}));
+    var fillStrokeMarkDefAndConfig = tslib_1.__assign({}, (defaultFill ? { fill: { value: defaultFill } } : {}), (defaultStroke ? { stroke: { value: defaultStroke } } : {}));
     if (encoding.fill || encoding.stroke) {
         // ignore encoding.color, markDef.color, config.color
         if (markDef.color) {
             // warn for markDef.color  (no need to warn encoding.color as it will be dropped in normalized already)
             log.warn(log.message.droppingColor('property', { fill: 'fill' in encoding, stroke: 'stroke' in encoding }));
         }
-        return tslib_1.__assign({}, nonPosition('fill', model, { defaultValue: getFirstDefined(defaultValue.fill, transparentIfNeeded) }), nonPosition('stroke', model, { defaultValue: defaultValue.stroke }));
+        return tslib_1.__assign({}, nonPosition('fill', model, { defaultValue: getFirstDefined(defaultFill, transparentIfNeeded) }), nonPosition('stroke', model, { defaultValue: defaultStroke }));
     }
     else if (encoding.color) {
         return tslib_1.__assign({}, fillStrokeMarkDefAndConfig, nonPosition('color', model, {
@@ -57,8 +50,8 @@ export function color(model) {
             defaultValue: getFirstDefined(markDef[colorVgChannel], markDef.color, configValue[colorVgChannel], configValue.color, filled ? transparentIfNeeded : undefined)
         }));
     }
-    else if (markDef.fill !== undefined || markDef.stroke !== undefined) {
-        // Ignore markDef.color, config.color
+    else if (isVisible(markDef.fill) || isVisible(markDef.stroke)) {
+        // Ignore markDef.color
         if (markDef.color) {
             log.warn(log.message.droppingColor('property', { fill: 'fill' in markDef, stroke: 'stroke' in markDef }));
         }
@@ -67,7 +60,7 @@ export function color(model) {
     else if (markDef.color) {
         return tslib_1.__assign({}, fillStrokeMarkDefAndConfig, (_a = {}, _a[colorVgChannel] = { value: markDef.color }, _a));
     }
-    else if (configValue.fill !== undefined || configValue.stroke !== undefined) {
+    else if (isVisible(configValue.fill) || isVisible(configValue.stroke)) {
         // ignore config.color
         return fillStrokeMarkDefAndConfig;
     }

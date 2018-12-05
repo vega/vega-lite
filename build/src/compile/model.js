@@ -9,7 +9,7 @@ import { isFacetSpec, isLayerSpec, isUnitSpec } from '../spec';
 import { extractTitleConfig } from '../title';
 import { extractCompositionLayout } from '../toplevelprops';
 import { normalizeTransform } from '../transform';
-import { contains, keys, varName } from '../util';
+import { contains, duplicate, keys, varName } from '../util';
 import { isVgRangeStep } from '../vega.schema';
 import { assembleAxes } from './axis/assemble';
 import { getHeaderGroups, getTitleGroup, HEADER_CHANNELS } from './header/index';
@@ -112,7 +112,7 @@ var Model = /** @class */ (function () {
             layoutSize: new Split(),
             layoutHeaders: { row: {}, column: {} },
             mark: null,
-            resolve: tslib_1.__assign({ scale: {}, axis: {}, legend: {} }, (resolve || {})),
+            resolve: tslib_1.__assign({ scale: {}, axis: {}, legend: {} }, (resolve ? duplicate(resolve) : {})),
             selection: null,
             scales: null,
             projection: null,

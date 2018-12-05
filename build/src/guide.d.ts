@@ -1,4 +1,5 @@
 import { ConditionValueDefMixins, ValueDef } from './fielddef';
+import { LegendConfig } from './legend';
 import { VgEncodeChannel } from './vega.schema';
 export interface TitleMixins {
     /**
@@ -36,3 +37,4 @@ export declare type GuideEncodingEntry = {
     [k in VgEncodeChannel]?: ValueDef & ConditionValueDefMixins;
 };
 export declare const VL_ONLY_GUIDE_CONFIG: (keyof VlOnlyGuideConfig)[];
+export declare const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[];

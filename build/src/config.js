@@ -1,7 +1,7 @@
 import * as tslib_1 from "tslib";
 import { isObject } from 'vega-util';
 import { getAllCompositeMarks } from './compositemark';
-import { VL_ONLY_GUIDE_CONFIG } from './guide';
+import { VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG } from './guide';
 import { defaultLegendConfig } from './legend';
 import * as mark from './mark';
 import { PRIMITIVE_MARKS, VL_ONLY_MARK_CONFIG_PROPERTIES, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX } from './mark';
@@ -104,26 +104,30 @@ export function stripAndRedirectConfig(config) {
             var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
             delete config.legend[prop];
         }
+        for (var _c = 0, VL_ONLY_LEGEND_CONFIG_1 = VL_ONLY_LEGEND_CONFIG; _c < VL_ONLY_LEGEND_CONFIG_1.length; _c++) {
+            var prop = VL_ONLY_LEGEND_CONFIG_1[_c];
+            delete config.legend[prop];
+        }
     }
     // Remove Vega-Lite only generic mark config
     if (config.mark) {
-        for (var _c = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = VL_ONLY_MARK_CONFIG_PROPERTIES; _c < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _c++) {
-            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_1[_c];
+        for (var _d = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = VL_ONLY_MARK_CONFIG_PROPERTIES; _d < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _d++) {
+            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_1[_d];
             delete config.mark[prop];
         }
     }
-    for (var _d = 0, MARK_STYLES_1 = MARK_STYLES; _d < MARK_STYLES_1.length; _d++) {
-        var markType = MARK_STYLES_1[_d];
+    for (var _e = 0, MARK_STYLES_1 = MARK_STYLES; _e < MARK_STYLES_1.length; _e++) {
+        var markType = MARK_STYLES_1[_e];
         // Remove Vega-Lite-only mark config
-        for (var _e = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = VL_ONLY_MARK_CONFIG_PROPERTIES; _e < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _e++) {
-            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_2[_e];
+        for (var _f = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = VL_ONLY_MARK_CONFIG_PROPERTIES; _f < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _f++) {
+            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_2[_f];
             delete config[markType][prop];
         }
         // Remove Vega-Lite only mark-specific config
         var vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
         if (vlOnlyMarkSpecificConfigs) {
-            for (var _f = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _f < vlOnlyMarkSpecificConfigs_1.length; _f++) {
-                var prop = vlOnlyMarkSpecificConfigs_1[_f];
+            for (var _g = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _g < vlOnlyMarkSpecificConfigs_1.length; _g++) {
+                var prop = vlOnlyMarkSpecificConfigs_1[_g];
                 delete config[markType][prop];
             }
         }
@@ -132,8 +136,8 @@ export function stripAndRedirectConfig(config) {
         // For example, config.rect should not affect bar marks.
         redirectConfig(config, markType);
     }
-    for (var _g = 0, _h = getAllCompositeMarks(); _g < _h.length; _g++) {
-        var m = _h[_g];
+    for (var _h = 0, _j = getAllCompositeMarks(); _h < _j.length; _h++) {
+        var m = _j[_h];
         // Clean up the composite mark config as we don't need them in the output specs anymore
         delete config[m];
     }

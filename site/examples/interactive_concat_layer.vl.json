@@ -21,7 +21,9 @@
             "aggregate": "count",
             "type": "quantitative",
             "legend": {
-              "title": "All Movies"
+              "title": "All Movies",
+              "direction": "horizontal",
+              "gradientLength": 120
             }
           }
         }

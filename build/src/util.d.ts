@@ -4,8 +4,6 @@ export declare const deepEqual: (a: any, b: any) => boolean;
 /**
  * Creates an object composed of the picked object properties.
  *
- * Example:  (from lodash)
- *
  * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
@@ -37,7 +35,7 @@ export declare function some<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean
  * Returns true if all items return true.
  */
 export declare function every<T>(arr: T[], f: (d: T, k?: any, i?: any) => boolean): boolean;
-export declare function flatten(arrays: any[]): any;
+export declare function flatten<T>(arrays: T[][]): T[];
 export declare function fill<T>(val: T, len: number): T[];
 /**
  * Like TS Partial but applies recursively to all properties.

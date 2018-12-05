@@ -1,21 +1,19 @@
 import * as tslib_1 from "tslib";
 import { isInlineData, isNamedData, isUrlData } from '../../data';
-import { contains, keys } from '../../util';
+import { contains, keys, omit } from '../../util';
 import { DataFlowNode } from './dataflow';
 var SourceNode = /** @class */ (function (_super) {
     tslib_1.__extends(SourceNode, _super);
     function SourceNode(data) {
         var _this = _super.call(this, null) || this;
         data = data || { name: 'source' };
+        var format = data.format ? tslib_1.__assign({}, omit(data.format, ['parse'])) : {};
         if (isInlineData(data)) {
             _this._data = { values: data.values };
         }
         else if (isUrlData(data)) {
             _this._data = { url: data.url };
-            if (!data.format) {
-                data.format = {};
-            }
-            if (!data.format || !data.format.type) {
+            if (!format.type) {
                 // Extract extension from URL using snippet from
                 // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
                 var defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
@@ -23,7 +21,7 @@ var SourceNode = /** @class */ (function (_super) {
                     defaultExtension = 'json';
                 }
                 // defaultExtension has type string but we ensure that it is DataFormatType above
-                data.format.type = defaultExtension;
+                format.type = defaultExtension;
             }
         }
         else if (isNamedData(data)) {
@@ -33,8 +31,7 @@ var SourceNode = /** @class */ (function (_super) {
         if (data.name) {
             _this._name = data.name;
         }
-        if (data.format) {
-            var _a = data.format, _b = _a.parse, parse = _b === void 0 ? null : _b, format = tslib_1.__rest(_a, ["parse"]);
+        if (format && keys(format).length > 0) {
             _this._data.format = format;
         }
         return _this;
@@ -73,10 +70,6 @@ var SourceNode = /** @class */ (function (_super) {
         throw new Error('Cannot hash sources');
     };
     SourceNode.prototype.assemble = function () {
-        // remove empty format
-        if (this._data.format && keys(this._data.format).length === 0) {
-            delete this._data.format;
-        }
         return tslib_1.__assign({ name: this._name }, this._data, { transform: [] });
     };
     return SourceNode;

@@ -1,6 +1,11 @@
 import * as tslib_1 from "tslib";
 import { flagKeys } from './util';
-export var defaultLegendConfig = {};
+export var defaultLegendConfig = {
+    gradientHorizontalMaxLength: 200,
+    gradientHorizontalMinLength: 100,
+    gradientVerticalMaxLength: 200,
+    gradientVerticalMinLength: 64 // This is the Vega's minimum.
+};
 var COMMON_LEGEND_PROPERTY_INDEX = {
     clipHeight: 1,
     columnPadding: 1,

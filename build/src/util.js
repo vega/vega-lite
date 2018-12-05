@@ -7,8 +7,6 @@ export var deepEqual = deepEqual_;
 /**
  * Creates an object composed of the picked object properties.
  *
- * Example:  (from lodash)
- *
  * var object = {'a': 1, 'b': '2', 'c': 3};
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
@@ -96,7 +94,8 @@ export function every(arr, f) {
     return true;
 }
 export function flatten(arrays) {
-    return [].concat.apply([], arrays);
+    var _a;
+    return (_a = []).concat.apply(_a, arrays);
 }
 export function fill(val, len) {
     var arr = new Array(len);

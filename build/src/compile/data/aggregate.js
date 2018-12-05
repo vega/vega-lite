@@ -1,5 +1,5 @@
 import * as tslib_1 from "tslib";
-import { extend } from 'vega';
+import { extend } from 'vega-util';
 import { isBinning } from '../../bin';
 import { isScaleChannel } from '../../channel';
 import { vgField } from '../../fielddef';

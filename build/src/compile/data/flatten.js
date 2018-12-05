@@ -9,6 +9,7 @@ var FlattenTransformNode = /** @class */ (function (_super) {
     function FlattenTransformNode(parent, transform) {
         var _this = _super.call(this, parent) || this;
         _this.transform = transform;
+        _this.transform = duplicate(transform); // duplicate to prevent side effects
         var _a = _this.transform, flatten = _a.flatten, _b = _a.as, as = _b === void 0 ? [] : _b;
         _this.transform.as = flatten.map(function (f, i) { return as[i] || f; });
         return _this;

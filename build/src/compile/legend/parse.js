@@ -105,6 +105,13 @@ function getProperty(property, specifiedLegend, channel, model) {
         //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
         case 'labelOverlap':
             return getFirstDefined(specifiedLegend.labelOverlap, properties.labelOverlap(model.getScaleComponent(channel).get('type')));
+        case 'gradientLength':
+            var legendConfig = model.config.legend;
+            return getFirstDefined(
+            // do specified gradientLength first
+            specifiedLegend.gradientLength, legendConfig.gradientLength, 
+            // Otherwise, use smart default based on plot height
+            properties.defaultGradientLength(model, specifiedLegend, legendConfig));
         case 'values':
             return properties.values(specifiedLegend, fieldDef);
     }
