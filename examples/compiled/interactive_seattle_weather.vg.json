@@ -575,7 +575,7 @@
     {
       "title": "Weather",
       "stroke": "color",
-      "gradientLength": {"signal": "min(max(concat_0_height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(concat_0_height, 100, 200)"},
       "encode": {
         "symbols": {
           "update": {
@@ -588,7 +588,7 @@
     },
     {
       "size": "size",
-      "gradientLength": {"signal": "min(max(concat_0_height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(concat_0_height, 100, 200)"},
       "title": "precipitation",
       "encode": {
         "symbols": {

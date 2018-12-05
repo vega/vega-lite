@@ -244,7 +244,7 @@
   "legends": [
     {
       "stroke": "color",
-      "gradientLength": {"signal": "min(max(child_height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(child_height, 100, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

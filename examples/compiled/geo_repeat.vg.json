@@ -127,7 +127,7 @@
       "legends": [
         {
           "fill": "child_population_color",
-          "gradientLength": {"signal": "min(max(height, 100), 200)"},
+          "gradientLength": {"signal": "clamp(height, 100, 200)"},
           "title": "population"
         }
       ]
@@ -171,7 +171,7 @@
       "legends": [
         {
           "fill": "child_engineers_color",
-          "gradientLength": {"signal": "min(max(height, 100), 200)"},
+          "gradientLength": {"signal": "clamp(height, 100, 200)"},
           "title": "engineers"
         }
       ]
@@ -215,7 +215,7 @@
       "legends": [
         {
           "fill": "child_hurricanes_color",
-          "gradientLength": {"signal": "min(max(height, 100), 200)"},
+          "gradientLength": {"signal": "clamp(height, 100, 200)"},
           "title": "hurricanes"
         }
       ]

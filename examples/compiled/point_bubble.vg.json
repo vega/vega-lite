@@ -117,7 +117,7 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(height, 100, 200)"},
       "title": "Acceleration",
       "encode": {
         "symbols": {

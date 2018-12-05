@@ -430,7 +430,7 @@
   "legends": [
     {
       "fill": "color",
-      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(height, 100, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {
@@ -440,7 +440,7 @@
     },
     {
       "size": "size",
-      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(height, 100, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {

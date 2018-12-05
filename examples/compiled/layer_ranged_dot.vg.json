@@ -160,7 +160,7 @@
     {
       "title": "Year",
       "fill": "color",
-      "gradientLength": {"signal": "min(max(height, 100), 200)"},
+      "gradientLength": {"signal": "clamp(height, 100, 200)"},
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
   ],
