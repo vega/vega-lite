@@ -1,4 +1,4 @@
-import {Legend as VgLegend, LegendEncode} from 'vega';
+import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
 import {
   COLOR,
   FILL,
@@ -149,6 +149,17 @@ function getProperty<K extends keyof VgLegend>(
         specifiedLegend.labelOverlap,
         properties.labelOverlap(model.getScaleComponent(channel).get('type'))
       );
+    case 'gradientLength':
+      const legendConfig = model.config.legend;
+
+      return getFirstDefined<number | SignalRef>(
+        // do specified gradientLength first
+        specifiedLegend.gradientLength,
+        legendConfig.gradientLength,
+        // Otherwise, use smart default based on plot height
+        properties.defaultGradientLength(model, specifiedLegend, legendConfig)
+      );
+
     case 'values':
       return properties.values(specifiedLegend, fieldDef);
   }

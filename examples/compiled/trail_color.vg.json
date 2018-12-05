@@ -132,9 +132,14 @@
     }
   ],
   "legends": [
-    {"fill": "color", "title": "symbol"},
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "symbol"
+    },
     {
       "size": "size",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "price",
       "encode": {
         "symbols": {

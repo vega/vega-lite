@@ -127,7 +127,9 @@
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color"}],
+  "legends": [
+    {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
+  ],
   "config": {
     "axis": {"domain": false},
     "axisY": {"minExtent": 30},

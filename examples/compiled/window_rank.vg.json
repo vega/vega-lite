@@ -134,6 +134,12 @@
       "zindex": 1
     }
   ],
-  "legends": [{"stroke": "color", "title": "team"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "team"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

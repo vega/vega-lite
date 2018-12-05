@@ -101,6 +101,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "date (year-month)",
       "encode": {
         "labels": {

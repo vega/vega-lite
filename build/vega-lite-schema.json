@@ -5554,6 +5554,14 @@
           "$ref": "#/definitions/Orientation",
           "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends.\n\n__Default value:__ `\"vertical\"`."
         },
+        "gradientHorizontalMaxLength": {
+          "description": "Max legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "gradientHorizontalMinLength": {
+          "description": "Min legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `100`",
+          "type": "number"
+        },
         "gradientLabelLimit": {
           "description": "The maximum allowed length in pixels of color ramp gradient labels.",
           "type": "number"
@@ -5583,6 +5591,14 @@
         "gradientThickness": {
           "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
           "minimum": 0,
+          "type": "number"
+        },
+        "gradientVerticalMaxLength": {
+          "description": "Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "gradientVerticalMinLength": {
+          "description": "Min legend length for a vertical gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `100`",
           "type": "number"
         },
         "gridAlign": {

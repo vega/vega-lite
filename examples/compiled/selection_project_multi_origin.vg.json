@@ -185,6 +185,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
         "symbols": {
@@ -198,6 +199,7 @@
     },
     {
       "shape": "shape",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Origin",
       "encode": {
         "symbols": {

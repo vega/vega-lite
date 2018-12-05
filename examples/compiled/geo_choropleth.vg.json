@@ -64,6 +64,12 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "title": "rate"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "rate"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

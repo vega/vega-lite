@@ -157,6 +157,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "title": "Acceleration (binned)"}],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "Acceleration (binned)"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

@@ -313,6 +313,7 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol",
       "encode": {
         "symbols": {
@@ -322,6 +323,7 @@
     },
     {
       "fill": "fill",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

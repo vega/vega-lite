@@ -150,6 +150,7 @@
     {
       "orient": "left",
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol",
       "fill": "color",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}

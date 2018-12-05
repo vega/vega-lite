@@ -700,6 +700,12 @@
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color", "title": "Number of Records"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "Number of Records"
+    }
+  ],
   "config": {"axisY": {"minExtent": 30}}
 }

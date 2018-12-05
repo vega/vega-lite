@@ -212,6 +212,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

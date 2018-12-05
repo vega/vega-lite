@@ -28,7 +28,48 @@ export type LegendConfig = LegendMixins &
     VgLayoutAlign,
     LabelOverlap,
     SymbolShape
-  >;
+  > & {
+    /**
+     * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `200`
+     */
+    gradientVerticalMaxLength?: number;
+
+    /**
+     * Min legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `100`
+     */
+    gradientVerticalMinLength?: number;
+
+    /**
+     * Max legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `200`
+     */
+    gradientHorizontalMaxLength?: number;
+
+    /**
+     * Min legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.
+     *
+     * __Default value:__ `100`
+     */
+    gradientHorizontalMinLength?: number;
+
+    /**
+     * The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.
+     *
+     * __Default value:__ `undefined`.  If `undefined`, the default gradient will be determined based on the following rules:
+     * - For vertical gradients, `clamp(plot_height, gradientVerticalMinLength, gradientVerticalMaxLength)`
+     * - For top-`orient`ed or bottom-`orient`ed horizontal gradients, `clamp(plot_width, gradientHorizontalMinLength, gradientHorizontalMaxLength)`
+     * - For other horizontal gradients, `gradientHorizontalMinLength`
+     *
+     * where `clamp(value, min, max)` restricts _value_ to be between the specified _min_ and _max_.
+     * @minimum 0
+     */
+    gradientLength?: number;
+  };
 
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
@@ -135,7 +176,12 @@ export interface LegendEncoding {
   gradient?: GuideEncodingEntry;
 }
 
-export const defaultLegendConfig: LegendConfig = {};
+export const defaultLegendConfig: LegendConfig = {
+  gradientHorizontalMaxLength: 200,
+  gradientHorizontalMinLength: 100,
+  gradientVerticalMaxLength: 200,
+  gradientVerticalMinLength: 64 // This is the Vega's minimum.
+};
 
 const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   clipHeight: 1,
