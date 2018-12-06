@@ -216,7 +216,7 @@ export function paddingInner(paddingValue: number, channel: Channel, mark: Mark,
 
     const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = scaleConfig;
 
-    return getFirstDefined(bandPaddingInner, mark === 'rect' ? rectBandPaddingInner : barBandPaddingInner);
+    return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
   }
   return undefined;
 }
