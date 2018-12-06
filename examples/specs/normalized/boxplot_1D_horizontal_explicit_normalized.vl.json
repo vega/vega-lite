@@ -37,7 +37,34 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "lower_box_people", "type": "quantitative"}
+            "x2": {"field": "lower_box_people", "type": "quantitative"},
+            "tooltip": [
+              {
+                "field": "upper_whisker_people",
+                "type": "quantitative",
+                "title": "Upper Whisker of people"
+              },
+              {
+                "field": "upper_box_people",
+                "type": "quantitative",
+                "title": "Q3 of people"
+              },
+              {
+                "field": "mid_box_people",
+                "type": "quantitative",
+                "title": "Median of people"
+              },
+              {
+                "field": "lower_box_people",
+                "type": "quantitative",
+                "title": "Q1 of people"
+              },
+              {
+                "field": "lower_whisker_people",
+                "type": "quantitative",
+                "title": "Lower Whisker of people"
+              }
+            ]
           }
         },
         {
@@ -48,7 +75,34 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "upper_whisker_people", "type": "quantitative"}
+            "x2": {"field": "upper_whisker_people", "type": "quantitative"},
+            "tooltip": [
+              {
+                "field": "upper_whisker_people",
+                "type": "quantitative",
+                "title": "Upper Whisker of people"
+              },
+              {
+                "field": "upper_box_people",
+                "type": "quantitative",
+                "title": "Q3 of people"
+              },
+              {
+                "field": "mid_box_people",
+                "type": "quantitative",
+                "title": "Median of people"
+              },
+              {
+                "field": "lower_box_people",
+                "type": "quantitative",
+                "title": "Q1 of people"
+              },
+              {
+                "field": "lower_whisker_people",
+                "type": "quantitative",
+                "title": "Lower Whisker of people"
+              }
+            ]
           }
         },
         {
@@ -59,7 +113,34 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "upper_box_people", "type": "quantitative"}
+            "x2": {"field": "upper_box_people", "type": "quantitative"},
+            "tooltip": [
+              {
+                "field": "upper_whisker_people",
+                "type": "quantitative",
+                "title": "Upper Whisker of people"
+              },
+              {
+                "field": "upper_box_people",
+                "type": "quantitative",
+                "title": "Q3 of people"
+              },
+              {
+                "field": "mid_box_people",
+                "type": "quantitative",
+                "title": "Median of people"
+              },
+              {
+                "field": "lower_box_people",
+                "type": "quantitative",
+                "title": "Q1 of people"
+              },
+              {
+                "field": "lower_whisker_people",
+                "type": "quantitative",
+                "title": "Lower Whisker of people"
+              }
+            ]
           }
         },
         {
@@ -75,7 +156,34 @@
               "field": "mid_box_people",
               "type": "quantitative",
               "axis": {"title": "population"}
-            }
+            },
+            "tooltip": [
+              {
+                "field": "upper_whisker_people",
+                "type": "quantitative",
+                "title": "Upper Whisker of people"
+              },
+              {
+                "field": "upper_box_people",
+                "type": "quantitative",
+                "title": "Q3 of people"
+              },
+              {
+                "field": "mid_box_people",
+                "type": "quantitative",
+                "title": "Median of people"
+              },
+              {
+                "field": "lower_box_people",
+                "type": "quantitative",
+                "title": "Q1 of people"
+              },
+              {
+                "field": "lower_whisker_people",
+                "type": "quantitative",
+                "title": "Lower Whisker of people"
+              }
+            ]
           }
         }
       ]
