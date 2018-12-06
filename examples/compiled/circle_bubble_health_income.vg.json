@@ -223,7 +223,6 @@
   "legends": [
     {
       "size": "size",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "population",
       "encode": {

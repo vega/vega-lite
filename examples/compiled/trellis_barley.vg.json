@@ -223,7 +223,6 @@
   "legends": [
     {
       "stroke": "trellis_barley_color",
-      "direction": "vertical",
       "gradientLength": {
         "signal": "clamp(trellis_barley_child_height, 64, 200)"
       },

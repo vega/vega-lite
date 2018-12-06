@@ -235,7 +235,6 @@
     {
       "title": "All Cars",
       "size": "size",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {
         "symbols": {
@@ -250,7 +249,6 @@
     {
       "title": "Cars from Japan",
       "size": "size",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {
         "symbols": {

@@ -67,7 +67,6 @@
   "legends": [
     {
       "fill": "color",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "rate"
     }

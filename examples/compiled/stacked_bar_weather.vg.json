@@ -137,7 +137,6 @@
     {
       "title": "Weather type",
       "fill": "color",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

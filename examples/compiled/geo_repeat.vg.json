@@ -127,7 +127,6 @@
       "legends": [
         {
           "fill": "child_population_color",
-          "direction": "vertical",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "population"
         }
@@ -172,7 +171,6 @@
       "legends": [
         {
           "fill": "child_engineers_color",
-          "direction": "vertical",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "engineers"
         }
@@ -217,7 +215,6 @@
       "legends": [
         {
           "fill": "child_hurricanes_color",
-          "direction": "vertical",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "hurricanes"
         }

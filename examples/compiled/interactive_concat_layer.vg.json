@@ -272,7 +272,6 @@
         {
           "title": "In Selected Category",
           "size": "size",
-          "direction": "vertical",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "encode": {
             "symbols": {

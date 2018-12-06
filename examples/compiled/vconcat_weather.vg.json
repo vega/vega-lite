@@ -291,7 +291,6 @@
   "legends": [
     {
       "size": "size",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
       "title": "Number of Records",
       "encode": {

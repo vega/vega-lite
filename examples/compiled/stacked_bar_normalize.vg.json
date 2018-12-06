@@ -129,7 +129,6 @@
   "legends": [
     {
       "fill": "color",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "gender",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}

@@ -125,7 +125,6 @@
     {
       "title": "Price",
       "fill": "color",
-      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"}
     }
   ],
