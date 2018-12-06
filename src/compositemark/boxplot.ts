@@ -1,7 +1,8 @@
 import {isNumber, isObject} from 'vega-util';
 import {Channel} from '../channel';
 import {Config} from '../config';
-import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import {Encoding, extractTransformsFromEncoding, fieldDefs} from '../encoding';
+import {PositionFieldDef, TextFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
@@ -129,13 +130,17 @@ export function normalizeBoxPlot(
     orient: tickOrient
   };
 
+  const tooltip: TextFieldDef<string>[] = getTooltip(isMinMax, continuousAxisChannelDef, encodingWithoutContinuousAxis);
+  const tooltipEncoding: Encoding<string> = {tooltip};
+
+  // TODO: support hiding certain mark parts
   const boxLayer: NormalizedUnitSpec[] = [
-    ...makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box'),
-    ...makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker'),
-    ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker'),
-    ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker'),
-    ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box'),
-    ...makeBoxPlotMidTick('median', midTick, 'mid_box')
+    ...makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box', tooltipEncoding),
+    ...makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker', tooltipEncoding),
+    ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker', null, tooltipEncoding),
+    ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker', null, tooltipEncoding),
+    ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box', tooltipEncoding),
+    ...makeBoxPlotMidTick('median', midTick, 'mid_box', null, tooltipEncoding)
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
@@ -189,6 +194,32 @@ export function normalizeBoxPlot(
     transform: (outerSpec.transform || []).concat(transform),
     layer: boxLayer
   };
+}
+
+function getTooltip(
+  isMinMax: boolean,
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  encodingWithoutContinuousAxis: Encoding<string>
+): TextFieldDef<string>[] {
+  const fiveSummaryTooltip: TextFieldDef<string>[] = [
+    {fieldPrefix: 'upper_whisker', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker'},
+    {fieldPrefix: 'upper_box', titlePrefix: 'Q3'},
+    {fieldPrefix: 'mid_box', titlePrefix: 'Median'},
+    {fieldPrefix: 'lower_box', titlePrefix: 'Q1'},
+    {fieldPrefix: 'lower_whisker', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker'}
+  ].map(
+    ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
+      field: fieldPrefix + '_' + continuousAxisChannelDef.field,
+      type: continuousAxisChannelDef.type,
+      title: titlePrefix + ' of ' + continuousAxisChannelDef.field
+    })
+  );
+
+  return [
+    ...fiveSummaryTooltip,
+    // need to cast because TextFieldDef support fewer types of bin
+    ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
+  ];
 }
 
 function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
