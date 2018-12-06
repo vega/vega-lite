@@ -23,14 +23,11 @@
   ],
   "signals": [
     {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    },
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
     {"name": "y_step", "value": 21},
     {
       "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+      "update": "bandspace(domain('y').length, 0, 0) * y_step"
     },
     {
       "name": "unit",
@@ -660,16 +657,16 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "color",
