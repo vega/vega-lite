@@ -1,12 +1,10 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {Channel, NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
-import {ScaleType} from '../../../src/scale';
-
 import * as rules from '../../../src/compile/scale/properties';
 import {AREA, BAR, LINE} from '../../../src/mark';
+import {ScaleType} from '../../../src/scale';
 
 describe('compile/scale', () => {
   describe('nice', () => {
@@ -81,17 +79,17 @@ describe('compile/scale', () => {
 
   describe('paddingInner', () => {
     it('should be undefined if padding is specified.', () => {
-      assert.equal(rules.paddingInner(10, 'x', {}), undefined);
+      assert.equal(rules.paddingInner(10, 'x', 'bar', {}), undefined);
     });
 
     it('should be bandPaddingInner if channel is x or y and padding is not specified.', () => {
-      assert.equal(rules.paddingInner(undefined, 'x', {bandPaddingInner: 15}), 15);
-      assert.equal(rules.paddingInner(undefined, 'y', {bandPaddingInner: 15}), 15);
+      assert.equal(rules.paddingInner(undefined, 'x', 'bar', {bandPaddingInner: 15}), 15);
+      assert.equal(rules.paddingInner(undefined, 'y', 'bar', {bandPaddingInner: 15}), 15);
     });
 
     it('should be undefined for non-xy channels.', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
-        assert.equal(rules.paddingInner(undefined, c, {bandPaddingInner: 15}), undefined);
+        assert.equal(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15}), undefined);
       }
     });
   });
@@ -99,25 +97,25 @@ describe('compile/scale', () => {
   describe('paddingOuter', () => {
     it('should be undefined if padding is specified.', () => {
       for (const scaleType of ['point', 'band'] as ScaleType[]) {
-        assert.equal(rules.paddingOuter(10, 'x', scaleType, 0, {}), undefined);
+        assert.equal(rules.paddingOuter(10, 'x', scaleType, 'bar', 0, {}), undefined);
       }
     });
 
     it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        assert.equal(rules.paddingOuter(undefined, c, 'band', 0, {bandPaddingOuter: 16}), 16);
+        assert.equal(rules.paddingOuter(undefined, c, 'band', 'bar', 0, {bandPaddingOuter: 16}), 16);
       }
     });
     it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        assert.equal(rules.paddingOuter(undefined, c, 'band', 10, {}), 5);
+        assert.equal(rules.paddingOuter(undefined, c, 'band', 'bar', 10, {}), 5);
       }
     });
 
     it('should be undefined for non-xy channels.', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.equal(rules.paddingOuter(undefined, c, scaleType, 0, {}), undefined);
+          assert.equal(rules.paddingOuter(undefined, c, scaleType, 'bar', 0, {}), undefined);
         }
       }
     });

@@ -2,7 +2,7 @@ import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {FieldDef, ScaleFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {BarConfig, MarkDef} from '../../mark';
+import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -17,7 +17,7 @@ import {
 } from '../../scale';
 import {Sort} from '../../sort';
 import * as util from '../../util';
-import {contains, keys} from '../../util';
+import {contains, getFirstDefined, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
@@ -105,9 +105,9 @@ export function getDefaultValue(
     case 'padding':
       return padding(channel, scaleType, scaleConfig, fieldDef, markDef, config.bar);
     case 'paddingInner':
-      return paddingInner(scalePadding, channel, scaleConfig);
+      return paddingInner(scalePadding, channel, markDef.type, scaleConfig);
     case 'paddingOuter':
-      return paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, scaleConfig);
+      return paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, scaleConfig);
     case 'reverse':
       return reverse(scaleType, fieldDef.sort);
     case 'zero':
@@ -202,7 +202,7 @@ export function padding(
   return undefined;
 }
 
-export function paddingInner(paddingValue: number, channel: Channel, scaleConfig: ScaleConfig) {
+export function paddingInner(paddingValue: number, channel: Channel, mark: Mark, scaleConfig: ScaleConfig) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
     return undefined;
@@ -213,7 +213,10 @@ export function paddingInner(paddingValue: number, channel: Channel, scaleConfig
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-    return scaleConfig.bandPaddingInner;
+
+    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = scaleConfig;
+
+    return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
   }
   return undefined;
 }
@@ -222,6 +225,7 @@ export function paddingOuter(
   paddingValue: number,
   channel: Channel,
   scaleType: ScaleType,
+  mark: Mark,
   paddingInnerValue: number,
   scaleConfig: ScaleConfig
 ) {
@@ -234,14 +238,17 @@ export function paddingOuter(
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {
-      if (scaleConfig.bandPaddingOuter !== undefined) {
-        return scaleConfig.bandPaddingOuter;
-      }
-      /* By default, paddingOuter is paddingInner / 2. The reason is that
+      const {bandPaddingOuter, barBandPaddingOuter, rectBandPaddingOuter} = scaleConfig;
+
+      return getFirstDefined(
+        bandPaddingOuter,
+        mark === 'bar' ? barBandPaddingOuter : rectBandPaddingOuter,
+        /* By default, paddingOuter is paddingInner / 2. The reason is that
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
           Note that step (by default) and cardinality are integers.) */
-      return paddingInnerValue / 2;
+        paddingInnerValue / 2
+      );
     }
   }
   return undefined;

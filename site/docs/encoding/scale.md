@@ -327,8 +327,8 @@ Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`sch
 Quantile scales (`"quantile"`) map a sample of input domain values to a discrete range based on computed [quantile](https://en.wikipedia.org/wiki/Quantile) boundaries.
 The domain is considered continuous and thus the scale will accept any reasonable input value; however, the domain is specified as a discrete set of sample values.
 The number of values in (i.e., the cardinality of) the output range determines the number of quantiles that will be computed from the domain. To compute the quantiles, the domain is sorted, and treated as a population of discrete values.
-The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group. 
-If the `range` is not specified, the domain will be segmented into 4 quantiles (quartiles) by default. 
+The resulting quantile boundaries segment the domain into groups with roughly equals numbers of sample points per group.
+If the `range` is not specified, the domain will be segmented into 4 quantiles (quartiles) by default.
 
 Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
 For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts.
@@ -340,7 +340,7 @@ Quantile scales have the benefit of evenly distributing data points to encoded v
 ### Quantize Scales
 
 Quantize scales (`"quantize"`) are similar to [linear scales](https://vega.github.io/vega-lite/docs/scale.html#linear), except they use a discrete rather than continuous range. The `quantize` scale maps continuous value to a discrete range by dividing the domain into uniform segments based on the number of values in (i.e., the cardinality of) the output range. Each range value _y_ can be expressed as a quantized linear function of the domain value _x_: _y = m round(x) + b_.
-If the `range` property is not specified, the domain will be divided into 4 uniform segments by default. 
+If the `range` property is not specified, the domain will be divided into 4 uniform segments by default.
 
 Quantize scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range.
 For related functionality see [quantile scales](https://vega.github.io/vega-lite/docs/scale.html#quantile), which partition the domain into groups with equal element counts, rather than uniform domain extents.
@@ -392,7 +392,17 @@ For example, the follow bar chart directly encodes color names in the data.
 
 To provide themes for all scales, the scale config (`config: {scale: {...}}`) can contain the following properties:
 
-{% include table.html props="bandPaddingInner,bandPaddingOuter,clamp,maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,pointPadding,rangeStep,round,textXRangeStep,useUnaggregatedDomain" source="ScaleConfig" %}
+#### Padding
+
+{% include table.html props="bandPaddingInner,bandPaddingOuter,barBandPaddingInner,barBandPaddingOuter,pointPadding,rectBandPaddingInner,rectBandPaddingOuter," source="ScaleConfig" %}
+
+#### Range
+
+{% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth,rangeStep,textXRangeStep" source="ScaleConfig" %}
+
+#### Other
+
+{% include table.html props="clamp,round,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#range-config}
 ### Range Config

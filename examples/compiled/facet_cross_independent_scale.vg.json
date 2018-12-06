@@ -96,7 +96,7 @@
       "encode": {
         "update": {
           "height": {
-            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+            "signal": "bandspace(datum[\"distinct_b\"], 0, 0) * child_y_step"
           }
         }
       }
@@ -116,7 +116,7 @@
       "encode": {
         "update": {
           "width": {
-            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+            "signal": "bandspace(datum[\"distinct_a\"], 0, 0) * child_x_step"
           }
         }
       }
@@ -145,10 +145,10 @@
       "encode": {
         "update": {
           "width": {
-            "signal": "bandspace(datum[\"distinct_a\"], 0.1, 0.05) * child_x_step"
+            "signal": "bandspace(datum[\"distinct_a\"], 0, 0) * child_x_step"
           },
           "height": {
-            "signal": "bandspace(datum[\"distinct_b\"], 0.1, 0.05) * child_y_step"
+            "signal": "bandspace(datum[\"distinct_b\"], 0, 0) * child_y_step"
           }
         }
       },
@@ -178,16 +178,16 @@
           "type": "band",
           "domain": {"data": "facet", "field": "a", "sort": true},
           "range": {"step": {"signal": "child_x_step"}},
-          "paddingInner": 0.1,
-          "paddingOuter": 0.05
+          "paddingInner": 0,
+          "paddingOuter": 0
         },
         {
           "name": "child_y",
           "type": "band",
           "domain": {"data": "facet", "field": "b", "sort": true},
           "range": {"step": {"signal": "child_y_step"}},
-          "paddingInner": 0.1,
-          "paddingOuter": 0.05
+          "paddingInner": 0,
+          "paddingOuter": 0
         }
       ],
       "axes": [

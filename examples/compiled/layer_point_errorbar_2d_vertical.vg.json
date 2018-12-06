@@ -38,10 +38,7 @@
   ],
   "signals": [
     {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    }
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"}
   ],
   "marks": [
     {
@@ -102,8 +99,8 @@
         "sort": true
       },
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",

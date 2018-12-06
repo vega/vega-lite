@@ -7880,13 +7880,25 @@
       "additionalProperties": false,
       "properties": {
         "bandPaddingInner": {
-          "description": "Default inner padding for `x` and `y` band-ordinal scales.\n\n__Default value:__ `0.1`",
+          "description": "Default inner padding for `x` and `y` band-ordinal scales.\n\n__Default value:__\n- `barBandPaddingInner` for bar marks (`0.1` by default)\n- `rectBandPaddingInner` for rect and other marks (`0` by default)",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
         },
         "bandPaddingOuter": {
-          "description": "Default outer padding for `x` and `y` band-ordinal scales.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
+          "description": "Default outer padding for `x` and `y` band-ordinal scales.\n\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "barBandPaddingInner": {
+          "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"bar\"` marks.\n\n__Default value:__ `0.1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "barBandPaddingOuter": {
+          "description": "Default outer padding for `x` and `y` band-ordinal scales of `\"bar\"` marks.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -7975,6 +7987,18 @@
             "number",
             "null"
           ]
+        },
+        "rectBandPaddingInner": {
+          "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\n\n__Default value:__ `0`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "rectBandPaddingOuter": {
+          "description": "Default outer padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\nIf not specified, by default, band scale's paddingOuter is paddingInner/2.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "round": {
           "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, and `size` scales.)",
