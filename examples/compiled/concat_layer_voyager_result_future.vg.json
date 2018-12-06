@@ -59,7 +59,7 @@
     {"name": "concat_0_y_step", "value": 21},
     {
       "name": "concat_0_height",
-      "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
+      "update": "bandspace(domain('concat_0_y').length, 0, 0) * concat_0_y_step"
     },
     {"name": "concat_1_height", "value": 21}
   ],
@@ -376,8 +376,8 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "study", "sort": true},
       "range": {"step": {"signal": "concat_0_y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "concat_1_x",
