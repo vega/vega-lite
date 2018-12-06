@@ -311,7 +311,7 @@
             {"scale": "color", "field": "type"}
           ],
           "tooltip": {
-            "signal": "{\"Percentage\": format(datum[\"nx\"], \"\"), \"Question\": ''+datum[\"question\"], \"nx2\": format(datum[\"nx2\"], \"\"), \"Response\": ''+datum[\"type\"]}"
+            "signal": "{\"Percentage\": format(datum[\"nx\"], \"\"), \"nx2\": format(datum[\"nx2\"], \"\"), \"Question\": ''+datum[\"question\"], \"Response\": ''+datum[\"type\"]}"
           },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},

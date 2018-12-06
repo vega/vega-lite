@@ -62,7 +62,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield_center\": format(datum[\"upper_yield_center\"], \"\")}"
+            "signal": "{\"yield\": format(datum[\"lower_yield_center\"], \"\"), \"upper_yield_center\": format(datum[\"upper_yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield_center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

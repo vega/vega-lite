@@ -89,7 +89,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
@@ -112,7 +112,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
@@ -135,7 +135,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 5},
@@ -160,7 +160,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mid_box_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"mid_box_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},
@@ -192,7 +192,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"people\": format(datum[\"people\"], \"\")}"
+            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "people"}

@@ -130,7 +130,7 @@
             {"value": "#404040"}
           ],
           "tooltip": {
-            "signal": "{\"Months\": ''+datum[\"label\"], \"sum\": format(datum[\"sum\"], \"\"), \"lead\": ''+datum[\"lead\"]}"
+            "signal": "{\"Months\": ''+datum[\"label\"], \"lead\": ''+datum[\"lead\"], \"sum\": format(datum[\"sum\"], \"\")}"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5, "offset": -22.5},
           "y": {"scale": "y", "field": "sum"},

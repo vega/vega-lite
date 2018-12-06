@@ -69,7 +69,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"], \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "lower_whisker_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -92,7 +92,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"upper_box_people\"], \"\"), \"age\": ''+datum[\"age\"], \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "upper_box_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -115,7 +115,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"lower_box_people\"], \"\"), \"age\": ''+datum[\"age\"], \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+            "signal": "{\"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "lower_box_people"},
           "x2": {"scale": "x", "field": "upper_box_people"},
@@ -165,7 +165,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},

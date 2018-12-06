@@ -311,7 +311,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
+                "signal": "{\"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
@@ -482,7 +482,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
               },
               "x": {"scale": "concat_1_x", "field": "count_*"},
               "x2": {"scale": "concat_1_x", "value": 0},

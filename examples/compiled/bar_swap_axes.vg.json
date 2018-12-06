@@ -56,7 +56,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Average of b\": format(datum[\"average_b\"], \"\"), \"a\": ''+datum[\"a\"]}"
+            "signal": "{\"a\": ''+datum[\"a\"], \"Average of b\": format(datum[\"average_b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "average_b"},
           "x2": {"scale": "x", "value": 0},

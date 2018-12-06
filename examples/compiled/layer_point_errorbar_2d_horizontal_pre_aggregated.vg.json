@@ -74,7 +74,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_upper_yield\": format(datum[\"upper_upper_yield\"], \"\")}"
+            "signal": "{\"yield\": format(datum[\"lower_upper_yield\"], \"\"), \"upper_upper_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_upper_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

@@ -59,7 +59,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Barley Yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"variety\": ''+datum[\"variety\"], \"Barley Yield\": format(datum[\"mean_yield\"], \"\")}"
           },
           "x": {"scale": "x", "field": "mean_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
@@ -81,7 +81,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Barley Yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"Barley Yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

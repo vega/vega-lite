@@ -59,7 +59,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"variety\": ''+datum[\"variety\"], \"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "lower_yield"},
@@ -82,7 +82,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"variety\": ''+datum[\"variety\"], \"Mean of yield\": format(datum[\"mean_yield\"], \"\")}"
+            "signal": "{\"Mean of yield\": format(datum[\"mean_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "mean_yield"}
