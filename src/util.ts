@@ -174,8 +174,6 @@ export interface Dict<T> {
   [key: string]: T;
 }
 
-export type StringSet = Dict<true>;
-
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
@@ -193,8 +191,28 @@ export function isEqual<T>(dict: Dict<T>, other: Dict<T>) {
   return true;
 }
 
-export function hasIntersection(a: StringSet, b: StringSet) {
-  for (const key in a) {
+export function setEqual<T>(a: Set<T>, b: Set<T>) {
+  if (a.size !== b.size) {
+    return false;
+  }
+  for (const e of a) {
+    if (!b.has(e)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function setUnion<T>(a: Set<T>, b: Set<T>) {
+  const out = new Set(a);
+  for (const elem of b) {
+    out.add(elem);
+  }
+  return out;
+}
+
+export function hasIntersection(a: Set<string>, b: Set<string>) {
+  for (const key of a) {
     if (key in b) {
       return true;
     }
@@ -202,19 +220,19 @@ export function hasIntersection(a: StringSet, b: StringSet) {
   return false;
 }
 
-export function prefixGenerator(a: StringSet): StringSet {
-  const prefixes = {};
-  for (const x of keys(a)) {
+export function prefixGenerator(a: Set<string>): Set<string> {
+  const prefixes = new Set<string>();
+  for (const x of a) {
     const splitField = splitAccessPath(x);
     // Wrap every element other than the first in `[]`
     const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
     const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
-    computedPrefixes.forEach(y => (prefixes[y] = true));
+    computedPrefixes.forEach(y => prefixes.add(y));
   }
   return prefixes;
 }
 
-export function fieldIntersection(a: StringSet, b: StringSet): boolean {
+export function fieldIntersection(a: Set<string>, b: Set<string>): boolean {
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 

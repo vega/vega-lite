@@ -1,7 +1,7 @@
-import {isString, toSet} from 'vega-util';
+import {isString} from 'vega-util';
 import * as log from '../../log';
 import {LookupTransform} from '../../transform';
-import {duplicate, hash, StringSet} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgLookupTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode, OutputNode} from './dataflow';
@@ -40,8 +40,8 @@ export class LookupNode extends DataFlowNode {
     return new LookupNode(parent, transform, fromOutputNode.getSource());
   }
 
-  public producedFields(): StringSet {
-    return toSet(
+  public producedFields() {
+    return new Set(
       this.transform.from.fields || (this.transform.as instanceof Array ? this.transform.as : [this.transform.as])
     );
   }

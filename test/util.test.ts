@@ -166,29 +166,24 @@ describe('util', () => {
 
   describe('prefixGenerator', () => {
     it('should return the correct value for simple nested field', () => {
-      expect(prefixGenerator({'a.b': true})).toEqual({a: true, 'a[b]': true});
+      expect(prefixGenerator(new Set(['a.b']))).toEqual(new Set(['a', 'a[b]']));
     });
 
     it('should return the correct value for multilevel nested field', () => {
-      expect(prefixGenerator({'a[b].c.d': true})).toEqual({
-        a: true,
-        'a[b]': true,
-        'a[b][c]': true,
-        'a[b][c][d]': true
-      });
+      expect(prefixGenerator(new Set(['a[b].c.d']))).toEqual(new Set(['a', 'a[b]', 'a[b][c]', 'a[b][c][d]']));
     });
   });
 
   describe('fieldIntersection', () => {
-    it('should return the correct value for 2 stringsets', () => {
-      expect(fieldIntersection({'a.b': true, d: true}, {'a[b]': true})).toEqual(true);
+    it('should return the correct value for 2 string sets', () => {
+      expect(fieldIntersection(new Set(['a.b', 'd']), new Set(['a[b]']))).toBe(true);
     });
-    it('should return the correct value for 2 nested but different stringsets', () => {
-      expect(fieldIntersection({'a.b.c': true}, {'a.b.d': true})).toEqual(true);
+    it('should return the correct value for 2 nested but different string sets', () => {
+      expect(fieldIntersection(new Set(['a.b.c']), new Set(['a.b.d']))).toBe(true);
     });
 
-    it('should return the correct value for 2 nested but different stringsets', () => {
-      expect(fieldIntersection({'a.b.c': true}, {'z.b.c': true})).toEqual(false);
+    it('should return the correct value for 2 nested but different string sets', () => {
+      expect(fieldIntersection(new Set(['a.b.c']), new Set(['z.b.c']))).toBe(false);
     });
   });
 

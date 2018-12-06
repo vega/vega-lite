@@ -19,10 +19,7 @@ export class FlattenTransformNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return this.transform.flatten.reduce((out, field, i) => {
-      out[this.transform.as[i]] = true;
-      return out;
-    }, {});
+    return new Set(this.transform.as);
   }
 
   public hash() {

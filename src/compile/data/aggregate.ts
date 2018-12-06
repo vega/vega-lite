@@ -1,31 +1,30 @@
 import {AggregateOp} from 'vega';
-import {extend} from 'vega-util';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
 import {FieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
-import {Dict, duplicate, hash, isEqual, keys, replacePathInField, StringSet} from '../../util';
+import {Dict, duplicate, hash, keys, replacePathInField, setEqual, setUnion} from '../../util';
 import {VgAggregateTransform} from '../../vega.schema';
 import {binRequiresRange} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 
-function addDimension(dims: {[field: string]: boolean}, channel: Channel, fieldDef: FieldDef<string>) {
+function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>) {
   if (isBinning(fieldDef.bin)) {
-    dims[vgField(fieldDef, {})] = true;
-    dims[vgField(fieldDef, {binSuffix: 'end'})] = true;
+    dims.add(vgField(fieldDef, {}));
+    dims.add(vgField(fieldDef, {binSuffix: 'end'}));
 
     if (binRequiresRange(fieldDef, channel)) {
-      dims[vgField(fieldDef, {binSuffix: 'range'})] = true;
+      dims.add(vgField(fieldDef, {binSuffix: 'range'}));
     }
   } else {
-    dims[vgField(fieldDef)] = true;
+    dims.add(vgField(fieldDef));
   }
   return dims;
 }
 
-function mergeMeasures(parentMeasures: Dict<Dict<StringSet>>, childMeasures: Dict<Dict<StringSet>>) {
+function mergeMeasures(parentMeasures: Dict<Dict<Set<string>>>, childMeasures: Dict<Dict<Set<string>>>) {
   for (const field in childMeasures) {
     if (childMeasures.hasOwnProperty(field)) {
       // when we merge a measure, we either have to add an aggregation operator or even a new field
@@ -46,7 +45,7 @@ function mergeMeasures(parentMeasures: Dict<Dict<StringSet>>, childMeasures: Dic
 
 export class AggregateNode extends DataFlowNode {
   public clone() {
-    return new AggregateNode(null, {...this.dimensions}, duplicate(this.measures));
+    return new AggregateNode(null, new Set(this.dimensions), duplicate(this.measures));
   }
 
   /**
@@ -55,13 +54,13 @@ export class AggregateNode extends DataFlowNode {
    */
   constructor(
     parent: DataFlowNode,
-    private dimensions: StringSet,
-    private measures: Dict<{[key in AggregateOp]?: StringSet}>
+    private dimensions: Set<string>,
+    private measures: Dict<{[key in AggregateOp]?: Set<string>}>
   ) {
     super(parent);
   }
 
-  get groupBy(): StringSet {
+  get groupBy() {
     return this.dimensions;
   }
 
@@ -74,7 +73,7 @@ export class AggregateNode extends DataFlowNode {
     });
 
     const meas = {};
-    const dims = {};
+    const dims = new Set<string>();
 
     if (!isAggregate) {
       // no need to create this node if the model has no aggregation
@@ -102,7 +101,7 @@ export class AggregateNode extends DataFlowNode {
       }
     });
 
-    if (keys(dims).length + keys(meas).length === 0) {
+    if (dims.size + keys(meas).length === 0) {
       return null;
     }
 
@@ -110,7 +109,7 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public static makeFromTransform(parent: DataFlowNode, t: AggregateTransform): AggregateNode {
-    const dims = {};
+    const dims = new Set<string>();
     const meas = {};
 
     for (const s of t.aggregate) {
@@ -127,10 +126,10 @@ export class AggregateNode extends DataFlowNode {
     }
 
     for (const s of t.groupby || []) {
-      dims[s] = true;
+      dims.add(s);
     }
 
-    if (keys(dims).length + keys(meas).length === 0) {
+    if (dims.size + keys(meas).length === 0) {
       return null;
     }
 
@@ -138,7 +137,7 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public merge(other: AggregateNode): boolean {
-    if (isEqual(this.dimensions, other.dimensions)) {
+    if (setEqual(this.dimensions, other.dimensions)) {
       mergeMeasures(this.measures, other.measures);
       return true;
     } else {
@@ -152,23 +151,18 @@ export class AggregateNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    const out = {};
-
-    keys(this.dimensions).forEach(f => (out[f] = true));
-    keys(this.measures).forEach(m => (out[m] = true));
-
-    return out;
+    return setUnion(this.dimensions, new Set(keys(this.measures)));
   }
 
   public producedFields() {
-    const out = {};
+    const out = new Set();
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
         if (keys(this.measures[field][op]).length === 0) {
-          out[`${op}_${field}`] = true;
+          out.add(`${op}_${field}`);
         } else {
-          extend(out, this.measures[field][op]);
+          out.add.apply(this.measures[field][op]);
         }
       }
     }
