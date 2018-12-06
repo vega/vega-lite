@@ -89,7 +89,7 @@
             {"value": "#ccc"}
           ],
           "tooltip": {
-            "signal": "{\"Day\": ''+datum[\"id\"], \"Temperature (F)\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
+            "signal": "{\"Temperature (F)\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\"), \"Day\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -113,7 +113,7 @@
             {"value": "#999"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\")}"
+            "signal": "{\"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -137,7 +137,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\")}"
+            "signal": "{\"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -161,7 +161,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\")}"
+            "signal": "{\"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -185,7 +185,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\")}"
+            "signal": "{\"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"id\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
@@ -209,7 +209,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"id\": ''+datum[\"id\"], \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\")}"
+            "signal": "{\"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},

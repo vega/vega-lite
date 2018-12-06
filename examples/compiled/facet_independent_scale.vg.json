@@ -142,7 +142,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "child_x", "field": "age"},
               "width": {"scale": "child_x", "band": true},

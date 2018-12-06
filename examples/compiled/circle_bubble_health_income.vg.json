@@ -139,7 +139,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"income\": format(datum[\"income\"], \"\"), \"health\": format(datum[\"health\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
+            "signal": "{\"health\": format(datum[\"health\"], \"\"), \"income\": format(datum[\"income\"], \"\"), \"population\": format(datum[\"population\"], \"\")}"
           },
           "x": {"scale": "x", "field": "income"},
           "y": {"scale": "y", "field": "health"},

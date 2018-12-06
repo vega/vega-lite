@@ -49,7 +49,7 @@
             {"scale": "color", "field": "yearmonth_date"}
           ],
           "tooltip": {
-            "signal": "{\"Mean of temp\": format(datum[\"mean_temp\"], \"\"), \"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y')}"
+            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], '%b %Y'), \"Mean of temp\": format(datum[\"mean_temp\"], \"\")}"
           },
           "x": {"scale": "x", "field": "mean_temp"},
           "y": {"signal": "height", "mult": 0.5}

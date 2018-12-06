@@ -162,7 +162,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"a\": ''+datum[\"a\"], \"b\": ''+datum[\"b\"]}"
+                "signal": "{\"b\": ''+datum[\"b\"], \"a\": ''+datum[\"a\"]}"
               },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"scale": "child_x", "band": true},

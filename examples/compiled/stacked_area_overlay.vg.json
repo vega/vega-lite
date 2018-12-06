@@ -79,7 +79,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "gender"},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
@@ -120,7 +120,7 @@
               "stroke": {"scale": "color", "field": "gender"},
               "opacity": {"value": 0.7},
               "tooltip": {
-                "signal": "{\"age\": ''+datum[\"age\"], \"Sum of people\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
+                "signal": "{\"Sum of people\": format(datum[\"sum_people\"], \"\"), \"age\": ''+datum[\"age\"], \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},

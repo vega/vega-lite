@@ -308,7 +308,7 @@
                     {"value": "#4c78a8"}
                   ],
                   "tooltip": {
-                    "signal": "{\"Number of Records\": format(datum[\"count_*\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\")}"
+                    "signal": "{\"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
                   },
                   "x": {"scale": "concat_1_concat_1_x", "field": "count_*"},
                   "x2": {"scale": "concat_1_concat_1_x", "value": 0},

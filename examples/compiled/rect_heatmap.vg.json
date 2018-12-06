@@ -47,7 +47,7 @@
             {"scale": "color", "field": "mean_Horsepower"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},

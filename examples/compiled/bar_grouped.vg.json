@@ -131,7 +131,7 @@
                 {"scale": "color", "field": "gender"}
               ],
               "tooltip": {
-                "signal": "{\"gender\": ''+datum[\"gender\"], \"population\": format(datum[\"sum_people\"], \"\")}"
+                "signal": "{\"population\": format(datum[\"sum_people\"], \"\"), \"gender\": ''+datum[\"gender\"]}"
               },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": true},

@@ -43,7 +43,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -68,7 +68,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": {"scale": "y", "field": "upper_Miles_per_Gallon"},
@@ -92,7 +92,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y'), \"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
