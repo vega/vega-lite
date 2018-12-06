@@ -5307,7 +5307,7 @@
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
-          "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__ \"vertical\"`\n   *"
+          "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__\n- For top-/bottom-`orient`ed legends, `\"horizontal\"`\n- For left-/right-`orient`ed legends, `\"vertical\"`\n- For top/bottom-left/right-`orient`ed legends, `\"horizontal\"` for gradient legends and `\"vertical\"` for symbol legends."
         },
         "fillColor": {
           "$ref": "#/definitions/Color",
