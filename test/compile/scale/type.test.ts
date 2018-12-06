@@ -137,7 +137,7 @@ describe('compile/scale', () => {
 
     describe('temporal', () => {
       it('should return sequential scale for temporal color field by default.', () => {
-        expect(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig)).toEqual(ScaleType.SEQUENTIAL);
+        expect(scaleType({}, 'color', {type: 'temporal'}, 'point', defaultScaleConfig)).toEqual('time');
       });
 
       it(
@@ -230,7 +230,7 @@ describe('compile/scale', () => {
             'point',
             defaultScaleConfig
           )
-        ).toEqual(ScaleType.SEQUENTIAL);
+        ).toEqual('time');
       });
 
       it('should return time if data type is temporal but specified scale type is discrete', () => {
