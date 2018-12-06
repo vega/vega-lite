@@ -8,7 +8,7 @@ images:
  - spec: selection_translate_scatterplot_drag
  - spec: layer_point_errorbar_stdev
  - spec: tick_strip
- - spec: layer_line_color_rule
+ - spec: line_overlay_stroked
  - spec: trellis_barley
  - spec: geo_choropleth
  - spec: circle_github_punchcard
