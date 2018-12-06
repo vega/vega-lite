@@ -83,7 +83,7 @@ function defaultType(
 
     case 'temporal':
       if (isColorChannel(channel)) {
-        return 'sequential';
+        return 'time';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it

@@ -68,10 +68,10 @@
     },
     {
       "name": "color",
-      "type": "sequential",
+      "type": "time",
       "domain": {"data": "source_0", "field": "yearmonth_date"},
-      "range": "ramp",
-      "zero": false
+      "range": ["#f7fbff", "#0e427f"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [

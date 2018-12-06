@@ -424,7 +424,7 @@ describe('src/compile', () => {
 
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('sequential');
+        expect(scale.implicit.type).toEqual('time');
       });
     });
 
