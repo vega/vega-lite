@@ -62,14 +62,12 @@ function defaultDirection(orient: LegendOrient, legendType: LegendType) {
 
     case 'left':
     case 'right':
-      return 'vertical';
-
     case 'none':
-      return undefined;
+      return undefined; // vertical is Vega's default
     default:
       // top-left / ...
       // For inner legend, uses compact layout like Tableau
-      return legendType === 'gradient' ? 'horizontal' : 'vertical';
+      return legendType === 'gradient' ? 'horizontal' : undefined;
   }
 }
 
