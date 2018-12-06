@@ -139,6 +139,7 @@
       "offset": 0,
       "orient": "bottom-right",
       "stroke": "color",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }

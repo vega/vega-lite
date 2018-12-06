@@ -96,6 +96,7 @@
         {
           "title": "Quantize",
           "fill": "concat_0_color",
+          "direction": "vertical",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "encode": {
             "symbols": {
@@ -161,6 +162,7 @@
           "format": "d",
           "title": "Quantile",
           "fill": "concat_1_color",
+          "direction": "vertical",
           "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
           "labelOverlap": "greedy",
           "encode": {
@@ -226,6 +228,7 @@
         {
           "title": "Threshold",
           "fill": "concat_2_color",
+          "direction": "vertical",
           "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
           "labelOverlap": "greedy",
           "encode": {

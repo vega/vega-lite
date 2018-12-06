@@ -122,7 +122,11 @@
     }
   ],
   "legends": [
-    {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
+    {
+      "fill": "color",
+      "direction": "vertical",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"}
+    }
   ],
   "config": {
     "axis": {"domain": false},

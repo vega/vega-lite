@@ -134,11 +134,13 @@
   "legends": [
     {
       "fill": "color",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "symbol"
     },
     {
       "size": "size",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "price",
       "encode": {

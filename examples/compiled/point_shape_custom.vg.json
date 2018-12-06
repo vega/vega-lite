@@ -126,6 +126,7 @@
   "legends": [
     {
       "stroke": "color",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Cylinders",
       "encode": {
@@ -142,6 +143,7 @@
     },
     {
       "size": "size",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Weight_in_lbs",
       "encode": {

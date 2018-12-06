@@ -103,6 +103,7 @@
       "legends": [
         {
           "stroke": "child_Origin_color",
+          "direction": "vertical",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "Origin",
           "encode": {
@@ -205,6 +206,7 @@
       "legends": [
         {
           "stroke": "child_Cylinders_color",
+          "direction": "vertical",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "Cylinders",
           "encode": {

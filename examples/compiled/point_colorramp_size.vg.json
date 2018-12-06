@@ -123,6 +123,7 @@
   "legends": [
     {
       "stroke": "color",
+      "direction": "vertical",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Miles_per_Gallon",
       "encode": {
