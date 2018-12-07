@@ -69,7 +69,6 @@
     "@types/d3": "^5.0.1",
     "@types/highlight.js": "^9.12.3",
     "@types/jest": "^23.3.9",
-    "@types/json-stable-stringify": "^1.0.32",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "10.12.10",
     "@types/webdriverio": "^4.13.0",
@@ -114,8 +113,9 @@
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
+    "fast-copy":"^1.2.3",
     "fast-deep-equal": "^2.0.1",
-    "json-stable-stringify": "^1.0.1",
+    "fast-json-stable-stringify": "^2.0.0",
     "json-stringify-pretty-compact": "^1.2.0",
     "tslib": "^1.9.3",
     "vega-event-selector": "^2.0.0",

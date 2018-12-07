@@ -46,7 +46,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      expect(agg.hash()).toEqual(
+      expect(agg.hash()).toBe(
         'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
       );
     });
@@ -216,10 +216,7 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      expect(agg.producedFields()).toEqual({
-        AvgDisplacement: true,
-        Acceleration_sum: true
-      });
+      expect(agg.producedFields()).toEqual(new Set(['AvgDisplacement', 'Acceleration_sum']));
     });
   });
 

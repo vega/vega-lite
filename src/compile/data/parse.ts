@@ -90,7 +90,7 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
-  model.transforms.forEach(t => {
+  for (const t of model.transforms) {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
 
@@ -142,7 +142,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
-      return;
+      continue;
     }
 
     if (transformNode && derivedType !== undefined) {
@@ -150,7 +150,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
         ancestorParse.set(field, derivedType, false);
       }
     }
-  });
+  }
 
   return head;
 }

@@ -132,7 +132,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    expect(window.producedFields()).toEqual({count_field: true, ordered_row_number: true, sum_field: true});
+    expect(window.producedFields()).toEqual(new Set(['count_field', 'ordered_row_number', 'sum_field']));
   });
 
   it('should generate the correct dependent fields', () => {
@@ -154,7 +154,7 @@ describe('compile/data/window', () => {
       frame: [null, 0]
     };
     const window = new WindowTransformNode(null, transform);
-    expect(window.dependentFields()).toEqual({g: true, f: true});
+    expect(window.dependentFields()).toEqual(new Set(['g', 'f']));
   });
 
   it('should clone to an equivalent version', () => {

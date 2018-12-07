@@ -1,9 +1,11 @@
+import copy_ from 'fast-copy';
 import deepEqual_ from 'fast-deep-equal';
-import stableStringify from 'json-stable-stringify';
+import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 export const deepEqual = deepEqual_;
+export const duplicate = copy_;
 
 /**
  * Creates an object composed of the picked object properties.
@@ -36,12 +38,19 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: K[]): O
 }
 
 /**
- * Converts any object into a string representation that can be consumed by humans.
+ * Monkey patch Set so that `stringify` produces a string representation of sets.
+ */
+Set.prototype['toJSON'] = function() {
+  return `Set(${[...this].map(stableStringify).join(',')})`;
+};
+
+/**
+ * Converts any object to a string representation that can be consumed by humans.
  */
 export const stringify = stableStringify;
 
 /**
- * Converts any object into a string of limited size, or a number.
+ * Converts any object to a string of limited size, or a number.
  */
 export function hash(a: any): string | number {
   if (isNumber(a)) {
@@ -203,17 +212,9 @@ export function setEqual<T>(a: Set<T>, b: Set<T>) {
   return true;
 }
 
-export function setUnion<T>(a: Set<T>, b: Set<T>) {
-  const out = new Set(a);
-  for (const elem of b) {
-    out.add(elem);
-  }
-  return out;
-}
-
-export function hasIntersection(a: Set<string>, b: Set<string>) {
+export function hasIntersection<T>(a: Set<T>, b: Set<T>) {
   for (const key of a) {
-    if (key in b) {
+    if (b.has(key)) {
       return true;
     }
   }
@@ -289,10 +290,6 @@ export type Flag<S extends string> = {[K in S]: 1};
 
 export function flagKeys<S extends string>(f: Flag<S>): S[] {
   return keys(f) as S[];
-}
-
-export function duplicate<T>(obj: T): T {
-  return JSON.parse(JSON.stringify(obj));
 }
 
 export function isBoolean(b: any): b is boolean {

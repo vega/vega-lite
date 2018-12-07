@@ -27,7 +27,7 @@ describe('compile/data/assemble', () => {
         {}
       );
 
-      expect(data.length).toBe(1);
+      expect(data).toHaveLength(1);
       expect(data[0].name).toBe('foo');
     });
 

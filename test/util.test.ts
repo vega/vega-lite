@@ -4,6 +4,7 @@ import {
   fieldIntersection,
   fill,
   flatAccessWithDatum,
+  hasIntersection,
   isEqual,
   isNumeric,
   prefixGenerator,
@@ -171,6 +172,20 @@ describe('util', () => {
 
     it('should return the correct value for multilevel nested field', () => {
       expect(prefixGenerator(new Set(['a[b].c.d']))).toEqual(new Set(['a', 'a[b]', 'a[b][c]', 'a[b][c][d]']));
+    });
+  });
+
+  describe('hasIntersection', () => {
+    it('should return true for sets that intersect', () => {
+      expect(hasIntersection(new Set([1, 2, 3]), new Set([3, 4]))).toBe(true);
+      expect(hasIntersection(new Set([1]), new Set([1, 2]))).toBe(true);
+      expect(hasIntersection(new Set([1, 2]), new Set([1]))).toBe(true);
+    });
+
+    it('should return false for distinct sets', () => {
+      expect(hasIntersection(new Set([1, 2, 3]), new Set([4, 5]))).toBe(false);
+      expect(hasIntersection(new Set([1]), new Set([]))).toBe(false);
+      expect(hasIntersection(new Set([]), new Set([1]))).toBe(false);
     });
   });
 

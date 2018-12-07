@@ -48,7 +48,7 @@ describe('compile/data/flatten', () => {
         flatten: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      expect(flatten.producedFields()).toEqual({a: true, b: true});
+      expect(flatten.producedFields()).toEqual(new Set(['a', 'b']));
     });
 
     it('should generate the correct hash', () => {
