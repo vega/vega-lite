@@ -1,14 +1,13 @@
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from './selection';
-import nearest from './transforms/nearest';
 import {TUPLE_FIELDS} from './transforms/project';
 
 export function signals(model: UnitModel, selCmpt: SelectionComponent) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
-  const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+  const datum = '(item().isVoronoi ? datum.datum : datum)';
   const values = proj
     .map(p => {
       const fieldDef = model.fieldDef(p.channel);
