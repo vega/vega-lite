@@ -1,11 +1,11 @@
-import copy_ from 'fast-copy';
+import clone_ from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalOperand} from './logical';
 
 export const deepEqual = deepEqual_;
-export const duplicate = copy_;
+export const duplicate = clone_;
 
 /**
  * Creates an object composed of the picked object properties.

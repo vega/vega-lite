@@ -77,7 +77,7 @@
     function clear(id, parent, shiftKey) {
       const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
       const el = mark(id, parent);
-      const [clientX, clientY] = coords(el);
+      let [clientX, clientY] = coords(el);
       clientX += 10;
       clientY -= 10;
       click(bg, {clientX, clientY, shiftKey});
