@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
@@ -114,7 +113,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             ),
-            makeImplicit({step: 21})
+            makeImplicit({step: 20})
           );
         }
       });
@@ -687,7 +686,7 @@ describe('compile/scale', () => {
         it('should return range interpolation of length 4 for quantile/quantize scales', () => {
           const scales: ScaleType[] = ['quantile', 'quantize'];
           scales.forEach(discretizingScale => {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 discretizingScale,
@@ -699,14 +698,13 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 []
-              ),
-              makeImplicit([9, 126.33333333333333, 243.66666666666666, 361])
-            );
+              )
+            ).toEqual(makeImplicit([9, 114, 219, 324]));
           });
         });
 
         it('should return range interpolation of length 4 for threshold scale', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'threshold',
@@ -718,9 +716,8 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([9, 185, 361])
-          );
+            )
+          ).toEqual(makeImplicit([9, 166.5, 324]));
         });
       });
     });

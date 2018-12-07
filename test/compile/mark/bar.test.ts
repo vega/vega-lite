@@ -618,7 +618,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 20});
+      expect(props.width).toEqual({value: 19});
     });
   });
 

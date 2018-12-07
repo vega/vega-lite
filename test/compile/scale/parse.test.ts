@@ -243,7 +243,7 @@ describe('src/compile', () => {
         });
         const scale = model.getScaleComponent('x');
         expect(scale.implicit.type).toEqual('point');
-        expect(scale.implicit.range).toEqual({step: 21});
+        expect(scale.implicit.range).toEqual({step: 20});
       });
     });
 

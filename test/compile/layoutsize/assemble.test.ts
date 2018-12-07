@@ -1,10 +1,9 @@
 /* tslint:disable:quotemark */
 
-import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
-
 import {X} from '../../../src/channel';
 import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
 import * as log from '../../../src/log';
+import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
   describe('sizeExpr', () => {
@@ -20,7 +19,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 21
+          value: 20
         },
         {
           name: 'width',
@@ -41,7 +40,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 21
+          value: 20
         },
         {
           name: 'width',
@@ -62,7 +61,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 21
+          value: 20
         },
         {
           name: 'width',
@@ -93,7 +92,7 @@ describe('compile/layout', () => {
       expect(size).toEqual([
         {
           name: 'child_x_step',
-          value: 21
+          value: 20
         }
       ]);
     });
@@ -142,7 +141,7 @@ describe('compile/layout', () => {
           width: 205,
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'ordinal', scale: {rangeStep: 21}}
+            x: {field: 'a', type: 'ordinal', scale: {rangeStep: 20}}
           }
         });
 

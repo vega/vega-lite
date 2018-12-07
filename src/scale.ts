@@ -201,7 +201,7 @@ export interface ScaleConfig {
    * Default range step for band and point scales of (1) the `y` channel
    * and (2) the `x` channel when the mark is not `text`.
    *
-   * __Default value:__ `21`
+   * __Default value:__ `20`
    *
    * @minimum 0
    */
@@ -408,7 +408,7 @@ export interface ScaleConfig {
 
 export const defaultScaleConfig = {
   textXRangeStep: 90,
-  rangeStep: 21,
+  rangeStep: 20,
   pointPadding: 0.5,
 
   barBandPaddingInner: 0.1,
