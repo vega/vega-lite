@@ -47,7 +47,7 @@ describe('compile/data/summary', () => {
 
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.hash()).toBe(
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
+        'Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"count_*\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}'
       );
     });
   });

@@ -152,7 +152,7 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
-      const dupe = keys(pfields).every(k => !!this.fields[k]);
+      const dupe = [...pfields].every(k => !!this.fields[k]);
 
       if (dupe) {
         this.setMutated();

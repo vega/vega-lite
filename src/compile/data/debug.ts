@@ -1,4 +1,4 @@
-import {entries, keys, uniqueId} from './../../util';
+import {entries, uniqueId} from './../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -43,12 +43,12 @@ export function draw(roots: DataFlowNode[]) {
     }
 
     const dep = node.dependentFields();
-    if (keys(dep).length) {
-      out.push(`<font color="grey" point-size="10">IN:</font> ${keys(node.dependentFields()).join(', ')}`);
+    if (dep.size) {
+      out.push(`<font color="grey" point-size="10">IN:</font> ${[...node.dependentFields()].join(', ')}`);
     }
     const prod = node.producedFields();
-    if (keys(prod).length) {
-      out.push(`<font color="grey" point-size="10">OUT:</font> ${keys(node.producedFields()).join(', ')}`);
+    if (prod.size) {
+      out.push(`<font color="grey" point-size="10">OUT:</font> ${[...node.producedFields()].join(', ')}`);
     }
     return out.join('<br/>');
   }
