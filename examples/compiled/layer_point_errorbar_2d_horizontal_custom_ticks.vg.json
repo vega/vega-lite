@@ -37,7 +37,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
@@ -61,7 +61,7 @@
           },
           "xc": {"scale": "x", "field": "lower_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -86,7 +86,7 @@
           },
           "xc": {"scale": "x", "field": "upper_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }

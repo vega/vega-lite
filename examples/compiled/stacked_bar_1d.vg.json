@@ -3,7 +3,7 @@
   "autosize": "pad",
   "padding": 5,
   "width": 200,
-  "height": 21,
+  "height": 20,
   "style": "cell",
   "data": [
     {
@@ -50,7 +50,7 @@
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 20}
+          "height": {"value": 19}
         }
       }
     }

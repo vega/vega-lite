@@ -52,8 +52,8 @@
     }
   ],
   "signals": [
-    {"name": "child_x_step", "value": 21},
-    {"name": "child_y_step", "value": 21}
+    {"name": "child_x_step", "value": 20},
+    {"name": "child_y_step", "value": 20}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
