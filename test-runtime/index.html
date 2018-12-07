@@ -10,14 +10,14 @@
 
   <script type="text/javascript">
     function embed(vlSpec) {
-      var vgSpec = vl.compile(vlSpec).spec;
+      const vgSpec = vl.compile(vlSpec).spec;
       view = new vega.View(vega.parse(vgSpec))
-        .renderer('svg')    // set renderer (canvas or svg)
-        .initialize('#vis') // initialize view within parent DOM container
+        .renderer('svg')
+        .initialize('#vis')
         .run();
     }
 
-    var winSrc = ['mousemove', 'mouseup'];
+    const winSrc = ['mousemove', 'mouseup'];
     function mouseEvt(type, target, opts) {
       opts.bubbles = true;
       target = winSrc.indexOf(type) < 0 ? target : window;
@@ -41,7 +41,7 @@
     }
 
     function coords(el) {
-      var rect = el.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
       return [Math.ceil(rect.left + rect.width/2), Math.ceil(rect.top + rect.height/2)];
     }
 
@@ -57,10 +57,10 @@
     }
 
     function brush(id0, id1, parent, targetBrush) {
-      var el0 = mark(id0, parent);
-      var el1 = mark(id1, parent);
-      var [mdX, mdY] = coords(el0);
-      var [muX, muY] = coords(el1);
+      const el0 = mark(id0, parent);
+      const el1 = mark(id1, parent);
+      const [mdX, mdY] = coords(el0);
+      const [muX, muY] = coords(el1);
       mouseEvt('mousedown',
         brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
       mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
@@ -68,16 +68,16 @@
     }
 
     function pt(id, parent, shiftKey) {
-      var el = mark(id, parent);
-      var [clientX, clientY] = coords(el);
+      const el = mark(id, parent);
+      const [clientX, clientY] = coords(el);
       click(el, {clientX, clientY, shiftKey});
       return view.data('sel_store');
     }
 
     function clear(id, parent, shiftKey) {
-      var bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
-      var el = mark(id, parent);
-      var [clientX, clientY] = coords(el);
+      const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
+      const el = mark(id, parent);
+      const [clientX, clientY] = coords(el);
       clientX += 10;
       clientY -= 10;
       click(bg, {clientX, clientY, shiftKey});
@@ -85,8 +85,8 @@
     }
 
     function zoom(id, delta, parent, targetBrush) {
-      var el = mark(id, parent);
-      var [clientX, clientY] = coords(el);
+      const el = mark(id, parent);
+      const [clientX, clientY] = coords(el);
       mouseEvt('wheel', brushOrEl(el, parent, targetBrush),
         {clientX, clientY, deltaX: delta, deltaY: delta, deltaZ: delta});
       mouseEvt('wheel', brushOrEl(el, parent, targetBrush),
