@@ -1,5 +1,5 @@
 import {MAIN} from '../../data';
-import {Dict, fieldIntersection, flatten, hash, keys} from '../../util';
+import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys} from '../../util';
 import {AggregateNode} from './aggregate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
@@ -147,18 +147,16 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
  */
 
 export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
-  private fields = {};
+  private fields = new Set<string>();
   public run(node: DataFlowNode): OptimizerFlags {
     this.setContinue();
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
-      const dupe = [...pfields].every(k => !!this.fields[k]);
-
-      if (dupe) {
+      if (hasIntersection(pfields, this.fields)) {
         this.setMutated();
         node.remove();
       } else {
-        this.fields = {...this.fields, ...pfields};
+        this.fields = new Set([...this.fields, ...pfields]);
       }
     }
     return this.flags;
