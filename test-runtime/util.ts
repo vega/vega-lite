@@ -137,22 +137,25 @@ function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | Norm
 export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
   const {data, ...specification} = base(iter, sel, opts);
   const resolve = opts.resolve;
+  const config = {scale: {rangeStep: 21}}; // A lot of magic number in this file uses the old rangeStep = 21
   switch (compose) {
     case 'unit':
-      return {data, ...specification};
+      return {data, ...specification, config};
     case 'facet':
       return {
         data,
         facet: {row: {field: 'c', type: 'nominal'}},
         spec: specification,
-        resolve
+        resolve,
+        config
       };
     case 'repeat':
       return {
         data,
         repeat: {row: ['d', 'e', 'f']},
         spec: specification,
-        resolve
+        resolve,
+        config
       };
   }
 
