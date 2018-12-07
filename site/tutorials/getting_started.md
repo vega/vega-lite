@@ -144,7 +144,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
 ```html
 <!DOCTYPE html>
 <head>
-  <title>Vega Lite Bar Chart</title>
+  <title>Vega-Lite Bar Chart</title>
   <meta charset="utf-8">
 
   <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}/build/vega.js"></script>
