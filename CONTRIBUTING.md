@@ -137,6 +137,7 @@ __Notes:__
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
 For example, `test/compile/` tests files inside `src/compile/`.
+- `test-runtime/` - Code for runtime tests. You can start a webserver inside the directory to debug the tests in yout browser. 
 - `typings/` - TypeScript typing declaration for dependencies.
 
 ## Understanding How Vega-Lite Works
