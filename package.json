@@ -113,7 +113,7 @@
     "yaml-front-matter": "^4.0.0"
   },
   "dependencies": {
-    "fast-copy":"^1.2.3",
+    "fast-copy": "^1.2.3",
     "fast-deep-equal": "^2.0.1",
     "fast-json-stable-stringify": "^2.0.0",
     "json-stringify-pretty-compact": "^1.2.0",

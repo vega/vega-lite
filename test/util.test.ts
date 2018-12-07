@@ -8,6 +8,7 @@ import {
   isEqual,
   isNumeric,
   prefixGenerator,
+  setEqual,
   unique,
   uniqueId
 } from '../src/util';
@@ -172,6 +173,16 @@ describe('util', () => {
 
     it('should return the correct value for multilevel nested field', () => {
       expect(prefixGenerator(new Set(['a[b].c.d']))).toEqual(new Set(['a', 'a[b]', 'a[b][c]', 'a[b][c][d]']));
+    });
+  });
+
+  describe('setEqual', () => {
+    it('should return true for equal sets', () => {
+      expect(setEqual(new Set([1, 2, 3]), new Set([3, 2, 1]))).toBe(true);
+    });
+
+    it('should return false for unequal sets', () => {
+      expect(setEqual(new Set([1, 2, 3]), new Set([2, 3]))).toBe(false);
     });
   });
 

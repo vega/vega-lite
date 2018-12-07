@@ -176,7 +176,7 @@ export class AggregateNode extends DataFlowNode {
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        for (const alias of keys(this.measures[field][op])) {
+        for (const alias of this.measures[field][op]) {
           as.push(alias);
           ops.push(op);
           fields.push(replacePathInField(field));
@@ -186,7 +186,7 @@ export class AggregateNode extends DataFlowNode {
 
     const result: VgAggregateTransform = {
       type: 'aggregate',
-      groupby: keys(this.dimensions),
+      groupby: [...this.dimensions],
       ops,
       fields,
       as
