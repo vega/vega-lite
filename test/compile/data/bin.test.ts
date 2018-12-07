@@ -1,3 +1,5 @@
+/* tslint:disable:quotemark */
+
 import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
@@ -10,6 +12,24 @@ function assembleFromEncoding(model: ModelWithField) {
 
 function assembleFromTransform(model: Model, t: BinTransform) {
   return BinNode.makeFromTransform(null, t, model).assemble();
+}
+
+function makeMovieExample(t: BinTransform) {
+  return parseUnitModelWithScale({
+    data: {url: 'data/movies.json'},
+    mark: 'circle',
+    transform: [t],
+    encoding: {
+      x: {
+        field: 'Rotten_Tomatoes_Rating',
+        type: 'quantitative'
+      },
+      color: {
+        field: 'Rotten_Tomatoes_Rating',
+        type: 'quantitative'
+      }
+    }
+  });
 }
 
 describe('compile/data/bin', () => {
@@ -47,7 +67,7 @@ describe('compile/data/bin', () => {
       }
     });
     const transform = assembleFromEncoding(model);
-    expect(transform.length).toEqual(2);
+    expect(transform).toHaveLength(2);
     expect(transform[0]).toEqual({
       type: 'extent',
       field: 'Acceleration',
@@ -81,7 +101,7 @@ describe('compile/data/bin', () => {
       }
     });
     const transform = assembleFromEncoding(model);
-    expect(transform.length).toEqual(3);
+    expect(transform).toHaveLength(3);
     expect(transform[0]).toEqual({
       type: 'extent',
       field: 'Rotten_Tomatoes_Rating',
@@ -108,22 +128,7 @@ describe('compile/data/bin', () => {
       field: 'Acceleration',
       as: 'binned_acceleration'
     };
-
-    const model = parseUnitModelWithScale({
-      data: {url: 'data/movies.json'},
-      mark: 'circle',
-      transform: [t],
-      encoding: {
-        x: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        },
-        color: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        }
-      }
-    });
+    const model = makeMovieExample(t);
 
     expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
@@ -141,22 +146,7 @@ describe('compile/data/bin', () => {
       field: 'Acceleration',
       as: 'binned_acceleration'
     };
-
-    const model = parseUnitModelWithScale({
-      data: {url: 'data/movies.json'},
-      mark: 'circle',
-      transform: [t],
-      encoding: {
-        x: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        },
-        color: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        }
-      }
-    });
+    const model = makeMovieExample(t);
 
     expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
@@ -174,22 +164,7 @@ describe('compile/data/bin', () => {
       field: 'Acceleration',
       as: 'binned_acceleration'
     };
-
-    const model = parseUnitModelWithScale({
-      data: {url: 'data/movies.json'},
-      mark: 'circle',
-      transform: [t],
-      encoding: {
-        x: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        },
-        color: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        }
-      }
-    });
+    const model = makeMovieExample(t);
 
     expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
@@ -208,22 +183,7 @@ describe('compile/data/bin', () => {
       field: 'Acceleration',
       as: ['binned_acceleration_start', 'binned_acceleration_stop']
     };
-
-    const model = parseUnitModelWithScale({
-      data: {url: 'data/movies.json'},
-      mark: 'circle',
-      transform: [t],
-      encoding: {
-        x: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        },
-        color: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        }
-      }
-    });
+    const model = makeMovieExample(t);
 
     expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
@@ -242,24 +202,35 @@ describe('compile/data/bin', () => {
       field: 'Acceleration',
       as: ['binned_acceleration_start', 'binned_acceleration_stop']
     };
+    const model = makeMovieExample(t);
 
-    const model = parseUnitModelWithScale({
-      data: {url: 'data/movies.json'},
-      mark: 'circle',
-      transform: [t],
-      encoding: {
-        x: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        },
-        color: {
-          field: 'Rotten_Tomatoes_Rating',
-          type: 'quantitative'
-        }
-      }
-    });
     const binNode = BinNode.makeFromTransform(null, t, model);
-    expect(binNode.hash()).toEqual('Bin 1594083826');
+    expect(binNode.hash()).toBe('Bin 1594083826');
+  });
+
+  it('should generate the correct dependent fields', () => {
+    const t: BinTransform = {
+      bin: {extent: [0, 100], anchor: 6},
+      field: 'Acceleration',
+      as: ['binned_acceleration_start', 'binned_acceleration_stop']
+    };
+    const model = makeMovieExample(t);
+
+    const binNode = BinNode.makeFromTransform(null, t, model);
+    expect(binNode.dependentFields()).toEqual(new Set(['Acceleration']));
+  });
+
+  it('should generate the correct produced fields', () => {
+    const t: BinTransform = {
+      bin: {extent: [0, 100], anchor: 6},
+      field: 'Acceleration',
+      as: ['binned_acceleration_start', 'binned_acceleration_stop']
+    };
+    const model = makeMovieExample(t);
+
+    const binNode = BinNode.makeFromTransform(null, t, model);
+    expect(binNode.hash()).toBe('Bin 1594083826');
+    expect(binNode.producedFields()).toEqual(new Set(['binned_acceleration_start', 'binned_acceleration_stop']));
   });
 
   it('should never clone parent', () => {

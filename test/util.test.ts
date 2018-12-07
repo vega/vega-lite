@@ -179,10 +179,14 @@ describe('util', () => {
   describe('setEqual', () => {
     it('should return true for equal sets', () => {
       expect(setEqual(new Set([1, 2, 3]), new Set([3, 2, 1]))).toBe(true);
+      expect(setEqual(new Set([]), new Set([]))).toBe(true);
     });
 
     it('should return false for unequal sets', () => {
       expect(setEqual(new Set([1, 2, 3]), new Set([2, 3]))).toBe(false);
+      expect(setEqual(new Set([1, 2]), new Set([2, 3]))).toBe(false);
+      expect(setEqual(new Set([1]), new Set([]))).toBe(false);
+      expect(setEqual(new Set([]), new Set([1]))).toBe(false);
     });
   });
 
