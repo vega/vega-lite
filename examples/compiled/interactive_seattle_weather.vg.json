@@ -432,7 +432,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [datum[\"weather\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"weather\"]]} : null",
               "force": true
             }
           ]

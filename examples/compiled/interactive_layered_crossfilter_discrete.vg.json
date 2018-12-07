@@ -222,7 +222,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_distance\"], datum[\"bin_maxbins_20_distance_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance_end\"]]]} : null",
               "force": true
             }
           ]
@@ -367,7 +367,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_delay\"], datum[\"bin_maxbins_20_delay_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay_end\"]]]} : null",
               "force": true
             }
           ]
@@ -512,7 +512,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_time\"], datum[\"bin_maxbins_20_time_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time_end\"]]]} : null",
               "force": true
             }
           ]
