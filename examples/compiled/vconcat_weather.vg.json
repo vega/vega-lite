@@ -75,7 +75,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_x_step", "value": 21},
+    {"name": "concat_0_x_step", "value": 20},
     {
       "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
@@ -248,7 +248,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_1", "field": "count_*"},
-      "range": [0, 361],
+      "range": [0, 324],
       "zero": true
     },
     {

@@ -34,7 +34,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -91,7 +91,7 @@
       "name": "size",
       "type": "point",
       "domain": {"data": "source_0", "field": "weather", "sort": true},
-      "range": [2, 20]
+      "range": [2, 19]
     }
   ],
   "axes": [

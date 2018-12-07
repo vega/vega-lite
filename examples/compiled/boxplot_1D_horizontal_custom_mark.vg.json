@@ -4,7 +4,7 @@
   "autosize": "pad",
   "padding": 5,
   "width": 200,
-  "height": 21,
+  "height": 20,
   "style": "cell",
   "data": [
     {
@@ -134,7 +134,7 @@
           },
           "xc": {"scale": "x", "field": "lower_whisker_people"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -159,7 +159,7 @@
           },
           "xc": {"scale": "x", "field": "upper_whisker_people"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }

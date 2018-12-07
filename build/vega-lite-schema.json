@@ -7981,7 +7981,7 @@
           "type": "number"
         },
         "rangeStep": {
-          "description": "Default range step for band and point scales of (1) the `y` channel\nand (2) the `x` channel when the mark is not `text`.\n\n__Default value:__ `21`",
+          "description": "Default range step for band and point scales of (1) the `y` channel\nand (2) the `x` channel when the mark is not `text`.\n\n__Default value:__ `20`",
           "minimum": 0,
           "type": [
             "number",
@@ -8800,7 +8800,7 @@
           "type": "number"
         },
         "bandSize": {
-          "description": "The width of the ticks.\n\n__Default value:__  2/3 of rangeStep.",
+          "description": "The width of the ticks.\n\n__Default value:__  3/4 of rangeStep.",
           "minimum": 0,
           "type": "number"
         },

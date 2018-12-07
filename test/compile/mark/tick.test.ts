@@ -123,7 +123,7 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({value: 14});
+      expect(props.height).toEqual({value: 15});
     });
   });
 

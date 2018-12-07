@@ -21,7 +21,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"

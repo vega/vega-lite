@@ -53,7 +53,7 @@
   ],
   "signals": [
     {"name": "concat_0_height", "value": 300},
-    {"name": "concat_1_y_step", "value": 21},
+    {"name": "concat_1_y_step", "value": 20},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
@@ -537,7 +537,7 @@
       "name": "size",
       "type": "linear",
       "domain": [-1, 50],
-      "range": [9, 361],
+      "range": [9, 324],
       "zero": false
     },
     {

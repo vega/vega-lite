@@ -27,8 +27,8 @@ describe('compile/compile', () => {
 
     assert.equal(spec.padding, 5);
     assert.equal(spec.autosize, 'pad');
-    assert.equal(spec.width, 21);
-    assert.equal(spec.height, 21);
+    assert.equal(spec.width, 20);
+    assert.equal(spec.height, 20);
     assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
 
     assert.equal(spec.data.length, 1); // just source
@@ -47,8 +47,8 @@ describe('compile/compile', () => {
 
     assert.equal(spec.padding, 123);
     assert.equal(spec.autosize, 'pad');
-    assert.equal(spec.width, 21);
-    assert.equal(spec.height, 21);
+    assert.equal(spec.width, 20);
+    assert.equal(spec.height, 20);
 
     assert.equal(spec.data.length, 1); // just source.
     assert.equal(spec.marks.length, 1); // just the root group
@@ -67,7 +67,7 @@ describe('compile/compile', () => {
     assert.deepEqual(spec.signals, [
       {
         name: 'x_step',
-        value: 21
+        value: 20
       },
       {
         name: 'width',

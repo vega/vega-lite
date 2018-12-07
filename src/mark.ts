@@ -368,7 +368,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
-   * __Default value:__  2/3 of rangeStep.
+   * __Default value:__  3/4 of rangeStep.
    * @minimum 0
    */
   bandSize?: number;

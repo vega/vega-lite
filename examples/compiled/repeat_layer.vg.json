@@ -53,17 +53,17 @@
     }
   ],
   "signals": [
-    {"name": "child_temp_max_x_step", "value": 21},
+    {"name": "child_temp_max_x_step", "value": 20},
     {
       "name": "child_temp_max_width",
       "update": "bandspace(domain('child_temp_max_x').length, 1, 0.5) * child_temp_max_x_step"
     },
-    {"name": "child_precipitation_x_step", "value": 21},
+    {"name": "child_precipitation_x_step", "value": 20},
     {
       "name": "child_precipitation_width",
       "update": "bandspace(domain('child_precipitation_x').length, 1, 0.5) * child_precipitation_x_step"
     },
-    {"name": "child_wind_x_step", "value": 21},
+    {"name": "child_wind_x_step", "value": 20},
     {
       "name": "child_wind_width",
       "update": "bandspace(domain('child_wind_x').length, 1, 0.5) * child_wind_x_step"

@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v4.json",
   "autosize": "pad",
   "padding": 5,
-  "height": 21,
+  "height": 20,
   "style": "cell",
   "data": [
     {
@@ -21,7 +21,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"

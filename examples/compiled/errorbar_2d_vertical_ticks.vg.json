@@ -47,7 +47,7 @@
           },
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": {"scale": "y", "field": "lower_Miles_per_Gallon"},
-          "width": {"value": 14},
+          "width": {"value": 15},
           "height": {"value": 1}
         }
       }
@@ -72,7 +72,7 @@
           },
           "xc": {"scale": "x", "field": "year_Year"},
           "yc": {"scale": "y", "field": "upper_Miles_per_Gallon"},
-          "width": {"value": 14},
+          "width": {"value": 15},
           "height": {"value": 1}
         }
       }
