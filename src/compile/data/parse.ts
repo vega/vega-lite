@@ -14,7 +14,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, keys, mergeDeep} from '../../util';
+import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
@@ -146,7 +146,7 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
     }
 
     if (transformNode && derivedType !== undefined) {
-      for (const field of keys(transformNode.producedFields())) {
+      for (const field of transformNode.producedFields()) {
         ancestorParse.set(field, derivedType, false);
       }
     }
