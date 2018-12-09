@@ -44,7 +44,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         }
       ]
