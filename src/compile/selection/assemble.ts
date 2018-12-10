@@ -140,15 +140,28 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 
 export function assembleLegendSelection(model: Model, part: string, value: any) {
   let hasLegend = false;
+  let field;
+  let store;
   forEachSelection(model, selCmpt => {
     if (selCmpt.legend) {
       hasLegend = true;
+      // Only single field for now
+      // To do: Refactor for multiple fields projection
+      field = selCmpt.project[0].field;
+      store = selCmpt.name + STORE;
     }
   });
 
   if (hasLegend) {
     const newValue = value ? value : {opacity: {value: 0.9}};
     // To do : Add test case for legends and symbols
+    newValue.opacity = [
+      {
+        test: `!(length(data(\"CylYr_store\"))) || vlSelectionTest('${store}', {${field}: datum.value})`,
+        ...newValue.opacity
+      },
+      {value: 0.25}
+    ];
     return {name: part + LEGEND, interactive: true, update: newValue};
   }
   return {};
