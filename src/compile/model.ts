@@ -284,8 +284,8 @@ export abstract class Model {
     parseLegend(this);
   }
 
-  public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
-  public abstract assembleSelectionSignals(): any[];
+  public abstract assembleSelectionTopLevelSignals(signals: VgSignal[]): VgSignal[];
+  public abstract assembleSelectionSignals(): VgSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
