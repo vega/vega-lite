@@ -6,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream, VgSignal} from '../../vega.schema';
+import {VgData, VgEventStream, VgMarkGroup, VgSignal} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -62,7 +62,7 @@ export interface SelectionCompiler {
   signals: (model: UnitModel, selCmpt: SelectionComponent) => VgSignal[];
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
+  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: VgMarkGroup[]) => VgMarkGroup[];
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
@@ -218,7 +218,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
   return data;
 }
 
-export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
+export function assembleUnitSelectionMarks(model: UnitModel, marks: VgMarkGroup[]): VgMarkGroup[] {
   forEachSelection(model, (selCmpt, selCompiler) => {
     marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
     forEachTransform(selCmpt, txCompiler => {
@@ -231,7 +231,7 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[
   return marks;
 }
 
-export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): any[] {
+export function assembleLayerSelectionMarks(model: LayerModel, marks: VgMarkGroup[]): VgMarkGroup[] {
   for (const child of model.children) {
     if (isUnitModel(child)) {
       marks = assembleUnitSelectionMarks(child, marks);
