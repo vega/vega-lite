@@ -2,6 +2,8 @@ import {
   AggregateOp,
   Align,
   Compare,
+  Data,
+  EncodeEntry,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
@@ -28,27 +30,14 @@ export {
   SortField as VgSortField,
   SignalRef as VgSignalRef,
   UnionSortField as VgUnionSortField,
-  Mark as VgMark,
   Compare as VgCompare,
-  SortOrder as VgSortOrder
+  SortOrder as VgSortOrder,
+  Mark as VgMark,
+  Data as VgData,
+  EncodeEntry as VgEncodeEntry
 };
 
 export type Color = string;
-
-export interface VgData {
-  name: string;
-  source?: string;
-  values?: any;
-  format?: {
-    type?: string;
-    parse?: string | object;
-    property?: string;
-    feature?: string;
-    mesh?: string;
-  };
-  url?: string;
-  transform?: VgTransform[];
-}
 
 export interface VgDataRef {
   data: string;
@@ -321,7 +310,8 @@ export type VgEncodeChannel =
   | 'cursor'
   | 'defined'
   | 'cornerRadius';
-export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
+
+// export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
 
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>

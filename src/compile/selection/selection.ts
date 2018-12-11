@@ -13,7 +13,7 @@ import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
-import {VgSignal} from './../../../build/src/vega.schema.d';
+import {VgSignal} from './../../vega.schema';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';

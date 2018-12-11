@@ -335,7 +335,7 @@ export abstract class Model {
 
   public assembleHeaderMarks(): GroupMark[] {
     const {layoutHeaders} = this.component;
-    let headerMarks = [];
+    let headerMarks: GroupMark[] = [];
 
     for (const channel of HEADER_CHANNELS) {
       if (layoutHeaders[channel].title) {
@@ -396,7 +396,7 @@ export abstract class Model {
    * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
   public assembleGroup(signals: VgSignal[] = []): GroupMark {
-    const group: Partial<GroupMark> = {};
+    const group: any = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
 
@@ -574,7 +574,7 @@ export abstract class Model {
   /**
    * Corrects the data references in marks after assemble.
    */
-  public correctDataNames = (mark: VgMarkGroup) => {
+  public correctDataNames = (mark: any): GroupMark => {
     // TODO: make this correct
 
     // for normal data references

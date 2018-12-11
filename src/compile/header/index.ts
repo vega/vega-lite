@@ -71,7 +71,7 @@ export function getHeaderType(orient: AxisOrient) {
   return 'footer';
 }
 
-export function getTitleGroup(model: Model, channel: HeaderChannel) {
+export function getTitleGroup(model: Model, channel: HeaderChannel): GroupMark {
   const title = model.component.layoutHeaders[channel].title;
   const config = model.config ? model.config : undefined;
   const facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef

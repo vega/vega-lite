@@ -1,4 +1,4 @@
-import {AggregateOp, GroupMark} from 'vega';
+import {AggregateOp, Facet, GroupMark} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
@@ -310,7 +310,7 @@ export class FacetModel extends ModelWithField {
     return {fields, ops, as};
   }
 
-  private assembleFacet() {
+  private assembleFacet(): Facet {
     const {name, data} = this.component.data.facetRoot;
     const {row, column} = this.facet;
     const {fields, ops, as} = this.getCardinalityAggregateForChild();
@@ -400,7 +400,7 @@ export class FacetModel extends ModelWithField {
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
 
-    const markGroup = {
+    const markGroup: GroupMark = {
       name: this.getName('cell'),
       type: 'group',
       ...(title ? {title} : {}),

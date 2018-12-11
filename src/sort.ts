@@ -4,6 +4,16 @@ import {DateTime} from './datetime';
 
 export type SortOrder = 'ascending' | 'descending' | null;
 
+export type Compare =
+  | {
+      field: string;
+      order?: SortOrder;
+    }
+  | {
+      field: string[];
+      order?: (SortOrder)[];
+    };
+
 /**
  * A sort definition for transform
  */

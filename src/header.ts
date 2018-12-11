@@ -1,5 +1,4 @@
-import {FontWeight, TextBaseline} from 'vega';
-import {TitleConfig as VgTitleConfig} from 'vega';
+import {FontWeight, TextBaseline, TitleConfig as VgTitleConfig} from 'vega';
 import {Guide} from './guide';
 import {keys} from './util';
 

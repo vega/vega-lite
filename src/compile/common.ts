@@ -18,7 +18,8 @@ import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {contains, getFirstDefined, keys, stringify} from '../util';
-import {VgCompare, VgEncodeChannel, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {Compare} from './../sort';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
@@ -193,7 +194,7 @@ export function timeFormatExpression(
 export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
-): VgCompare {
+): Compare {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
@@ -265,7 +266,7 @@ export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
 }
 
 export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
-  return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
+  return keys(encoding).reduce((encode, channel) => {
     const valueDef = encoding[channel];
     return {
       ...encode,
