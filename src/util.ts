@@ -332,7 +332,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
-  return Object.keys(obj).length === 0;
+  return keys(obj).length === 0;
 }
 
 export function titlecase(s: string) {
