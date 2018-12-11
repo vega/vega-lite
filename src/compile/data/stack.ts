@@ -3,9 +3,10 @@ import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
+import {VgComparatorOrder, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
+import {Compare} from './../../sort';
 import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
@@ -46,7 +47,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgSort;
+  sort: Compare;
 
   /** Mode for stacking marks.
    */
@@ -95,7 +96,7 @@ export class StackNode extends DataFlowNode {
         sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
-    const sort: VgSort = {
+    const sort: Compare = {
       field: sortFields,
       order: sortOrder
     };
@@ -133,7 +134,7 @@ export class StackNode extends DataFlowNode {
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: VgSort;
+    let sort: Compare;
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {

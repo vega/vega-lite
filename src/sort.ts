@@ -1,9 +1,17 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
-import {VgComparatorOrder} from './vega.schema';
 
-export type SortOrder = VgComparatorOrder | null;
+export type SortOrder = 'ascending' | 'descending' | null;
+export type Compare =
+  | {
+      field: string;
+      order?: SortOrder;
+    }
+  | {
+      field: string[];
+      order?: (SortOrder)[];
+    };
 
 /**
  * A sort definition for transform
@@ -17,7 +25,7 @@ export interface SortField {
   /**
    * Whether to sort the field in ascending or descending order.
    */
-  order?: VgComparatorOrder;
+  order?: 'ascending' | 'descending';
 }
 
 /**

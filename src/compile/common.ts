@@ -18,7 +18,8 @@ import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {contains, getFirstDefined, keys, stringify} from '../util';
-import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
+import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {Compare} from './../sort';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
@@ -193,7 +194,7 @@ export function timeFormatExpression(
 export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
-): VgSort {
+): Compare {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));

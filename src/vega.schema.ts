@@ -1,6 +1,7 @@
 import {
   AggregateOp,
   Align,
+  Compare as VgCompare,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
@@ -358,7 +359,7 @@ export interface VgAggregateTransform {
 
 export interface VgCollectTransform {
   type: 'collect';
-  sort: VgSort;
+  sort: VgCompare;
 }
 
 export interface VgLookupTransform {
@@ -376,7 +377,7 @@ export interface VgStackTransform {
   offset?: StackOffset;
   groupby: string[];
   field: string;
-  sort: VgSort;
+  sort: VgCompare;
   as: string[];
 }
 
@@ -427,16 +428,6 @@ export interface VgGeoJSONTransform {
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
-
-export type VgSort =
-  | {
-      field: string;
-      order?: VgComparatorOrder;
-    }
-  | {
-      field: string[];
-      order?: (VgComparatorOrder)[];
-    };
 
 export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
 

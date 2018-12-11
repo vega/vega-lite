@@ -349,7 +349,7 @@ export abstract class Model {
     return headerMarks;
   }
 
-  public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
+  public abstract assembleMarks(): VgMarkGroup[];
 
   public assembleAxes(): VgAxis[] {
     return assembleAxes(this.component.axes, this.config);
