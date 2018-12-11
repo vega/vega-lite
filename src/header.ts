@@ -1,6 +1,7 @@
 import {FontWeight, TextBaseline} from 'vega';
 import {TitleConfig as VgTitleConfig} from 'vega';
 import {Guide} from './guide';
+import {keys} from './util';
 
 export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
   titleAnchor: 'anchor',
@@ -23,9 +24,9 @@ export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   labelPadding: 'offset'
 };
 
-export const HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
+export const HEADER_TITLE_PROPERTIES = keys(HEADER_TITLE_PROPERTIES_MAP);
 
-export const HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);
+export const HEADER_LABEL_PROPERTIES = keys(HEADER_LABEL_PROPERTIES_MAP);
 
 export interface HeaderConfig {
   // ---------- Title ----------

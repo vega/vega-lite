@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, GroupMark} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {contains} from '../util';
-import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgLayout, VgSignal} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -388,7 +388,7 @@ export class FacetModel extends ModelWithField {
     return [];
   }
 
-  public assembleMarks(): VgMarkGroup[] {
+  public assembleMarks(): GroupMark[] {
     const {child} = this;
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);

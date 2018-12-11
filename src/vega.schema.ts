@@ -1,15 +1,18 @@
 import {
   AggregateOp,
   Align,
+  Compare,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
   FontStyle,
   FontWeight,
+  Mark,
   NewSignal,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField,
+  SortOrder,
   TextBaseline,
   UnionSortField
 } from 'vega';
@@ -20,7 +23,15 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SignalRef as VgSignalRef, NewSignal as VgSignal, SortField as VgSortField, UnionSortField as VgUnionSortField};
+export {
+  NewSignal as VgSignal,
+  SortField as VgSortField,
+  SignalRef as VgSignalRef,
+  UnionSortField as VgUnionSortField,
+  Mark as VgMark,
+  Compare as VgCompare,
+  SortOrder as VgSortOrder
+};
 
 export type Color = string;
 
@@ -97,8 +108,6 @@ export function isVgRangeStep(range: VgRange): range is VgRangeStep {
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
-
-export type VgMarkGroup = any;
 
 export type VgProjectionType =
   | 'albers'
@@ -359,7 +368,7 @@ export interface VgAggregateTransform {
 
 export interface VgCollectTransform {
   type: 'collect';
-  sort: VgSort;
+  sort: Compare;
 }
 
 export interface VgLookupTransform {
@@ -377,7 +386,7 @@ export interface VgStackTransform {
   offset?: StackOffset;
   groupby: string[];
   field: string;
-  sort: VgSort;
+  sort: Compare;
   as: string[];
 }
 
@@ -428,16 +437,6 @@ export interface VgGeoJSONTransform {
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
-
-export type VgSort =
-  | {
-      field: string;
-      order?: VgComparatorOrder;
-    }
-  | {
-      field: string[];
-      order?: (VgComparatorOrder)[];
-    };
 
 export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
 
@@ -817,13 +816,6 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
 
 export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 
-export type VgComparatorOrder = 'ascending' | 'descending';
-
-export interface VgComparator {
-  field?: string | string[];
-  order?: VgComparatorOrder | VgComparatorOrder[];
-}
-
 export interface VgWindowTransform {
   type: 'window';
   params?: number[];
@@ -833,5 +825,5 @@ export interface VgWindowTransform {
   frame?: number[];
   ignorePeers?: boolean;
   groupby?: string[];
-  sort?: VgComparator;
+  sort?: Compare;
 }

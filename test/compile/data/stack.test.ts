@@ -1,13 +1,12 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 /* tslint:disable:quotemark */
 
 import {assert} from 'chai';
-
 import {StackComponent, StackNode} from '../../../src/compile/data/stack';
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';
-import {VgComparatorOrder, VgSort, VgTransform} from '../../../src/vega.schema';
+import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function parse(model: UnitModel) {
   return StackNode.makeFromEncoding(null, model).stack;
@@ -221,7 +220,7 @@ describe('compile/data/stack', () => {
           groupby: ['age'],
           field: 'people',
           offset: 'zero',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['v1', 'v2']
         }
       ]);
@@ -241,7 +240,7 @@ describe('compile/data/stack', () => {
           groupby: ['age', 'gender'],
           field: 'people',
           offset: 'normalize',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['val', 'val_end']
         }
       ]);

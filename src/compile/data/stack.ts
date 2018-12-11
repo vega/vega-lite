@@ -3,7 +3,7 @@ import {FieldDef, isFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
+import {VgCompare, VgSortOrder, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -46,7 +46,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgSort;
+  sort: VgCompare;
 
   /** Mode for stacking marks.
    */
@@ -88,14 +88,14 @@ export class StackNode extends DataFlowNode {
     const {stack, groupby, as, offset = 'zero'} = stackTransform;
 
     const sortFields: string[] = [];
-    const sortOrder: VgComparatorOrder[] = [];
+    const sortOrder: VgSortOrder[] = [];
     if (stackTransform.sort !== undefined) {
       for (const sortField of stackTransform.sort) {
         sortFields.push(sortField.field);
         sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
-    const sort: VgSort = {
+    const sort: VgCompare = {
       field: sortFields,
       order: sortOrder
     };
@@ -133,7 +133,7 @@ export class StackNode extends DataFlowNode {
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: VgSort;
+    let sort: VgCompare;
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {

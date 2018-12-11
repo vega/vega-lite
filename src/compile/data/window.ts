@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {vgField} from '../../fielddef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
+import {VgCompare, VgSortOrder, VgWindowTransform} from '../../vega.schema';
 import {StringSet, unique} from './../../util';
 import {DataFlowNode} from './dataflow';
 
@@ -65,14 +65,14 @@ export class WindowTransformNode extends DataFlowNode {
     const frame = this.transform.frame;
     const groupby = this.transform.groupby;
     const sortFields: string[] = [];
-    const sortOrder: VgComparatorOrder[] = [];
+    const sortOrder: VgSortOrder[] = [];
     if (this.transform.sort !== undefined) {
       for (const sortField of this.transform.sort) {
         sortFields.push(sortField.field);
         sortOrder.push(sortField.order || 'ascending');
       }
     }
-    const sort: VgComparator = {
+    const sort: VgCompare = {
       field: sortFields,
       order: sortOrder
     };

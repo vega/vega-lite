@@ -6,13 +6,14 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream, VgMarkGroup, VgSignal} from '../../vega.schema';
+import {VgData, VgEventStream, VgMark} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
+import {VgSignal} from './../../../build/src/vega.schema.d';
 import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import {SelectionComponent} from './selection';
@@ -62,7 +63,7 @@ export interface SelectionCompiler {
   signals: (model: UnitModel, selCmpt: SelectionComponent) => VgSignal[];
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: VgMarkGroup[]) => VgMarkGroup[];
+  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: VgMark[]) => VgMark[];
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
@@ -218,7 +219,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: VgData[]): VgD
   return data;
 }
 
-export function assembleUnitSelectionMarks(model: UnitModel, marks: VgMarkGroup[]): VgMarkGroup[] {
+export function assembleUnitSelectionMarks(model: UnitModel, marks: VgMark[]): VgMark[] {
   forEachSelection(model, (selCmpt, selCompiler) => {
     marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
     forEachTransform(selCmpt, txCompiler => {
@@ -231,7 +232,7 @@ export function assembleUnitSelectionMarks(model: UnitModel, marks: VgMarkGroup[
   return marks;
 }
 
-export function assembleLayerSelectionMarks(model: LayerModel, marks: VgMarkGroup[]): VgMarkGroup[] {
+export function assembleLayerSelectionMarks(model: LayerModel, marks: VgMark[]): VgMark[] {
   for (const child of model.children) {
     if (isUnitModel(child)) {
       marks = assembleUnitSelectionMarks(child, marks);

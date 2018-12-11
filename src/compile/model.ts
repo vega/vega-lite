@@ -1,4 +1,4 @@
-import {AnchorValue, Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
+import {AnchorValue, Axis as VgAxis, GroupMark, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -13,7 +13,7 @@ import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgProjection, VgSignal} from '../vega.schema';
 import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
@@ -57,7 +57,7 @@ export interface Component {
     column?: LayoutHeaderComponent;
   };
 
-  mark: VgMarkGroup[];
+  mark: GroupMark[];
   scales: ScaleComponentIndex;
   projection: ProjectionComponent;
   selection: Dict<SelectionComponent>;
@@ -333,7 +333,7 @@ export abstract class Model {
 
   public abstract assembleLayoutSignals(): VgSignal[];
 
-  public assembleHeaderMarks(): VgMarkGroup[] {
+  public assembleHeaderMarks(): GroupMark[] {
     const {layoutHeaders} = this.component;
     let headerMarks = [];
 
@@ -349,7 +349,7 @@ export abstract class Model {
     return headerMarks;
   }
 
-  public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
+  public abstract assembleMarks(): GroupMark[];
 
   public assembleAxes(): VgAxis[] {
     return assembleAxes(this.component.axes, this.config);
@@ -395,8 +395,8 @@ export abstract class Model {
   /**
    * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
-  public assembleGroup(signals: VgSignal[] = []) {
-    const group: VgMarkGroup = {};
+  public assembleGroup(signals: VgSignal[] = []): GroupMark {
+    const group: Partial<GroupMark> = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
 

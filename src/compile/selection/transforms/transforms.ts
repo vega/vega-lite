@@ -1,7 +1,7 @@
 import {Signal} from 'vega';
 import {SelectionDef} from '../../../selection';
 import {Dict} from '../../../util';
-import {VgMarkGroup, VgSignal} from '../../../vega.schema';
+import {VgMark, VgSignal} from '../../../vega.schema';
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
 import {SelectionComponent} from '../selection';
@@ -19,7 +19,7 @@ export interface TransformCompiler {
   signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: VgSignal[]) => Signal[]; // the output can be a new or a push signal
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: VgMarkGroup[]) => VgMarkGroup[];
+  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: VgMark[]) => VgMark[];
 }
 
 const compilers: Dict<TransformCompiler> = {

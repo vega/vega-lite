@@ -1,7 +1,8 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig} from 'vega';
+
+import {Align, Axis as VgAxis, AxisOrient, Baseline, GroupMark, Title, TitleConfig as VgTitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {Config} from '../../config';
 import {FacetFieldDef} from '../../facet';
@@ -15,7 +16,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {keys} from '../../util';
-import {VgComparator, VgMarkGroup} from '../../vega.schema';
+import {VgCompare} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {Model} from '../model';
@@ -91,9 +92,9 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   };
 }
 
-export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
+export function getHeaderGroups(model: Model, channel: HeaderChannel): GroupMark[] {
   const layoutHeader = model.component.layoutHeaders[channel];
-  const groups = [];
+  const groups: GroupMark[] = [];
   for (const headerType of HEADER_TYPES) {
     if (layoutHeader[headerType]) {
       for (const headerCmpt of layoutHeader[headerType]) {
@@ -106,7 +107,7 @@ export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGro
 
 // 0, (0,90), 90, (90, 180), 180, (180, 270), 270, (270, 0)
 
-export function labelAlign(angle: number) {
+export function labelAlign(angle: number): {align?: {value: Align}} {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if ((angle + 90) % 180 === 0) {
@@ -120,7 +121,7 @@ export function labelAlign(angle: number) {
   return {};
 }
 
-export function labelBaseline(angle: number) {
+export function labelBaseline(angle: number): {baseline: Baseline} {
   // to keep angle in [0, 360)
   angle = ((angle % 360) + 360) % 360;
   if (45 <= angle && angle <= 135) {
@@ -129,7 +130,7 @@ export function labelBaseline(angle: number) {
   return {baseline: 'middle'};
 }
 
-function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'): VgComparator {
+function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'): VgCompare {
   const {sort} = facetFieldDef;
   if (isSortField(sort)) {
     return {
@@ -155,9 +156,9 @@ export function getHeaderGroup(
   headerType: HeaderType,
   layoutHeader: LayoutHeaderComponent,
   headerCmpt: HeaderComponent
-) {
+): GroupMark {
   if (headerCmpt) {
-    let title = null;
+    let title: Title = null;
     const {facetFieldDef} = layoutHeader;
     if (facetFieldDef && headerCmpt.labels) {
       const {header = {}} = facetFieldDef;
@@ -216,7 +217,7 @@ export function getHeaderGroup(
 export function getHeaderProperties(
   config: Config,
   facetFieldDef: FacetFieldDef<string>,
-  properties: string[],
+  properties: (keyof HeaderConfig)[],
   propertiesMap: {[k in keyof HeaderConfig]: keyof VgTitleConfig}
 ) {
   const props = {};
