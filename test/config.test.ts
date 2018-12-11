@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {Config, defaultConfig, isVgScheme, stripAndRedirectConfig} from '../src/config';
 import {PRIMITIVE_MARKS} from '../src/mark';
 import {duplicate} from '../src/util';
@@ -35,44 +34,44 @@ describe('config', () => {
     const output = stripAndRedirectConfig(config);
 
     it('should not cause side-effect to the input', () => {
-      assert.deepEqual(config, copy);
+      expect(config).toEqual(copy);
     });
 
     it('should remove VL only mark config but keep Vega mark config', () => {
-      assert.isUndefined(output.mark.color);
-      assert.equal(output.mark.opacity, 0.3);
+      expect(output.mark.color).not.toBeDefined();
+      expect(output.mark.opacity).toEqual(0.3);
     });
 
     it('should redirect mark config to style and remove VL only mark-specific config', () => {
       for (const mark of PRIMITIVE_MARKS) {
-        assert.isUndefined(output[mark], `${mark} config should be redirected`);
+        expect(output[mark]).not.toBeDefined();
       }
-      assert.isUndefined(output.style.bar['binSpacing'], `VL only Bar config should be removed`);
-      assert.isUndefined(output.style.cell['width'], `VL only cell config should be removed`);
-      assert.isUndefined(output.style.cell['height'], `VL only cell config should be removed`);
-      assert.equal(output.style.cell['fill'], '#eee', `config.view should be redirect to config.style.cell`);
+      expect(output.style.bar['binSpacing']).not.toBeDefined();
+      expect(output.style.cell['width']).not.toBeDefined();
+      expect(output.style.cell['height']).not.toBeDefined();
+      expect(output.style.cell['fill']).toEqual('#eee');
 
-      assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
+      expect(output.style.bar.opacity).toEqual(0.5);
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {
-      assert.deepEqual(output.title, undefined);
-      assert.deepEqual(output.style['group-title'].fontWeight, 'bold');
-      assert.deepEqual(output.style['group-title'].fill, 'red');
+      expect(output.title).toEqual(undefined);
+      expect(output.style['group-title'].fontWeight).toEqual('bold');
+      expect(output.style['group-title'].fill).toEqual('red');
     });
 
     it('should remove empty config object', () => {
-      assert.isUndefined(output.axisTop);
+      expect(output.axisTop).not.toBeDefined();
     });
   });
 
   describe('isVgScheme', () => {
     it('should return true for valid scheme object', () => {
-      assert.isTrue(isVgScheme({scheme: 'viridis', count: 2}));
+      expect(isVgScheme({scheme: 'viridis', count: 2})).toBe(true);
     });
 
     it('should return false for non-scheme object', () => {
-      assert.isFalse(isVgScheme(['#EA98D2', '#659CCA']));
+      expect(isVgScheme(['#EA98D2', '#659CCA'])).toBe(false);
     });
   });
 });

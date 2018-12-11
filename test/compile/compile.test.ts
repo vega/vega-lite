@@ -1,18 +1,13 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {compile} from '../../src/compile/compile';
+import { compile } from '../../src/compile/compile';
 import * as log from '../../src/log';
 
 describe('compile/compile', () => {
   it('should throw error for invalid spec', () => {
-    assert.throws(
-      () => {
-        compile({} as any);
-      },
-      Error,
-      log.message.INVALID_SPEC
-    );
+    expect(() => {
+      compile({} as any);
+    }).toThrow();
   });
 
   it('should return a spec with default top-level properties, size signals, data, marks, and title', () => {
@@ -25,14 +20,14 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert.equal(spec.padding, 5);
-    assert.equal(spec.autosize, 'pad');
-    assert.equal(spec.width, 20);
-    assert.equal(spec.height, 20);
-    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
+    expect(spec.padding).toEqual(5);
+    expect(spec.autosize).toEqual('pad');
+    expect(spec.width).toEqual(20);
+    expect(spec.height).toEqual(20);
+    expect(spec.title).toEqual({text: 'test', frame: 'group'});
 
-    assert.equal(spec.data.length, 1); // just source
-    assert.equal(spec.marks.length, 1); // just the root group
+    expect(spec.data.length).toEqual(1); // just source
+    expect(spec.marks.length).toEqual(1); // just the root group
   });
 
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
@@ -45,13 +40,13 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert.equal(spec.padding, 123);
-    assert.equal(spec.autosize, 'pad');
-    assert.equal(spec.width, 20);
-    assert.equal(spec.height, 20);
+    expect(spec.padding).toEqual(123);
+    expect(spec.autosize).toEqual('pad');
+    expect(spec.width).toEqual(20);
+    expect(spec.height).toEqual(20);
 
-    assert.equal(spec.data.length, 1); // just source.
-    assert.equal(spec.marks.length, 1); // just the root group
+    expect(spec.data.length).toEqual(1); // just source.
+    expect(spec.marks.length).toEqual(1); // just the root group
   });
 
   it('should use size signal for bar chart width', () => {
@@ -64,7 +59,7 @@ describe('compile/compile', () => {
       }
     }).spec;
 
-    assert.deepEqual(spec.signals, [
+    expect(spec.signals).toEqual([
       {
         name: 'x_step',
         value: 20
@@ -74,7 +69,7 @@ describe('compile/compile', () => {
         update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
       }
     ]);
-    assert.equal(spec.height, 200);
+    expect(spec.height).toEqual(200);
   });
 
   it('should set resize to true if requested', () => {
@@ -87,7 +82,7 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert((spec.autosize as any).resize);
+    expect((spec.autosize as any).resize).toBeTruthy();
   });
 
   it('should set autosize to fit and containment if requested', () => {
@@ -101,7 +96,7 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert.deepEqual(spec.autosize, {type: 'fit', contains: 'content'});
+    expect(spec.autosize).toEqual({type: 'fit', contains: 'content'});
   });
 
   it('should set autosize to fit if requested', () => {
@@ -112,7 +107,7 @@ describe('compile/compile', () => {
       encoding: {}
     }).spec;
 
-    assert.equal(spec.autosize, 'fit');
+    expect(spec.autosize).toEqual('fit');
   });
 
   it(
@@ -127,9 +122,9 @@ describe('compile/compile', () => {
           y: {field: 'b', type: 'quantitative'}
         }
       }).spec;
-      assert.equal(localLogger.warns[0], log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
-      assert.equal(spec.width, 200);
-      assert.equal(spec.height, 200);
+      expect(localLogger.warns[0]).toEqual(log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
+      expect(spec.width).toEqual(200);
+      expect(spec.height).toEqual(200);
     })
   );
 
@@ -146,8 +141,8 @@ describe('compile/compile', () => {
           }
         ]
       }).spec;
-      assert.equal(localLogger.warns[0], log.message.FIT_NON_SINGLE);
-      assert.equal(spec.autosize, 'pad');
+      expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
+      expect(spec.autosize).toEqual('pad');
     })
   );
 
@@ -164,7 +159,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
+    expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it('should return title (string) for a layered spec.', () => {
@@ -180,7 +175,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
+    expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it('should return title from a child of a layer spec if parent has no title.', () => {
@@ -196,7 +191,7 @@ describe('compile/compile', () => {
         }
       ]
     }).spec;
-    assert.deepEqual(spec.title, {text: 'test', frame: 'group'});
+    expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
 
   it(
@@ -215,11 +210,11 @@ describe('compile/compile', () => {
         ],
         config: {title: {anchor: 'middle'}}
       }).spec;
-      assert.deepEqual(spec.title, {
+      expect(spec.title).toEqual({
         text: 'test',
         anchor: 'start' // We only support anchor as start for concat
       });
-      assert.equal(localLogger.warns[0], log.message.cannotSetTitleAnchor('concat'));
+      expect(localLogger.warns[0]).toEqual(log.message.cannotSetTitleAnchor('concat'));
     })
   );
 
@@ -237,7 +232,7 @@ describe('compile/compile', () => {
       ],
       config: {title: {offset: 5}}
     }).spec;
-    assert.deepEqual(spec.title, {
+    expect(spec.title).toEqual({
       text: 'test',
       anchor: 'start',
       offset: 5
@@ -257,7 +252,7 @@ describe('compile/compile', () => {
       ],
       config: {title: {offset: 5}}
     }).spec;
-    assert.isUndefined(spec.title);
+    expect(spec.title).not.toBeDefined();
   });
 
   it('should use provided config.', () => {
@@ -273,7 +268,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    assert.equal(spec.config.background, 'blue');
+    expect(spec.config.background).toEqual('blue');
   });
 
   it('should merge spec and provided config.', () => {
@@ -292,7 +287,7 @@ describe('compile/compile', () => {
         }
       }
     ).spec;
-    assert.equal(spec.config.background, 'red');
+    expect(spec.config.background).toEqual('red');
   });
 
   it('should return a spec with projections (implicit)', () => {
@@ -307,7 +302,7 @@ describe('compile/compile', () => {
       },
       encoding: {}
     }).spec;
-    assert.isDefined(spec.projections);
+    expect(spec.projections).toBeDefined();
   });
 
   it('should return a spec with projections (explicit)', () => {
@@ -325,6 +320,6 @@ describe('compile/compile', () => {
       },
       encoding: {}
     }).spec;
-    assert.isDefined(spec.projections);
+    expect(spec.projections).toBeDefined();
   });
 });

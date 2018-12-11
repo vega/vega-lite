@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-import {AncestorParse} from '../../../src/compile/data';
+import { AncestorParse } from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
@@ -18,7 +17,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
         'foo.bar': 'flatten'
       });
     });
@@ -77,7 +76,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()), null);
+      expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toEqual(null);
     });
 
     it('should not parse the same field twice', () => {
@@ -102,29 +101,26 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.deepEqual(ParseNode.makeExplicit(null, model, new AncestorParse()).parse, {
+      expect(ParseNode.makeExplicit(null, model, new AncestorParse()).parse).toEqual({
         a: 'number'
       });
       model.parseScale();
       model.parseData();
 
-      assert.deepEqual(model.child.component.data.ancestorParse.combine(), {
+      expect(model.child.component.data.ancestorParse.combine()).toEqual({
         a: 'number',
         b: 'date'
       });
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = new AncestorParse({a: 'number'});
-      assert.deepEqual(
-        ParseNode.makeImplicitFromEncoding(
-          null,
-          model.child as ModelWithField,
-          model.child.component.data.ancestorParse
-        ).parse,
-        {
-          b: 'date'
-        }
-      );
+      expect(ParseNode.makeImplicitFromEncoding(
+        null,
+        model.child as ModelWithField,
+        model.child.component.data.ancestorParse
+      ).parse).toEqual({
+        b: 'date'
+      });
     });
 
     it('should not parse the same field twice in explicit', () => {
@@ -141,7 +137,7 @@ describe('compile/data/formatparse', () => {
         encoding: {}
       });
 
-      assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
+      expect(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {}))).toBeNull();
     });
 
     it('should not parse the same field twice in implicit', () => {
@@ -152,7 +148,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {})));
+      expect(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {}))).toBeNull();
     });
 
     it('should not parse counts', () => {
@@ -200,8 +196,8 @@ describe('compile/data/formatparse', () => {
       });
 
       const ancestorParse = new AncestorParse();
-      assert.isNull(ParseNode.makeExplicit(null, model, ancestorParse), null);
-      assert.deepEqual(ancestorParse.combine(), {
+      expect(ParseNode.makeExplicit(null, model, ancestorParse)).toBeNull();
+      expect(ancestorParse.combine()).toEqual({
         b: null
       });
       expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse)).toBeNull();
@@ -222,7 +218,7 @@ describe('compile/data/formatparse', () => {
         }
       });
 
-      assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true)));
+      expect(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true))).toBeNull();
     });
   });
 
@@ -237,7 +233,7 @@ describe('compile/data/formatparse', () => {
         d3: 'utc:"%y"'
       });
 
-      assert.deepEqual(p.assembleTransforms(), [
+      expect(p.assembleTransforms()).toEqual([
         {type: 'formula', expr: 'toNumber(datum["n"])', as: 'n'},
         {type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b'},
         {type: 'formula', expr: 'toString(datum["s"])', as: 's'},
@@ -253,7 +249,7 @@ describe('compile/data/formatparse', () => {
         'nested.field': 'flatten'
       });
 
-      assert.deepEqual(p.assembleTransforms(true), [
+      expect(p.assembleTransforms(true)).toEqual([
         {type: 'formula', expr: 'datum["nested"] && datum["nested"]["field"]', as: 'nested.field'}
       ]);
     });
@@ -265,8 +261,8 @@ describe('compile/data/formatparse', () => {
           x: 'foo'
         });
 
-        assert.deepEqual(p.assembleTransforms(), []);
-        assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+        expect(p.assembleTransforms()).toEqual([]);
+        expect(localLogger.warns[0]).toEqual(log.message.unrecognizedParse('foo'));
       })
     );
   });
@@ -279,7 +275,7 @@ describe('compile/data/formatparse', () => {
         'nested.field': 'flatten'
       });
 
-      assert.deepEqual(p.assembleFormatParse(), {
+      expect(p.assembleFormatParse()).toEqual({
         n: 'number',
         b: 'boolean'
       });
@@ -294,7 +290,7 @@ describe('compile/data/formatparse', () => {
         'nested.field': 'flatten'
       });
 
-      assert.deepEqual(p.producedFields(), {n: true, b: true, 'nested.field': true});
+      expect(p.producedFields()).toEqual({n: true, b: true, 'nested.field': true});
     });
   });
 

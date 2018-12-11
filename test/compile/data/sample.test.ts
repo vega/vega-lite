@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
-import {SampleTransformNode} from '../../../src/compile/data/sample';
+import { SampleTransformNode } from '../../../src/compile/data/sample';
 import {Transform} from '../../../src/transform';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
@@ -11,7 +10,7 @@ describe('compile/data/sample', () => {
         sample: 500
       };
       const sample = new SampleTransformNode(null, transform);
-      assert.deepEqual(sample.assemble(), {
+      expect(sample.assemble()).toEqual({
         type: 'sample',
         size: 500
       });
@@ -21,7 +20,7 @@ describe('compile/data/sample', () => {
         sample: 500
       };
       const sample = new SampleTransformNode(null, transform);
-      assert.deepEqual(sample.hash(), 'SampleTransform {"sample":500}');
+      expect(sample.hash()).toEqual('SampleTransform {"sample":500}');
     });
 
     it('should never clone parent', () => {

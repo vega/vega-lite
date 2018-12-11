@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import {UnitModel} from '../../../src/compile/unit';
 import {parseLayerModel} from '../../util';
@@ -38,7 +37,7 @@ describe('Layered Selections', () => {
 
   it('should appropriately name the unit', () => {
     const unit = layers.children[0] as UnitModel;
-    assert.equal(selection.unitName(unit), '"layer_0"');
+    expect(selection.unitName(unit)).toEqual('"layer_0"');
   });
 
   // Selections should augment layered marks together, rather than each
@@ -133,7 +132,7 @@ describe('Layered Selections', () => {
     const child0 = layers.children[0].assembleMarks()[0];
     const child1 = layers.children[1].assembleMarks()[0];
 
-    assert.sameDeepMembers(layers.assembleMarks(), [
+    expect(layers.assembleMarks()).toEqual([
       // Background brush mark for "brush" selection.
       {
         name: 'brush_brush_bg',

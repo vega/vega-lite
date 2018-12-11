@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {
   isScaleChannel,
   rangeType,
@@ -19,53 +18,50 @@ import {without} from '../src/util';
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {
     it('should be CHANNELS without row and column', () => {
-      assert.deepEqual(UNIT_CHANNELS, without(CHANNELS, ['row', 'column']));
+      expect(UNIT_CHANNELS).toEqual(without(CHANNELS, ['row', 'column']));
     });
   });
 
   describe('SINGLE_DEF_CHANNELS', () => {
     it('should be CHANNELS without detail and order', () => {
-      assert.deepEqual(SINGLE_DEF_CHANNELS, without(CHANNELS, ['detail', 'order']));
+      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order']));
     });
   });
 
   describe('SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
-      assert.deepEqual(
-        SCALE_CHANNELS,
-        without(UNIT_CHANNELS, [
-          'x2',
-          'y2',
-          'xError',
-          'yError',
-          'xError2',
-          'yError2',
-          'latitude',
-          'longitude',
-          'latitude2',
-          'longitude2',
-          'order',
-          'detail',
-          'key',
-          'text',
-          'label',
-          'tooltip',
-          'href'
-        ])
-      );
+      expect(SCALE_CHANNELS).toEqual(without(UNIT_CHANNELS, [
+        'x2',
+        'y2',
+        'xError',
+        'yError',
+        'xError2',
+        'yError2',
+        'latitude',
+        'longitude',
+        'latitude2',
+        'longitude2',
+        'order',
+        'detail',
+        'key',
+        'text',
+        'label',
+        'tooltip',
+        'href'
+      ]));
     });
   });
 
   describe('NONPOSITION_SCALE_CHANNELS', () => {
     it('should be SCALE_CHANNELS without x, y, x2, y2', () => {
-      assert.deepEqual(NONPOSITION_SCALE_CHANNELS, without(SCALE_CHANNELS, ['x', 'y']));
+      expect(NONPOSITION_SCALE_CHANNELS).toEqual(without(SCALE_CHANNELS, ['x', 'y']));
     });
   });
 
   describe('isScaleChannel', () => {
     it('should return true for all scale channel', () => {
       for (const channel of SCALE_CHANNELS) {
-        assert(isScaleChannel(channel));
+        expect(isScaleChannel(channel)).toBeTruthy();
       }
     });
   });
@@ -73,9 +69,9 @@ describe('channel', () => {
   describe('rangeType', () => {
     it('should be defined for all channels (no error).', () => {
       for (const c of CHANNELS) {
-        assert.doesNotThrow(() => {
+        expect(() => {
           rangeType(c);
-        });
+        }).not.toThrow();
       }
     });
   });
@@ -100,10 +96,10 @@ describe('channel', () => {
           type: 'quantitative'
         }
       };
-      assert.isTrue(supportMark(encoding, X2, CIRCLE));
-      assert.isTrue(supportMark(encoding, X2, POINT));
-      assert.isTrue(supportMark(encoding, X2, SQUARE));
-      assert.isTrue(supportMark(encoding, X2, TICK));
+      expect(supportMark(encoding, X2, CIRCLE)).toBe(true);
+      expect(supportMark(encoding, X2, POINT)).toBe(true);
+      expect(supportMark(encoding, X2, SQUARE)).toBe(true);
+      expect(supportMark(encoding, X2, TICK)).toBe(true);
     });
 
     it('should support y2 for circle, point, square and tick mark with binned data', () => {
@@ -125,10 +121,10 @@ describe('channel', () => {
           type: 'quantitative'
         }
       };
-      assert.isTrue(supportMark(encoding, Y2, CIRCLE));
-      assert.isTrue(supportMark(encoding, Y2, POINT));
-      assert.isTrue(supportMark(encoding, Y2, SQUARE));
-      assert.isTrue(supportMark(encoding, Y2, TICK));
+      expect(supportMark(encoding, Y2, CIRCLE)).toBe(true);
+      expect(supportMark(encoding, Y2, POINT)).toBe(true);
+      expect(supportMark(encoding, Y2, SQUARE)).toBe(true);
+      expect(supportMark(encoding, Y2, TICK)).toBe(true);
     });
 
     it('should not support x2 for circle, point, square and tick mark without binned data', () => {
@@ -149,10 +145,10 @@ describe('channel', () => {
           type: 'quantitative'
         }
       };
-      assert.isFalse(supportMark(encoding, X2, CIRCLE));
-      assert.isFalse(supportMark(encoding, X2, POINT));
-      assert.isFalse(supportMark(encoding, X2, SQUARE));
-      assert.isFalse(supportMark(encoding, X2, TICK));
+      expect(supportMark(encoding, X2, CIRCLE)).toBe(false);
+      expect(supportMark(encoding, X2, POINT)).toBe(false);
+      expect(supportMark(encoding, X2, SQUARE)).toBe(false);
+      expect(supportMark(encoding, X2, TICK)).toBe(false);
     });
 
     it('should not support y2 for circle, point, square and tick mark with binned data', () => {
@@ -173,10 +169,10 @@ describe('channel', () => {
           type: 'quantitative'
         }
       };
-      assert.isFalse(supportMark(encoding, Y2, CIRCLE));
-      assert.isFalse(supportMark(encoding, Y2, POINT));
-      assert.isFalse(supportMark(encoding, Y2, SQUARE));
-      assert.isFalse(supportMark(encoding, Y2, TICK));
+      expect(supportMark(encoding, Y2, CIRCLE)).toBe(false);
+      expect(supportMark(encoding, Y2, POINT)).toBe(false);
+      expect(supportMark(encoding, Y2, SQUARE)).toBe(false);
+      expect(supportMark(encoding, Y2, TICK)).toBe(false);
     });
 
     it('should not support xError for all marks', () => {
@@ -199,7 +195,7 @@ describe('channel', () => {
       };
 
       for (const m of PRIMITIVE_MARKS) {
-        assert.isFalse(supportMark(encoding, XERROR, m));
+        expect(supportMark(encoding, XERROR, m)).toBe(false);
       }
     });
 
@@ -223,7 +219,7 @@ describe('channel', () => {
       };
 
       for (const m of PRIMITIVE_MARKS) {
-        assert.isFalse(supportMark(encoding, XERROR2, m));
+        expect(supportMark(encoding, XERROR2, m)).toBe(false);
       }
     });
 
@@ -247,7 +243,7 @@ describe('channel', () => {
       };
 
       for (const m of PRIMITIVE_MARKS) {
-        assert.isFalse(supportMark(encoding, YERROR, m));
+        expect(supportMark(encoding, YERROR, m)).toBe(false);
       }
     });
 
@@ -271,7 +267,7 @@ describe('channel', () => {
       };
 
       for (const m of PRIMITIVE_MARKS) {
-        assert.isFalse(supportMark(encoding, YERROR2, m));
+        expect(supportMark(encoding, YERROR2, m)).toBe(false);
       }
     });
   });

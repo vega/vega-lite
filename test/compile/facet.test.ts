@@ -1,13 +1,10 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import {FacetMapping} from '../../src/facet';
-import {PositionFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {ORDINAL} from '../../src/type';
-import {VgLayout} from '../../src/vega.schema';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('FacetModel', () => {
@@ -24,8 +21,8 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        assert.equal(model.facet['shape'], undefined);
-        assert.equal(localLogger.warns[0], log.message.incompatibleChannel(SHAPE, 'facet'));
+        expect(model.facet['shape']).toEqual(undefined);
+        expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(SHAPE, 'facet'));
       })
     );
 
@@ -41,8 +38,8 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        assert.equal(model.facet.row, undefined);
-        assert.equal(localLogger.warns[0], log.message.emptyFieldDef({type: ORDINAL}, ROW));
+        expect(model.facet.row).toEqual(undefined);
+        expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: ORDINAL}, ROW));
       })
     );
 
@@ -58,8 +55,8 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        assert.deepEqual<PositionFieldDef<string>>(model.facet.row, {field: 'a', type: 'quantitative'});
-        assert.equal(localLogger.warns[0], log.message.facetChannelShouldBeDiscrete(ROW));
+        expect(model.facet.row).toEqual({field: 'a', type: 'quantitative'});
+        expect(localLogger.warns[0]).toEqual(log.message.facetChannelShouldBeDiscrete(ROW));
       })
     );
   });
@@ -88,7 +85,7 @@ describe('FacetModel', () => {
         return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, 'timeFormat(parent["year_date"], \'%Y\')');
+      expect(columnHeader.title.text.signal).toBeTruthy();
     });
 
     it('applies number format for fieldref of a quantitative field', () => {
@@ -110,7 +107,7 @@ describe('FacetModel', () => {
         return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, 'format(parent["a"], \'d\')');
+      expect(columnHeader.title.text.signal).toBeTruthy();
     });
 
     it('ignores number format for fieldref of a binned field', () => {
@@ -132,7 +129,7 @@ describe('FacetModel', () => {
         return d.name === 'column_header';
       })[0];
 
-      assert(columnHeader.title.text.signal, 'parent["a"]');
+      expect(columnHeader.title.text.signal).toBeTruthy();
     });
   });
 
@@ -150,7 +147,7 @@ describe('FacetModel', () => {
         }
       });
 
-      assert(model.component.scales['x']);
+      expect(model.component.scales['x']).toBeTruthy();
     });
 
     it('should create independent scales if resolve is set to independent', () => {
@@ -171,7 +168,7 @@ describe('FacetModel', () => {
         }
       });
 
-      assert(!model.component.scales['x']);
+      expect(!model.component.scales['x']).toBeTruthy();
     });
   });
 
@@ -196,7 +193,7 @@ describe('FacetModel', () => {
         return d.name === 'column_header';
       })[0];
 
-      assert.deepEqual(columnHeader.sort, {field: 'datum["a"]', order: 'ascending'});
+      expect(columnHeader.sort).toEqual({field: 'datum["a"]', order: 'ascending'});
     });
   });
 
@@ -221,7 +218,7 @@ describe('FacetModel', () => {
       } as any);
       model.parseData();
       const group = model.child.assembleGroup([]);
-      assert.deepEqual(group.encode.update.columns, {field: 'distinct_c'});
+      expect(group.encode.update.columns).toEqual({field: 'distinct_c'});
     });
   });
 
@@ -239,7 +236,7 @@ describe('FacetModel', () => {
         }
       });
       const layout = model.assembleLayout();
-      assert.deepEqual<VgLayout>(layout, {
+      expect(layout).toEqual({
         padding: {row: 10, column: 10},
         columns: {
           signal: "length(data('column_domain'))"
@@ -268,7 +265,7 @@ describe('FacetModel', () => {
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       const layout = model.child.assembleLayout();
-      assert.deepEqual(layout.columns, undefined);
+      expect(layout.columns).toEqual(undefined);
     });
 
     it('returns a layout with header band if child spec is also a facet', () => {
@@ -291,7 +288,7 @@ describe('FacetModel', () => {
       model.parseLayoutSize();
       model.parseAxisAndHeader();
       const layout = model.assembleLayout();
-      assert.deepEqual(layout.headerBand, {row: 0.5});
+      expect(layout.headerBand).toEqual({row: 0.5});
     });
   });
 
@@ -313,8 +310,8 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      assert(marks[0].from.facet.aggregate.cross);
-      assert.deepEqual(marks[0].sort, {
+      expect(marks[0].from.facet.aggregate.cross).toBeTruthy();
+      expect(marks[0].sort).toEqual({
         field: ['datum["a"]', 'datum["b"]'],
         order: ['ascending', 'ascending']
       });
@@ -337,7 +334,7 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      assert(marks[0].from.facet.aggregate.cross);
+      expect(marks[0].from.facet.aggregate.cross).toBeTruthy();
       expect(marks[0].sort).toEqual({
         field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
         order: ['ascending', 'ascending']
@@ -397,7 +394,7 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      assert.deepEqual(marks[0].from.facet.aggregate, {
+      expect(marks[0].from.facet.aggregate).toEqual({
         fields: ['b', 'c'],
         ops: ['distinct', 'distinct'],
         as: ['distinct_b', 'distinct_c']
@@ -426,7 +423,7 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      assert.deepEqual(marks[0].from.facet.aggregate, {
+      expect(marks[0].from.facet.aggregate).toEqual({
         fields: ['c'],
         ops: ['distinct'],
         as: ['distinct_c']

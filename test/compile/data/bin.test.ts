@@ -1,13 +1,8 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
-
 import {BinNode} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
-import {VgTransform} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
@@ -30,7 +25,7 @@ describe('compile/data/bin', () => {
       }
     });
 
-    assert.deepEqual<VgTransform>(assembleFromEncoding(model)[0], {
+    expect(assembleFromEncoding(model)[0]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       as: ['bin_extent_0_100_maxbins_10_Acceleration', 'bin_extent_0_100_maxbins_10_Acceleration_end'],
@@ -52,13 +47,13 @@ describe('compile/data/bin', () => {
       }
     });
     const transform = assembleFromEncoding(model);
-    assert.deepEqual(transform.length, 2);
-    assert.deepEqual<VgTransform>(transform[0], {
+    expect(transform.length).toEqual(2);
+    expect(transform[0]).toEqual({
       type: 'extent',
       field: 'Acceleration',
       signal: 'bin_maxbins_10_Acceleration_extent'
     });
-    assert.deepEqual<VgTransform>(transform[1], {
+    expect(transform[1]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       as: ['bin_maxbins_10_Acceleration', 'bin_maxbins_10_Acceleration_end'],
@@ -86,13 +81,13 @@ describe('compile/data/bin', () => {
       }
     });
     const transform = assembleFromEncoding(model);
-    assert.deepEqual(transform.length, 3);
-    assert.deepEqual<VgTransform>(transform[0], {
+    expect(transform.length).toEqual(3);
+    expect(transform[0]).toEqual({
       type: 'extent',
       field: 'Rotten_Tomatoes_Rating',
       signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'
     });
-    assert.deepEqual<VgTransform>(transform[1], {
+    expect(transform[1]).toEqual({
       type: 'bin',
       field: 'Rotten_Tomatoes_Rating',
       as: ['bin_maxbins_10_Rotten_Tomatoes_Rating', 'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
@@ -100,7 +95,7 @@ describe('compile/data/bin', () => {
       maxbins: 10,
       extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'}
     });
-    assert.deepEqual<VgTransform>(transform[2], {
+    expect(transform[2]).toEqual({
       type: 'formula',
       as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
       expr: `datum["bin_maxbins_10_Rotten_Tomatoes_Rating"] === null || isNaN(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + " - " + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
@@ -130,7 +125,7 @@ describe('compile/data/bin', () => {
       }
     });
 
-    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
+    expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       maxbins: 10,
@@ -163,7 +158,7 @@ describe('compile/data/bin', () => {
       }
     });
 
-    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
+    expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       maxbins: 20,
@@ -196,7 +191,7 @@ describe('compile/data/bin', () => {
       }
     });
 
-    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
+    expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       anchor: 6,
@@ -230,7 +225,7 @@ describe('compile/data/bin', () => {
       }
     });
 
-    assert.deepEqual<VgTransform>(assembleFromTransform(model, t)[0], {
+    expect(assembleFromTransform(model, t)[0]).toEqual({
       type: 'bin',
       field: 'Acceleration',
       anchor: 6,
@@ -264,7 +259,7 @@ describe('compile/data/bin', () => {
       }
     });
     const binNode = BinNode.makeFromTransform(null, t, model);
-    assert.deepEqual(binNode.hash(), 'Bin 1594083826');
+    expect(binNode.hash()).toEqual('Bin 1594083826');
   });
 
   it('should never clone parent', () => {

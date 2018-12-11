@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import * as log from '../../src/log';
 import {normalize} from '../../src/spec';
 import {Transform} from '../../src/transform';
@@ -7,34 +6,30 @@ import {defaultConfig} from '.././../src/config';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: {
-              type: 'boxplot',
-              extent: 'min-max'
-            },
-            encoding: {
-              x: {aggregate: 'boxplot', field: 'people', type: 'quantitative'},
-              y: {
-                aggregate: 'boxplot',
-                field: 'people',
-                type: 'quantitative',
-                axis: {title: 'population'}
-              },
-              color: {value: 'skyblue'}
-            }
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: {
+            type: 'boxplot',
+            extent: 'min-max'
           },
-          defaultConfig
-        );
-      },
-      Error,
-      'Both x and y cannot have aggregate'
-    );
+          encoding: {
+            x: {aggregate: 'boxplot', field: 'people', type: 'quantitative'},
+            y: {
+              aggregate: 'boxplot',
+              field: 'people',
+              type: 'quantitative',
+              axis: {title: 'population'}
+            },
+            color: {value: 'skyblue'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it('should produce correct transform groupby for vertical boxplot with two quantitative axes and use default orientation', () => {
@@ -95,27 +90,23 @@ describe('normalizeBoxMinMax', () => {
   });
 
   it('should produce an error if neither the x axis or y axis is specified', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: {
-              type: 'boxplot',
-              extent: 'min-max'
-            },
-            encoding: {
-              color: {value: 'skyblue'}
-            }
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: {
+            type: 'boxplot',
+            extent: 'min-max'
           },
-          defaultConfig
-        );
-      },
-      Error,
-      'Need a valid continuous axis for boxplots'
-    );
+          encoding: {
+            color: {value: 'skyblue'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it(
@@ -148,110 +139,94 @@ describe('normalizeBoxMinMax', () => {
         defaultConfig
       );
 
-      assert.equal(localLogger.warns[0], log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, type));
+      expect(localLogger.warns[0]).toEqual(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, type));
     })
   );
 
   it('should produce an error if build 1D boxplot with a discrete axis', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: 'boxplot',
-            encoding: {
-              x: {field: 'age', type: 'ordinal'}
-            }
-          },
-          defaultConfig
-        );
-      },
-      Error,
-      'Need a valid continuous axis for boxplots'
-    );
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: 'boxplot',
+          encoding: {
+            x: {field: 'age', type: 'ordinal'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it('should produce an error if both axes are discrete', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: {
-              type: 'boxplot',
-              extent: 'min-max'
-            },
-            encoding: {
-              x: {field: 'age', type: 'ordinal'},
-              y: {
-                field: 'age',
-                type: 'ordinal',
-                axis: {title: 'age'}
-              },
-              color: {value: 'skyblue'}
-            }
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: {
+            type: 'boxplot',
+            extent: 'min-max'
           },
-          defaultConfig
-        );
-      },
-      Error,
-      'Need a valid continuous axis for boxplots'
-    );
+          encoding: {
+            x: {field: 'age', type: 'ordinal'},
+            y: {
+              field: 'age',
+              type: 'ordinal',
+              axis: {title: 'age'}
+            },
+            color: {value: 'skyblue'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it('should produce an error if in 2D boxplot both axes are not valid field definitions', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: {
-              type: 'boxplot',
-              extent: 'min-max'
-            },
-            encoding: {
-              x: {field: 'age', type: 'ordinal'},
-              y: {
-                type: 'ordinal',
-                axis: {title: 'age'}
-              },
-              color: {value: 'skyblue'}
-            }
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: {
+            type: 'boxplot',
+            extent: 'min-max'
           },
-          defaultConfig
-        );
-      },
-      Error,
-      'Need a valid continuous axis for boxplots'
-    );
+          encoding: {
+            x: {field: 'age', type: 'ordinal'},
+            y: {
+              type: 'ordinal',
+              axis: {title: 'age'}
+            },
+            color: {value: 'skyblue'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it('should produce an error if 1D boxplot only axis is discrete', () => {
-    assert.throws(
-      () => {
-        normalize(
-          {
-            description:
-              'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
-            data: {url: 'data/population.json'},
-            mark: 'boxplot',
-            encoding: {
-              x: {field: 'age', type: 'ordinal'},
-              color: {value: 'skyblue'}
-            }
-          },
-          defaultConfig
-        );
-      },
-      Error,
-      'Need a valid continuous axis for boxplots'
-    );
+    expect(() => {
+      normalize(
+        {
+          description:
+            'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+          data: {url: 'data/population.json'},
+          mark: 'boxplot',
+          encoding: {
+            x: {field: 'age', type: 'ordinal'},
+            color: {value: 'skyblue'}
+          }
+        },
+        defaultConfig
+      );
+    }).toThrow();
   });
 
   it('should produce correct transform groupby for vertical boxplot with two quantitative axes and specify orientation with orient', () => {

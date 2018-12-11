@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
 import {circle, point, square} from '../../../src/compile/mark/point';
 import {Config} from '../../../src/config';
@@ -33,14 +32,14 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should be centered on y', () => {
-      assert.deepEqual(props.y, {
+      expect(props.y).toEqual({
         mult: 0.5,
         signal: 'height'
       });
     });
 
     it('should scale on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year'});
+      expect(props.x).toEqual({scale: X, field: 'year'});
     });
   });
 
@@ -60,7 +59,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should use stack_end on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'sum_a_end'});
+      expect(props.x).toEqual({scale: X, field: 'sum_a_end'});
     });
   });
 
@@ -74,14 +73,14 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should be centered on x', () => {
-      assert.deepEqual(props.x, {
+      expect(props.x).toEqual({
         mult: 0.5,
         signal: 'width'
       });
     });
 
     it('should scale on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'year'});
+      expect(props.y).toEqual({scale: Y, field: 'year'});
     });
   });
 
@@ -101,7 +100,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should use stack_end on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'sum_a_end'});
+      expect(props.y).toEqual({scale: Y, field: 'sum_a_end'});
     });
   });
 
@@ -110,16 +109,16 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should scale on x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year'});
+      expect(props.x).toEqual({scale: X, field: 'year'});
     });
 
     it('should scale on y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'yield'});
+      expect(props.y).toEqual({scale: Y, field: 'yield'});
     });
 
     it('should be an unfilled circle', () => {
-      assert.deepEqual(props.fill, {value: 'transparent'});
-      assert.deepEqual(props.stroke, {value: defaultMarkConfig.color});
+      expect(props.fill).toEqual({value: 'transparent'});
+      expect(props.stroke).toEqual({value: defaultMarkConfig.color});
     });
   });
 
@@ -134,7 +133,7 @@ describe('Mark: Point', () => {
         }
       });
       const props = point.encodeEntry(model);
-      assert.deepEqual(props.x, {scale: 'x', field: 'year', band: 0.5});
+      expect(props.x).toEqual({scale: 'x', field: 'year', band: 0.5});
     });
   });
 
@@ -147,7 +146,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have scale for size', () => {
-      assert.deepEqual(props.size, {scale: SIZE, field: 'count_*'});
+      expect(props.size).toEqual({scale: SIZE, field: 'count_*'});
     });
   });
 
@@ -160,7 +159,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have scale for color', () => {
-      assert.deepEqual(props.stroke, {scale: COLOR, field: 'yield'});
+      expect(props.stroke).toEqual({scale: COLOR, field: 'yield'});
     });
   });
 
@@ -175,10 +174,10 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have one condition for color with scale for "yield"', () => {
-      assert.isArray(props.stroke);
-      assert.equal(props.stroke['length'], 2);
-      assert.equal(props.stroke[0].scale, COLOR);
-      assert.equal(props.stroke[0].field, 'yield');
+      expect(Array.isArray(props.stroke)).toBe(true);
+      expect(props.stroke['length']).toEqual(2);
+      expect(props.stroke[0].scale).toEqual(COLOR);
+      expect(props.stroke[0].field).toEqual('yield');
     });
   });
 
@@ -192,10 +191,10 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have one condition for color with scale for "yield"', () => {
-      assert.isArray(props.stroke);
-      assert.equal(props.stroke['length'], 2);
-      assert.equal(props.stroke[0].test, 'true');
-      assert.equal(props.stroke[1].value, '#4c78a8');
+      expect(Array.isArray(props.stroke)).toBe(true);
+      expect(props.stroke['length']).toEqual(2);
+      expect(props.stroke[0].test).toEqual('true');
+      expect(props.stroke[1].value).toEqual('#4c78a8');
     });
   });
 
@@ -208,7 +207,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should have scale for shape', () => {
-      assert.deepEqual(props.shape, {scale: SHAPE, field: 'site'});
+      expect(props.shape).toEqual({scale: SHAPE, field: 'site'});
     });
   });
 
@@ -222,9 +221,9 @@ describe('Mark: Point', () => {
     );
     const props = point.encodeEntry(model);
     it('should correct shape, color and size', () => {
-      assert.deepEqual(props.shape, {value: 'circle'});
-      assert.deepEqual(props.stroke, {value: 'red'});
-      assert.deepEqual(props.size, {value: 23});
+      expect(props.shape).toEqual({value: 'circle'});
+      expect(props.stroke).toEqual({value: 'red'});
+      expect(props.size).toEqual({value: 23});
     });
   });
 
@@ -232,7 +231,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {mark: {size: 23}}));
     const props = point.encodeEntry(model);
     it('should have correct size', () => {
-      assert.deepEqual(props.size, {value: 23});
+      expect(props.size).toEqual({value: 23});
     });
   });
 
@@ -240,7 +239,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {point: {size: 23}}));
     const props = point.encodeEntry(model);
     it('should have correct size', () => {
-      assert.deepEqual(props.size, {value: 23});
+      expect(props.size).toEqual({value: 23});
     });
   });
 
@@ -254,7 +253,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should pass href value to encoding', () => {
-      assert.deepEqual(props.href, {value: 'https://idl.cs.washington.edu/'});
+      expect(props.href).toEqual({value: 'https://idl.cs.washington.edu/'});
     });
   });
 });
@@ -269,7 +268,7 @@ describe('Mark: Square', () => {
     });
     const props = square.encodeEntry(model);
 
-    assert.propertyVal(props.shape, 'value', 'square');
+    expect(props.shape['value']).toBe('square');
   });
 
   it('should be filled by default', () => {
@@ -281,7 +280,7 @@ describe('Mark: Square', () => {
     });
     const props = square.encodeEntry(model);
 
-    assert.propertyVal(props.fill, 'value', 'blue');
+    expect(props.fill['value']).toBe('blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', () => {
@@ -299,8 +298,8 @@ describe('Mark: Square', () => {
 
     const props = square.encodeEntry(model);
 
-    assert.propertyVal(props.stroke, 'value', 'blue');
-    assert.propertyVal(props.fill, 'value', 'transparent');
+    expect(props.stroke['value']).toBe('blue');
+    expect(props.fill['value']).toBe('transparent');
   });
 });
 
@@ -314,11 +313,11 @@ describe('Mark: Circle', () => {
   const props = circle.encodeEntry(model);
 
   it('should have correct shape', () => {
-    assert.propertyVal(props.shape, 'value', 'circle');
+    expect(props.shape['value']).toBe('circle');
   });
 
   it('should be filled by default', () => {
-    assert.propertyVal(props.fill, 'value', 'blue');
+    expect(props.fill['value']).toBe('blue');
   });
 
   it('with config.mark.filled:false should have transparent fill', () => {
@@ -336,7 +335,7 @@ describe('Mark: Circle', () => {
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);
 
-    assert.propertyVal(filledCircleProps.stroke, 'value', 'blue');
-    assert.propertyVal(filledCircleProps.fill, 'value', 'transparent');
+    expect(filledCircleProps.stroke['value']).toBe('blue');
+    expect(filledCircleProps.fill['value']).toBe('transparent');
   });
 });

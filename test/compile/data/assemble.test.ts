@@ -1,13 +1,11 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {OutputNode} from '../../../src/compile/data/dataflow';
 import {SourceNode} from '../../../src/compile/data/source';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
-import {VgData} from '../../../src/vega.schema';
 
 describe('compile/data/assemble', () => {
   describe('assembleData', () => {
@@ -17,7 +15,7 @@ describe('compile/data/assemble', () => {
       const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = src;
 
-      assert.equal(main.getSource(), 'mainOut');
+      expect(main.getSource()).toBe('mainOut');
 
       const data = assembleRootData(
         {
@@ -29,8 +27,8 @@ describe('compile/data/assemble', () => {
         {}
       );
 
-      assert.equal(data.length, 1);
-      assert.equal(data[0].name, 'foo');
+      expect(data.length).toBe(1);
+      expect(data[0].name).toBe('foo');
     });
 
     it('should assemble raw and main output', () => {
@@ -43,8 +41,8 @@ describe('compile/data/assemble', () => {
       const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = agg;
 
-      assert.equal(raw.getSource(), 'rawOut');
-      assert.equal(main.getSource(), 'mainOut');
+      expect(raw.getSource()).toBe('rawOut');
+      expect(main.getSource()).toBe('mainOut');
 
       const data = assembleRootData(
         {
@@ -56,7 +54,7 @@ describe('compile/data/assemble', () => {
         {}
       );
 
-      assert.deepEqual<VgData[]>(data, [
+      expect(data).toEqual([
         {
           name: 'source_0',
           url: 'foo.csv',
@@ -105,8 +103,8 @@ describe('compile/data/assemble', () => {
       const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
       main.parent = agg;
 
-      assert.equal(raw.getSource(), 'rawOut');
-      assert.equal(main.getSource(), 'mainOut');
+      expect(raw.getSource()).toBe('rawOut');
+      expect(main.getSource()).toBe('mainOut');
 
       const data = assembleRootData(
         {
@@ -118,7 +116,7 @@ describe('compile/data/assemble', () => {
         {}
       );
 
-      assert.deepEqual<VgData[]>(data, [
+      expect(data).toEqual([
         {
           name: 'source_0',
           url: 'foo.csv',
@@ -165,7 +163,7 @@ describe('compile/data/assemble', () => {
         }
       );
 
-      assert.deepEqual<VgData[]>(data, [
+      expect(data).toEqual([
         {
           name: 'foo',
           values: [1, 2, 3]

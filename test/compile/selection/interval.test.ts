@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import {selector as parseSelector} from 'vega-event-selector';
 
 import interval from '../../../src/compile/selection/interval';
@@ -48,170 +47,165 @@ describe('Interval Selections', () => {
   describe('Tuple Signals', () => {
     it('builds projection signals', () => {
       const oneSg = interval.signals(model, selCmpts['one']);
-      assert.includeDeepMembers(oneSg, [
-        {
-          name: 'one_x',
-          value: [],
-          on: [
-            {
-              events: parseSelector('mousedown', 'scope')[0],
-              update: '[x(unit), x(unit)]'
-            },
-            {
-              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-              update: '[one_x[0], clamp(x(unit), 0, width)]'
-            },
-            {
-              events: {signal: 'one_scale_trigger'},
-              update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
-            }
-          ]
-        },
-        {
-          name: 'one_Horsepower',
-          on: [
-            {
-              events: {signal: 'one_x'},
-              update: 'one_x[0] === one_x[1] ? null : invert("x", one_x)'
-            }
-          ]
-        },
-        {
-          name: 'one_scale_trigger',
-          update:
-            '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
-        }
-      ]);
+      expect(oneSg).toEqual(
+        expect.arrayContaining([
+          {
+            name: 'one_x',
+            value: [],
+            on: [
+              {
+                events: parseSelector('mousedown', 'scope')[0],
+                update: '[x(unit), x(unit)]'
+              },
+              {
+                events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                update: '[one_x[0], clamp(x(unit), 0, width)]'
+              },
+              {
+                events: {signal: 'one_scale_trigger'},
+                update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
+              }
+            ]
+          },
+          {
+            name: 'one_Horsepower',
+            on: [
+              {
+                events: {signal: 'one_x'},
+                update: 'one_x[0] === one_x[1] ? null : invert("x", one_x)'
+              }
+            ]
+          },
+          {
+            name: 'one_scale_trigger',
+            update:
+              '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
+          }
+        ])
+      );
 
       const twoSg = interval.signals(model, selCmpts['two']);
-      assert.includeDeepMembers(twoSg, [
-        {
-          name: 'two_Miles_per_Gallon',
-          on: []
-        }
-      ]);
+      expect(twoSg).toContainEqual({
+        name: 'two_Miles_per_Gallon',
+        on: []
+      });
 
       const threeSg = interval.signals(model, selCmpts['thr_ee']);
-      assert.includeDeepMembers(threeSg, [
-        {
-          name: 'thr_ee_x',
-          value: [],
-          on: [
-            {
-              events: parseSelector('mousedown', 'scope')[0],
-              update: '[x(unit), x(unit)]'
-            },
-            {
-              events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
-            },
-            {
-              events: parseSelector('keydown', 'scope')[0],
-              update: '[x(unit), x(unit)]'
-            },
-            {
-              events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
-            },
-            {
-              events: {signal: 'thr_ee_scale_trigger'},
-              update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]'
-            }
-          ]
-        },
-        {
-          name: 'thr_ee_Horsepower',
-          on: [
-            {
-              events: {signal: 'thr_ee_x'},
-              update: 'thr_ee_x[0] === thr_ee_x[1] ? null : invert("x", thr_ee_x)'
-            }
-          ]
-        },
-        {
-          name: 'thr_ee_y',
-          value: [],
-          on: [
-            {
-              events: parseSelector('mousedown', 'scope')[0],
-              update: '[y(unit), y(unit)]'
-            },
-            {
-              events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
-              update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
-            },
-            {
-              events: parseSelector('keydown', 'scope')[0],
-              update: '[y(unit), y(unit)]'
-            },
-            {
-              events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-              update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
-            },
-            {
-              events: {signal: 'thr_ee_scale_trigger'},
-              update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]'
-            }
-          ]
-        },
-        {
-          name: 'thr_ee_Miles_per_Gallon',
-          on: [
-            {
-              events: {signal: 'thr_ee_y'},
-              update: 'thr_ee_y[0] === thr_ee_y[1] ? null : invert("y", thr_ee_y)'
-            }
-          ]
-        },
-        {
-          name: 'thr_ee_scale_trigger',
-          update:
-            '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
-        }
-      ]);
+      expect(threeSg).toEqual(
+        expect.arrayContaining([
+          {
+            name: 'thr_ee_x',
+            value: [],
+            on: [
+              {
+                events: parseSelector('mousedown', 'scope')[0],
+                update: '[x(unit), x(unit)]'
+              },
+              {
+                events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
+              },
+              {
+                events: parseSelector('keydown', 'scope')[0],
+                update: '[x(unit), x(unit)]'
+              },
+              {
+                events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
+                update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
+              },
+              {
+                events: {signal: 'thr_ee_scale_trigger'},
+                update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]'
+              }
+            ]
+          },
+          {
+            name: 'thr_ee_Horsepower',
+            on: [
+              {
+                events: {signal: 'thr_ee_x'},
+                update: 'thr_ee_x[0] === thr_ee_x[1] ? null : invert("x", thr_ee_x)'
+              }
+            ]
+          },
+          {
+            name: 'thr_ee_y',
+            value: [],
+            on: [
+              {
+                events: parseSelector('mousedown', 'scope')[0],
+                update: '[y(unit), y(unit)]'
+              },
+              {
+                events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
+              },
+              {
+                events: parseSelector('keydown', 'scope')[0],
+                update: '[y(unit), y(unit)]'
+              },
+              {
+                events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
+                update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
+              },
+              {
+                events: {signal: 'thr_ee_scale_trigger'},
+                update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]'
+              }
+            ]
+          },
+          {
+            name: 'thr_ee_Miles_per_Gallon',
+            on: [
+              {
+                events: {signal: 'thr_ee_y'},
+                update: 'thr_ee_y[0] === thr_ee_y[1] ? null : invert("y", thr_ee_y)'
+              }
+            ]
+          },
+          {
+            name: 'thr_ee_scale_trigger',
+            update:
+              '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
+          }
+        ])
+      );
     });
 
     it('builds trigger signals', () => {
       const oneSg = interval.signals(model, selCmpts['one']);
-      assert.includeDeepMembers(oneSg, [
-        {
-          name: 'one_tuple',
-          on: [
-            {
-              events: [{signal: 'one_Horsepower'}],
-              update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
-            }
-          ]
-        }
-      ]);
+      expect(oneSg).toContainEqual({
+        name: 'one_tuple',
+        on: [
+          {
+            events: [{signal: 'one_Horsepower'}],
+            update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
+          }
+        ]
+      });
 
       const twoSg = interval.signals(model, selCmpts['two']);
-      assert.includeDeepMembers(twoSg, [
-        {
-          name: 'two_tuple',
-          on: [
-            {
-              events: [{signal: 'two_Miles_per_Gallon'}],
-              update:
-                'two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Miles_per_Gallon]} : null'
-            }
-          ]
-        }
-      ]);
+      expect(twoSg).toContainEqual({
+        name: 'two_tuple',
+        on: [
+          {
+            events: [{signal: 'two_Miles_per_Gallon'}],
+            update: 'two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Miles_per_Gallon]} : null'
+          }
+        ]
+      });
 
       const threeSg = interval.signals(model, selCmpts['thr_ee']);
-      assert.includeDeepMembers(threeSg, [
-        {
-          name: 'thr_ee_tuple',
-          on: [
-            {
-              events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
-              update:
-                'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower, thr_ee_Miles_per_Gallon]} : null'
-            }
-          ]
-        }
-      ]);
+      expect(threeSg).toContainEqual({
+        name: 'thr_ee_tuple',
+        on: [
+          {
+            events: [{signal: 'thr_ee_Horsepower'}, {signal: 'thr_ee_Miles_per_Gallon'}],
+            update:
+              'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower, thr_ee_Miles_per_Gallon]} : null'
+          }
+        ]
+      });
     });
 
     it('namespaces signals when encoding/fields collide', () => {
@@ -235,56 +229,58 @@ describe('Interval Selections', () => {
       }));
 
       const sg = interval.signals(model, selCmpts2['one']);
-      assert.equal(sg[0].name, 'one_x');
-      assert.equal(sg[1].name, 'one_x_1');
+      expect(sg[0].name).toEqual('one_x');
+      expect(sg[1].name).toEqual('one_x_1');
     });
   });
 
   it('builds modify signals', () => {
     const oneExpr = interval.modifyExpr(model, selCmpts['one']);
-    assert.equal(oneExpr, 'one_tuple, true');
+    expect(oneExpr).toEqual('one_tuple, true');
 
     const twoExpr = interval.modifyExpr(model, selCmpts['two']);
-    assert.equal(twoExpr, 'two_tuple, true');
+    expect(twoExpr).toEqual('two_tuple, true');
 
     const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
-    assert.equal(threeExpr, 'thr_ee_tuple, {unit: ""}');
+    expect(threeExpr).toEqual('thr_ee_tuple, {unit: ""}');
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, [
-      {
-        name: 'one_modify',
-        on: [
-          {
-            events: {signal: 'one_tuple'},
-            update: `modify(\"one_store\", ${oneExpr})`
-          }
-        ]
-      },
-      {
-        name: 'two_modify',
-        on: [
-          {
-            events: {signal: 'two_tuple'},
-            update: `modify(\"two_store\", ${twoExpr})`
-          }
-        ]
-      },
-      {
-        name: 'thr_ee_modify',
-        on: [
-          {
-            events: {signal: 'thr_ee_tuple'},
-            update: `modify(\"thr_ee_store\", ${threeExpr})`
-          }
-        ]
-      }
-    ]);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_modify',
+          on: [
+            {
+              events: {signal: 'one_tuple'},
+              update: `modify(\"one_store\", ${oneExpr})`
+            }
+          ]
+        },
+        {
+          name: 'two_modify',
+          on: [
+            {
+              events: {signal: 'two_tuple'},
+              update: `modify(\"two_store\", ${twoExpr})`
+            }
+          ]
+        },
+        {
+          name: 'thr_ee_modify',
+          on: [
+            {
+              events: {signal: 'thr_ee_tuple'},
+              update: `modify(\"thr_ee_store\", ${threeExpr})`
+            }
+          ]
+        }
+      ])
+    );
   });
 
   it('builds brush mark', () => {
     const marks: any[] = [{hello: 'world'}];
-    assert.sameDeepMembers(interval.marks(model, selCmpts['one'], marks), [
+    expect(interval.marks(model, selCmpts['one'], marks)).toEqual([
       {
         name: 'one_brush_bg',
         type: 'rect',
@@ -399,9 +395,9 @@ describe('Interval Selections', () => {
     ]);
 
     // Scale-bound interval selections should not add a brush mark.
-    assert.sameDeepMembers(interval.marks(model, selCmpts['two'], marks), marks);
+    expect(interval.marks(model, selCmpts['two'], marks)).toEqual(marks);
 
-    assert.sameDeepMembers(interval.marks(model, selCmpts['thr_ee'], marks), [
+    expect(interval.marks(model, selCmpts['thr_ee'], marks)).toEqual([
       {
         name: 'thr_ee_brush_bg',
         type: 'rect',

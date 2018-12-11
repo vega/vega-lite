@@ -1,7 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-import {Y} from '../../../src/channel';
+import { Y } from '../../../src/channel';
 import {parseLayerAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
@@ -24,7 +23,7 @@ describe('Axis', () => {
         },
         data: {url: 'data/movies.json'}
       });
-      assert.deepEqual(model1.axis(Y), model2.axis(Y));
+      expect(model1.axis(Y)).toEqual(model2.axis(Y));
     });
   });
   describe('parseUnitAxis', () => {
@@ -40,8 +39,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.grid, true);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.grid).toEqual(true);
     });
 
     it('should produce Vega grid when axis config is specified.', () => {
@@ -56,8 +55,8 @@ describe('Axis', () => {
         config: {axisX: {grid: true}}
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].implicit.grid, true);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].implicit.grid).toEqual(true);
     });
 
     it('should produce axis component with grid=false', () => {
@@ -72,8 +71,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.grid, false);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.grid).toEqual(false);
     });
 
     it('should ignore null scales', () => {
@@ -91,8 +90,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.isUndefined(axisComponent['x']);
-      assert.isUndefined(axisComponent['y']);
+      expect(axisComponent['x']).not.toBeDefined();
+      expect(axisComponent['y']).not.toBeDefined();
     });
 
     it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', () => {
@@ -107,8 +106,8 @@ describe('Axis', () => {
         config: {axisX: {grid: false}}
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.grid, undefined);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
     });
 
     it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', () => {
@@ -123,8 +122,8 @@ describe('Axis', () => {
         config: {axis: {grid: false}}
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.grid, undefined);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
     });
 
     it('should store the title value if title = null, "", or false', () => {
@@ -140,8 +139,8 @@ describe('Axis', () => {
           }
         });
         const axisComponent = parseUnitAxis(model);
-        assert.equal(axisComponent['x'].length, 1);
-        assert.equal(axisComponent['x'][0].explicit.title, val as any);
+        expect(axisComponent['x'].length).toEqual(1);
+        expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
     });
 
@@ -158,8 +157,8 @@ describe('Axis', () => {
           }
         });
         const axisComponent = parseUnitAxis(model);
-        assert.equal(axisComponent['x'].length, 1);
-        assert.equal(axisComponent['x'][0].explicit.title, val as any);
+        expect(axisComponent['x'].length).toEqual(1);
+        expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
     });
 
@@ -175,8 +174,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.title, 'foo');
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.title).toEqual('foo');
     });
 
     it('should merge title of fieldDef and fieldDef2', () => {
@@ -196,8 +195,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.title, 'foo, bar');
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.title).toEqual('foo, bar');
     });
 
     it('should use title of fieldDef2', () => {
@@ -216,8 +215,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.equal(axisComponent['x'][0].explicit.title, 'bar');
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].explicit.title).toEqual('bar');
     });
 
     it('should store both x and x2 for ranged mark', () => {
@@ -229,8 +228,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxis(model);
-      assert.equal(axisComponent['x'].length, 1);
-      assert.deepEqual(axisComponent['x'][0].get('title'), [{field: 'a'}, {field: 'a2'}]);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}, {field: 'a2'}]);
     });
   });
 
@@ -270,13 +269,13 @@ describe('Axis', () => {
 
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.equal(axisComponents.y.length, 1);
-      assert.equal(axisComponents.y[0].get('gridScale'), 'x');
+      expect(axisComponents.y.length).toEqual(1);
+      expect(axisComponents.y[0].get('gridScale')).toEqual('x');
     });
 
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      assert.deepEqual(axisComponents.y[0].get('title'), [{aggregate: 'mean', field: 'a'}]);
+      expect(axisComponents.y[0].get('title')).toEqual([{aggregate: 'mean', field: 'a'}]);
     });
 
     it('correctly combines different title', () => {
@@ -314,7 +313,7 @@ describe('Axis', () => {
       parseLayerAxis(model);
       const axisComponents = model.component.axes;
 
-      assert.deepEqual(axisComponents.y[0].get('title'), [
+      expect(axisComponents.y[0].get('title')).toEqual([
         {aggregate: 'max', field: 'Horsepower'},
         {aggregate: 'min', field: 'Horsepower'}
       ]);

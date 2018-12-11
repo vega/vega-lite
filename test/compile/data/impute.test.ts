@@ -1,7 +1,4 @@
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {Transform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
@@ -17,7 +14,7 @@ describe('compile/data/impute', () => {
       };
       const impute = new ImputeNode(null, transform);
 
-      assert.deepEqual(impute.assemble(), [
+      expect(impute.assemble()).toEqual([
         {
           type: 'impute',
           field: 'y',
@@ -41,7 +38,7 @@ describe('compile/data/impute', () => {
         method: 'mean'
       };
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.assemble(), [
+      expect(impute.assemble()).toEqual([
         {
           type: 'impute',
           field: 'y',
@@ -75,7 +72,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       };
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.assemble(), [
+      expect(impute.assemble()).toEqual([
         {
           type: 'impute',
           field: 'y',
@@ -111,7 +108,7 @@ describe('compile/data/impute', () => {
         groupby: ['a', 'b']
       };
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.assemble(), [
+      expect(impute.assemble()).toEqual([
         {
           type: 'impute',
           field: 'y',
@@ -148,7 +145,7 @@ describe('compile/data/impute', () => {
       };
 
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.assemble(), [
+      expect(impute.assemble()).toEqual([
         {
           type: 'impute',
           field: 'y',
@@ -182,7 +179,7 @@ describe('compile/data/impute', () => {
         value: 200
       };
       const impute = new ImputeNode(null, transform);
-      assert.deepEqual(impute.hash(), 'Impute {"impute":"y","key":"x","method":"value","value":200}');
+      expect(impute.hash()).toEqual('Impute {"impute":"y","key":"x","method":"value","value":200}');
     });
   });
 
@@ -197,7 +194,7 @@ describe('compile/data/impute', () => {
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble() as any, [
+      expect(result.assemble() as any).toEqual([
         {
           type: 'impute',
           field: 'variety',
@@ -224,7 +221,7 @@ describe('compile/data/impute', () => {
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble() as any, [
+      expect(result.assemble() as any).toEqual([
         {
           type: 'impute',
           field: 'variety',
@@ -251,7 +248,7 @@ describe('compile/data/impute', () => {
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble() as any, [
+      expect(result.assemble() as any).toEqual([
         {
           type: 'impute',
           field: 'variety',
@@ -287,7 +284,7 @@ describe('compile/data/impute', () => {
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble(), [
+      expect(result.assemble()).toEqual([
         {
           type: 'impute',
           field: 'variety',
@@ -324,7 +321,7 @@ describe('compile/data/impute', () => {
         }
       });
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble() as any, [
+      expect(result.assemble() as any).toEqual([
         {
           type: 'impute',
           field: 'variety',
@@ -361,7 +358,7 @@ describe('compile/data/impute', () => {
       });
 
       const result = ImputeNode.makeFromEncoding(null, model);
-      assert.deepEqual(result.assemble() as any, [
+      expect(result.assemble() as any).toEqual([
         {
           type: 'impute',
           field: 'variety',

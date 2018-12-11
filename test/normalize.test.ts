@@ -1,9 +1,8 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import {defaultConfig, initConfig} from '../src/config';
 import * as log from '../src/log';
 import {LocalLogger} from '../src/log';
-import {normalize, NormalizedSpec, TopLevel, TopLevelSpec} from '../src/spec';
+import {normalize, NormalizedSpec, TopLevelSpec} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -24,7 +23,7 @@ describe('normalize()', () => {
         }
       };
       const config = initConfig(spec.config);
-      assert.deepEqual(normalize(spec, config), {
+      expect(normalize(spec, config)).toEqual({
         name: 'faceted',
         description: 'faceted spec',
         data: {url: 'data/movies.json'},
@@ -55,7 +54,7 @@ describe('normalize()', () => {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual(normalize(spec, config), {
+      expect(normalize(spec, config)).toEqual({
         data: {url: 'data/movies.json'},
         facet: {
           row: {field: 'MPAA_Rating', type: 'ordinal'}
@@ -195,7 +194,7 @@ describe('normalize()', () => {
         defaultConfig
       );
 
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         data: {url: 'data/population.json'},
         layer: [
           {
@@ -254,19 +253,18 @@ describe('normalize()', () => {
           defaultConfig
         );
 
-        assert.equal(localLogger.warns.length, 2);
+        expect(localLogger.warns.length).toEqual(2);
 
-        assert.equal(
-          localLogger.warns[0],
+        expect(localLogger.warns[0]).toEqual(
           log.message.projectionOverridden({
             parentProjection: {type: 'mercator'},
             projection: {type: 'albersUsa'}
           })
         );
 
-        assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
+        expect(localLogger.warns[1]).toEqual(log.message.encodingOverridden(['x']));
 
-        assert.deepEqual(output, {
+        expect(output).toEqual({
           data: {url: 'data/population.json'},
           layer: [
             {
@@ -301,7 +299,7 @@ describe('normalize()', () => {
         config: {line: {point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -333,7 +331,7 @@ describe('normalize()', () => {
         }
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -364,7 +362,7 @@ describe('normalize()', () => {
         }
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -397,7 +395,7 @@ describe('normalize()', () => {
         config: {line: {point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         facet: {
           row: {field: 'symbol', type: 'nominal'}
@@ -435,7 +433,7 @@ describe('normalize()', () => {
         config: {area: {line: {}, point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -475,7 +473,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -508,7 +506,7 @@ describe('normalize()', () => {
           }
         };
         const normalizedSpec = normalize(spec, spec.config);
-        assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+        expect(normalizedSpec).toEqual({
           data: {url: 'data/stocks.csv', format: {type: 'csv'}},
           mark: 'area',
           encoding: {
@@ -533,7 +531,7 @@ describe('normalize()', () => {
           }
         };
         const normalizedSpec = normalize(spec, spec.config);
-        assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+        expect(normalizedSpec).toEqual({
           data: {url: 'data/stocks.csv', format: {type: 'csv'}},
           mark: 'area',
           encoding: {
@@ -559,7 +557,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -595,7 +593,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -632,7 +630,7 @@ describe('normalize()', () => {
         }
       };
 
-      assert.deepEqual<NormalizedSpec>(normalize(spec, defaultConfig), {
+      expect(normalize(spec, defaultConfig)).toEqual({
         data: {url: 'data/population.json'},
         mark: 'rule',
         encoding: {
@@ -653,7 +651,7 @@ describe('normalize()', () => {
         }
       };
 
-      assert.deepEqual(normalize(spec, defaultConfig), spec);
+      expect(normalize(spec, defaultConfig)).toEqual(spec);
     });
 
     it('should convert x2 -> x if there is no x in the encoding', () => {
@@ -667,7 +665,7 @@ describe('normalize()', () => {
         }
       };
 
-      assert.deepEqual<NormalizedSpec>(normalize(spec, defaultConfig), {
+      expect(normalize(spec, defaultConfig)).toEqual({
         data: {url: 'data/population.json'},
         mark: 'rule',
         encoding: {
