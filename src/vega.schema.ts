@@ -6,6 +6,7 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle,
   FontWeight,
+  NewSignal,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField,
@@ -19,7 +20,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
+export {SignalRef as VgSignalRef, NewSignal as VgSignal, SortField as VgSortField, UnionSortField as VgUnionSortField};
 
 export type Color = string;
 
@@ -256,26 +257,6 @@ export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
     return 'signal' in domain;
   }
   return false;
-}
-
-export interface VgEventHandler {
-  events: string[] | SignalRef;
-  update?: string;
-  encode?: string;
-  force?: boolean;
-  between?: any[];
-}
-
-export interface VgSignal {
-  name: string;
-  bind?: string;
-  description?: string;
-  on?: VgEventHandler[];
-  update?: string;
-  react?: boolean;
-  value?: string | number | boolean | {} | SignalRef;
-  // only for nested signals
-  push?: string;
 }
 
 export type VgEncodeChannel =

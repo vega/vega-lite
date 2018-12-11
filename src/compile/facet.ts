@@ -176,7 +176,7 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: VgSignal[]): VgSignal[] {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 

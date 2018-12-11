@@ -6,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream} from '../../vega.schema';
+import {VgData, VgEventStream, VgSignal} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -59,8 +59,8 @@ export interface ProjectSelectionComponent {
 }
 
 export interface SelectionCompiler {
-  signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
+  signals: (model: UnitModel, selCmpt: SelectionComponent) => VgSignal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
