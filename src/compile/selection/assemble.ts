@@ -139,6 +139,7 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 }
 
 export function assembleLegendSelection(model: Model, part: string, value: any) {
+  // Prototype for Single Selection - Single Field Projected Legend
   let hasLegend = false;
   let field;
   let store;
@@ -148,7 +149,8 @@ export function assembleLegendSelection(model: Model, part: string, value: any) 
       // Only single field for now
       // To do: Refactor for multiple fields projection
       field = selCmpt.project[0].field;
-      store = selCmpt.name + STORE;
+      const vname = varName(selCmpt.name);
+      store = stringValue(vname + STORE);
     }
   });
 
@@ -157,7 +159,7 @@ export function assembleLegendSelection(model: Model, part: string, value: any) 
     // To do : Add test case for legends and symbols
     newValue.opacity = [
       {
-        test: `!(length(data(\"CylYr_store\"))) || vlSelectionTest('${store}', {${field}: datum.value})`,
+        test: `!(length(data(\"CylYr_store\"))) || vlSelectionTest(${store}, {${field}: datum.value})`,
         ...newValue.opacity
       },
       {value: 0.25}
