@@ -30,25 +30,27 @@ describe('channel', () => {
 
   describe('SCALE_CHANNELS', () => {
     it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
-      expect(SCALE_CHANNELS).toEqual(without(UNIT_CHANNELS, [
-        'x2',
-        'y2',
-        'xError',
-        'yError',
-        'xError2',
-        'yError2',
-        'latitude',
-        'longitude',
-        'latitude2',
-        'longitude2',
-        'order',
-        'detail',
-        'key',
-        'text',
-        'label',
-        'tooltip',
-        'href'
-      ]));
+      expect(SCALE_CHANNELS).toEqual(
+        without(UNIT_CHANNELS, [
+          'x2',
+          'y2',
+          'xError',
+          'yError',
+          'xError2',
+          'yError2',
+          'latitude',
+          'longitude',
+          'latitude2',
+          'longitude2',
+          'order',
+          'detail',
+          'key',
+          'text',
+          'label',
+          'tooltip',
+          'href'
+        ])
+      );
     });
   });
 

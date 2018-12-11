@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { Channel, NONPOSITION_SCALE_CHANNELS } from '../../../src/channel';
+import {Channel, NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
 import * as rules from '../../../src/compile/scale/properties';
 import {AREA, BAR, LINE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
@@ -29,43 +29,47 @@ describe('compile/scale', () => {
   describe('padding', () => {
     it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        expect(
-          rules.padding(c, 'point', {pointPadding: 13}, undefined, undefined, undefined)
-        ).toEqual(13);
+        expect(rules.padding(c, 'point', {pointPadding: 13}, undefined, undefined, undefined)).toEqual(13);
       }
     });
 
     it('should be continuousBandSize for linear x-scale of vertical bar.', () => {
-      expect(rules.padding(
-        'x',
-        'linear',
-        {},
-        {field: 'date', type: 'temporal'},
-        {type: 'bar', orient: 'vertical'},
-        {continuousBandSize: 13}
-      )).toEqual(13);
+      expect(
+        rules.padding(
+          'x',
+          'linear',
+          {},
+          {field: 'date', type: 'temporal'},
+          {type: 'bar', orient: 'vertical'},
+          {continuousBandSize: 13}
+        )
+      ).toEqual(13);
     });
 
     it('should be undefined for linear x-scale for binned field of vertical bar.', () => {
-      expect(rules.padding(
-        'x',
-        'linear',
-        {},
-        {bin: true, field: 'date', type: 'temporal'},
-        {type: 'bar', orient: 'vertical'},
-        {continuousBandSize: 13}
-      )).toEqual(undefined);
+      expect(
+        rules.padding(
+          'x',
+          'linear',
+          {},
+          {bin: true, field: 'date', type: 'temporal'},
+          {type: 'bar', orient: 'vertical'},
+          {continuousBandSize: 13}
+        )
+      ).toEqual(undefined);
     });
 
     it('should be continuousBandSize for linear y-scale of horizontal bar.', () => {
-      expect(rules.padding(
-        'y',
-        'linear',
-        {},
-        {field: 'date', type: 'temporal'},
-        {type: 'bar', orient: 'horizontal'},
-        {continuousBandSize: 13}
-      )).toEqual(13);
+      expect(
+        rules.padding(
+          'y',
+          'linear',
+          {},
+          {field: 'date', type: 'temporal'},
+          {type: 'bar', orient: 'horizontal'},
+          {continuousBandSize: 13}
+        )
+      ).toEqual(13);
     });
   });
 
@@ -141,15 +145,11 @@ describe('compile/scale', () => {
     });
 
     it('should return true when mapping a quantitative field to size', () => {
-      expect(
-        rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')
-      ).toBeTruthy();
+      expect(rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')).toBeTruthy();
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      expect(
-        !rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear')
-      ).toBeTruthy();
+      expect(!rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear')).toBeTruthy();
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y of point', () => {
@@ -181,17 +181,19 @@ describe('compile/scale', () => {
 
     it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
       for (const channel of ['x', 'y'] as Channel[]) {
-        expect(!rules.zero(
-          channel,
-          {
-            bin: true,
-            field: 'a',
-            type: 'quantitative'
-          },
-          [3, 5],
-          {type: 'point'},
-          'linear'
-        )).toBeTruthy();
+        expect(
+          !rules.zero(
+            channel,
+            {
+              bin: true,
+              field: 'a',
+              type: 'quantitative'
+            },
+            [3, 5],
+            {type: 'point'},
+            'linear'
+          )
+        ).toBeTruthy();
       }
     });
   });

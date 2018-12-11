@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { assembleRootData } from '../../../src/compile/data/assemble';
+import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Model} from '../../../src/compile/model';
@@ -85,9 +85,7 @@ describe('Selection time unit', () => {
     });
 
     const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(
-      data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length
-    ).toEqual(1);
+    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 
   it('is added before selection filters', () => {
@@ -138,8 +136,6 @@ describe('Selection time unit', () => {
     });
 
     const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(
-      data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length
-    ).toEqual(1);
+    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 });

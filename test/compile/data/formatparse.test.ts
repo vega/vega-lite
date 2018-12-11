@@ -1,5 +1,5 @@
 /* tslint:disable:quotemark */
-import { AncestorParse } from '../../../src/compile/data';
+import {AncestorParse} from '../../../src/compile/data';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
@@ -114,11 +114,13 @@ describe('compile/data/formatparse', () => {
 
       // set the ancestor parse to see whether fields from it are not parsed
       model.child.component.data.ancestorParse = new AncestorParse({a: 'number'});
-      expect(ParseNode.makeImplicitFromEncoding(
-        null,
-        model.child as ModelWithField,
-        model.child.component.data.ancestorParse
-      ).parse).toEqual({
+      expect(
+        ParseNode.makeImplicitFromEncoding(
+          null,
+          model.child as ModelWithField,
+          model.child.component.data.ancestorParse
+        ).parse
+      ).toEqual({
         b: 'date'
       });
     });

@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { SourceNode } from '../../../src/compile/data/source';
+import {SourceNode} from '../../../src/compile/data/source';
 import {Data} from '../../../src/data';
 
 function parse(data: Data) {

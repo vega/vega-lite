@@ -1,7 +1,7 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 import {ImputeNode} from '../../../src/compile/data/impute';
 import {Transform} from '../../../src/transform';
 import {parseUnitModelWithScale} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/impute', () => {
   describe('Impute Transform', () => {

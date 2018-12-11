@@ -238,8 +238,10 @@ describe('filter', () => {
       ]
     });
 
-    expect(expr).toEqual('(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
-      '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))');
+    expect(expr).toEqual(
+      '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
+        '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))'
+    );
   });
 
   describe('fieldFilterExpression', () => {

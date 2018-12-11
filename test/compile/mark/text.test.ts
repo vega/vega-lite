@@ -1,5 +1,5 @@
 /* tslint:disable quotemark */
-import { X, Y } from '../../../src/channel';
+import {X, Y} from '../../../src/channel';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';

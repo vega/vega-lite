@@ -1,5 +1,5 @@
 /* tslint:disable:quotemark */
-import { getOffset, midPoint } from '../../../src/compile/mark/valueref';
+import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
 import {FieldDef} from '../../../src/fielddef';
 import {MarkDef} from '../../../src/mark';
 

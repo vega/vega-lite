@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { DataFlowNode, OutputNode } from '../../../src/compile/data/dataflow';
+import {DataFlowNode, OutputNode} from '../../../src/compile/data/dataflow';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import {MergeParse} from '../../../src/compile/data/optimizers';

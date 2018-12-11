@@ -15,9 +15,11 @@ describe('scale', () => {
     // Make sure we always edit this when we add new channel
     it('should have at least one supported scale types for all scale properties', () => {
       for (const prop of scale.SCALE_PROPERTIES) {
-        expect(some(scale.SCALE_TYPES, scaleType => {
-          return scale.scaleTypeSupportProperty(scaleType, prop);
-        })).toBeTruthy();
+        expect(
+          some(scale.SCALE_TYPES, scaleType => {
+            return scale.scaleTypeSupportProperty(scaleType, prop);
+          })
+        ).toBeTruthy();
       }
     });
 
@@ -29,9 +31,7 @@ describe('scale', () => {
   describe('scaleTypes', () => {
     it('should either hasContinuousDomain or hasDiscreteDomain', () => {
       for (const scaleType of scale.SCALE_TYPES) {
-        expect(
-          scale.hasContinuousDomain(scaleType) !== scale.hasDiscreteDomain(scaleType)
-        ).toBeTruthy();
+        expect(scale.hasContinuousDomain(scaleType) !== scale.hasDiscreteDomain(scaleType)).toBeTruthy();
       }
     });
   });
@@ -40,18 +40,22 @@ describe('scale', () => {
     // Make sure we always edit this when we add new channel
     it('should have at least one supported scale types for all channels with scale', () => {
       for (const channel of SCALE_CHANNELS) {
-        expect(some(SCALE_TYPES, scaleType => {
-          return channelSupportScaleType(channel, scaleType);
-        })).toBeTruthy();
+        expect(
+          some(SCALE_TYPES, scaleType => {
+            return channelSupportScaleType(channel, scaleType);
+          })
+        ).toBeTruthy();
       }
     });
 
     // Make sure we always edit this when we add new scale type
     it('should have at least one supported channel for all scale types', () => {
       for (const scaleType of SCALE_TYPES) {
-        expect(some(SCALE_CHANNELS, channel => {
-          return channelSupportScaleType(channel, scaleType);
-        })).toBeTruthy();
+        expect(
+          some(SCALE_CHANNELS, channel => {
+            return channelSupportScaleType(channel, scaleType);
+          })
+        ).toBeTruthy();
       }
     });
 

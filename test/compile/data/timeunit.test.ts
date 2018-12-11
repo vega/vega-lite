@@ -1,8 +1,8 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
 import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {ModelWithField} from '../../../src/compile/model';
 import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model).assemble();

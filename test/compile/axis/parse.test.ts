@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import { Y } from '../../../src/channel';
+import {Y} from '../../../src/channel';
 import {parseLayerAxis, parseUnitAxis} from '../../../src/compile/axis/parse';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 

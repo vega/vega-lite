@@ -38,12 +38,8 @@ describe('compile/data/geopoint', () => {
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
         expect(transform.type).toEqual('geopoint');
-        expect(
-          every(['longitude', 'latitude'], field => contains(transform.fields, field))
-        ).toBe(true);
-        expect(
-          every([model.getName('x'), model.getName('y')], a => contains(transform.as, a))
-        ).toBe(true);
+        expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
+        expect(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a))).toBe(true);
         expect(transform.projection).toBeDefined();
         expect(node.children.length).toBeLessThanOrEqual(1);
         node = node.children[0];

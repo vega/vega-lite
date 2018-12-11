@@ -1,5 +1,5 @@
 /* tslint:disable:quotemark */
-import { AggregateOp } from 'vega';
+import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
@@ -11,25 +11,27 @@ import {defaultConfig} from '.././../src/config';
 
 describe('normalizeErrorBar with raw data input', () => {
   it('should produce correct layered specs for mean point and vertical error bar', () => {
-    expect(normalize(
-      {
-        data: {
-          url: 'data/population.json'
-        },
-        mark: 'errorbar',
-        encoding: {
-          x: {
-            field: 'age',
-            type: 'ordinal'
+    expect(
+      normalize(
+        {
+          data: {
+            url: 'data/population.json'
           },
-          y: {
-            field: 'people',
-            type: 'quantitative'
+          mark: 'errorbar',
+          encoding: {
+            x: {
+              field: 'age',
+              type: 'ordinal'
+            },
+            y: {
+              field: 'people',
+              type: 'quantitative'
+            }
           }
-        }
-      },
-      defaultConfig
-    )).toEqual({
+        },
+        defaultConfig
+      )
+    ).toEqual({
       data: {url: 'data/population.json'},
       transform: [
         {
@@ -212,12 +214,14 @@ describe('normalizeErrorBar with raw data input', () => {
     );
     const aggregateTransform = outputSpec.transform[0];
     if (isAggregate(aggregateTransform)) {
-      expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-        return (
-          aggregateFieldDef.field === 'people' &&
-          (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-        );
-      })).toBe(true);
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === 'people' &&
+            (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -247,11 +251,13 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const aggregateTransform = outputSpec.transform[0];
     if (isAggregate(aggregateTransform)) {
-      expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-        return (
-          aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-        );
-      })).toBe(true);
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -279,12 +285,14 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const aggregateTransform = outputSpec.transform[0];
     if (isAggregate(aggregateTransform)) {
-      expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-        return (
-          aggregateFieldDef.field === 'people' &&
-          (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-        );
-      })).toBe(true);
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === 'people' &&
+            (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -312,11 +320,13 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const aggregateTransform = outputSpec.transform[0];
     if (isAggregate(aggregateTransform)) {
-      expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-        return (
-          aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-        );
-      })).toBe(true);
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -343,11 +353,13 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const aggregateTransform = outputSpec.transform[0];
     if (isAggregate(aggregateTransform)) {
-      expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-        return (
-          aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-        );
-      })).toBe(true);
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === 'age' && (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -385,16 +397,18 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return (
-          isUnitSpec(unitSpec) &&
-          isMarkDef(unitSpec.mark) &&
-          unitSpec.mark.type === 'tick' &&
-          unitSpec.mark.size === size &&
-          unitSpec.mark.color === color &&
-          unitSpec.mark.opacity === opacity
-        );
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return (
+            isUnitSpec(unitSpec) &&
+            isMarkDef(unitSpec.mark) &&
+            unitSpec.mark.type === 'tick' &&
+            unitSpec.mark.size === size &&
+            unitSpec.mark.color === color &&
+            unitSpec.mark.opacity === opacity
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -425,9 +439,11 @@ describe('normalizeErrorBar with raw data input', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.y) && unitSpec.encoding.y.title === 'population';
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.y) && unitSpec.encoding.y.title === 'population';
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -519,9 +535,11 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
           log.wrap(localLogger => {
             normalize(spec, defaultConfig);
 
-            expect(warningOutput[k]).toEqual(some(localLogger.warns, message => {
-              return message === warningMessage[k](center, extent, type);
-            }));
+            expect(warningOutput[k]).toEqual(
+              some(localLogger.warns, message => {
+                return message === warningMessage[k](center, extent, type);
+              })
+            );
           })
         );
       }
@@ -538,36 +556,50 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
       it(testMsg, () => {
         if (isAggregate(aggregateTransform)) {
           if (extent === 'ci' || extent === 'iqr' || (center === 'median' && !extent)) {
-            expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-              return aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median';
-            })).toBe(false);
+            expect(
+              some(aggregateTransform.aggregate, aggregateFieldDef => {
+                return aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median';
+              })
+            ).toBe(false);
           } else {
             if (center) {
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === center;
-              })).toBe(true);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return aggregateFieldDef.op === center;
+                })
+              ).toBe(true);
             } else {
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'mean';
-              })).toBe(true);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return aggregateFieldDef.op === 'mean';
+                })
+              ).toBe(true);
             }
 
             if (extent) {
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return isPartOfExtent(extent, aggregateFieldDef.op);
-              })).toBe(true);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return isPartOfExtent(extent, aggregateFieldDef.op);
+                })
+              ).toBe(true);
             } else if (center === 'median') {
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return isPartOfExtent('iqr', aggregateFieldDef.op);
-              })).toBe(true);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return isPartOfExtent('iqr', aggregateFieldDef.op);
+                })
+              ).toBe(true);
 
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'median';
-              })).toBe(false);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return aggregateFieldDef.op === 'median';
+                })
+              ).toBe(false);
             } else {
-              expect(some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return isPartOfExtent('stderr', aggregateFieldDef.op);
-              })).toBe(true);
+              expect(
+                some(aggregateTransform.aggregate, aggregateFieldDef => {
+                  return isPartOfExtent('stderr', aggregateFieldDef.op);
+                })
+              ).toBe(true);
             }
           }
         } else {
@@ -665,16 +697,20 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return (
-          isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people'
-        );
-      })).toBe(true);
-      expect(some(layer, unitSpec => {
-        return (
-          isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people'
-        );
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return (
+            isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people'
+          );
+        })
+      ).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return (
+            isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people'
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
@@ -883,16 +919,20 @@ describe('normalizeErrorBar with aggregated error input', () => {
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
-      expect(some(layer, unitSpec => {
-        return (
-          isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people'
-        );
-      })).toBe(true);
-      expect(some(layer, unitSpec => {
-        return (
-          isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people'
-        );
-      })).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return (
+            isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x) && unitSpec.encoding.x.field === 'lower_people'
+          );
+        })
+      ).toBe(true);
+      expect(
+        some(layer, unitSpec => {
+          return (
+            isUnitSpec(unitSpec) && isFieldDef(unitSpec.encoding.x2) && unitSpec.encoding.x2.field === 'upper_people'
+          );
+        })
+      ).toBe(true);
     } else {
       expect(false).toBe(true);
     }
