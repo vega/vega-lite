@@ -216,7 +216,7 @@ export function getHeaderGroup(
 export function getHeaderProperties(
   config: Config,
   facetFieldDef: FacetFieldDef<string>,
-  properties: string[],
+  properties: (keyof HeaderConfig)[],
   propertiesMap: {[k in keyof HeaderConfig]: keyof VgTitleConfig}
 ) {
   const props = {};
