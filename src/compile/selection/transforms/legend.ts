@@ -19,7 +19,7 @@ const legend: TransformCompiler = {
     }`;
     signal.on.push({
       events: `@symbols${LEGEND}:click, @labels${LEGEND}:click`,
-      update: '{unit: "", fields: CylYr_tuple_fields, values: [datum.value]}'
+      update: `{unit: "", fields: ${name}_tuple_fields, values: [datum.value]}`
     });
 
     return signals;

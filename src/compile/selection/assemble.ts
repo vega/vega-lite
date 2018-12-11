@@ -158,10 +158,7 @@ export function assembleLegendSelection(model: Model, part: string, value: any) 
     const newValue = value ? value : {opacity: {value: 0.9}};
     // To do : Add test case for legends and symbols
     newValue.opacity = [
-      {
-        test: `!(length(data(\"CylYr_store\"))) || vlSelectionTest(${store}, {${field}: datum.value})`,
-        ...newValue.opacity
-      },
+      {test: `!(length(data(${store}))) || vlSelectionTest(${store}, {${field}: datum.value})`, ...newValue.opacity},
       {value: 0.25}
     ];
     return {name: part + LEGEND, interactive: true, update: newValue};
