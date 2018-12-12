@@ -9,7 +9,7 @@ or even submit a pull request.
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
 - For major changes, please discuss it with the community via a GitHub issue first. This will help us coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
-  - One way to use GitHub for this purpose is to submit a pull request (PR) with a "WIP" (work in progress) label.
+  - One way to use GitHub for this purpose is to submit a pull request (PR) with a ":construction: WIP" (work in progress) label.
 
 - Generally we name a branch using this pattern `<your 2-3 letters initial>/<topic>`.
 For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
@@ -18,7 +18,7 @@ See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUE
 
 ### Looking for a Task to Contribute
 
-You can find [tasks with the "Help wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/%F0%9F%99%8F%20Help%20wanted). Please add a comment in an issues if you are planning to work on a major task.
+You can find [tasks with the "🙏 Help wanted" label in the issue tracker](https://github.com/vega/vega-lite/labels/%F0%9F%99%8F%20Help%20wanted). Please add a comment in an issues if you are planning to work on a major task.
 
 ### Help Create New Examples
 
@@ -194,7 +194,7 @@ for instructions).
 
 ## Pull Requests and Travis
 
-All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the `WIP` label. Once you're ready for review, remove the label and comment that the PR is ready for review.
+All pull requests will be tested on [Travis](https://travis-ci.org/). If your PR does not pass the checks, your PR will not be approved. Travis' environments will run `yarn test`, generate vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code.  (See `.travis.yml` for the commands it executes.) If you don't want your PR reviewed until Travis checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
 
 ### Code Coverage
 
