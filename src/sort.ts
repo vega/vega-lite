@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
 
-export type SortOrder = 'ascending' | 'descending' | null;
+export type SortOrder = 'ascending' | 'descending';
 export type Compare =
   | {
       field: string;
@@ -23,9 +23,9 @@ export interface SortField {
   field: string;
 
   /**
-   * Whether to sort the field in ascending or descending order.
+   * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: 'ascending' | 'descending';
+  order?: SortOrder | null;
 }
 
 /**
@@ -51,7 +51,7 @@ export interface EncodingSortField<F> {
   /**
    * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: SortOrder;
+  order?: SortOrder | null;
 }
 
 export type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;
