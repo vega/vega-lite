@@ -143,6 +143,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
 {: .suppress-error}
 ```html
 <!DOCTYPE html>
+<html>
 <head>
   <title>Vega-Lite Bar Chart</title>
   <meta charset="utf-8">
