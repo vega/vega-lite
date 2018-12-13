@@ -47,7 +47,7 @@
     "site": "bundle exec jekyll serve --incremental",
     "prettierbase": "prettier '{src,test,test-runtime,site,typings}/**/*.{ts,md,css}'",
     "format": "tslint -p . --fix -e 'package.json' && npm run prettierbase -- --write",
-    "lint": "tslint -p . -e 'package.json' && npm run prettierbase -- --list-different'",
+    "lint": "tslint -p . -e 'package.json' && npm run prettierbase -- --list-different",
     "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
