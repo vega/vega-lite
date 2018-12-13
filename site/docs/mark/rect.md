@@ -21,6 +21,7 @@ The `rect` mark represents an arbitrary rectangle.
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 {:#properties}

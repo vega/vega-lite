@@ -20,6 +20,7 @@ The `trail` mark represents the data points stored in a field with a line connec
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

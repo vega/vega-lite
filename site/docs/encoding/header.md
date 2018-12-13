@@ -15,6 +15,7 @@ In addition to the `header` property of a row- or column-field definition, users
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

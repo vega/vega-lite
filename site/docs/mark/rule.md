@@ -21,6 +21,7 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

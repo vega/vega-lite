@@ -16,6 +16,7 @@ Second, as a shortcut you can use the [`column` or `row` encoding channels](#fac
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

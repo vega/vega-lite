@@ -22,6 +22,7 @@ __Note:__ For line segments that connect (x,y) positions to (x2,y2) positions, p
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

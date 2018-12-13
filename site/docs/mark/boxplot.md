@@ -23,6 +23,7 @@ To create a box plot, set `mark` to `"boxplot"`.
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

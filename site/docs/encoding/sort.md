@@ -28,6 +28,7 @@ The `sort` property of [a mark properties channel](encoding.html#mark-props) det
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

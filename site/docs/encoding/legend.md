@@ -12,6 +12,7 @@ User can set the `legend` property of a [mark property channel's field definitio
 
 Besides `legend` property of a field definition, the configuration object ([`config`](config.html)) also provides [legend config](#config) (`config: {legend: {...}}`) for setting default legend properties for all legends.
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

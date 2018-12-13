@@ -42,6 +42,7 @@ For more information about guides that visualize the scales, please see the [axe
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

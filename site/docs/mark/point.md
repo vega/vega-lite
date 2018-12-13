@@ -20,6 +20,7 @@ permalink: /docs/point.html
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

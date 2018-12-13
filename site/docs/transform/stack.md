@@ -9,6 +9,7 @@ To stack fields in Vega-Lite, users can either use the `stack` property of an [e
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

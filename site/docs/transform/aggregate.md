@@ -9,6 +9,7 @@ To aggregate data in Vega-Lite, users can either use the `aggregate` property of
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

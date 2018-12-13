@@ -24,6 +24,7 @@ To create an error bar, set `mark` to `"errorbar"`.
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

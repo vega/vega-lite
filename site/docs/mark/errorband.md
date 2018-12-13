@@ -24,6 +24,7 @@ To create an error band, set `mark` to `"errorband"`.
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

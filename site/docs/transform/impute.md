@@ -11,6 +11,7 @@ The impute transform groups data and determines missing values of the `key` fiel
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

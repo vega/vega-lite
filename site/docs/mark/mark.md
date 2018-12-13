@@ -27,6 +27,7 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

@@ -11,6 +11,7 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 ## Tutorial Overview
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

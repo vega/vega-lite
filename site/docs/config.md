@@ -30,6 +30,7 @@ Vega-Lite's `config` object lists configuration properties of a visualization fo
 
 The rest of this page outlines different types of config properties:
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

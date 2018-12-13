@@ -12,6 +12,7 @@ Vega-Lite's `data` property describes the visualization's data source as part of
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
@@ -73,7 +74,7 @@ For example, to create a data source named `myData`, use the following data
 
 You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data) to load data at runtime and update the chart. Here is an example using [Vega-Embed](https://github.com/vega/vega-embed):
 
-```js 
+```js
 vegaEmbed("#vis", spec)
   .then((res) => res.view
     .insert("myData", [ /* some data array */])
@@ -81,7 +82,7 @@ vegaEmbed("#vis", spec)
   );
 ```
 
-You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html) 
+You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html)
 
 ## Format
 

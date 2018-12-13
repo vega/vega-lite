@@ -22,6 +22,7 @@ The `tick` mark represents each data point as a short line. This is a useful mar
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

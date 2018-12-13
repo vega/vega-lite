@@ -23,6 +23,7 @@ Selections are the basic building block in Vega-Lite's _grammar of interaction._
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

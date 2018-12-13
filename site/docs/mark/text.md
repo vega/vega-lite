@@ -22,6 +22,7 @@ permalink: /docs/text.html
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

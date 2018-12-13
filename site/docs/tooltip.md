@@ -13,6 +13,7 @@ By default, the renderer will generate tooltips via native HTML ["title" attribu
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

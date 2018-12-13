@@ -10,6 +10,7 @@ The window transform performs calculations over sorted groups of data objects. T
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 

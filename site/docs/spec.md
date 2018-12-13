@@ -13,6 +13,7 @@ These operators include [`layer`](layer.html), [`facet`](facet.html), [`concat`]
 ## Documentation Overview
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
