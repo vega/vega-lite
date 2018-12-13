@@ -19,32 +19,21 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
 
-{:.small-table}
-| a | b |
-|---|---|
-| C | 2 |
-| C | 7 |
-| C | 4 |
-| D | 1 |
-| D | 2 |
-| D | 6 |
-| E | 8 |
-| E | 4 |
-| E | 7 |
+{:.small-table} | a | b | |---|---| | C | 2 | | C | 7 | | C | 4 | | D | 1 | | D | 2 | | D | 6 | | E | 8 | | E | 4 | | E | 7 |
 
 We can represent this data as a [JSON array](http://www.json.org/) in which each row is an object in the array.
 
 ```json
 [
-  {"a": "C", "b": 2},
-  {"a": "C", "b": 7},
-  {"a": "C", "b": 4},
-  {"a": "D", "b": 1},
-  {"a": "D", "b": 2},
-  {"a": "D", "b": 6},
-  {"a": "E", "b": 8},
-  {"a": "E", "b": 4},
-  {"a": "E", "b": 7}
+  { "a": "C", "b": 2 },
+  { "a": "C", "b": 7 },
+  { "a": "C", "b": 4 },
+  { "a": "D", "b": 1 },
+  { "a": "D", "b": 2 },
+  { "a": "D", "b": 6 },
+  { "a": "E", "b": 8 },
+  { "a": "E", "b": 4 },
+  { "a": "E", "b": 7 }
 ]
 ```
 
@@ -54,9 +43,15 @@ To visualize this data with Vega-Lite, we can add it directly to the `data` prop
 {
   "data": {
     "values": [
-      {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-      {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-      {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
+      { "a": "C", "b": 2 },
+      { "a": "C", "b": 7 },
+      { "a": "C", "b": 4 },
+      { "a": "D", "b": 1 },
+      { "a": "D", "b": 2 },
+      { "a": "D", "b": 6 },
+      { "a": "E", "b": 8 },
+      { "a": "E", "b": 4 },
+      { "a": "E", "b": 7 }
     ]
   }
 }
@@ -68,7 +63,7 @@ The [`data`]({{site.baseurl}}/docs/data.html) property defines the data source o
 
 Now we have a data source but we haven't defined yet how the data should be visualized.
 
-Basic graphical elements in Vega-Lite are [*marks*]({{site.baseurl}}/docs/mark.html). Marks provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field (or a variable), or a constant value.
+Basic graphical elements in Vega-Lite are [_marks_]({{site.baseurl}}/docs/mark.html). Marks provide basic shapes whose properties (such as position, size, and color) can be used to visually encode data, either from a data field (or a variable), or a constant value.
 
 To show the data as a point, we can set the `mark` property to `point`.
 
@@ -76,9 +71,10 @@ To show the data as a point, we can set the `mark` property to `point`.
 
 Now, it looks like we get a point. In fact, Vega-Lite renders one point for each object in the array, but they are all overlapping since we have not specified each point's position.
 
-To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can [*encode*]({{site.baseurl}}/docs/encoding.html) the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
+To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can [_encode_]({{site.baseurl}}/docs/encoding.html) the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
 
 {: .suppress-error}
+
 ```json
 ...
 "encoding": {
@@ -89,11 +85,12 @@ To visually separate the points, data variables can be mapped to visual properti
 
 <div class="vl-example" data-name="point_1d_array"></div>
 
-The [`encoding`]({{site.baseurl}}/docs/encoding.html) object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields. The channel definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#type) (`type`). In this example, we map the values for field `a` to the *encoding channel* `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories. (See [the documentation for more information about data types]({{site.baseurl}}/docs/encoding.html#type).)
+The [`encoding`]({{site.baseurl}}/docs/encoding.html) object is a key-value mapping between encoding channels (such as `x`, `y`) and definitions of the mapped data fields. The channel definition describes the field's name (`field`) and its [data type]({{site.baseurl}}/docs/encoding.html#type) (`type`). In this example, we map the values for field `a` to the _encoding channel_ `x` (the x-location of the points) and set `a`'s data type to `nominal`, since it represents categories. (See [the documentation for more information about data types]({{site.baseurl}}/docs/encoding.html#type).)
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
 {: .suppress-error}
+
 ```json
 ...
 "y": {"field": "b", "type": "quantitative"}
@@ -114,7 +111,6 @@ Vega-Lite also supports data transformation such as aggregation. By adding `"agg
 
 Great! You computed the aggregate values for each category and visualized the resulting value as a point. Typically aggregated values for categories are visualized using bar charts. To create a bar chart, we have to change the mark type from `point` to `bar`.
 
-
 ```diff
 - "mark": "point"
 + "mark": "bar"
@@ -129,69 +125,79 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
 ## Customize your Visualization
 
 <!-- TODO need to find a way to talk about conciseness here somehow. -->
+
 Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `Average of b`, we can set the title property of the axis in the `x` channel.
 
 <div class="vl-example" data-name="bar_swap_custom"></div>
 
 {:#embed}
+
 ## Publish your Visualization Online
 
-You have learned about basic components of a Vega-Lite specification.
-Now, let's see how to publish your visualization.
+You have learned about basic components of a Vega-Lite specification. Now, let's see how to publish your visualization.
 
-You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-Lite visualization in a webpage.  For example, you can create a web page with the following content:
+You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-Lite visualization in a webpage. For example, you can create a web page with the following content:
 
 {: .suppress-error}
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Vega-Lite Bar Chart</title>
-  <meta charset="utf-8">
+  <head>
+    <title>Vega-Lite Bar Chart</title>
+    <meta charset="utf-8" />
 
-  <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}/build/vega.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}/build/vega-lite.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}/build/vega-embed.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}/build/vega.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}/build/vega-lite.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}/build/vega-embed.js"></script>
 
-  <style media="screen">
-    /* Add space between Vega-Embed links  */
-    .vega-actions a {
-      margin-right: 5px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Template for Embedding Vega-Lite Visualization</h1>
-  <!-- Container for the visualization -->
-  <div id="vis"></div>
-
-  <script>
-  // Assign the specification to a local variable vlSpec.
-  var vlSpec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-    "data": {
-      "values": [
-        {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-        {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-        {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-      ]
-    },
-    "mark": "bar",
-    "encoding": {
-      "y": {"field": "a", "type": "nominal"},
-      "x": {
-        "aggregate": "average", "field": "b", "type": "quantitative",
-        "axis": {
-          "title": "Average of b"
-        }
+    <style media="screen">
+      /* Add space between Vega-Embed links  */
+      .vega-actions a {
+        margin-right: 5px;
       }
-    }
-  };
+    </style>
+  </head>
+  <body>
+    <h1>Template for Embedding Vega-Lite Visualization</h1>
+    <!-- Container for the visualization -->
+    <div id="vis"></div>
 
-  // Embed the visualization in the container with id `vis`
-  vegaEmbed("#vis", vlSpec);
-  </script>
-</body>
+    <script>
+      // Assign the specification to a local variable vlSpec.
+      var vlSpec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v3.json",
+        data: {
+          values: [
+            { a: "C", b: 2 },
+            { a: "C", b: 7 },
+            { a: "C", b: 4 },
+            { a: "D", b: 1 },
+            { a: "D", b: 2 },
+            { a: "D", b: 6 },
+            { a: "E", b: 8 },
+            { a: "E", b: 4 },
+            { a: "E", b: 7 }
+          ]
+        },
+        mark: "bar",
+        encoding: {
+          y: { field: "a", type: "nominal" },
+          x: {
+            aggregate: "average",
+            field: "b",
+            type: "quantitative",
+            axis: {
+              title: "Average of b"
+            }
+          }
+        }
+      };
+
+      // Embed the visualization in the container with id `vis`
+      vegaEmbed("#vis", vlSpec);
+    </script>
+  </body>
 </html>
 ```
 

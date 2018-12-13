@@ -6,6 +6,7 @@ permalink: /docs/tick.html
 ---
 
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -18,16 +19,16 @@ permalink: /docs/tick.html
 
 The `tick` mark represents each data point as a short line. This is a useful mark for displaying the distribution of values in a field.
 
-
 ## Documentation Overview
+
 {:.no_toc}
 
 <!-- prettier-ignore -->
 - TOC
 {:toc}
 
-
 {:#properties}
+
 ## Tick Mark Properties
 
 A tick mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
@@ -45,6 +46,7 @@ For example, the following dot plot uses tick marks to show the distribution of 
 ### Strip Plot
 
 <!-- TODO: better explain this -->
+
 The following strip-plot use `tick` mark to represent its data.
 
 <span class="vl-example" data-name="tick_strip"></span>
@@ -52,9 +54,11 @@ The following strip-plot use `tick` mark to represent its data.
 <!--__TODO__ Colored Tick with adjusted size and thickness-->
 
 {:#config}
+
 ## Tick Config
 
 {: .suppress-error}
+
 ```json
 // Top-level View Specification
 {
@@ -66,7 +70,7 @@ The following strip-plot use `tick` mark to represent its data.
 }
 ```
 
-The `tick` property of the top-level [`config`](config.html) object sets the default properties for all tick marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `tick` property of the top-level [`config`](config.html) object sets the default properties for all tick marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 Besides standard [mark config properties](mark.html#config), tick config can contain the following additional properties:
 

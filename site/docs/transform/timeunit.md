@@ -18,20 +18,22 @@ Vega-Lite supports the following time units:
 - `"seconds"`, `"secondsmilliseconds"`
 - `"milliseconds"`
 
-By default, all time units represent date time using local time.  To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
+By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
 
 ## Documentation Overview
+
 {:.no_toc}
 
 <!-- prettier-ignore -->
 - TOC
 {:toc}
 
-
 {: #encoding}
+
 ## Time Unit in Encoding Field Definition
 
 {: .suppress-error}
+
 ```json
 {
   "data": ... ,
@@ -50,7 +52,7 @@ By default, all time units represent date time using local time.  To use UTC tim
 }
 ```
 
-A field definition can include a `timeUnit` property.  For example, the chart below shows shows temperature in Seattle aggregated by month.
+A field definition can include a `timeUnit` property. For example, the chart below shows shows temperature in Seattle aggregated by month.
 
 <span class="vl-example" data-name="line_month"></span>
 
@@ -65,9 +67,11 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 <span class="vl-example" data-name="bar_month"></span>
 
 {: #transform}
+
 ## Time Unit Transform
 
 {: .suppress-error}
+
 ```json
 {
   ...
@@ -88,21 +92,22 @@ In the example below, we use the time unit transform to extract the month compon
 <span class="vl-example" data-name="line_timeunit_transform"></span>
 
 {:#utc}
+
 ## UTC time
 
 ### Input
 
 To parse data in local time or UTC time, there are three cases:
 
-1) Times are parsed as UTC time if the date strings are in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). Note that in JavaScript date strings without time are interpreted as UTC but but date strings with time and without timezone as local.
+1. Times are parsed as UTC time if the date strings are in [ISO format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse). Note that in JavaScript date strings without time are interpreted as UTC but but date strings with time and without timezone as local.
 
 <span class="vl-example" data-name="time_parse_utc"></span>
 
-2) If that is not the case, by default, times are assumed to be local.
+2. If that is not the case, by default, times are assumed to be local.
 
 <span class="vl-example" data-name="time_parse_local"></span>
 
-3) To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc`
+3. To parse inline data or url data without ISO format as UTC time, we need to specify the `format` to be `utc`
 
 <span class="vl-example" data-name="time_parse_utc_format"></span>
 
@@ -110,11 +115,11 @@ To parse data in local time or UTC time, there are three cases:
 
 By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we need to specify either a UTC time unit or scale:
 
-1) UTC time unit when input data is in local time.
+1. UTC time unit when input data is in local time.
 
 <span class="vl-example" data-name="time_output_utc_timeunit"></span>
 
-2) UTC scale type when you have input data in UTC time.
+2. UTC scale type when you have input data in UTC time.
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
 

@@ -5,7 +5,7 @@ title: Embedding Vega-Lite
 permalink: /usage/embed.html
 ---
 
-*Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) if you want to quickly publish a Vega-Lite visualization on the web.*
+_Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) if you want to quickly publish a Vega-Lite visualization on the web._
 
 The easiest way to use Vega-Lite on your own web page is with [Vega-Embed](https://github.com/vega/vega-embed), a library we built to make the process as painless as possible.
 
@@ -47,7 +47,7 @@ You can learn more about NPM on the [official website](https://docs.npmjs.com/ge
 
 ### Download
 
-Alternatively, you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually.  In this case, you will also have to download [Vega](https://github.com/vega/vega/releases/latest), and [Vega-Embed](https://github.com/vega/vega-embed/releases/latest).
+Alternatively, you can [download the latest Vega-Lite release](https://github.com/vega/vega-lite/releases/latest) and add it to your project manually. In this case, you will also have to download [Vega](https://github.com/vega/vega/releases/latest), and [Vega-Embed](https://github.com/vega/vega-embed/releases/latest).
 
 ## Start using Vega-Lite with Vega-Embed
 
@@ -71,35 +71,40 @@ Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Embedding Vega-Lite</title>
-  <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
-</head>
-<body>
+  <head>
+    <title>Embedding Vega-Lite</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@{{ site.data.versions.vega }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@{{ site.data.versions.vega-lite }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@{{ site.data.versions.vega-embed }}"></script>
+  </head>
+  <body>
+    <div id="vis"></div>
 
-  <div id="vis"></div>
-
-  <script type="text/javascript">
-    var yourVlSpec = {
-      "$schema": "https://vega.github.io/schema/vega-lite/v2.0.json",
-      "description": "A simple bar chart with embedded data.",
-      "data": {
-        "values": [
-          {"a": "A","b": 28}, {"a": "B","b": 55}, {"a": "C","b": 43},
-          {"a": "D","b": 91}, {"a": "E","b": 81}, {"a": "F","b": 53},
-          {"a": "G","b": 19}, {"a": "H","b": 87}, {"a": "I","b": 52}
-        ]
-      },
-      "mark": "bar",
-      "encoding": {
-        "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"}
-      }
-    }
-    vegaEmbed("#vis", yourVlSpec);
-  </script>
-</body>
+    <script type="text/javascript">
+      var yourVlSpec = {
+        $schema: "https://vega.github.io/schema/vega-lite/v2.0.json",
+        description: "A simple bar chart with embedded data.",
+        data: {
+          values: [
+            { a: "A", b: 28 },
+            { a: "B", b: 55 },
+            { a: "C", b: 43 },
+            { a: "D", b: 91 },
+            { a: "E", b: 81 },
+            { a: "F", b: 53 },
+            { a: "G", b: 19 },
+            { a: "H", b: 87 },
+            { a: "I", b: 52 }
+          ]
+        },
+        mark: "bar",
+        encoding: {
+          x: { field: "a", type: "ordinal" },
+          y: { field: "b", type: "quantitative" }
+        }
+      };
+      vegaEmbed("#vis", yourVlSpec);
+    </script>
+  </body>
 </html>
 ```

@@ -10,13 +10,11 @@ Vega-Lite is a higher-level grammar for visual analysis. It supports common char
 
 Vega-Lite and Vega are visualization specification languages in JSON. The Vega website has a detailed [comparison of Vega and D3](https://vega.github.io/vega/about/vega-and-d3/).
 
-
 ## Grammar of Graphics, GGPlot and Tableau
 
 GGPlot and Vega-Lite both use a compositional approach to visualization design and are both grounded in the [Grammar of Graphics](https://www.amazon.com/The-Grammar-Graphics-Statistics-Computing/dp/0387245448). Vega-Lite adds common data analysis transformations such as aggregation. GGPlot is embedded in R so that data can be transformed outside of the visualization specification. Vega-Lite is implemented in Java-Script and thus available in all modern browsers.
 
 [Tableau](https://www.tableau.com/) is a graphical interface. The underlying formalism ([VizQL](https://www.tableau.com/products/technology)) heavily influenced the design of Vega-Lite. Vega-Lite and Tableau both provide smart defaults.
-
 
 ## Highcharts and plotly
 

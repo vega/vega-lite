@@ -17,32 +17,29 @@ _Note:_ The `fold` transform only applies to a list of known fields (set using t
 
 {% include table.html props="fold,as" source="FoldTransform" %}
 
-
 ## Usage
 
 ```json
-{"fold": ["gold", "silver"]}
+{ "fold": ["gold", "silver"] }
 ```
 
 This example folds the `"gold"` and `"silver"` properties. Given the input data
 
 ```json
-[
-  {"country": "USA", "gold": 10, "silver": 20},
-  {"country": "Canada", "gold": 7, "silver": 26}
-]
+[{ "country": "USA", "gold": 10, "silver": 20 }, { "country": "Canada", "gold": 7, "silver": 26 }]
 ```
 
 this example produces the output:
 
 ```json
 [
-  {"key": "gold", "value": 10, "country": "USA", "gold": 10, "silver": 20},
-  {"key": "silver", "value": 20, "country": "USA", "gold": 10, "silver": 20},
-  {"key": "gold", "value": 7, "country": "Canada", "gold": 7, "silver": 26},
-  {"key": "silver", "value": 26, "country": "Canada", "gold": 7, "silver": 26}
+  { "key": "gold", "value": 10, "country": "USA", "gold": 10, "silver": 20 },
+  { "key": "silver", "value": 20, "country": "USA", "gold": 10, "silver": 20 },
+  { "key": "gold", "value": 7, "country": "Canada", "gold": 7, "silver": 26 },
+  { "key": "silver", "value": 26, "country": "Canada", "gold": 7, "silver": 26 }
 ]
 ```
+
 ## Example
 
 <div class="vl-example" data-name="bar_column_fold"></div>
