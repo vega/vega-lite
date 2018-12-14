@@ -49,7 +49,7 @@ describe('compile/data/fold', () => {
       fold: ['a', 'b']
     };
     const fold = new FoldTransformNode(null, transform);
-    expect(fold.producedFields()).toEqual({key: true, value: true});
+    expect(fold.producedFields()).toEqual(new Set(['key', 'value']));
   });
 
   it('should return proper produced fields for complete "as"', () => {
@@ -58,7 +58,7 @@ describe('compile/data/fold', () => {
       as: ['A', 'B']
     };
     const fold = new FoldTransformNode(null, transform);
-    expect(fold.producedFields()).toEqual({A: true, B: true});
+    expect(fold.producedFields()).toEqual(new Set(['A', 'B']));
   });
 
   it('should generate the correct hash', () => {

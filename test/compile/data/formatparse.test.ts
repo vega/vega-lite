@@ -292,7 +292,7 @@ describe('compile/data/formatparse', () => {
         'nested.field': 'flatten'
       });
 
-      expect(p.producedFields()).toEqual({n: true, b: true, 'nested.field': true});
+      expect(p.producedFields()).toEqual(new Set(['n', 'b', 'nested.field']));
     });
   });
 

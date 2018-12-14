@@ -3,7 +3,7 @@ import {vgField} from '../../fielddef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
-import {StringSet, unique} from './../../util';
+import {unique} from './../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
@@ -23,23 +23,20 @@ export class WindowTransformNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    const out = {};
+    const out = new Set<string>();
 
-    this.transform.groupby.forEach(f => (out[f] = true));
-    this.transform.sort.forEach(m => (out[m.field] = true));
+    this.transform.groupby.forEach(f => out.add(f));
+    this.transform.sort.forEach(m => out.add(m.field));
     this.transform.window
       .map(w => w.field)
       .filter(f => f !== undefined)
-      .forEach(f => (out[f] = true));
+      .forEach(f => out.add(f));
 
     return out;
   }
 
-  public producedFields(): StringSet {
-    const out = {};
-    this.transform.window.forEach(windowFieldDef => (out[this.getDefaultName(windowFieldDef)] = true));
-
-    return out;
+  public producedFields() {
+    return new Set(this.transform.window.map(this.getDefaultName));
   }
 
   private getDefaultName(windowFieldDef: WindowFieldDef): string {

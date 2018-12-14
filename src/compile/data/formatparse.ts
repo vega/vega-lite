@@ -1,4 +1,4 @@
-import {isNumber, isString, toSet} from 'vega-util';
+import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {Parse} from '../../data';
@@ -9,7 +9,7 @@ import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, StringSet} from '../../util';
+import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
@@ -236,12 +236,12 @@ export class ParseNode extends DataFlowNode {
   }
 
   // format parse depends and produces all fields in its parse
-  public producedFields(): StringSet {
-    return toSet(keys(this._parse));
+  public producedFields() {
+    return new Set(keys(this._parse));
   }
 
-  public dependentFields(): StringSet {
-    return toSet(keys(this._parse));
+  public dependentFields() {
+    return new Set(keys(this._parse));
   }
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {

@@ -294,10 +294,7 @@ describe('compile/data/stack', () => {
         as: 'people'
       };
       const stack = StackNode.makeFromTransform(null, transform);
-      expect(stack.producedFields()).toEqual({
-        people: true,
-        people_end: true
-      });
+      expect(stack.producedFields()).toEqual(new Set(['people', 'people_end']));
     });
 
     it('should give producedFields correctly when in encoding channel', () => {
@@ -310,10 +307,7 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      expect(stack.producedFields()).toEqual({
-        sum_a_start: true,
-        sum_a_end: true
-      });
+      expect(stack.producedFields()).toEqual(new Set(['sum_a_start', 'sum_a_end']));
     });
 
     it('should generate the correct hash', () => {

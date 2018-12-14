@@ -38,8 +38,8 @@ describe('compile/data/calculate', () => {
         as: 'bar'
       });
 
-      expect(node.dependentFields()).toEqual({foo: true});
-      expect(node.producedFields()).toEqual({bar: true});
+      expect(node.dependentFields()).toEqual(new Set(['foo']));
+      expect(node.producedFields()).toEqual(new Set(['bar']));
     });
   });
 

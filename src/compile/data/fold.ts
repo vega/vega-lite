@@ -19,10 +19,7 @@ export class FoldTransformNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return this.transform.as.reduce((result, item) => {
-      result[item] = true;
-      return result;
-    }, {});
+    return new Set(this.transform.as);
   }
 
   public hash() {
