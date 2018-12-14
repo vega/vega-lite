@@ -34,7 +34,7 @@ For example, the following specification embeds an inline data table with nine r
 If the input data is simply an array of primitive values, each value is mapped to the `data` property of a new object. For example `[5, 3, 8, 1]` is loaded as:
 
 ```json
-[{ "data": 5 }, { "data": 3 }, { "data": 8 }, { "data": 1 }]
+[{"data": 5}, {"data": 3}, {"data": 8}, {"data": 1}]
 ```
 
 You can also inline a string that will be parsed according to the specified format type.
@@ -78,9 +78,9 @@ For example, to create a data source named `myData`, use the following data
 You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data) to load data at runtime and update the chart. Here is an example using [Vega-Embed](https://github.com/vega/vega-embed):
 
 ```js
-vegaEmbed("#vis", spec).then(res =>
+vegaEmbed('#vis', spec).then(res =>
   res.view
-    .insert("myData", [
+    .insert('myData', [
       /* some data array */
     ])
     .run()

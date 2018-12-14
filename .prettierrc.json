@@ -3,21 +3,11 @@
     {
       "files": "*",
       "options": {
-        "printWidth": 120
-      }
-    },
-    {
-      "files": "*.ts",
-      "options": {
-        "parser": "typescript",
+        "printWidth": 120,
         "singleQuote": true,
         "bracketSpacing": false,
         "arrowParens": "avoid",
-        "trailingComma": "none"
-      }
-    }, {
-      "files": "*.md",
-      "options": {
+        "trailingComma": "none",
         "proseWrap": "never"
       }
     }

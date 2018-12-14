@@ -45,7 +45,7 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 {: .suppress-error}
 
 ```json
-{ "filter": { "field": "car_color", "equal": "red" } }
+{"filter": {"field": "car_color", "equal": "red"}}
 ```
 
 {:#lt-predicate}
@@ -59,7 +59,7 @@ For example, to check if the `height` field's value is less than `180`, we can u
 {: .suppress-error}
 
 ```json
-{ "filter": { "field": "height", "lt": 180 } }
+{"filter": {"field": "height", "lt": 180}}
 ```
 
 {:#lte-predicate}
@@ -73,7 +73,7 @@ For example, to check if the `Year` field's value is less than or equals to `"20
 {: .suppress-error}
 
 ```json
-{ "filter": { "timeUnit": "year", "field": "Year", "lte": "2000" } }
+{"filter": {"timeUnit": "year", "field": "Year", "lte": "2000"}}
 ```
 
 {:#gt-predicate}
@@ -87,7 +87,7 @@ To check if the `state` field's value is greater than `"Arizona"` by string comp
 {: .suppress-error}
 
 ```json
-{ "filter": { "field": "state", "gt": "Arizona" } }
+{"filter": {"field": "state", "gt": "Arizona"}}
 ```
 
 {:#gte-predicate}
@@ -101,7 +101,7 @@ For example, to check if the `height` field's value is greater than or equals to
 {: .suppress-error}
 
 ```json
-{ "filter": { "field": "height", "gte": 0 } }
+{"filter": {"field": "height", "gte": 0}}
 ```
 
 {:#range-predicate}

@@ -38,7 +38,7 @@ You can specify a [config]({{site.baseurl}}/docs/config.html) object as a proper
 By default, warnings and other messages are printed to the JavaScript console (via `console.log/warn` methods). To redirect the log messages, you can pass a customize logger to the compile function.
 
 ```js
-var vgSpec = vl.compile(vlSpec, { logger: logger }).spec;
+var vgSpec = vl.compile(vlSpec, {logger: logger}).spec;
 ```
 
 A custom logger should implement the following interface:
@@ -61,9 +61,9 @@ To customize how Vega-Lite generates axis or legend titles for a [field definiti
 ```js
 var vgSpec = vl.compile(vlSpec, {
   titleFormat: function(fieldDef, config) {
-    const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && "bin");
+    const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
     if (fn) {
-      return fn.toUpperCase() + "(" + fieldDef.field + ")";
+      return fn.toUpperCase() + '(' + fieldDef.field + ')';
     } else {
       return fieldDef.field;
     }

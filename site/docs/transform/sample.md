@@ -14,7 +14,7 @@ The sample transform filters random rows from the data source to reduce its size
 ## Usage
 
 ```json
-{ "sample": 500 }
+{"sample": 500}
 ```
 
 Filters a data stream to a random sample of at most 500 data objects.

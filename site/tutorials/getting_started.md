@@ -25,15 +25,15 @@ We can represent this data as a [JSON array](http://www.json.org/) in which each
 
 ```json
 [
-  { "a": "C", "b": 2 },
-  { "a": "C", "b": 7 },
-  { "a": "C", "b": 4 },
-  { "a": "D", "b": 1 },
-  { "a": "D", "b": 2 },
-  { "a": "D", "b": 6 },
-  { "a": "E", "b": 8 },
-  { "a": "E", "b": 4 },
-  { "a": "E", "b": 7 }
+  {"a": "C", "b": 2},
+  {"a": "C", "b": 7},
+  {"a": "C", "b": 4},
+  {"a": "D", "b": 1},
+  {"a": "D", "b": 2},
+  {"a": "D", "b": 6},
+  {"a": "E", "b": 8},
+  {"a": "E", "b": 4},
+  {"a": "E", "b": 7}
 ]
 ```
 
@@ -43,15 +43,15 @@ To visualize this data with Vega-Lite, we can add it directly to the `data` prop
 {
   "data": {
     "values": [
-      { "a": "C", "b": 2 },
-      { "a": "C", "b": 7 },
-      { "a": "C", "b": 4 },
-      { "a": "D", "b": 1 },
-      { "a": "D", "b": 2 },
-      { "a": "D", "b": 6 },
-      { "a": "E", "b": 8 },
-      { "a": "E", "b": 4 },
-      { "a": "E", "b": 7 }
+      {"a": "C", "b": 2},
+      {"a": "C", "b": 7},
+      {"a": "C", "b": 4},
+      {"a": "D", "b": 1},
+      {"a": "D", "b": 2},
+      {"a": "D", "b": 6},
+      {"a": "E", "b": 8},
+      {"a": "E", "b": 4},
+      {"a": "E", "b": 7}
     ]
   }
 }
@@ -166,36 +166,36 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     <script>
       // Assign the specification to a local variable vlSpec.
       var vlSpec = {
-        $schema: "https://vega.github.io/schema/vega-lite/v3.json",
+        $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: {
           values: [
-            { a: "C", b: 2 },
-            { a: "C", b: 7 },
-            { a: "C", b: 4 },
-            { a: "D", b: 1 },
-            { a: "D", b: 2 },
-            { a: "D", b: 6 },
-            { a: "E", b: 8 },
-            { a: "E", b: 4 },
-            { a: "E", b: 7 }
+            {a: 'C', b: 2},
+            {a: 'C', b: 7},
+            {a: 'C', b: 4},
+            {a: 'D', b: 1},
+            {a: 'D', b: 2},
+            {a: 'D', b: 6},
+            {a: 'E', b: 8},
+            {a: 'E', b: 4},
+            {a: 'E', b: 7}
           ]
         },
-        mark: "bar",
+        mark: 'bar',
         encoding: {
-          y: { field: "a", type: "nominal" },
+          y: {field: 'a', type: 'nominal'},
           x: {
-            aggregate: "average",
-            field: "b",
-            type: "quantitative",
+            aggregate: 'average',
+            field: 'b',
+            type: 'quantitative',
             axis: {
-              title: "Average of b"
+              title: 'Average of b'
             }
           }
         }
       };
 
       // Embed the visualization in the container with id `vis`
-      vegaEmbed("#vis", vlSpec);
+      vegaEmbed('#vis', vlSpec);
     </script>
   </body>
 </html>

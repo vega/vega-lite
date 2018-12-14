@@ -34,7 +34,7 @@ var changeSet = vega
   .remove(function(t) {
     return t.x < minimumX;
   });
-view.change("table", changeSet).run();
+view.change('table', changeSet).run();
 ```
 
 The view is given to us by the [embed](https://github.com/vega/vega-embed) method, which helps load Vega/Vega-Lite specs on your webpages. When `embed` completes successfully, `embed` returns a fulfilled [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an object containing the `view`, which is how we could access the `view.change` mentioned earlier, and `spec`, which is the compiled Vega spec from the original Vega-Lite spec given. When `embed` fails, it returns a rejected [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) with an error object.
@@ -45,17 +45,17 @@ Below is the JavaScript code to run this example. Make sure your html contains a
 
 ```js
 var vlSpec = {
-  $schema: "https://vega.github.io/schema/vega-lite/v3.json",
-  data: { name: "table" },
+  $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+  data: {name: 'table'},
   width: 400,
-  mark: "line",
+  mark: 'line',
   encoding: {
-    x: { field: "x", type: "quantitative", scale: { zero: false } },
-    y: { field: "y", type: "quantitative" },
-    color: { field: "category", type: "nominal" }
+    x: {field: 'x', type: 'quantitative', scale: {zero: false}},
+    y: {field: 'y', type: 'quantitative'},
+    color: {field: 'category', type: 'nominal'}
   }
 };
-vegaEmbed("#chart", vlSpec).then(function(res) {
+vegaEmbed('#chart', vlSpec).then(function(res) {
   /**
    * Generates a new tuple with random walk.
    */
@@ -88,7 +88,7 @@ vegaEmbed("#chart", vlSpec).then(function(res) {
       .remove(function(t) {
         return t.x < minimumX;
       });
-    res.view.change("table", changeSet).run();
+    res.view.change('table', changeSet).run();
   }, 1000);
 });
 ```
