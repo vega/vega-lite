@@ -1,6 +1,6 @@
 import {
   AggregateOp,
-  Align as VgAlign,
+  Align,
   Compare as VgCompare,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
@@ -644,7 +644,7 @@ export interface VgMarkConfig {
   /**
    * The horizontal alignment of the text. One of `"left"`, `"right"`, `"center"`.
    */
-  align?: VgAlign;
+  align?: Align;
 
   /**
    * The rotation angle of the text, in degrees.
