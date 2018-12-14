@@ -5,23 +5,25 @@ title: Data
 permalink: /docs/data.html
 ---
 
-Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is *tabular* data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
+Akin to [Vega](https://www.github.com/vega/vega)'s [data model](https://vega.github.io/vega/docs/data/), the basic data model used by Vega-Lite is _tabular_ data, similar to a spreadsheet or a database table. Individual data sets are assumed to contain a collection of records, which may contain any number of named data fields.
 
-Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`).  Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [`datasets`](#datasets).
+Vega-Lite's `data` property describes the visualization's data source as part of the specification, which can be either [inline data](#inline) (`values`) or [a URL from which to load the data](#url) (`url`). Alternatively, we can create an empty, [named data source](#named) (`name`), which can be [bound at runtime](https://vega.github.io/vega/docs/api/view/#data) or populated from top-level [`datasets`](#datasets).
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
 ## Types of Data Sources
 
 {:#inline}
+
 ### Inline Data
 
-Inline Data can be specified using `values` property.
-Here is a list of all properties of an inline `data` source:
+Inline Data can be specified using `values` property. Here is a list of all properties of an inline `data` source:
 
 {% include table.html props="values,name,format" source="InlineData" %}
 
@@ -32,7 +34,7 @@ For example, the following specification embeds an inline data table with nine r
 If the input data is simply an array of primitive values, each value is mapped to the `data` property of a new object. For example `[5, 3, 8, 1]` is loaded as:
 
 ```json
-[ {"data": 5}, {"data": 3}, {"data": 8}, {"data": 1} ]
+[{"data": 5}, {"data": 3}, {"data": 8}, {"data": 1}]
 ```
 
 You can also inline a string that will be parsed according to the specified format type.
@@ -40,6 +42,7 @@ You can also inline a string that will be parsed according to the specified form
 <span class="vl-example" data-name="embed_csv"></span>
 
 {:#url}
+
 ### Data from URL
 
 Data can be loaded from a URL using the `url` property. In addition, the format of the input data can be specified using the `formatType` property. By default Vega-Lite will infer the type from the file extension.
@@ -53,10 +56,10 @@ For example, the following specification loads data from a relative `url`: `data
 <span class="vl-example" data-name="point_2d"></span>
 
 {:#named}
+
 ### Named Data Sources
 
-Data can also be added at runtime through the [Vega View API](https://vega.github.io/vega/docs/api/view/#data).
-Data sources are referenced by name, which is specified in Vega-Lite with `name`.
+Data can also be added at runtime through the [Vega View API](https://vega.github.io/vega/docs/api/view/#data). Data sources are referenced by name, which is specified in Vega-Lite with `name`.
 
 Here is a list of all properties describing a named `data` source:
 
@@ -65,23 +68,26 @@ Here is a list of all properties describing a named `data` source:
 For example, to create a data source named `myData`, use the following data
 
 {: .suppress-error}
+
 ```json
 {
-    "name": "myData"
+  "name": "myData"
 }
 ```
 
 You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data) to load data at runtime and update the chart. Here is an example using [Vega-Embed](https://github.com/vega/vega-embed):
 
-```js 
-vegaEmbed("#vis", spec)
-  .then((res) => res.view
-    .insert("myData", [ /* some data array */])
+```js
+vegaEmbed('#vis', spec).then(res =>
+  res.view
+    .insert('myData', [
+      /* some data array */
+    ])
     .run()
-  );
+);
 ```
 
-You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html) 
+You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html)
 
 ## Format
 
@@ -120,6 +126,7 @@ Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The inp
 Vega-Lite supports a top-level `datasets` property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the [named](#named) datasource in the rest of the spec. `datasets` is a mapping from name to an [inline](#inline) dataset.
 
 {: .suppress-error}
+
 ```json
     "datasets": {
       "somedata": [1,2,3]

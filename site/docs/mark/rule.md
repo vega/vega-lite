@@ -6,6 +6,7 @@ permalink: /docs/rule.html
 ---
 
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -19,16 +20,19 @@ permalink: /docs/rule.html
 The `rule` mark represents each data point as a line segment. It can be used in two ways. First, as a line segment that spans the complete width or height of a view. Second, a rule can be used to draw a line segment between two positions.
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
 {:#properties}
+
 ## Rule Mark Properties
 
-
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -48,13 +52,13 @@ A rule mark definition can contain any [standard mark properties](mark.html#mark
 
 ### Width/Height-Spanning Rules
 
-If the `rule` mark only has `y` encoding, the output view produces horizontal rules that  spans the complete width.  Similarly, if the `rule` mark only has `x` encoding, the output view produces vertical rules that spans the height.
+If the `rule` mark only has `y` encoding, the output view produces horizontal rules that spans the complete width. Similarly, if the `rule` mark only has `x` encoding, the output view produces vertical rules that spans the height.
 
 We can use rules to show the average price of different stocks akin to [`tick`](tick.html) marks.
 
 <span class="vl-example" data-name="rule_color_mean"></span>
 
-The fact that rule marks span the width or the height of a single view make them useful as an annotation [layer](layer.html).  For example, we can use rules to show average values of different stocks alongside the price curve.
+The fact that rule marks span the width or the height of a single view make them useful as an annotation [layer](layer.html). For example, we can use rules to show average values of different stocks alongside the price curve.
 
 <span class="vl-example" data-name="layer_line_color_rule"></span>
 
@@ -63,6 +67,7 @@ We can also use a rule mark to show global mean value over a histogram.
 <span class="vl-example" data-name="layer_histogram_global_mean"></span>
 
 {:#ranged}
+
 ### Ranged Rules
 
 To control the spans of horizontal/vertical rules, `x` and `x2`/`y` and `y2` channels can be specified.
@@ -80,10 +85,11 @@ Alternatively, we can create error bars showing one standard deviation (`stdev`)
 <span class="vl-example" data-name="layer_error_bars_dev"></span>
 
 {:#config}
+
 ## Rule Config
 
-
 {: .suppress-error}
+
 ```json
 // Top-level View Specification
 {
@@ -95,6 +101,6 @@ Alternatively, we can create error bars showing one standard deviation (`stdev`)
 }
 ```
 
-The `rule` property of the top-level [`config`](config.html) object sets the default properties for all rule marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `rule` property of the top-level [`config`](config.html) object sets the default properties for all rule marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The rule config can contain any [rule mark properties](#properties) (except `type`, `style`, and `clip`).

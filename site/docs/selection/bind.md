@@ -7,8 +7,8 @@ permalink: /docs/bind.html
 
 Using the `bind` property, selections can be bound in two ways:
 
-  - Single selections can be bound to [input elements](#input-element-binding) also known as dynamic query widgets.
-  - Interval selections can be bound to their own [view's scales](#scale-binding) to enable panning &amp; zooming.
+- Single selections can be bound to [input elements](#input-element-binding) also known as dynamic query widgets.
+- Interval selections can be bound to their own [view's scales](#scale-binding) to enable panning &amp; zooming.
 
 ## Input Element Binding
 

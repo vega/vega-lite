@@ -5,6 +5,7 @@ permalink: /docs/value.html
 ---
 
 {: .suppress-error}
+
 ```json
 // Specification of a Single View
 {
@@ -19,8 +20,7 @@ permalink: /docs/value.html
 }
 ```
 
-A [value definition](encoding.html#value-def) must include a `value` property
-to map a constant value to an [encoding channel](encoding.html#channels).
+A [value definition](encoding.html#value-def) must include a `value` property to map a constant value to an [encoding channel](encoding.html#channels).
 
 {% include table.html props="value" source="ValueDef" %}
 
@@ -34,4 +34,4 @@ Similarly, `value` for `size` channel of bar marks will adjust the bar's size. B
 
 <span class="vl-example" data-name="bar_aggregate_size"></span>
 
-__Note:__ Mapping an encoding channel to a constant `value` is equivalent to setting a property of the [`"mark"`](mark.html#mark-def) definition block. For example, you can also set color and shape of marks by setting `"mark"` to `{"color": "#ff9900", "shape": "square"}`. However, unlike mark definition properties, `value` definition of an encoding channel can also be combined with `condition` to specify conditional encoding. See the [`condition`](condition.html) page for more details.
+**Note:** Mapping an encoding channel to a constant `value` is equivalent to setting a property of the [`"mark"`](mark.html#mark-def) definition block. For example, you can also set color and shape of marks by setting `"mark"` to `{"color": "#ff9900", "shape": "square"}`. However, unlike mark definition properties, `value` definition of an encoding channel can also be combined with `condition` to specify conditional encoding. See the [`condition`](condition.html) page for more details.

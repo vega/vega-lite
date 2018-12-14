@@ -17,7 +17,6 @@ _Note:_ The `fold` transform only applies to a list of known fields (set using t
 
 {% include table.html props="fold,as" source="FoldTransform" %}
 
-
 ## Usage
 
 ```json
@@ -27,10 +26,7 @@ _Note:_ The `fold` transform only applies to a list of known fields (set using t
 This example folds the `"gold"` and `"silver"` properties. Given the input data
 
 ```json
-[
-  {"country": "USA", "gold": 10, "silver": 20},
-  {"country": "Canada", "gold": 7, "silver": 26}
-]
+[{"country": "USA", "gold": 10, "silver": 20}, {"country": "Canada", "gold": 7, "silver": 26}]
 ```
 
 this example produces the output:
@@ -43,6 +39,7 @@ this example produces the output:
   {"key": "silver", "value": 26, "country": "Canada", "gold": 7, "silver": 26}
 ]
 ```
+
 ## Example
 
 <div class="vl-example" data-name="bar_column_fold"></div>
