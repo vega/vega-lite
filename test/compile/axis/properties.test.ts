@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
 import {labelAlign, labelAngle, labelBaseline} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
@@ -59,7 +58,7 @@ describe('compile/axis', () => {
           undefined,
           {}
         );
-        assert.isUndefined(tickCount);
+        expect(tickCount).not.toBeDefined();
       });
     }
 
@@ -256,101 +255,101 @@ describe('compile/axis', () => {
   describe('labelAlign', () => {
     describe('horizontal orients', () => {
       it('360 degree check for horizonatal orients return to see if they orient properly', () => {
-        assert.equal(labelAlign(0, 'top'), 'center');
-        assert.equal(labelAlign(15, 'top'), 'right');
-        assert.equal(labelAlign(30, 'top'), 'right');
-        assert.equal(labelAlign(45, 'top'), 'right');
-        assert.equal(labelAlign(60, 'top'), 'right');
-        assert.equal(labelAlign(75, 'top'), 'right');
-        assert.equal(labelAlign(90, 'top'), 'right');
-        assert.equal(labelAlign(105, 'top'), 'right');
-        assert.equal(labelAlign(120, 'top'), 'right');
-        assert.equal(labelAlign(135, 'top'), 'right');
-        assert.equal(labelAlign(150, 'top'), 'right');
-        assert.equal(labelAlign(165, 'top'), 'right');
-        assert.equal(labelAlign(180, 'top'), 'center');
-        assert.equal(labelAlign(195, 'bottom'), 'right');
-        assert.equal(labelAlign(210, 'bottom'), 'right');
-        assert.equal(labelAlign(225, 'bottom'), 'right');
-        assert.equal(labelAlign(240, 'bottom'), 'right');
-        assert.equal(labelAlign(255, 'bottom'), 'right');
-        assert.equal(labelAlign(270, 'bottom'), 'right');
-        assert.equal(labelAlign(285, 'bottom'), 'right');
-        assert.equal(labelAlign(300, 'bottom'), 'right');
-        assert.equal(labelAlign(315, 'bottom'), 'right');
-        assert.equal(labelAlign(330, 'bottom'), 'right');
-        assert.equal(labelAlign(345, 'bottom'), 'right');
+        expect(labelAlign(0, 'top')).toEqual('center');
+        expect(labelAlign(15, 'top')).toEqual('right');
+        expect(labelAlign(30, 'top')).toEqual('right');
+        expect(labelAlign(45, 'top')).toEqual('right');
+        expect(labelAlign(60, 'top')).toEqual('right');
+        expect(labelAlign(75, 'top')).toEqual('right');
+        expect(labelAlign(90, 'top')).toEqual('right');
+        expect(labelAlign(105, 'top')).toEqual('right');
+        expect(labelAlign(120, 'top')).toEqual('right');
+        expect(labelAlign(135, 'top')).toEqual('right');
+        expect(labelAlign(150, 'top')).toEqual('right');
+        expect(labelAlign(165, 'top')).toEqual('right');
+        expect(labelAlign(180, 'top')).toEqual('center');
+        expect(labelAlign(195, 'bottom')).toEqual('right');
+        expect(labelAlign(210, 'bottom')).toEqual('right');
+        expect(labelAlign(225, 'bottom')).toEqual('right');
+        expect(labelAlign(240, 'bottom')).toEqual('right');
+        expect(labelAlign(255, 'bottom')).toEqual('right');
+        expect(labelAlign(270, 'bottom')).toEqual('right');
+        expect(labelAlign(285, 'bottom')).toEqual('right');
+        expect(labelAlign(300, 'bottom')).toEqual('right');
+        expect(labelAlign(315, 'bottom')).toEqual('right');
+        expect(labelAlign(330, 'bottom')).toEqual('right');
+        expect(labelAlign(345, 'bottom')).toEqual('right');
       });
       it('360 degree check for vertical orients return to see if they orient properly', () => {
-        assert.equal(labelAlign(0, 'left'), 'right');
-        assert.equal(labelAlign(15, 'left'), 'right');
-        assert.equal(labelAlign(30, 'left'), 'right');
-        assert.equal(labelAlign(45, 'left'), 'right');
-        assert.equal(labelAlign(60, 'left'), 'right');
-        assert.equal(labelAlign(75, 'left'), 'right');
-        assert.equal(labelAlign(90, 'left'), 'center');
-        assert.equal(labelAlign(105, 'left'), 'left');
-        assert.equal(labelAlign(120, 'left'), 'left');
-        assert.equal(labelAlign(135, 'left'), 'left');
-        assert.equal(labelAlign(150, 'left'), 'left');
-        assert.equal(labelAlign(165, 'left'), 'left');
-        assert.equal(labelAlign(180, 'left'), 'left');
-        assert.equal(labelAlign(195, 'right'), 'right');
-        assert.equal(labelAlign(210, 'right'), 'right');
-        assert.equal(labelAlign(225, 'right'), 'right');
-        assert.equal(labelAlign(240, 'right'), 'right');
-        assert.equal(labelAlign(255, 'right'), 'right');
-        assert.equal(labelAlign(270, 'right'), 'center');
-        assert.equal(labelAlign(285, 'right'), 'left');
-        assert.equal(labelAlign(300, 'right'), 'left');
-        assert.equal(labelAlign(315, 'right'), 'left');
-        assert.equal(labelAlign(330, 'right'), 'left');
-        assert.equal(labelAlign(345, 'right'), 'left');
+        expect(labelAlign(0, 'left')).toEqual('right');
+        expect(labelAlign(15, 'left')).toEqual('right');
+        expect(labelAlign(30, 'left')).toEqual('right');
+        expect(labelAlign(45, 'left')).toEqual('right');
+        expect(labelAlign(60, 'left')).toEqual('right');
+        expect(labelAlign(75, 'left')).toEqual('right');
+        expect(labelAlign(90, 'left')).toEqual('center');
+        expect(labelAlign(105, 'left')).toEqual('left');
+        expect(labelAlign(120, 'left')).toEqual('left');
+        expect(labelAlign(135, 'left')).toEqual('left');
+        expect(labelAlign(150, 'left')).toEqual('left');
+        expect(labelAlign(165, 'left')).toEqual('left');
+        expect(labelAlign(180, 'left')).toEqual('left');
+        expect(labelAlign(195, 'right')).toEqual('right');
+        expect(labelAlign(210, 'right')).toEqual('right');
+        expect(labelAlign(225, 'right')).toEqual('right');
+        expect(labelAlign(240, 'right')).toEqual('right');
+        expect(labelAlign(255, 'right')).toEqual('right');
+        expect(labelAlign(270, 'right')).toEqual('center');
+        expect(labelAlign(285, 'right')).toEqual('left');
+        expect(labelAlign(300, 'right')).toEqual('left');
+        expect(labelAlign(315, 'right')).toEqual('left');
+        expect(labelAlign(330, 'right')).toEqual('left');
+        expect(labelAlign(345, 'right')).toEqual('left');
       });
       it('should return undefined if angle is undefined', () => {
-        assert.deepEqual(labelAlign(undefined, 'left'), undefined);
+        expect(labelAlign(undefined, 'left')).toEqual(undefined);
       });
     });
   });
 
   describe('labelBaseline', () => {
     it('is middle for perpendiculars horizontal orients', () => {
-      assert.deepEqual(labelBaseline(90, 'top'), 'middle');
-      assert.deepEqual(labelBaseline(270, 'bottom'), 'middle');
+      expect(labelBaseline(90, 'top')).toEqual('middle');
+      expect(labelBaseline(270, 'bottom')).toEqual('middle');
     });
 
     it('is top for bottom orients for 1st and 4th quadrants', () => {
-      assert.deepEqual(labelBaseline(45, 'bottom'), 'top');
-      assert.deepEqual(labelBaseline(180, 'top'), 'top');
+      expect(labelBaseline(45, 'bottom')).toEqual('top');
+      expect(labelBaseline(180, 'top')).toEqual('top');
     });
 
     it('is bottom for bottom orients for 2nd and 3rd quadrants', () => {
-      assert.deepEqual(labelBaseline(100, 'bottom'), 'middle');
-      assert.deepEqual(labelBaseline(260, 'bottom'), 'middle');
+      expect(labelBaseline(100, 'bottom')).toEqual('middle');
+      expect(labelBaseline(260, 'bottom')).toEqual('middle');
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      assert.deepEqual(labelBaseline(0, 'left'), 'middle');
-      assert.deepEqual(labelBaseline(180, 'right'), 'middle');
+      expect(labelBaseline(0, 'left')).toEqual('middle');
+      expect(labelBaseline(180, 'right')).toEqual('middle');
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
-      assert.deepEqual(labelBaseline(80, 'left'), 'top');
-      assert.deepEqual(labelBaseline(100, 'left'), 'top');
+      expect(labelBaseline(80, 'left')).toEqual('top');
+      expect(labelBaseline(100, 'left')).toEqual('top');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      assert.deepEqual(labelBaseline(280, 'left'), 'bottom');
-      assert.deepEqual(labelBaseline(260, 'left'), 'bottom');
+      expect(labelBaseline(280, 'left')).toEqual('bottom');
+      expect(labelBaseline(260, 'left')).toEqual('bottom');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      assert.deepEqual(labelBaseline(280, 'left'), 'bottom');
-      assert.deepEqual(labelBaseline(260, 'left'), 'bottom');
+      expect(labelBaseline(280, 'left')).toEqual('bottom');
+      expect(labelBaseline(260, 'left')).toEqual('bottom');
     });
 
     it('should return undefined if angle is undefined', () => {
-      assert.deepEqual(labelBaseline(undefined, 'left'), undefined);
+      expect(labelBaseline(undefined, 'left')).toEqual(undefined);
     });
   });
 });

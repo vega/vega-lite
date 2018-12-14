@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
@@ -33,13 +32,13 @@ describe('compile/data/geojson', () => {
     let node = root.children[0];
 
     while (node != null) {
-      assert.instanceOf(node, GeoJSONNode);
+      expect(node).toBeInstanceOf(GeoJSONNode);
       const transform = (node as GeoJSONNode).assemble();
-      assert.equal(transform.type, 'geojson');
-      assert.isTrue(every(['longitude', 'latitude'], field => contains(transform.fields, field)));
-      assert.isUndefined(transform.geojson);
+      expect(transform.type).toEqual('geojson');
+      expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
+      expect(transform.geojson).not.toBeDefined();
 
-      assert.isAtMost(node.children.length, 1);
+      expect(node.children.length).toBeLessThanOrEqual(1);
       node = node.children[0];
     }
   });

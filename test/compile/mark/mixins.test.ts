@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {X, Y} from '../../../src/channel';
 import {binPosition, color, nonPosition, pointPosition, tooltip} from '../../../src/compile/mark/mixins';
 import {FieldDef} from '../../../src/fielddef';
@@ -29,7 +28,7 @@ describe('compile/mark/mixins', () => {
       });
 
       const colorMixins = color(model);
-      assert.deepEqual(colorMixins.fill, {field: 'gender', scale: 'color'});
+      expect(colorMixins.fill).toEqual({field: 'gender', scale: 'color'});
     });
 
     it('color should be mapped to stroke for point', () => {
@@ -52,8 +51,8 @@ describe('compile/mark/mixins', () => {
       });
 
       const colorMixins = color(model);
-      assert.deepEqual(colorMixins.stroke, {field: 'gender', scale: 'color'});
-      assert.propertyVal(colorMixins.fill, 'value', 'transparent');
+      expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'color'});
+      expect(colorMixins.fill['value']).toBe('transparent');
     });
 
     it('add transparent fill when stroke is encoded', () => {
@@ -76,8 +75,8 @@ describe('compile/mark/mixins', () => {
       });
 
       const colorMixins = color(model);
-      assert.deepEqual(colorMixins.stroke, {field: 'gender', scale: 'stroke'});
-      assert.propertyVal(colorMixins.fill, 'value', 'transparent');
+      expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'stroke'});
+      expect(colorMixins.fill['value']).toBe('transparent');
     });
 
     it(
@@ -107,9 +106,9 @@ describe('compile/mark/mixins', () => {
         });
 
         const colorMixins = color(model);
-        assert.isUndefined(colorMixins.stroke);
-        assert.deepEqual(colorMixins.fill, {field: 'gender', scale: 'fill'});
-        assert.equal(logger.warns[0], log.message.droppingColor('encoding', {fill: true}));
+        expect(colorMixins.stroke).not.toBeDefined();
+        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {fill: true}));
       })
     );
 
@@ -135,9 +134,9 @@ describe('compile/mark/mixins', () => {
         });
 
         const colorMixins = color(model);
-        assert.isUndefined(colorMixins.stroke);
-        assert.deepEqual(colorMixins.fill, {field: 'gender', scale: 'fill'});
-        assert.equal(logger.warns[0], log.message.droppingColor('property', {fill: true}));
+        expect(colorMixins.stroke).not.toBeDefined();
+        expect(colorMixins.fill).toEqual({field: 'gender', scale: 'fill'});
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
       })
     );
 
@@ -152,8 +151,8 @@ describe('compile/mark/mixins', () => {
           }
         });
         const props = color(model);
-        assert.deepEqual(props.stroke, {value: 'blue'});
-        assert.equal(logger.warns[0], log.message.droppingColor('property', {stroke: true}));
+        expect(props.stroke).toEqual({value: 'blue'});
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {stroke: true}));
       })
     );
 
@@ -168,8 +167,8 @@ describe('compile/mark/mixins', () => {
           }
         });
         const props = color(model);
-        assert.isUndefined(props.stroke);
-        assert.equal(logger.warns[0], log.message.droppingColor('property', {fill: true}));
+        expect(props.stroke).not.toBeDefined();
+        expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {fill: true}));
       })
     );
 
@@ -182,7 +181,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = color(model);
-      assert.deepEqual(props.stroke, {value: 'red'});
+      expect(props.stroke).toEqual({value: 'red'});
     });
 
     it('should apply color from mark-specific config over general mark config', () => {
@@ -195,7 +194,7 @@ describe('compile/mark/mixins', () => {
         config: {mark: {color: 'blue'}, point: {color: 'red'}}
       });
       const props = color(model);
-      assert.deepEqual(props.stroke, {value: 'red'});
+      expect(props.stroke).toEqual({value: 'red'});
     });
 
     it('should apply stroke mark config over color mark config', () => {
@@ -208,7 +207,7 @@ describe('compile/mark/mixins', () => {
         config: {mark: {color: 'red', stroke: 'blue'}}
       });
       const props = color(model);
-      assert.deepEqual(props.stroke, {value: 'blue'});
+      expect(props.stroke).toEqual({value: 'blue'});
     });
 
     it('should apply stroke mark config over color mark config', () => {
@@ -221,7 +220,7 @@ describe('compile/mark/mixins', () => {
         config: {point: {color: 'red', stroke: 'blue'}}
       });
       const props = color(model);
-      assert.deepEqual(props.stroke, {value: 'blue'});
+      expect(props.stroke).toEqual({value: 'blue'});
     });
   });
 
@@ -234,7 +233,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = tooltip(model);
-      assert.deepEqual(props.tooltip, {
+      expect(props.tooltip).toEqual({
         signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
@@ -248,7 +247,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = tooltip(model);
-      assert.deepEqual(props.tooltip, {
+      expect(props.tooltip).toEqual({
         signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
@@ -262,7 +261,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = tooltip(model);
-      assert.deepEqual(props.tooltip, {signal: 'datum'});
+      expect(props.tooltip).toEqual({signal: 'datum'});
     });
 
     it('priorizes tooltip field def', () => {
@@ -275,7 +274,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = tooltip(model);
-      assert.deepEqual(props.tooltip, {
+      expect(props.tooltip).toEqual({
         signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
@@ -290,7 +289,7 @@ describe('compile/mark/mixins', () => {
         }
       });
       const props = tooltip(model);
-      assert.deepEqual(props.tooltip, {value: 'haha'});
+      expect(props.tooltip).toEqual({value: 'haha'});
     });
 
     it('generates correct keys and values for channels with axis', () => {
@@ -345,7 +344,7 @@ describe('compile/mark/mixins', () => {
 
       [X, Y].forEach(channel => {
         const mixins = pointPosition(channel, model, 'zeroOrMin');
-        assert.equal(mixins[channel].field, model.getName(channel));
+        expect(mixins[channel].field).toEqual(model.getName(channel));
       });
     });
   });
@@ -378,8 +377,8 @@ describe('compile/mark/mixins', () => {
       log.wrap(logger => {
         const fieldDef: FieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
         const props = binPosition(fieldDef, undefined, 'x', undefined, undefined, undefined);
-        assert.isUndefined(props);
-        assert.equal(logger.warns[0], log.message.channelRequiredForBinned('x2'));
+        expect(props).not.toBeDefined();
+        expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
       })
     );
 
@@ -388,8 +387,8 @@ describe('compile/mark/mixins', () => {
       log.wrap(logger => {
         const fieldDef: FieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
         const props = binPosition(fieldDef, undefined, 'y', undefined, undefined, undefined);
-        assert.isUndefined(props);
-        assert.equal(logger.warns[0], log.message.channelRequiredForBinned('y2'));
+        expect(props).not.toBeDefined();
+        expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
       })
     );
   });

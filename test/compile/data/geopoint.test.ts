@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {DataFlowNode} from '../../../src/compile/data/dataflow';
 import {GeoPointNode} from '../../../src/compile/data/geopoint';
 import {contains, every} from '../../../src/util';
@@ -35,14 +34,14 @@ describe('compile/data/geopoint', () => {
       let node = root.children[0];
 
       while (node != null) {
-        assert.instanceOf(node, GeoPointNode);
+        expect(node).toBeInstanceOf(GeoPointNode);
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
-        assert.equal(transform.type, 'geopoint');
-        assert.isTrue(every(['longitude', 'latitude'], field => contains(transform.fields, field)));
-        assert.isTrue(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a)));
-        assert.isDefined(transform.projection);
-        assert.isAtMost(node.children.length, 1);
+        expect(transform.type).toEqual('geopoint');
+        expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
+        expect(every([model.getName('x'), model.getName('y')], a => contains(transform.as, a))).toBe(true);
+        expect(transform.projection).toBeDefined();
+        expect(node.children.length).toBeLessThanOrEqual(1);
         node = node.children[0];
       }
     });

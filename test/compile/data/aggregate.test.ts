@@ -1,28 +1,23 @@
-import {DataFlowNode} from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-
-import {assert} from 'chai';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {AggregateTransform} from '../../../src/transform';
-import {StringSet} from '../../../src/util';
-import {VgAggregateTransform} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
+import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
 describe('compile/data/summary', () => {
   describe('clone', () => {
     it('should have correct type', () => {
       const agg = new AggregateNode(null, {}, {});
-      assert(agg instanceof AggregateNode);
+      expect(agg instanceof AggregateNode).toBeTruthy();
       const clone = agg.clone();
-      assert(clone instanceof AggregateNode);
+      expect(clone instanceof AggregateNode).toBeTruthy();
     });
 
     it('should have made a deep copy', () => {
       const agg = new AggregateNode(null, {foo: true}, {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
-      assert.deepEqual<StringSet>(clone.dependentFields(), {foo: true, bar: true});
-      assert.deepEqual<StringSet>(agg.dependentFields(), {foo: true});
+      expect(clone.dependentFields()).toEqual({foo: true, bar: true});
+      expect(agg.dependentFields()).toEqual({foo: true});
     });
 
     it('should never clone parent', () => {
@@ -51,8 +46,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual(
-        agg.hash(),
+      expect(agg.hash()).toEqual(
         'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
       );
     });
@@ -77,7 +71,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['sum', 'count'],
@@ -96,7 +90,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin', 'Cylinders'],
         ops: ['mean'],
@@ -118,7 +112,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['mean'],
@@ -136,7 +130,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: [],
         ops: ['mean', 'min', 'max'],
@@ -156,7 +150,7 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: [
           'bin_maxbins_10_Displacement',
@@ -181,7 +175,7 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Group'],
         ops: ['mean', 'sum'],
@@ -201,7 +195,7 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      assert.deepEqual<VgAggregateTransform>(agg.assemble(), {
+      expect(agg.assemble()).toEqual({
         type: 'aggregate',
         groupby: ['Group'],
         ops: ['mean', 'max', 'sum'],

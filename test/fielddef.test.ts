@@ -1,15 +1,6 @@
-import {assert} from 'chai';
 import {COUNTING_OPS} from '../src/aggregate';
 import {Channel, CHANNELS} from '../src/channel';
-import {
-  channelCompatibility,
-  ChannelDef,
-  defaultTitle,
-  defaultType,
-  FieldDef,
-  normalize,
-  vgField
-} from '../src/fielddef';
+import {channelCompatibility, defaultTitle, defaultType, FieldDef, normalize, vgField} from '../src/fielddef';
 import * as log from '../src/log';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
@@ -17,32 +8,32 @@ import {QUANTITATIVE, TEMPORAL} from '../src/type';
 describe('fieldDef', () => {
   describe('vgField()', () => {
     it('should access flattened fields', () => {
-      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}), 'foo\\.bar\\.baz');
+      expect(vgField({field: 'foo.bar\\.baz'})).toEqual('foo\\.bar\\.baz');
     });
 
     it('should access flattened fields in expression', () => {
-      assert.deepEqual(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'}), 'datum["foo.bar.baz"]');
+      expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toEqual('datum["foo.bar.baz"]');
     });
   });
 
   describe('defaultType()', () => {
     it('should return temporal if there is timeUnit', () => {
-      assert.equal(defaultType({timeUnit: 'month', field: 'a'} as FieldDef<string>, 'x'), 'temporal');
+      expect(defaultType({timeUnit: 'month', field: 'a'} as FieldDef<string>, 'x')).toEqual('temporal');
     });
 
     it('should return quantitative if there is bin', () => {
-      assert.equal(defaultType({bin: true, field: 'a'} as FieldDef<string>, 'x'), 'quantitative');
+      expect(defaultType({bin: true, field: 'a'} as FieldDef<string>, 'x')).toEqual('quantitative');
     });
 
     it('should return quantitative for a channel that supports measure', () => {
       for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
-        assert.equal(defaultType({field: 'a'} as FieldDef<string>, c), 'quantitative', c);
+        expect(defaultType({field: 'a'} as FieldDef<string>, c)).toEqual('quantitative');
       }
     });
 
     it('should return nominal for a channel that does not support measure', () => {
       for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
-        assert.equal(defaultType({field: 'a'} as FieldDef<string>, c), 'nominal', c);
+        expect(defaultType({field: 'a'} as FieldDef<string>, c)).toEqual('nominal');
       }
     });
   });
@@ -51,14 +42,14 @@ describe('fieldDef', () => {
     it(
       'should convert primitive type to value def',
       log.wrap(localLogger => {
-        assert.deepEqual<ChannelDef<string>>(normalize(5 as any, 'x'), {value: 5});
-        assert.equal(localLogger.warns.length, 1);
+        expect(normalize(5 as any, 'x')).toEqual({value: 5});
+        expect(localLogger.warns.length).toEqual(1);
       })
     );
 
     it('should return fieldDef with full type name.', () => {
       const fieldDef: FieldDef<string> = {field: 'a', type: 'q' as any};
-      assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
+      expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
     });
 
     it(
@@ -69,12 +60,12 @@ describe('fieldDef', () => {
           field: 'a',
           type: 'temporal'
         };
-        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {
+        expect(normalize(fieldDef, 'x')).toEqual({
           timeUnit: 'yearmonthdate',
           field: 'a',
           type: 'temporal'
         });
-        assert.equal(localLogger.warns[0], log.message.dayReplacedWithDate('yearmonthday'));
+        expect(localLogger.warns[0]).toEqual(log.message.dayReplacedWithDate('yearmonthday'));
       })
     );
 
@@ -83,9 +74,9 @@ describe('fieldDef', () => {
       log.wrap(localLogger => {
         for (const aggregate of COUNTING_OPS) {
           const fieldDef: FieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
-          assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {aggregate, field: 'a', type: 'quantitative'});
+          expect(normalize(fieldDef, 'x')).toEqual({aggregate, field: 'a', type: 'quantitative'});
         }
-        assert.equal(localLogger.warns.length, 4);
+        expect(localLogger.warns.length).toEqual(4);
       })
     );
 
@@ -102,8 +93,8 @@ describe('fieldDef', () => {
       'should drop invalid aggregate ops and throw warning.',
       log.wrap(localLogger => {
         const fieldDef: FieldDef<string> = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
-        assert.deepEqual<ChannelDef<string>>(normalize(fieldDef, 'x'), {field: 'a', type: 'quantitative'});
-        assert.equal(localLogger.warns[0], log.message.invalidAggregate('boxplot'));
+        expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+        expect(localLogger.warns[0]).toEqual(log.message.invalidAggregate('boxplot'));
       })
     );
   });
@@ -112,12 +103,12 @@ describe('fieldDef', () => {
     describe('row/column', () => {
       it('is incompatible with continuous field', () => {
         for (const channel of ['row', 'column'] as Channel[]) {
-          assert(!channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+          expect(!channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible).toBeTruthy();
         }
       });
       it('is compatible with discrete field', () => {
         for (const channel of ['row', 'column'] as Channel[]) {
-          assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+          expect(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible).toBeTruthy();
         }
       });
     });
@@ -125,12 +116,12 @@ describe('fieldDef', () => {
     describe('x/y/color/text/detail', () => {
       it('is compatible with continuous field', () => {
         for (const channel of ['x', 'y', 'color', 'text', 'detail'] as Channel[]) {
-          assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+          expect(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible).toBeTruthy();
         }
       });
       it('is compatible with discrete field', () => {
         for (const channel of ['x', 'y', 'color', 'text', 'detail'] as Channel[]) {
-          assert(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+          expect(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible).toBeTruthy();
         }
       });
     });
@@ -138,96 +129,98 @@ describe('fieldDef', () => {
     describe('opacity/size/x2/y2', () => {
       it('is compatible with continuous field', () => {
         for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
-          assert(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible);
+          expect(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible).toBeTruthy();
         }
       });
 
       it('is compatible with binned field', () => {
         for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
-          assert(channelCompatibility({bin: true, field: 'a', type: 'quantitative'}, channel).compatible);
+          expect(channelCompatibility({bin: true, field: 'a', type: 'quantitative'}, channel).compatible).toBeTruthy();
         }
       });
 
       it('is incompatible with nominal field', () => {
         for (const channel of ['opacity', 'size', 'x2', 'y2'] as Channel[]) {
-          assert(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible);
+          expect(!channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible).toBeTruthy();
         }
       });
     });
 
     describe('shape', () => {
       it('is compatible with nominal field', () => {
-        assert(channelCompatibility({field: 'a', type: 'nominal'}, 'shape').compatible);
+        expect(channelCompatibility({field: 'a', type: 'nominal'}, 'shape').compatible).toBeTruthy();
       });
       it('is compatible with ordinal field', () => {
-        assert(channelCompatibility({field: 'a', type: 'ordinal'}, 'shape').compatible);
+        expect(channelCompatibility({field: 'a', type: 'ordinal'}, 'shape').compatible).toBeTruthy();
       });
       it('is incompatible with quantitative field', () => {
-        assert(!channelCompatibility({field: 'a', type: 'quantitative'}, 'shape').compatible);
+        expect(!channelCompatibility({field: 'a', type: 'quantitative'}, 'shape').compatible).toBeTruthy();
       });
 
       it('is the only channel that is incompatible with geojson field', () => {
         for (const channel of CHANNELS) {
-          assert(channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape'));
+          expect(
+            channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape')
+          ).toBeTruthy();
         }
       });
     });
 
     describe('order', () => {
       it('is incompatible with nominal field', () => {
-        assert(!channelCompatibility({field: 'a', type: 'nominal'}, 'order').compatible);
+        expect(!channelCompatibility({field: 'a', type: 'nominal'}, 'order').compatible).toBeTruthy();
       });
       it('is compatible with ordinal field', () => {
-        assert(channelCompatibility({field: 'a', type: 'ordinal'}, 'order').compatible);
+        expect(channelCompatibility({field: 'a', type: 'ordinal'}, 'order').compatible).toBeTruthy();
       });
       it('is compatible with quantitative field', () => {
-        assert(channelCompatibility({field: 'a', type: 'quantitative'}, 'order').compatible);
+        expect(channelCompatibility({field: 'a', type: 'quantitative'}, 'order').compatible).toBeTruthy();
       });
     });
   });
 
   describe('defaultTitle()', () => {
     it('should return correct title for aggregate', () => {
-      assert.equal(defaultTitle({field: 'f', aggregate: 'mean'}, {}), 'Mean of f');
+      expect(defaultTitle({field: 'f', aggregate: 'mean'}, {})).toEqual('Mean of f');
     });
 
     it('should return correct title for count', () => {
-      assert.equal(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'}), 'baz!');
+      expect(defaultTitle({aggregate: 'count'}, {countTitle: 'baz!'})).toEqual('baz!');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(defaultTitle(fieldDef, {}), 'f (binned)');
+      expect(defaultTitle(fieldDef, {})).toEqual('f (binned)');
     });
 
     it('should return correct title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
-      assert.equal(defaultTitle(fieldDef, {fieldTitle: 'functional'}), 'BIN(f)');
+      expect(defaultTitle(fieldDef, {fieldTitle: 'functional'})).toEqual('BIN(f)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
-      assert.equal(defaultTitle(fieldDef, {}), 'f (month)');
+      expect(defaultTitle(fieldDef, {})).toEqual('f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
-      assert.equal(defaultTitle(fieldDef, {}), 'f (year-month-date)');
+      expect(defaultTitle(fieldDef, {})).toEqual('f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
-      assert.equal(defaultTitle(fieldDef, {}), 'f (day)');
+      expect(defaultTitle(fieldDef, {})).toEqual('f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
-      assert.equal(defaultTitle(fieldDef, {}), 'f (year-quarter)');
+      expect(defaultTitle(fieldDef, {})).toEqual('f (year-quarter)');
     });
 
     it('should return correct title for raw field', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
-      assert.equal(defaultTitle(fieldDef, {}), 'f');
+      expect(defaultTitle(fieldDef, {})).toEqual('f');
     });
   });
 });
