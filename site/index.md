@@ -83,5 +83,15 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), [Arvind Satyanarayan](https://twitter.com/arvindsatya1), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu), with significant help from [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Matthew Chun](http://mattwchun.com/), and [Akshat Shrivastava](https://github.com/AkshatSh).
-Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by the alumni and members of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL). 
+Many contributors including 
+[Will Strimling](https://willium.com), 
+[Yuhan (Zoe) Lu](https://github.com/YuhanLu), 
+[Souvik Sen](https://github.com/invokesus),
+[Chanwut Kittivorawong](https://github.com/chanwutk),
+[Matthew Chun](http://mattwchun.com/), 
+[Akshat Shrivastava](https://github.com/AkshatSh), 
+[Saba Noorassa](https://github.com/Saba9), 
+and 
+[Sira Horradarn](https://github.com/sirahd) 
+have provided significant helps. 
