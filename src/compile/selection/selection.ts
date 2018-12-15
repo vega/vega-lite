@@ -1,4 +1,4 @@
-import {Binding, SignalRef} from 'vega';
+import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
@@ -59,8 +59,8 @@ export interface ProjectSelectionComponent {
 }
 
 export interface SelectionCompiler {
-  signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
+  signals: (model: UnitModel, selCmpt: SelectionComponent) => NewSignal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }

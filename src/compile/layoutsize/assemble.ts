@@ -1,14 +1,15 @@
+import {NewSignal} from 'vega';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
-import {isVgRangeStep, VgRangeStep, VgSignal} from '../../vega.schema';
+import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 
-export function assembleLayoutSignals(model: Model): VgSignal[] {
+export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
 
-export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSignal[] {
+export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSignal[] {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
   if (!size || size === 'merged') {
@@ -59,7 +60,7 @@ export function sizeSignals(model: Model, sizeType: 'width' | 'height'): VgSigna
   }
 }
 
-function stepSignal(scaleName: string, range: VgRangeStep): VgSignal {
+function stepSignal(scaleName: string, range: VgRangeStep): NewSignal {
   return {
     name: scaleName + '_step',
     value: range.step

@@ -1,3 +1,4 @@
+import {NewSignal} from 'vega';
 import {Axis} from '../axis';
 import {
   Channel,
@@ -10,8 +11,8 @@ import {
   Y
 } from '../channel';
 import {Config} from '../config';
-import * as vlEncoding from '../encoding';
 import {Encoding, normalizeEncoding} from '../encoding';
+import * as vlEncoding from '../encoding';
 import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
@@ -21,7 +22,7 @@ import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
-import {VgData, VgEncodeEntry, VgLayout, VgSignal} from '../vega.schema';
+import {VgData, VgEncodeEntry, VgLayout} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -213,11 +214,11 @@ export class UnitModel extends ModelWithField {
     this.component.axes = parseUnitAxis(this);
   }
 
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: any[]): NewSignal[] {
     return assembleTopLevelSignals(this, signals);
   }
 
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     return assembleUnitSelectionSignals(this, []);
   }
 
@@ -229,7 +230,7 @@ export class UnitModel extends ModelWithField {
     return null;
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     return assembleLayoutSignals(this);
   }
 

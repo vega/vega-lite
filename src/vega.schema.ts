@@ -258,26 +258,6 @@ export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
   return false;
 }
 
-export interface VgEventHandler {
-  events: string[] | SignalRef;
-  update?: string;
-  encode?: string;
-  force?: boolean;
-  between?: any[];
-}
-
-export interface VgSignal {
-  name: string;
-  bind?: string;
-  description?: string;
-  on?: VgEventHandler[];
-  update?: string;
-  react?: boolean;
-  value?: string | number | boolean | {} | SignalRef;
-  // only for nested signals
-  push?: string;
-}
-
 export type VgEncodeChannel =
   | 'x'
   | 'x2'

@@ -84,8 +84,9 @@ const scaleBindings: TransformCompiler = {
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent) {
       for (const channel of selCmpt.scales) {
-        const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
+        const signal: any = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
 
+        // convert to PushSignal
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;
