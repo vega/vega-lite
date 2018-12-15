@@ -6,23 +6,23 @@ import {DataFlowNode} from './../../../src/compile/data/dataflow';
 describe('compile/data/summary', () => {
   describe('clone', () => {
     it('should have correct type', () => {
-      const agg = new AggregateNode(null, {}, {});
+      const agg = new AggregateNode(null, new Set(), {});
       expect(agg instanceof AggregateNode).toBeTruthy();
       const clone = agg.clone();
       expect(clone instanceof AggregateNode).toBeTruthy();
     });
 
     it('should have made a deep copy', () => {
-      const agg = new AggregateNode(null, {foo: true}, {});
+      const agg = new AggregateNode(null, new Set(['foo']), {});
       const clone = agg.clone();
       clone.addDimensions(['bar']);
-      expect(clone.dependentFields()).toEqual({foo: true, bar: true});
-      expect(agg.dependentFields()).toEqual({foo: true});
+      expect(clone.dependentFields()).toEqual(new Set(['foo', 'bar']));
+      expect(agg.dependentFields()).toEqual(new Set(['foo']));
     });
 
     it('should never clone parent', () => {
       const parent = new DataFlowNode(null);
-      const aggregate = new AggregateNode(parent, {}, {});
+      const aggregate = new AggregateNode(parent, new Set(), {});
       expect(aggregate.clone().parent).toBeNull();
     });
   });
@@ -46,8 +46,8 @@ describe('compile/data/summary', () => {
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
-      expect(agg.hash()).toEqual(
-        'Aggregate {"dimensions":{"Origin":true},"measures":{"*":{"count":{"count_*":true}},"Acceleration":{"sum":{"sum_Acceleration":true}}}}'
+      expect(agg.hash()).toBe(
+        'Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"count_*\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}'
       );
     });
   });
@@ -216,28 +216,25 @@ describe('compile/data/summary', () => {
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
-      expect(agg.producedFields()).toEqual({
-        AvgDisplacement: true,
-        Acceleration_sum: true
-      });
+      expect(agg.producedFields()).toEqual(new Set(['AvgDisplacement', 'Acceleration_sum']));
     });
   });
 
   describe('merge', () => {
     it('should not merge AggregateNodes with different dimensions', () => {
       const parent = new DataFlowNode(null);
-      const agg1 = new AggregateNode(parent, {a: true, b: true}, {});
-      const agg2 = new AggregateNode(parent, {a: true}, {});
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {});
+      const agg2 = new AggregateNode(parent, new Set(['a']), {});
 
       expect(agg1.merge(agg2)).toBe(false);
     });
     it('should merge AggregateNodes with same dimensions', () => {
       const parent = new DataFlowNode(null);
-      const agg1 = new AggregateNode(parent, {a: true, b: true}, {a: {mean: {a_mean: true}}});
-      const agg2 = new AggregateNode(parent, {a: true, b: true}, {b: {mean: {b_mean: true}}});
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: new Set(['a_mean'])}});
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: new Set(['b_mean'])}});
 
       expect(agg1.merge(agg2)).toBe(true);
-      expect(agg1.producedFields()).toEqual({a_mean: true, b_mean: true});
+      expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
     });
   });
 });

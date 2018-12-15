@@ -47,8 +47,8 @@ describe('compile/data/filter', () => {
     it('returns the right fields', () => {
       const node = new FilterNode(null, null, 'datum.foo > 2');
 
-      expect(node.dependentFields()).toEqual({foo: true});
-      expect(node.producedFields()).toEqual({});
+      expect(node.dependentFields()).toEqual(new Set(['foo']));
+      expect(node.producedFields()).toEqual(new Set());
     });
   });
 

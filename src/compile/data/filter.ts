@@ -1,6 +1,6 @@
 import {LogicalOperand} from '../../logical';
 import {expression, Predicate} from '../../predicate';
-import {duplicate, StringSet} from '../../util';
+import {duplicate} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
@@ -8,7 +8,7 @@ import {getDependentFields} from './expressions';
 
 export class FilterNode extends DataFlowNode {
   private expr: string;
-  private _dependentFields: StringSet;
+  private _dependentFields: Set<string>;
   public clone() {
     return new FilterNode(null, this.model, duplicate(this.filter));
   }

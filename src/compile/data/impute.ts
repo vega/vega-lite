@@ -17,8 +17,7 @@ export class ImputeNode extends DataFlowNode {
   }
 
   public producedFields() {
-    // typescript detects true as boolean type
-    return {[this.transform.impute]: true as true};
+    return new Set([this.transform.impute]);
   }
 
   private processSequence(keyvals: ImputeSequence): SignalRef {

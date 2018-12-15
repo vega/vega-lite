@@ -5,7 +5,7 @@ import {FieldRefOption} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
-import {duplicate, hash, StringSet} from '../../util';
+import {duplicate, hash} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
 
@@ -17,7 +17,7 @@ import {getDependentFields} from './expressions';
  */
 
 export class CalculateNode extends DataFlowNode {
-  private _dependentFields: StringSet;
+  private _dependentFields: Set<string>;
 
   public clone() {
     return new CalculateNode(null, duplicate(this.transform));
@@ -56,9 +56,7 @@ export class CalculateNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
-    out[this.transform.as] = true;
-    return out;
+    return new Set([this.transform.as]);
   }
 
   public dependentFields() {

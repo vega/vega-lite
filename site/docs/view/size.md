@@ -5,24 +5,23 @@ title: Customizing Size
 permalink: /docs/size.html
 ---
 
-
 This page describe how to adjust width and height of visualizations in Vega-lite.
 
 ## Documentation Overview
+
 {:.no_toc}
 
+<!-- prettier-ignore -->
 - TOC
 {:toc}
 
 ## Width and Height of Single and Layered Plots
 
-[Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size.
-By default, `width` and `height` set the size of the data rectangle (plotting) dimensions.
-To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
+[Single view](spec.html#single) and [layer](layer.html) specifications can contain `width` and `height` properties for customizing the view size. By default, `width` and `height` set the size of the data rectangle (plotting) dimensions. To set the overall size of the visualization, the [`autosize`](#autosize) property can be specified.
 
 ### Explicitly Specified Width and Height
 
-When the top-level `width` property is specified, the width of the single plot is the specified value for all scale types of the x-axis.  Similarly, when the top-level `height` property is specified, the height of the single plot is the specified value for all scale types of the y-axis.
+When the top-level `width` property is specified, the width of the single plot is the specified value for all scale types of the x-axis. Similarly, when the top-level `height` property is specified, the height of the single plot is the specified value for all scale types of the y-axis.
 
 <span class="vl-example" data-name="bar_size_explicit"></span>
 
@@ -48,7 +47,7 @@ This example shows a plot with a continuous y-scale and a discrete x-scale:
 
 <span class="vl-example" data-name="bar_size_fit"></span>
 
-- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except for the width when the mark is `text`.  In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
+- If `x` / `y` is not mapped to a field, the width / height is derived from [config.scale.rangeStep](#scale-config) except for the width when the mark is `text`. In that case, the width will be drawn from [config.scale.textXRangeStep](#scale-config).
 
 For example, the following plot use `21` as a default height.
 
@@ -81,16 +80,14 @@ Below is an example of a bar chart that fits exactly into 300px width.
 
 <span class="vl-example" data-name="bar_fit"></span>
 
-
 ## Width and Height of Multi-View Displays
 
-Currently, width and height of multi-view displays including [concatenated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views.  To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
+Currently, width and height of multi-view displays including [concatenated](concat.html), [faceted](facet.html), and [repeated](repeat.html) are determined based on the size of the composed unit and layered views. To adjust the size of multi-view displays, you can `width` and `height` of the inner unit and layered views.
 
 For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 
 <span class="vl-example" data-name="normalized/trellis_point_small_normalized"></span>
 
-__Note:__ If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot.
-For example, this specification is equivalent to the specification above.
+**Note:** If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot. For example, this specification is equivalent to the specification above.
 
 <span class="vl-example" data-name="trellis_point_small"></span>

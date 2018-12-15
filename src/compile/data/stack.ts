@@ -173,23 +173,20 @@ export class StackNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    const out = {};
+    const out = new Set();
 
-    out[this._stack.stackField] = true;
+    out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(f => (out[f] = true));
-    this._stack.facetby.forEach(f => (out[f] = true));
+    this.getGroupbyFields().forEach(f => out.add(f));
+    this._stack.facetby.forEach(f => out.add(f));
     const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => (out[f] = true)) : (out[field] = true);
+    isArray(field) ? field.forEach(f => out.add(f)) : out.add(field);
 
     return out;
   }
 
   public producedFields() {
-    return this._stack.as.reduce((result, item) => {
-      result[item] = true;
-      return result;
-    }, {});
+    return new Set(this._stack.as);
   }
 
   public hash() {

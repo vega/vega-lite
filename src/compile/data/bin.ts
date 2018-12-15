@@ -125,23 +125,11 @@ export class BinNode extends DataFlowNode {
   }
 
   public producedFields() {
-    const out = {};
-
-    vals(this.bins).forEach(c => {
-      c.as.forEach(f => (out[f] = true));
-    });
-
-    return out;
+    return new Set(flatten(vals(this.bins).map(c => c.as)));
   }
 
   public dependentFields() {
-    const out = {};
-
-    vals(this.bins).forEach(c => {
-      out[c.field] = true;
-    });
-
-    return out;
+    return new Set(vals(this.bins).map(c => c.field));
   }
 
   public hash() {

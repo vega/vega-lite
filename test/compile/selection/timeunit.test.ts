@@ -117,8 +117,8 @@ describe('Selection time unit', () => {
       }
     });
 
-    expect(tuIdx).not.toEqual(-1);
-    expect(selIdx).not.toEqual(-1);
+    expect(tuIdx).not.toBe(-1);
+    expect(selIdx).not.toBe(-1);
   });
 
   it('removes duplicate time unit formulae', () => {

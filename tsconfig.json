@@ -21,11 +21,11 @@
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "importHelpers": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots" : ["./node_modules/@types", "./typings"]
   },
   "files": ["src/index.ts"],
   "include": [
-    "typings/*.d.ts",
     "src/**/*.ts",
     "test/**/*.ts",
     "test-runtime/**/*.ts"

@@ -4,33 +4,30 @@ permalink: /
 title: A High-Level Grammar of Interactive Graphics
 
 images:
- - spec: stacked_area_stream
- - spec: selection_translate_scatterplot_drag
- - spec: layer_point_errorbar_stdev
- - spec: tick_strip
- - spec: line_overlay_stroked
- - spec: trellis_barley
- - spec: geo_choropleth
- - spec: circle_github_punchcard
- - spec: geo_layer_line_london
- - spec: stacked_bar_weather
- - spec: layer_line_co2_concentration
- - spec: circle_natural_disasters
- - spec: trellis_area
- - spec: layer_line_errorband_ci
- - spec: line_slope
- - spec: layer_ranged_dot
- - spec: layer_bar_annotations
- - spec: rect_binned_heatmap
- - spec: interactive_splom
- - spec: interactive_layered_crossfilter
- - spec: interactive_overview_detail
-
+  - spec: stacked_area_stream
+  - spec: selection_translate_scatterplot_drag
+  - spec: layer_point_errorbar_stdev
+  - spec: tick_strip
+  - spec: line_overlay_stroked
+  - spec: trellis_barley
+  - spec: geo_choropleth
+  - spec: circle_github_punchcard
+  - spec: geo_layer_line_london
+  - spec: stacked_bar_weather
+  - spec: layer_line_co2_concentration
+  - spec: circle_natural_disasters
+  - spec: trellis_area
+  - spec: layer_line_errorband_ci
+  - spec: line_slope
+  - spec: layer_ranged_dot
+  - spec: layer_bar_annotations
+  - spec: rect_binned_heatmap
+  - spec: interactive_splom
+  - spec: interactive_layered_crossfilter
+  - spec: interactive_overview_detail
 ---
 
-{:.lead}
-**Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
-
+{:.lead} **Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
 
 <span class="lead-columns">
   <span>
@@ -79,7 +76,6 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v3.json))
 - Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://bit.ly/vega-discuss) or [Slack](https://bit.ly/join-vega-slack)
 - Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
-
 
 ## Team
 

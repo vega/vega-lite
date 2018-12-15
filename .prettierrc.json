@@ -1,14 +1,14 @@
 {
   "overrides": [
     {
-      "files": "*.ts",
+      "files": "*",
       "options": {
         "printWidth": 120,
-        "parser": "typescript",
         "singleQuote": true,
         "bracketSpacing": false,
         "arrowParens": "avoid",
-        "trailingComma": "none"
+        "trailingComma": "none",
+        "proseWrap": "never"
       }
     }
   ]
