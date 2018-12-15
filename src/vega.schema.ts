@@ -20,7 +20,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField};
+export {VgSortField, VgUnionSortField, VgCompare};
 
 export type Color = string;
 

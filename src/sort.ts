@@ -3,15 +3,6 @@ import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
 
 export type SortOrder = 'ascending' | 'descending';
-export type Compare =
-  | {
-      field: string;
-      order?: SortOrder;
-    }
-  | {
-      field: string[];
-      order?: (SortOrder)[];
-    };
 
 /**
  * A sort definition for transform
@@ -26,6 +17,11 @@ export interface SortField {
    * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
   order?: SortOrder | null;
+}
+
+export interface SortFields {
+  field: string[];
+  order?: (SortOrder)[];
 }
 
 /**
