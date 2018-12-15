@@ -63,6 +63,7 @@ function defaultDirection(orient: LegendOrient, legendType: LegendType) {
     case 'left':
     case 'right':
     case 'none':
+    case undefined: // undefined = "right" in Vega
       return undefined; // vertical is Vega's default
     default:
       // top-left / ...

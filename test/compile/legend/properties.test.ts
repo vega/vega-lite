@@ -1,8 +1,67 @@
 /* tslint:disable:quotemark */
 
+import {LegendOrient} from 'vega';
 import * as properties from '../../../src/compile/legend/properties';
 
 describe('compile/legend', () => {
+  describe('direction()', () => {
+    it('should return horizontal for top/bottom if legend.orient and its config are not defined', () => {
+      const orients: LegendOrient[] = ['top', 'bottom'];
+      for (const orient of orients) {
+        const dir = properties.direction({
+          legend: {orient},
+          legendConfig: {},
+          channel: 'color',
+          scaleType: 'linear'
+        });
+
+        expect(dir).toEqual('horizontal');
+      }
+    });
+
+    it('should return undefined for left/right if legend.orient and its config are not defined', () => {
+      const orients: LegendOrient[] = ['left', 'right', undefined, 'none'];
+      for (const orient of orients) {
+        const dir = properties.direction({
+          legend: {orient},
+          legendConfig: {},
+          channel: 'color',
+          scaleType: 'linear'
+        });
+
+        expect(dir).toEqual(undefined);
+      }
+    });
+
+    it('should return horizontal for quantitative inner legend if legend.orient and its config are not defined', () => {
+      const orients: LegendOrient[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+      for (const orient of orients) {
+        const dir = properties.direction({
+          legend: {orient},
+          legendConfig: {},
+          channel: 'color',
+          scaleType: 'linear'
+        });
+
+        expect(dir).toEqual('horizontal');
+      }
+    });
+
+    it('should return undefined for discrete inner legend if legend.orient and its config are not defined', () => {
+      const orients: LegendOrient[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+      for (const orient of orients) {
+        const dir = properties.direction({
+          legend: {orient},
+          legendConfig: {},
+          channel: 'color',
+          scaleType: 'ordinal'
+        });
+
+        expect(dir).toEqual(undefined);
+      }
+    });
+  });
+
   describe('values()', () => {
     it('should return correct timestamp values for DateTimes', () => {
       const values = properties.values({values: [{year: 1970}, {year: 1980}]}, {field: 'a', type: 'temporal'});
