@@ -1,8 +1,9 @@
+import {NewSignal} from 'vega';
 import {Config} from '../config';
 import {Resolve} from '../resolve';
 import {BaseSpec} from '../spec';
 import {keys} from '../util';
-import {VgData, VgSignal} from '../vega.schema';
+import {VgData} from '../vega.schema';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {Model} from './model';
@@ -53,16 +54,16 @@ export abstract class BaseConcatModel extends Model {
     // TODO(#2415): support shared axes
   }
 
-  public assembleSelectionTopLevelSignals(signals: VgSignal[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     this.children.forEach(child => child.assembleSelectionSignals());
     return [];
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
     }, assembleLayoutSignals(this));

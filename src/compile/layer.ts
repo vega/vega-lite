@@ -1,10 +1,9 @@
-import {Legend as VgLegend} from 'vega';
-import {Title as VgTitle} from 'vega';
+import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {flatten, keys} from '../util';
-import {VgData, VgLayout, VgSignal} from '../vega.schema';
+import {VgData, VgLayout} from '../vega.schema';
 import {parseLayerAxis} from './axis/parse';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
@@ -88,18 +87,18 @@ export class LayerModel extends Model {
     parseLayerAxis(this);
   }
 
-  public assembleSelectionTopLevelSignals(signals: VgSignal[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
   }
 
   // TODO: Support same named selections across children.
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleSelectionSignals());
     }, []);
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
       return signals.concat(child.assembleLayoutSignals());
     }, assembleLayoutSignals(this));

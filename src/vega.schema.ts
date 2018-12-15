@@ -6,7 +6,6 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle,
   FontWeight,
-  NewSignal,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField,
@@ -20,7 +19,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SignalRef as VgSignalRef, NewSignal as VgSignal, SortField as VgSortField, UnionSortField as VgUnionSortField};
+export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
 
 export type Color = string;
 

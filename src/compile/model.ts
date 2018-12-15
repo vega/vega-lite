@@ -1,4 +1,4 @@
-import {AnchorValue, Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
+import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -13,7 +13,7 @@ import {extractTitleConfig, TitleParams} from '../title';
 import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
 import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
@@ -284,8 +284,8 @@ export abstract class Model {
     parseLegend(this);
   }
 
-  public abstract assembleSelectionTopLevelSignals(signals: VgSignal[]): VgSignal[];
-  public abstract assembleSelectionSignals(): VgSignal[];
+  public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+  public abstract assembleSelectionSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -331,7 +331,7 @@ export abstract class Model {
     return {};
   }
 
-  public abstract assembleLayoutSignals(): VgSignal[];
+  public abstract assembleLayoutSignals(): NewSignal[];
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
@@ -395,7 +395,7 @@ export abstract class Model {
   /**
    * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
-  public assembleGroup(signals: VgSignal[] = []) {
+  public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSelectionSignals());

@@ -1,7 +1,6 @@
-import {Signal} from 'vega';
+import {NewSignal, Signal} from 'vega';
 import {SelectionDef} from '../../../selection';
 import {Dict} from '../../../util';
-import {VgSignal} from '../../../vega.schema';
 import {Model} from '../../model';
 import {UnitModel} from '../../unit';
 import {SelectionComponent} from '../selection';
@@ -16,8 +15,8 @@ import zoom from './zoom';
 export interface TransformCompiler {
   has: (selCmpt: SelectionComponent | SelectionDef) => boolean;
   parse?: (model: UnitModel, def: SelectionDef, selCmpt: SelectionComponent) => void;
-  signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: VgSignal[]) => Signal[]; // the output can be a new or a push signal
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
+  signals?: (model: UnitModel, selCmpt: SelectionComponent, signals: NewSignal[]) => Signal[]; // the output can be a new or a push signal
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent, expr: string) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }

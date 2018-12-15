@@ -1,4 +1,4 @@
-import {Binding, SignalRef} from 'vega';
+import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
@@ -6,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream, VgSignal} from '../../vega.schema';
+import {VgData, VgEventStream} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -59,8 +59,8 @@ export interface ProjectSelectionComponent {
 }
 
 export interface SelectionCompiler {
-  signals: (model: UnitModel, selCmpt: SelectionComponent) => VgSignal[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: VgSignal[]) => VgSignal[];
+  signals: (model: UnitModel, selCmpt: SelectionComponent) => NewSignal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
   modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }
