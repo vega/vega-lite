@@ -20,7 +20,7 @@ Read about future plans in [our roadmap](https://docs.google.com/document/d/1fsc
 
 ## Team
 
-The development of Vega-Lite is led by the alumni and members of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL). 
+The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL). 
 Many contributors including 
 [Will Strimling](https://willium.com), 
 [Yuhan (Zoe) Lu](https://github.com/YuhanLu), 
