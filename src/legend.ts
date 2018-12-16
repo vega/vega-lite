@@ -126,7 +126,10 @@ export interface Legend
   /**
    * The direction of the legend, one of `"vertical"` or `"horizontal"`.
    *
-   * __Default value:__ "vertical"`
+   * __Default value:__
+   * - For top-/bottom-`orient`ed legends, `"horizontal"`
+   * - For left-/right-`orient`ed legends, `"vertical"`
+   * - For top/bottom-left/right-`orient`ed legends, `"horizontal"` for gradient legends and `"vertical"` for symbol legends.
    */
   direction?: Orientation;
 
