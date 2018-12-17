@@ -1,16 +1,17 @@
 import {
   AggregateOp,
   Align,
+  Compare as VgCompare,
   Field as VgField,
   FlattenTransform as VgFlattenTransform,
   FoldTransform as VgFoldTransform,
-  FontStyle,
-  FontWeight,
+  FontStyle as VgFontStyle,
+  FontWeight as VgFontWeight,
   SampleTransform as VgSampleTransform,
   SignalRef,
-  SortField,
-  TextBaseline,
-  UnionSortField
+  SortField as VgSortField,
+  TextBaseline as VgTextBaseline,
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {BaseBin} from './bin';
@@ -19,7 +20,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {SignalRef as VgSignalRef, SortField as VgSortField, UnionSortField as VgUnionSortField};
+export {VgSortField, VgUnionSortField, VgCompare};
 
 export type Color = string;
 
@@ -41,7 +42,7 @@ export interface VgData {
 export interface VgDataRef {
   data: string;
   field: VgField;
-  sort?: SortField;
+  sort?: VgSortField;
 }
 
 export function isSignalRef(o: any): o is SignalRef {
@@ -70,13 +71,13 @@ export interface VgValueRef {
 // TODO: add vg prefix
 export interface DataRefUnionDomain {
   fields: (any[] | VgDataRef | SignalRef)[];
-  sort?: UnionSortField;
+  sort?: VgUnionSortField;
 }
 
 export interface VgFieldRefUnionDomain {
   data: string;
   fields: VgField[];
-  sort?: UnionSortField;
+  sort?: VgUnionSortField;
 }
 
 export interface VgScheme {
@@ -358,7 +359,7 @@ export interface VgAggregateTransform {
 
 export interface VgCollectTransform {
   type: 'collect';
-  sort: VgSort;
+  sort: VgCompare;
 }
 
 export interface VgLookupTransform {
@@ -376,7 +377,7 @@ export interface VgStackTransform {
   offset?: StackOffset;
   groupby: string[];
   field: string;
-  sort: VgSort;
+  sort: VgCompare;
   as: string[];
 }
 
@@ -427,16 +428,6 @@ export interface VgGeoJSONTransform {
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 export type VgGuideEncode = any; // TODO: replace this (See guideEncode in Vega Schema)
-
-export type VgSort =
-  | {
-      field: string;
-      order?: VgComparatorOrder;
-    }
-  | {
-      field: string[];
-      order?: (VgComparatorOrder)[];
-    };
 
 export type ImputeMethod = 'value' | 'median' | 'max' | 'min' | 'mean';
 
@@ -668,7 +659,7 @@ export interface VgMarkConfig {
    * __Default value:__ `"middle"`
    *
    */
-  baseline?: TextBaseline;
+  baseline?: VgTextBaseline;
 
   /**
    * The direction of the text. One of `"ltr"` (left-to-right) or `"rtl"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.
@@ -728,12 +719,12 @@ export interface VgMarkConfig {
   /**
    * The font style (e.g., `"italic"`).
    */
-  fontStyle?: FontStyle;
+  fontStyle?: VgFontStyle;
   /**
    * The font weight.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  fontWeight?: FontWeight;
+  fontWeight?: VgFontWeight;
 
   /**
    * Placeholder text if the `text` channel is not specified

@@ -1,10 +1,9 @@
-import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
+import {Axis as VgAxis, AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, VG_AXIS_PROPERTIES} from '../../axis';
 import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {getFirstDefined, keys} from '../../util';
-import {VgSignalRef} from '../../vega.schema';
 import {guideEncodeEntry, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
@@ -319,7 +318,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getFirstDefined<number | VgSignalRef>(
+      return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
         properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis)
       );

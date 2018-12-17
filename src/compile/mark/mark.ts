@@ -5,7 +5,7 @@ import {getFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, getFirstDefined, keys} from '../../util';
-import {VgComparator} from '../../vega.schema';
+import {VgCompare} from '../../vega.schema';
 import {getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {area} from './area';
@@ -81,7 +81,7 @@ function parsePathMark(model: UnitModel) {
   }
 }
 
-export function getSort(model: UnitModel): VgComparator {
+export function getSort(model: UnitModel): VgCompare {
   const {encoding, stack, mark, markDef} = model;
   const order = encoding.order;
   if (!isArray(order) && isValueDef(order)) {

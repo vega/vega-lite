@@ -1,9 +1,8 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
-import {VgComparatorOrder} from './vega.schema';
 
-export type SortOrder = VgComparatorOrder | null;
+export type SortOrder = 'ascending' | 'descending';
 
 /**
  * A sort definition for transform
@@ -15,9 +14,14 @@ export interface SortField {
   field: string;
 
   /**
-   * Whether to sort the field in ascending or descending order.
+   * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: VgComparatorOrder;
+  order?: SortOrder | null;
+}
+
+export interface SortFields {
+  field: string[];
+  order?: (SortOrder)[];
 }
 
 /**
@@ -43,7 +47,7 @@ export interface EncodingSortField<F> {
   /**
    * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
    */
-  order?: SortOrder;
+  order?: SortOrder | null;
 }
 
 export type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;

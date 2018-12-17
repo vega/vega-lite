@@ -1,7 +1,8 @@
+/* tslint:disable:quotemark */
+
 import {StackNode} from '../../../src/compile/data/stack';
 import {UnitModel} from '../../../src/compile/unit';
 import {Transform} from '../../../src/transform';
-import {VgComparatorOrder, VgSort} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 import {DataFlowNode} from './../../../src/compile/data/dataflow';
 
@@ -217,7 +218,7 @@ describe('compile/data/stack', () => {
           groupby: ['age'],
           field: 'people',
           offset: 'zero',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['v1', 'v2']
         }
       ]);
@@ -237,7 +238,7 @@ describe('compile/data/stack', () => {
           groupby: ['age', 'gender'],
           field: 'people',
           offset: 'normalize',
-          sort: {field: [] as string[], order: [] as VgComparatorOrder[]} as VgSort,
+          sort: {field: [] as string[], order: []},
           as: ['val', 'val_end']
         }
       ]);
