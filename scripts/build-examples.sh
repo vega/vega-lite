@@ -29,8 +29,8 @@ skipnormalize=false
 export skipnormalize
 
 # Clean up outdated normalized vega-lite files and vega files
-rm -fv examples/specs/normalized/*_normalized.vl.json
-rm -fv $dir/*.vg.json
+rm -f examples/specs/normalized/*_normalized.vl.json
+rm -f $dir/*.vg.json
 
 # Re-compile all examples
 echo "Using parallel to generate vega specs from examples in parallel."
