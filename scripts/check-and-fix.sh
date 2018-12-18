@@ -50,7 +50,7 @@ fi
 # Commit examples if outdated
 
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
-git add ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/compiled/*.svg ./examples/specs/normalized/*.vl.json
+git -v add ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/compiled/*.svg ./examples/specs/normalized/*.vl.json
 
 if [[ $TRAVIS_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
