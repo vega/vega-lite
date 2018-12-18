@@ -62,7 +62,7 @@ if [[ $TRAVIS_BRANCH == 'master' ]]; then
 else
   if ! git diff --cached --word-diff=color --exit-code HEAD -- ./examples/compiled/vega_version ./examples/compiled/*.vg.json ./examples/compiled/*.svg ./examples/specs/normalized/*.vl.json
   then
-    git commit -m "[Travis] Update examples (build: $TRAVIS_BUILD_NUMBER)"
+    git commit -v -m "[Travis] Update examples (build: $TRAVIS_BUILD_NUMBER)"
   fi
 fi
 
