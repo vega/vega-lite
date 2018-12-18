@@ -340,7 +340,7 @@
                 {"value": "grey"}
               ],
               "tooltip": {
-                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"Major_Genre\": ''+datum[\"Major_Genre\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x": {"scale": "concat_1_x", "field": "Major_Genre"},
               "width": {"scale": "concat_1_x", "band": true},
@@ -365,7 +365,7 @@
           "scale": "concat_1_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 1
