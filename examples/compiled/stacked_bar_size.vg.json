@@ -57,7 +57,7 @@
           ],
           "opacity": {"value": 0.5},
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
           },
           "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"scale": "size", "field": "weather"},
@@ -115,7 +115,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

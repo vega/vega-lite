@@ -2258,7 +2258,7 @@
           "description": "Circle-Specific Config"
         },
         "countTitle": {
-          "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Number of Records'`.",
+          "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Count of Records`.",
           "type": "string"
         },
         "errorband": {

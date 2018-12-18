@@ -137,7 +137,7 @@ describe('encoding', () => {
         encoding: {
           x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
           x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
-          y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
+          y: {field: 'count_*', type: 'quantitative', title: 'Count of Records'}
         }
       });
     });

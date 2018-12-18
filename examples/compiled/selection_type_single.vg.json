@@ -84,7 +84,7 @@
             {"value": "grey"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -144,7 +144,7 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "title": "Number of Records"
+      "title": "Count of Records"
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

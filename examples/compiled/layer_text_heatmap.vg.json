@@ -41,7 +41,7 @@
             {"scale": "color", "field": "count_*"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -62,7 +62,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
@@ -123,7 +123,7 @@
       "direction": "horizontal",
       "gradientLength": 120,
       "fill": "color",
-      "title": "Number of Records"
+      "title": "Count of Records"
     }
   ],
   "config": {

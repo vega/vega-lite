@@ -166,7 +166,7 @@ export interface VLOnlyConfig {
   /**
    * Default axis and legend title for count fields.
    *
-   * __Default value:__ `'Number of Records'`.
+   * __Default value:__ `'Count of Records`.
    *
    * @type {string}
    */
@@ -258,7 +258,7 @@ export interface Config
 export const defaultConfig: Config = {
   padding: 5,
   timeFormat: '%b %d, %Y',
-  countTitle: 'Number of Records',
+  countTitle: 'Count of Records',
 
   invalidValues: 'filter',
 
