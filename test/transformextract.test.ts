@@ -165,7 +165,7 @@ describe('extractTransforms()', () => {
           height: 234,
           encoding: {
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'count_*', type: 'quantitative', title: 'Number of Records'}
+            y: {field: 'count_*', type: 'quantitative', title: 'Count of Records'}
           }
         }
       });
