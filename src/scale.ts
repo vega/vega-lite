@@ -267,7 +267,7 @@ export interface ScaleConfig {
   /**
    * Default padding for continuous scales.
    *
-   * __Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
+   * __Default:__ `5`
    *
    * @minimum 0
    */
@@ -410,6 +410,7 @@ export const defaultScaleConfig = {
   textXRangeStep: 90,
   rangeStep: 20,
   pointPadding: 0.5,
+  continuousPadding: 5,
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
