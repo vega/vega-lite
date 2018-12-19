@@ -23,7 +23,20 @@
               "scale": {"zero": false}
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "ordinal"}
+            "y": {"field": "variety", "type": "ordinal"},
+            "tooltip": [
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "Ci1 of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "Ci0 of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         }
       ]

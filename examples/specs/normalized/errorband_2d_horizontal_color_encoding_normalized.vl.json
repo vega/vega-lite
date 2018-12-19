@@ -38,7 +38,25 @@
               "field": "year_Year",
               "axis": {"format": "%Y"}
             },
-            "color": {"value": "black"}
+            "color": {"value": "black"},
+            "tooltip": [
+              {
+                "field": "upper_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci1 of Miles_per_Gallon"
+              },
+              {
+                "field": "lower_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci0 of Miles_per_Gallon"
+              },
+              {
+                "title": "Year (year)",
+                "type": "temporal",
+                "field": "year_Year",
+                "axis": {"format": "%Y"}
+              }
+            ]
           }
         },
         {
@@ -56,7 +74,25 @@
               "field": "year_Year",
               "axis": {"format": "%Y"}
             },
-            "color": {"value": "black"}
+            "color": {"value": "black"},
+            "tooltip": [
+              {
+                "field": "upper_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci1 of Miles_per_Gallon"
+              },
+              {
+                "field": "lower_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci0 of Miles_per_Gallon"
+              },
+              {
+                "title": "Year (year)",
+                "type": "temporal",
+                "field": "year_Year",
+                "axis": {"format": "%Y"}
+              }
+            ]
           }
         },
         {
@@ -74,7 +110,25 @@
               "field": "year_Year",
               "axis": {"format": "%Y"}
             },
-            "color": {"value": "black"}
+            "color": {"value": "black"},
+            "tooltip": [
+              {
+                "field": "upper_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci1 of Miles_per_Gallon"
+              },
+              {
+                "field": "lower_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Ci0 of Miles_per_Gallon"
+              },
+              {
+                "title": "Year (year)",
+                "type": "temporal",
+                "field": "year_Year",
+                "axis": {"format": "%Y"}
+              }
+            ]
           }
         }
       ]

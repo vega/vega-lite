@@ -30,7 +30,19 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "x2": {"field": "upper_yield", "type": "quantitative"}
+            "x2": {"field": "upper_yield", "type": "quantitative"},
+            "tooltip": [
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "mean + stderr of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "mean - stderr of yield"
+              }
+            ]
           }
         }
       ]

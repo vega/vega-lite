@@ -10,20 +10,9 @@ describe('normalizeErrorBand', () => {
     expect(
       normalize(
         {
-          data: {
-            url: 'data/population.json'
-          },
+          data: {url: 'data/population.json'},
           mark: 'errorband',
-          encoding: {
-            x: {
-              field: 'age',
-              type: 'ordinal'
-            },
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
+          encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
         },
         defaultConfig
       )
@@ -76,7 +65,12 @@ describe('normalizeErrorBand', () => {
             x: {
               field: 'age',
               type: 'ordinal'
-            }
+            },
+            tooltip: [
+              {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+              {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]
