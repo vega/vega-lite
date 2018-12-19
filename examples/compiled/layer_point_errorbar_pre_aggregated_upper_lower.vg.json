@@ -40,13 +40,13 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum.upper_yield",
-          "as": "lower_upper_yield"
+          "expr": "datum.lower_yield",
+          "as": "upper_upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum.lower_yield",
-          "as": "upper_upper_yield"
+          "expr": "datum.upper_yield",
+          "as": "lower_upper_yield"
         }
       ]
     }
@@ -71,7 +71,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_upper_yield\"], \"\"), \"upper_upper_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_upper_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

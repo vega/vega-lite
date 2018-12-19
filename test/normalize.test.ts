@@ -84,10 +84,7 @@ describe('normalize()', () => {
               layer: [
                 {
                   mark: 'errorbar',
-                  encoding: {
-                    x: {field: 'age', type: 'ordinal'},
-                    y: {field: 'people', type: 'quantitative'}
-                  }
+                  encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
                 },
                 {
                   mark: {type: 'point', opacity: 1, filled: true},
@@ -149,7 +146,12 @@ describe('normalize()', () => {
                       title: 'people'
                     },
                     y2: {field: 'upper_people', type: 'quantitative'},
-                    x: {field: 'age', type: 'ordinal'}
+                    x: {field: 'age', type: 'ordinal'},
+                    tooltip: [
+                      {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+                      {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+                      {field: 'age', type: 'ordinal'}
+                    ]
                   }
                 }
               ]

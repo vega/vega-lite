@@ -44,7 +44,20 @@
               "title": "Barley Yield"
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "ordinal"}
+            "y": {"field": "variety", "type": "ordinal"},
+            "tooltip": [
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "mean + stdev of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "mean - stdev of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         }
       ]
