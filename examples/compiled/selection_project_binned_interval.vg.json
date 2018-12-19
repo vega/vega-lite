@@ -156,7 +156,7 @@
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
+      "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
     },
     {
       "name": "brush_translate_anchor",
@@ -229,12 +229,7 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     }
   ],
   "marks": [

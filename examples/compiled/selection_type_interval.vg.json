@@ -145,13 +145,16 @@
       "on": [
         {
           "events": [{"signal": "pts_Cylinders"}, {"signal": "pts_Origin"}],
-          "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders, pts_Origin]} : null"
+          "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
         }
       ]
     },
     {
       "name": "pts_tuple_fields",
-      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
+      "value": [
+        {"field": "Cylinders", "channel": "x", "type": "E"},
+        {"field": "Origin", "channel": "y", "type": "E"}
+      ]
     },
     {
       "name": "pts_translate_anchor",
@@ -222,15 +225,7 @@
         }
       ]
     },
-    {
-      "name": "pts_modify",
-      "on": [
-        {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
-        }
-      ]
-    }
+    {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],
   "marks": [
     {

@@ -101,7 +101,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"}]"
+      "value": [{"field": "Cylinders", "channel": "x", "type": "E"}]
     },
     {
       "name": "pts_translate_anchor",
@@ -172,15 +172,7 @@
         }
       ]
     },
-    {
-      "name": "pts_modify",
-      "on": [
-        {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
-        }
-      ]
-    }
+    {"name": "pts_modify", "update": "modify(\"pts_store\", pts_tuple, true)"}
   ],
   "marks": [
     {

@@ -218,7 +218,6 @@
       "signals": [
         {
           "name": "brush_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -229,7 +228,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"distance\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
+          "value": [{"field": "distance", "channel": "x", "type": "R-RE"}]
         },
         {
           "name": "brush_toggle",
@@ -243,12 +242,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
         }
       ],
       "marks": [
@@ -363,7 +357,6 @@
       "signals": [
         {
           "name": "brush_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -374,7 +367,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"delay\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
+          "value": [{"field": "delay", "channel": "x", "type": "R-RE"}]
         },
         {
           "name": "brush_toggle",
@@ -388,12 +381,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
         }
       ],
       "marks": [
@@ -508,7 +496,6 @@
       "signals": [
         {
           "name": "brush_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -519,7 +506,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"time\",\"channel\":\"x\",\"type\":\"R-RE\"}]"
+          "value": [{"field": "time", "channel": "x", "type": "R-RE"}]
         },
         {
           "name": "brush_toggle",
@@ -533,12 +520,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_toggle ? null : brush_tuple, brush_toggle ? null : true, brush_toggle ? brush_tuple : null)"
         }
       ],
       "marks": [

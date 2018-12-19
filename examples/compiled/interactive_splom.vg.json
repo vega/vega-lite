@@ -170,13 +170,16 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Horsepower]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
+            {"field": "Horsepower", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -257,12 +260,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon\"})"
         },
         {
           "name": "grid_Miles_per_Gallon",
@@ -300,13 +298,16 @@
                 {"signal": "grid_Miles_per_Gallon"},
                 {"signal": "grid_Horsepower"}
               ],
-              "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon, grid_Horsepower]} : null"
+              "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
+            {"field": "Horsepower", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -383,12 +384,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -655,13 +651,16 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Horsepower]} : null"
+              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Horsepower]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Acceleration", "channel": "x", "type": "R"},
+            {"field": "Horsepower", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -742,12 +741,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Acceleration\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Acceleration\"})"
         },
         {
           "name": "grid_Acceleration",
@@ -785,13 +779,16 @@
                 {"signal": "grid_Acceleration"},
                 {"signal": "grid_Horsepower"}
               ],
-              "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration, grid_Horsepower]} : null"
+              "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Horsepower]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Acceleration", "channel": "x", "type": "R"},
+            {"field": "Horsepower", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -868,12 +865,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -1086,7 +1078,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Horsepower", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -1167,12 +1159,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower\"})"
         },
         {
           "name": "grid_Horsepower",
@@ -1199,7 +1186,7 @@
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Horsepower", "channel": "x", "type": "R"}]
         },
         {
           "name": "grid_translate_anchor",
@@ -1276,12 +1263,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -1545,13 +1527,16 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Acceleration"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Acceleration]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Acceleration]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
+            {"field": "Acceleration", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -1632,12 +1617,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon\"})"
         },
         {
           "name": "grid_Miles_per_Gallon",
@@ -1675,13 +1655,16 @@
                 {"signal": "grid_Miles_per_Gallon"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon, grid_Acceleration]} : null"
+              "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Acceleration]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
+            {"field": "Acceleration", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -1758,12 +1741,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -1976,7 +1954,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -2057,12 +2035,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Acceleration\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Acceleration\"})"
         },
         {
           "name": "grid_Acceleration",
@@ -2089,7 +2062,7 @@
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
         },
         {
           "name": "grid_translate_anchor",
@@ -2166,12 +2139,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -2435,13 +2403,16 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Acceleration"}
               ],
-              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Acceleration]} : null"
+              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Acceleration]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R"},
+            {"field": "Acceleration", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -2522,12 +2493,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower\"})"
         },
         {
           "name": "grid_Horsepower",
@@ -2565,13 +2531,16 @@
                 {"signal": "grid_Horsepower"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower, grid_Acceleration]} : null"
+              "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Acceleration]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R"},
+            {"field": "Acceleration", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -2648,12 +2617,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -2866,7 +2830,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Miles_per_Gallon", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -2947,12 +2911,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\"})"
         },
         {
           "name": "grid_Miles_per_Gallon",
@@ -2979,7 +2938,7 @@
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "Miles_per_Gallon", "channel": "x", "type": "R"}]
         },
         {
           "name": "grid_translate_anchor",
@@ -3056,12 +3015,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -3325,13 +3279,16 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Miles_per_Gallon]} : null"
+              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Miles_per_Gallon]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Acceleration", "channel": "x", "type": "R"},
+            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -3412,12 +3369,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Acceleration\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Acceleration\"})"
         },
         {
           "name": "grid_Acceleration",
@@ -3455,13 +3407,16 @@
                 {"signal": "grid_Acceleration"},
                 {"signal": "grid_Miles_per_Gallon"}
               ],
-              "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration, grid_Miles_per_Gallon]} : null"
+              "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Miles_per_Gallon]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Acceleration\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Acceleration", "channel": "x", "type": "R"},
+            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -3538,12 +3493,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
@@ -3810,13 +3760,16 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
+              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R"},
+            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -3897,12 +3850,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Horsepower\"})"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Horsepower\"})"
         },
         {
           "name": "grid_Horsepower",
@@ -3940,13 +3888,16 @@
                 {"signal": "grid_Horsepower"},
                 {"signal": "grid_Miles_per_Gallon"}
               ],
-              "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower, grid_Miles_per_Gallon]} : null"
+              "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R"},
+            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -4023,12 +3974,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [
