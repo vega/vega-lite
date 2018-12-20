@@ -23,10 +23,8 @@ import {LegendComponent} from './component';
 import {defaultType} from './properties';
 
 function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
-  return getFirstDefined(
-    legendCmp.get('type'),
-    defaultType({channel, scaleType: model.getScaleComponent(channel).get('type'), alwaysReturn: true})
-  );
+  const scaleType = model.getScaleComponent(channel).get('type');
+  return getFirstDefined(legendCmp.get('type'), defaultType({channel, scaleType, alwaysReturn: true}));
 }
 
 export function symbols(
@@ -113,7 +111,7 @@ export function symbols(
     }
   }
 
-  if (type(legendCmp, model, channel) === 'gradient' && channel !== SHAPE) {
+  if (type(legendCmp, model, channel) === 'symbol' && channel !== SHAPE) {
     const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
     if (shape) {
       out.shape = {value: shape};

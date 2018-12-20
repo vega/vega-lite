@@ -61,7 +61,7 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'},
+            color: {field: 'a', type: 'nominal'},
             shape: {value: 'square'}
           }
         }),
@@ -78,7 +78,7 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'}
+            color: {field: 'a', type: 'nominal'}
           }
         }),
         COLOR,
@@ -94,7 +94,7 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'},
+            color: {field: 'a', type: 'nominal'},
             opacity: {
               condition: {selection: 'brush', value: 1},
               value: 0
@@ -116,7 +116,7 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'quantitative'}
+            color: {field: 'a', type: 'nominal'}
           }
         }),
         COLOR,
