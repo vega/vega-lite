@@ -30,7 +30,6 @@ export function type(params: {
   scaleType: ScaleType;
   alwaysReturn: boolean;
 }): LegendType {
-  // Following the logic in https://github.com/vega/vega-parser/blob/master/src/parsers/legend.js
   const {legend} = params;
 
   return getFirstDefined(legend.type, defaultType(params));
