@@ -416,9 +416,12 @@ export function positionalProjections(selCmpt: SelectionComponent) {
   return {x, xi, y, yi};
 }
 
-export function assembleInit(init: any, wrap: (str: string) => string = identity): string {
+export function assembleInit(
+  init: SelectionInit | SelectionInitArray,
+  wrap: (str: string) => string = identity
+): string {
   return isArray(init)
-    ? `[${init.map(v => assembleInit(v, wrap)).join(', ')}]`
+    ? `[${(init as SelectionInit[]).map(v => assembleInit(v, wrap)).join(', ')}]`
     : isDateTime(init)
     ? wrap(dateTimeExpr(init))
     : wrap(JSON.stringify(init));
