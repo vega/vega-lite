@@ -18,7 +18,16 @@ import {getFirstDefined, keys} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
+import {defaultType} from './properties';
+
+function type(legendCmp: LegendComponent, model: UnitModel, channel: Channel) {
+  return getFirstDefined(
+    legendCmp.get('type'),
+    defaultType({channel, scaleType: model.getScaleComponent(channel as ScaleChannel).get('type'), alwaysReturn: true})
+  );
+}
 
 export function symbols(
   fieldDef: FieldDef<string>,
@@ -27,7 +36,7 @@ export function symbols(
   channel: Channel,
   legendCmp: LegendComponent
 ): SymbolEncodeEntry {
-  if (legendCmp.get('type') === 'gradient') {
+  if (type(legendCmp, model, channel) === 'gradient') {
     return undefined;
   }
 
@@ -104,17 +113,19 @@ export function symbols(
     }
   }
 
-  if (channel !== SHAPE) {
-    const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
-    if (shape) {
-      out.shape = {value: shape};
+  if (type(legendCmp, model, channel) === 'gradient') {
+    if (channel !== SHAPE) {
+      const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
+      if (shape) {
+        out.shape = {value: shape};
+      }
     }
-  }
 
-  if (channel !== OPACITY) {
-    if (opacity) {
-      // only apply opacity if it is neither zero or undefined
-      out.opacity = {value: opacity};
+    if (channel !== OPACITY) {
+      if (opacity) {
+        // only apply opacity if it is neither zero or undefined
+        out.opacity = {value: opacity};
+      }
     }
   }
 
@@ -132,7 +143,7 @@ export function gradient(
 ) {
   let out: SymbolEncodeEntry = {};
 
-  if (legendCmp.get('type') === 'gradient') {
+  if (type(legendCmp, model, channel) === 'gradient') {
     const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
     if (opacity) {
       // only apply opacity if it is neither zero or undefined

@@ -35,7 +35,7 @@ export function type(params: {
   return getFirstDefined(legend.type, defaultType(params));
 }
 
-function defaultType({
+export function defaultType({
   channel,
   timeUnit,
   scaleType,
