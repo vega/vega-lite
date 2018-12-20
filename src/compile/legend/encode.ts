@@ -113,19 +113,17 @@ export function symbols(
     }
   }
 
-  if (type(legendCmp, model, channel) === 'gradient') {
-    if (channel !== SHAPE) {
-      const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
-      if (shape) {
-        out.shape = {value: shape};
-      }
+  if (type(legendCmp, model, channel) === 'gradient' && channel !== SHAPE) {
+    const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
+    if (shape) {
+      out.shape = {value: shape};
     }
+  }
 
-    if (channel !== OPACITY) {
-      if (opacity) {
-        // only apply opacity if it is neither zero or undefined
-        out.opacity = {value: opacity};
-      }
+  if (channel !== OPACITY) {
+    if (opacity) {
+      // only apply opacity if it is neither zero or undefined
+      out.opacity = {value: opacity};
     }
   }
 
