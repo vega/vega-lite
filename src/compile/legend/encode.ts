@@ -1,6 +1,6 @@
 import {SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
   Conditional,
   FieldDef,
@@ -22,10 +22,10 @@ import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
 
-function type(legendCmp: LegendComponent, model: UnitModel, channel: Channel) {
+function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
   return getFirstDefined(
     legendCmp.get('type'),
-    defaultType({channel, scaleType: model.getScaleComponent(channel as ScaleChannel).get('type'), alwaysReturn: true})
+    defaultType({channel, scaleType: model.getScaleComponent(channel).get('type'), alwaysReturn: true})
   );
 }
 
@@ -33,7 +33,7 @@ export function symbols(
   fieldDef: FieldDef<string>,
   symbolsSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ): SymbolEncodeEntry {
   if (type(legendCmp, model, channel) === 'gradient') {
@@ -138,7 +138,7 @@ export function gradient(
   fieldDef: FieldDef<string>,
   gradientSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ) {
   let out: SymbolEncodeEntry = {};
