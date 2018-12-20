@@ -80,13 +80,13 @@ describe('compile/legend', () => {
   });
 
   describe('clipHeight()', () => {
-    it('should return clip height for continuous domain', () => {
-      const height = properties.clipHeight('linear');
+    it('should return clip height for gradient legend', () => {
+      const height = properties.clipHeight('gradient');
       expect(height).toBe(20);
     });
 
-    it('should simply return for discrete domain', () => {
-      const height = properties.clipHeight('ordinal');
+    it('should simply return for symbol legends', () => {
+      const height = properties.clipHeight('symbol');
       expect(height).toBeUndefined();
     });
   });
