@@ -23,7 +23,7 @@ import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
-import {direction} from './properties';
+import {direction, type} from './properties';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -135,6 +135,9 @@ function getProperty<K extends keyof VgLegend>(
 ): VgLegend[K] {
   const fieldDef = model.fieldDef(channel);
   const legendConfig = model.config.legend;
+  const {timeUnit} = fieldDef;
+
+  const scaleType = model.getScaleComponent(channel).get('type');
 
   switch (property) {
     case 'format':
@@ -143,17 +146,17 @@ function getProperty<K extends keyof VgLegend>(
     case 'title':
       return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined;
 
+    case 'type':
+      return type({legend, channel, timeUnit, scaleType, alwaysReturn: false});
+
     case 'direction':
-      return direction({legend, legendConfig, channel, scaleType: model.getScaleComponent(channel).get('type')});
+      return direction({legend, legendConfig, timeUnit, channel, scaleType});
 
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
-    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(model.getScaleComponent(channel).get('type')));
+    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(scaleType));
     case 'labelOverlap':
-      return getFirstDefined(
-        legend.labelOverlap,
-        properties.labelOverlap(model.getScaleComponent(channel).get('type'))
-      );
+      return getFirstDefined(legend.labelOverlap, properties.labelOverlap(scaleType));
     case 'gradientLength':
       return getFirstDefined<number | SignalRef>(
         // do specified gradientLength first
@@ -165,7 +168,7 @@ function getProperty<K extends keyof VgLegend>(
           legend,
           legendConfig,
           channel,
-          scaleType: model.getScaleComponent(channel).get('type')
+          scaleType
         })
       );
 
