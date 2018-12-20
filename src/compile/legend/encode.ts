@@ -34,7 +34,7 @@ export function symbols(
   channel: ScaleChannel,
   legendCmp: LegendComponent
 ): SymbolEncodeEntry {
-  if (type(legendCmp, model, channel) === 'gradient') {
+  if (type(legendCmp, model, channel) !== 'symbol') {
     return undefined;
   }
 
@@ -111,7 +111,7 @@ export function symbols(
     }
   }
 
-  if (type(legendCmp, model, channel) === 'symbol' && channel !== SHAPE) {
+  if (channel !== SHAPE) {
     const shape = (getFirstConditionValue(encoding.shape) as string) || markDef.shape;
     if (shape) {
       out.shape = {value: shape};
@@ -137,14 +137,16 @@ export function gradient(
   channel: ScaleChannel,
   legendCmp: LegendComponent
 ) {
+  if (type(legendCmp, model, channel) !== 'gradient') {
+    return undefined;
+  }
+
   let out: SymbolEncodeEntry = {};
 
-  if (type(legendCmp, model, channel) === 'gradient') {
-    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
-    if (opacity) {
-      // only apply opacity if it is neither zero or undefined
-      out.opacity = {value: opacity};
-    }
+  const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
+  if (opacity) {
+    // only apply opacity if it is neither zero or undefined
+    out.opacity = {value: opacity};
   }
 
   out = {...out, ...gradientSpec};

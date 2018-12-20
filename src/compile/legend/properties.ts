@@ -2,7 +2,7 @@ import {LabelOverlap, LegendOrient, LegendType} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
 import {FieldDef, valueArray} from '../../fielddef';
 import {Legend, LegendConfig} from '../../legend';
-import {hasContinuousDomain, ScaleType} from '../../scale';
+import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {Model} from '../model';
@@ -16,8 +16,8 @@ export function values(legend: Legend, fieldDef: FieldDef<string>) {
   return undefined;
 }
 
-export function clipHeight(scaleType: ScaleType) {
-  if (hasContinuousDomain(scaleType)) {
+export function clipHeight(legendType: LegendType) {
+  if (legendType === 'gradient') {
     return 20;
   }
   return undefined;
@@ -53,7 +53,7 @@ export function defaultType({
       return 'symbol';
     }
 
-    if (hasContinuousDomain(scaleType)) {
+    if (isContinuousToContinuous(scaleType)) {
       return alwaysReturn ? 'gradient' : undefined;
     }
   }
