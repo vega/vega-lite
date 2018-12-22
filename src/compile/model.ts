@@ -14,7 +14,6 @@ import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelpro
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
-import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -187,8 +186,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
-    this.layout =
-      isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec as TopLevelFacetSpec);
+    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec);
 
     this.component = {
       data: {

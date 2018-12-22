@@ -1,6 +1,7 @@
 import {isString} from 'vega-util';
 import {InlineDataset} from './data';
 import * as log from './log';
+import {BaseSpec} from './spec';
 import {Dict} from './util';
 import {RowCol, VgLayoutAlign} from './vega.schema';
 
@@ -109,7 +110,9 @@ export interface GenericCompositionLayout extends BoundsMixins {
   spacing?: number | RowCol<number>;
 }
 
-export function extractCompositionLayout(layout: GenericCompositionLayout): GenericCompositionLayout {
+export function extractCompositionLayout(
+  layout: BaseSpec & Partial<GenericCompositionLayout>
+): GenericCompositionLayout {
   const {align = undefined, center = undefined, bounds = undefined, spacing = undefined} = layout || {};
   return {align, bounds, center, spacing};
 }

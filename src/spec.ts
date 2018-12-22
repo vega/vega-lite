@@ -1,3 +1,7 @@
+/**
+ * Declarations for Vega-Lite specifications and their helper methods
+ */
+
 import {Config} from './config';
 import {Data} from './data';
 import * as vlEncoding from './encoding';
@@ -16,6 +20,21 @@ import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} fr
 import {Transform} from './transform';
 import {Dict, hash, vals} from './util';
 
+/**
+ * Top-level specifications of Vega-Lite.
+ * All Vega-Lite specification must satisfy this type.
+ */
+export type TopLevelSpec =
+  | TopLevelFacetedUnitSpec
+  | TopLevelFacetSpec
+  | TopLevel<ExtendedLayerSpec>
+  | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
+
+/**
+ * Common properties for all kind of top-level specifications
+ */
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {
     /**
@@ -42,6 +61,9 @@ export type TopLevel<S extends BaseSpec> = S &
     usermeta?: object;
   };
 
+/**
+ * Common properties for all types of specification
+ */
 export type BaseSpec = Partial<DataMixins> & {
   /**
    * Title for the plot.
@@ -108,6 +130,9 @@ export interface LayoutSizeMixins {
   height?: number;
 }
 
+/**
+ * Base interface for a unit (single-view) specification.
+ */
 export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -132,6 +157,10 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   selection?: {[name: string]: SelectionDef};
 }
 
+/**
+ * Interface for a normalized single-view specification, which no
+ * longer contains expansion's syntax.
+ */
 export type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
 
 /**
@@ -159,7 +188,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 }
 
 /**
- * Layer Spec with encoding and projection
+ * Layer Spec with `encoding` and `projection`
  */
 export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
   /**
@@ -257,16 +286,9 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
 
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins; // Top-level unit spec requires data
 
-export type TopLevelSpec =
-  | TopLevelFacetedUnitSpec
-  | TopLevelFacetSpec
-  | TopLevel<ExtendedLayerSpec>
-  | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins; // Top-level facet requires data
 
 /* Custom type guards */
 
