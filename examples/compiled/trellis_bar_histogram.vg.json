@@ -102,7 +102,9 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/20)"},
+          "tickCount": {
+            "signal": "(domain('x')[1] - domain('x')[0]) / child_bin_maxbins_15_Horsepower_bins.step + 1"
+          },
           "values": {
             "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
           },

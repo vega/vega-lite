@@ -139,7 +139,9 @@
       "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {
+        "signal": "(domain('x')[1] - domain('x')[0]) / layer_0_bin_maxbins_10_IMDB_Rating_bins.step + 1"
+      },
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
       },

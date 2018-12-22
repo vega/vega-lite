@@ -212,7 +212,9 @@
       "title": "Acceleration (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {
+        "signal": "(domain('x')[1] - domain('x')[0]) / layer_0_bin_maxbins_10_Acceleration_bins.step + 1"
+      },
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
       },
@@ -224,7 +226,9 @@
       "grid": false,
       "title": "Horsepower (binned)",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/20)"},
+      "tickCount": {
+        "signal": "(domain('y')[1] - domain('y')[0]) / layer_0_bin_maxbins_10_Horsepower_bins.step + 1"
+      },
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop + layer_0_bin_maxbins_10_Horsepower_bins.step, layer_0_bin_maxbins_10_Horsepower_bins.step)"
       },

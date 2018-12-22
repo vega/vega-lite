@@ -101,7 +101,9 @@
       "title": "precipitation (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {
+        "signal": "(domain('x')[1] - domain('x')[0]) / bin_maxbins_10_precipitation_bins.step + 1"
+      },
       "values": {
         "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
       },
