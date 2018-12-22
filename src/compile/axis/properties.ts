@@ -140,13 +140,15 @@ export function defaultTickCount({
   scaleType,
   size,
   scaleName,
-  specifiedAxis = {}
+  specifiedAxis = {},
+  getName
 }: {
   fieldDef: FieldDef<string>;
   scaleType: ScaleType;
   size?: SignalRef;
   scaleName?: string;
   specifiedAxis?: Axis;
+  getName?: (x: string) => string;
 }) {
   if (
     !hasDiscreteDomain(scaleType) &&
@@ -154,15 +156,20 @@ export function defaultTickCount({
     !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)
   ) {
     if (specifiedAxis.tickStep) {
-      return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
+      return tickCountByStep(scaleName, specifiedAxis.tickStep);
     } else if (isBinning(fieldDef.bin)) {
-      // for binned data, we don't want more ticks than maxbins
-      return {signal: `ceil(${size.signal}/20)`};
+      const binSignal = getName(vgField(fieldDef, {suffix: 'bins'}));
+      return tickCountByStep(scaleName, `${binSignal}.step`);
     }
+    // TODO: For binned case, calculate step and apply the same formula
     return {signal: `ceil(${size.signal}/40)`};
   }
 
   return undefined;
+}
+
+function tickCountByStep(scaleName: string, step: number | string) {
+  return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${step} + 1`};
 }
 
 export function values(

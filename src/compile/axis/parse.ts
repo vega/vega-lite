@@ -321,9 +321,17 @@ function getProperty<K extends keyof AxisComponentProps>(
       const scaleName = model.scaleName(channel);
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
+      const getName = model.getName.bind(model);
       return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
-        properties.defaultTickCount({fieldDef, scaleType, size, scaleName, specifiedAxis})
+        properties.defaultTickCount({
+          fieldDef,
+          scaleType,
+          size,
+          scaleName,
+          specifiedAxis,
+          getName
+        })
       );
     }
     case 'title':

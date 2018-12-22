@@ -2,6 +2,7 @@
 
 import * as properties from '../../../src/compile/axis/properties';
 import {defaultLabelAlign, defaultLabelBaseline, labelAngle} from '../../../src/compile/axis/properties';
+import {FieldDef, vgField} from '../../../src/fielddef';
 import {TimeUnit} from '../../../src/timeunit';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -37,12 +38,17 @@ describe('compile/axis', () => {
 
   describe('defaultTickCount()', () => {
     it('should return undefined by default for a binned field', () => {
+      const fieldDef: FieldDef<string> = {bin: {maxbins: 10}, field: 'a', type: 'quantitative'};
       const tickCount = properties.defaultTickCount({
-        fieldDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
+        fieldDef,
         scaleType: 'linear',
-        size: {signal: 'a'}
+        scaleName: 'x',
+        size: {signal: 'a'},
+        getName: x => x
       });
-      expect(tickCount).toEqual({signal: 'ceil(a/20)'});
+      expect(tickCount).toEqual({
+        signal: `(domain('x')[1] - domain('x')[0]) / ${vgField(fieldDef, {suffix: 'bins'})}.step + 1`
+      });
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
