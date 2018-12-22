@@ -2,7 +2,7 @@ import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
 import {binToString, isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {FieldDef, valueArray} from '../../fielddef';
+import {FieldDef, valueArray, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
@@ -192,8 +192,8 @@ export function values(
         // explicit value
         return vals;
       }
-      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-      return {signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`};
+      const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+      return {signal: `sequence(${binSignal}.start, ${binSignal}.stop + ${binSignal}.step, ${binSignal}.step)`};
     } else if (specifiedAxis.tickStep) {
       const scaleName = model.scaleName(channel);
       const step = specifiedAxis.tickStep;
