@@ -252,6 +252,19 @@ describe('compile/mark/mixins', () => {
       });
     });
 
+    it('generates no tooltip if encoding.tooltip === null', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Acceleration', type: 'quantitative'},
+          tooltip: null
+        }
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual(undefined);
+    });
+
     it('generates tooltip object signal for all data if specified', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: {content: 'data'}},

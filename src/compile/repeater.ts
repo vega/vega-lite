@@ -52,6 +52,8 @@ function replaceRepeaterInFieldDef(fieldDef: ScaleFieldDef<Field>, repeater: Rep
   if (fieldDef === undefined) {
     // the field def should be ignored
     return undefined;
+  } else if (fieldDef === null) {
+    return null;
   }
 
   if (fieldDef.sort && isSortField(fieldDef.sort)) {
@@ -104,7 +106,7 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
         out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
       } else {
         const cd = replaceRepeaterInChannelDef(channelDef, repeater);
-        if (cd) {
+        if (cd !== undefined) {
           out[channel] = cd;
         }
       }
