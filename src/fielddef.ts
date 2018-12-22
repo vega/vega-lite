@@ -420,7 +420,7 @@ export function vgField(
         fn = fieldDef.op;
       } else if (isBinning(fieldDef.bin)) {
         fn = binToString(fieldDef.bin);
-        suffix = opt.binSuffix || '';
+        suffix = (opt.binSuffix || '') + (opt.suffix || '');
       } else if (fieldDef.aggregate) {
         fn = String(fieldDef.aggregate);
       } else if (fieldDef.timeUnit) {
