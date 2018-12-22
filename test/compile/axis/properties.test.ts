@@ -37,63 +37,55 @@ describe('compile/axis', () => {
 
   describe('tickCount', () => {
     it('should return undefined by default for a binned field', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
-        'linear',
-        {signal: 'a'},
-        undefined,
-        {}
-      );
+      const tickCount = properties.tickCount({
+        fieldDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'}
+      });
       expect(tickCount).toEqual({signal: 'ceil(a/20)'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
       it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
-        const tickCount = properties.tickCount(
-          'x',
-          {timeUnit, field: 'a', type: 'temporal'},
-          'linear',
-          {signal: 'a'},
-          undefined,
-          {}
-        );
+        const tickCount = properties.tickCount({
+          fieldDef: {timeUnit, field: 'a', type: 'temporal'},
+          scaleType: 'linear',
+          size: {signal: 'a'}
+        });
         expect(tickCount).not.toBeDefined();
       });
     }
 
     it('should return size/40 by default for linear scale', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {field: 'a', type: 'quantitative'},
-        'linear',
-        {signal: 'a'},
-        undefined,
-        {}
-      );
+      const tickCount = properties.tickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'}
+      });
       expect(tickCount).toEqual({signal: 'ceil(a/40)'});
     });
 
     it('should return undefined by default for log scale', () => {
-      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined, undefined, {});
+      const tickCount = properties.tickCount({fieldDef: {field: 'a', type: 'quantitative'}, scaleType: 'log'});
       expect(tickCount).toBeUndefined();
     });
 
     it('should return undefined by default for point scale', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {field: 'a', type: 'quantitative'},
-        'point',
-        undefined,
-        undefined,
-        {}
-      );
+      const tickCount = properties.tickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'point'
+      });
       expect(tickCount).toBeUndefined();
     });
 
     it('should return prebin step signal for axis with tickStep', () => {
-      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', undefined, 'x', {
-        tickStep: 3
+      const tickCount = properties.tickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        scaleName: 'x',
+        specifiedAxis: {
+          tickStep: 3
+        }
       });
       expect(tickCount).toEqual({signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1"});
     });

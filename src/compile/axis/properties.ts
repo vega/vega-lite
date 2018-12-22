@@ -1,6 +1,6 @@
 import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
-import {binToString, isBinning} from '../../bin';
+import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDef, valueArray, vgField} from '../../fielddef';
 import * as log from '../../log';
@@ -148,14 +148,19 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount(
-  channel: PositionScaleChannel,
-  fieldDef: FieldDef<string>,
-  scaleType: ScaleType,
-  size: SignalRef,
-  scaleName: string,
-  specifiedAxis: Axis
-) {
+export function tickCount({
+  fieldDef,
+  scaleType,
+  size,
+  scaleName,
+  specifiedAxis = {}
+}: {
+  fieldDef: FieldDef<string>;
+  scaleType: ScaleType;
+  size?: SignalRef;
+  scaleName?: string;
+  specifiedAxis?: Axis;
+}) {
   if (
     !hasDiscreteDomain(scaleType) &&
     scaleType !== 'log' &&

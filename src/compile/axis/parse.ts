@@ -320,7 +320,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
       return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
-        properties.tickCount(channel, fieldDef, scaleType, size, scaleName, specifiedAxis)
+        properties.tickCount({fieldDef, scaleType, size, scaleName, specifiedAxis})
       );
     }
     case 'title':
