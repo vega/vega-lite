@@ -3428,7 +3428,7 @@
     },
     "LayerSpec": {
       "additionalProperties": false,
-      "description": "Layer Spec with encoding and projection",
+      "description": "Layer Spec with `encoding` and `projection`",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -4567,6 +4567,7 @@
     },
     "CompositeUnitSpecAlias": {
       "additionalProperties": false,
+      "description": "Base interface for a unit (single-view) specification.",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -4633,6 +4634,7 @@
     },
     "FacetedCompositeUnitSpecAlias": {
       "additionalProperties": false,
+      "description": "Base interface for a unit (single-view) specification.",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -9145,6 +9147,7 @@
     },
     "TopLevelLayerSpec": {
       "additionalProperties": false,
+      "description": "Common properties for all kind of top-level specifications",
       "properties": {
         "$schema": {
           "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
@@ -9254,6 +9257,7 @@
     },
     "TopLevelHConcatSpec": {
       "additionalProperties": false,
+      "description": "Common properties for all kind of top-level specifications",
       "properties": {
         "$schema": {
           "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
@@ -9356,6 +9360,7 @@
     },
     "TopLevelRepeatSpec": {
       "additionalProperties": false,
+      "description": "Common properties for all kind of top-level specifications",
       "properties": {
         "$schema": {
           "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
@@ -9484,6 +9489,7 @@
     },
     "TopLevelVConcatSpec": {
       "additionalProperties": false,
+      "description": "Common properties for all kind of top-level specifications",
       "properties": {
         "$schema": {
           "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
@@ -9844,7 +9850,8 @@
         {
           "$ref": "#/definitions/TopLevelHConcatSpec"
         }
-      ]
+      ],
+      "description": "Top-level specifications of Vega-Lite.\nAll Vega-Lite specification must satisfy this type."
     },
     "TopoDataFormat": {
       "additionalProperties": false,
