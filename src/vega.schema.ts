@@ -85,7 +85,13 @@ export interface VgScheme {
   extent?: number[];
   count?: number;
 }
-export type VgRange = string | VgDataRef | (number | string | VgDataRef | SignalRef)[] | VgScheme | VgRangeStep;
+export type VgRange =
+  | string
+  | VgDataRef
+  | (number | string | VgDataRef | SignalRef)[]
+  | VgScheme
+  | VgRangeStep
+  | SignalRef;
 
 export interface VgRangeStep {
   step: number | SignalRef;
