@@ -91,19 +91,19 @@ describe('compile/legend', () => {
     });
   });
 
-  describe('labelOverlap()', () => {
+  describe('defaultLabelOverlap()', () => {
     it('should return undefined for linear', () => {
-      const overlap = properties.labelOverlap('linear');
+      const overlap = properties.defaultLabelOverlap('linear');
       expect(overlap).toBeUndefined();
     });
 
     it('should return greedy for log', () => {
-      const overlap = properties.labelOverlap('log');
+      const overlap = properties.defaultLabelOverlap('log');
       expect(overlap).toEqual('greedy');
     });
 
     it('should return greedy for threshold', () => {
-      const overlap = properties.labelOverlap('threshold');
+      const overlap = properties.defaultLabelOverlap('threshold');
       expect(overlap).toEqual('greedy');
     });
   });

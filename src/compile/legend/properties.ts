@@ -141,7 +141,7 @@ function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: n
   return {signal: `clamp(${sizeSignal}, ${min}, ${max})`};
 }
 
-export function labelOverlap(scaleType: ScaleType): LabelOverlap {
+export function defaultLabelOverlap(scaleType: ScaleType): LabelOverlap {
   if (contains(['quantile', 'threshold', 'log'], scaleType)) {
     return 'greedy';
   }

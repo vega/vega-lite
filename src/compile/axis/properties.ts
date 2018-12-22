@@ -15,7 +15,7 @@ import {getAxisConfig} from './config';
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function grid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
+export function defaultGrid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
   return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef.bin);
 }
 
@@ -59,7 +59,7 @@ export function labelAngle(
   }
 }
 
-export function labelBaseline(angle: number, axisOrient: AxisOrient) {
+export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
   if (angle !== undefined) {
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle <= 45 || 315 <= angle) {
@@ -82,7 +82,7 @@ export function labelBaseline(angle: number, axisOrient: AxisOrient) {
   return undefined;
 }
 
-export function labelAlign(angle: number, axisOrient: AxisOrient): Align {
+export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align {
   if (angle !== undefined) {
     angle = ((angle % 360) + 360) % 360;
     if (axisOrient === 'top' || axisOrient === 'bottom') {
@@ -106,26 +106,14 @@ export function labelAlign(angle: number, axisOrient: AxisOrient): Align {
   return undefined;
 }
 
-export function labelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel, specifiedAxis: Axis) {
-  if (specifiedAxis.labelFlush !== undefined) {
-    return specifiedAxis.labelFlush;
-  }
+export function defaultLabelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
   if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
     return true;
   }
   return undefined;
 }
 
-export function labelOverlap(
-  fieldDef: FieldDef<string>,
-  specifiedAxis: Axis,
-  channel: PositionScaleChannel,
-  scaleType: ScaleType
-) {
-  if (specifiedAxis.labelOverlap !== undefined) {
-    return specifiedAxis.labelOverlap;
-  }
-
+export function defaultLabelOverlap(fieldDef: FieldDef<string>, scaleType: ScaleType) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
   if (fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
@@ -133,7 +121,6 @@ export function labelOverlap(
     }
     return true;
   }
-
   return undefined;
 }
 
@@ -148,7 +135,7 @@ export function orient(channel: PositionScaleChannel) {
   throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
-export function tickCount({
+export function defaultTickCount({
   fieldDef,
   scaleType,
   size,
