@@ -5,6 +5,7 @@ import {
   FILL,
   FILLOPACITY,
   OPACITY,
+  POSITION_SCALE_CHANNELS,
   SCALE_CHANNELS,
   ScaleChannel,
   SHAPE,
@@ -99,22 +100,23 @@ function parseUnitScaleRange(model: UnitModel) {
   });
 }
 
+function getRangeStep(model: UnitModel, channel: 'x' | 'y') {
+  const scaleCmpt = model.getScaleComponent(channel);
+  const range = scaleCmpt && scaleCmpt.get('range');
+  if (range && isVgRangeStep(range) && isNumber(range.step)) {
+    return range.step;
+  }
+  return undefined;
+}
+
 function getXYRangeStep(model: UnitModel) {
-  const xyRangeSteps: number[] = [];
-
-  const xScale = model.getScaleComponent('x');
-  const xRange = xScale && xScale.get('range');
-  if (xRange && isVgRangeStep(xRange) && isNumber(xRange.step)) {
-    xyRangeSteps.push(xRange.step);
-  }
-
-  const yScale = model.getScaleComponent('y');
-  const yRange = yScale && yScale.get('range');
-  if (yRange && isVgRangeStep(yRange) && isNumber(yRange.step)) {
-    xyRangeSteps.push(yRange.step);
-  }
-
-  return xyRangeSteps;
+  return POSITION_SCALE_CHANNELS.reduce((steps, channel) => {
+    const step = getRangeStep(model, channel);
+    if (step !== undefined) {
+      steps.push(step);
+    }
+    return steps;
+  }, []);
 }
 
 /**
@@ -195,7 +197,7 @@ function parseScheme(scheme: Scheme) {
   return {scheme: scheme};
 }
 
-export function defaultRange(
+function defaultRange(
   channel: Channel,
   scaleType: ScaleType,
   type: Type,
