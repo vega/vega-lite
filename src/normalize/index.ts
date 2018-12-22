@@ -1,10 +1,10 @@
 import {isObject} from 'vega-util';
-import {COLUMN, ROW} from './channel';
-import * as compositeMark from './compositemark';
-import {Config} from './config';
-import {channelHasField, Encoding} from './encoding';
-import {Field} from './fielddef';
-import * as log from './log';
+import {COLUMN, ROW} from '../channel';
+import * as compositeMark from '../compositemark';
+import {Config} from '../config';
+import {channelHasField, Encoding} from '../encoding';
+import {Field} from '../fielddef';
+import * as log from '../log';
 import {
   AnyMark,
   AreaConfig,
@@ -15,8 +15,8 @@ import {
   Mark,
   MarkConfig,
   MarkDef
-} from './mark';
-import {Projection} from './projection';
+} from '../mark';
+import {Projection} from '../projection';
 import {
   ExtendedLayerSpec,
   ExtendedUnitSpec,
@@ -41,9 +41,9 @@ import {
   NormalizedUnitSpec,
   TopLevel,
   TopLevelSpec
-} from './spec';
-import {stack} from './stack';
-import {keys, omit, pick} from './util';
+} from '../spec';
+import {stack} from '../stack';
+import {keys, omit, pick} from '../util';
 
 export function normalizeTopLevelSpec(
   spec: TopLevelSpec | GenericSpec<ExtendedUnitSpec, ExtendedLayerSpec> | FacetedExtendedUnitSpec,
@@ -313,7 +313,7 @@ function normalizePathOverlay(spec: NormalizedUnitSpec, config: Config = {}): No
   // _ is used to denote a dropped property of the unit spec
   // which should not be carried over to the layer spec
   const {selection, projection, encoding, mark, ...outerSpec} = spec;
-  const markDef = isMarkDef(mark) ? mark : {type: mark};
+  const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
   const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
   const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);

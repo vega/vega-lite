@@ -1,8 +1,8 @@
 /* tslint:disable:quotemark */
-import {defaultConfig, initConfig} from '../src/config';
-import * as log from '../src/log';
-import {LocalLogger} from '../src/log';
-import {normalize, TopLevelSpec} from '../src/spec';
+import {defaultConfig, initConfig} from '../../src/config';
+import * as log from '../../src/log';
+import {LocalLogger} from '../../src/log';
+import {normalize, TopLevelSpec} from '../../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
