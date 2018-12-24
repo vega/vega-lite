@@ -10,14 +10,15 @@ import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {BaseSpec, DataMixins} from './base';
-import {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
+import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
-export {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
+export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 export {TopLevel} from './toplevel';
+export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
@@ -116,10 +117,6 @@ export type TopLevelSpec =
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {
   return spec['facet'] !== undefined;
-}
-
-export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
-  return spec['layer'] !== undefined;
 }
 
 export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any> {
