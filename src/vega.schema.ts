@@ -85,21 +85,16 @@ export interface VgScheme {
   extent?: number[];
   count?: number;
 }
-export type VgRange =
-  | string
-  | VgDataRef
-  | (number | string | VgDataRef | SignalRef)[]
-  | VgScheme
-  | VgRangeStep
-  | SignalRef;
+
+export type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | VgScheme | VgRangeStep | S;
+
+export function isVgRangeStep(range: VgRange<any>): range is VgRangeStep {
+  return !!range['step'];
+}
 
 export interface VgRangeStep {
   step: number | SignalRef;
 }
-export function isVgRangeStep(range: VgRange): range is VgRangeStep {
-  return !!range['step'];
-}
-
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
@@ -183,12 +178,13 @@ export interface VgProjection {
   tilt?: number;
 }
 
+// TODO: Eventually migrate to Vega-typings and make Vega typings take generic SR that can allow us to replace SignalRef with SignalComponent
 export interface VgScale {
   name: string;
   type: ScaleType;
   domain: VgDomain;
   domainRaw?: SignalRef;
-  range: VgRange;
+  range: VgRange<SignalRef>;
 
   clamp?: boolean;
   base?: number;

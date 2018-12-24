@@ -1,9 +1,11 @@
+import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
-import {isSignalRef, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
+import {SignalRefComponent} from '../signal';
 import {assembleDomain} from './domain';
 
 export function assembleScales(model: Model): VgScale[] {
@@ -31,10 +33,10 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       const scale = scaleComponent.combine();
 
       // need to separate const and non const object destruction
-      let {domainRaw, range} = scale;
+      let {domainRaw} = scale;
       const {name, type, domainRaw: _d, range: _r, ...otherScaleProps} = scale;
 
-      range = assembleScaleRange(range, name, model, channel);
+      const range = assembleScaleRange(scale.range, name, model, channel);
 
       // As scale parsing occurs before selection parsing, a temporary signal
       // is used for domainRaw. Here, we detect if this temporary signal
@@ -58,26 +60,50 @@ export function assembleScalesForModel(model: Model): VgScale[] {
     [] as VgScale[]
   );
 }
+function assembleExprSignal(scaleRange: SignalRefComponent, model: Model) {
+  let signal = scaleRange.expr;
+  for (const signalName of scaleRange.signalNames) {
+    const newName = model.getSignalName(signalName);
+    if (newName !== signalName) {
+      // replace the signal name
 
-export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model: Model, channel: Channel) {
-  // add signals to x/y range
-  if (channel === 'x' || channel === 'y') {
-    if (isVgRangeStep(scaleRange)) {
-      // For x/y range step, use a signal created in layout assemble instead of a constant range step.
-      return {
-        step: {signal: scaleName + '_step'}
-      };
-    } else if (isArray(scaleRange) && scaleRange.length === 2) {
-      const r0 = scaleRange[0];
-      const r1 = scaleRange[1];
-      if (r0 === 0 && isSignalRef(r1)) {
-        // Replace width signal just in case it is renamed.
-        return [0, {signal: model.getSignalName(r1.signal)}];
-      } else if (isSignalRef(r0) && r1 === 0) {
-        // Replace height signal just in case it is renamed.
-        return [{signal: model.getSignalName(r0.signal)}, 0];
-      }
+      /*
+       A regular expression to check whole word
+       (`\b` = word boundary https://stackoverflow.com/questions/2232934/whole-word-match-in-javascript)
+      */
+      const regEx = new RegExp(`\\b${signalName}\\b`);
+
+      signal = signal.replace(regEx, newName);
     }
   }
-  return scaleRange;
+  return {signal};
+}
+
+export function assembleScaleRange(
+  scaleRange: VgRange<SignalRefComponent>,
+  scaleName: string,
+  model: Model,
+  channel: Channel
+): VgRange<SignalRef> {
+  if (scaleRange instanceof SignalRefComponent) {
+    return assembleExprSignal(scaleRange, model);
+  } else if (isArray(scaleRange)) {
+    return scaleRange.map(val => {
+      if (val instanceof SignalRefComponent) {
+        return assembleExprSignal(val, model);
+      }
+      return val;
+    });
+  } else {
+    // add signals to x/y range
+    if (channel === 'x' || channel === 'y') {
+      if (isVgRangeStep(scaleRange)) {
+        // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+        return {
+          step: {signal: scaleName + '_step'}
+        };
+      }
+    }
+    return scaleRange;
+  }
 }
