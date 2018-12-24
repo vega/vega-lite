@@ -1,54 +1,23 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
-import {Encoding, forEach} from '../encoding';
+import {forEach} from '../encoding';
 import {FacetMapping} from '../facet';
 import {Field, FieldDef, RepeatRef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
-import {Projection} from '../projection';
 import {Repeat} from '../repeat';
 import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
-import {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
+import {BaseSpec, DataMixins} from './base';
+import {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
-import {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
+import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
+export {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
 export {TopLevel} from './toplevel';
-export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
-
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
-  /**
-   * Layer or single view specifications to be layered.
-   *
-   * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
-   */
-  layer: (GenericLayerSpec<U> | U)[];
-
-  /**
-   * Scale, axis, and legend resolutions for layers.
-   */
-  resolve?: Resolve;
-}
-
-/**
- * Layer Spec with encoding and projection
- */
-export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
-  /**
-   * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
-   */
-  encoding?: Encoding<string | RepeatRef>;
-
-  /**
-   * An object defining properties of the geographic projection shared by underlying layers.
-   */
-  projection?: Projection;
-}
-
-export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
