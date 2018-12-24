@@ -9,6 +9,9 @@ export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {TopLevel} from './toplevel';
 
+/**
+ * Base interface for a unit (single-view) specification.
+ */
 export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
@@ -33,6 +36,9 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
   selection?: {[name: string]: SelectionDef};
 }
 
+/**
+ * A unit specification without any shortcut/expansion syntax.
+ */
 export type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
 
 /**

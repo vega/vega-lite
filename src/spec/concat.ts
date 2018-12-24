@@ -5,6 +5,9 @@ import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {ConcatLayout} from './toplevel';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
+/**
+ * Base interface for a vertical concatenation specification.
+ */
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
     ConcatLayout {
@@ -19,6 +22,9 @@ export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L exten
   resolve?: Resolve;
 }
 
+/**
+ * Base interface for a horizontal concatenation specification.
+ */
 export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
     ConcatLayout {
@@ -32,7 +38,7 @@ export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L exten
    */
   resolve?: Resolve;
 }
-
+/** A concat spec without any shortcut/expansion syntax */
 export type NormalizedConcatSpec =
   | GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>
   | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
