@@ -4,40 +4,23 @@ import {forEach} from '../encoding';
 import {Field, FieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
-import {Repeat} from '../repeat';
 import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {BaseSpec, DataMixins} from './base';
 import {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
-import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
+import {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
+import {ConcatLayout, TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
+export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
 export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
-
-export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    GenericCompositionLayout {
-  /**
-   * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
-   */
-  repeat: Repeat;
-
-  spec: GenericSpec<U, L>;
-
-  /**
-   * Scale and legend resolutions for repeated charts.
-   */
-  resolve?: Resolve;
-}
-
-export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
@@ -93,10 +76,6 @@ export type TopLevelSpec =
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
-
-export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any> {
-  return spec['repeat'] !== undefined;
-}
 
 export function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> | GenericHConcatSpec<any, any> {
   return isVConcatSpec(spec) || isHConcatSpec(spec);
