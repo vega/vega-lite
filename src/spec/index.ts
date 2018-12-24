@@ -6,18 +6,15 @@
  */
 
 import {Config} from '../config';
-import * as vlEncoding from '../encoding';
-import {Field, FieldDef, TypedFieldDef} from '../fielddef';
 import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
-import {Dict, hash, vals} from '../util';
 import {DataMixins} from './base';
-import {GenericHConcatSpec, GenericVConcatSpec, isConcatSpec, isVConcatSpec} from './concat';
-import {GenericFacetSpec, isFacetSpec} from './facet';
-import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericRepeatSpec, isRepeatSpec} from './repeat';
+import {GenericHConcatSpec, GenericVConcatSpec} from './concat';
+import {GenericFacetSpec} from './facet';
+import {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
+import {GenericRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
-import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
+import {FacetedCompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
 
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {
@@ -70,60 +67,6 @@ export type TopLevelSpec =
   | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
-
-/* Custom type guards */
-
-// TODO: add vl.spec.validate & move stuff from vl.validate to here
-
-/* Accumulate non-duplicate fieldDefs in a dictionary */
-function accumulate(dict: any, defs: FieldDef<Field>[]): any {
-  defs.forEach(fieldDef => {
-    // Consider only pure fieldDef properties (ignoring scale, axis, legend)
-    const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {
-      if (fieldDef[key] !== undefined) {
-        f[key] = fieldDef[key];
-      }
-      return f;
-    }, {});
-    const key = hash(pureFieldDef);
-    dict[key] = dict[key] || fieldDef;
-  });
-  return dict;
-}
-
-/* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
-function fieldDefIndex<F extends Field>(
-  spec: GenericSpec<any, any>,
-  dict: Dict<TypedFieldDef<F>> = {}
-): Dict<TypedFieldDef<F>> {
-  // FIXME(https://github.com/vega/vega-lite/issues/2207): Support fieldDefIndex for repeat
-  if (isLayerSpec(spec)) {
-    spec.layer.forEach(layer => {
-      if (isUnitSpec(layer)) {
-        accumulate(dict, vlEncoding.fieldDefs(layer.encoding));
-      } else {
-        fieldDefIndex(layer, dict);
-      }
-    });
-  } else if (isFacetSpec(spec)) {
-    accumulate(dict, vlEncoding.fieldDefs(spec.facet));
-    fieldDefIndex(spec.spec, dict);
-  } else if (isRepeatSpec(spec)) {
-    fieldDefIndex(spec.spec, dict);
-  } else if (isConcatSpec(spec)) {
-    const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
-    childSpec.forEach(child => fieldDefIndex(child, dict));
-  } else {
-    // Unit Spec
-    accumulate(dict, vlEncoding.fieldDefs(spec.encoding));
-  }
-  return dict;
-}
-
-/* Returns all non-duplicate fieldDefs in a spec in a flat array */
-export function fieldDefs(spec: GenericSpec<any, any>): TypedFieldDef<any>[] {
-  return vals(fieldDefIndex(spec));
-}
 
 export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean {
   config = config || spec.config;
