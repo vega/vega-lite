@@ -478,8 +478,6 @@ export type SelectionDomain =
 export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | SchemeParams;
 
-export type Range = number[] | string[] | string;
-
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
   return scheme && !!scheme['name'];
 }
