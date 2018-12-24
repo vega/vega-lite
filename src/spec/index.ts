@@ -1,20 +1,20 @@
-import {Config} from './config';
-import {Data} from './data';
-import * as vlEncoding from './encoding';
-import {Encoding, EncodingWithFacet, forEach} from './encoding';
-import {FacetMapping} from './facet';
-import {Field, FieldDef, RepeatRef} from './fielddef';
-import * as log from './log';
-import {AnyMark, isPrimitiveMark, Mark, MarkDef} from './mark';
-import {Projection} from './projection';
-import {Repeat} from './repeat';
-import {Resolve} from './resolve';
-import {SelectionDef} from './selection';
-import {stack} from './stack';
-import {TitleParams} from './title';
-import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevelprops';
-import {Transform} from './transform';
-import {Dict, hash, vals} from './util';
+import {Config} from '../config';
+import {Data} from '../data';
+import * as vlEncoding from '../encoding';
+import {Encoding, EncodingWithFacet, forEach} from '../encoding';
+import {FacetMapping} from '../facet';
+import {Field, FieldDef, RepeatRef} from '../fielddef';
+import * as log from '../log';
+import {AnyMark, isPrimitiveMark, Mark, MarkDef} from '../mark';
+import {Projection} from '../projection';
+import {Repeat} from '../repeat';
+import {Resolve} from '../resolve';
+import {SelectionDef} from '../selection';
+import {stack} from '../stack';
+import {TitleParams} from '../title';
+import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from '../toplevelprops';
+import {Transform} from '../transform';
+import {Dict, hash, vals} from '../util';
 
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {
@@ -298,7 +298,7 @@ export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, a
   return spec['hconcat'] !== undefined;
 }
 
-export {normalizeTopLevelSpec as normalize} from './normalize';
+export {normalizeTopLevelSpec as normalize} from '../normalize';
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 

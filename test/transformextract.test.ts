@@ -1,10 +1,9 @@
 /* tslint:disable:quotemark */
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
-import {normalize} from '../src/spec';
+import {normalize, NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
 import {initConfig} from './../src/config';
-import {NormalizedSpec, TopLevelSpec} from './../src/spec';
 
 describe('extractTransforms()', () => {
   const specsDir = './examples/specs/';
