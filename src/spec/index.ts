@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
-import {Field, FieldDef, RepeatRef} from '../fielddef';
+import {Field, FieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
 import {Repeat} from '../repeat';
@@ -9,38 +9,17 @@ import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {BaseSpec, DataMixins} from './base';
-import {FacetMapping} from './facet';
+import {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
+export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 export {TopLevel} from './toplevel';
 export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
-
-export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    GenericCompositionLayout {
-  /**
-   * An object that describes mappings between `row` and `column` channels and their field definitions.
-   */
-  facet: FacetMapping<string | RepeatRef>;
-
-  /**
-   * A specification of the view that gets faceted.
-   */
-  spec: L | U;
-  // TODO: replace this with GenericSpec<U> once we support all cases;
-
-  /**
-   * Scale, axis, and legend resolutions for facets.
-   */
-  resolve?: Resolve;
-}
-
-export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
@@ -114,10 +93,6 @@ export type TopLevelSpec =
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
-
-export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {
-  return spec['facet'] !== undefined;
-}
 
 export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any> {
   return spec['repeat'] !== undefined;
