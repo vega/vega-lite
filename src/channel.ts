@@ -6,9 +6,9 @@
 import {isBinned} from './bin';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
-import {FacetMapping} from './facet';
 import {isFieldDef} from './fielddef';
 import {CIRCLE, Mark, POINT, SQUARE, TICK} from './mark';
+import {FacetMapping} from './spec/facet';
 import {contains, Flag, flagKeys} from './util';
 
 export namespace Channel {

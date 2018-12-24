@@ -1,10 +1,18 @@
 import {isArray} from 'vega-util';
 import {Encoding} from '../encoding';
-import {FacetMapping} from '../facet';
-import {Field, hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, ValueDef} from '../fielddef';
-import {ChannelDef, ScaleFieldDef} from '../fielddef';
+import {
+  ChannelDef,
+  Field,
+  hasConditionalFieldDef,
+  isConditionalDef,
+  isFieldDef,
+  isRepeatRef,
+  ScaleFieldDef,
+  ValueDef
+} from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
+import {FacetMapping} from '../spec/facet';
 
 export interface RepeaterValue {
   row?: string;

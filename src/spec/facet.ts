@@ -1,5 +1,5 @@
-import {ChannelDef, SortableFieldDef} from './fielddef';
-import {Header} from './header';
+import {ChannelDef, SortableFieldDef} from '../fielddef';
+import {Header} from '../header';
 
 export interface FacetFieldDef<F> extends SortableFieldDef<F> {
   /**

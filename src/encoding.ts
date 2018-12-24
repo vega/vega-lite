@@ -4,7 +4,6 @@ import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} from './channel';
 import {binRequiresRange} from './compile/common';
 import {Config} from './config';
-import {FacetMapping} from './facet';
 import {
   ChannelDef,
   Field,
@@ -31,6 +30,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
+import {FacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';

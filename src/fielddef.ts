@@ -8,7 +8,6 @@ import {Channel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
-import {isFacetFieldDef} from './facet';
 import {Guide, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -17,6 +16,7 @@ import {LogicalOperand} from './logical';
 import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {Sort, SortOrder} from './sort';
+import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
   getLocalTimeUnit,
