@@ -5,11 +5,6 @@ import {Resolve} from '../resolve';
 import {BaseSpec, LayoutSizeMixins} from './base';
 import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
-export {normalizeTopLevelSpec as normalize} from '../normalize';
-export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
-export {TopLevel} from './toplevel';
-export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
-
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
   /**
    * Layer or single view specifications to be layered.
@@ -40,3 +35,7 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
 }
 
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
+
+export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
+  return spec['layer'] !== undefined;
+}
