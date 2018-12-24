@@ -386,17 +386,17 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     ) {
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
-        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
-          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
-            if (!isFieldDef(fieldDef)) {
-              log.warn(log.message.emptyFieldDef(fieldDef, channel));
-            } else {
-              defs.push(normalizeFieldDef(fieldDef, channel));
-            }
-            return defs;
-          },
-          []
-        );
+        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce((
+          defs: FieldDef<string>[],
+          fieldDef: FieldDef<string>
+        ) => {
+          if (!isFieldDef(fieldDef)) {
+            log.warn(log.message.emptyFieldDef(fieldDef, channel));
+          } else {
+            defs.push(normalizeFieldDef(fieldDef, channel));
+          }
+          return defs;
+        }, []);
       }
     } else {
       if (channel === 'tooltip' && channelDef === null) {
