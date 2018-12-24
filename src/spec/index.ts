@@ -4,55 +4,31 @@ import {forEach} from '../encoding';
 import {Field, FieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
-import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
-import {BaseSpec, DataMixins} from './base';
+import {DataMixins} from './base';
+import {GenericHConcatSpec, GenericVConcatSpec, isConcatSpec, isVConcatSpec} from './concat';
 import {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
-import {ConcatLayout, TopLevel} from './toplevel';
+import {TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
+export {
+  GenericHConcatSpec,
+  GenericVConcatSpec,
+  isConcatSpec,
+  isHConcatSpec,
+  isVConcatSpec,
+  NormalizedConcatSpec
+} from './concat';
 export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
 export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
-
-export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    ConcatLayout {
-  /**
-   * A list of views that should be concatenated and put into a column.
-   */
-  vconcat: (GenericSpec<U, L>)[];
-
-  /**
-   * Scale, axis, and legend resolutions for vertically concatenated charts.
-   */
-  resolve?: Resolve;
-}
-
-export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    ConcatLayout {
-  /**
-   * A list of views that should be concatenated and put into a row.
-   */
-  hconcat: (GenericSpec<U, L>)[];
-
-  /**
-   * Scale, axis, and legend resolutions for horizontally concatenated charts.
-   */
-  resolve?: Resolve;
-}
-
-export type NormalizedConcatSpec =
-  | GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>
-  | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> =
   | U
@@ -76,18 +52,6 @@ export type TopLevelSpec =
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
-
-export function isConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> | GenericHConcatSpec<any, any> {
-  return isVConcatSpec(spec) || isHConcatSpec(spec);
-}
-
-export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> {
-  return spec['vconcat'] !== undefined;
-}
-
-export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, any> {
-  return spec['hconcat'] !== undefined;
-}
 
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
