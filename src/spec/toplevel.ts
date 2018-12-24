@@ -1,8 +1,8 @@
 import {isString} from 'vega-util';
-import {InlineDataset} from './data';
-import * as log from './log';
-import {Dict} from './util';
-import {RowCol, VgLayoutAlign} from './vega.schema';
+import {InlineDataset} from '../data';
+import * as log from '../log';
+import {Dict} from '../util';
+import {RowCol, VgLayoutAlign} from '../vega.schema';
 
 /**
  * @minimum 0

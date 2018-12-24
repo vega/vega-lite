@@ -12,9 +12,9 @@ import {Resolve} from '../resolve';
 import {SelectionDef} from '../selection';
 import {stack} from '../stack';
 import {TitleParams} from '../title';
-import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from '../toplevelprops';
 import {Transform} from '../transform';
 import {Dict, hash, vals} from '../util';
+import {ConcatLayout, Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevel';
 
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {

@@ -15,9 +15,9 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
+import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
-import {TopLevelProperties} from './toplevelprops';
 import {duplicate, keys, mergeDeep} from './util';
 import {StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
 

@@ -9,7 +9,7 @@ import {
   extractTopLevelProperties,
   normalizeAutoSize,
   TopLevelProperties
-} from '../toplevelprops';
+} from '../spec/toplevel';
 import {keys, mergeDeep} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
