@@ -5,6 +5,9 @@ import {Transform} from '../transform';
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
 
+/**
+ * Common properties for all types of specification
+ */
 export type BaseSpec = Partial<DataMixins> & {
   /**
    * Title for the plot.
@@ -40,6 +43,9 @@ export interface DataMixins {
 }
 
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
+/**
+ * Common properties for specifying width and height of unit and layer specifications.
+ */
 export interface LayoutSizeMixins {
   /**
    * The width of a visualization.

@@ -30,6 +30,9 @@ export function isFacetFieldDef<F>(channelDef: ChannelDef<F>): channelDef is Fac
   return !!channelDef && !!channelDef['header'];
 }
 
+/**
+ * Base interface for a facet specification.
+ */
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
     GenericCompositionLayout {
@@ -50,6 +53,9 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
   resolve?: Resolve;
 }
 
+/**
+ * A facet specification without any shortcut / expansion syntax
+ */
 export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {

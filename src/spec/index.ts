@@ -43,6 +43,11 @@ export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec
 export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
 export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 
+/**
+ * A Vega-Lite top-level specification.
+ * This is the root class for all Vega-Lite specifications.
+ * (The json schema is generated from this type.)
+ */
 export type TopLevelSpec =
   | TopLevelFacetedUnitSpec
   | TopLevelFacetSpec

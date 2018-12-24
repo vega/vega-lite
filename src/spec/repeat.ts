@@ -18,6 +18,9 @@ export interface Repeat {
   column?: string[];
 }
 
+/**
+ * Base interface for a repeat specification.
+ */
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
     GenericCompositionLayout {
@@ -34,6 +37,9 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
   resolve?: Resolve;
 }
 
+/**
+ * A repeat specification without any shortcut/expansion syntax.
+ */
 export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any> {

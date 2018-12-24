@@ -5,6 +5,9 @@ import {Resolve} from '../resolve';
 import {BaseSpec, LayoutSizeMixins} from './base';
 import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
+/**
+ * Base interface for a layer specification.
+ */
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
   /**
    * Layer or single view specifications to be layered.
@@ -20,7 +23,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 }
 
 /**
- * Layer Spec with encoding and projection
+ * Layer Spec with `encoding` and `projection` shorthands that will be applied to underlying unit (single-view) specifications.
  */
 export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
   /**
@@ -34,6 +37,9 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
   projection?: Projection;
 }
 
+/**
+ * A layered specification without any shortcut/expansion syntax.
+ */
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
