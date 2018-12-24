@@ -1,58 +1,23 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
-import {Encoding, EncodingWithFacet, forEach} from '../encoding';
+import {Encoding, forEach} from '../encoding';
 import {FacetMapping} from '../facet';
 import {Field, FieldDef, RepeatRef} from '../fielddef';
 import * as log from '../log';
-import {AnyMark, isPrimitiveMark, Mark, MarkDef} from '../mark';
+import {isPrimitiveMark} from '../mark';
 import {Projection} from '../projection';
 import {Repeat} from '../repeat';
 import {Resolve} from '../resolve';
-import {SelectionDef} from '../selection';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
+import {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {TopLevel} from './toplevel';
-
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
-  /**
-   * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
-   */
-  mark: M;
-
-  /**
-   * A key-value mapping between encoding channels and definition of fields.
-   */
-  encoding?: E;
-
-  /**
-   * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
-   * and to `latitude` and `"longitude"` channels for other marks.
-   */
-  projection?: Projection;
-
-  /**
-   * A key-value mapping between selection names and definitions.
-   */
-  selection?: {[name: string]: SelectionDef};
-}
-
-export type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
-
-/**
- * Unit spec that can have a composite mark.
- */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, AnyMark>;
-
-/**
- * Unit spec that can have a composite mark and row or column channels.
- */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<string | RepeatRef>, AnyMark>;
+export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
   /**
@@ -182,10 +147,6 @@ export type TopLevelSpec =
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {
   return spec['facet'] !== undefined;
-}
-
-export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec {
-  return !!spec['mark'];
 }
 
 export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
