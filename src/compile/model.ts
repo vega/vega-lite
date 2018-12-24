@@ -8,13 +8,12 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
+import {extractCompositionLayout, GenericCompositionLayout} from '../spec/toplevel';
 import {extractTitleConfig, TitleParams} from '../title';
-import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
-import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';

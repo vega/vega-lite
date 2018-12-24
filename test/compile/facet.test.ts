@@ -2,8 +2,8 @@
 
 import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
-import {FacetMapping} from '../../src/facet';
 import * as log from '../../src/log';
+import {FacetMapping} from '../../src/spec/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 

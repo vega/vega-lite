@@ -1,8 +1,11 @@
 import {isString} from 'vega-util';
-import {InlineDataset} from './data';
-import * as log from './log';
-import {Dict} from './util';
-import {RowCol, VgLayoutAlign} from './vega.schema';
+import {Config} from '../config';
+import {InlineDataset} from '../data';
+import * as log from '../log';
+import {Dict} from '../util';
+import {RowCol, VgLayoutAlign} from '../vega.schema';
+import {BaseSpec} from './index';
+import {Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevel';
 
 /**
  * @minimum 0
@@ -10,6 +13,32 @@ import {RowCol, VgLayoutAlign} from './vega.schema';
 export type Padding = number | {top?: number; bottom?: number; left?: number; right?: number};
 
 export type Datasets = Dict<InlineDataset>;
+
+export type TopLevel<S extends BaseSpec> = S &
+  TopLevelProperties & {
+    /**
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+     * @format uri
+     */
+    $schema?: string;
+
+    /**
+     * Vega-Lite configuration object.  This property can only be defined at the top-level of a specification.
+     */
+    config?: Config;
+
+    /**
+     * A global data store for named datasets. This is a mapping from names to inline datasets.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     */
+    datasets?: Datasets;
+
+    /**
+     * Optional metadata that will be passed to Vega.
+     * This object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.
+     */
+    usermeta?: object;
+  };
 
 export interface TopLevelProperties {
   /**
