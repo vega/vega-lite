@@ -1,7 +1,6 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
-import {FacetMapping} from '../facet';
 import {Field, FieldDef, RepeatRef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
@@ -10,6 +9,7 @@ import {Resolve} from '../resolve';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {BaseSpec, DataMixins} from './base';
+import {FacetMapping} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {ConcatLayout, GenericCompositionLayout, TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
