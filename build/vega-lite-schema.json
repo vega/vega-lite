@@ -2797,6 +2797,9 @@
                 "$ref": "#/definitions/TextFieldDef"
               },
               "type": "array"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -3124,6 +3127,9 @@
                 "$ref": "#/definitions/TextFieldDef"
               },
               "type": "array"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."

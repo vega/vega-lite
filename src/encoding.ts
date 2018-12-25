@@ -192,7 +192,7 @@ export interface Encoding<F> {
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
@@ -372,7 +372,10 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
         );
       }
     } else {
-      if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
+      if (channel === 'tooltip' && channelDef === null) {
+        // Preserve null so we can use it to disable tooltip
+        normalizedEncoding[channel] = null;
+      } else if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
