@@ -292,7 +292,8 @@
           },
           "range": [0, {"signal": "child_width"}],
           "nice": false,
-          "zero": true
+          "zero": true,
+          "padding": 5
         }
       ],
       "axes": [

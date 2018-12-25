@@ -59,13 +59,15 @@
       "domain": {"data": "source_0", "field": "sum_Weight_in_lbs"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "y",
       "type": "time",
       "domain": {"data": "source_0", "field": "year_Year"},
-      "range": [{"signal": "height"}, 0]
+      "range": [{"signal": "height"}, 0],
+      "padding": 5
     }
   ],
   "axes": [

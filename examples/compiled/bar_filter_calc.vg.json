@@ -77,7 +77,8 @@
       "domain": {"data": "data_0", "field": "b2"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

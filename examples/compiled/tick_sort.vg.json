@@ -43,7 +43,8 @@
       "range": [0, {"signal": "width"}],
       "reverse": true,
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

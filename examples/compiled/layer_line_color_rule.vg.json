@@ -99,7 +99,8 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "data_0", "field": "date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "y",
@@ -112,7 +113,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "color",

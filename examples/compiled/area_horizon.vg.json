@@ -100,7 +100,8 @@
       },
       "range": [0, {"signal": "width"}],
       "nice": false,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -108,7 +109,8 @@
       "domain": [0, 50],
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     }
   ],
   "axes": [

@@ -372,7 +372,8 @@
         ]
       },
       "range": [0, {"signal": "concat_0_width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -380,7 +381,8 @@
       "domain": [0, 1000],
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_concat_0_x",
@@ -393,7 +395,8 @@
         ]
       },
       "range": [0, {"signal": "concat_1_concat_0_width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_concat_0_y",
@@ -406,7 +409,8 @@
         ]
       },
       "range": [{"signal": "concat_1_height"}, 0],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_concat_1_x",
@@ -414,7 +418,8 @@
       "domain": [0, 1000],
       "range": [0, {"signal": "concat_1_concat_1_width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_concat_1_y",
@@ -427,7 +432,8 @@
         ]
       },
       "range": [{"signal": "concat_1_height"}, 0],
-      "zero": false
+      "zero": false,
+      "padding": 5
     }
   ],
   "legends": [

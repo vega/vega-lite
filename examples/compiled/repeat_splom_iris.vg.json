@@ -1516,7 +1516,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_sepalLength_y",
@@ -1524,7 +1525,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_sepalWidth_x",
@@ -1532,7 +1534,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_sepalWidth_y",
@@ -1540,7 +1543,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_petalLength_x",
@@ -1548,7 +1552,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_petalLength_y",
@@ -1556,7 +1561,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_petalWidth_x",
@@ -1564,7 +1570,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalWidth_petalWidth_y",
@@ -1572,7 +1579,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_sepalLength_x",
@@ -1580,7 +1588,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_sepalLength_y",
@@ -1588,7 +1597,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_sepalWidth_x",
@@ -1596,7 +1606,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_sepalWidth_y",
@@ -1604,7 +1615,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_petalLength_x",
@@ -1612,7 +1624,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_petalLength_y",
@@ -1620,7 +1633,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_petalWidth_x",
@@ -1628,7 +1642,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_petalLength_petalWidth_y",
@@ -1636,7 +1651,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_sepalLength_x",
@@ -1644,7 +1660,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_sepalLength_y",
@@ -1652,7 +1669,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_sepalWidth_x",
@@ -1660,7 +1678,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_sepalWidth_y",
@@ -1668,7 +1687,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_petalLength_x",
@@ -1676,7 +1696,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_petalLength_y",
@@ -1684,7 +1705,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_petalWidth_x",
@@ -1692,7 +1714,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalWidth_petalWidth_y",
@@ -1700,7 +1723,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_sepalLength_x",
@@ -1708,7 +1732,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_sepalLength_y",
@@ -1716,7 +1741,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_sepalWidth_x",
@@ -1724,7 +1750,8 @@
       "domain": {"data": "source_0", "field": "sepalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_sepalWidth_y",
@@ -1732,7 +1759,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_petalLength_x",
@@ -1740,7 +1768,8 @@
       "domain": {"data": "source_0", "field": "petalLength"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_petalLength_y",
@@ -1748,7 +1777,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_petalWidth_x",
@@ -1756,7 +1786,8 @@
       "domain": {"data": "source_0", "field": "petalWidth"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "child_sepalLength_petalWidth_y",
@@ -1764,7 +1795,8 @@
       "domain": {"data": "source_0", "field": "sepalLength"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     }
   ],
   "legends": [

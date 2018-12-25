@@ -169,7 +169,8 @@
       },
       "range": [0, {"signal": "child_width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "y",

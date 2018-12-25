@@ -427,7 +427,8 @@
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
       "domainRaw": {"signal": "brush[\"date\"]"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -435,13 +436,15 @@
       "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -449,7 +452,8 @@
       "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

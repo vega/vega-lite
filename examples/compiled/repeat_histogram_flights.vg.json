@@ -343,7 +343,8 @@
         "fields": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_distance_y",
@@ -351,7 +352,8 @@
       "domain": {"data": "data_0", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_delay_x",
@@ -361,7 +363,8 @@
         "fields": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_delay_y",
@@ -369,7 +372,8 @@
       "domain": {"data": "data_1", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_time_x",
@@ -379,7 +383,8 @@
         "fields": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_time_y",
@@ -387,7 +392,8 @@
       "domain": {"data": "data_2", "field": "count_*"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

@@ -168,7 +168,8 @@
       "domain": {"data": "data_0", "field": "value"},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "color",

@@ -150,7 +150,8 @@
           {"data": "data_1", "field": "yearmonthdate_date"}
         ]
       },
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "y",
@@ -158,7 +159,8 @@
       "domain": {"data": "data_0", "fields": ["temp_max", "temp_min"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

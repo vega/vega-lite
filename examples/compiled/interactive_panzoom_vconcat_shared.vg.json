@@ -326,7 +326,8 @@
       "domainRaw": {"signal": "region[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -335,7 +336,8 @@
       "domainRaw": {"signal": "region[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -343,7 +345,8 @@
       "domain": {"data": "source_0", "field": "Acceleration"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

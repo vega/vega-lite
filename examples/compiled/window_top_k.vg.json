@@ -89,7 +89,8 @@
       "domain": {"data": "data_0", "field": "score"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "y",

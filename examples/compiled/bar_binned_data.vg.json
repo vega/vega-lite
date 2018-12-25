@@ -52,7 +52,8 @@
       "type": "linear",
       "domain": {"data": "source_0", "fields": ["bin_start", "bin_end"]},
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -60,7 +61,8 @@
       "domain": {"data": "source_0", "field": "count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

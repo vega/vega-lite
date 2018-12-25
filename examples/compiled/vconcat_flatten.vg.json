@@ -321,7 +321,8 @@
       "domain": {"data": "data_1", "field": "ra"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -329,7 +330,8 @@
       "domain": {"data": "data_1", "field": "dec"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
@@ -337,7 +339,8 @@
       "domain": {"data": "data_2", "field": "lc\\.time"},
       "range": [0, {"signal": "width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -345,7 +348,8 @@
       "domain": {"data": "data_2", "field": "lc\\.mag"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

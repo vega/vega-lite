@@ -106,7 +106,8 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "source_0", "field": "year_Year"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "y",
@@ -117,7 +118,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     }
   ],
   "axes": [

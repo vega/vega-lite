@@ -350,7 +350,8 @@
       "domain": [75, 150],
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -358,7 +359,8 @@
       "domain": [20, 40],
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "color",

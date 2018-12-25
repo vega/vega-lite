@@ -347,7 +347,8 @@
       "name": "child_temp_max_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "child_temp_max_y",
@@ -355,13 +356,15 @@
       "domain": {"data": "source_0", "field": "mean_temp_max"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_precipitation_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "child_precipitation_y",
@@ -369,13 +372,15 @@
       "domain": {"data": "source_0", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_wind_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "child_wind_y",
@@ -383,7 +388,8 @@
       "domain": {"data": "source_0", "field": "mean_wind"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "legends": [

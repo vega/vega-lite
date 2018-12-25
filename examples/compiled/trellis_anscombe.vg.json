@@ -161,7 +161,8 @@
       "domain": {"data": "source_0", "field": "X"},
       "range": [0, {"signal": "child_width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "y",
@@ -169,7 +170,8 @@
       "domain": {"data": "source_0", "field": "Y"},
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

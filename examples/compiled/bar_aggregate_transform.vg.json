@@ -68,7 +68,8 @@
       "domain": {"data": "source_0", "field": "mean_acc"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

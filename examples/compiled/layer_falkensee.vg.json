@@ -187,7 +187,8 @@
           {"data": "data_0", "field": "year_year"}
         ]
       },
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "color",
@@ -201,7 +202,8 @@
       "domain": {"data": "data_0", "field": "population"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

@@ -1366,7 +1366,8 @@
       "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -1393,7 +1394,8 @@
       },
       "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -1420,7 +1422,8 @@
       },
       "range": [0, {"signal": "concat_2_width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "concat_2_y",
@@ -1428,7 +1431,8 @@
       "domain": {"data": "source_0", "field": "Population_ages_15_64_of_total"},
       "range": [{"signal": "concat_2_height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

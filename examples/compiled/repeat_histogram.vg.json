@@ -412,7 +412,8 @@
         "fields": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_Horsepower_y",
@@ -420,7 +421,8 @@
       "domain": {"data": "data_0", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_Miles_per_Gallon_x",
@@ -433,7 +435,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_Miles_per_Gallon_y",
@@ -441,7 +444,8 @@
       "domain": {"data": "data_1", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_Acceleration_x",
@@ -454,7 +458,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_Acceleration_y",
@@ -462,7 +467,8 @@
       "domain": {"data": "data_2", "fields": ["count_*_start", "count_*_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "legends": [

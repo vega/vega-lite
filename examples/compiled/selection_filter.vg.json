@@ -524,7 +524,8 @@
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -532,7 +533,8 @@
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
@@ -540,7 +542,8 @@
       "domain": [0, 25],
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -548,7 +551,8 @@
       "domain": [0, 500],
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

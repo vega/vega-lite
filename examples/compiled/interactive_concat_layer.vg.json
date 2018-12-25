@@ -413,7 +413,8 @@
         ]
       },
       "range": [0, {"signal": "concat_0_width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -433,7 +434,8 @@
         ]
       },
       "range": [{"signal": "concat_0_height"}, 0],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
@@ -449,7 +451,8 @@
       "domain": {"data": "data_2", "field": "count_*"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {

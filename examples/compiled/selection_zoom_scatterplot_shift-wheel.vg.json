@@ -169,7 +169,8 @@
       "domainRaw": {"signal": "grid[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -178,7 +179,8 @@
       "domainRaw": {"signal": "grid[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "size",

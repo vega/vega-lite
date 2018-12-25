@@ -151,7 +151,8 @@
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -165,7 +166,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "color",

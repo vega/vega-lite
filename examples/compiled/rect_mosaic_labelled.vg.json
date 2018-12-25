@@ -210,7 +210,8 @@
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "color",
@@ -237,7 +238,8 @@
       "domain": {"data": "source_0", "fields": ["y", "y2", "yc"]},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {

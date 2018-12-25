@@ -265,7 +265,8 @@
       "domain": {"data": "data_0", "field": "mean_precipitation"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
@@ -275,7 +276,8 @@
         "fields": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"]
       },
       "range": [0, {"signal": "concat_1_width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -285,7 +287,8 @@
         "fields": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"]
       },
       "range": [{"signal": "concat_1_height"}, 0],
-      "zero": false
+      "zero": false,
+      "padding": 5
     }
   ],
   "legends": [

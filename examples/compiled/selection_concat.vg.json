@@ -630,7 +630,8 @@
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -638,7 +639,8 @@
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_x",
@@ -647,7 +649,8 @@
       "domainRaw": {"signal": "grid[\"Displacement\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_1_y",
@@ -656,7 +659,8 @@
       "domainRaw": {"signal": "grid[\"Acceleration\"]"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

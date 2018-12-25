@@ -114,7 +114,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     }
   ],
   "axes": [

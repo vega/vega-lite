@@ -200,7 +200,8 @@
       "domain": {"data": "data_1", "field": "median_yield"},
       "range": [0, {"signal": "trellis_barley_child_width"}],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "trellis_barley_y",

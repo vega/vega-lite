@@ -267,7 +267,8 @@
       "range": [0, {"signal": "concat_0_width"}],
       "reverse": true,
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_0_y",
@@ -293,7 +294,8 @@
       },
       "range": [0, {"signal": "concat_2_width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "concat_2_y",

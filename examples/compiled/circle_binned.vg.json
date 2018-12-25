@@ -100,7 +100,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -113,7 +114,8 @@
         ]
       },
       "range": [{"signal": "height"}, 0],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "size",

@@ -156,7 +156,8 @@
       "domain": {"data": "source_0", "field": "income"},
       "domainRaw": {"signal": "view[\"income\"]"},
       "range": [0, {"signal": "width"}],
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "y",
@@ -165,7 +166,8 @@
       "domainRaw": {"signal": "view[\"health\"]"},
       "range": [{"signal": "height"}, 0],
       "zero": false,
-      "nice": true
+      "nice": true,
+      "padding": 5
     },
     {
       "name": "size",

@@ -55,7 +55,8 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "source_0", "field": "yearmonth_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "padding": 5
     },
     {
       "name": "y",
@@ -63,7 +64,8 @@
       "domain": {"data": "source_0", "field": "sum_count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [

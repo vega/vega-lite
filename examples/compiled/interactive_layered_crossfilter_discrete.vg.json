@@ -657,7 +657,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_distance_y",
@@ -670,7 +671,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_delay_x",
@@ -684,7 +686,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_delay_y",
@@ -697,7 +700,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "child_time_x",
@@ -711,7 +715,8 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "child_time_y",
@@ -724,7 +729,8 @@
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

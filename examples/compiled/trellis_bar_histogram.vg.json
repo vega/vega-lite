@@ -180,7 +180,8 @@
         "fields": ["bin_maxbins_15_Horsepower", "bin_maxbins_15_Horsepower_end"]
       },
       "range": [0, {"signal": "child_width"}],
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -188,7 +189,8 @@
       "domain": {"data": "source_0", "field": "count_*"},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

@@ -82,7 +82,8 @@
       "domain": {"data": "data_0", "field": "source\\.reco"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     },
     {
       "name": "y",
@@ -90,7 +91,8 @@
       "domain": {"data": "data_0", "field": "source\\.yes"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": true,
+      "padding": 5
     }
   ],
   "axes": [
