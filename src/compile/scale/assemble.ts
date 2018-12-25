@@ -72,10 +72,10 @@ export function assembleScaleRange(scaleRange: VgRange, scaleName: string, model
       const r1 = scaleRange[1];
       if (r0 === 0 && isSignalRef(r1)) {
         // Replace width signal just in case it is renamed.
-        return [0, {signal: model.getSizeName(r1.signal)}];
+        return [0, {signal: model.getSignalName(r1.signal)}];
       } else if (isSignalRef(r0) && r1 === 0) {
         // Replace height signal just in case it is renamed.
-        return [{signal: model.getSizeName(r0.signal)}, 0];
+        return [{signal: model.getSignalName(r0.signal)}, 0];
       }
     }
   }

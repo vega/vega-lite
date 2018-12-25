@@ -510,8 +510,8 @@ export abstract class Model {
     return node.getSource();
   }
 
-  public getSizeName(oldSizeName: string): string {
-    return this.signalNameMap.get(oldSizeName);
+  public getSignalName(oldSignalName: string): string {
+    return this.signalNameMap.get(oldSignalName);
   }
 
   public renameSignal(oldName: string, newName: string) {
