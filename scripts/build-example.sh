@@ -22,5 +22,11 @@ do
   then
     rm -f examples/compiled/$name.svg
     node_modules/vega/bin/vg2svg --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
+
+    # [[ -s file ]] --> Checks if file has size greater than 0
+    if [ ! -s examples/compiled/$name.svg ]; then
+      echo " SVG output for examples/compiled/$name.svg broken "
+      exit 1
+    fi
   fi
 done
