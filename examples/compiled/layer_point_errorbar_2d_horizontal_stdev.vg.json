@@ -56,7 +56,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

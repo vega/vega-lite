@@ -118,9 +118,25 @@ export function normalizeErrorBar(
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBarPart('ticks', tick, 'lower', null, tooltipEncoding),
-      ...makeErrorBarPart('ticks', tick, 'upper', null, tooltipEncoding),
-      ...makeErrorBarPart('rule', 'rule', 'lower', 'upper', tooltipEncoding)
+      ...makeErrorBarPart({
+        partName: 'ticks',
+        mark: tick,
+        positionPrefix: 'lower',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBarPart({
+        partName: 'ticks',
+        mark: tick,
+        positionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBarPart({
+        partName: 'rule',
+        mark: 'rule',
+        positionPrefix: 'lower',
+        endPositionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      })
     ]
   };
 }

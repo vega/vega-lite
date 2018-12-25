@@ -49,12 +49,12 @@
               {
                 "field": "upper_Miles_per_Gallon",
                 "type": "quantitative",
-                "title": "mean + stdev of Miles_per_Gallon"
+                "title": "Mean + stdev of Miles_per_Gallon"
               },
               {
                 "field": "lower_Miles_per_Gallon",
                 "type": "quantitative",
-                "title": "mean - stdev of Miles_per_Gallon"
+                "title": "Mean - stdev of Miles_per_Gallon"
               }
             ]
           }
