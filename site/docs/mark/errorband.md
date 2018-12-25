@@ -75,8 +75,6 @@ If the data is already pre-aggregated with low and high values of the error band
 
 If the data is already pre-aggregated with center and error values of the error band, you can use `x/y`, `x/yError`, and `x/yError2` as defined in [Error Bar](errorbar.html#pre-aggregated-usage)
 
-**Note** in this case, `extent` is not necessary and will be ignored.
-
 ## Dimension
 
 Vega-Lite supports both 1D and 2D error bands:

@@ -69,7 +69,7 @@ If the data is not aggregated yet, Vega-Lite will aggregate the data based on th
 
 If the data is already pre-aggregated with low and high values of the error bars, you can directly specify `x` and `x2` (or `y` and `y2`) to use error bar as a ranged mark.
 
-<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated"></div>
+<div class="vl-example" data-name="layer_point_errorbar_pre_aggregated_upper_lower"></div>
 
 2. **Data is aggregated with center and error value(s)**
 
@@ -77,13 +77,13 @@ If the data is already pre-aggregated with center and error values of the error 
 
 Error bar with symmetric error values:
 
-<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated_error_symmetric"></div>
+<div class="vl-example" data-name="layer_point_errorbar_pre_aggregated_symmetric_error"></div>
 
 Error bar with asymmetric error values:
 
-<div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_pre_aggregated_error_asymmetric"></div>
+<div class="vl-example" data-name="layer_point_errorbar_pre_aggregated_asymmetric_error"></div>
 
-**Note** in this case, `extent` is not necessary and will be ignored.
+**Note** if error is pre-aggregated with asymmetric error values one of `x/yError` and `x/yError2` has to be positive value and other has to be negative value
 
 ## Dimension & Orientation
 
