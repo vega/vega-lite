@@ -56,7 +56,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

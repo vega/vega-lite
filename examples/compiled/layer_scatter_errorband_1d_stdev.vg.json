@@ -78,7 +78,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"mean + stdev of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"mean - stdev of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Mean + stdev of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Mean - stdev of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},

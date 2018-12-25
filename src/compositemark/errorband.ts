@@ -137,9 +137,25 @@ export function normalizeErrorBand(
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBandPart('band', bandMark, 'lower', 'upper', tooltipEncoding),
-      ...makeErrorBandPart('borders', bordersMark, 'lower', null, tooltipEncoding),
-      ...makeErrorBandPart('borders', bordersMark, 'upper', null, tooltipEncoding)
+      ...makeErrorBandPart({
+        partName: 'band',
+        mark: bandMark,
+        positionPrefix: 'lower',
+        endPositionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'lower',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      })
     ]
   };
 }

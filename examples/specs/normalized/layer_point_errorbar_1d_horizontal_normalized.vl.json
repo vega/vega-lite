@@ -35,12 +35,12 @@
               {
                 "field": "upper_yield",
                 "type": "quantitative",
-                "title": "mean + stderr of yield"
+                "title": "Mean + stderr of yield"
               },
               {
                 "field": "lower_yield",
                 "type": "quantitative",
-                "title": "mean - stderr of yield"
+                "title": "Mean - stderr of yield"
               }
             ]
           }

@@ -76,13 +76,19 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
 ) {
   const {scale, axis} = continuousAxisChannelDef;
 
-  return (
-    partName: keyof P,
-    mark: Mark | MarkDef,
-    positionPrefix: string,
-    endPositionPrefix: string = undefined,
-    extraEncoding: Encoding<string> = {}
-  ) => {
+  return ({
+    partName,
+    mark,
+    positionPrefix,
+    endPositionPrefix = undefined,
+    extraEncoding = {}
+  }: {
+    partName: keyof P;
+    mark: Mark | MarkDef;
+    positionPrefix: string;
+    endPositionPrefix?: string;
+    extraEncoding?: Encoding<string>;
+  }) => {
     const title =
       axis && axis.title !== undefined
         ? undefined

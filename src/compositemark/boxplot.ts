@@ -135,12 +135,45 @@ export function normalizeBoxPlot(
 
   // TODO: support hiding certain mark parts
   const boxLayer: NormalizedUnitSpec[] = [
-    ...makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box', tooltipEncoding),
-    ...makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker', tooltipEncoding),
-    ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker', null, tooltipEncoding),
-    ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker', null, tooltipEncoding),
-    ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box', tooltipEncoding),
-    ...makeBoxPlotMidTick('median', midTick, 'mid_box', null, tooltipEncoding)
+    ...makeBoxPlotExtent({
+      partName: 'rule',
+      mark: 'rule',
+      positionPrefix: 'lower_whisker',
+      endPositionPrefix: 'lower_box',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'rule',
+      mark: 'rule',
+      positionPrefix: 'upper_box',
+      endPositionPrefix: 'upper_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'ticks',
+      mark: endTick,
+      positionPrefix: 'lower_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'ticks',
+      mark: endTick,
+      positionPrefix: 'upper_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotBox({
+      partName: 'box',
+      mark: bar,
+      positionPrefix: 'lower_box',
+      endPositionPrefix: 'upper_box',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotMidTick({
+      partName: 'median',
+      mark: midTick,
+      positionPrefix: 'mid_box',
+      extraEncoding: tooltipEncoding
+    })
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
