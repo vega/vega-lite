@@ -347,20 +347,13 @@ export function interpolateRange(
   rangeMin: number,
   rangeMax: number | SignalRefComponent,
   cardinality: number
-): number[] | SignalRefComponent {
-  const ranges: number[] = [];
-
-  // TODO: leverage Vega-Expression to write this formula only once
-  if (rangeMax instanceof SignalRefComponent) {
-    const step = `(${rangeMax.expr} - ${rangeMin}) / (${cardinality} - 1)`;
-    return new SignalRefComponent(`sequence(${rangeMin}, ${rangeMax.expr} + ${step}, ${step})`, rangeMax.signalNames);
-  } else {
-    const step = (rangeMax - rangeMin) / (cardinality - 1);
-    for (let i = 0; i < cardinality; i++) {
-      ranges.push(rangeMin + i * step);
-    }
-    return ranges;
-  }
+): SignalRefComponent {
+  const step = '(rangeMax - rangeMin) / (cardinality - 1)';
+  return evalOrMakeSignalRefComponent(`sequence(rangeMin, rangeMax + ${step}, ${step})`, {
+    rangeMin,
+    rangeMax,
+    cardinality
+  });
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
