@@ -8,6 +8,15 @@ export const deepEqual = deepEqual_;
 export const duplicate = clone_;
 
 /**
+ * Make a regular expression that matches a whole word of the given string
+ */
+export function globalWholeWordRegExp(word: string) {
+  // `\b` = word boundary
+  // https://stackoverflow.com/questions/2232934/whole-word-match-in-javascript
+  return new RegExp(`\\b${word}\\b`, 'g');
+}
+
+/**
  * Creates an object composed of the picked object properties.
  *
  * var object = {'a': 1, 'b': '2', 'c': 3};

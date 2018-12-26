@@ -1,7 +1,7 @@
 import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
-import {keys} from '../../util';
+import {globalWholeWordRegExp, keys} from '../../util';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
@@ -67,11 +67,7 @@ function assembleExprSignal(scaleRange: SignalRefComponent, model: Model) {
     if (newName !== signalName) {
       // replace the signal name
 
-      /*
-       A regular expression to check whole word
-       (`\b` = word boundary https://stackoverflow.com/questions/2232934/whole-word-match-in-javascript)
-      */
-      const regEx = new RegExp(`\\b${signalName}\\b`);
+      const regEx = globalWholeWordRegExp(signalName);
 
       signal = signal.replace(regEx, newName);
     }

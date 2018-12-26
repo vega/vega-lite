@@ -39,7 +39,7 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {SignalRefComponent} from '../signal';
+import {evalOrMakeSignalRefComponent, SignalRefComponent} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -401,8 +401,7 @@ function sizeRangeMax(
       }
       const min = minXYRangeStep(xyRangeSteps, config.scale);
 
-      // TODO: leverage Vega-Expression to write this formula only once
-      return min instanceof SignalRefComponent ? min.map(x => `${x} - 1`) : min - 1;
+      return evalOrMakeSignalRefComponent(`min - 1`, {min});
 
     case 'line':
     case 'trail':
@@ -417,13 +416,10 @@ function sizeRangeMax(
         return config.scale.maxSize;
       }
 
-      // TODO: leverage Vega-Expression to write this formula only once
       const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
-      if (pointStep instanceof SignalRefComponent) {
-        return pointStep.map(expr => `pow(${expr} - 2, 2) `);
-      } else {
-        return (pointStep - 2) * (pointStep - 2);
-      }
+      return evalOrMakeSignalRefComponent(`pow(pointStep - 2, 2)`, {
+        pointStep
+      });
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMax not implemented for the mark
