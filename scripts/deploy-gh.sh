@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
-set -e
+set -ex
 
 scripts/pre-deploy.sh
 
