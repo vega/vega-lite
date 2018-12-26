@@ -106,7 +106,7 @@ __Notes:__
 
   For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
   ```sh
-  brew install ruby@2.3
+  brew install ruby
   ```
 
   For bundler:
@@ -137,7 +137,7 @@ __Notes:__
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure.
 For example, `test/compile/` tests files inside `src/compile/`.
-- `test-runtime/` - Code for runtime tests. You can start a webserver at the root and open the directory to debug the tests in your browser. 
+- `test-runtime/` - Code for runtime tests. You can start a webserver at the root and open the directory to debug the tests in your browser.
 - `typings/` - TypeScript typing declaration for dependencies.
 
 ## Understanding How Vega-Lite Works
