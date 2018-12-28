@@ -156,10 +156,11 @@ export function defaultTickCount({
     !contains(['month', 'hours', 'day', 'quarter'], fieldDef.timeUnit)
   ) {
     if (specifiedAxis.tickStep) {
-      return tickCountByStep(scaleName, specifiedAxis.tickStep);
+      return {signal: tickCountByStep(scaleName, specifiedAxis.tickStep)};
     } else if (isBinning(fieldDef.bin)) {
       const binSignal = getName(vgField(fieldDef, {suffix: 'bins'}));
-      return tickCountByStep(scaleName, `${binSignal}.step`);
+      const byStep = tickCountByStep(scaleName, `${binSignal}.step`);
+      return {signal: `min(${byStep}, ${size.signal}/5)`};
     }
     // TODO: For binned case, calculate step and apply the same formula
     return {signal: `ceil(${size.signal}/40)`};
@@ -169,7 +170,7 @@ export function defaultTickCount({
 }
 
 function tickCountByStep(scaleName: string, step: number | string) {
-  return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${step} + 1`};
+  return `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${step} + 1`;
 }
 
 export function values(

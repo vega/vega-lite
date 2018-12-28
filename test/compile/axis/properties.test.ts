@@ -47,7 +47,7 @@ describe('compile/axis', () => {
         getName: x => x
       });
       expect(tickCount).toEqual({
-        signal: `(domain('x')[1] - domain('x')[0]) / ${vgField(fieldDef, {suffix: 'bins'})}.step + 1`
+        signal: `min((domain('x')[1] - domain('x')[0]) / ${vgField(fieldDef, {suffix: 'bins'})}.step + 1, a/5)`
       });
     });
 
