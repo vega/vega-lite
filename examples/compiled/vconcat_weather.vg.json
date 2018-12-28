@@ -223,7 +223,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('concat_1_x')[1] - domain('concat_1_x')[0]) / concat_1_bin_maxbins_10_temp_min_bins.step + 1"
+            "signal": "min((domain('concat_1_x')[1] - domain('concat_1_x')[0]) / concat_1_bin_maxbins_10_temp_min_bins.step + 1, concat_1_width/5)"
           },
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
@@ -237,7 +237,7 @@
           "title": "temp_max (binned)",
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('concat_1_y')[1] - domain('concat_1_y')[0]) / concat_1_bin_maxbins_10_temp_max_bins.step + 1"
+            "signal": "min((domain('concat_1_y')[1] - domain('concat_1_y')[0]) / concat_1_bin_maxbins_10_temp_max_bins.step + 1, concat_1_height/5)"
           },
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"

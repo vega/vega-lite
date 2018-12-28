@@ -198,7 +198,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('child_Horsepower_x')[1] - domain('child_Horsepower_x')[0]) / child_Horsepower_bin_maxbins_10_Horsepower_bins.step + 1"
+            "signal": "min((domain('child_Horsepower_x')[1] - domain('child_Horsepower_x')[0]) / child_Horsepower_bin_maxbins_10_Horsepower_bins.step + 1, width/5)"
           },
           "values": {
             "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
@@ -284,7 +284,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('child_Miles_per_Gallon_x')[1] - domain('child_Miles_per_Gallon_x')[0]) / child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step + 1"
+            "signal": "min((domain('child_Miles_per_Gallon_x')[1] - domain('child_Miles_per_Gallon_x')[0]) / child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step + 1, width/5)"
           },
           "values": {
             "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
@@ -364,7 +364,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('child_Acceleration_x')[1] - domain('child_Acceleration_x')[0]) / child_Acceleration_bin_maxbins_10_Acceleration_bins.step + 1"
+            "signal": "min((domain('child_Acceleration_x')[1] - domain('child_Acceleration_x')[0]) / child_Acceleration_bin_maxbins_10_Acceleration_bins.step + 1, width/5)"
           },
           "values": {
             "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"

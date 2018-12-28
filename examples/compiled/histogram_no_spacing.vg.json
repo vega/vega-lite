@@ -98,7 +98,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {
-        "signal": "(domain('x')[1] - domain('x')[0]) / bin_maxbins_10_IMDB_Rating_bins.step + 1"
+        "signal": "min((domain('x')[1] - domain('x')[0]) / bin_maxbins_10_IMDB_Rating_bins.step + 1, width/5)"
       },
       "values": {
         "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"

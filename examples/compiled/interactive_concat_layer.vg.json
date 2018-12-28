@@ -244,7 +244,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('concat_0_x')[1] - domain('concat_0_x')[0]) / concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step + 1"
+            "signal": "min((domain('concat_0_x')[1] - domain('concat_0_x')[0]) / concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step + 1, concat_0_width/5)"
           },
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
@@ -258,7 +258,7 @@
           "title": "Rotten_Tomatoes_Rating (binned)",
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('concat_0_y')[1] - domain('concat_0_y')[0]) / concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step + 1"
+            "signal": "min((domain('concat_0_y')[1] - domain('concat_0_y')[0]) / concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step + 1, concat_0_height/5)"
           },
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)"

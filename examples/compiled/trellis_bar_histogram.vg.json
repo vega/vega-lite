@@ -103,7 +103,7 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {
-            "signal": "(domain('x')[1] - domain('x')[0]) / child_bin_maxbins_15_Horsepower_bins.step + 1"
+            "signal": "min((domain('x')[1] - domain('x')[0]) / child_bin_maxbins_15_Horsepower_bins.step + 1, child_width/5)"
           },
           "values": {
             "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"

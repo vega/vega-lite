@@ -140,7 +140,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {
-        "signal": "(domain('x')[1] - domain('x')[0]) / layer_0_bin_maxbins_10_IMDB_Rating_bins.step + 1"
+        "signal": "min((domain('x')[1] - domain('x')[0]) / layer_0_bin_maxbins_10_IMDB_Rating_bins.step + 1, width/5)"
       },
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
