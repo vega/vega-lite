@@ -106,7 +106,7 @@
     "wdio-dot-reporter": "0.0.10",
     "wdio-mocha-framework": "^0.6.4",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "^5.1.0",
+    "webdriverio": "^4.14.0",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2",
     "yaml-front-matter": "^4.0.0"
