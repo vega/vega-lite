@@ -33,6 +33,11 @@
             "x2": {"field": "upper_yield", "type": "quantitative"},
             "tooltip": [
               {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
                 "field": "upper_yield",
                 "type": "quantitative",
                 "title": "Mean + stderr of yield"

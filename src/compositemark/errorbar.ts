@@ -1,3 +1,4 @@
+import {AggregateOp} from 'vega';
 import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
@@ -439,8 +440,9 @@ function errorBarAggregationAndCalculation<
       ];
 
       tooltipSummary = [
-        {fieldPrefix: 'upper', titlePrefix: getTitlePrefix(center, extent, '+')},
-        {fieldPrefix: 'lower', titlePrefix: getTitlePrefix(center, extent, '-')}
+        {fieldPrefix: 'center_', titlePrefix: titlecase(center)},
+        {fieldPrefix: 'upper_', titlePrefix: getTitlePrefix(center, extent, '+')},
+        {fieldPrefix: 'lower_', titlePrefix: getTitlePrefix(center, extent, '-')}
       ];
       tooltipTitleWithFieldName = true;
     } else {
@@ -448,24 +450,41 @@ function errorBarAggregationAndCalculation<
         log.warn(log.message.errorBarCenterIsNotNeeded(markDef.extent, compositeMark));
       }
 
-      const upperExtent = extent === 'ci' ? 'ci1' : 'q3';
-      const lowerExtent = extent === 'ci' ? 'ci0' : 'q1';
+      let centerOp: AggregateOp;
+      let lowerExtentOp: AggregateOp;
+      let upperExtentOp: AggregateOp;
+      if (extent === 'ci') {
+        centerOp = 'mean';
+        lowerExtentOp = 'ci0';
+        upperExtentOp = 'ci1';
+      } else {
+        centerOp = 'median';
+        lowerExtentOp = 'q1';
+        upperExtentOp = 'q3';
+      }
 
       errorBarSpecificAggregate = [
-        {op: lowerExtent, field: continuousFieldName, as: 'lower_' + continuousFieldName},
-        {op: upperExtent, field: continuousFieldName, as: 'upper_' + continuousFieldName}
+        {op: lowerExtentOp, field: continuousFieldName, as: 'lower_' + continuousFieldName},
+        {op: upperExtentOp, field: continuousFieldName, as: 'upper_' + continuousFieldName},
+        {op: centerOp, field: continuousFieldName, as: 'center_' + continuousFieldName}
       ];
 
       tooltipSummary = [
         {
-          fieldPrefix: 'upper',
-          titlePrefix: title({field: continuousFieldName, aggregate: upperExtent, type: 'quantitative'}, config, {
+          fieldPrefix: 'upper_',
+          titlePrefix: title({field: continuousFieldName, aggregate: upperExtentOp, type: 'quantitative'}, config, {
             allowDisabling: false
           })
         },
         {
-          fieldPrefix: 'lower',
-          titlePrefix: title({field: continuousFieldName, aggregate: lowerExtent, type: 'quantitative'}, config, {
+          fieldPrefix: 'lower_',
+          titlePrefix: title({field: continuousFieldName, aggregate: lowerExtentOp, type: 'quantitative'}, config, {
+            allowDisabling: false
+          })
+        },
+        {
+          fieldPrefix: 'center_',
+          titlePrefix: title({field: continuousFieldName, aggregate: centerOp, type: 'quantitative'}, config, {
             allowDisabling: false
           })
         }
@@ -476,14 +495,14 @@ function errorBarAggregationAndCalculation<
       log.warn(log.message.errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
     }
 
-    tooltipSummary = [];
-
     if (inputType === 'aggregated-upper-lower') {
+      tooltipSummary = [];
       postAggregateCalculates = [
         {calculate: `datum.${continuousAxisChannelDef2.field}`, as: `upper_` + continuousFieldName},
         {calculate: `datum.${continuousFieldName}`, as: `lower_` + continuousFieldName}
       ];
     } else if (inputType === 'aggregated-error') {
+      tooltipSummary = [{fieldPrefix: '', titlePrefix: continuousFieldName}];
       postAggregateCalculates = [
         {
           calculate: `datum.${continuousFieldName} + datum.${continuousAxisChannelDefError.field}`,
@@ -506,7 +525,7 @@ function errorBarAggregationAndCalculation<
 
     for (const postAggregateCalculate of postAggregateCalculates) {
       tooltipSummary.push({
-        fieldPrefix: postAggregateCalculate.as.substring(0, 5),
+        fieldPrefix: postAggregateCalculate.as.substring(0, 6),
         titlePrefix: postAggregateCalculate.calculate.replace(new RegExp('datum.', 'g'), '')
       });
     }

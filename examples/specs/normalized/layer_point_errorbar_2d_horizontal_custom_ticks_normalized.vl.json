@@ -38,6 +38,11 @@
             "y": {"field": "variety", "type": "ordinal"},
             "tooltip": [
               {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
                 "field": "upper_yield",
                 "type": "quantitative",
                 "title": "Mean + stderr of yield"
@@ -68,6 +73,11 @@
             "y": {"field": "variety", "type": "ordinal"},
             "tooltip": [
               {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
                 "field": "upper_yield",
                 "type": "quantitative",
                 "title": "Mean + stderr of yield"
@@ -93,6 +103,11 @@
             "x2": {"field": "upper_yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "ordinal"},
             "tooltip": [
+              {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
               {
                 "field": "upper_yield",
                 "type": "quantitative",

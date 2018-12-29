@@ -308,11 +308,11 @@ function boxParams(
   const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
 
   const tooltipSummary: CompositeMarkTooltipSummary[] = [
-    {fieldPrefix: 'upper_whisker', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker'},
-    {fieldPrefix: 'upper_box', titlePrefix: 'Q3'},
-    {fieldPrefix: 'mid_box', titlePrefix: 'Median'},
-    {fieldPrefix: 'lower_box', titlePrefix: 'Q1'},
-    {fieldPrefix: 'lower_whisker', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker'}
+    {fieldPrefix: 'upper_whisker_', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker'},
+    {fieldPrefix: 'upper_box_', titlePrefix: 'Q3'},
+    {fieldPrefix: 'mid_box_', titlePrefix: 'Median'},
+    {fieldPrefix: 'lower_box_', titlePrefix: 'Q1'},
+    {fieldPrefix: 'lower_whisker_', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker'}
   ];
   const tooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
     tooltipSummary,
