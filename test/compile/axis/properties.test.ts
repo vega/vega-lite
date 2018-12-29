@@ -42,7 +42,7 @@ describe('compile/axis', () => {
         scaleType: 'linear',
         size: {signal: 'a'}
       });
-      expect(tickCount).toEqual({signal: 'ceil(a/20)'});
+      expect(tickCount).toEqual({signal: 'ceil(a/10)'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
