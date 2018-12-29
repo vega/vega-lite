@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -x
-set -e
+set -ex
 
 # define color
 RED='\033[0;31m'
