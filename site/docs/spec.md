@@ -25,17 +25,17 @@ All view specifications in Vega-Lite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelFacetedUnitSpec" %}
 
-## Top-Level Specifications
+{:#top-level}
 
-{:top-level-spec}
+## Top-Level Specifications
 
 In addition to the [common properties](#common), any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
 {% include table.html props="$schema,background,padding,autosize,config" source="TopLevelFacetedUnitSpec" %}
 
-## Single View Specifications
-
 {:#single}
+
+## Single View Specifications
 
 {: .suppress-error}
 
