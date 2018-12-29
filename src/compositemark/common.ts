@@ -52,7 +52,7 @@ export function getCompositeMarkTooltip(
 ): Encoding<string> {
   const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
     ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
-      field: fieldPrefix + '_' + continuousAxisChannelDef.field,
+      field: fieldPrefix + continuousAxisChannelDef.field,
       type: continuousAxisChannelDef.type,
       title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
     })

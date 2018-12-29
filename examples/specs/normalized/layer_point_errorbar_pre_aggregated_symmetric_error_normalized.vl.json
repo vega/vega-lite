@@ -34,6 +34,11 @@
             "y": {"field": "variety", "type": "ordinal"},
             "tooltip": [
               {
+                "field": "yield_center",
+                "type": "quantitative",
+                "title": "yield_center"
+              },
+              {
                 "field": "upper_yield_center",
                 "type": "quantitative",
                 "title": "yield_center + yield_error"

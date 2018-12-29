@@ -71,7 +71,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield_center + yield_error\": format(datum[\"upper_yield_center\"], \"\"), \"yield_center + yield_error2\": format(datum[\"lower_yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"yield_center\": format(datum[\"yield_center\"], \"\"), \"yield_center + yield_error\": format(datum[\"upper_yield_center\"], \"\"), \"yield_center + yield_error2\": format(datum[\"lower_yield_center\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield_center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

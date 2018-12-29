@@ -62,6 +62,7 @@ describe('normalizeErrorBar with raw data input', () => {
             y2: {field: 'upper_people', type: 'quantitative'},
             x: {field: 'age', type: 'ordinal'},
             tooltip: [
+              {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
               {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
               {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
               {field: 'age', type: 'ordinal'}
@@ -488,6 +489,7 @@ describe('normalizeErrorBar with raw data input', () => {
       expect(encoding).toBeTruthy();
       const tooltip = encoding.tooltip;
       expect(tooltip).toEqual([
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
         {field: 'upper_people', title: 'Mean + stdev of people', type: 'quantitative'},
         {field: 'lower_people', title: 'Mean - stdev of people', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
@@ -512,6 +514,7 @@ describe('normalizeErrorBar with raw data input', () => {
       expect(encoding).toBeTruthy();
       const tooltip = encoding.tooltip;
       expect(tooltip).toEqual([
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
         {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
         {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
@@ -538,6 +541,7 @@ describe('normalizeErrorBar with raw data input', () => {
       expect(tooltip).toEqual([
         {field: 'upper_people', title: 'Ci1 of people', type: 'quantitative'},
         {field: 'lower_people', title: 'Ci0 of people', type: 'quantitative'},
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
       ]);
     }
@@ -562,6 +566,7 @@ describe('normalizeErrorBar with raw data input', () => {
       expect(tooltip).toEqual([
         {field: 'upper_people', title: 'Q3 of people', type: 'quantitative'},
         {field: 'lower_people', title: 'Q1 of people', type: 'quantitative'},
+        {field: 'center_people', title: 'Median of people', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
       ]);
     }
@@ -656,12 +661,18 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
       it(testMsg, () => {
         if (isAggregate(aggregateTransform)) {
-          if (extent === 'ci' || extent === 'iqr' || (center === 'median' && !extent)) {
+          if (extent === 'iqr' || (center === 'median' && !extent)) {
             expect(
               some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median';
+                return aggregateFieldDef.op === 'median';
               })
-            ).toBe(false);
+            ).toBe(true);
+          } else if (extent === 'ci') {
+            expect(
+              some(aggregateTransform.aggregate, aggregateFieldDef => {
+                return aggregateFieldDef.op === 'mean';
+              })
+            ).toBe(true);
           } else {
             if (center) {
               expect(
@@ -740,7 +751,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       normalize(
         {
           data,
-          mark: 'errorbar',
+          mark,
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
@@ -778,7 +789,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
     const outputSpec = normalize(
       {
         data,
-        mark: 'errorbar',
+        mark,
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', type: 'quantitative'},
@@ -854,7 +865,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       normalize(
         {
           data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
+          mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
             x2: {field: 'age2', type: 'quantitative'},
@@ -915,8 +926,8 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
   it('should produce a correct tooltip title for ranged errorbar', () => {
     const outputSpec = normalize(
       {
-        data: {url: 'data/population.json'},
-        mark: {type: 'errorbar', extent: 'stderr'},
+        data,
+        mark,
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
@@ -985,6 +996,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
             y2: {field: 'upper_people', type: 'quantitative'},
             x: {field: 'age', type: 'ordinal'},
             tooltip: [
+              {field: 'people', title: 'people', type: 'quantitative'},
               {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
               {field: 'lower_people', title: 'people - people_error', type: 'quantitative'},
               {field: 'age', type: 'ordinal'}
@@ -1076,6 +1088,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
       if (isUnitSpec(unit)) {
         const tooltip = unit.encoding.tooltip;
         expect(tooltip).toEqual([
+          {field: 'people', title: 'people', type: 'quantitative'},
           {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
           {field: 'lower_people', title: 'people + people_error2', type: 'quantitative'},
           {field: 'age', type: 'ordinal'}
@@ -1206,8 +1219,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
   it('should produce a correct tooltip title for errorbar with pre-aggregated error value', () => {
     const outputSpec = normalize(
       {
-        data: {url: 'data/population.json'},
-        mark: {type: 'errorbar', extent: 'stderr'},
+        data,
+        mark,
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
@@ -1224,6 +1237,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
       expect(encoding).toBeTruthy();
       const tooltip = encoding.tooltip;
       expect(tooltip).toEqual([
+        {field: 'people', title: 'people', type: 'quantitative'},
         {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
         {field: 'lower_people', title: 'people - people_error', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
@@ -1234,12 +1248,12 @@ describe('normalizeErrorBar with aggregated error input', () => {
   it('should produce a correct tooltip title for errorbar with pre-aggregated error value', () => {
     const outputSpec = normalize(
       {
-        data: {url: 'data/population.json'},
-        mark: {type: 'errorbar', extent: 'stderr'},
+        data,
+        mark,
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', type: 'quantitative'},
-          yError: {field: 'people_error1', type: 'quantitative'},
+          yError: {field: 'people_error', type: 'quantitative'},
           yError2: {field: 'people_error2', type: 'quantitative'}
         }
       },
@@ -1253,7 +1267,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
       expect(encoding).toBeTruthy();
       const tooltip = encoding.tooltip;
       expect(tooltip).toEqual([
-        {field: 'upper_people', title: 'people + people_error1', type: 'quantitative'},
+        {field: 'people', title: 'people', type: 'quantitative'},
+        {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
         {field: 'lower_people', title: 'people + people_error2', type: 'quantitative'},
         {field: 'age', type: 'ordinal'}
       ]);
