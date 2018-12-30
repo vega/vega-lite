@@ -19,6 +19,7 @@ import {
   isFieldDef,
   isTypedFieldDef,
   isValueDef,
+  LatLongFieldDef,
   normalize,
   normalizeFieldDef,
   NumericFieldDefWithCondition,
@@ -27,6 +28,8 @@ import {
   PositionFieldDef,
   RepeatRef,
   SecondaryRangeFieldDef,
+  ShapeFieldDefWithCondition,
+  ShapeValueDefWithCondition,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextFieldDef,
@@ -95,12 +98,12 @@ export interface Encoding<F extends Field> {
   /**
    * Longitude position of geographically projected marks.
    */
-  longitude?: FieldDefWithoutScale<F>;
+  longitude?: LatLongFieldDef<F>;
 
   /**
    * Latitude position of geographically projected marks.
    */
-  latitude?: FieldDefWithoutScale<F>;
+  latitude?: LatLongFieldDef<F>;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -189,7 +192,7 @@ export interface Encoding<F extends Field> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property.
    */
-  shape?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  shape?: ShapeFieldDefWithCondition<F> | ShapeValueDefWithCondition<F>;
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.

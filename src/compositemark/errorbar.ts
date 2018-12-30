@@ -2,7 +2,14 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {Field, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {
+  Field,
+  FieldDefWithoutScale,
+  isContinuous,
+  isFieldDef,
+  PositionFieldDef,
+  SecondaryRangeFieldDef
+} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
@@ -347,9 +354,9 @@ function errorBarAggregationAndCalculation<
 >(
   markDef: MD,
   continuousAxisChannelDef: PositionFieldDef<string>,
-  continuousAxisChannelDef2: PositionFieldDef<string>,
-  continuousAxisChannelDefError: PositionFieldDef<string>,
-  continuousAxisChannelDefError2: PositionFieldDef<string>,
+  continuousAxisChannelDef2: SecondaryRangeFieldDef<string>,
+  continuousAxisChannelDefError: FieldDefWithoutScale<string>,
+  continuousAxisChannelDefError2: SecondaryRangeFieldDef<string>,
   inputType: ErrorInputType,
   compositeMark: M,
   config: Config

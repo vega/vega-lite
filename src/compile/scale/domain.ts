@@ -331,7 +331,8 @@ export function domainSort(
     return undefined;
   }
 
-  const fieldDef: ScaleFieldDef<string> = model.fieldDef(channel);
+  // save to cast as the only exception is the geojson type for shape, which would not generate a scale
+  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
   const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
