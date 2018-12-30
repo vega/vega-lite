@@ -222,7 +222,7 @@
           "title": "temp_min (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/20)"},
+          "tickCount": {"signal": "ceil(concat_1_width/10)"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
           },
@@ -234,7 +234,7 @@
           "grid": false,
           "title": "temp_max (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/20)"},
+          "tickCount": {"signal": "ceil(concat_1_height/10)"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
           },

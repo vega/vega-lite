@@ -101,7 +101,7 @@
       "title": "IMDB_Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {"signal": "ceil(width/10)"},
       "values": {
         "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
       },
