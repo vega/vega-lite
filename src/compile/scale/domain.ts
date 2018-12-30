@@ -4,7 +4,7 @@ import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
-import {FieldDef, ScaleFieldDef, valueExpr, vgField} from '../../fielddef';
+import {ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {EncodingSortField, isSortArray, isSortField} from '../../sort';
@@ -130,7 +130,7 @@ function parseNonUnitScaleDomain(model: Model) {
  */
 function normalizeUnaggregatedDomain(
   domain: Domain,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig
 ) {
@@ -376,7 +376,7 @@ export function domainSort(
  * 3. The scale is quantitative or time scale.
  */
 export function canUseUnaggregatedDomain(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
   if (!fieldDef.aggregate) {

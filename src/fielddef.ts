@@ -193,7 +193,7 @@ export interface FieldDefBase<F> extends BaseBinMixins {
   aggregate?: Aggregate;
 }
 
-export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
+export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<string> {
   const {field, timeUnit, bin, aggregate} = fieldDef;
   return {
     ...(timeUnit ? {timeUnit} : {}),
@@ -218,9 +218,9 @@ export interface TypeMixins {
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface FieldDef<F> extends FieldDefBase<F>, TitleMixins, TypeMixins {}
+export interface TypedFieldDef<F> extends FieldDefBase<F>, TitleMixins, TypeMixins {}
 
-export interface SortableFieldDef<F> extends FieldDef<F> {
+export interface SortableFieldDef<F> extends TypedFieldDef<F> {
   /**
    * Sort order for the encoded field.
    *
@@ -255,7 +255,7 @@ export type SecondaryRangeFieldDef<F> = FieldDefBase<F> & TitleMixins;
 /**
  * Field Def without scale (and without bin: "binned" support).
  */
-export type FieldDefWithoutScale<F> = FieldDef<F> & BinWithoutBinnedMixins;
+export type FieldDefWithoutScale<F> = TypedFieldDef<F> & BinWithoutBinnedMixins;
 
 export interface PositionFieldDef<F> extends ScaleFieldDef<F> {
   /**
@@ -324,9 +324,11 @@ export interface TextFieldDef<F> extends FieldDefWithoutScale<F> {
   format?: string;
 }
 
-export type ChannelDef<F> = ChannelDefWithCondition<SecondaryRangeFieldDef<F> | FieldDef<F>>;
+export type ChannelDef<F> = ChannelDefWithCondition<SecondaryRangeFieldDef<F> | TypedFieldDef<F>>;
 
-export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is ChannelDefWithCondition<FieldDef<F>> {
+export function isConditionalDef<F>(
+  channelDef: ChannelDef<F>
+): channelDef is ChannelDefWithCondition<TypedFieldDef<F>> {
   return !!channelDef && !!channelDef.condition;
 }
 
@@ -335,7 +337,7 @@ export function isConditionalDef<F>(channelDef: ChannelDef<F>): channelDef is Ch
  */
 export function hasConditionalFieldDef<F>(
   channelDef: ChannelDef<F>
-): channelDef is ValueDef & {condition: Conditional<FieldDef<F>>} {
+): channelDef is ValueDef & {condition: Conditional<TypedFieldDef<F>>} {
   return !!channelDef && !!channelDef.condition && !isArray(channelDef.condition) && isFieldDef(channelDef.condition);
 }
 
@@ -348,7 +350,7 @@ export function hasConditionalValueDef<F>(
 export function isFieldDef<F>(
   channelDef: ChannelDef<F>
 ): channelDef is
-  | FieldDef<F>
+  | TypedFieldDef<F>
   | PositionFieldDef<F>
   | ScaleFieldDef<F>
   | MarkPropFieldDef<F>
@@ -357,7 +359,7 @@ export function isFieldDef<F>(
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
-export function isStringFieldDef(channelDef: ChannelDef<string | RepeatRef>): channelDef is FieldDef<string> {
+export function isStringFieldDef(channelDef: ChannelDef<string | RepeatRef>): channelDef is TypedFieldDef<string> {
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 
@@ -458,7 +460,7 @@ export function vgField(
   }
 }
 
-export function isDiscrete(fieldDef: FieldDef<Field>) {
+export function isDiscrete(fieldDef: TypedFieldDef<Field>) {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -472,7 +474,7 @@ export function isDiscrete(fieldDef: FieldDef<Field>) {
   throw new Error(log.message.invalidFieldType(fieldDef.type));
 }
 
-export function isContinuous(fieldDef: FieldDef<Field>) {
+export function isContinuous(fieldDef: TypedFieldDef<Field>) {
   return !isDiscrete(fieldDef);
 }
 
@@ -528,7 +530,7 @@ export function resetTitleFormatter() {
 }
 
 export function title(
-  fieldDef: FieldDef<string> | SecondaryRangeFieldDef<string>,
+  fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>,
   config: Config,
   {allowDisabling}: {allowDisabling: boolean}
 ) {
@@ -541,7 +543,7 @@ export function title(
   }
 }
 
-export function getGuide(fieldDef: FieldDef<string> | SecondaryRangeFieldDef<string>): Guide {
+export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>): Guide {
   if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
     return fieldDef.axis;
   } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {
@@ -556,7 +558,7 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
-export function format(fieldDef: FieldDef<string>) {
+export function format(fieldDef: TypedFieldDef<string>) {
   if (isTextFieldDef(fieldDef) && fieldDef.format) {
     return fieldDef.format;
   } else {
@@ -565,7 +567,7 @@ export function format(fieldDef: FieldDef<string>) {
   }
 }
 
-export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
+export function defaultType(fieldDef: TypedFieldDef<Field>, channel: Channel): Type {
   if (fieldDef.timeUnit) {
     return 'temporal';
   }
@@ -588,7 +590,7 @@ export function defaultType(fieldDef: FieldDef<Field>, channel: Channel): Type {
  * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
  * @param channelDef
  */
-export function getFieldDef<F>(channelDef: ChannelDef<F>): FieldDef<F> {
+export function getFieldDef<F>(channelDef: ChannelDef<F>): TypedFieldDef<F> {
   if (isFieldDef(channelDef)) {
     return channelDef;
   } else if (hasConditionalFieldDef(channelDef)) {
@@ -614,12 +616,12 @@ export function normalize(channelDef: ChannelDef<string>, channel: Channel): Cha
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: normalizeFieldDef(channelDef.condition, channel) as Conditional<FieldDef<string>>
+      condition: normalizeFieldDef(channelDef.condition, channel) as Conditional<TypedFieldDef<string>>
     };
   }
   return channelDef;
 }
-export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
+export function normalizeFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel) {
   // Drop invalid aggregate
   if (fieldDef.aggregate && !isAggregateOp(fieldDef.aggregate)) {
     const {aggregate, ...fieldDefWithoutAggregate} = fieldDef;
@@ -696,7 +698,7 @@ export function normalizeBin(bin: BinParams | boolean, channel: Channel) {
 
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(
-  fieldDef: FieldDef<Field>,
+  fieldDef: TypedFieldDef<Field>,
   channel: Channel
 ): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;
@@ -779,11 +781,11 @@ export function channelCompatibility(
   throw new Error('channelCompatability not implemented for channel ' + channel);
 }
 
-export function isNumberFieldDef(fieldDef: FieldDef<any>) {
+export function isNumberFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'quantitative' || isBinning(fieldDef.bin);
 }
 
-export function isTimeFieldDef(fieldDef: FieldDef<any>) {
+export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
 }
 
@@ -831,7 +833,7 @@ export function valueExpr(
 /**
  * Standardize value array -- convert each value to Vega expression if applicable
  */
-export function valueArray(fieldDef: FieldDef<string>, values: (number | string | boolean | DateTime)[]) {
+export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | string | boolean | DateTime)[]) {
   const {timeUnit, type} = fieldDef;
   return values.map(v => {
     const expr = valueExpr(v, {timeUnit, type, undefinedIfExprNotRequired: true});

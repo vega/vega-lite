@@ -7,7 +7,6 @@ import {Config} from './config';
 import {
   ChannelDef,
   Field,
-  FieldDef,
   FieldDefWithCondition,
   FieldDefWithoutScale,
   getFieldDef,
@@ -25,6 +24,7 @@ import {
   SecondaryRangeFieldDef,
   TextFieldDef,
   title,
+  TypedFieldDef,
   ValueDef,
   ValueDefWithCondition,
   vgField
@@ -286,7 +286,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
           }
           // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
           if (isPositionChannel) {
-            const secondaryChannel: FieldDef<string> = {
+            const secondaryChannel: TypedFieldDef<string> = {
               field: newField + '_end',
               type: Type.QUANTITATIVE
             };
@@ -371,7 +371,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
         normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
-          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+          (defs: TypedFieldDef<string>[], fieldDef: TypedFieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
@@ -400,8 +400,8 @@ export function isRanged(encoding: EncodingWithFacet<any>) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
-  const arr: FieldDef<T>[] = [];
+export function fieldDefs<T>(encoding: EncodingWithFacet<T>): TypedFieldDef<T>[] {
+  const arr: TypedFieldDef<T>[] = [];
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -435,7 +435,7 @@ export function forEach(mapping: any, f: (cd: ChannelDef<string>, c: Channel) =>
 
 export function reduce<T, U extends {[k in Channel]?: any}>(
   mapping: U,
-  f: (acc: any, fd: FieldDef<string>, c: Channel) => U,
+  f: (acc: any, fd: TypedFieldDef<string>, c: Channel) => U,
   init: T,
   thisArg?: any
 ) {

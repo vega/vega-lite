@@ -2,7 +2,7 @@ import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {Channel} from '../channel';
 import {Encoding, reduce} from '../encoding';
-import {Field, FieldDef, FieldDefWithoutScale, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {Field, FieldDefWithoutScale, isContinuous, isFieldDef, PositionFieldDef, TypedFieldDef} from '../fielddef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
@@ -106,9 +106,9 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   compositeMark: M
 ): {
   continuousAxisChannelDef: PositionFieldDef<string>;
-  continuousAxisChannelDef2: FieldDef<string>;
-  continuousAxisChannelDefError: FieldDef<string>;
-  continuousAxisChannelDefError2: FieldDef<string>;
+  continuousAxisChannelDef2: TypedFieldDef<string>;
+  continuousAxisChannelDefError: TypedFieldDef<string>;
+  continuousAxisChannelDefError2: TypedFieldDef<string>;
   continuousAxis: 'x' | 'y';
 } {
   const {encoding} = spec;
@@ -136,9 +136,9 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
 }
 
 function filterAggregateFromChannelDef<M extends CompositeMark>(
-  continuousAxisChannelDef: FieldDef<string>,
+  continuousAxisChannelDef: TypedFieldDef<string>,
   compositeMark: M
-): FieldDef<string> {
+): TypedFieldDef<string> {
   if (isFieldDef(continuousAxisChannelDef) && continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {

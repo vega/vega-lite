@@ -8,7 +8,7 @@ import {Channel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
-import {Aggregate, FieldDef} from './fielddef';
+import {Aggregate, TypedFieldDef} from './fielddef';
 import {Mark} from './mark';
 import {Projection} from './projection';
 import {ScaleType} from './scale';
@@ -210,7 +210,7 @@ export namespace message {
     );
   }
 
-  export function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel) {
+  export function emptyFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel) {
     return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain data field or value.`;
   }
   export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
@@ -259,7 +259,7 @@ export namespace message {
     return `Cannot use the scale property "${prop}" with non-color channel.`;
   }
 
-  export function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>) {
+  export function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string>) {
     return `Using unaggregated domain with raw field has no effect (${stringify(fieldDef)}).`;
   }
 
@@ -267,7 +267,7 @@ export namespace message {
     return `Unaggregated domain not applicable for "${aggregate}" since it produces values outside the origin domain of the source data.`;
   }
 
-  export function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>) {
+  export function unaggregatedDomainWithLogScale(fieldDef: TypedFieldDef<string>) {
     return `Unaggregated domain is currently unsupported for log scale (${stringify(fieldDef)}).`;
   }
 

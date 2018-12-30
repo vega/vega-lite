@@ -9,7 +9,6 @@ import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import {
   ChannelDef,
-  FieldDef,
   FieldRefOption,
   format,
   hasConditionalFieldDef,
@@ -17,6 +16,7 @@ import {
   isValueDef,
   SecondaryRangeFieldDef,
   title,
+  TypedFieldDef,
   vgField
 } from '../../fielddef';
 import * as log from '../../log';
@@ -89,13 +89,13 @@ export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
 /**
  * Value Ref for binned fields
  */
-export function bin(fieldDef: FieldDef<string>, scaleName: string, side: 'start' | 'end', offset?: number) {
+export function bin(fieldDef: TypedFieldDef<string>, scaleName: string, side: 'start' | 'end', offset?: number) {
   const binSuffix = side === 'start' ? undefined : 'end';
   return fieldRef(fieldDef, scaleName, {binSuffix}, offset ? {offset} : {});
 }
 
 export function fieldRef(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleName: string,
   opt: FieldRefOption,
   mixins?: {offset?: number | VgValueRef; band?: number | boolean}
@@ -124,7 +124,7 @@ export function bandRef(scaleName: string, band: number | boolean = true): VgVal
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(scaleName: string, fieldDef: FieldDef<string>, fieldDef2?: FieldDef<string>) {
+function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: TypedFieldDef<string>) {
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -209,7 +209,7 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   const keyValues: string[] = [];
   const usedKey = {};
 
-  function add(fieldDef: FieldDef<string> | SecondaryRangeFieldDef<string>, channel: Channel) {
+  function add(fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
     if (channel !== mainChannel) {
       fieldDef = {

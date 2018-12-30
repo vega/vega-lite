@@ -3,12 +3,12 @@ import {isArray} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
   Conditional,
-  FieldDef,
   FieldDefWithCondition,
   hasConditionalValueDef,
   isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
+  TypedFieldDef,
   ValueDef,
   ValueDefWithCondition
 } from '../../fielddef';
@@ -28,7 +28,7 @@ function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChanne
 }
 
 export function symbols(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   symbolsSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -131,7 +131,7 @@ export function symbols(
 }
 
 export function gradient(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   gradientSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -154,7 +154,7 @@ export function gradient(
 }
 
 export function labels(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   labelsSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,

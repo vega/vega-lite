@@ -1,29 +1,18 @@
-import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
-import {
-  COLOR,
-  FILL,
-  FILLOPACITY,
-  NonPositionScaleChannel,
-  OPACITY,
-  SHAPE,
-  SIZE,
-  STROKE,
-  STROKEOPACITY,
-  STROKEWIDTH
-} from '../../channel';
-import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
-import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
-import {GEOJSON} from '../../type';
-import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
-import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
-import {isUnitModel, Model} from '../model';
-import {parseGuideResolve} from '../resolve';
-import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {LegendComponent, LegendComponentIndex} from './component';
+import { Legend as VgLegend, LegendEncode, SignalRef } from 'vega';
+import { COLOR, FILL, FILLOPACITY, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from '../../channel';
+import { isFieldDef, title as fieldDefTitle, TypedFieldDef } from '../../fielddef';
+import { Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
+import { GEOJSON } from '../../type';
+import { deleteNestedProperty, getFirstDefined, keys } from '../../util';
+import { guideEncodeEntry, mergeTitleComponent, numberFormat } from '../common';
+import { isUnitModel, Model } from '../model';
+import { parseGuideResolve } from '../resolve';
+import { defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit } from '../split';
+import { UnitModel } from '../unit';
+import { LegendComponent, LegendComponentIndex } from './component';
 import * as encode from './encode';
 import * as properties from './properties';
-import {direction, type} from './properties';
+import { direction, type } from './properties';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -73,7 +62,7 @@ function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof VgLegend,
   legend: Legend,
-  fieldDef: FieldDef<string>
+  fieldDef: TypedFieldDef<string>
 ) {
   switch (property) {
     case 'values':

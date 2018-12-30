@@ -1,5 +1,5 @@
 import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
-import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
+import {getFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
@@ -46,7 +46,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const {encoding, config, mark} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
-    let fieldDef: FieldDef<string>;
+    let fieldDef: TypedFieldDef<string>;
     let specifiedScale: Scale | null;
 
     const channelDef = encoding[channel];
