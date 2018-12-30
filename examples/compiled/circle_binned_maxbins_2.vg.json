@@ -116,7 +116,7 @@
       "range": [
         0,
         {
-          "signal": "pow(min(width / ((bin_maxbins_2_IMDB_Rating_bins.stop - bin_maxbins_2_IMDB_Rating_bins.start) / bin_maxbins_2_IMDB_Rating_bins.step), height / ((bin_maxbins_2_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_2_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_2_Rotten_Tomatoes_Rating_bins.step)) - 2, 2) "
+          "signal": "pow(min(width / ((bin_maxbins_2_IMDB_Rating_bins.stop - bin_maxbins_2_IMDB_Rating_bins.start) / bin_maxbins_2_IMDB_Rating_bins.step), height / ((bin_maxbins_2_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_2_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_2_Rotten_Tomatoes_Rating_bins.step)) - 2, 2)"
         }
       ],
       "zero": true
