@@ -39,7 +39,7 @@ import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
-import {SignalRefComponent} from '../signal';
+import {evalOrMakeSignalRefComponent, SignalRefComponent} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -347,20 +347,13 @@ export function interpolateRange(
   rangeMin: number,
   rangeMax: number | SignalRefComponent,
   cardinality: number
-): number[] | SignalRefComponent {
-  const ranges: number[] = [];
-
-  // TODO: leverage Vega-Expression to write this formula only once
-  if (rangeMax instanceof SignalRefComponent) {
-    const step = `(${rangeMax.expr} - ${rangeMin}) / (${cardinality} - 1)`;
-    return new SignalRefComponent(`sequence(${rangeMin}, ${rangeMax.expr} + ${step}, ${step})`, rangeMax.signalNames);
-  } else {
-    const step = (rangeMax - rangeMin) / (cardinality - 1);
-    for (let i = 0; i < cardinality; i++) {
-      ranges.push(rangeMin + i * step);
-    }
-    return ranges;
-  }
+): SignalRefComponent {
+  const step = '(rangeMax - rangeMin) / (cardinality - 1)';
+  return evalOrMakeSignalRefComponent(`sequence(rangeMin, rangeMax + ${step}, ${step})`, {
+    rangeMin,
+    rangeMax,
+    cardinality
+  });
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
@@ -401,8 +394,7 @@ function sizeRangeMax(
       }
       const min = minXYRangeStep(xyRangeSteps, config.scale);
 
-      // TODO: leverage Vega-Expression to write this formula only once
-      return min instanceof SignalRefComponent ? min.map(x => `${x} - 1`) : min - 1;
+      return evalOrMakeSignalRefComponent(`min - 1`, {min});
 
     case 'line':
     case 'trail':
@@ -417,13 +409,10 @@ function sizeRangeMax(
         return config.scale.maxSize;
       }
 
-      // TODO: leverage Vega-Expression to write this formula only once
       const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
-      if (pointStep instanceof SignalRefComponent) {
-        return pointStep.map(expr => `pow(${expr} - 2, 2) `);
-      } else {
-        return (pointStep - 2) * (pointStep - 2);
-      }
+      return evalOrMakeSignalRefComponent(`pow(pointStep - 2, 2)`, {
+        pointStep
+      });
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMax not implemented for the mark

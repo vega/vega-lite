@@ -74,7 +74,9 @@
       "name": "size",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 114, 219, 324],
+      "range": {
+        "signal": "sequence(9, 324 + (324 - 9) / (4 - 1), (324 - 9) / (4 - 1))"
+      },
       "zero": false
     }
   ],

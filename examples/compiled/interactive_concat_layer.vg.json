@@ -401,7 +401,7 @@
       "range": [
         0,
         {
-          "signal": "pow(min(concat_0_width / ((concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.step), concat_0_height / ((concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)) - 2, 2) "
+          "signal": "pow(min(concat_0_width / ((concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.step), concat_0_height / ((concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)) - 2, 2)"
         }
       ],
       "zero": true
