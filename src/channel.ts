@@ -56,6 +56,8 @@ export namespace Channel {
 
   export const TOOLTIP: 'tooltip' = 'tooltip';
   export const HREF: 'href' = 'href';
+
+  export const URL: 'url' = 'url';
 }
 
 export type Channel = keyof Encoding<any> | keyof FacetMapping<any>;
@@ -95,6 +97,8 @@ export const STROKEWIDTH = Channel.STROKEWIDTH;
 
 export const TOOLTIP = Channel.TOOLTIP;
 export const HREF = Channel.HREF;
+
+export const URL = Channel.URL;
 
 export type GeoPositionChannel = 'longitude' | 'latitude' | 'longitude2' | 'latitude2';
 
@@ -140,7 +144,10 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
   detail: 1,
   key: 1,
   tooltip: 1,
-  href: 1
+  href: 1,
+
+  // image
+  url: 1
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -203,7 +210,8 @@ export type SingleDefChannel =
   | 'text'
   | 'tooltip'
   | 'href'
-  | 'key';
+  | 'key'
+  | 'url';
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
@@ -243,10 +251,11 @@ export type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 const {
   // x2 and y2 share the same scale as x and y
   // text and tooltip have format instead of scale,
-  // href has neither format, nor scale
+  // href and url has neither format, nor scale
   text: _t,
   tooltip: _tt,
   href: _hr,
+  url: _u,
   // detail and order have no scale
   detail: _dd,
   key: _k,
@@ -306,16 +315,31 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLOR:
     case FILL:
     case STROKE:
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
+      return {
+        // all marks except image. Colors in image come from image File
+        point: true,
+        tick: true,
+        rule: true,
+        circle: true,
+        square: true,
+        bar: true,
+        rect: true,
+        line: true,
+        trail: true,
+        area: true,
+        text: true,
+        geoshape: true,
+      };
 
+    case OPACITY:
     case DETAIL:
     case KEY:
     case TOOLTIP:
     case HREF:
     case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
-    case OPACITY:
-    case FILLOPACITY:
-    case STROKEOPACITY:
-    case STROKEWIDTH:
     case ROW:
     case COLUMN:
       return {
@@ -331,7 +355,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         trail: true,
         area: true,
         text: true,
-        geoshape: true
+        geoshape: true,
+        image: true
       };
     case X:
     case Y:
@@ -349,7 +374,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         line: true,
         trail: true,
         area: true,
-        text: true
+        text: true,
+        image: true
       };
     case X2:
     case Y2:
@@ -359,7 +385,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
         rule: true,
         bar: true,
         rect: true,
-        area: true
+        area: true,
+        image: true
       };
     case SIZE:
       return {
@@ -382,6 +409,8 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case XERROR2:
     case YERROR2:
       return {};
+    case URL:
+      return {image: true}
   }
 }
 

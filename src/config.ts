@@ -221,10 +221,10 @@ export interface StyleConfigIndex {
 
 export interface Config
   extends TopLevelProperties,
-    VLOnlyConfig,
-    MarkConfigMixins,
-    CompositeMarkConfigMixins,
-    AxisConfigMixins {
+  VLOnlyConfig,
+  MarkConfigMixins,
+  CompositeMarkConfigMixins,
+  AxisConfigMixins {
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
@@ -269,6 +269,7 @@ export const defaultConfig: Config = {
   bar: mark.defaultBarConfig,
   circle: {},
   geoshape: {},
+  image: {},
   line: {},
   point: {},
   rect: {},
@@ -423,8 +424,8 @@ function redirectConfig(
     prop === 'title'
       ? extractTitleConfig(config.title).mark
       : compositeMarkPart
-      ? config[prop][compositeMarkPart]
-      : config[prop];
+        ? config[prop][compositeMarkPart]
+        : config[prop];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"

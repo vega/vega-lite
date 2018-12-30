@@ -69,8 +69,8 @@ function defaultType(
       }
 
       if (util.contains(['x', 'y'], channel)) {
-        if (util.contains(['rect', 'bar', 'rule'], mark)) {
-          // The rect/bar mark should fit into a band.
+        if (util.contains(['rect', 'bar', 'image', 'rule'], mark)) {
+          // The rect/bar/image mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }

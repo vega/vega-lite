@@ -2,18 +2,18 @@ import {isBinned, isBinning} from '../../bin';
 import {X, Y} from '../../channel';
 import {isFieldDef} from '../../fielddef';
 import * as log from '../../log';
-import {RECT} from '../../mark';
+import {IMAGE} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {VgEncodeEntry} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as mixins from './mixins';
 
-export const rect: MarkCompiler = {
-  vgMark: 'rect',
+export const image: MarkCompiler = {
+  vgMark: 'image',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore', color: 'include'}),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore', color: 'ignore'}),
       ...x(model),
       ...y(model)
     };
@@ -35,7 +35,7 @@ export function x(model: UnitModel): VgEncodeEntry {
       return mixins.bandPosition(xDef, 'x', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, xScaleType));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(IMAGE, xScaleType));
     }
   } else {
     // continuous scale or no scale
@@ -61,7 +61,7 @@ export function y(model: UnitModel): VgEncodeEntry {
       return mixins.bandPosition(yDef, 'y', model);
     } else {
       // We don't support rect mark with point/ordinal scale
-      throw new Error(log.message.scaleTypeNotWorkWithMark(RECT, yScaleType));
+      throw new Error(log.message.scaleTypeNotWorkWithMark(IMAGE, yScaleType));
     }
   } else {
     // continuous scale or no scale

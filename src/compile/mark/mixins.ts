@@ -26,14 +26,16 @@ function isVisible(c: string) {
   return c !== 'transparent' && c !== null && c !== undefined;
 }
 
-export function color(model: UnitModel): VgEncodeEntry {
+export function color(model: UnitModel, ignore?: Ignore): VgEncodeEntry {
   const {markDef, encoding, config} = model;
   const {filled, type: markType} = markDef;
 
+  const ignoreColor = !!ignore && ignore['color'] === 'ignore';
+
   const configValue = {
-    fill: getMarkConfig('fill', markDef, config),
-    stroke: getMarkConfig('stroke', markDef, config),
-    color: getMarkConfig('color', markDef, config)
+    fill: ignoreColor ? undefined : getMarkConfig('fill', markDef, config),
+    stroke: ignoreColor ? undefined : getMarkConfig('stroke', markDef, config),
+    color: ignoreColor ? undefined : getMarkConfig('color', markDef, config)
   };
 
   const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType)
@@ -109,10 +111,10 @@ export function color(model: UnitModel): VgEncodeEntry {
   return {};
 }
 
-export type Ignore = Record<'size' | 'orient', 'ignore' | 'include'>;
+export type Ignore = Record<'size' | 'orient' | 'color', 'ignore' | 'include'>;
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
-  const {fill, stroke} = color(model);
+  const {fill, stroke} = color(model, ignore);
   return {
     ...markDefProperties(model.markDef, ignore),
     ...wrapInvalid(model, 'fill', fill),
@@ -122,7 +124,8 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('strokeOpacity', model),
     ...nonPosition('strokeWidth', model),
     ...tooltip(model),
-    ...text(model, 'href')
+    ...text(model, 'href'),
+    ...text(model, 'url'),
   };
 }
 
@@ -291,7 +294,7 @@ export function tooltip(model: UnitModel) {
   }
 }
 
-export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
+export function text(model: UnitModel, channel: 'text' | 'href' | 'url' = 'text') {
   const channelDef = model.encoding[channel];
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
@@ -403,19 +406,19 @@ export function pointPosition(
   const valueRef =
     !channelDef && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
-        {field: model.getName(channel)}
+      {field: model.getName(channel)}
       : {
-          ...ref.position(
-            channel,
-            channelDef,
-            channel2Def,
-            scaleName,
-            scale,
-            stack,
-            ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
-          ),
-          ...(offset ? {offset} : {})
-        };
+        ...ref.position(
+          channel,
+          channelDef,
+          channel2Def,
+          scaleName,
+          scale,
+          stack,
+          ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+        ),
+        ...(offset ? {offset} : {})
+      };
 
   return {
     [vgChannel || channel]: valueRef
@@ -439,19 +442,19 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
   const valueRef =
     !channelDef && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
-        {field: model.getName(channel)}
+      {field: model.getName(channel)}
       : {
-          ...ref.position2(
-            channel,
-            channelDef,
-            encoding[channel],
-            scaleName,
-            scale,
-            stack,
-            ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
-          ),
-          ...(offset ? {offset} : {})
-        };
+        ...ref.position2(
+          channel,
+          channelDef,
+          encoding[channel],
+          scaleName,
+          scale,
+          stack,
+          ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+        ),
+        ...(offset ? {offset} : {})
+      };
 
   return {[channel]: valueRef};
 }

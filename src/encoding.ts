@@ -208,6 +208,11 @@ export interface Encoding<F> {
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef;
+
+  /**
+  * A URL of an image of the `image` tag
+  */
+  url?: FieldDefWithCondition<FieldDefWithoutScale<F>> | ValueDefWithCondition<FieldDefWithoutScale<F>>;
 }
 
 export interface EncodingWithFacet<F> extends Encoding<F>, FacetMapping<F> {}
