@@ -76,7 +76,7 @@
           "grid": false,
           "title": "population",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "zindex": 1
         }
       ]
@@ -179,7 +179,7 @@
           "orient": "left",
           "gridScale": "child_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

@@ -99,7 +99,7 @@
           "grid": false,
           "title": "Price",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "zindex": 1
         }
       ]
@@ -117,7 +117,7 @@
           "title": "Time",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "encode": {
             "labels": {
               "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}

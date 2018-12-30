@@ -386,7 +386,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "zindex": 1
         },
         {
@@ -394,7 +394,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -408,7 +408,7 @@
           "grid": false,
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -416,7 +416,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -476,7 +476,7 @@
           "title": "Acceleration",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "zindex": 1
         },
         {
@@ -484,7 +484,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -498,7 +498,7 @@
           "grid": false,
           "title": "Displacement",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "floor(concat_1_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -506,7 +506,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "floor(concat_1_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

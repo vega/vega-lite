@@ -61,7 +61,7 @@
       "title": "date",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "zindex": 1
     },
     {
@@ -69,7 +69,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -83,7 +83,7 @@
       "grid": false,
       "title": "price",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "zindex": 1
     },
     {
@@ -91,7 +91,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

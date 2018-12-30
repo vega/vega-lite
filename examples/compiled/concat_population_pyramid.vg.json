@@ -133,7 +133,7 @@
           "title": "population",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "zindex": 1
         },
         {
@@ -141,7 +141,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -225,7 +225,7 @@
           "title": "population",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_2_width/40)"},
+          "tickCount": {"signal": "floor(concat_2_width/40) + 1"},
           "zindex": 1
         },
         {
@@ -233,7 +233,7 @@
           "orient": "bottom",
           "gridScale": "concat_2_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_2_width/40)"},
+          "tickCount": {"signal": "floor(concat_2_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

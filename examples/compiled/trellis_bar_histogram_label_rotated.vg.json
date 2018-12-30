@@ -85,7 +85,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "zindex": 1
         }
       ]
@@ -103,7 +103,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/10)"},
+          "tickCount": {"signal": "floor(child_width/10) + 1"},
           "values": {
             "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
           },
@@ -161,7 +161,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

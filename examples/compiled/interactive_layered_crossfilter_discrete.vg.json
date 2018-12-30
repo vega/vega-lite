@@ -323,7 +323,7 @@
           "title": "distance (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
+          "tickCount": {"signal": "floor(width/10) + 1"},
           "values": {
             "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
           },
@@ -335,7 +335,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -343,7 +343,7 @@
           "orient": "left",
           "gridScale": "child_distance_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -468,7 +468,7 @@
           "title": "delay (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
+          "tickCount": {"signal": "floor(width/10) + 1"},
           "values": {
             "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
           },
@@ -480,7 +480,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -488,7 +488,7 @@
           "orient": "left",
           "gridScale": "child_delay_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -613,7 +613,7 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
+          "tickCount": {"signal": "floor(width/10) + 1"},
           "values": {
             "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
           },
@@ -625,7 +625,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -633,7 +633,7 @@
           "orient": "left",
           "gridScale": "child_time_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

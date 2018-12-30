@@ -354,7 +354,7 @@
           "title": "date (seconds)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "encode": {
             "labels": {
               "update": {"text": {"signal": "timeFormat(datum.value, '%S')"}}
@@ -367,7 +367,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -381,7 +381,7 @@
           "grid": false,
           "title": "price",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -389,7 +389,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -449,7 +449,7 @@
           "title": "date (minutes)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "floor(concat_1_width/40) + 1"},
           "encode": {
             "labels": {
               "update": {"text": {"signal": "timeFormat(datum.value, '%M')"}}
@@ -462,7 +462,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "floor(concat_1_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -476,7 +476,7 @@
           "grid": false,
           "title": "price",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -484,7 +484,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

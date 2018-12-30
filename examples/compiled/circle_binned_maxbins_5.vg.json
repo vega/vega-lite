@@ -130,7 +130,7 @@
       "title": "IMDB_Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/10)"},
+      "tickCount": {"signal": "floor(width/10) + 1"},
       "values": {
         "signal": "sequence(bin_maxbins_5_IMDB_Rating_bins.start, bin_maxbins_5_IMDB_Rating_bins.stop + bin_maxbins_5_IMDB_Rating_bins.step, bin_maxbins_5_IMDB_Rating_bins.step)"
       },
@@ -142,7 +142,7 @@
       "grid": false,
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/10)"},
+      "tickCount": {"signal": "floor(height/10) + 1"},
       "values": {
         "signal": "sequence(bin_maxbins_5_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_5_Rotten_Tomatoes_Rating_bins.stop + bin_maxbins_5_Rotten_Tomatoes_Rating_bins.step, bin_maxbins_5_Rotten_Tomatoes_Rating_bins.step)"
       },

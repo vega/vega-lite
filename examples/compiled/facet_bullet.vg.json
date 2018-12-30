@@ -302,14 +302,14 @@
           "grid": false,
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "zindex": 1
         },
         {
           "scale": "child_x",
           "orient": "bottom",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

@@ -370,7 +370,7 @@
           "title": "Date",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "encode": {
             "labels": {
               "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
@@ -383,7 +383,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -397,7 +397,7 @@
           "grid": false,
           "title": "Maximum Daily Temperature (C)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -405,7 +405,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -500,7 +500,7 @@
           "title": "Count of Records",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "zindex": 1
         },
         {
@@ -508,7 +508,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

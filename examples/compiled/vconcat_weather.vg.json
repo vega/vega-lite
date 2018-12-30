@@ -150,7 +150,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -158,7 +158,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "floor(concat_0_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -222,7 +222,7 @@
           "title": "temp_min (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/10)"},
+          "tickCount": {"signal": "floor(concat_1_width/10) + 1"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
           },
@@ -234,7 +234,7 @@
           "grid": false,
           "title": "temp_max (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/10)"},
+          "tickCount": {"signal": "floor(concat_1_height/10) + 1"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
           },

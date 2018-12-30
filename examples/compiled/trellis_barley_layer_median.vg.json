@@ -112,7 +112,7 @@
           "title": "Median of yield",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "tickCount": {"signal": "floor(trellis_barley_child_width/40) + 1"},
           "zindex": 1
         }
       ]
@@ -231,7 +231,7 @@
           "orient": "bottom",
           "gridScale": "trellis_barley_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "tickCount": {"signal": "floor(trellis_barley_child_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

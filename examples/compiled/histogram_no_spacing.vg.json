@@ -97,7 +97,7 @@
       "title": "IMDB_Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/10)"},
+      "tickCount": {"signal": "floor(width/10) + 1"},
       "values": {
         "signal": "sequence(bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop + bin_maxbins_10_IMDB_Rating_bins.step, bin_maxbins_10_IMDB_Rating_bins.step)"
       },
@@ -109,7 +109,7 @@
       "grid": false,
       "title": "Count of Records",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "zindex": 1
     },
     {
@@ -117,7 +117,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

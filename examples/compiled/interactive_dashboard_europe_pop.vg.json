@@ -619,7 +619,7 @@
           "title": "Population_ages_15_64_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "zindex": 1
         },
         {
@@ -627,7 +627,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "floor(concat_0_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -932,7 +932,7 @@
           "title": "Population_ages_65_and_above_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "floor(concat_1_width/40) + 1"},
           "zindex": 1
         },
         {
@@ -940,7 +940,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "floor(concat_1_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1318,7 +1318,7 @@
           "title": "Population_ages_65_and_above_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_2_width/40)"},
+          "tickCount": {"signal": "floor(concat_2_width/40) + 1"},
           "zindex": 1
         },
         {
@@ -1326,7 +1326,7 @@
           "orient": "bottom",
           "gridScale": "concat_2_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_2_width/40)"},
+          "tickCount": {"signal": "floor(concat_2_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1340,7 +1340,7 @@
           "grid": false,
           "title": "Population_ages_15_64_of_total",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_2_height/40)"},
+          "tickCount": {"signal": "floor(concat_2_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -1348,7 +1348,7 @@
           "orient": "left",
           "gridScale": "concat_2_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_2_height/40)"},
+          "tickCount": {"signal": "floor(concat_2_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

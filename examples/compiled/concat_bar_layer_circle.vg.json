@@ -230,7 +230,7 @@
           "title": "IMDB_Rating (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/10)"},
+          "tickCount": {"signal": "floor(concat_0_width/10) + 1"},
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
           },
@@ -242,7 +242,7 @@
           "grid": false,
           "title": "Rotten_Tomatoes_Rating (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/10)"},
+          "tickCount": {"signal": "floor(concat_0_height/10) + 1"},
           "values": {
             "signal": "sequence(concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop + concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step, concat_0_layer_0_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)"
           },
@@ -364,7 +364,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "floor(concat_1_height/40) + 1"},
           "zindex": 1
         },
         {
@@ -372,7 +372,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "floor(concat_1_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

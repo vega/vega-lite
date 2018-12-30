@@ -84,7 +84,7 @@
           "title": "population",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "zindex": 1
         }
       ]

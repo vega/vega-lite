@@ -154,7 +154,7 @@
       "grid": false,
       "title": "Mean Precipitation",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "zindex": 1
     },
     {
@@ -163,7 +163,7 @@
       "grid": false,
       "title": "Temperature (min and max)",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "zindex": 1
     }
   ],

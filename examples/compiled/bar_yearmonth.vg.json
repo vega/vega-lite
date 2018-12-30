@@ -78,7 +78,7 @@
       "title": "date (year-month)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "encode": {
         "labels": {
           "update": {"text": {"signal": "timeFormat(datum.value, '%b %Y')"}}
@@ -91,7 +91,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -105,7 +105,7 @@
       "grid": false,
       "title": "Mean of temp",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "zindex": 1
     },
     {
@@ -113,7 +113,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {"signal": "floor(height/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

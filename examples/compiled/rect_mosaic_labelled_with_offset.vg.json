@@ -150,7 +150,7 @@
           "title": "Origin",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "floor(width/40) + 1"},
           "zindex": 1
         }
       ]
@@ -224,7 +224,7 @@
           "grid": false,
           "title": "Cylinders",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "floor(concat_1_height/40) + 1"},
           "zindex": 1
         }
       ]

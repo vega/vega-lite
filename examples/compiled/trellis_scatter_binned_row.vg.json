@@ -90,7 +90,7 @@
           "grid": false,
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "zindex": 1
         }
       ]
@@ -108,7 +108,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "zindex": 1
         }
       ]
@@ -172,7 +172,7 @@
           "orient": "bottom",
           "gridScale": "y",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "floor(child_width/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -185,7 +185,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "floor(child_height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,

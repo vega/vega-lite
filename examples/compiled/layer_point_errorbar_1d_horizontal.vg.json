@@ -108,14 +108,14 @@
       "title": "yield",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "zindex": 1
     },
     {
       "scale": "x",
       "orient": "bottom",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

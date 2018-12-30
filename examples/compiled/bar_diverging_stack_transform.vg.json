@@ -359,7 +359,7 @@
       "title": "Percentage",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "zindex": 1
     },
     {
@@ -367,7 +367,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "floor(width/40) + 1"},
       "domain": false,
       "labels": false,
       "maxExtent": 0,

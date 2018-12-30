@@ -190,7 +190,7 @@
           "grid": false,
           "title": "Mean of temp_max",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -198,7 +198,7 @@
           "orient": "left",
           "gridScale": "child_temp_max_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -334,7 +334,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -342,7 +342,7 @@
           "orient": "left",
           "gridScale": "child_precipitation_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -466,7 +466,7 @@
           "grid": false,
           "title": "Mean of wind",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "zindex": 1
         },
         {
@@ -474,7 +474,7 @@
           "orient": "left",
           "gridScale": "child_wind_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "floor(height/40) + 1"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
