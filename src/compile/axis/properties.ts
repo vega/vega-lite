@@ -157,9 +157,9 @@ export function defaultTickCount({
       return {signal: `(domain('${scaleName}')[1] - domain('${scaleName}')[0]) / ${specifiedAxis.tickStep} + 1`};
     } else if (isBinning(fieldDef.bin)) {
       // for binned data, we don't want more ticks than maxbins
-      return {signal: `ceil(${size.signal}/10)`};
+      return {signal: `floor(${size.signal}/10) + 1`};
     }
-    return {signal: `ceil(${size.signal}/40)`};
+    return {signal: `floor(${size.signal}/40) + 1`};
   }
 
   return undefined;

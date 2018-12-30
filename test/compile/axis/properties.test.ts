@@ -42,7 +42,7 @@ describe('compile/axis', () => {
         scaleType: 'linear',
         size: {signal: 'a'}
       });
-      expect(tickCount).toEqual({signal: 'ceil(a/10)'});
+      expect(tickCount).toEqual({signal: 'floor(a/10) + 1'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
@@ -62,7 +62,7 @@ describe('compile/axis', () => {
         scaleType: 'linear',
         size: {signal: 'a'}
       });
-      expect(tickCount).toEqual({signal: 'ceil(a/40)'});
+      expect(tickCount).toEqual({signal: 'floor(a/40) + 1'});
     });
 
     it('should return undefined by default for log scale', () => {
