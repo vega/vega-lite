@@ -7,7 +7,18 @@ import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
-import {ChannelDef, FieldDef, FieldRefOption, format, isFieldDef, isValueDef, title, vgField} from '../../fielddef';
+import {
+  ChannelDef,
+  FieldDef,
+  FieldRefOption,
+  format,
+  hasConditionalFieldDef,
+  isFieldDef,
+  isValueDef,
+  SecondaryRangeFieldDef,
+  title,
+  vgField
+} from '../../fielddef';
 import * as log from '../../log';
 import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -197,23 +208,30 @@ export function midPoint(
 export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   const keyValues: string[] = [];
   const usedKey = {};
+
+  function add(fieldDef: FieldDef<string> | SecondaryRangeFieldDef<string>, channel: Channel) {
+    const mainChannel = getMainRangeChannel(channel);
+    if (channel !== mainChannel) {
+      fieldDef = {
+        ...fieldDef,
+        type: encoding[mainChannel].type
+      };
+    }
+
+    const key = title(fieldDef, config, {allowDisabling: false});
+    const value = text(fieldDef, config).signal;
+
+    if (!usedKey[key]) {
+      keyValues.push(`${stringValue(key)}: ${value}`);
+    }
+    usedKey[key] = true;
+  }
+
   forEach(encoding, (channelDef, channel) => {
     if (isFieldDef(channelDef)) {
-      const key = title(channelDef, config, {allowDisabling: false});
-
-      const mainChannel = getMainRangeChannel(channel);
-      if (channel !== mainChannel) {
-        channelDef = {
-          ...channelDef,
-          type: encoding[mainChannel].type
-        };
-      }
-
-      const value = text(channelDef, config).signal;
-      if (!usedKey[key]) {
-        keyValues.push(`${stringValue(key)}: ${value}`);
-      }
-      usedKey[key] = true;
+      add(channelDef, channel);
+    } else if (hasConditionalFieldDef(channelDef)) {
+      add(channelDef.condition, channel);
     }
   });
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
