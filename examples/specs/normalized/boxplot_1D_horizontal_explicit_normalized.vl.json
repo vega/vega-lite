@@ -37,7 +37,7 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "lower_box_people"},
+            "x2": {"field": "lower_box_people", "type": "quantitative"},
             "tooltip": [
               {
                 "field": "upper_whisker_people",
@@ -75,7 +75,7 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "upper_whisker_people"},
+            "x2": {"field": "upper_whisker_people", "type": "quantitative"},
             "tooltip": [
               {
                 "field": "upper_whisker_people",
@@ -113,7 +113,7 @@
               "type": "quantitative",
               "axis": {"title": "population"}
             },
-            "x2": {"field": "upper_box_people"},
+            "x2": {"field": "upper_box_people", "type": "quantitative"},
             "tooltip": [
               {
                 "field": "upper_whisker_people",

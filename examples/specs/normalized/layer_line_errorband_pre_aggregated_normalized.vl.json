@@ -25,7 +25,7 @@
               "title": "Mean of Miles per Gallon (95% CIs)",
               "scale": {"zero": false}
             },
-            "y2": {"field": "upper_ci1"},
+            "y2": {"field": "upper_ci1", "type": "quantitative"},
             "x": {
               "title": "Year (year)",
               "type": "temporal",

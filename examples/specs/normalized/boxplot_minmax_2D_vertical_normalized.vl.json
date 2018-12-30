@@ -23,7 +23,7 @@
           "type": "quantitative",
           "axis": {"title": "population"}
         },
-        "y2": {"field": "lower_box_people"},
+        "y2": {"field": "lower_box_people", "type": "quantitative"},
         "x": {"field": "age", "type": "ordinal"},
         "tooltip": [
           {
@@ -63,7 +63,7 @@
           "type": "quantitative",
           "axis": {"title": "population"}
         },
-        "y2": {"field": "upper_whisker_people"},
+        "y2": {"field": "upper_whisker_people", "type": "quantitative"},
         "x": {"field": "age", "type": "ordinal"},
         "tooltip": [
           {
@@ -103,7 +103,7 @@
           "type": "quantitative",
           "axis": {"title": "population"}
         },
-        "y2": {"field": "upper_box_people"},
+        "y2": {"field": "upper_box_people", "type": "quantitative"},
         "x": {"field": "age", "type": "ordinal"},
         "tooltip": [
           {

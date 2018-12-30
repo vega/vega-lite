@@ -35,7 +35,7 @@
               "type": "quantitative",
               "title": "Barley Yield"
             },
-            "x2": {"field": "upper_yield"},
+            "x2": {"field": "upper_yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "ordinal"}
           }
         }

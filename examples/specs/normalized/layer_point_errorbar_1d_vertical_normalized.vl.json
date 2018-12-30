@@ -30,7 +30,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "y2": {"field": "upper_yield"}
+            "y2": {"field": "upper_yield", "type": "quantitative"}
           }
         }
       ]

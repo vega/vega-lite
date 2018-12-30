@@ -50,7 +50,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "x2": {"field": "upper_yield_center"},
+            "x2": {"field": "upper_yield_center", "type": "quantitative"},
             "y": {"field": "variety", "type": "ordinal"}
           }
         }

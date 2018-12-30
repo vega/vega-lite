@@ -22,7 +22,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "x2": {"field": "upper_yield"},
+            "x2": {"field": "upper_yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "ordinal"}
           }
         }
