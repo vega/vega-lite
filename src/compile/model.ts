@@ -8,13 +8,12 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
+import {extractCompositionLayout, GenericCompositionLayout} from '../spec/toplevel';
 import {extractTitleConfig, TitleParams} from '../title';
-import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
-import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -151,8 +150,8 @@ export abstract class Model {
   /** Name map for projections, which can be renamed by a model's parent. */
   protected projectionNameMap: NameMapInterface;
 
-  /** Name map for size, which can be renamed by a model's parent. */
-  protected layoutSizeNameMap: NameMapInterface;
+  /** Name map for signals, which can be renamed by a model's parent. */
+  protected signalNameMap: NameMapInterface;
 
   public readonly repeater: RepeaterValue;
 
@@ -181,7 +180,7 @@ export abstract class Model {
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
     this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
-    this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
+    this.signalNameMap = parent ? parent.signalNameMap : new NameMap();
 
     this.data = spec.data;
 
@@ -238,7 +237,7 @@ export abstract class Model {
     this.parseScale();
 
     this.parseLayoutSize(); // depends on scale
-    this.renameTopLevelLayoutSize();
+    this.renameTopLevelLayoutSizeSignal();
 
     this.parseSelection();
     this.parseProjection();
@@ -267,12 +266,12 @@ export abstract class Model {
    * This essentially merges the top-level spec's width/height signals with the width/height signals
    * to help us reduce redundant signals declaration.
    */
-  private renameTopLevelLayoutSize() {
+  private renameTopLevelLayoutSizeSignal() {
     if (this.getName('width') !== 'width') {
-      this.renameLayoutSize(this.getName('width'), 'width');
+      this.renameSignal(this.getName('width'), 'width');
     }
     if (this.getName('height') !== 'height') {
-      this.renameLayoutSize(this.getName('height'), 'height');
+      this.renameSignal(this.getName('height'), 'height');
     }
   }
 
@@ -492,7 +491,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.layoutSizeNameMap.get(this.getName(sizeType))
+      signal: this.signalNameMap.get(this.getName(sizeType))
     };
   }
 
@@ -511,12 +510,12 @@ export abstract class Model {
     return node.getSource();
   }
 
-  public getSizeName(oldSizeName: string): string {
-    return this.layoutSizeNameMap.get(oldSizeName);
+  public getSignalName(oldSignalName: string): string {
+    return this.signalNameMap.get(oldSignalName);
   }
 
-  public renameLayoutSize(oldName: string, newName: string) {
-    this.layoutSizeNameMap.rename(oldName, newName);
+  public renameSignal(oldName: string, newName: string) {
+    this.signalNameMap.rename(oldName, newName);
   }
 
   public renameScale(oldName: string, newName: string) {

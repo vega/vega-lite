@@ -1,6 +1,6 @@
-import {FacetMapping} from '../../facet';
 import {vgField} from '../../fielddef';
 import {isSortField} from '../../sort';
+import {FacetMapping} from '../../spec/facet';
 import {facetSortFieldName} from '../facet';
 import {DataFlowNode} from './dataflow';
 import {WindowTransformNode} from './window';

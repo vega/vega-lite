@@ -62,7 +62,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'hei
   if (mergedSize) {
     // If merged, rename size and set size of all children.
     for (const child of model.children) {
-      model.renameLayoutSize(child.getName(sizeType), model.getName(sizeType));
+      model.renameSignal(child.getName(sizeType), model.getName(sizeType));
       child.component.layoutSize.set(sizeType, 'merged', false);
     }
     return mergedSize;

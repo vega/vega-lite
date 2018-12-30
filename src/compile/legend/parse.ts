@@ -154,9 +154,9 @@ function getProperty<K extends keyof VgLegend>(
 
     // TODO: enable when https://github.com/vega/vega/issues/1351 is fixed
     // case 'clipHeight':
-    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(scaleType));
+    //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
     case 'labelOverlap':
-      return getFirstDefined(legend.labelOverlap, properties.labelOverlap(scaleType));
+      return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType));
     case 'gradientLength':
       return getFirstDefined<number | SignalRef>(
         // do specified gradientLength first

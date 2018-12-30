@@ -273,6 +273,11 @@ export function tooltip(model: UnitModel) {
         return tooltipRefFromChannelDef;
       }
 
+      if (cDef === null) {
+        // Allow using encoding.tooltip = null to disable tooltip
+        return undefined;
+      }
+
       // If tooltipDef does not exist, then use value from markDef or config
       const markTooltip = getFirstDefined(markDef.tooltip, getMarkConfig('tooltip', markDef, config));
       if (isString(markTooltip)) {

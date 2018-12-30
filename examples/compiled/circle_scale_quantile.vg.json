@@ -45,7 +45,7 @@
             {"scale": "color", "field": "b"}
           ],
           "tooltip": {
-            "signal": "{\"b\": ''+datum[\"b\"], \"Quantize\": format(datum[\"b\"], \"\")}"
+            "signal": "{\"b\": ''+datum[\"b\"], \"Quantile\": format(datum[\"b\"], \"\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},
@@ -65,17 +65,17 @@
     },
     {
       "name": "color",
-      "type": "quantize",
+      "type": "quantile",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "blues", "count": 4},
-      "zero": true
+      "range": {"scheme": "blues", "count": 4}
     },
     {
       "name": "size",
-      "type": "quantize",
+      "type": "quantile",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 114, 219, 324],
-      "zero": false
+      "range": {
+        "signal": "sequence(9, 324 + (324 - 9) / (4 - 1), (324 - 9) / (4 - 1))"
+      }
     }
   ],
   "axes": [
@@ -90,9 +90,10 @@
   ],
   "legends": [
     {
-      "title": "Quantize",
+      "title": "Quantile",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "labelOverlap": "greedy",
       "encode": {
         "symbols": {
           "update": {"shape": {"value": "circle"}, "opacity": {"value": 0.7}}

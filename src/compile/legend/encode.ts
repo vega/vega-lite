@@ -1,6 +1,6 @@
 import {SymbolEncodeEntry} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
   Conditional,
   FieldDef,
@@ -18,16 +18,23 @@ import {getFirstDefined, keys} from '../../util';
 import {applyMarkConfig, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
+import {ScaleChannel} from './../../channel';
 import {LegendComponent} from './component';
+import {defaultType} from './properties';
+
+function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
+  const scaleType = model.getScaleComponent(channel).get('type');
+  return getFirstDefined(legendCmp.get('type'), defaultType({channel, scaleType, alwaysReturn: true}));
+}
 
 export function symbols(
   fieldDef: FieldDef<string>,
   symbolsSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ): SymbolEncodeEntry {
-  if (legendCmp.get('type') === 'gradient') {
+  if (type(legendCmp, model, channel) !== 'symbol') {
     return undefined;
   }
 
@@ -127,17 +134,19 @@ export function gradient(
   fieldDef: FieldDef<string>,
   gradientSpec: any,
   model: UnitModel,
-  channel: Channel,
+  channel: ScaleChannel,
   legendCmp: LegendComponent
 ) {
+  if (type(legendCmp, model, channel) !== 'gradient') {
+    return undefined;
+  }
+
   let out: SymbolEncodeEntry = {};
 
-  if (legendCmp.get('type') === 'gradient') {
-    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
-    if (opacity) {
-      // only apply opacity if it is neither zero or undefined
-      out.opacity = {value: opacity};
-    }
+  const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
+  if (opacity) {
+    // only apply opacity if it is neither zero or undefined
+    out.opacity = {value: opacity};
   }
 
   out = {...out, ...gradientSpec};

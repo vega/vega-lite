@@ -1,24 +1,24 @@
 /* tslint:disable:quotemark */
 
 import * as properties from '../../../src/compile/axis/properties';
-import {labelAlign, labelAngle, labelBaseline} from '../../../src/compile/axis/properties';
+import {defaultLabelAlign, defaultLabelBaseline, labelAngle} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis', () => {
-  describe('grid()', () => {
+  describe('defaultGrid()', () => {
     it('should return true by default for continuous scale that is not binned', () => {
-      const grid = properties.grid('linear', {field: 'a', type: 'quantitative'});
+      const grid = properties.defaultGrid('linear', {field: 'a', type: 'quantitative'});
       expect(grid).toBe(true);
     });
 
     it('should return false by default for binned field', () => {
-      const grid = properties.grid('linear', {bin: true, field: 'a', type: 'quantitative'});
+      const grid = properties.defaultGrid('linear', {bin: true, field: 'a', type: 'quantitative'});
       expect(grid).toBe(false);
     });
 
     it('should return false by default for a discrete scale', () => {
-      const grid = properties.grid('point', {field: 'a', type: 'quantitative'});
+      const grid = properties.defaultGrid('point', {field: 'a', type: 'quantitative'});
       expect(grid).toBe(false);
     });
   });
@@ -35,65 +35,57 @@ describe('compile/axis', () => {
     });
   });
 
-  describe('tickCount', () => {
+  describe('defaultTickCount()', () => {
     it('should return undefined by default for a binned field', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
-        'linear',
-        {signal: 'a'},
-        undefined,
-        {}
-      );
-      expect(tickCount).toEqual({signal: 'ceil(a/20)'});
+      const tickCount = properties.defaultTickCount({
+        fieldDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'}
+      });
+      expect(tickCount).toEqual({signal: 'ceil(a/10)'});
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
       it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
-        const tickCount = properties.tickCount(
-          'x',
-          {timeUnit, field: 'a', type: 'temporal'},
-          'linear',
-          {signal: 'a'},
-          undefined,
-          {}
-        );
+        const tickCount = properties.defaultTickCount({
+          fieldDef: {timeUnit, field: 'a', type: 'temporal'},
+          scaleType: 'linear',
+          size: {signal: 'a'}
+        });
         expect(tickCount).not.toBeDefined();
       });
     }
 
     it('should return size/40 by default for linear scale', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {field: 'a', type: 'quantitative'},
-        'linear',
-        {signal: 'a'},
-        undefined,
-        {}
-      );
+      const tickCount = properties.defaultTickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'}
+      });
       expect(tickCount).toEqual({signal: 'ceil(a/40)'});
     });
 
     it('should return undefined by default for log scale', () => {
-      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'log', undefined, undefined, {});
+      const tickCount = properties.defaultTickCount({fieldDef: {field: 'a', type: 'quantitative'}, scaleType: 'log'});
       expect(tickCount).toBeUndefined();
     });
 
     it('should return undefined by default for point scale', () => {
-      const tickCount = properties.tickCount(
-        'x',
-        {field: 'a', type: 'quantitative'},
-        'point',
-        undefined,
-        undefined,
-        {}
-      );
+      const tickCount = properties.defaultTickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'point'
+      });
       expect(tickCount).toBeUndefined();
     });
 
     it('should return prebin step signal for axis with tickStep', () => {
-      const tickCount = properties.tickCount('x', {field: 'a', type: 'quantitative'}, 'linear', undefined, 'x', {
-        tickStep: 3
+      const tickCount = properties.defaultTickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        scaleName: 'x',
+        specifiedAxis: {
+          tickStep: 3
+        }
       });
       expect(tickCount).toEqual({signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1"});
     });
@@ -252,104 +244,104 @@ describe('compile/axis', () => {
     });
   });
 
-  describe('labelAlign', () => {
+  describe('defaultLabelAlign', () => {
     describe('horizontal orients', () => {
       it('360 degree check for horizonatal orients return to see if they orient properly', () => {
-        expect(labelAlign(0, 'top')).toEqual('center');
-        expect(labelAlign(15, 'top')).toEqual('right');
-        expect(labelAlign(30, 'top')).toEqual('right');
-        expect(labelAlign(45, 'top')).toEqual('right');
-        expect(labelAlign(60, 'top')).toEqual('right');
-        expect(labelAlign(75, 'top')).toEqual('right');
-        expect(labelAlign(90, 'top')).toEqual('right');
-        expect(labelAlign(105, 'top')).toEqual('right');
-        expect(labelAlign(120, 'top')).toEqual('right');
-        expect(labelAlign(135, 'top')).toEqual('right');
-        expect(labelAlign(150, 'top')).toEqual('right');
-        expect(labelAlign(165, 'top')).toEqual('right');
-        expect(labelAlign(180, 'top')).toEqual('center');
-        expect(labelAlign(195, 'bottom')).toEqual('right');
-        expect(labelAlign(210, 'bottom')).toEqual('right');
-        expect(labelAlign(225, 'bottom')).toEqual('right');
-        expect(labelAlign(240, 'bottom')).toEqual('right');
-        expect(labelAlign(255, 'bottom')).toEqual('right');
-        expect(labelAlign(270, 'bottom')).toEqual('right');
-        expect(labelAlign(285, 'bottom')).toEqual('right');
-        expect(labelAlign(300, 'bottom')).toEqual('right');
-        expect(labelAlign(315, 'bottom')).toEqual('right');
-        expect(labelAlign(330, 'bottom')).toEqual('right');
-        expect(labelAlign(345, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(0, 'top')).toEqual('center');
+        expect(defaultLabelAlign(15, 'top')).toEqual('right');
+        expect(defaultLabelAlign(30, 'top')).toEqual('right');
+        expect(defaultLabelAlign(45, 'top')).toEqual('right');
+        expect(defaultLabelAlign(60, 'top')).toEqual('right');
+        expect(defaultLabelAlign(75, 'top')).toEqual('right');
+        expect(defaultLabelAlign(90, 'top')).toEqual('right');
+        expect(defaultLabelAlign(105, 'top')).toEqual('right');
+        expect(defaultLabelAlign(120, 'top')).toEqual('right');
+        expect(defaultLabelAlign(135, 'top')).toEqual('right');
+        expect(defaultLabelAlign(150, 'top')).toEqual('right');
+        expect(defaultLabelAlign(165, 'top')).toEqual('right');
+        expect(defaultLabelAlign(180, 'top')).toEqual('center');
+        expect(defaultLabelAlign(195, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(210, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(225, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(240, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(255, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(270, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(285, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(300, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(315, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(330, 'bottom')).toEqual('right');
+        expect(defaultLabelAlign(345, 'bottom')).toEqual('right');
       });
       it('360 degree check for vertical orients return to see if they orient properly', () => {
-        expect(labelAlign(0, 'left')).toEqual('right');
-        expect(labelAlign(15, 'left')).toEqual('right');
-        expect(labelAlign(30, 'left')).toEqual('right');
-        expect(labelAlign(45, 'left')).toEqual('right');
-        expect(labelAlign(60, 'left')).toEqual('right');
-        expect(labelAlign(75, 'left')).toEqual('right');
-        expect(labelAlign(90, 'left')).toEqual('center');
-        expect(labelAlign(105, 'left')).toEqual('left');
-        expect(labelAlign(120, 'left')).toEqual('left');
-        expect(labelAlign(135, 'left')).toEqual('left');
-        expect(labelAlign(150, 'left')).toEqual('left');
-        expect(labelAlign(165, 'left')).toEqual('left');
-        expect(labelAlign(180, 'left')).toEqual('left');
-        expect(labelAlign(195, 'right')).toEqual('right');
-        expect(labelAlign(210, 'right')).toEqual('right');
-        expect(labelAlign(225, 'right')).toEqual('right');
-        expect(labelAlign(240, 'right')).toEqual('right');
-        expect(labelAlign(255, 'right')).toEqual('right');
-        expect(labelAlign(270, 'right')).toEqual('center');
-        expect(labelAlign(285, 'right')).toEqual('left');
-        expect(labelAlign(300, 'right')).toEqual('left');
-        expect(labelAlign(315, 'right')).toEqual('left');
-        expect(labelAlign(330, 'right')).toEqual('left');
-        expect(labelAlign(345, 'right')).toEqual('left');
+        expect(defaultLabelAlign(0, 'left')).toEqual('right');
+        expect(defaultLabelAlign(15, 'left')).toEqual('right');
+        expect(defaultLabelAlign(30, 'left')).toEqual('right');
+        expect(defaultLabelAlign(45, 'left')).toEqual('right');
+        expect(defaultLabelAlign(60, 'left')).toEqual('right');
+        expect(defaultLabelAlign(75, 'left')).toEqual('right');
+        expect(defaultLabelAlign(90, 'left')).toEqual('center');
+        expect(defaultLabelAlign(105, 'left')).toEqual('left');
+        expect(defaultLabelAlign(120, 'left')).toEqual('left');
+        expect(defaultLabelAlign(135, 'left')).toEqual('left');
+        expect(defaultLabelAlign(150, 'left')).toEqual('left');
+        expect(defaultLabelAlign(165, 'left')).toEqual('left');
+        expect(defaultLabelAlign(180, 'left')).toEqual('left');
+        expect(defaultLabelAlign(195, 'right')).toEqual('right');
+        expect(defaultLabelAlign(210, 'right')).toEqual('right');
+        expect(defaultLabelAlign(225, 'right')).toEqual('right');
+        expect(defaultLabelAlign(240, 'right')).toEqual('right');
+        expect(defaultLabelAlign(255, 'right')).toEqual('right');
+        expect(defaultLabelAlign(270, 'right')).toEqual('center');
+        expect(defaultLabelAlign(285, 'right')).toEqual('left');
+        expect(defaultLabelAlign(300, 'right')).toEqual('left');
+        expect(defaultLabelAlign(315, 'right')).toEqual('left');
+        expect(defaultLabelAlign(330, 'right')).toEqual('left');
+        expect(defaultLabelAlign(345, 'right')).toEqual('left');
       });
       it('should return undefined if angle is undefined', () => {
-        expect(labelAlign(undefined, 'left')).toEqual(undefined);
+        expect(defaultLabelAlign(undefined, 'left')).toEqual(undefined);
       });
     });
   });
 
-  describe('labelBaseline', () => {
+  describe('defaultLabelBaseline', () => {
     it('is middle for perpendiculars horizontal orients', () => {
-      expect(labelBaseline(90, 'top')).toEqual('middle');
-      expect(labelBaseline(270, 'bottom')).toEqual('middle');
+      expect(defaultLabelBaseline(90, 'top')).toEqual('middle');
+      expect(defaultLabelBaseline(270, 'bottom')).toEqual('middle');
     });
 
     it('is top for bottom orients for 1st and 4th quadrants', () => {
-      expect(labelBaseline(45, 'bottom')).toEqual('top');
-      expect(labelBaseline(180, 'top')).toEqual('top');
+      expect(defaultLabelBaseline(45, 'bottom')).toEqual('top');
+      expect(defaultLabelBaseline(180, 'top')).toEqual('top');
     });
 
     it('is bottom for bottom orients for 2nd and 3rd quadrants', () => {
-      expect(labelBaseline(100, 'bottom')).toEqual('middle');
-      expect(labelBaseline(260, 'bottom')).toEqual('middle');
+      expect(defaultLabelBaseline(100, 'bottom')).toEqual('middle');
+      expect(defaultLabelBaseline(260, 'bottom')).toEqual('middle');
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      expect(labelBaseline(0, 'left')).toEqual('middle');
-      expect(labelBaseline(180, 'right')).toEqual('middle');
+      expect(defaultLabelBaseline(0, 'left')).toEqual('middle');
+      expect(defaultLabelBaseline(180, 'right')).toEqual('middle');
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
-      expect(labelBaseline(80, 'left')).toEqual('top');
-      expect(labelBaseline(100, 'left')).toEqual('top');
+      expect(defaultLabelBaseline(80, 'left')).toEqual('top');
+      expect(defaultLabelBaseline(100, 'left')).toEqual('top');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      expect(labelBaseline(280, 'left')).toEqual('bottom');
-      expect(labelBaseline(260, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
     });
 
     it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      expect(labelBaseline(280, 'left')).toEqual('bottom');
-      expect(labelBaseline(260, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
+      expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
     });
 
     it('should return undefined if angle is undefined', () => {
-      expect(labelBaseline(undefined, 'left')).toEqual(undefined);
+      expect(defaultLabelBaseline(undefined, 'left')).toEqual(undefined);
     });
   });
 });

@@ -2797,6 +2797,9 @@
                 "$ref": "#/definitions/TextFieldDef"
               },
               "type": "array"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -3124,6 +3127,9 @@
                 "$ref": "#/definitions/TextFieldDef"
               },
               "type": "array"
+            },
+            {
+              "type": "null"
             }
           ],
           "description": "The tooltip text to show upon mouse hover."
@@ -3428,7 +3434,7 @@
     },
     "LayerSpec": {
       "additionalProperties": false,
-      "description": "Layer Spec with encoding and projection",
+      "description": "Layer Spec with `encoding` and `projection` shorthands that will be applied to underlying unit (single-view) specifications.",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -4287,6 +4293,7 @@
     },
     "FacetSpec": {
       "additionalProperties": false,
+      "description": "Base interface for a facet specification.",
       "properties": {
         "align": {
           "anyOf": [
@@ -4387,6 +4394,7 @@
     },
     "HConcatSpec": {
       "additionalProperties": false,
+      "description": "Base interface for a horizontal concatenation specification.",
       "properties": {
         "bounds": {
           "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
@@ -4453,6 +4461,7 @@
     },
     "RepeatSpec": {
       "additionalProperties": false,
+      "description": "Base interface for a repeat specification.",
       "properties": {
         "align": {
           "anyOf": [
@@ -4567,6 +4576,7 @@
     },
     "CompositeUnitSpecAlias": {
       "additionalProperties": false,
+      "description": "Base interface for a unit (single-view) specification.",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -4633,6 +4643,7 @@
     },
     "FacetedCompositeUnitSpecAlias": {
       "additionalProperties": false,
+      "description": "Base interface for a unit (single-view) specification.",
       "properties": {
         "data": {
           "$ref": "#/definitions/Data",
@@ -4699,6 +4710,7 @@
     },
     "VConcatSpec": {
       "additionalProperties": false,
+      "description": "Base interface for a vertical concatenation specification.",
       "properties": {
         "bounds": {
           "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
@@ -9844,7 +9856,8 @@
         {
           "$ref": "#/definitions/TopLevelHConcatSpec"
         }
-      ]
+      ],
+      "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
     },
     "TopoDataFormat": {
       "additionalProperties": false,

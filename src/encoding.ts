@@ -4,7 +4,6 @@ import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} from './channel';
 import {binRequiresRange} from './compile/common';
 import {Config} from './config';
-import {FacetMapping} from './facet';
 import {
   ChannelDef,
   Field,
@@ -31,6 +30,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
+import {FacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
@@ -192,7 +192,7 @@ export interface Encoding<F> {
   /**
    * The tooltip text to show upon mouse hover.
    */
-  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[];
+  tooltip?: FieldDefWithCondition<TextFieldDef<F>> | ValueDefWithCondition<TextFieldDef<F>> | TextFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
@@ -372,7 +372,10 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
         );
       }
     } else {
-      if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
+      if (channel === 'tooltip' && channelDef === null) {
+        // Preserve null so we can use it to disable tooltip
+        normalizedEncoding[channel] = null;
+      } else if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }

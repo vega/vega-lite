@@ -1,10 +1,9 @@
 /* tslint:disable:quotemark */
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
-import {normalize} from '../src/spec';
+import {normalize, NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
 import {initConfig} from './../src/config';
-import {NormalizedSpec, TopLevelSpec} from './../src/spec';
 
 describe('extractTransforms()', () => {
   const specsDir = './examples/specs/';
@@ -18,6 +17,10 @@ describe('extractTransforms()', () => {
     'bar_month_temporal.vl.json',
     'bar_sort_by_count.vl.json',
     'circle_binned.vl.json',
+    'circle_binned_maxbins_2.vl.json',
+    'circle_binned_maxbins_5.vl.json',
+    'circle_binned_maxbins_10.vl.json',
+    'circle_binned_maxbins_20.vl.json',
     'circle_github_punchcard.vl.json',
     'concat_bar_layer_circle.vl.json',
     'concat_marginal_histograms.vl.json',

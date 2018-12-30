@@ -339,7 +339,7 @@ Quantile scales (`"quantile"`) map a sample of input domain values to a discrete
 
 Quantile scales are particularly useful for creating color or size encodings with a fixed number of output values. Using a discrete set of encoding levels (typically between 5-9 colors or sizes) sometimes supports more accurate perceptual comparison than a continuous range. For related functionality see [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), which partition the domain into uniform domain extents, rather than groups with equal element counts. Quantile scales have the benefit of evenly distributing data points to encoded values. In contrast, quantize scales uniformly segment the input domain and provide no guarantee on how data points will be distributed among the output visual values.
 
-<span class="vl-example" data-name="bar_scale_quantile"></span>
+<span class="vl-example" data-name="circle_scale_quantile"></span>
 
 {:#quantize}
 
@@ -351,7 +351,7 @@ Quantize scales are particularly useful for creating color or size encodings wit
 
 {% include table.html props="nice,zero" source="Scale" %}
 
-<span class="vl-example" data-name="bar_scale_quantize"></span>
+<span class="vl-example" data-name="circle_scale_quantize"></span>
 
 {:#threshold}
 
@@ -359,7 +359,7 @@ Quantize scales are particularly useful for creating color or size encodings wit
 
 Threshold scales (`"threshold"`) are similar to [quantize scales](https://vega.github.io/vega-lite/docs/scale.html#quantize), except they allow mapping of arbitrary subsets of the domain (not uniform segments) to discrete values in the range. The input domain is still continuous, and divided into slices based on a set of threshold values provided to the _required_ `domain` property. The `range` property must have N+1 elements, where N is the number of threshold boundaries provided in the domain.
 
-<span class="vl-example" data-name="bar_scale_threshold"></span>
+<span class="vl-example" data-name="circle_scale_threshold"></span>
 
 {:#disable}
 
