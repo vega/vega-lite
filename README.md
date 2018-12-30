@@ -1,10 +1,6 @@
 # Vega-Lite
 
-[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
-[![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite)
-[![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite)
-[![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier)
+[![npm version](https://img.shields.io/npm/v/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![Build Status](https://travis-ci.org/vega/vega-lite.svg?branch=master)](https://travis-ci.org/vega/vega-lite) [![codecov](https://codecov.io/gh/vega/vega-lite/branch/master/graph/badge.svg)](https://codecov.io/gh/vega/vega-lite) [![npm dependencies](https://david-dm.org/vega/vega-lite.svg)](https://www.npmjs.com/package/vega-lite) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=rounded)](https://github.com/prettier/prettier)
 
 ![Teaser](site/static/teaser.png)
 
@@ -20,5 +16,6 @@ Read about future plans in [our roadmap](https://docs.google.com/document/d/1fsc
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), [Arvind Satyanarayan](https://twitter.com/arvindsatya1), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu), with significant help from [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Matthew Chun](http://mattwchun.com/), and [Akshat Shrivastava](https://github.com/AkshatSh).
-Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL).
+
+Vega-Lite gets significant contributions from its community. In particular [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Souvik Sen](https://github.com/invokesus), [Chanwut Kittivorawong](https://github.com/chanwutk), [Matthew Chun](http://mattwchun.com/), [Akshat Shrivastava](https://github.com/AkshatSh), [Saba Noorassa](https://github.com/Saba9), and [Sira Horradarn](https://github.com/sirahd). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
