@@ -55,12 +55,12 @@ export type VgEventStream = any;
 export interface VgValueRef {
   value?: number | string | boolean;
   field?:
-    | string
-    | {
-        datum?: string;
-        group?: string;
-        parent?: string;
-      };
+  | string
+  | {
+    datum?: string;
+    group?: string;
+    parent?: string;
+  };
   signal?: string;
   scale?: string; // TODO: object
   mult?: number;
@@ -219,15 +219,15 @@ export interface VgLayout {
   headerBand?: number | RowCol<number>;
   footerBand?: number | RowCol<number>;
   offset?:
-    | number
-    | {
-        rowHeader?: number;
-        rowFooter?: number;
-        rowTitle?: number;
-        columnHeader?: number;
-        columnFooter?: number;
-        columnTitle?: number;
-      };
+  | number
+  | {
+    rowHeader?: number;
+    rowFooter?: number;
+    rowTitle?: number;
+    columnHeader?: number;
+    columnFooter?: number;
+    columnTitle?: number;
+  };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
   align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
@@ -758,6 +758,18 @@ export interface VgMarkConfig {
    * __Default value:__ `0`
    */
   cornerRadius?: number;
+
+  /**
+   * The URL of the image to display in image mark.
+   *
+   * @format uri
+   */
+  url?: string;
+
+  /**
+   * whether or not keeping aspect ratio in image marks
+   */
+  aspect?: boolean;
 }
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
@@ -795,7 +807,9 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   cursor: 1,
   href: 1,
   tooltip: 1,
-  cornerRadius: 1
+  cornerRadius: 1,
+  aspect: 1,
+  url: 1
   // commented below are vg channel that do not have mark config.
   // 'x'|'x2'|'xc'|'width'|'y'|'y2'|'yc'|'height'
   // clip: 1,

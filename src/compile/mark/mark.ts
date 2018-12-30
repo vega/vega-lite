@@ -14,6 +14,7 @@ import {MarkCompiler} from './base';
 import {geoshape} from './geoshape';
 import {line, trail} from './line';
 import {circle, point, square} from './point';
+import {image} from './image';
 import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';
@@ -23,6 +24,7 @@ const markCompiler: {[m in Mark]: MarkCompiler} = {
   area,
   bar,
   circle,
+  image,
   geoshape,
   line,
   point,
@@ -96,19 +98,19 @@ export function getSort(model: UnitModel): VgCompare {
       const s = dimensionChannelDef.sort;
       const sortField = isSortField(s)
         ? vgField(
-            {
-              // FIXME: this op might not already exist?
-              // FIXME: what if dimensionChannel (x or y) contains custom domain?
-              aggregate: isAggregate(model.encoding) ? s.op : undefined,
-              field: s.field
-            },
-            {expr: 'datum'}
-          )
+          {
+            // FIXME: this op might not already exist?
+            // FIXME: what if dimensionChannel (x or y) contains custom domain?
+            aggregate: isAggregate(model.encoding) ? s.op : undefined,
+            field: s.field
+          },
+          {expr: 'datum'}
+        )
         : vgField(dimensionChannelDef, {
-            // For stack with imputation, we only have bin_mid
-            binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
-            expr: 'datum'
-          });
+          // For stack with imputation, we only have bin_mid
+          binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
+          expr: 'datum'
+        });
 
       return {
         field: sortField,
@@ -151,8 +153,8 @@ function getMarkGroups(
       },
       ...(postEncodingTransform
         ? {
-            transform: postEncodingTransform
-          }
+          transform: postEncodingTransform
+        }
         : {})
     }
   ];

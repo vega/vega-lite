@@ -19,7 +19,7 @@ export const bar: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore', color: 'include'}),
       ...x(model),
       ...y(model)
     };

@@ -6,6 +6,7 @@ import {VgMarkConfig} from './vega.schema';
 export namespace Mark {
   export const AREA: 'area' = 'area';
   export const BAR: 'bar' = 'bar';
+  export const IMAGE: 'image' = 'image';
   export const LINE: 'line' = 'line';
   export const POINT: 'point' = 'point';
   export const RECT: 'rect' = 'rect';
@@ -24,6 +25,7 @@ export namespace Mark {
 export type Mark =
   | typeof Mark.AREA
   | typeof Mark.BAR
+  | typeof Mark.IMAGE
   | typeof Mark.LINE
   | typeof Mark.TRAIL
   | typeof Mark.POINT
@@ -38,6 +40,7 @@ export type Mark =
 export const AREA = Mark.AREA;
 export const BAR = Mark.BAR;
 export const LINE = Mark.LINE;
+export const IMAGE = Mark.IMAGE;
 export const POINT = Mark.POINT;
 export const TEXT = Mark.TEXT;
 export const TICK = Mark.TICK;
@@ -53,6 +56,7 @@ export const SQUARE = Mark.SQUARE;
 const MARK_INDEX: {[M in Mark]: 1} = {
   area: 1,
   bar: 1,
+  image: 1,
   line: 1,
   point: 1,
   text: 1,
@@ -194,6 +198,9 @@ export interface MarkConfigMixins {
 
   /** Circle-Specific Config */
   circle?: MarkConfig;
+
+  /** Image-Specific Config */
+  image?: MarkConfig;
 
   /** Line-Specific Config */
   line?: LineConfig;
@@ -338,12 +345,12 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef
   extends GenericMarkDef<Mark>,
-    BarBinSpacingMixins,
-    MarkConfig,
-    PointOverlayMixins,
-    LineOverlayMixins,
-    TickThicknessMixins,
-    MarkDefMixins {
+  BarBinSpacingMixins,
+  MarkConfig,
+  PointOverlayMixins,
+  LineOverlayMixins,
+  TickThicknessMixins,
+  MarkDefMixins {
   /**
    * The mark type.
    * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,

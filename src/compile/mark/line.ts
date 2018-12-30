@@ -9,7 +9,7 @@ export const line: MarkCompiler = {
     const {width, height} = model;
 
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {size: 'ignore', orient: 'ignore', color: 'include'}),
       ...mixins.pointPosition('x', model, ref.mid(width)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.nonPosition('size', model, {
@@ -26,7 +26,7 @@ export const trail: MarkCompiler = {
     const {width, height} = model;
 
     return {
-      ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore'}),
+      ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore', color: 'include'}),
       ...mixins.pointPosition('x', model, ref.mid(width)),
       ...mixins.pointPosition('y', model, ref.mid(height)),
       ...mixins.nonPosition('size', model),

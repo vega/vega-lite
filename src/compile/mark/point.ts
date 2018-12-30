@@ -10,7 +10,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config, markDef, width, height} = model;
 
   return {
-    ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore'}),
+    ...mixins.baseEncodeEntry(model, {size: 'include', orient: 'ignore', color: 'include'}),
     ...mixins.pointPosition('x', model, ref.mid(width)),
     ...mixins.pointPosition('y', model, ref.mid(height)),
     ...mixins.nonPosition('size', model, {defaultValue: getMarkConfig('size', markDef, config)}),
