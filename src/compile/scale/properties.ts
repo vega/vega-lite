@@ -1,6 +1,6 @@
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef, ScaleFieldDef} from '../../fielddef';
+import {ScaleFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
@@ -166,7 +166,7 @@ export function interpolate(channel: Channel, scaleType: ScaleType) {
   return undefined;
 }
 
-export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
+export function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | NiceTime {
   if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
@@ -177,7 +177,7 @@ export function padding(
   channel: Channel,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   markDef: MarkDef,
   barConfig: BarConfig
 ) {
@@ -265,7 +265,7 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>) {
 
 export function zero(
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   specifiedScale: Domain,
   markDef: MarkDef,
   scaleType: ScaleType

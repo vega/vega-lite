@@ -1,13 +1,13 @@
 import {LabelOverlap, LegendOrient, LegendType} from 'vega';
 import {Channel, isColorChannel} from '../../channel';
-import {FieldDef, valueArray} from '../../fielddef';
+import {TypedFieldDef, valueArray} from '../../fielddef';
 import {Legend, LegendConfig} from '../../legend';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {Model} from '../model';
 
-export function values(legend: Legend, fieldDef: FieldDef<string>) {
+export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
   const vals = legend.values;
 
   if (vals) {

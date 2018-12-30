@@ -3,12 +3,12 @@ import {isBinning} from '../bin';
 import {Channel, isScaleChannel} from '../channel';
 import {Config, StyleConfigIndex, ViewConfig} from '../config';
 import {
-  FieldDef,
   FieldDefBase,
   FieldRefOption,
   isScaleFieldDef,
   isTimeFieldDef,
   OrderFieldDef,
+  TypedFieldDef,
   ValueDef,
   vgField
 } from '../fielddef';
@@ -89,7 +89,7 @@ export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDe
 }
 
 export function formatSignalRef(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   specifiedFormat: string,
   expr: 'datum' | 'parent',
   config: Config
@@ -128,7 +128,7 @@ export function formatSignalRef(
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
+export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
   if (isTimeFieldDef(fieldDef)) {
     return undefined;
   }
@@ -253,7 +253,7 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
+export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Channel) {
   if (!isBinning(fieldDef.bin)) {
     console.warn('Only use this method with binned field defs');
     return false;

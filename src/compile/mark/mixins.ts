@@ -3,12 +3,12 @@ import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
-  FieldDef,
   getFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
   SecondaryRangeFieldDef,
+  TypedFieldDef,
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
@@ -301,7 +301,7 @@ export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
 
-export function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
+export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
@@ -355,7 +355,7 @@ export function centeredBandPosition(
 }
 
 export function binPosition(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   fieldDef2: ValueDef | SecondaryRangeFieldDef<string>,
   channel: 'x' | 'y',
   scaleName: string,

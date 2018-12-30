@@ -1,14 +1,12 @@
 import {SingleDefChannel} from '../../channel';
 import {DateTime} from '../../datetime';
-import {FieldDef, isScaleFieldDef, vgField} from '../../fielddef';
-import {FieldRefOption} from '../../fielddef';
+import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import {fieldFilterExpression} from '../../predicate';
 import {isSortArray} from '../../sort';
 import {CalculateTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgFormulaTransform} from '../../vega.schema';
 import {ModelWithField} from '../model';
-
 import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
 
@@ -31,7 +29,7 @@ export class CalculateNode extends DataFlowNode {
 
   public static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField) {
     // get all the encoding with sort fields from model
-    model.forEachFieldDef((fieldDef: FieldDef<string>, channel: SingleDefChannel) => {
+    model.forEachFieldDef((fieldDef: TypedFieldDef<string>, channel: SingleDefChannel) => {
       if (!isScaleFieldDef(fieldDef)) {
         return;
       }
@@ -76,6 +74,6 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
+export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
   return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...(opt || {})});
 }

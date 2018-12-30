@@ -1,18 +1,18 @@
-import {AggregateOp} from 'vega';
-import {isBinning} from '../../bin';
-import {Channel, isScaleChannel} from '../../channel';
-import {FieldDef, vgField} from '../../fielddef';
+import { AggregateOp } from 'vega';
+import { isBinning } from '../../bin';
+import { Channel, isScaleChannel } from '../../channel';
+import { TypedFieldDef, vgField } from '../../fielddef';
 import * as log from '../../log';
-import {AggregateTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
-import {VgAggregateTransform} from '../../vega.schema';
-import {binRequiresRange} from '../common';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import { AggregateTransform } from '../../transform';
+import { Dict, duplicate, hash, keys, replacePathInField, setEqual } from '../../util';
+import { VgAggregateTransform } from '../../vega.schema';
+import { binRequiresRange } from '../common';
+import { UnitModel } from '../unit';
+import { DataFlowNode } from './dataflow';
 
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 
-function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>) {
+function addDimension(dims: Set<string>, channel: Channel, fieldDef: TypedFieldDef<string>) {
   if (isBinning(fieldDef.bin)) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {binSuffix: 'end'}));

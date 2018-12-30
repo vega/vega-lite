@@ -2,7 +2,7 @@ import {Align, AxisOrient, SignalRef} from 'vega';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {FieldDef, valueArray, vgField} from '../../fielddef';
+import {TypedFieldDef, valueArray, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain, isSelectionDomain, ScaleType} from '../../scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../type';
@@ -15,7 +15,7 @@ import {getAxisConfig} from './config';
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
-export function defaultGrid(scaleType: ScaleType, fieldDef: FieldDef<string>) {
+export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string>) {
   return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef.bin);
 }
 
@@ -31,7 +31,7 @@ export function labelAngle(
   model: UnitModel,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
-  fieldDef: FieldDef<string>
+  fieldDef: TypedFieldDef<string>
 ) {
   // try axis value
   if (specifiedAxis.labelAngle !== undefined) {
@@ -106,14 +106,14 @@ export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align 
   return undefined;
 }
 
-export function defaultLabelFlush(fieldDef: FieldDef<string>, channel: PositionScaleChannel) {
+export function defaultLabelFlush(fieldDef: TypedFieldDef<string>, channel: PositionScaleChannel) {
   if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
     return true;
   }
   return undefined;
 }
 
-export function defaultLabelOverlap(fieldDef: FieldDef<string>, scaleType: ScaleType) {
+export function defaultLabelOverlap(fieldDef: TypedFieldDef<string>, scaleType: ScaleType) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
   if (fieldDef.type !== 'nominal') {
     if (scaleType === 'log') {
@@ -142,7 +142,7 @@ export function defaultTickCount({
   scaleName,
   specifiedAxis = {}
 }: {
-  fieldDef: FieldDef<string>;
+  fieldDef: TypedFieldDef<string>;
   scaleType: ScaleType;
   size?: SignalRef;
   scaleName?: string;
@@ -168,7 +168,7 @@ export function defaultTickCount({
 export function values(
   specifiedAxis: Axis,
   model: UnitModel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   channel: PositionScaleChannel
 ) {
   const vals = specifiedAxis.values;
