@@ -50,7 +50,7 @@ export function evalOrMakeSignalRefComponent(
 
       const ast = parse(expr);
       const {code} = generate(ast);
-      const f = new Function('global', `return ${code};`);
+      const f = new Function('global', `return ${code};`); // tslint:disable-line:function-constructor
       return f(params);
     } catch (error) {
       if (error.message.indexOf('Unrecognized function') === 0) {
