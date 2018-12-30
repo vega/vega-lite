@@ -4,19 +4,10 @@
 import {SignalRef} from 'vega';
 import {isArray, isFunction, isString, stringValue} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, X, X2, Y, Y2} from '../../channel';
+import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
-import {
-  ChannelDef,
-  ChannelDefWithCondition,
-  FieldDef,
-  FieldRefOption,
-  format,
-  isFieldDef,
-  isValueDef,
-  title,
-  vgField
-} from '../../fielddef';
+import {Encoding, forEach} from '../../encoding';
+import {ChannelDef, FieldDef, FieldRefOption, format, isFieldDef, isValueDef, title, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark, MarkDef} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
@@ -203,21 +194,32 @@ export function midPoint(
   return isFunction(defaultRef) ? defaultRef() : defaultRef;
 }
 
-export function tooltipForChannelDefs(channelDefs: FieldDef<string>[], config: Config) {
+export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   const keyValues: string[] = [];
   const usedKey = {};
-  for (const fieldDef of channelDefs) {
-    const key = title(fieldDef, config, {allowDisabling: false});
-    const value = text(fieldDef, config).signal;
-    if (!usedKey[key]) {
-      keyValues.push(`${stringValue(key)}: ${value}`);
+  forEach(encoding, (channelDef, channel) => {
+    if (isFieldDef(channelDef)) {
+      const key = title(channelDef, config, {allowDisabling: false});
+
+      const mainChannel = getMainRangeChannel(channel);
+      if (channel !== mainChannel) {
+        channelDef = {
+          ...channelDef,
+          type: encoding[mainChannel].type
+        };
+      }
+
+      const value = text(channelDef, config).signal;
+      if (!usedKey[key]) {
+        keyValues.push(`${stringValue(key)}: ${value}`);
+      }
+      usedKey[key] = true;
     }
-    usedKey[key] = true;
-  }
+  });
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-export function text(channelDef: ChannelDefWithCondition<FieldDef<string>>, config: Config): VgValueRef {
+export function text(channelDef: ChannelDef<string>, config: Config): VgValueRef {
   // text
   if (channelDef) {
     if (isValueDef(channelDef)) {

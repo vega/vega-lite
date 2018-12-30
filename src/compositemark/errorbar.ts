@@ -2,7 +2,7 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {Field, FieldDef, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {Field, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
@@ -149,16 +149,16 @@ function errorBarOrientAndInputType(
       // having both x, x2 and y, y2
       throw new Error(compositeMark + ' cannot have both x2 and y2');
     } else if (isFieldDef(x2)) {
-      if (isContinuous(x2) && isFieldDef(x) && isContinuous(x)) {
+      if (isFieldDef(x) && isContinuous(x)) {
         // having x, x2 quantitative and field y, y2 are not specified
         return {orient: 'horizontal', inputType: 'aggregated-upper-lower'};
       } else {
         // having x, x2 that are not both quantitative
         throw new Error('Both x and x2 have to be quantitative in ' + compositeMark);
       }
-    } else {
+    } else if (isFieldDef(y2)) {
       // y2 is a FieldDef
-      if (isContinuous(y2 as FieldDef<string>) && isFieldDef(y) && isContinuous(y)) {
+      if (isFieldDef(y) && isContinuous(y)) {
         // having y, y2 quantitative and field x, x2 are not specified
         return {orient: 'vertical', inputType: 'aggregated-upper-lower'};
       } else {
@@ -166,6 +166,7 @@ function errorBarOrientAndInputType(
         throw new Error('Both y and y2 have to be quantitative in ' + compositeMark);
       }
     }
+    throw new Error('No ranged axis');
   } else {
     // type is aggregated-error
 
@@ -188,27 +189,23 @@ function errorBarOrientAndInputType(
       // having both xError and yError
       throw new Error(compositeMark + ' cannot have both xError and yError with both are quantiative');
     } else if (isFieldDef(xError)) {
-      if (isContinuous(xError) && isFieldDef(x) && isContinuous(x) && (!isFieldDef(xError2) || isContinuous(xError2))) {
-        // having x, xError, xError2 that are all quantitative, or x and xError that are quantitative without xError2
+      if (isContinuous(xError) && isFieldDef(x) && isContinuous(x)) {
+        // having x and xError that are all quantitative
         return {orient: 'horizontal', inputType: 'aggregated-error'};
       } else {
         // having x, xError, and xError2 that are not all quantitative
         throw new Error('All x, xError, and xError2 (if exist) have to be quantitative');
       }
-    } else {
-      if (
-        isContinuous(yError as FieldDef<string>) &&
-        isFieldDef(y) &&
-        isContinuous(y) &&
-        (!isFieldDef(yError2) || isContinuous(yError2))
-      ) {
-        // having y, yError, yError2 that are all quantitative, or y and yError that are quantitative without yError2
+    } else if (isFieldDef(yError)) {
+      if (isContinuous(yError) && isFieldDef(y) && isContinuous(y)) {
+        // having y and yError that are all quantitative
         return {orient: 'vertical', inputType: 'aggregated-error'};
       } else {
         // having y, yError, and yError2 that are not all quantitative
         throw new Error('All y, yError, and yError2 (if exist) have to be quantitative');
       }
     }
+    throw new Error('No ranged axis');
   }
 }
 

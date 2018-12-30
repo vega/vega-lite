@@ -805,40 +805,6 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(size, mark));
     })
   );
-
-  it('should produce an error if upper and lower bound are aggregated for horizontal errorbar and one of x, x2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            x2: {field: 'age2', type: 'ordinal'},
-            y: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
-  it('should produce an error if upper and lower bound are aggregated for vertical errorbar and one of y, y2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
-          encoding: {
-            y: {field: 'age', type: 'quantitative'},
-            y2: {field: 'age2', type: 'ordinal'},
-            x: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
 });
 
 describe('normalizeErrorBar with aggregated error input', () => {

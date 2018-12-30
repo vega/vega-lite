@@ -44,7 +44,7 @@
               "title": "yield",
               "scale": {"zero": false}
             },
-            "x2": {"field": "upper_upper_yield", "type": "quantitative"},
+            "x2": {"field": "upper_upper_yield"},
             "y": {"field": "variety", "type": "ordinal"}
           }
         }

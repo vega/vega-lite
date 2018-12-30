@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
-import {Field, FieldDef} from '../fielddef';
+import {Field, FieldDef, isFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
@@ -133,8 +133,10 @@ export function usedFields(spec: NormalizedSpec): string[] {
 
 function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
   const fields: string[] = [];
-  forEach(spec.encoding, (fieldDef, channel) => {
-    fields.push(fieldDef.field);
+  forEach(spec.encoding, (channelDef, channel) => {
+    if (isFieldDef(channelDef)) {
+      fields.push(channelDef.field);
+    }
   });
   return fields;
 }

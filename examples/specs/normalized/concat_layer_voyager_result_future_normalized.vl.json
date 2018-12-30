@@ -78,7 +78,7 @@
                 }
               }
             },
-            "x2": {"field": "hi", "type": "quantitative"}
+            "x2": {"field": "hi"}
           }
         },
         {
@@ -123,7 +123,7 @@
               "scale": {"zero": false},
               "axis": null
             },
-            "x2": {"field": "to", "type": "quantitative"}
+            "x2": {"field": "to"}
           }
         },
         {

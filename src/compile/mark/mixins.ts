@@ -1,7 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
-import {fieldDefs} from '../../encoding';
 import {
   ChannelDef,
   FieldDef,
@@ -9,6 +8,7 @@ import {
   isConditionalSelection,
   isFieldDef,
   isValueDef,
+  SecondaryRangeFieldDef,
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
@@ -264,7 +264,7 @@ export function tooltip(model: UnitModel) {
   const {encoding, markDef, config} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: ref.tooltipForChannelDefs(channelDef, config)};
+    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config)};
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
@@ -285,7 +285,7 @@ export function tooltip(model: UnitModel) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return ref.tooltipForChannelDefs(fieldDefs(encoding), config);
+          return ref.tooltipForEncoding(encoding, config);
         } else {
           return {signal: 'datum'};
         }
@@ -356,7 +356,7 @@ export function centeredBandPosition(
 
 export function binPosition(
   fieldDef: FieldDef<string>,
-  fieldDef2: ValueDef | FieldDef<string>,
+  fieldDef2: ValueDef | SecondaryRangeFieldDef<string>,
   channel: 'x' | 'y',
   scaleName: string,
   spacing: number,

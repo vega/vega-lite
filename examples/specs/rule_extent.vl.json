@@ -6,6 +6,6 @@
   "encoding": {
     "x": {"field": "Origin","type": "nominal"},
     "y": {"field": "Horsepower", "aggregate": "min", "type": "quantitative"},
-    "y2": {"field": "Horsepower", "aggregate": "max", "type": "quantitative"}
+    "y2": {"field": "Horsepower", "aggregate": "max"}
   }
 }

@@ -20,7 +20,7 @@
       "type": "quantitative",
       "aggregate": "max"
     },
-    "y2": { "field": "temp_min", "type": "quantitative", "aggregate": "min" },
+    "y2": { "field": "temp_min", "aggregate": "min" },
     "opacity": { "value": 0.7 }
   }
 }

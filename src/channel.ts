@@ -209,6 +209,25 @@ export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
 }
 
+export function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2' {
+  const main = getMainRangeChannel(c);
+  return main !== c;
+}
+
+export function getMainRangeChannel(channel: Channel): Channel {
+  switch (channel) {
+    case 'x2':
+      return 'x';
+    case 'y2':
+      return 'y';
+    case 'latitude2':
+      return 'latitude';
+    case 'longitude2':
+      return 'longitude';
+  }
+  return channel;
+}
+
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 
@@ -401,7 +420,7 @@ export function rangeType(channel: Channel): RangeType {
     case YERROR:
     case XERROR2:
     case YERROR2:
-      return 'continuous';
+      return undefined;
 
     case ROW:
     case COLUMN:

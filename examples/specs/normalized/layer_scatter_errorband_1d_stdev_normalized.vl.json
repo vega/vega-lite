@@ -44,7 +44,7 @@
               "type": "quantitative",
               "title": "Miles per Gallon"
             },
-            "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"}
+            "y2": {"field": "upper_Miles_per_Gallon"}
           }
         }
       ]

@@ -30,7 +30,7 @@
               "type": "quantitative",
               "title": "Mean of Miles per Gallon (95% CIs)"
             },
-            "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
+            "y2": {"field": "upper_Miles_per_Gallon"},
             "x": {
               "title": "Year (year)",
               "type": "temporal",

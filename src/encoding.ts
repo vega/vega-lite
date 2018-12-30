@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {isAggregateOp} from './aggregate';
 import {isBinning} from './bin';
-import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark} from './channel';
+import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
 import {binRequiresRange} from './compile/common';
 import {Config} from './config';
 import {
@@ -22,6 +22,7 @@ import {
   OrderFieldDef,
   PositionFieldDef,
   RepeatRef,
+  SecondaryRangeFieldDef,
   TextFieldDef,
   title,
   ValueDef,
@@ -51,13 +52,15 @@ export interface Encoding<F> {
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  x2?: FieldDefWithoutScale<F> | ValueDef;
+  // `x2` cannot have type as it should have the same type as `x`
+  x2?: SecondaryRangeFieldDef<F> | ValueDef;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
-  y2?: FieldDefWithoutScale<F> | ValueDef;
+  // `y2` cannot have type as it should have the same type as `y`
+  y2?: SecondaryRangeFieldDef<F> | ValueDef;
 
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
@@ -67,7 +70,8 @@ export interface Encoding<F> {
   /**
    * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  xError2?: FieldDefWithoutScale<F> | ValueDef;
+  // `xError2` cannot have type as it should have the same type as `xError`
+  xError2?: SecondaryRangeFieldDef<F> | ValueDef;
 
   /**
    * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
@@ -77,7 +81,8 @@ export interface Encoding<F> {
   /**
    * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  yError2?: FieldDefWithoutScale<F> | ValueDef;
+  // `yError2` cannot have type as it should have the same type as `yError`
+  yError2?: SecondaryRangeFieldDef<F> | ValueDef;
 
   /**
    * Longitude position of geographically projected marks.
@@ -92,12 +97,14 @@ export interface Encoding<F> {
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
-  longitude2?: FieldDefWithoutScale<F>;
+  // `longitude2` cannot have type as it should have the same type as `longitude`
+  longitude2?: SecondaryRangeFieldDef<F>;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
-  latitude2?: FieldDefWithoutScale<F>;
+  // `latitude2` cannot have type as it should have the same type as `latitude`
+  latitude2?: SecondaryRangeFieldDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -247,66 +254,70 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
 
   forEach(oldEncoding, (channelDef, channel) => {
     // Extract potential embedded transformations along with remaining properties
-    const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
-    if (isFieldDef(channelDef) && (aggOp || timeUnit || bin)) {
-      const guide = getGuide(channelDef);
-      const isTitleDefined = guide && guide.title;
-      const newField = vgField(channelDef, {forAs: true});
-      const newChannelDef = {
-        // Only add title if it doesn't exist
-        ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
-        ...remaining,
-        // Always overwrite field
-        field: newField
-      };
-      const isPositionChannel: boolean = channel === Channel.X || channel === Channel.Y;
-      if (aggOp && isAggregateOp(aggOp)) {
-        const aggregateEntry: AggregatedFieldDef = {
-          op: aggOp,
-          as: newField
+    if (isFieldDef(channelDef)) {
+      const {field, aggregate: aggOp, timeUnit, bin, ...remaining} = channelDef;
+      if (aggOp || timeUnit || bin) {
+        const guide = getGuide(channelDef);
+        const isTitleDefined = guide && guide.title;
+        const newField = vgField(channelDef, {forAs: true});
+        const newChannelDef = {
+          // Only add title if it doesn't exist
+          ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
+          ...remaining,
+          // Always overwrite field
+          field: newField
         };
-        if (field) {
-          aggregateEntry.field = field;
-        }
-        aggregate.push(aggregateEntry);
-      } else if (isBinning(bin)) {
-        bins.push({bin, field, as: newField});
-        // Add additional groupbys for range and end of bins
-        groupby.push(vgField(channelDef, {binSuffix: 'end'}));
-        if (binRequiresRange(channelDef, channel)) {
-          groupby.push(vgField(channelDef, {binSuffix: 'range'}));
-        }
-        // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
-        if (isPositionChannel) {
-          const secondaryChannel: FieldDef<string> = {
-            field: newField + '_end',
-            type: Type.QUANTITATIVE
+        const isPositionChannel: boolean = channel === Channel.X || channel === Channel.Y;
+        if (aggOp && isAggregateOp(aggOp)) {
+          const aggregateEntry: AggregatedFieldDef = {
+            op: aggOp,
+            as: newField
           };
-          encoding[channel + '2'] = secondaryChannel;
-        }
-        newChannelDef['bin'] = 'binned';
-        newChannelDef.type = Type.QUANTITATIVE;
-      } else if (timeUnit) {
-        timeUnits.push({timeUnit, field, as: newField});
+          if (field) {
+            aggregateEntry.field = field;
+          }
+          aggregate.push(aggregateEntry);
+        } else if (isBinning(bin)) {
+          bins.push({bin, field, as: newField});
+          // Add additional groupbys for range and end of bins
+          groupby.push(vgField(channelDef, {binSuffix: 'end'}));
+          if (binRequiresRange(channelDef, channel)) {
+            groupby.push(vgField(channelDef, {binSuffix: 'range'}));
+          }
+          // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
+          if (isPositionChannel) {
+            const secondaryChannel: FieldDef<string> = {
+              field: newField + '_end',
+              type: Type.QUANTITATIVE
+            };
+            encoding[channel + '2'] = secondaryChannel;
+          }
+          newChannelDef['bin'] = 'binned';
+          if (!isSecondaryRangeChannel(channel)) {
+            newChannelDef['type'] = Type.QUANTITATIVE;
+          }
+        } else if (timeUnit) {
+          timeUnits.push({timeUnit, field, as: newField});
 
-        // Add formatting to appropriate property based on the type of channel we're processing
-        const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-        if (isNonPositionScaleChannel(channel)) {
-          newChannelDef['legend'] = {format, ...newChannelDef['legend']};
-        } else if (isPositionChannel) {
-          newChannelDef['axis'] = {format, ...newChannelDef['axis']};
-        } else if (channel === 'text' || channel === 'tooltip') {
-          newChannelDef['format'] = newChannelDef['format'] || format;
+          // Add formatting to appropriate property based on the type of channel we're processing
+          const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
+          if (isNonPositionScaleChannel(channel)) {
+            newChannelDef['legend'] = {format, ...newChannelDef['legend']};
+          } else if (isPositionChannel) {
+            newChannelDef['axis'] = {format, ...newChannelDef['axis']};
+          } else if (channel === 'text' || channel === 'tooltip') {
+            newChannelDef['format'] = newChannelDef['format'] || format;
+          }
         }
+        if (!aggOp) {
+          groupby.push(newField);
+        }
+        // now the field should refer to post-transformed field instead
+        encoding[channel] = newChannelDef;
+      } else {
+        groupby.push(field);
+        encoding[channel] = oldEncoding[channel];
       }
-      if (!aggOp) {
-        groupby.push(newField);
-      }
-      // now the field should refer to post-transformed field instead
-      encoding[channel] = newChannelDef;
-    } else if (isFieldDef(channelDef)) {
-      groupby.push(field);
-      encoding[channel] = oldEncoding[channel];
     } else {
       // For value def, just copy
       encoding[channel] = oldEncoding[channel];
@@ -406,7 +417,7 @@ export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
   return arr;
 }
 
-export function forEach(mapping: any, f: (fd: FieldDef<string>, c: Channel) => void, thisArg?: any) {
+export function forEach(mapping: any, f: (cd: ChannelDef<string>, c: Channel) => void, thisArg?: any) {
   if (!mapping) {
     return;
   }

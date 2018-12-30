@@ -2,7 +2,7 @@
 import {defaultConfig, initConfig} from '../src/config';
 import * as log from '../src/log';
 import {LocalLogger} from '../src/log';
-import {normalize, NormalizedSpec, TopLevelSpec} from '../src/spec';
+import {normalize, TopLevelSpec} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -614,65 +614,6 @@ describe('normalize()', () => {
           }
         ],
         config: {area: {line: {}}}
-      });
-    });
-  });
-
-  describe('normalizeRangedUnitSpec', () => {
-    it('should convert y2 -> y if there is no y in the encoding', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y2: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      expect(normalize(spec, defaultConfig)).toEqual({
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      });
-    });
-    it('should do nothing if there is no missing x or y', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      expect(normalize(spec, defaultConfig)).toEqual(spec);
-    });
-
-    it('should convert x2 -> x if there is no x in the encoding', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          x2: {field: 'age', type: 'ordinal'},
-          y: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          y2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      expect(normalize(spec, defaultConfig)).toEqual({
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          x: {field: 'age', type: 'ordinal'},
-          y: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          y2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
       });
     });
   });
