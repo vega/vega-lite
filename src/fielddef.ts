@@ -172,7 +172,6 @@ export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V exten
  *   condition: {field: ...} | {value: ...}
  * }
  */
-
 export interface ConditionOnlyDef<
   F extends FieldDef<any>,
   V extends number | string | boolean | null = number | string | boolean | null

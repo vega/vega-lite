@@ -3,6 +3,7 @@
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
+  MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
 import {SignalRefComponent} from '../../../src/compile/signal';
@@ -576,7 +577,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([0, 81]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -595,7 +596,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, 81]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -614,7 +615,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, 81]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -633,7 +634,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11] // xyRangeSteps only have one value
               )
-            ).toEqual(makeImplicit([0, 81]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -654,7 +655,7 @@ describe('compile/scale', () => {
                 []
               )
             ).toEqual(
-              makeImplicit(new SignalRefComponent('sequence(9, 324 + (324 - 9) / (4 - 1), (324 - 9) / (4 - 1))', []))
+              makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))', []))
             );
           });
         });
@@ -674,7 +675,7 @@ describe('compile/scale', () => {
               []
             )
           ).toEqual(
-            makeImplicit(new SignalRefComponent('sequence(9, 324 + (324 - 9) / (3 - 1), (324 - 9) / (3 - 1))', []))
+            makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))', []))
           );
         });
       });
