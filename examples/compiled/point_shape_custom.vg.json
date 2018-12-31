@@ -72,7 +72,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Weight_in_lbs"},
-      "range": [0, 324],
+      "range": [0, 361],
       "zero": true
     }
   ],
