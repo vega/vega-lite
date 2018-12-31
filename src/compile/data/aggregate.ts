@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, isScaleChannel} from '../../channel';
-import {FieldDef, vgField} from '../../fielddef';
+import {FieldDef, isTypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
@@ -13,7 +13,7 @@ import {DataFlowNode} from './dataflow';
 type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
 
 function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>) {
-  if (isBinning(fieldDef.bin)) {
+  if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {binSuffix: 'end'}));
 

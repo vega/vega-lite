@@ -21,7 +21,7 @@
       "scale": {"zero": false},
       "title": "IMDB Rating"
     },
-    "x2": {"field": "bin_IMDB_Rating_end", "type": "quantitative"}
+    "x2": {"field": "bin_IMDB_Rating_end"}
   },
   "layer": [{
     "mark": "bar",

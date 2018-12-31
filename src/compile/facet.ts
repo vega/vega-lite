@@ -3,7 +3,7 @@ import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -61,7 +61,7 @@ export class FacetModel extends ModelWithField {
     // clone to prevent side effect to the original spec
     return reduce(
       facet,
-      (normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) => {
+      (normalizedFacet, fieldDef: TypedFieldDef<string>, channel: Channel) => {
         if (!contains([ROW, COLUMN], channel)) {
           // Drop unsupported channel
           log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -85,7 +85,7 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): FieldDef<string> {
+  public fieldDef(channel: Channel): TypedFieldDef<string> {
     return this.facet[channel];
   }
 

@@ -1,8 +1,12 @@
 import {
+  CHANNELS,
   isScaleChannel,
+  NONPOSITION_SCALE_CHANNELS,
   rangeType,
+  SCALE_CHANNELS,
   SINGLE_DEF_CHANNELS,
   supportMark,
+  UNIT_CHANNELS,
   X2,
   XERROR,
   XERROR2,
@@ -10,7 +14,6 @@ import {
   YERROR,
   YERROR2
 } from '../src/channel';
-import {CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, UNIT_CHANNELS} from '../src/channel';
 import {Encoding} from '../src/encoding';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../src/mark';
 import {without} from '../src/util';
@@ -90,8 +93,7 @@ describe('channel', () => {
           }
         },
         x2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         y: {
           field: 'count',
@@ -115,8 +117,7 @@ describe('channel', () => {
           }
         },
         y2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         x: {
           field: 'count',
@@ -139,8 +140,7 @@ describe('channel', () => {
           }
         },
         x2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         y: {
           field: 'count',
@@ -163,8 +163,7 @@ describe('channel', () => {
           }
         },
         y2: {
-          field: 'bin_end',
-          type: 'quantitative'
+          field: 'bin_end'
         },
         x: {
           field: 'count',
@@ -215,8 +214,7 @@ describe('channel', () => {
           type: 'quantitative'
         },
         xError2: {
-          field: 'count',
-          type: 'quantitative'
+          field: 'count'
         }
       };
 
@@ -263,8 +261,7 @@ describe('channel', () => {
           type: 'quantitative'
         },
         yError2: {
-          field: 'count',
-          type: 'quantitative'
+          field: 'count'
         }
       };
 

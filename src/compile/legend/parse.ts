@@ -11,7 +11,7 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
@@ -73,7 +73,7 @@ function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof VgLegend,
   legend: Legend,
-  fieldDef: FieldDef<string>
+  fieldDef: TypedFieldDef<string>
 ) {
   switch (property) {
     case 'values':
@@ -133,7 +133,8 @@ function getProperty<K extends keyof VgLegend>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const fieldDef = model.fieldDef(channel);
+  const {encoding} = model;
+  const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
   const {timeUnit} = fieldDef;
 

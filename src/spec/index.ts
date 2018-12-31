@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
-import {Field, FieldDef} from '../fielddef';
+import {Field, FieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
@@ -77,7 +77,7 @@ function accumulate(dict: any, defs: FieldDef<Field>[]): any {
 }
 
 /* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
-function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<FieldDef<T>> = {}): Dict<FieldDef<T>> {
+function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<TypedFieldDef<T>> = {}): Dict<TypedFieldDef<T>> {
   // FIXME(https://github.com/vega/vega-lite/issues/2207): Support fieldDefIndex for repeat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(layer => {
@@ -103,7 +103,7 @@ function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<FieldDef<T>> =
 }
 
 /* Returns all non-duplicate fieldDefs in a spec in a flat array */
-export function fieldDefs(spec: GenericSpec<any, any>): FieldDef<any>[] {
+export function fieldDefs(spec: GenericSpec<any, any>): TypedFieldDef<any>[] {
   return vals(fieldDefIndex(spec));
 }
 
@@ -133,8 +133,10 @@ export function usedFields(spec: NormalizedSpec): string[] {
 
 function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
   const fields: string[] = [];
-  forEach(spec.encoding, (fieldDef, channel) => {
-    fields.push(fieldDef.field);
+  forEach(spec.encoding, (channelDef, channel) => {
+    if (isFieldDef(channelDef)) {
+      fields.push(channelDef.field);
+    }
   });
   return fields;
 }

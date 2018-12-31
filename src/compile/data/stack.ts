@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {FieldDef, isFieldDef, vgField} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
@@ -29,7 +29,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: FieldDef<string>;
+  dimensionFieldDef?: TypedFieldDef<string>;
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -120,14 +120,16 @@ export class StackNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
+    const {encoding} = model;
 
     if (!stackProperties) {
       return null;
     }
 
-    let dimensionFieldDef: FieldDef<string>;
+    let dimensionFieldDef: TypedFieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      dimensionFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      const cDef = encoding[stackProperties.groupbyChannel];
+      dimensionFieldDef = getTypedFieldDef(cDef);
     }
 
     const stackby = getStackByFields(model);

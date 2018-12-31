@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
-import {FieldDef} from '../../fielddef';
+import {TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
@@ -17,7 +17,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   mark: Mark,
   scaleConfig: ScaleConfig
 ): ScaleType {
@@ -53,7 +53,7 @@ export function scaleType(
 // NOTE: Voyager uses this method.
 function defaultType(
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   mark: Mark,
   specifiedScale: Scale,
   scaleConfig: ScaleConfig

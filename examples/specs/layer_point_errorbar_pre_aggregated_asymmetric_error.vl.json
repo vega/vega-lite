@@ -39,7 +39,7 @@
           "title": "yield"
         },
         "xError": {"field": "yield_error", "type": "quantitative"},
-        "xError2": {"field": "yield_error2", "type": "quantitative"},
+        "xError2": {"field": "yield_error2"},
         "y": {"field": "variety", "type": "ordinal"}
       }
     },
