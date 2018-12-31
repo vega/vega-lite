@@ -243,14 +243,10 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-<<<<<<< HEAD
 export function text(
   channelDef: ChannelDefWithCondition<FieldDef<string>, string | number | boolean>,
   config: Config
 ): VgValueRef {
-=======
-export function text(channelDef: ChannelDef, config: Config): VgValueRef {
->>>>>>> master
   // text
   if (channelDef) {
     if (isValueDef(channelDef)) {
