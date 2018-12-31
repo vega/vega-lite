@@ -92,7 +92,7 @@
     "svg2png-many": "^0.0.7",
     "terser": "^3.13.1",
     "ts-jest": "^23.10.5",
-    "ts-json-schema-generator": "^0.38.0",
+    "ts-json-schema-generator": "^0.38.1",
     "ts-node": "^7.0.1",
     "tslint": "5.12.0",
     "tslint-config-prettier": "^1.17.0",
