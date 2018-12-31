@@ -537,7 +537,7 @@
       "name": "size",
       "type": "linear",
       "domain": [-1, 50],
-      "range": [9, 324],
+      "range": [9, 361],
       "zero": false
     },
     {
