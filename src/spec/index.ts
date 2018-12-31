@@ -77,7 +77,10 @@ function accumulate(dict: any, defs: FieldDef<Field>[]): any {
 }
 
 /* Recursively get fieldDefs from a spec, returns a dictionary of fieldDefs */
-function fieldDefIndex<T>(spec: GenericSpec<any, any>, dict: Dict<TypedFieldDef<T>> = {}): Dict<TypedFieldDef<T>> {
+function fieldDefIndex<F extends Field>(
+  spec: GenericSpec<any, any>,
+  dict: Dict<TypedFieldDef<F>> = {}
+): Dict<TypedFieldDef<F>> {
   // FIXME(https://github.com/vega/vega-lite/issues/2207): Support fieldDefIndex for repeat
   if (isLayerSpec(spec)) {
     spec.layer.forEach(layer => {

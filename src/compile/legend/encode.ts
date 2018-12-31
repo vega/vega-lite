@@ -9,6 +9,7 @@ import {
   isValueDef,
   MarkPropFieldDef,
   TypedFieldDef,
+  Value,
   ValueDef,
   ValueDefWithCondition
 } from '../../fielddef';
@@ -187,9 +188,11 @@ export function labels(
 }
 
 function getMaxValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, number>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, number>
 ) {
-  return getConditionValue(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
+  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
 function getFirstConditionValue(
@@ -200,8 +203,8 @@ function getFirstConditionValue(
   });
 }
 
-function getConditionValue<T>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
+function getConditionValue<T extends Value>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, T> | ValueDefWithCondition<MarkPropFieldDef<string>, T>,
   reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
 ): T {
   if (hasConditionalValueDef(channelDef)) {

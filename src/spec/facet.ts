@@ -1,4 +1,4 @@
-import {ChannelDef, FieldDef, RepeatRef, SortableFieldDef} from '../fielddef';
+import {ChannelDef, Field, FieldDef, RepeatRef, SortableFieldDef} from '../fielddef';
 import {Header} from '../header';
 import {Resolve} from '../resolve';
 import {BaseSpec} from './base';
@@ -7,14 +7,14 @@ import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericCompositionLayout} from './toplevel';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
-export interface FacetFieldDef<F> extends SortableFieldDef<F> {
+export interface FacetFieldDef<F extends Field> extends SortableFieldDef<F> {
   /**
    * An object defining properties of a facet's header.
    */
   header?: Header;
 }
 
-export interface FacetMapping<F> {
+export interface FacetMapping<F extends Field> {
   /**
    * Vertical facets for trellis plots.
    */
@@ -26,7 +26,7 @@ export interface FacetMapping<F> {
   column?: FacetFieldDef<F>;
 }
 
-export function isFacetFieldDef<F>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
+export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
   return !!channelDef && !!channelDef['header'];
 }
 
