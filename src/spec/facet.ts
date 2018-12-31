@@ -1,4 +1,4 @@
-import {ChannelDef, RepeatRef, SortableFieldDef} from '../fielddef';
+import {ChannelDef, FieldDef, RepeatRef, SortableFieldDef} from '../fielddef';
 import {Header} from '../header';
 import {Resolve} from '../resolve';
 import {BaseSpec} from './base';
@@ -26,7 +26,7 @@ export interface FacetMapping<F> {
   column?: FacetFieldDef<F>;
 }
 
-export function isFacetFieldDef<F>(channelDef: ChannelDef<F>): channelDef is FacetFieldDef<F> {
+export function isFacetFieldDef<F>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
   return !!channelDef && !!channelDef['header'];
 }
 

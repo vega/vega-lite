@@ -3,7 +3,7 @@ import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
-  getFieldDef,
+  getTypedFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
@@ -236,9 +236,9 @@ export function nonPosition(
  */
 export function wrapCondition(
   model: UnitModel,
-  channelDef: ChannelDef<string>,
+  channelDef: ChannelDef,
   vgChannel: string,
-  refFn: (cDef: ChannelDef<string>) => VgValueRef
+  refFn: (cDef: ChannelDef) => VgValueRef
 ): VgEncodeEntry {
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
@@ -314,7 +314,7 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
         [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
       };
 
-      if (getFieldDef(model.encoding.size)) {
+      if (getTypedFieldDef(model.encoding.size)) {
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})

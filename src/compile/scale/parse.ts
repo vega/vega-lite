@@ -1,5 +1,5 @@
-import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
-import {getFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../fielddef';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
+import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
@@ -62,10 +62,6 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     } else if (hasConditionalFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
       specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
-    } else if (channel === X) {
-      fieldDef = getFieldDef(encoding.x2);
-    } else if (channel === Y) {
-      fieldDef = getFieldDef(encoding.y2);
     }
 
     if (fieldDef && specifiedScale !== null && specifiedScale !== false) {

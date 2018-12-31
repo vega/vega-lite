@@ -7,13 +7,16 @@ import {Config} from './config';
 import {
   ChannelDef,
   Field,
+  FieldDef,
   FieldDefWithCondition,
   FieldDefWithoutScale,
   getFieldDef,
   getGuide,
+  getTypedFieldDef,
   hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
+  isTypedFieldDef,
   isValueDef,
   MarkPropFieldDef,
   normalize,
@@ -277,7 +280,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
             aggregateEntry.field = field;
           }
           aggregate.push(aggregateEntry);
-        } else if (isBinning(bin)) {
+        } else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
           bins.push({bin, field, as: newField});
           // Add additional groupbys for range and end of bins
           groupby.push(vgField(channelDef, {binSuffix: 'end'}));
@@ -349,7 +352,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
 
     // Drop line's size if the field is aggregated.
     if (channel === 'size' && mark === 'line') {
-      const fieldDef = getFieldDef(encoding[channel]);
+      const fieldDef = getTypedFieldDef(encoding[channel]);
       if (fieldDef && fieldDef.aggregate) {
         log.warn(log.message.LINE_WITH_VARYING_SIZE);
         return normalizedEncoding;
@@ -371,7 +374,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
         normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
-          (defs: TypedFieldDef<string>[], fieldDef: TypedFieldDef<string>) => {
+          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
@@ -390,7 +393,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
-      normalizedEncoding[channel] = normalize(channelDef as ChannelDef<string>, channel);
+      normalizedEncoding[channel] = normalize(channelDef as ChannelDef, channel);
     }
     return normalizedEncoding;
   }, {});
@@ -400,8 +403,8 @@ export function isRanged(encoding: EncodingWithFacet<any>) {
   return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 
-export function fieldDefs<T>(encoding: EncodingWithFacet<T>): TypedFieldDef<T>[] {
-  const arr: TypedFieldDef<T>[] = [];
+export function fieldDefs<T>(encoding: EncodingWithFacet<T>): FieldDef<T>[] {
+  const arr: FieldDef<T>[] = [];
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -417,14 +420,14 @@ export function fieldDefs<T>(encoding: EncodingWithFacet<T>): TypedFieldDef<T>[]
   return arr;
 }
 
-export function forEach(mapping: any, f: (cd: ChannelDef<string>, c: Channel) => void, thisArg?: any) {
+export function forEach(mapping: any, f: (cd: ChannelDef, c: Channel) => void, thisArg?: any) {
   if (!mapping) {
     return;
   }
 
   for (const channel of keys(mapping)) {
     if (isArray(mapping[channel])) {
-      mapping[channel].forEach((channelDef: ChannelDef<string>) => {
+      mapping[channel].forEach((channelDef: ChannelDef) => {
         f.call(thisArg, channelDef, channel);
       });
     } else {
@@ -446,7 +449,7 @@ export function reduce<T, U extends {[k in Channel]?: any}>(
   return keys(mapping).reduce((r, channel) => {
     const map = mapping[channel];
     if (isArray(map)) {
-      return map.reduce((r1: T, channelDef: ChannelDef<string>) => {
+      return map.reduce((r1: T, channelDef: ChannelDef) => {
         return f.call(thisArg, r1, channelDef, channel);
       }, r);
     } else {

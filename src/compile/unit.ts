@@ -13,7 +13,7 @@ import {
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding';
-import {ChannelDef, getFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
+import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -137,10 +137,6 @@ export class UnitModel extends ModelWithField {
         } else if (hasConditionalFieldDef(channelDef)) {
           fieldDef = channelDef.condition;
           specifiedScale = channelDef.condition['scale'];
-        } else if (channel === 'x') {
-          fieldDef = getFieldDef(encoding.x2);
-        } else if (channel === 'y') {
-          fieldDef = getFieldDef(encoding.y2);
         }
 
         if (fieldDef) {
@@ -287,8 +283,8 @@ export class UnitModel extends ModelWithField {
     return vlEncoding.channelHasField(this.encoding, channel);
   }
 
-  public fieldDef(channel: SingleDefChannel): TypedFieldDef<string> {
-    const channelDef = this.encoding[channel] as ChannelDef<string>;
-    return getFieldDef(channelDef);
+  public fieldDef(channel: SingleDefChannel) {
+    const channelDef = this.encoding[channel];
+    return getTypedFieldDef<string>(channelDef);
   }
 }

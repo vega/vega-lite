@@ -9,10 +9,12 @@ import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import {
   ChannelDef,
+  FieldDefBase,
   FieldRefOption,
   format,
   hasConditionalFieldDef,
   isFieldDef,
+  isTypedFieldDef,
   isValueDef,
   SecondaryRangeFieldDef,
   title,
@@ -37,8 +39,8 @@ import {ScaleComponent} from '../scale/component';
  */
 export function position(
   channel: 'x' | 'y',
-  channelDef: ChannelDef<string>,
-  channel2Def: ChannelDef<string>,
+  channelDef: ChannelDef,
+  channel2Def: ChannelDef,
   scaleName: string,
   scale: ScaleComponent,
   stack: StackProperties,
@@ -56,8 +58,8 @@ export function position(
  */
 export function position2(
   channel: 'x2' | 'y2',
-  aFieldDef: ChannelDef<string>,
-  a2fieldDef: ChannelDef<string>,
+  aFieldDef: ChannelDef,
+  a2fieldDef: ChannelDef,
   scaleName: string,
   scale: ScaleComponent,
   stack: StackProperties,
@@ -95,7 +97,7 @@ export function bin(fieldDef: TypedFieldDef<string>, scaleName: string, side: 's
 }
 
 export function fieldRef(
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: FieldDefBase<string>,
   scaleName: string,
   opt: FieldRefOption,
   mixins?: {offset?: number | VgValueRef; band?: number | boolean}
@@ -124,7 +126,7 @@ export function bandRef(scaleName: string, band: number | boolean = true): VgVal
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: TypedFieldDef<string>) {
+function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: SecondaryRangeFieldDef<string>) {
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -141,8 +143,8 @@ function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldD
  */
 export function midPoint(
   channel: Channel,
-  channelDef: ChannelDef<string>,
-  channel2Def: ChannelDef<string>,
+  channelDef: ChannelDef,
+  channel2Def: ChannelDef<SecondaryRangeFieldDef<string>>,
   scaleName: string,
   scale: ScaleComponent,
   stack: StackProperties,
@@ -154,24 +156,26 @@ export function midPoint(
     /* istanbul ignore else */
 
     if (isFieldDef(channelDef)) {
-      if (isBinning(channelDef.bin)) {
-        // Use middle only for x an y to place marks in the center between start and end of the bin range.
-        // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-        if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
-          if (stack && stack.impute) {
-            // For stack, we computed bin_mid so we can impute.
-            return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
+      if (isTypedFieldDef(channelDef)) {
+        if (isBinning(channelDef.bin)) {
+          // Use middle only for x an y to place marks in the center between start and end of the bin range.
+          // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
+          if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
+            if (stack && stack.impute) {
+              // For stack, we computed bin_mid so we can impute.
+              return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
+            }
+            // For non-stack, we can just calculate bin mid on the fly using signal.
+            return binMidSignal(scaleName, channelDef);
           }
-          // For non-stack, we can just calculate bin mid on the fly using signal.
-          return binMidSignal(scaleName, channelDef);
-        }
-        return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
-      } else if (isBinned(channelDef.bin)) {
-        if (isFieldDef(channel2Def)) {
-          return binMidSignal(scaleName, channelDef, channel2Def);
-        } else {
-          const channel2 = channel === X ? X2 : Y2;
-          log.warn(log.message.channelRequiredForBinned(channel2));
+          return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
+        } else if (isBinned(channelDef.bin)) {
+          if (isFieldDef(channel2Def)) {
+            return binMidSignal(scaleName, channelDef, channel2Def);
+          } else {
+            const channel2 = channel === X ? X2 : Y2;
+            log.warn(log.message.channelRequiredForBinned(channel2));
+          }
         }
       }
 
@@ -237,13 +241,13 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   return keyValues.length ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
 
-export function text(channelDef: ChannelDef<string>, config: Config): VgValueRef {
+export function text(channelDef: ChannelDef, config: Config): VgValueRef {
   // text
   if (channelDef) {
     if (isValueDef(channelDef)) {
       return {value: channelDef.value};
     }
-    if (isFieldDef(channelDef)) {
+    if (isTypedFieldDef(channelDef)) {
       return formatSignalRef(channelDef, format(channelDef), 'datum', config);
     }
   }

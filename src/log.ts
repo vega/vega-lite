@@ -200,8 +200,8 @@ export namespace message {
     return `Invalid aggregation operator "${aggregate}"`;
   }
 
-  export function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type) {
-    return `Invalid field type "${type}" for channel "${channel}", using "${newType}" instead.`;
+  export function missingFieldType(channel: Channel, newType: Type) {
+    return `Missing type for channel "${channel}", using "${newType}" instead.`;
   }
   export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean; stroke?: boolean}) {
     const {fill, stroke} = opt;
