@@ -196,17 +196,19 @@ function getMaxValue(
 }
 
 function getFirstConditionValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>
 ) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => {
     return getFirstDefined(v, conditionalDef.value);
   });
 }
 
-function getConditionValue<T extends Value>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, T> | ValueDefWithCondition<MarkPropFieldDef<string>, T>,
-  reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
-): T {
+function getConditionValue<V extends Value>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
+  reducer: (val: V, conditionalDef: Conditional<ValueDef>) => V
+): V {
   if (hasConditionalValueDef(channelDef)) {
     return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition]).reduce(
       reducer,

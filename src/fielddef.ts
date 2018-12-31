@@ -27,7 +27,7 @@ import {
   TimeUnit
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
-import {getFullName, QUANTITATIVE, Type} from './type';
+import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
 
 export type Value = number | string | boolean | null;
@@ -58,15 +58,30 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
  *   value: ...,
  * }
  */
+
 export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Value> =
   | ValueDefWithOptionalCondition<F, V>
   | ConditionOnlyDef<F>;
 
-export type ColorValueDefWithCondition<F extends Field> = ValueDefWithCondition<MarkPropFieldDef<F>, string | null>;
+export type ColorValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  string | null
+>;
 
-export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<MarkPropFieldDef<F>, number>;
+export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  number
+>;
 
-export type StringValueDefWithCondition<F extends Field> = ValueDefWithCondition<MarkPropFieldDef<F>, string>;
+export type StringValueDefWithCondition<F extends Field, T extends Type = 'nominal'> = ValueDefWithCondition<
+  MarkPropFieldDef<F, T>,
+  string
+>;
+
+export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<
+  F,
+  'nominal' | 'ordinal' | 'geojson'
+>;
 
 export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
   TextFieldDef<F>,
@@ -111,10 +126,24 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
 
 export type FieldDefWithCondition<F extends FieldDef<any>, V extends Value = Value> = F & ConditionValueDefMixins<V>;
 
-export type ColorFieldDefWithCondition<F extends Field> = FieldDefWithCondition<MarkPropFieldDef<F>, string | null>;
+export type ColorFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  string | null
+>;
 
-export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<MarkPropFieldDef<F>, number>;
-export type StringFieldDefWithCondition<F extends Field> = FieldDefWithCondition<MarkPropFieldDef<F>, string>;
+export type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
+  MarkPropFieldDef<F, StandardType>,
+  number
+>;
+export type StringFieldDefWithCondition<F extends Field, T extends Type = 'nominal'> = FieldDefWithCondition<
+  MarkPropFieldDef<F, T>,
+  string
+>;
+
+export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<
+  F,
+  'nominal' | 'ordinal' | 'geojson'
+>;
 
 export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
   TextFieldDef<F>,
@@ -229,7 +258,7 @@ export function toFieldDefBase(fieldDef: TypedFieldDef<string>): FieldDefBase<st
   };
 }
 
-export interface TypeMixins {
+export interface TypeMixins<T extends Type> {
   /**
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    * It can also be a `"geojson"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).
@@ -238,15 +267,18 @@ export interface TypeMixins {
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
-  type: Type;
+  type: T;
 }
 
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface TypedFieldDef<F extends Field> extends FieldDefBase<F>, TitleMixins, TypeMixins {}
+export interface TypedFieldDef<F extends Field, T extends Type = Type>
+  extends FieldDefBase<F>,
+    TitleMixins,
+    TypeMixins<T> {}
 
-export interface SortableFieldDef<F extends Field> extends TypedFieldDef<F> {
+export interface SortableFieldDef<F extends Field, T extends Type = StandardType> extends TypedFieldDef<F, T> {
   /**
    * Sort order for the encoded field.
    *
@@ -269,7 +301,7 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return isTypedFieldDef(fieldDef) && !!fieldDef['sort'];
 }
 
-export interface ScaleFieldDef<F extends Field> extends SortableFieldDef<F> {
+export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> extends SortableFieldDef<F, T> {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
@@ -285,7 +317,10 @@ export type SecondaryRangeFieldDef<F extends Field> = FieldDefBase<F> & TitleMix
 /**
  * Field Def without scale (and without bin: "binned" support).
  */
-export type FieldDefWithoutScale<F extends Field> = TypedFieldDef<F> & BinWithoutBinnedMixins;
+export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T> &
+  BinWithoutBinnedMixins;
+
+export type LatLongFieldDef<F extends Field> = FieldDefWithoutScale<F, 'quantitative'>;
 
 export interface PositionFieldDef<F extends Field> extends ScaleFieldDef<F> {
   /**
@@ -325,7 +360,7 @@ export interface PositionFieldDef<F extends Field> extends ScaleFieldDef<F> {
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F extends Field> = ScaleFieldDef<F> &
+export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<F, T> &
   BinWithoutBinnedMixins & {
     /**
      * An object defining properties of the legend.
@@ -347,7 +382,7 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
   sort?: SortOrder;
 }
 
-export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F> {
+export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType> {
   /**
    * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */

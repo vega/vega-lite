@@ -12,7 +12,7 @@ describe('UnitModel', () => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
-            shape: {field: 'a', type: 'quantitative'}
+            shape: {field: 'a', type: 'nominal'}
           }
         });
         expect(model.encoding.shape).toEqual(undefined);

@@ -16,6 +16,7 @@ import {
   scaleTypeSupportProperty
 } from '../../scale';
 import {Sort} from '../../sort';
+import {Type} from '../../type';
 import * as util from '../../util';
 import {contains, getFirstDefined, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
@@ -86,7 +87,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 export function getDefaultValue(
   property: keyof Scale,
   channel: Channel,
-  fieldDef: ScaleFieldDef<string>,
+  fieldDef: ScaleFieldDef<string, Type>,
   scaleType: ScaleType,
   scalePadding: number,
   scalePaddingInner: number,

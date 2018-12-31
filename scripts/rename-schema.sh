@@ -2,6 +2,7 @@
 
 perl -pi -e s,'<\(string\|RepeatRef\)>','',g build/vega-lite-schema.json
 perl -pi -e s,'<\(string\|RepeatRef\)\,','<',g build/vega-lite-schema.json
+perl -pi -e s,'<StandardType>','',g build/vega-lite-schema.json
 
 perl -pi -e s,'FacetedCompositeUnitSpec','FacetedUnitSpec',g build/vega-lite-schema.json
 perl -pi -e s,'ExtendedLayerSpec','LayerSpec',g build/vega-lite-schema.json
