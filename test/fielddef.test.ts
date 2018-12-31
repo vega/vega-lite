@@ -85,7 +85,7 @@ describe('fieldDef', () => {
       log.wrap(localLogger => {
         const fieldDef = {field: 'a'} as TypedFieldDef<string>;
         expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
-        expect(localLogger.warns[0]).toEqual(log.message.emptyOrInvalidFieldType(undefined, 'x', 'quantitative'));
+        expect(localLogger.warns[0]).toEqual(log.message.missingFieldType('x', 'quantitative'));
       })
     );
 

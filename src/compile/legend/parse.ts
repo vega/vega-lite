@@ -1,18 +1,29 @@
-import { Legend as VgLegend, LegendEncode, SignalRef } from 'vega';
-import { COLOR, FILL, FILLOPACITY, NonPositionScaleChannel, OPACITY, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH } from '../../channel';
-import { isFieldDef, title as fieldDefTitle, TypedFieldDef } from '../../fielddef';
-import { Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES } from '../../legend';
-import { GEOJSON } from '../../type';
-import { deleteNestedProperty, getFirstDefined, keys } from '../../util';
-import { guideEncodeEntry, mergeTitleComponent, numberFormat } from '../common';
-import { isUnitModel, Model } from '../model';
-import { parseGuideResolve } from '../resolve';
-import { defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit } from '../split';
-import { UnitModel } from '../unit';
-import { LegendComponent, LegendComponentIndex } from './component';
+import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
+import {
+  COLOR,
+  FILL,
+  FILLOPACITY,
+  NonPositionScaleChannel,
+  OPACITY,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEOPACITY,
+  STROKEWIDTH
+} from '../../channel';
+import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} from '../../fielddef';
+import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
+import {GEOJSON} from '../../type';
+import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
+import {isUnitModel, Model} from '../model';
+import {parseGuideResolve} from '../resolve';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
+import {UnitModel} from '../unit';
+import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
-import { direction, type } from './properties';
+import {direction, type} from './properties';
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -122,7 +133,8 @@ function getProperty<K extends keyof VgLegend>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const fieldDef = model.fieldDef(channel);
+  const {encoding} = model;
+  const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
   const {timeUnit} = fieldDef;
 

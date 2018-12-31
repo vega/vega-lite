@@ -1,12 +1,12 @@
-import { isArray, isString } from 'vega-util';
-import { isFieldDef, TypedFieldDef, vgField } from '../../fielddef';
-import { StackOffset } from '../../stack';
-import { StackTransform } from '../../transform';
-import { duplicate, getFirstDefined, hash } from '../../util';
-import { VgComparatorOrder, VgCompare, VgTransform } from '../../vega.schema';
-import { sortParams } from '../common';
-import { UnitModel } from '../unit';
-import { DataFlowNode } from './dataflow';
+import {isArray, isString} from 'vega-util';
+import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../fielddef';
+import {StackOffset} from '../../stack';
+import {StackTransform} from '../../transform';
+import {duplicate, getFirstDefined, hash} from '../../util';
+import {VgComparatorOrder, VgCompare, VgTransform} from '../../vega.schema';
+import {sortParams} from '../common';
+import {UnitModel} from '../unit';
+import {DataFlowNode} from './dataflow';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce(
@@ -120,6 +120,7 @@ export class StackNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
+    const {encoding} = model;
 
     if (!stackProperties) {
       return null;
@@ -127,7 +128,8 @@ export class StackNode extends DataFlowNode {
 
     let dimensionFieldDef: TypedFieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      dimensionFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      const cDef = encoding[stackProperties.groupbyChannel];
+      dimensionFieldDef = getTypedFieldDef(cDef);
     }
 
     const stackby = getStackByFields(model);

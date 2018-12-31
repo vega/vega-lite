@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
-import {Field, isFieldDef, TypedFieldDef} from '../fielddef';
+import {Field, FieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
@@ -61,7 +61,7 @@ export type TopLevelSpec =
 // TODO: add vl.spec.validate & move stuff from vl.validate to here
 
 /* Accumulate non-duplicate fieldDefs in a dictionary */
-function accumulate(dict: any, defs: TypedFieldDef<Field>[]): any {
+function accumulate(dict: any, defs: FieldDef<Field>[]): any {
   defs.forEach(fieldDef => {
     // Consider only pure fieldDef properties (ignoring scale, axis, legend)
     const pureFieldDef = ['field', 'type', 'value', 'timeUnit', 'bin', 'aggregate'].reduce((f, key) => {

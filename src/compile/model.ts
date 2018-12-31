@@ -4,7 +4,7 @@ import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ChannelDef, FieldRefOption, getFieldDef, TypedFieldDef, vgField} from '../fielddef';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -624,7 +624,7 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: SingleDefChannel): TypedFieldDef<string>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 
   /** Get "field" reference for Vega */
   public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
@@ -639,10 +639,10 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): {[key in Channel]?: any};
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: TypedFieldDef<string>, c: Channel) => U, init: T, t?: any) {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef<string>, c: Channel) => {
+      (acc: U, cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           return f(acc, fieldDef, c);
@@ -654,10 +654,10 @@ export abstract class ModelWithField extends Model {
     );
   }
 
-  public forEachFieldDef(f: (fd: TypedFieldDef<string>, c: Channel) => void, t?: any) {
+  public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
     forEach(
       this.getMapping(),
-      (cd: ChannelDef<string>, c: Channel) => {
+      (cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           f(fieldDef, c);

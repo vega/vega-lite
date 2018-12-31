@@ -2,7 +2,7 @@ import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning} from '../../bin';
 import {Channel} from '../../channel';
 import {Config} from '../../config';
-import {normalizeBin, TypedFieldDef, vgField} from '../../fielddef';
+import {isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../fielddef';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, flatten, hash, keys, vals} from '../../util';
 import {VgBinTransform, VgTransform} from '../../vega.schema';
@@ -90,7 +90,7 @@ export class BinNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
     const bins = model.reduceFieldDef((binComponentIndex: Dict<BinComponent>, fieldDef, channel) => {
-      if (isBinning(fieldDef.bin)) {
+      if (isTypedFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
         const {key, binComponent} = createBinComponent(fieldDef, fieldDef.bin, model);
         binComponentIndex[key] = {
           ...binComponent,
