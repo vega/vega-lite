@@ -122,7 +122,7 @@
       "range": [
         0,
         {
-          "signal": "pow(min(width / ((bin_maxbins_20_IMDB_Rating_bins.stop - bin_maxbins_20_IMDB_Rating_bins.start) / bin_maxbins_20_IMDB_Rating_bins.step), height / ((bin_maxbins_20_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_20_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_20_Rotten_Tomatoes_Rating_bins.step)) - 2, 2)"
+          "signal": "pow(0.95 * min(width / ((bin_maxbins_20_IMDB_Rating_bins.stop - bin_maxbins_20_IMDB_Rating_bins.start) / bin_maxbins_20_IMDB_Rating_bins.step), height / ((bin_maxbins_20_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_20_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_20_Rotten_Tomatoes_Rating_bins.step)), 2)"
         }
       ],
       "zero": true

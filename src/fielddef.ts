@@ -58,7 +58,6 @@ export type ChannelDefWithCondition<F extends FieldDef<any>, V extends Value> =
  *   value: ...,
  * }
  */
-
 export type ValueDefWithCondition<F extends FieldDef<any>, V extends Value = Value> =
   | ValueDefWithOptionalCondition<F, V>
   | ConditionOnlyDef<F>;
@@ -144,7 +143,6 @@ export interface ValueDefWithOptionalCondition<FD extends FieldDef<any>, V exten
  *   condition: {field: ...} | {value: ...}
  * }
  */
-
 export interface ConditionOnlyDef<
   F extends FieldDef<any>,
   V extends number | string | boolean | null = number | string | boolean | null

@@ -74,7 +74,7 @@
       "type": "quantile",
       "domain": {"data": "source_0", "field": "b"},
       "range": {
-        "signal": "sequence(9, 324 + (324 - 9) / (4 - 1), (324 - 9) / (4 - 1))"
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
       }
     }
   ],
