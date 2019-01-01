@@ -263,7 +263,7 @@ export interface TypeMixins<T extends Type> {
    * The encoded field's type of measurement (`"quantitative"`, `"temporal"`, `"ordinal"`, or `"nominal"`).
    * It can also be a `"geojson"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).
    *
-   * __Note:__ Secondary channels for ranged marks (e.g., `x2` and `y2`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)
+   * __Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)
    */
   // * or an initial character of the type name (`"Q"`, `"T"`, `"O"`, `"N"`).
   // * This property is case-insensitive.
@@ -312,7 +312,10 @@ export interface ScaleFieldDef<F extends Field, T extends Type = StandardType> e
   scale?: Scale | null;
 }
 
-export type SecondaryRangeFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins;
+/**
+ * A field definition of a secondary channel that shares a scale with another primary channel.  For example, `x2`, `xError` and `xError2` share the same scale with `x`.
+ */
+export type SecondaryFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins;
 
 /**
  * Field Def without scale (and without bin: "binned" support).
@@ -389,7 +392,7 @@ export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, S
   format?: string;
 }
 
-export type FieldDef<F extends Field> = SecondaryRangeFieldDef<F> | TypedFieldDef<F>;
+export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
 export type ChannelDef<FD extends FieldDef<any> = FieldDef<string>, V extends Value = Value> = ChannelDefWithCondition<
   FD,
   V
@@ -421,7 +424,7 @@ export function isFieldDef<F extends Field>(
   channelDef: ChannelDef<FieldDef<F>>
 ): channelDef is
   | TypedFieldDef<F>
-  | SecondaryRangeFieldDef<F>
+  | SecondaryFieldDef<F>
   | PositionFieldDef<F>
   | ScaleFieldDef<F>
   | MarkPropFieldDef<F>
@@ -613,7 +616,7 @@ export function resetTitleFormatter() {
 }
 
 export function title(
-  fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>,
+  fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>,
   config: Config,
   {allowDisabling}: {allowDisabling: boolean}
 ) {
@@ -626,7 +629,7 @@ export function title(
   }
 }
 
-export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>): Guide {
+export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>): Guide {
   if (isPositionFieldDef(fieldDef) && fieldDef.axis) {
     return fieldDef.axis;
   } else if (isMarkPropFieldDef(fieldDef) && fieldDef.legend) {

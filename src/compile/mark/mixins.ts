@@ -1,13 +1,13 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
-import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
+import {Channel, NonPositionScaleChannel, ScaleChannel, SCALE_CHANNELS, X, X2, Y2} from '../../channel';
 import {
   ChannelDef,
   getTypedFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
-  SecondaryRangeFieldDef,
+  SecondaryFieldDef,
   TypedFieldDef,
   ValueDef
 } from '../../fielddef';
@@ -16,7 +16,7 @@ import {isPathMark, MarkDef} from '../../mark';
 import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
-import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
+import {VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../vega.schema';
 import {getMarkConfig} from '../common';
 import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
@@ -356,7 +356,7 @@ export function centeredBandPosition(
 
 export function binPosition(
   fieldDef: TypedFieldDef<string>,
-  fieldDef2: ValueDef | SecondaryRangeFieldDef<string>,
+  fieldDef2: ValueDef | SecondaryFieldDef<string>,
   channel: 'x' | 'y',
   scaleName: string,
   spacing: number,

@@ -27,7 +27,7 @@ import {
   OrderFieldDef,
   PositionFieldDef,
   RepeatRef,
-  SecondaryRangeFieldDef,
+  SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
   StringFieldDefWithCondition,
@@ -64,14 +64,14 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `x2` cannot have type as it should have the same type as `x`
-  x2?: SecondaryRangeFieldDef<F> | ValueDef<number | 'width'>;
+  x2?: SecondaryFieldDef<F> | ValueDef<number | 'width'>;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
-  y2?: SecondaryRangeFieldDef<F> | ValueDef<number | 'height'>;
+  y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'>;
 
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
@@ -82,7 +82,7 @@ export interface Encoding<F extends Field> {
    * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
   // `xError2` cannot have type as it should have the same type as `xError`
-  xError2?: SecondaryRangeFieldDef<F> | ValueDef<number>;
+  xError2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
@@ -93,7 +93,7 @@ export interface Encoding<F extends Field> {
    * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
    */
   // `yError2` cannot have type as it should have the same type as `yError`
-  yError2?: SecondaryRangeFieldDef<F> | ValueDef<number>;
+  yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Longitude position of geographically projected marks.
@@ -109,13 +109,13 @@ export interface Encoding<F extends Field> {
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `longitude2` cannot have type as it should have the same type as `longitude`
-  longitude2?: SecondaryRangeFieldDef<F>;
+  longitude2?: SecondaryFieldDef<F>;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `latitude2` cannot have type as it should have the same type as `latitude`
-  latitude2?: SecondaryRangeFieldDef<F>;
+  latitude2?: SecondaryFieldDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
