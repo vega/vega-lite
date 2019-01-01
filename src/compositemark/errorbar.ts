@@ -189,7 +189,7 @@ function errorBarOrientAndInputType(
       // having both xError and yError
       throw new Error(compositeMark + ' cannot have both xError and yError with both are quantiative');
     } else if (isFieldDef(xError)) {
-      if (isContinuous(xError) && isFieldDef(x) && isContinuous(x)) {
+      if (isFieldDef(x) && isContinuous(x)) {
         // having x and xError that are all quantitative
         return {orient: 'horizontal', inputType: 'aggregated-error'};
       } else {
@@ -197,7 +197,7 @@ function errorBarOrientAndInputType(
         throw new Error('All x, xError, and xError2 (if exist) have to be quantitative');
       }
     } else if (isFieldDef(yError)) {
-      if (isContinuous(yError) && isFieldDef(y) && isContinuous(y)) {
+      if (isFieldDef(y) && isContinuous(y)) {
         // having y and yError that are all quantitative
         return {orient: 'vertical', inputType: 'aggregated-error'};
       } else {

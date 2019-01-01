@@ -76,7 +76,7 @@ export interface Encoding<F extends Field> {
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  xError?: FieldDefWithoutScale<F> | ValueDef<number>;
+  xError?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
@@ -87,7 +87,7 @@ export interface Encoding<F extends Field> {
   /**
    * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  yError?: FieldDefWithoutScale<F> | ValueDef<number>;
+  yError?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.

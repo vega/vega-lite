@@ -189,10 +189,7 @@ describe('channel', () => {
           field: 'count',
           type: 'quantitative'
         },
-        xError: {
-          field: 'count',
-          type: 'quantitative'
-        }
+        xError: {field: 'count'}
       };
 
       for (const m of PRIMITIVE_MARKS) {
@@ -237,8 +234,7 @@ describe('channel', () => {
           type: 'quantitative'
         },
         yError: {
-          field: 'count',
-          type: 'quantitative'
+          field: 'count'
         }
       };
 
