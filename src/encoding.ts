@@ -51,16 +51,22 @@ import {keys, some} from './util';
 export interface Encoding<F extends Field> {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"`.
    */
   x?: PositionFieldDef<F> | ValueDef<number | 'width'>;
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"`.
    */
   y?: PositionFieldDef<F> | ValueDef<number | 'height'>;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"width"`.
    */
   // TODO: Ham need to add default behavior
   // `x2` cannot have type as it should have the same type as `x`
@@ -68,6 +74,8 @@ export interface Encoding<F extends Field> {
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
+   *
+   * The `value` of this channel can be a number or a string `"height"`.
    */
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
