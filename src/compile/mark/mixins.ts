@@ -7,7 +7,7 @@ import {
   isConditionalSelection,
   isFieldDef,
   isValueDef,
-  SecondaryRangeFieldDef,
+  SecondaryFieldDef,
   TypedFieldDef,
   ValueDef
 } from '../../fielddef';
@@ -356,7 +356,7 @@ export function centeredBandPosition(
 
 export function binPosition(
   fieldDef: TypedFieldDef<string>,
-  fieldDef2: ValueDef | SecondaryRangeFieldDef<string>,
+  fieldDef2: ValueDef | SecondaryFieldDef<string>,
   channel: 'x' | 'y',
   scaleName: string,
   spacing: number,

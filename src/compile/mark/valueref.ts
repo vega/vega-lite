@@ -18,7 +18,7 @@ import {
   isFieldDef,
   isTypedFieldDef,
   isValueDef,
-  SecondaryRangeFieldDef,
+  SecondaryFieldDef,
   title,
   TypedFieldDef,
   vgField
@@ -128,7 +128,7 @@ export function bandRef(scaleName: string, band: number | boolean = true): VgVal
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: SecondaryRangeFieldDef<string>) {
+function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: SecondaryFieldDef<string>) {
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -146,7 +146,7 @@ function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldD
 export function midPoint(
   channel: Channel,
   channelDef: ChannelDef,
-  channel2Def: ChannelDef<SecondaryRangeFieldDef<string>>,
+  channel2Def: ChannelDef<SecondaryFieldDef<string>>,
   scaleName: string,
   scale: ScaleComponent,
   stack: StackProperties,
@@ -215,7 +215,7 @@ export function tooltipForEncoding(encoding: Encoding<string>, config: Config) {
   const keyValues: string[] = [];
   const usedKey = {};
 
-  function add(fieldDef: TypedFieldDef<string> | SecondaryRangeFieldDef<string>, channel: Channel) {
+  function add(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
     if (channel !== mainChannel) {
       fieldDef = {

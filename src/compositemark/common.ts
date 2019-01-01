@@ -9,7 +9,7 @@ import {
   isContinuous,
   isFieldDef,
   PositionFieldDef,
-  SecondaryRangeFieldDef
+  SecondaryFieldDef
 } from '../fielddef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
@@ -117,7 +117,7 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
   const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryRangeFieldDef<string>;
+  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
   const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
   const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
 

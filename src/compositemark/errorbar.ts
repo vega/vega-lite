@@ -2,14 +2,7 @@ import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {
-  Field,
-  FieldDefWithoutScale,
-  isContinuous,
-  isFieldDef,
-  PositionFieldDef,
-  SecondaryRangeFieldDef
-} from '../fielddef';
+import {Field, FieldDefWithoutScale, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
@@ -196,7 +189,7 @@ function errorBarOrientAndInputType(
       // having both xError and yError
       throw new Error(compositeMark + ' cannot have both xError and yError with both are quantiative');
     } else if (isFieldDef(xError)) {
-      if (isContinuous(xError) && isFieldDef(x) && isContinuous(x)) {
+      if (isFieldDef(x) && isContinuous(x)) {
         // having x and xError that are all quantitative
         return {orient: 'horizontal', inputType: 'aggregated-error'};
       } else {
@@ -204,7 +197,7 @@ function errorBarOrientAndInputType(
         throw new Error('All x, xError, and xError2 (if exist) have to be quantitative');
       }
     } else if (isFieldDef(yError)) {
-      if (isContinuous(yError) && isFieldDef(y) && isContinuous(y)) {
+      if (isFieldDef(y) && isContinuous(y)) {
         // having y and yError that are all quantitative
         return {orient: 'vertical', inputType: 'aggregated-error'};
       } else {
@@ -354,9 +347,9 @@ function errorBarAggregationAndCalculation<
 >(
   markDef: MD,
   continuousAxisChannelDef: PositionFieldDef<string>,
-  continuousAxisChannelDef2: SecondaryRangeFieldDef<string>,
+  continuousAxisChannelDef2: SecondaryFieldDef<string>,
   continuousAxisChannelDefError: FieldDefWithoutScale<string>,
-  continuousAxisChannelDefError2: SecondaryRangeFieldDef<string>,
+  continuousAxisChannelDefError2: SecondaryFieldDef<string>,
   inputType: ErrorInputType,
   compositeMark: M,
   config: Config

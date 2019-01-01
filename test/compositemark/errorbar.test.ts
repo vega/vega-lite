@@ -1012,42 +1012,6 @@ describe('normalizeErrorBar with aggregated error input', () => {
     }).toThrow();
   });
 
-  it('should produce an error if error are aggregated for horizontal errorbar and one of x, xError, or xError2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            xError: {field: 'people_error', type: 'ordinal'},
-            xError2: {field: 'people_error2', type: 'quantitative'},
-            y: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
-  it('should produce an error if error are aggregated for vertical errorbar and one of y, yError, or yError2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            y: {field: 'age', type: 'quantitative'},
-            yError: {field: 'people_error', type: 'ordinal'},
-            yError2: {field: 'people_error2', type: 'quantitative'},
-            x: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
   it(
     'should produce a warning if the second continuous axis has aggregate property',
     log.wrap(localLogger => {

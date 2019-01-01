@@ -34,7 +34,7 @@
           "scale": {"zero": false},
           "title": "yield"
         },
-        "xError": {"field": "yield_error", "type": "quantitative"},
+        "xError": {"field": "yield_error"},
         "y": {"field": "variety", "type": "ordinal"}
       }
     },
