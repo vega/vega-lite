@@ -35,13 +35,12 @@ export abstract class SpecMapper<
     throw new Error(log.message.INVALID_SPEC);
   }
 
-  public abstract mapUnit(spec: UI, params: P): UO;
-  protected mapLayer(spec: LI, params: P): GenericLayerSpec<UO> {
-    const {layer, ...rest} = spec;
+  public abstract mapUnit(spec: UI, params: P): UO | GenericLayerSpec<UO>;
 
+  protected mapLayer(spec: LI, params: P): GenericLayerSpec<UO> {
     return {
-      ...rest,
-      layer: layer.map(subspec => this.mapLayerOrUnit(subspec, params))
+      ...spec,
+      layer: spec.layer.map(subspec => this.mapLayerOrUnit(subspec, params))
     };
   }
 

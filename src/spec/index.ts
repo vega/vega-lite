@@ -19,7 +19,6 @@ import {GenericRepeatSpec, isRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
 
-export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {
   GenericHConcatSpec,

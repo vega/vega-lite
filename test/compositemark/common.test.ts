@@ -1,6 +1,7 @@
 /* tslint:disable:quotemark */
 import {isMarkDef, MarkDef} from '../../src/mark';
-import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/normalize/index';
+import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {defaultConfig} from '.././../src/config';
 
 describe('common feature of composite marks', () => {

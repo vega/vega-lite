@@ -4,10 +4,12 @@ import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import {PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, getFirstDefined, keys} from '../util';
 import {Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -73,9 +75,11 @@ export interface BoxPlotConfigMixins {
   boxplot?: BoxPlotConfig;
 }
 
+export const boxPlotNormalizer = new CompositeMarkNormalizer(BOXPLOT, normalizeBoxPlot);
+
 export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
-  config: Config
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
   // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
