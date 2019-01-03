@@ -14,11 +14,13 @@ import {
 } from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, titlecase} from '../util';
 import {Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -119,9 +121,11 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
+export const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normalizeErrorBar);
+
 export function normalizeErrorBar(
   spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>,
-  config: Config
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
   const {
     transform,

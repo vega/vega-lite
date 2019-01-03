@@ -140,7 +140,7 @@ export interface BarBinSpacingMixins {
 
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
-export function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef {
+export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
   return mark['type'];
 }
 
@@ -337,21 +337,14 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef
-  extends GenericMarkDef<Mark>,
+export interface MarkDef<M extends string | Mark = Mark>
+  extends GenericMarkDef<M>,
     BarBinSpacingMixins,
     MarkConfig,
     PointOverlayMixins,
     LineOverlayMixins,
     TickThicknessMixins,
-    MarkDefMixins {
-  /**
-   * The mark type.
-   * One of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
-   * `"area"`, `"point"`, `"geoshape"`, `"rule"`, and `"text"`.
-   */
-  type: Mark;
-}
+    MarkDefMixins {}
 
 export const defaultBarConfig: BarConfig = {
   binSpacing: 1,
@@ -378,3 +371,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
 export const defaultTickConfig: TickConfig = {
   thickness: 1
 };
+
+export function getMarkType(m: string | GenericMarkDef<any>) {
+  return isMarkDef(m) ? m.type : m;
+}

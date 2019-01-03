@@ -6,10 +6,10 @@ import {Model} from '../src/compile/model';
 import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
+import {normalize} from '../src/normalize/index';
 import {
   isLayerSpec,
   isUnitSpec,
-  normalize,
   NormalizedConcatSpec,
   NormalizedFacetSpec,
   NormalizedLayerSpec,
