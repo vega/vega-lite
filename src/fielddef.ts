@@ -213,7 +213,7 @@ export interface GenericBinMixins<B> {
   bin?: B;
 }
 
-export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned'>;
+export type BaseBinMixins = GenericBinMixins<boolean | BinParams | 'binned' | null>;
 export type BinWithoutBinnedMixins = GenericBinMixins<boolean | BinParams>;
 
 export interface FieldDefBase<F> extends BaseBinMixins {
@@ -273,10 +273,7 @@ export interface TypeMixins<T extends Type> {
 /**
  *  Definition object for a data field, its type and transformation of an encoding channel.
  */
-export interface TypedFieldDef<F extends Field, T extends Type = Type>
-  extends FieldDefBase<F>,
-    TitleMixins,
-    TypeMixins<T> {}
+export type TypedFieldDef<F extends Field, T extends Type = Type> = FieldDefBase<F> & TitleMixins & TypeMixins<T>;
 
 export interface SortableFieldDef<F extends Field, T extends Type = StandardType> extends TypedFieldDef<F, T> {
   /**
@@ -323,7 +320,10 @@ export type SecondaryFieldDef<F extends Field> = FieldDefBase<F> & TitleMixins;
 export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T> &
   BinWithoutBinnedMixins;
 
-export type LatLongFieldDef<F extends Field> = FieldDefWithoutScale<F, 'quantitative'>;
+export type LatLongFieldDef<F extends Field> = FieldDefBase<F> &
+  TitleMixins &
+  Partial<TypeMixins<'quantitative'>> &
+  GenericBinMixins<null>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 export interface PositionFieldDef<F extends Field> extends ScaleFieldDef<F> {
   /**
