@@ -3,7 +3,7 @@ import {Field} from '../fielddef';
 import {Projection} from '../projection';
 import {Resolve} from '../resolve';
 import {BaseSpec, LayerUnitMixins} from './base';
-import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
+import {ExtendedUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
@@ -25,7 +25,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 /**
  * Layer Spec with `encoding` and `projection` shorthands that will be applied to underlying unit (single-view) specifications.
  */
-export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
+export interface ExtendedLayerSpec extends GenericLayerSpec<ExtendedUnitSpec> {
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */

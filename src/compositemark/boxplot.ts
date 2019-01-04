@@ -1,8 +1,7 @@
 import {isNumber, isObject} from 'vega-util';
-import {Channel} from '../channel';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {PositionFieldDef} from '../fielddef';
+import {Field, PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
@@ -13,13 +12,16 @@ import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
   CompositeMarkTooltipSummary,
-  filterUnsupportedChannels,
   GenericCompositeMarkDef,
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
   partLayerMixins,
   PartsMixins
 } from './common';
+
+export type BoxPlotUnitSpec<
+  EE = {} // extra encoding parameter (for faceted composite unit spec)
+> = GenericUnitSpec<BoxPlotEncoding<Field> & EE, BoxPlot | BoxPlotDef>;
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -68,6 +70,8 @@ export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
     orient?: Orient;
   };
 
+export type BoxPlotEncoding<F extends Field> = Pick<Encoding<F>, 'x' | 'y' | 'color' | 'detail' | 'opacity' | 'size'>;
+
 export interface BoxPlotConfigMixins {
   /**
    * Box Config
@@ -75,14 +79,10 @@ export interface BoxPlotConfigMixins {
   boxplot?: BoxPlotConfig;
 }
 
-const boxPlotSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
-
 export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
   config: Config
 ): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
-
   // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};

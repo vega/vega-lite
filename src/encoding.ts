@@ -81,28 +81,6 @@ export interface Encoding<F extends Field> {
   y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'>;
 
   /**
-   * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  xError?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  // `xError2` cannot have type as it should have the same type as `xError`
-  xError2?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  yError?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  // `yError2` cannot have type as it should have the same type as `yError`
-  yError2?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
    * Longitude position of geographically projected marks.
    */
   longitude?: LatLongFieldDef<F>;

@@ -1,7 +1,6 @@
 import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
-import {Channel} from '../channel';
-import {Encoding, fieldDefs, reduce} from '../encoding';
+import {Encoding, fieldDefs} from '../encoding';
 import {
   Field,
   FieldDefBase,
@@ -15,6 +14,7 @@ import {
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {StandardType} from '../type';
 import {Orient} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
@@ -154,7 +154,13 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   orient: Orient,
   compositeMark: M
-) {
+): {
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxisChannelDef2: SecondaryFieldDef<string>;
+  continuousAxisChannelDefError: FieldDefWithoutScale<string, StandardType>;
+  continuousAxisChannelDefError2: FieldDefWithoutScale<string, StandardType>;
+  continuousAxis: 'x' | 'y';
+} {
   const {encoding} = spec;
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
@@ -222,26 +228,4 @@ export function compositeMarkOrient<M extends CompositeMark>(
     // Neither x nor y is continuous.
     throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
   }
-}
-
-export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
-  spec: GenericUnitSpec<Encoding<string>, M | MD>,
-  supportedChannels: Channel[],
-  compositeMark: M
-): GenericUnitSpec<Encoding<string>, M | MD> {
-  return {
-    ...spec,
-    encoding: reduce(
-      spec.encoding,
-      (newEncoding, fieldDef, channel) => {
-        if (supportedChannels.indexOf(channel) > -1) {
-          newEncoding[channel] = fieldDef;
-        } else {
-          log.warn(log.message.incompatibleChannel(channel, compositeMark));
-        }
-        return newEncoding;
-      },
-      {}
-    )
-  };
 }
