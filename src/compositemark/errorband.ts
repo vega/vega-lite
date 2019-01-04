@@ -1,12 +1,17 @@
 import {Config} from '../config';
 import {Encoding} from '../encoding';
+import {Field} from '../fielddef';
 import * as log from '../log';
 import {MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
 import {Interpolate, Orient} from '../vega.schema';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
-import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
+import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
+
+export type ErrorBandUnitSpec<
+  EE = {} // extra encoding parameter (for faceted composite unit spec)
+> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;

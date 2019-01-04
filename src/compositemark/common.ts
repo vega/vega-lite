@@ -1,7 +1,6 @@
 import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
-import {Channel} from '../channel';
-import {Encoding, fieldDefs, reduce} from '../encoding';
+import {Encoding, fieldDefs} from '../encoding';
 import {
   Field,
   FieldDefBase,
@@ -222,26 +221,4 @@ export function compositeMarkOrient<M extends CompositeMark>(
     // Neither x nor y is continuous.
     throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
   }
-}
-
-export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
-  spec: GenericUnitSpec<Encoding<string>, M | MD>,
-  supportedChannels: Channel[],
-  compositeMark: M
-): GenericUnitSpec<Encoding<string>, M | MD> {
-  return {
-    ...spec,
-    encoding: reduce(
-      spec.encoding,
-      (newEncoding, fieldDef, channel) => {
-        if (supportedChannels.indexOf(channel) > -1) {
-          newEncoding[channel] = fieldDef;
-        } else {
-          log.warn(log.message.incompatibleChannel(channel, compositeMark));
-        }
-        return newEncoding;
-      },
-      {}
-    )
-  };
 }

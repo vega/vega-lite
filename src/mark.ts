@@ -145,7 +145,7 @@ export function isMarkDef(mark: AnyMark): mark is MarkDef | CompositeMarkDef {
 
 const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
 
-export function isPrimitiveMark(mark: CompositeMark | CompositeMarkDef | Mark | MarkDef): mark is Mark {
+export function isPrimitiveMark(mark: AnyMark): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
   return markType in PRIMITIVE_MARK_INDEX;
 }

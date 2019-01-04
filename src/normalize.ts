@@ -18,9 +18,9 @@ import {
 } from './mark';
 import {Projection} from './projection';
 import {
-  CompositeUnitSpec,
   ExtendedLayerSpec,
-  FacetedCompositeUnitSpec,
+  ExtendedUnitSpec,
+  FacetedExtendedUnitSpec,
   GenericFacetSpec,
   GenericHConcatSpec,
   GenericRepeatSpec,
@@ -46,7 +46,7 @@ import {stack} from './stack';
 import {keys, omit, pick} from './util';
 
 export function normalizeTopLevelSpec(
-  spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec,
+  spec: TopLevelSpec | GenericSpec<ExtendedUnitSpec, ExtendedLayerSpec> | FacetedExtendedUnitSpec,
   config: Config
 ): TopLevel<NormalizedSpec> {
   return normalize(spec, config);
@@ -56,7 +56,7 @@ export function normalizeTopLevelSpec(
  * Decompose extended unit specs into composition of pure unit specs.
  */
 function normalize(
-  spec: GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec,
+  spec: GenericSpec<ExtendedUnitSpec, ExtendedLayerSpec> | FacetedExtendedUnitSpec,
   config: Config
 ): NormalizedSpec {
   if (isFacetSpec(spec)) {
@@ -87,7 +87,7 @@ function normalize(
 }
 
 function normalizeFacet(
-  spec: GenericFacetSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  spec: GenericFacetSpec<ExtendedUnitSpec, ExtendedLayerSpec>,
   config: Config
 ): NormalizedFacetSpec {
   const {spec: subspec, ...rest} = spec;
@@ -149,7 +149,7 @@ function normalizeLayer(
 }
 
 function normalizeRepeat(
-  spec: GenericRepeatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  spec: GenericRepeatSpec<ExtendedUnitSpec, ExtendedLayerSpec>,
   config: Config
 ): NormalizedRepeatSpec {
   const {spec: subspec, ...rest} = spec;
@@ -160,7 +160,7 @@ function normalizeRepeat(
 }
 
 function normalizeVConcat(
-  spec: GenericVConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  spec: GenericVConcatSpec<ExtendedUnitSpec, ExtendedLayerSpec>,
   config: Config
 ): NormalizedConcatSpec {
   const {vconcat: vconcat, ...rest} = spec;
@@ -171,7 +171,7 @@ function normalizeVConcat(
 }
 
 function normalizeHConcat(
-  spec: GenericHConcatSpec<CompositeUnitSpec, ExtendedLayerSpec>,
+  spec: GenericHConcatSpec<ExtendedUnitSpec, ExtendedLayerSpec>,
   config: Config
 ): NormalizedConcatSpec {
   const {hconcat: hconcat, ...rest} = spec;
@@ -181,7 +181,7 @@ function normalizeHConcat(
   };
 }
 
-function normalizeFacetedUnit(spec: FacetedCompositeUnitSpec, config: Config): NormalizedFacetSpec {
+function normalizeFacetedUnit(spec: FacetedExtendedUnitSpec, config: Config): NormalizedFacetSpec {
   // New encoding in the inside spec should not contain row / column
   // as row/column should be moved to facet
   const {row: row, column: column, ...encoding} = spec.encoding;
