@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if grep 'Generic.*Spec<' ./build/vega-lite-schema.json
+if grep 'Generic[^U].*Spec<' ./build/vega-lite-schema.json
 then
-  echo "Generic*Spec in the schema have not been replaced."
+  echo "Non-Unit Generic Spec in the schema have not been replaced."
   exit 1
 elif grep 'UnitSpec<Encoding' ./build/vega-lite-schema.json
 then

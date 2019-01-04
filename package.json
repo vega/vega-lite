@@ -41,7 +41,7 @@
     "deploy:gh": "scripts/deploy-gh.sh",
     "deploy:schema": "scripts/deploy-schema.sh",
     "preschema": "npm run prebuild",
-    "schema": "node --stack-size=2800 ./node_modules/.bin/ts-json-schema-generator --no-type-check --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
+    "schema": "node --stack-size=4000 ./node_modules/.bin/ts-json-schema-generator --no-type-check --path tsconfig.json --type TopLevelSpec > build/vega-lite-schema.json && npm run renameschema && cp build/vega-lite-schema.json _data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "npm run prebuild && npm run data && npm run build:site && npm run build:toc && npm run build:versions && scripts/create-example-pages",
     "site": "bundle exec jekyll serve --incremental",
