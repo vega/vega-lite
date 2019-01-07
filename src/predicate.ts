@@ -1,12 +1,8 @@
-import {isArray, isString} from 'vega-util';
-import {DataFlowNode} from './compile/data/dataflow';
-import {Model} from './compile/model';
-import {selectionPredicate} from './compile/selection/selection';
+import {isArray} from 'vega-util';
 import {DateTime} from './datetime';
 import {valueExpr, vgField} from './fielddef';
 import {LogicalOperand} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit} from './timeunit';
-import {logicalExpr} from './util';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
@@ -177,23 +173,6 @@ export function isFieldPredicate(
     isFieldLTEPredicate(predicate) ||
     isFieldGTEPredicate(predicate)
   );
-}
-
-/**
- * Converts a predicate into an expression.
- */
-// model is only used for selection filters.
-export function expression(model: Model, filterOp: LogicalOperand<Predicate>, node?: DataFlowNode): string {
-  return logicalExpr(filterOp, (predicate: Predicate) => {
-    if (isString(predicate)) {
-      return predicate;
-    } else if (isSelectionPredicate(predicate)) {
-      return selectionPredicate(model, predicate.selection, node);
-    } else {
-      // Filter Object
-      return fieldFilterExpression(predicate);
-    }
-  });
 }
 
 function predicateValueExpr(v: number | string | boolean | DateTime, timeUnit: TimeUnit) {

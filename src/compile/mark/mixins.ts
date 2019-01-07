@@ -13,11 +13,11 @@ import {
 } from '../../fielddef';
 import * as log from '../../log';
 import {isPathMark, MarkDef} from '../../mark';
-import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
+import {expression} from '../predicate';
 import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';

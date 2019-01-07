@@ -1,5 +1,5 @@
+import {expression} from '../src/compile/predicate';
 import {
-  expression,
   fieldFilterExpression,
   isFieldEqualPredicate,
   isFieldLTEPredicate,
