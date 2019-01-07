@@ -17,8 +17,7 @@ import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleDomain} from './domain';
-import {parseScaleProperty} from './properties';
-import {parseScaleRange} from './range';
+import {parseScaleProperty, parseScaleRange} from './properties';
 import {scaleType} from './type';
 
 export function parseScale(model: Model) {

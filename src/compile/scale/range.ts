@@ -38,12 +38,10 @@ import {
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
-import {isUnitModel, Model} from '../model';
 import {evalOrMakeSignalRefComponent, SignalRefComponent} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {parseNonUnitScaleProperty} from './properties';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'rangeStep', 'scheme'];
 
@@ -51,15 +49,7 @@ function getSizeType(channel: ScaleChannel) {
   return channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
 }
 
-export function parseScaleRange(model: Model) {
-  if (isUnitModel(model)) {
-    parseUnitScaleRange(model);
-  } else {
-    parseNonUnitScaleProperty(model, 'range');
-  }
-}
-
-function parseUnitScaleRange(model: UnitModel) {
+export function parseUnitScaleRange(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!

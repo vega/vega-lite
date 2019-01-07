@@ -24,7 +24,7 @@ import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
-import {parseScaleRange} from './range';
+import {parseUnitScaleRange} from './range';
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
   if (isUnitModel(model)) {
@@ -116,6 +116,15 @@ export function getDefaultValue(
   }
   // Otherwise, use scale config
   return scaleConfig[property];
+}
+
+// This method is here rather than in range.ts to avoid circular dependency.
+export function parseScaleRange(model: Model) {
+  if (isUnitModel(model)) {
+    parseUnitScaleRange(model);
+  } else {
+    parseNonUnitScaleProperty(model, 'range');
+  }
 }
 
 export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
