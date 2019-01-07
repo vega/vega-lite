@@ -354,6 +354,24 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
   };
 }
 
+export function markChannelCompatible(encoding: Encoding<string>, channel: Channel, mark: Mark) {
+  const markSupported = supportMark(channel, mark);
+  if (!markSupported) {
+    return false;
+  } else if (markSupported === 'binned') {
+    const primaryFieldDef = encoding[channel === 'x2' ? 'x' : 'y'];
+
+    // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
+    // has "binned" data and thus need x2/y2 to specify the bin-end field.
+    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && primaryFieldDef.bin === 'binned') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encoding<string> {
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
     if (!isChannel(channel)) {
@@ -362,7 +380,7 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
       return normalizedEncoding;
     }
 
-    if (!supportMark(encoding, channel, mark)) {
+    if (!markChannelCompatible(encoding, channel, mark)) {
       // Drop unsupported channel
       log.warn(log.message.incompatibleChannel(channel, mark));
       return normalizedEncoding;

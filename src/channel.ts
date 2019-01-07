@@ -3,13 +3,11 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {isBinned} from './bin';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
-import {isFieldDef} from './fielddef';
-import {CIRCLE, Mark, POINT, SQUARE, TICK} from './mark';
+import {Mark} from './mark';
 import {FacetMapping} from './spec/facet';
-import {contains, Flag, flagKeys} from './util';
+import {Flag, flagKeys} from './util';
 
 export namespace Channel {
   // Facet
@@ -292,7 +290,7 @@ export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
 
-export type SupportedMark = {[mark in Mark]?: boolean};
+export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};
 
 /**
  * Return whether a channel supports a particular mark type.
@@ -300,27 +298,16 @@ export type SupportedMark = {[mark in Mark]?: boolean};
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(encoding: Encoding<string>, channel: Channel, mark: Mark) {
-  if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
-    const primaryFieldDef = encoding[channel === X2 ? X : Y];
-    // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
-    // has "binned" data and thus need x2/y2 to specify the bin-end field.
-    if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return mark in getSupportedMark(channel);
-  }
+export function supportMark(channel: Channel, mark: Mark) {
+  return getSupportedMark(channel)[mark];
 }
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param channel
- * @return A dictionary mapping mark types to boolean values.
+ * @return A dictionary mapping mark types to 'always', 'binned', or undefined
  */
-export function getSupportedMark(channel: Channel): SupportedMark {
+function getSupportedMark(channel: Channel): SupportedMark {
   switch (channel) {
     case COLOR:
     case FILL:
@@ -339,18 +326,18 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case COLUMN:
       return {
         // all marks
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        rect: true,
-        line: true,
-        trail: true,
-        area: true,
-        text: true,
-        geoshape: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        rect: 'always',
+        line: 'always',
+        trail: 'always',
+        area: 'always',
+        text: 'always',
+        geoshape: 'always'
       };
     case X:
     case Y:
@@ -358,44 +345,48 @@ export function getSupportedMark(channel: Channel): SupportedMark {
     case LONGITUDE:
       return {
         // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        rect: true,
-        line: true,
-        trail: true,
-        area: true,
-        text: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        rect: 'always',
+        line: 'always',
+        trail: 'always',
+        area: 'always',
+        text: 'always'
       };
     case X2:
     case Y2:
     case LATITUDE2:
     case LONGITUDE2:
       return {
-        rule: true,
-        bar: true,
-        rect: true,
-        area: true
+        rule: 'always',
+        bar: 'always',
+        rect: 'always',
+        area: 'always',
+        circle: 'binned',
+        point: 'binned',
+        square: 'binned',
+        tick: 'binned'
       };
     case SIZE:
       return {
-        point: true,
-        tick: true,
-        rule: true,
-        circle: true,
-        square: true,
-        bar: true,
-        text: true,
-        line: true,
-        trail: true
+        point: 'always',
+        tick: 'always',
+        rule: 'always',
+        circle: 'always',
+        square: 'always',
+        bar: 'always',
+        text: 'always',
+        line: 'always',
+        trail: 'always'
       };
     case SHAPE:
-      return {point: true, geoshape: true};
+      return {point: 'always', geoshape: 'always'};
     case TEXT:
-      return {text: true};
+      return {text: 'always'};
     case XERROR:
     case YERROR:
     case XERROR2:
