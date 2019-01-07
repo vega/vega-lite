@@ -15,7 +15,8 @@ import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} fro
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
-import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
+import {mergeTitleComponent, numberFormat} from '../common';
+import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';

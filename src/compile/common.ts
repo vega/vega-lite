@@ -8,18 +8,15 @@ import {
   isTimeFieldDef,
   OrderFieldDef,
   TypedFieldDef,
-  ValueDef,
   vgField
 } from '../fielddef';
-import {GuideEncodingEntry} from '../guide';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {getFirstDefined, keys, stringify} from '../util';
-import {VgCompare, VgEncodeChannel, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {getFirstDefined, stringify} from '../util';
+import {VgCompare, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
-import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
@@ -247,14 +244,4 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
   throw new Error('It should never reach here');
-}
-
-export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
-  return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
-    const valueDef = encoding[channel];
-    return {
-      ...encode,
-      ...wrapCondition(model, valueDef, channel, (x: ValueDef) => ({value: x.value}))
-    };
-  }, {});
 }
