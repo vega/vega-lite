@@ -1,6 +1,5 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Channel, isScaleChannel} from '../channel';
 import {Config, StyleConfigIndex, ViewConfig} from '../config';
 import {
   FieldDefBase,
@@ -17,7 +16,7 @@ import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, getFirstDefined, keys, stringify} from '../util';
+import {getFirstDefined, keys, stringify} from '../util';
 import {VgCompare, VgEncodeChannel, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {wrapCondition} from './mark/mixins';
@@ -248,20 +247,6 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
   throw new Error('It should never reach here');
-}
-
-/**
- * Checks whether a fieldDef for a particular channel requires a computed bin range.
- */
-export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Channel) {
-  if (!isBinning(fieldDef.bin)) {
-    console.warn('Only use this method with binned field defs');
-    return false;
-  }
-
-  // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
-  // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
 }
 
 export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {

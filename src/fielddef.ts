@@ -4,7 +4,7 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {isAggregateOp, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, BinParams, binToString, isBinned, isBinning} from './bin';
-import {Channel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeExpr, isDateTime} from './datetime';
@@ -942,4 +942,18 @@ export function valueArray(fieldDef: TypedFieldDef<string>, values: (number | st
     // otherwise just return the original value
     return v;
   });
+}
+
+/**
+ * Checks whether a fieldDef for a particular channel requires a computed bin range.
+ */
+export function binRequiresRange(fieldDef: TypedFieldDef<string>, channel: Channel) {
+  if (!isBinning(fieldDef.bin)) {
+    console.warn('Only use this method with binned field defs');
+    return false;
+  }
+
+  // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
+  // We could check whether the axis or legend exists (not disabled) but that seems overkill.
+  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
 }

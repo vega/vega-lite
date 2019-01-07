@@ -8,6 +8,7 @@ import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
 import {Encoding, forEach} from '../../encoding';
 import {
+  binRequiresRange,
   ChannelDef,
   ChannelDefWithCondition,
   FieldDef,
@@ -30,7 +31,7 @@ import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, some} from '../../util';
 import {VgValueRef} from '../../vega.schema';
-import {binRequiresRange, formatSignalRef} from '../common';
+import {formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale

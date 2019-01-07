@@ -1,7 +1,13 @@
-import {CHANNELS, isScaleChannel, NONPOSITION_SCALE_CHANNELS, rangeType, SCALE_CHANNELS, SINGLE_DEF_CHANNELS, UNIT_CHANNELS} from '../src/channel';
-import {without} from '../src/util';
+import {
+  CHANNELS,
+  isScaleChannel,
+  NONPOSITION_SCALE_CHANNELS,
+  rangeType,
+  SCALE_CHANNELS,
+  SINGLE_DEF_CHANNELS,
   UNIT_CHANNELS
 } from '../src/channel';
+import {without} from '../src/util';
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {

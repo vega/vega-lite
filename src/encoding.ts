@@ -2,9 +2,9 @@ import {isArray} from 'vega-util';
 import {isAggregateOp} from './aggregate';
 import {isBinning} from './bin';
 import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
-import {binRequiresRange} from './compile/common';
 import {Config} from './config';
 import {
+  binRequiresRange,
   ChannelDef,
   ColorFieldDefWithCondition,
   ColorValueDefWithCondition,

@@ -4,7 +4,7 @@ import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
-import {ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
+import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {EncodingSortField, isSortArray, isSortField} from '../../sort';
@@ -22,7 +22,6 @@ import {
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
-import {binRequiresRange} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
