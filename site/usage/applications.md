@@ -17,7 +17,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
 - [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
-- [Vega Preview](https://marketplace.visualstudio.com/items?itemName=mdk.vega-preview), a Visual Studio Code extension for viewing Vega and Vega-Lite visualizations.
+- [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer) and [Vega Preview](https://marketplace.visualstudio.com/items?itemName=mdk.vega-preview), Visual Studio Code extensions for viewing Vega and Vega-Lite visualizations.
 
 ## Plug-ins for Vega-Lite
 
