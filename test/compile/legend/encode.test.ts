@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {SignalRef} from '../../../node_modules/vega';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';
@@ -28,9 +27,9 @@ describe('compile/legend', () => {
         COLOR,
         symbolLegend
       );
-      assert.deepEqual(symbol.fill, {value: 'transparent'});
-      assert.isUndefined((symbol || {}).strokeDash);
-      assert.isUndefined((symbol || {}).strokeDashOffset);
+      expect(symbol.fill).toEqual({value: 'transparent'});
+      expect((symbol || {}).strokeDash).not.toBeDefined();
+      expect((symbol || {}).strokeDashOffset).not.toBeDefined();
     });
 
     it('should have fill if a color encoding exists', () => {
@@ -51,8 +50,8 @@ describe('compile/legend', () => {
         SIZE,
         symbolLegend
       );
-      assert.deepEqual(symbol.fill, {value: 'black'});
-      assert.deepEqual(symbol.fillOpacity, {value: 0.3});
+      expect(symbol.fill).toEqual({value: 'black'});
+      expect(symbol.fillOpacity).toEqual({value: 0.3});
     });
 
     it('should return specific symbols.shape.value if user has specified', () => {
@@ -62,14 +61,14 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'},
+            color: {field: 'a', type: 'nominal'},
             shape: {value: 'square'}
           }
         }),
         COLOR,
         symbolLegend
       );
-      assert.deepEqual(symbol.shape['value'], 'square');
+      expect(symbol.shape['value']).toEqual('square');
     });
 
     it('should have default opacity', () => {
@@ -79,13 +78,13 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'}
+            color: {field: 'a', type: 'nominal'}
           }
         }),
         COLOR,
         symbolLegend
       );
-      assert.deepEqual(symbol.opacity['value'], 0.7); // default opacity is 0.7.
+      expect(symbol.opacity['value']).toEqual(0.7); // default opacity is 0.7.
     });
 
     it('should return the maximum value when there is a condition', () => {
@@ -95,7 +94,7 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'nominal'},
+            color: {field: 'a', type: 'nominal'},
             opacity: {
               condition: {selection: 'brush', value: 1},
               value: 0
@@ -105,7 +104,7 @@ describe('compile/legend', () => {
         COLOR,
         symbolLegend
       );
-      assert.deepEqual(symbol.opacity['value'], 1);
+      expect(symbol.opacity['value']).toEqual(1);
     });
   });
 
@@ -117,14 +116,14 @@ describe('compile/legend', () => {
         parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'a', type: 'quantitative'}
+            color: {field: 'a', type: 'nominal'}
           }
         }),
         COLOR,
         gradientLegend
       );
 
-      assert.deepEqual(gradient.opacity['value'], 0.7); // default opacity is 0.7.
+      expect(gradient.opacity['value']).toEqual(0.7); // default opacity is 0.7.
     });
   });
 
@@ -141,7 +140,7 @@ describe('compile/legend', () => {
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
       const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
       const expected = `timeFormat(datum.value, '%b')`;
-      assert.deepEqual((label.text as SignalRef).signal, expected);
+      expect((label.text as SignalRef).signal).toEqual(expected);
     });
 
     it('should return correct expression for the timeUnit: TimeUnit.QUARTER', () => {
@@ -156,7 +155,7 @@ describe('compile/legend', () => {
       const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
       const label = encode.labels(fieldDef, {}, model, COLOR, gradientLegend);
       const expected = `'Q' + quarter(datum.value)`;
-      assert.deepEqual((label.text as SignalRef).signal, expected);
+      expect((label.text as SignalRef).signal).toEqual(expected);
     });
   });
 });

@@ -6,6 +6,7 @@ permalink: /docs/circle.html
 ---
 
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -19,9 +20,11 @@ permalink: /docs/circle.html
 `circle` mark is similar to [`point`](point.html) mark, except that (1) the `shape` value is always set to `circle` (2) they are filled by default.
 
 {:#properties}
+
 ## Circle Mark Properties
 
 {: .suppress-error}
+
 ```json
 // Single View Specification
 {
@@ -39,7 +42,6 @@ A circle mark definition can contain any [standard mark properties](mark.html#ma
 
 {% include table.html props="size" source="MarkDef" %}
 
-
 ## Examples
 
 ### Scatterplot with Circle
@@ -49,9 +51,11 @@ Here is an example scatter plot with `circle` marks:
 <span class="vl-example" data-name="circle"></span>
 
 {:#config}
+
 ## Circle Config
 
 {: .suppress-error}
+
 ```json
 // Top-level View Specification
 {
@@ -63,6 +67,6 @@ Here is an example scatter plot with `circle` marks:
 }
 ```
 
-The `circle` property of the top-level [`config`](config.html) object sets the default properties for all circle marks.  If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
+The `circle` property of the top-level [`config`](config.html) object sets the default properties for all circle marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The circle config can contain any [circle mark properties](#properties) (except `type`, `style`, and `clip`).

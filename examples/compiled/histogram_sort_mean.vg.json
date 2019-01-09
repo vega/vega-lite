@@ -21,7 +21,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
@@ -43,7 +43,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
           },
           "x": {"scale": "x", "field": "mean_Horsepower"},
           "x2": {"scale": "x", "value": 0},

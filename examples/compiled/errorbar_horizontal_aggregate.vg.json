@@ -45,11 +45,8 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
@@ -67,7 +64,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"], \"Max of people\": format(datum[\"max_people\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\"), \"Max of people\": format(datum[\"max_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "min_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -90,7 +87,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"min_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"min_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "min_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -114,7 +111,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"max_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"max_people\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "max_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -145,7 +142,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"mean_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mean_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "mean_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
@@ -180,8 +177,8 @@
         "sort": true
       },
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

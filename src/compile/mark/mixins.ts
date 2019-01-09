@@ -1,23 +1,23 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, NonPositionScaleChannel, SCALE_CHANNELS, ScaleChannel, X, X2, Y2} from '../../channel';
-import {fieldDefs} from '../../encoding';
 import {
   ChannelDef,
-  FieldDef,
-  getFieldDef,
+  getTypedFieldDef,
   isConditionalSelection,
   isFieldDef,
   isValueDef,
+  SecondaryFieldDef,
+  TypedFieldDef,
   ValueDef
 } from '../../fielddef';
 import * as log from '../../log';
 import {isPathMark, MarkDef} from '../../mark';
-import {expression} from '../../predicate';
 import {hasContinuousDomain} from '../../scale';
 import {contains, Dict, getFirstDefined, keys} from '../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../vega.schema';
 import {getMarkConfig} from '../common';
+import {expression} from '../predicate';
 import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
@@ -236,9 +236,9 @@ export function nonPosition(
  */
 export function wrapCondition(
   model: UnitModel,
-  channelDef: ChannelDef<string>,
+  channelDef: ChannelDef,
   vgChannel: string,
-  refFn: (cDef: ChannelDef<string>) => VgValueRef
+  refFn: (cDef: ChannelDef) => VgValueRef
 ): VgEncodeEntry {
   const condition = channelDef && channelDef.condition;
   const valueRef = refFn(channelDef);
@@ -264,13 +264,18 @@ export function tooltip(model: UnitModel) {
   const {encoding, markDef, config} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: ref.tooltipForChannelDefs(channelDef, config)};
+    return {tooltip: ref.tooltipForEncoding({tooltip: channelDef}, config)};
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
       const tooltipRefFromChannelDef = ref.text(cDef, model.config);
       if (tooltipRefFromChannelDef) {
         return tooltipRefFromChannelDef;
+      }
+
+      if (cDef === null) {
+        // Allow using encoding.tooltip = null to disable tooltip
+        return undefined;
       }
 
       // If tooltipDef does not exist, then use value from markDef or config
@@ -280,7 +285,7 @@ export function tooltip(model: UnitModel) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return ref.tooltipForChannelDefs(fieldDefs(encoding), config);
+          return ref.tooltipForEncoding(encoding, config);
         } else {
           return {signal: 'datum'};
         }
@@ -296,7 +301,7 @@ export function text(model: UnitModel, channel: 'text' | 'href' = 'text') {
   return wrapCondition(model, channelDef, channel, cDef => ref.text(cDef, model.config));
 }
 
-export function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
+export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y', model: UnitModel) {
   const scaleName = model.scaleName(channel);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
@@ -309,7 +314,7 @@ export function bandPosition(fieldDef: FieldDef<string>, channel: 'x' | 'y', mod
         [channel + 'c']: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5})
       };
 
-      if (getFieldDef(model.encoding.size)) {
+      if (getTypedFieldDef(model.encoding.size)) {
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})
@@ -350,8 +355,8 @@ export function centeredBandPosition(
 }
 
 export function binPosition(
-  fieldDef: FieldDef<string>,
-  fieldDef2: ValueDef | FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
+  fieldDef2: ValueDef | SecondaryFieldDef<string>,
   channel: 'x' | 'y',
   scaleName: string,
   spacing: number,

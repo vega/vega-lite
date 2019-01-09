@@ -20,20 +20,20 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 21},
-    {"name": "concat_0_y_step", "value": 21},
+    {"name": "concat_0_width", "value": 20},
+    {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
       "update": "bandspace(domain('concat_0_y').length, 1, 0.5) * concat_0_y_step"
     },
-    {"name": "concat_1_width", "value": 21},
-    {"name": "concat_1_y_step", "value": 21},
+    {"name": "concat_1_width", "value": 20},
+    {"name": "concat_1_y_step", "value": 20},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 1, 0.5) * concat_1_y_step"
     },
-    {"name": "concat_2_width", "value": 21},
-    {"name": "concat_2_y_step", "value": 21},
+    {"name": "concat_2_width", "value": 20},
+    {"name": "concat_2_y_step", "value": 20},
     {
       "name": "concat_2_height",
       "update": "bandspace(domain('concat_2_y').length, 1, 0.5) * concat_2_y_step"
@@ -260,7 +260,9 @@
       "name": "concat_0_size",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 126.33333333333333, 243.66666666666666, 361],
+      "range": {
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+      },
       "zero": false
     },
     {

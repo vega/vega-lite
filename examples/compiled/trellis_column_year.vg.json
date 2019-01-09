@@ -35,7 +35,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "child_width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"

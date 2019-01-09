@@ -4,7 +4,7 @@ import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
-import {FieldDef, ScaleFieldDef, valueExpr, vgField} from '../../fielddef';
+import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {EncodingSortField, isSortArray, isSortField} from '../../sort';
@@ -22,7 +22,6 @@ import {
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
-import {binRequiresRange} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -130,7 +129,7 @@ function parseNonUnitScaleDomain(model: Model) {
  */
 function normalizeUnaggregatedDomain(
   domain: Domain,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig
 ) {
@@ -331,7 +330,8 @@ export function domainSort(
     return undefined;
   }
 
-  const fieldDef: ScaleFieldDef<string> = model.fieldDef(channel);
+  // save to cast as the only exception is the geojson type for shape, which would not generate a scale
+  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
   const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
@@ -376,7 +376,7 @@ export function domainSort(
  * 3. The scale is quantitative or time scale.
  */
 export function canUseUnaggregatedDomain(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
   if (!fieldDef.aggregate) {

@@ -1,5 +1,5 @@
-import {SCALE_CHANNELS, ScaleChannel, SHAPE, X, Y} from '../../channel';
-import {FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../../fielddef';
+import {SCALE_CHANNELS, ScaleChannel, SHAPE} from '../../channel';
+import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../fielddef';
 import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
@@ -17,8 +17,7 @@ import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 import {parseScaleDomain} from './domain';
-import {parseScaleProperty} from './properties';
-import {parseScaleRange} from './range';
+import {parseScaleProperty, parseScaleRange} from './properties';
 import {scaleType} from './type';
 
 export function parseScale(model: Model) {
@@ -46,7 +45,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const {encoding, config, mark} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
-    let fieldDef: FieldDef<string>;
+    let fieldDef: TypedFieldDef<string>;
     let specifiedScale: Scale | null;
 
     const channelDef = encoding[channel];
@@ -62,10 +61,6 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     } else if (hasConditionalFieldDef(channelDef)) {
       fieldDef = channelDef.condition;
       specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
-    } else if (channel === X) {
-      fieldDef = getFieldDef(encoding.x2);
-    } else if (channel === Y) {
-      fieldDef = getFieldDef(encoding.y2);
     }
 
     if (fieldDef && specifiedScale !== null && specifiedScale !== false) {

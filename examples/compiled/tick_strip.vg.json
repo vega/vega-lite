@@ -9,7 +9,7 @@
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}}
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
@@ -36,7 +36,7 @@
           },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"scale": "y", "field": "Cylinders"},
-          "height": {"value": 14},
+          "height": {"value": 15},
           "width": {"value": 1}
         }
       }

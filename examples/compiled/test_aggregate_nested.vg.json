@@ -66,7 +66,7 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
@@ -88,7 +88,7 @@
             {"scale": "color", "field": "properties\\.site"}
           ],
           "tooltip": {
-            "signal": "{\"Sum of properties.yield\": format(datum[\"sum_properties.yield\"], \"\"), \"properties.variety\": ''+datum[\"properties.variety\"], \"site\": ''+datum[\"properties.site\"]}"
+            "signal": "{\"properties.variety\": ''+datum[\"properties.variety\"], \"Sum of properties.yield\": format(datum[\"sum_properties.yield\"], \"\"), \"site\": ''+datum[\"properties.site\"]}"
           },
           "x": {"scale": "x", "field": "sum_properties\\.yield_end"},
           "x2": {"scale": "x", "field": "sum_properties\\.yield_start"},

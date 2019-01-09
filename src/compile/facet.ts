@@ -1,16 +1,16 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FacetFieldDef, FacetMapping} from '../facet';
-import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
+import {FacetFieldDef, FacetMapping} from '../spec/facet';
 import {contains} from '../util';
-import {isVgRangeStep, VgData, VgLayout, VgMarkGroup, VgSignal} from '../vega.schema';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -61,7 +61,7 @@ export class FacetModel extends ModelWithField {
     // clone to prevent side effect to the original spec
     return reduce(
       facet,
-      (normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) => {
+      (normalizedFacet, fieldDef: TypedFieldDef<string>, channel: Channel) => {
         if (!contains([ROW, COLUMN], channel)) {
           // Drop unsupported channel
           log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -85,7 +85,7 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): FieldDef<string> {
+  public fieldDef(channel: Channel): TypedFieldDef<string> {
     return this.facet[channel];
   }
 
@@ -176,11 +176,11 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public assembleSelectionTopLevelSignals(signals: any[]): VgSignal[] {
+  public assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[] {
     return this.child.assembleSelectionTopLevelSignals(signals);
   }
 
-  public assembleSelectionSignals(): VgSignal[] {
+  public assembleSelectionSignals(): NewSignal[] {
     this.child.assembleSelectionSignals();
     return [];
   }
@@ -230,7 +230,7 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  public assembleLayoutSignals(): VgSignal[] {
+  public assembleLayoutSignals(): NewSignal[] {
     // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
     return this.child.assembleLayoutSignals();
   }
@@ -248,7 +248,7 @@ export class FacetModel extends ModelWithField {
     }
   }
 
-  public assembleGroup(signals: VgSignal[]) {
+  public assembleGroup(signals: NewSignal[]) {
     if (this.parent && this.parent instanceof FacetModel) {
       // Provide number of columns for layout.
       // See discussion in https://github.com/vega/vega/issues/952

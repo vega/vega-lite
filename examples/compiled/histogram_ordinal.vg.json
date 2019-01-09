@@ -46,7 +46,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -68,7 +68,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating_range"},
           "width": {"scale": "x", "band": true},
@@ -116,7 +116,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

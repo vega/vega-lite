@@ -24,7 +24,7 @@
           "scale": {"zero": false},
           "title": "IMDB Rating"
         },
-        "x2": {"field": "bin_IMDB_Rating_end", "type": "quantitative"},
+        "x2": {"field": "bin_IMDB_Rating_end"},
         "y": {"field": "cumulative_count", "type": "quantitative"}
       }
     },
@@ -37,7 +37,7 @@
           "scale": {"zero": false},
           "title": "IMDB Rating"
         },
-        "x2": {"field": "bin_IMDB_Rating_end", "type": "quantitative"},
+        "x2": {"field": "bin_IMDB_Rating_end"},
         "y": {"field": "count", "type": "quantitative"}
       }
     }

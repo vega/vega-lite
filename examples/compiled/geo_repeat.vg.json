@@ -111,7 +111,7 @@
                 {"scale": "child_population_color", "field": "population"}
               ],
               "tooltip": {
-                "signal": "{\"population\": format(datum[\"population\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"population\": format(datum[\"population\"], \"\")}"
               }
             }
           },
@@ -155,7 +155,7 @@
                 {"scale": "child_engineers_color", "field": "engineers"}
               ],
               "tooltip": {
-                "signal": "{\"engineers\": format(datum[\"engineers\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"engineers\": format(datum[\"engineers\"], \"\")}"
               }
             }
           },
@@ -199,7 +199,7 @@
                 {"scale": "child_hurricanes_color", "field": "hurricanes"}
               ],
               "tooltip": {
-                "signal": "{\"hurricanes\": format(datum[\"hurricanes\"], \"\"), \"geo\": ''+datum[\"geo\"]}"
+                "signal": "{\"geo\": ''+datum[\"geo\"], \"hurricanes\": format(datum[\"hurricanes\"], \"\")}"
               }
             }
           },

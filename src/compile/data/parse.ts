@@ -14,7 +14,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, keys, mergeDeep} from '../../util';
+import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection/selection';
 import {AggregateNode} from './aggregate';
@@ -90,7 +90,7 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
-  model.transforms.forEach(t => {
+  for (const t of model.transforms) {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;
 
@@ -142,15 +142,15 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
-      return;
+      continue;
     }
 
     if (transformNode && derivedType !== undefined) {
-      for (const field of keys(transformNode.producedFields())) {
+      for (const field of transformNode.producedFields()) {
         ancestorParse.set(field, derivedType, false);
       }
     }
-  });
+  }
 
   return head;
 }

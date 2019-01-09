@@ -7,6 +7,8 @@ import {RepeatModel} from '../src/compile/repeat';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
 import {
+  isLayerSpec,
+  isUnitSpec,
   normalize,
   NormalizedConcatSpec,
   NormalizedFacetSpec,
@@ -16,8 +18,7 @@ import {
   TopLevel,
   TopLevelSpec
 } from '../src/spec';
-import {isLayerSpec, isUnitSpec} from '../src/spec';
-import {normalizeAutoSize} from '../src/toplevelprops';
+import {normalizeAutoSize} from '../src/spec/toplevel';
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);

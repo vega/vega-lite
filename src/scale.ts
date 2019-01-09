@@ -201,7 +201,7 @@ export interface ScaleConfig {
    * Default range step for band and point scales of (1) the `y` channel
    * and (2) the `x` channel when the mark is not `text`.
    *
-   * __Default value:__ `21`
+   * __Default value:__ `20`
    *
    * @minimum 0
    */
@@ -210,7 +210,9 @@ export interface ScaleConfig {
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
    *
-   * __Default value:__ `0.1`
+   * __Default value:__
+   * - `barBandPaddingInner` for bar marks (`0.1` by default)
+   * - `rectBandPaddingInner` for rect and other marks (`0` by default)
    *
    * @minimum 0
    * @maximum 1
@@ -219,11 +221,48 @@ export interface ScaleConfig {
 
   /**
    * Default outer padding for `x` and `y` band-ordinal scales.
+   *
    * If not specified, by default, band scale's paddingOuter is paddingInner/2.
    * @minimum 0
    * @maximum 1
    */
   bandPaddingOuter?: number;
+
+  /**
+   * Default inner padding for `x` and `y` band-ordinal scales of `"bar"` marks.
+   *
+   * __Default value:__ `0.1`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  barBandPaddingInner?: number;
+
+  /**
+   * Default outer padding for `x` and `y` band-ordinal scales of `"bar"` marks.
+   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * @minimum 0
+   * @maximum 1
+   */
+  barBandPaddingOuter?: number;
+
+  /**
+   * Default inner padding for `x` and `y` band-ordinal scales of `"rect"` marks.
+   *
+   * __Default value:__ `0`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  rectBandPaddingInner?: number;
+
+  /**
+   * Default outer padding for `x` and `y` band-ordinal scales of `"rect"` marks.
+   * If not specified, by default, band scale's paddingOuter is paddingInner/2.
+   * @minimum 0
+   * @maximum 1
+   */
+  rectBandPaddingOuter?: number;
 
   /**
    * Default padding for continuous scales.
@@ -369,9 +408,11 @@ export interface ScaleConfig {
 
 export const defaultScaleConfig = {
   textXRangeStep: 90,
-  rangeStep: 21,
+  rangeStep: 20,
   pointPadding: 0.5,
-  bandPaddingInner: 0.1,
+
+  barBandPaddingInner: 0.1,
+  rectBandPaddingInner: 0,
   facetSpacing: 16,
 
   minBandSize: 2,
@@ -436,8 +477,6 @@ export type SelectionDomain =
 
 export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionDomain;
 export type Scheme = string | SchemeParams;
-
-export type Range = number[] | string[] | string;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
   return scheme && !!scheme['name'];

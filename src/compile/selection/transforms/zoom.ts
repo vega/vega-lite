@@ -1,7 +1,7 @@
+import {NewSignal} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
 import {ScaleChannel, X, Y} from '../../../channel';
-import {VgSignal} from '../../../vega.schema';
 import {UnitModel} from '../../unit';
 import {BRUSH as INTERVAL_BRUSH} from '../interval';
 import {channelSignalName, positionalProjections, SelectionComponent} from '../selection';
@@ -76,7 +76,7 @@ function onDelta(
   selCmpt: SelectionComponent,
   channel: ScaleChannel,
   size: 'width' | 'height',
-  signals: VgSignal[]
+  signals: NewSignal[]
 ) {
   const name = selCmpt.name;
   const hasScales = scalesCompiler.has(selCmpt);

@@ -42,12 +42,12 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
     },
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
@@ -69,7 +69,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"time (hours)\": timeFormat(datum[\"hours_time\"], '%H'), \"time (day)\": timeFormat(datum[\"day_time\"], '%A'), \"Sum of count\": format(datum[\"sum_count\"], \"\")}"
+            "signal": "{\"time (day)\": timeFormat(datum[\"day_time\"], '%A'), \"time (hours)\": timeFormat(datum[\"hours_time\"], '%H'), \"Sum of count\": format(datum[\"sum_count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "hours_time"},
           "y": {"scale": "y", "field": "day_time"},

@@ -1,9 +1,8 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import {defaultConfig, initConfig} from '../src/config';
 import * as log from '../src/log';
 import {LocalLogger} from '../src/log';
-import {normalize, NormalizedSpec, TopLevel, TopLevelSpec} from '../src/spec';
+import {normalize, TopLevelSpec} from '../src/spec';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
@@ -24,7 +23,7 @@ describe('normalize()', () => {
         }
       };
       const config = initConfig(spec.config);
-      assert.deepEqual(normalize(spec, config), {
+      expect(normalize(spec, config)).toEqual({
         name: 'faceted',
         description: 'faceted spec',
         data: {url: 'data/movies.json'},
@@ -55,7 +54,7 @@ describe('normalize()', () => {
       };
 
       const config = initConfig(spec.config);
-      assert.deepEqual(normalize(spec, config), {
+      expect(normalize(spec, config)).toEqual({
         data: {url: 'data/movies.json'},
         facet: {
           row: {field: 'MPAA_Rating', type: 'ordinal'}
@@ -85,10 +84,7 @@ describe('normalize()', () => {
               layer: [
                 {
                   mark: 'errorbar',
-                  encoding: {
-                    x: {field: 'age', type: 'ordinal'},
-                    y: {field: 'people', type: 'quantitative'}
-                  }
+                  encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
                 },
                 {
                   mark: {type: 'point', opacity: 1, filled: true},
@@ -150,7 +146,13 @@ describe('normalize()', () => {
                       title: 'people'
                     },
                     y2: {field: 'upper_people', type: 'quantitative'},
-                    x: {field: 'age', type: 'ordinal'}
+                    x: {field: 'age', type: 'ordinal'},
+                    tooltip: [
+                      {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+                      {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+                      {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+                      {field: 'age', type: 'ordinal'}
+                    ]
                   }
                 }
               ]
@@ -195,7 +197,7 @@ describe('normalize()', () => {
         defaultConfig
       );
 
-      assert.deepEqual(output, {
+      expect(output).toEqual({
         data: {url: 'data/population.json'},
         layer: [
           {
@@ -254,19 +256,18 @@ describe('normalize()', () => {
           defaultConfig
         );
 
-        assert.equal(localLogger.warns.length, 2);
+        expect(localLogger.warns.length).toEqual(2);
 
-        assert.equal(
-          localLogger.warns[0],
+        expect(localLogger.warns[0]).toEqual(
           log.message.projectionOverridden({
             parentProjection: {type: 'mercator'},
             projection: {type: 'albersUsa'}
           })
         );
 
-        assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
+        expect(localLogger.warns[1]).toEqual(log.message.encodingOverridden(['x']));
 
-        assert.deepEqual(output, {
+        expect(output).toEqual({
           data: {url: 'data/population.json'},
           layer: [
             {
@@ -301,7 +302,7 @@ describe('normalize()', () => {
         config: {line: {point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -333,7 +334,7 @@ describe('normalize()', () => {
         }
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -364,7 +365,7 @@ describe('normalize()', () => {
         }
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -397,7 +398,7 @@ describe('normalize()', () => {
         config: {line: {point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         facet: {
           row: {field: 'symbol', type: 'nominal'}
@@ -435,7 +436,7 @@ describe('normalize()', () => {
         config: {area: {line: {}, point: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -475,7 +476,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -508,7 +509,7 @@ describe('normalize()', () => {
           }
         };
         const normalizedSpec = normalize(spec, spec.config);
-        assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+        expect(normalizedSpec).toEqual({
           data: {url: 'data/stocks.csv', format: {type: 'csv'}},
           mark: 'area',
           encoding: {
@@ -533,7 +534,7 @@ describe('normalize()', () => {
           }
         };
         const normalizedSpec = normalize(spec, spec.config);
-        assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+        expect(normalizedSpec).toEqual({
           data: {url: 'data/stocks.csv', format: {type: 'csv'}},
           mark: 'area',
           encoding: {
@@ -559,7 +560,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -595,7 +596,7 @@ describe('normalize()', () => {
         config: {area: {line: {}}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevel<NormalizedSpec>>(normalizedSpec, {
+      expect(normalizedSpec).toEqual({
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         layer: [
           {
@@ -616,65 +617,6 @@ describe('normalize()', () => {
           }
         ],
         config: {area: {line: {}}}
-      });
-    });
-  });
-
-  describe('normalizeRangedUnitSpec', () => {
-    it('should convert y2 -> y if there is no y in the encoding', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y2: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      assert.deepEqual<NormalizedSpec>(normalize(spec, defaultConfig), {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      });
-    });
-    it('should do nothing if there is no missing x or y', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          y: {field: 'age', type: 'ordinal'},
-          x: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      assert.deepEqual(normalize(spec, defaultConfig), spec);
-    });
-
-    it('should convert x2 -> x if there is no x in the encoding', () => {
-      const spec: NormalizedSpec = {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          x2: {field: 'age', type: 'ordinal'},
-          y: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          y2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
-      };
-
-      assert.deepEqual<NormalizedSpec>(normalize(spec, defaultConfig), {
-        data: {url: 'data/population.json'},
-        mark: 'rule',
-        encoding: {
-          x: {field: 'age', type: 'ordinal'},
-          y: {aggregate: 'min', field: 'people', type: 'quantitative'},
-          y2: {aggregate: 'max', field: 'people', type: 'quantitative'}
-        }
       });
     });
   });

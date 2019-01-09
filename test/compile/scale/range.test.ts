@@ -1,12 +1,12 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
-
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
+  MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
+import {SignalRefComponent} from '../../../src/compile/signal';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {Config, defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
@@ -19,7 +19,7 @@ describe('compile/scale', () => {
     describe('position', () => {
       it('should return [0, plot_width] for x-continuous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -31,15 +31,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([0, {signal: 'plot_width'}])
-          );
+            )
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
       it('should return [plot_height,0] for y-continuous scales by default.', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'y',
               scaleType,
@@ -51,15 +50,14 @@ describe('compile/scale', () => {
               false,
               'plot_height',
               []
-            ),
-            makeImplicit([{signal: 'plot_height'}, 0])
-          );
+            )
+          ).toEqual(makeImplicit([SignalRefComponent.fromName('plot_height'), 0]));
         }
       });
 
       it('should return [0, plot_height] for y-discrete scales with height by default.', () => {
         for (const scaleType of DISCRETE_DOMAIN_SCALES) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'y',
               scaleType,
@@ -71,16 +69,15 @@ describe('compile/scale', () => {
               true,
               'plot_height',
               []
-            ),
-            makeImplicit([0, {signal: 'plot_height'}])
-          );
+            )
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_height')]));
         }
       });
 
       it(
         'should support custom range.',
         log.wrap(localLogger => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               'linear',
@@ -92,16 +89,15 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeExplicit([0, 100])
-          );
-          assert.deepEqual(localLogger.warns.length, 0);
+            )
+          ).toEqual(makeExplicit([0, 100]));
+          expect(localLogger.warns.length).toEqual(0);
         })
       );
 
       it('should return config.scale.rangeStep for band/point scales by default.', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -113,15 +109,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit({step: 21})
-          );
+            )
+          ).toEqual(makeImplicit({step: 20}));
         }
       });
 
       it("should return config.scale.textXRangeStep by default for text mark's x band/point scales.", () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -133,15 +128,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit({step: 55})
-          );
+            )
+          ).toEqual(makeImplicit({step: 55}));
         }
       });
 
       it('should return specified rangeStep if topLevelSize is undefined for band/point scales', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -153,9 +147,8 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeExplicit({step: 23})
-          );
+            )
+          ).toEqual(makeExplicit({step: 23}));
         }
       });
 
@@ -163,7 +156,7 @@ describe('compile/scale', () => {
         'should drop rangeStep if topLevelSize is specified for band/point scales',
         log.wrap(localLogger => {
           for (const scaleType of ['point', 'band'] as ScaleType[]) {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'x',
                 scaleType,
@@ -175,17 +168,16 @@ describe('compile/scale', () => {
                 true,
                 'plot_width',
                 []
-              ),
-              makeImplicit([0, {signal: 'plot_width'}])
-            );
+              )
+            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
           }
-          assert.equal(localLogger.warns[0], log.message.rangeStepDropped('x'));
+          expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped('x'));
         })
       );
 
       it('should return default topLevelSize if rangeStep is null for band/point scales', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -197,15 +189,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([0, {signal: 'plot_width'}])
-          );
+            )
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
       it('should return default topLevelSize if rangeStep config is null', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -217,15 +208,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([0, {signal: 'plot_width'}])
-          );
+            )
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
       it('should return default topLevelSize for text if textXRangeStep config is null', () => {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'x',
               scaleType,
@@ -237,16 +227,15 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([0, {signal: 'plot_width'}])
-          );
+            )
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
       it('should drop rangeStep for continuous scales', () => {
         for (const scaleType of CONTINUOUS_TO_CONTINUOUS_SCALES) {
           log.wrap(localLogger => {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'x',
                 scaleType,
@@ -258,11 +247,9 @@ describe('compile/scale', () => {
                 true,
                 'plot_width',
                 []
-              ),
-              makeImplicit([0, {signal: 'plot_width'}])
-            );
-            assert.equal(
-              localLogger.warns[0],
+              )
+            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+            expect(localLogger.warns[0]).toEqual(
               log.message.scalePropertyNotWorkWithScaleType(scaleType, 'rangeStep', 'x')
             );
           })();
@@ -272,7 +259,7 @@ describe('compile/scale', () => {
 
     describe('color', () => {
       it('should use the specified scheme for a nominal color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -284,13 +271,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeExplicit({scheme: 'warm'})
-        );
+          )
+        ).toEqual(makeExplicit({scheme: 'warm'}));
       });
 
       it('should use the specified scheme with extent for a nominal color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -302,13 +288,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeExplicit({scheme: 'warm', extent: [0.2, 1]})
-        );
+          )
+        ).toEqual(makeExplicit({scheme: 'warm', extent: [0.2, 1]}));
       });
 
       it('should use the specified range for a nominal color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -320,13 +305,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeExplicit(['red', 'green', 'blue'])
-        );
+          )
+        ).toEqual(makeExplicit(['red', 'green', 'blue']));
       });
 
       it('should use default category range in Vega for a nominal color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -338,13 +322,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit('category')
-        );
+          )
+        ).toEqual(makeImplicit('category'));
       });
 
       it('should use default ordinal range in Vega for an ordinal color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -356,13 +339,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit('ordinal')
-        );
+          )
+        ).toEqual(makeImplicit('ordinal'));
       });
 
       it('should use default ramp range in Vega for a temporal/quantitative color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'sequential',
@@ -374,13 +356,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit('ramp')
-        );
+          )
+        ).toEqual(makeImplicit('ramp'));
       });
 
       it('should use the specified scheme with count for a quantitative color field.', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'ordinal',
@@ -392,15 +373,14 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeExplicit({scheme: 'viridis', count: 3})
-        );
+          )
+        ).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
       });
 
       it('should use default ordinal range for quantile/quantize scales', () => {
         const scales: ScaleType[] = ['quantile', 'quantize'];
         scales.forEach(discretizingScale => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'color',
               discretizingScale,
@@ -412,14 +392,13 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit({scheme: 'blues', count: 4})
-          );
+            )
+          ).toEqual(makeImplicit({scheme: 'blues', count: 4}));
         });
       });
 
       it('should use default ordinal range for threshold scale', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'threshold',
@@ -431,13 +410,12 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit({scheme: 'blues', count: 3})
-        );
+          )
+        ).toEqual(makeImplicit({scheme: 'blues', count: 3}));
       });
 
       it('should use default color range for log scale', () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'color',
             'log',
@@ -449,15 +427,14 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit(['#f7fbff', '#0e427f'])
-        );
+          )
+        ).toEqual(makeImplicit(['#f7fbff', '#0e427f']));
       });
     });
 
     describe('opacity', () => {
       it("should use default opacityRange as opacity's scale range.", () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'opacity',
             'linear',
@@ -469,9 +446,8 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity])
-        );
+          )
+        ).toEqual(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
       });
     });
 
@@ -481,14 +457,13 @@ describe('compile/scale', () => {
           const config = {
             scale: {minBandSize: 2, maxBandSize: 9}
           };
-          assert.deepEqual(
-            parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, 'bar', false, 'plot_width', []),
-            makeImplicit([2, 9])
-          );
+          expect(
+            parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, 'bar', false, 'plot_width', [])
+          ).toEqual(makeImplicit([2, 9]));
         });
 
         it('should return [continuousBandSize, xRangeStep-1] by default since min/maxSize config are not specified', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'linear',
@@ -500,9 +475,8 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([2, defaultConfig.scale.rangeStep - 1])
-          );
+            )
+          ).toEqual(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
@@ -511,25 +485,13 @@ describe('compile/scale', () => {
           const config = {
             scale: {minBandSize: 4, maxBandSize: 9}
           };
-          assert.deepEqual(
-            parseRangeForChannel(
-              'size',
-              'linear',
-              QUANTITATIVE,
-              {},
-              config,
-              undefined,
-              'tick',
-              false,
-              'plot_width',
-              []
-            ),
-            makeImplicit([4, 9])
-          );
+          expect(
+            parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, 'tick', false, 'plot_width', [])
+          ).toEqual(makeImplicit([4, 9]));
         });
 
         it('should return [(default)minBandSize, rangeStep-1] by default since maxSize config is not specified', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'linear',
@@ -541,15 +503,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1])
-          );
+            )
+          ).toEqual(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
       describe('text', () => {
         it('should return [minFontSize, maxFontSize]', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'linear',
@@ -561,15 +522,14 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize])
-          );
+            )
+          ).toEqual(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
         });
       });
 
       describe('rule', () => {
         it('should return [minStrokeWidth, maxStrokeWidth]', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'linear',
@@ -581,9 +541,8 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth])
-          );
+            )
+          ).toEqual(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
         });
       });
 
@@ -597,16 +556,15 @@ describe('compile/scale', () => {
               }
             };
 
-            assert.deepEqual(
-              parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, m, false, 'plot_width', []),
-              makeImplicit([5, 25])
-            );
+            expect(
+              parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, m, false, 'plot_width', [])
+            ).toEqual(makeImplicit([5, 25]));
           }
         });
 
         it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 'linear',
@@ -618,15 +576,14 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 [11, 13] // xyRangeSteps
-              ),
-              makeImplicit([0, 81])
-            );
+              )
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
         it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is not quantitative (thus use zero=false, by default)', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 'linear',
@@ -638,15 +595,14 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 [11, 13] // xyRangeSteps
-              ),
-              makeImplicit([9, 81])
-            );
+              )
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
         it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is quantitative but use zero=false', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 'linear',
@@ -658,15 +614,14 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 [11, 13] // xyRangeSteps
-              ),
-              makeImplicit([9, 81])
-            );
+              )
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
         it('should return [0, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
           for (const m of ['point', 'square', 'circle'] as Mark[]) {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 'linear',
@@ -678,16 +633,15 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 [11] // xyRangeSteps only have one value
-              ),
-              makeImplicit([0, 81])
-            );
+              )
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
         it('should return range interpolation of length 4 for quantile/quantize scales', () => {
           const scales: ScaleType[] = ['quantile', 'quantize'];
           scales.forEach(discretizingScale => {
-            assert.deepEqual(
+            expect(
               parseRangeForChannel(
                 'size',
                 discretizingScale,
@@ -699,14 +653,15 @@ describe('compile/scale', () => {
                 false,
                 'plot_width',
                 []
-              ),
-              makeImplicit([9, 126.33333333333333, 243.66666666666666, 361])
+              )
+            ).toEqual(
+              makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))', []))
             );
           });
         });
 
         it('should return range interpolation of length 4 for threshold scale', () => {
-          assert.deepEqual(
+          expect(
             parseRangeForChannel(
               'size',
               'threshold',
@@ -718,8 +673,9 @@ describe('compile/scale', () => {
               false,
               'plot_width',
               []
-            ),
-            makeImplicit([9, 185, 361])
+            )
+          ).toEqual(
+            makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))', []))
           );
         });
       });
@@ -727,7 +683,7 @@ describe('compile/scale', () => {
 
     describe('shape', () => {
       it("should use default symbol range in Vega as shape's scale range.", () => {
-        assert.deepEqual(
+        expect(
           parseRangeForChannel(
             'shape',
             'ordinal',
@@ -739,9 +695,8 @@ describe('compile/scale', () => {
             false,
             'plot_width',
             []
-          ),
-          makeImplicit('symbol')
-        );
+          )
+        ).toEqual(makeImplicit('symbol'));
       });
     });
   });
@@ -753,7 +708,7 @@ describe('compile/scale', () => {
           quantileCount: 4
         }
       };
-      assert.equal(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x'), 4);
+      expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toEqual(4);
     });
 
     it('should use config.scale.quantizeCount for quantize scale', () => {
@@ -762,24 +717,26 @@ describe('compile/scale', () => {
           quantizeCount: 4
         }
       };
-      assert.equal(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x'), 4);
+      expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toEqual(4);
     });
 
     it('should use domain size for threshold scale', () => {
-      assert.equal(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x'), 3);
+      expect(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x')).toEqual(3);
     });
 
     it('should throw warning and default to 4 for scale without domain', () => {
       log.wrap(localLogger => {
-        assert.equal(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x'), 4);
-        assert.equal(localLogger.warns[0], log.message.domainRequiredForThresholdScale('x'));
+        expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toEqual(4);
+        expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('x'));
       });
     });
   });
 
   describe('interpolateRange', () => {
     it('should return the correct interpolation of 1 - 100 with cardinality of 5', () => {
-      assert.deepEqual(interpolateRange(0, 100, 5), [0, 25, 50, 75, 100]);
+      expect(interpolateRange(0, 100, 5)).toEqual(
+        new SignalRefComponent('sequence(0, 100 + (100 - 0) / (5 - 1), (100 - 0) / (5 - 1))', [])
+      );
     });
   });
 });

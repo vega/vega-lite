@@ -131,7 +131,7 @@ export const AXIS_PROPERTY_TYPE: {
 
   orient: 'main',
 
-  bandPosition: 'main',
+  bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   domain: 'main',
   domainColor: 'main',
   domainOpacity: 'main',
@@ -158,7 +158,7 @@ export const AXIS_PROPERTY_TYPE: {
   position: 'main',
   tickColor: 'main',
   tickExtra: 'main',
-  tickOffset: 'main',
+  tickOffset: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   tickOpacity: 'main',
   tickRound: 'main',
   ticks: 'main',

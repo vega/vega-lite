@@ -22,7 +22,8 @@ while echo "$prefix" | grep -q '\.'; do
 done
 
 if [ -n "$(git status --porcelain)" ]; then
-    git add *.json
+    # Note: git commands need single quotes for all the files and directories with wildcards
+    git add '*.json'
     git commit -m"Add Vega-Lite $version"
     git push
 else

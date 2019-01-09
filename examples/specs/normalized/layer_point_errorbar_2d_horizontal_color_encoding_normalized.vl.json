@@ -35,7 +35,25 @@
               "scale": {"zero": false}
             },
             "y": {"field": "variety", "type": "ordinal"},
-            "color": {"value": "#4682b4"}
+            "color": {"value": "#4682b4"},
+            "tooltip": [
+              {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "Mean + stderr of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "Mean - stderr of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         },
         {
@@ -52,7 +70,25 @@
               "scale": {"zero": false}
             },
             "y": {"field": "variety", "type": "ordinal"},
-            "color": {"value": "#4682b4"}
+            "color": {"value": "#4682b4"},
+            "tooltip": [
+              {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "Mean + stderr of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "Mean - stderr of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         },
         {
@@ -66,7 +102,25 @@
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
             "y": {"field": "variety", "type": "ordinal"},
-            "color": {"value": "#4682b4"}
+            "color": {"value": "#4682b4"},
+            "tooltip": [
+              {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "Mean + stderr of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "Mean - stderr of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         }
       ]

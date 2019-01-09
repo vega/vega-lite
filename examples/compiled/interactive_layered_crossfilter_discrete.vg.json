@@ -222,7 +222,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_distance\"], datum[\"bin_maxbins_20_distance_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_distance_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance_end\"]]]} : null",
               "force": true
             }
           ]
@@ -267,7 +267,7 @@
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_distance_x",
@@ -298,7 +298,7 @@
                 {"value": "goldenrod"}
               ],
               "tooltip": {
-                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"distance (binned)\": datum[\"bin_maxbins_20_distance\"] === null || isNaN(datum[\"bin_maxbins_20_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_20_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_distance_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_distance_x",
@@ -323,7 +323,7 @@
           "title": "distance (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_distance_layer_0_bin_maxbins_20_distance_bins.start, child_distance_layer_0_bin_maxbins_20_distance_bins.stop + child_distance_layer_0_bin_maxbins_20_distance_bins.step, child_distance_layer_0_bin_maxbins_20_distance_bins.step)"
           },
@@ -333,7 +333,7 @@
           "scale": "child_distance_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -367,7 +367,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_delay\"], datum[\"bin_maxbins_20_delay_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_delay_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay_end\"]]]} : null",
               "force": true
             }
           ]
@@ -412,7 +412,7 @@
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_delay_x",
@@ -443,7 +443,7 @@
                 {"value": "goldenrod"}
               ],
               "tooltip": {
-                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"delay (binned)\": datum[\"bin_maxbins_20_delay\"] === null || isNaN(datum[\"bin_maxbins_20_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_20_delay\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_delay_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_delay_x",
@@ -468,7 +468,7 @@
           "title": "delay (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_delay_layer_0_bin_maxbins_20_delay_bins.start, child_delay_layer_0_bin_maxbins_20_delay_bins.stop + child_delay_layer_0_bin_maxbins_20_delay_bins.step, child_delay_layer_0_bin_maxbins_20_delay_bins.step)"
           },
@@ -478,7 +478,7 @@
           "scale": "child_delay_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -512,7 +512,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [[datum[\"bin_maxbins_20_time\"], datum[\"bin_maxbins_20_time_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child_time_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time_end\"]]]} : null",
               "force": true
             }
           ]
@@ -557,7 +557,7 @@
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_time_x",
@@ -588,7 +588,7 @@
                 {"value": "goldenrod"}
               ],
               "tooltip": {
-                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"time (binned)\": datum[\"bin_maxbins_20_time\"] === null || isNaN(datum[\"bin_maxbins_20_time\"]) ? \"null\" : format(datum[\"bin_maxbins_20_time\"], \"\") + \" - \" + format(datum[\"bin_maxbins_20_time_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
               },
               "x2": {
                 "scale": "child_time_x",
@@ -613,7 +613,7 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_time_layer_0_bin_maxbins_20_time_bins.start, child_time_layer_0_bin_maxbins_20_time_bins.stop + child_time_layer_0_bin_maxbins_20_time_bins.step, child_time_layer_0_bin_maxbins_20_time_bins.step)"
           },
@@ -623,7 +623,7 @@
           "scale": "child_time_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1

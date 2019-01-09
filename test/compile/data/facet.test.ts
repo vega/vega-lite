@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {FacetNode} from '../../../src/compile/data/facet';
 import {parseFacetModelWithScale} from '../../util';
 
@@ -40,7 +39,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -89,7 +88,7 @@ describe('compile/data/facet', () => {
       const data = node.assemble();
 
       // crossed data
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'cross_column_domain_row_domain',
         source: 'dataName',
         transform: [
@@ -102,7 +101,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'column_domain',
         source: 'cross_column_domain_row_domain',
         transform: [
@@ -116,7 +115,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[2], {
+      expect(data[2]).toEqual({
         name: 'row_domain',
         source: 'cross_column_domain_row_domain',
         transform: [
@@ -153,7 +152,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -167,7 +166,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'row_domain',
         source: 'dataName',
         transform: [
@@ -204,7 +203,7 @@ describe('compile/data/facet', () => {
       const node = new FacetNode(null, model, 'facetName', 'dataName');
       const data = node.assemble();
 
-      assert.deepEqual(data[0], {
+      expect(data[0]).toEqual({
         name: 'column_domain',
         source: 'dataName',
         transform: [
@@ -218,7 +217,7 @@ describe('compile/data/facet', () => {
         ]
       });
 
-      assert.deepEqual(data[1], {
+      expect(data[1]).toEqual({
         name: 'row_domain',
         source: 'dataName',
         transform: [

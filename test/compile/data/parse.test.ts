@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import {AncestorParse} from '../../../src/compile/data';
 import {AggregateNode} from '../../../src/compile/data/aggregate';
 import {BinNode} from '../../../src/compile/data/bin';
@@ -32,8 +31,8 @@ describe('compile/data/parse', () => {
 
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof CalculateNode);
-      assert.isTrue(result instanceof FilterNode);
+      expect(root.children[0] instanceof CalculateNode).toBe(true);
+      expect(result instanceof FilterNode).toBe(true);
     });
 
     it('should add a parse node for filter transforms with time unit', () => {
@@ -72,12 +71,12 @@ describe('compile/data/parse', () => {
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
 
-      assert.isTrue(root.children[0] instanceof ParseNode);
-      assert.isTrue(result instanceof FilterNode);
-      assert.deepEqual((root.children[0] as ParseNode).parse, {
+      expect(root.children[0] instanceof ParseNode).toBe(true);
+      expect(result instanceof FilterNode).toBe(true);
+      expect((root.children[0] as ParseNode).parse).toEqual({
         date: 'date'
       });
-      assert.deepEqual(parse.combine(), {date: 'date'});
+      expect(parse.combine()).toEqual({date: 'date'});
     });
 
     it('should return a BinNode node and a TimeUnitNode', () => {
@@ -113,8 +112,8 @@ describe('compile/data/parse', () => {
 
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof BinNode);
-      assert.isTrue(result instanceof AggregateNode);
+      expect(root.children[0] instanceof BinNode).toBe(true);
+      expect(result instanceof AggregateNode).toBe(true);
     });
 
     it('should return a ImputeTransform Node', () => {
@@ -129,8 +128,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof ImputeNode);
-      assert.isTrue(result instanceof ImputeNode);
+      expect(root.children[0] instanceof ImputeNode).toBe(true);
+      expect(result instanceof ImputeNode).toBe(true);
     });
     it('should return a WindowTransform Node', () => {
       const transform: Transform = {
@@ -152,7 +151,7 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof WindowTransformNode);
+      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
     it('should return a WindowTransform Node with optional properties', () => {
       const transform: Transform = {
@@ -180,7 +179,7 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof WindowTransformNode);
+      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
 
     it('should return a WindowTransform Node', () => {
@@ -203,7 +202,7 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof WindowTransformNode);
+      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
     it('should return a WindowTransform Node with optional properties', () => {
       const transform: Transform = {
@@ -231,7 +230,7 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof WindowTransformNode);
+      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
     });
 
     it('should return a FoldTransformNode', () => {
@@ -250,8 +249,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof FoldTransformNode);
-      assert.isTrue(result instanceof FoldTransformNode);
+      expect(root.children[0] instanceof FoldTransformNode).toBe(true);
+      expect(result instanceof FoldTransformNode).toBe(true);
     });
 
     it('should return a FlattenTransformNode', () => {
@@ -269,8 +268,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof FlattenTransformNode);
-      assert.isTrue(result instanceof FlattenTransformNode);
+      expect(root.children[0] instanceof FlattenTransformNode).toBe(true);
+      expect(result instanceof FlattenTransformNode).toBe(true);
     });
 
     it('should return a SampleTransformNode', () => {
@@ -288,8 +287,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof SampleTransformNode);
-      assert.isTrue(result instanceof SampleTransformNode);
+      expect(root.children[0] instanceof SampleTransformNode).toBe(true);
+      expect(result instanceof SampleTransformNode).toBe(true);
     });
 
     it('should return a 3 Transforms from an Impute', () => {
@@ -313,8 +312,8 @@ describe('compile/data/parse', () => {
       });
       const root = new DataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      assert.isTrue(root.children[0] instanceof ImputeNode);
-      assert.isTrue(result instanceof ImputeNode);
+      expect(root.children[0] instanceof ImputeNode).toBe(true);
+      expect(result instanceof ImputeNode).toBe(true);
     });
   });
 

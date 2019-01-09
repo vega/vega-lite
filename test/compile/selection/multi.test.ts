@@ -1,6 +1,4 @@
 /* tslint:disable quotemark */
-import {assert} from 'chai';
-
 import multi from '../../../src/compile/selection/multi';
 import * as selection from '../../../src/compile/selection/selection';
 import {parseUnitModelWithScale} from '../../util';
@@ -28,7 +26,7 @@ describe('Multi Selection', () => {
 
   it('builds tuple signals', () => {
     const oneSg = multi.signals(model, selCmpts['one']);
-    assert.sameDeepMembers(oneSg, [
+    expect(oneSg).toEqual([
       {
         name: 'one_tuple',
         value: {},
@@ -36,7 +34,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [datum["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           }
         ]
@@ -44,7 +42,7 @@ describe('Multi Selection', () => {
     ]);
 
     const twoSg = multi.signals(model, selCmpts['two']);
-    assert.sameDeepMembers(twoSg, [
+    expect(twoSg).toEqual([
       {
         name: 'two_tuple',
         value: {},
@@ -60,20 +58,17 @@ describe('Multi Selection', () => {
     ]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
   });
 
   it('builds unit datasets', () => {
     const data: any[] = [];
-    assert.sameDeepMembers(selection.assembleUnitSelectionData(model, data), [
-      {name: 'one_store'},
-      {name: 'two_store'}
-    ]);
+    expect(selection.assembleUnitSelectionData(model, data)).toEqual([{name: 'one_store'}, {name: 'two_store'}]);
   });
 
   it('leaves marks alone', () => {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
-    assert.equal(selection.assembleUnitSelectionMarks(model, marks), marks);
+    expect(selection.assembleUnitSelectionMarks(model, marks)).toEqual(marks);
   });
 });

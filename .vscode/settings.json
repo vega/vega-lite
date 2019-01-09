@@ -3,7 +3,7 @@
   "editor.tabSize": 2,
   "files.exclude": {
     "coverage/**/*": true,
-    "_site/**/*": true,
+    "_site/**/*": true
   },
   "search.exclude": {
     "build": true
@@ -14,8 +14,6 @@
   "tsimporter.spaceBetweenBraces": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
-  "[typescript]": {
-    "editor.formatOnSave": true
-  },
+  "editor.formatOnSave": true,
   "typescript.referencesCodeLens.enabled": true
 }

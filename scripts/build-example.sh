@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 dir=${dir-"examples/compiled"}
 
 for name in "$@"

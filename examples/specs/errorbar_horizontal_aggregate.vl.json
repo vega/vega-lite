@@ -7,7 +7,7 @@
     {
       "mark": "rule",
       "encoding": {
-        "y": {"field": "age","type": "ordinal"},
+        "y": {"field": "age", "type": "ordinal"},
         "x": {
           "aggregate": "min",
           "field": "people",
@@ -16,15 +16,14 @@
         },
         "x2": {
           "aggregate": "max",
-          "field": "people",
-          "type": "quantitative"
+          "field": "people"
         }
       }
     },
     {
       "mark": "tick",
       "encoding": {
-        "y": {"field": "age","type": "ordinal"},
+        "y": {"field": "age", "type": "ordinal"},
         "x": {
           "aggregate": "min",
           "field": "people",
@@ -37,7 +36,7 @@
     {
       "mark": "tick",
       "encoding": {
-        "y": {"field": "age","type": "ordinal"},
+        "y": {"field": "age", "type": "ordinal"},
         "x": {
           "aggregate": "max",
           "field": "people",
@@ -50,7 +49,7 @@
     {
       "mark": "point",
       "encoding": {
-        "y": {"field": "age","type": "ordinal"},
+        "y": {"field": "age", "type": "ordinal"},
         "x": {
           "aggregate": "mean",
           "field": "people",

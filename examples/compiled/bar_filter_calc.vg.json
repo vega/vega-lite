@@ -30,7 +30,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -52,7 +52,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"a\": ''+datum[\"a\"], \"b2\": format(datum[\"b2\"], \"\")}"
+            "signal": "{\"b2\": format(datum[\"b2\"], \"\"), \"a\": ''+datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": true},

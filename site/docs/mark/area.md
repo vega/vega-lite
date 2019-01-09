@@ -23,8 +23,7 @@ permalink: /docs/area.html
 
 {:.no_toc}
 
-- TOC
-  {:toc}
+- TOC {:toc}
 
 {:#properties}
 
@@ -85,8 +84,7 @@ We can also shift the stacked area chart's baseline to center and produces a [st
 
 ### Ranged Area
 
-Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas.
-For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
+Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas. For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
 
 <span class="vl-example" data-name="area_temperature_range"></span>
 

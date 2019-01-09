@@ -53,7 +53,7 @@
   ],
   "signals": [
     {"name": "concat_0_height", "value": 300},
-    {"name": "concat_1_y_step", "value": 21},
+    {"name": "concat_1_y_step", "value": 20},
     {
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 0.1, 0.05) * concat_1_y_step"
@@ -311,7 +311,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\"), \"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\")}"
+                "signal": "{\"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
@@ -432,7 +432,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [datum[\"weather\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", fields: click_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"weather\"]]} : null",
               "force": true
             }
           ]
@@ -482,7 +482,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"], \"Weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
               },
               "x": {"scale": "concat_1_x", "field": "count_*"},
               "x2": {"scale": "concat_1_x", "value": 0},
@@ -497,7 +497,7 @@
           "scale": "concat_1_x",
           "orient": "bottom",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/40)"},

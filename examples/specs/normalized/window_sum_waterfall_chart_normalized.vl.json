@@ -65,7 +65,7 @@
           "type": "quantitative",
           "title": "Amount"
         },
-        "y2": {"field": "sum", "type": "quantitative"},
+        "y2": {"field": "sum"},
         "color": {
           "condition": [
             {
@@ -94,7 +94,7 @@
           "sort": null,
           "title": "Months"
         },
-        "x2": {"field": "lead", "type": "ordinal"},
+        "x2": {"field": "lead"},
         "y": {"field": "sum", "type": "quantitative"}
       }
     },

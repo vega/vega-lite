@@ -1,6 +1,5 @@
 /* tslint:disable quotemark */
 
-import {assert} from 'chai';
 import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
@@ -32,11 +31,11 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      expect(props.y2).toEqual({field: {group: 'height'}});
     });
 
     it('should has no height', () => {
-      assert.isUndefined(props.height);
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -53,7 +52,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should use bin_mid for x', () => {
-      assert.deepEqual(props.x, {field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
+      expect(props.x).toEqual({field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
     });
   });
 
@@ -69,11 +68,11 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      assert.deepEqual(props.y2, {field: {group: 'height'}});
+      expect(props.y2).toEqual({field: {group: 'height'}});
     });
 
     it('should has no height', () => {
-      assert.isUndefined(props.height);
+      expect(props.height).not.toBeDefined();
     });
   });
 
@@ -82,15 +81,15 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
+      expect(props.x).toEqual({scale: X, field: 'year_Year'});
     });
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
+      expect(props.y).toEqual({scale: Y, field: 'count_*'});
     });
 
     it('should have the correct value for y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', value: 0});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
     });
   });
 
@@ -99,15 +98,15 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'year_Year'});
+      expect(props.x).toEqual({scale: X, field: 'year_Year'});
     });
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'count_*'});
+      expect(props.y).toEqual({scale: Y, field: 'count_*'});
     });
 
     it('should have the correct value for y2', () => {
-      assert.deepEqual(props.y2, {scale: 'y', value: 0});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
     });
   });
 
@@ -121,16 +120,16 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for y and y2', () => {
-      assert.deepEqual(props.y, {scale: 'y', field: 'count_*_end'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'count_*_start'});
+      expect(props.y).toEqual({scale: 'y', field: 'count_*_end'});
+      expect(props.y2).toEqual({scale: 'y', field: 'count_*_start'});
     });
 
     it('should have correct orient', () => {
-      assert.deepEqual(props.orient, {value: 'vertical'});
+      expect(props.orient).toEqual({value: 'vertical'});
     });
 
     it('should have scale for color', () => {
-      assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
+      expect(props.fill).toEqual({scale: COLOR, field: 'Origin'});
     });
   });
 
@@ -151,15 +150,15 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have scale for y', () => {
-      assert.deepEqual(props.y, {scale: Y, field: 'year_Year'});
+      expect(props.y).toEqual({scale: Y, field: 'year_Year'});
     });
 
     it('should have scale for x', () => {
-      assert.deepEqual(props.x, {scale: X, field: 'count_*'});
+      expect(props.x).toEqual({scale: X, field: 'count_*'});
     });
 
     it('should have the correct value for x2', () => {
-      assert.deepEqual(props.x2, {scale: 'x', value: 0});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
     });
   });
 
@@ -176,11 +175,11 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      assert.deepEqual(props.x2, {value: 0});
+      expect(props.x2).toEqual({value: 0});
     });
 
     it('should have no width', () => {
-      assert.isUndefined(props.width);
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -197,11 +196,11 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      assert.deepEqual(props.x2, {value: 0});
+      expect(props.x2).toEqual({value: 0});
     });
 
     it('should have no width', () => {
-      assert.isUndefined(props.width);
+      expect(props.width).not.toBeDefined();
     });
   });
 
@@ -215,16 +214,16 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for x and x2', () => {
-      assert.deepEqual(props.x, {scale: 'x', field: 'count_*_end'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'count_*_start'});
+      expect(props.x).toEqual({scale: 'x', field: 'count_*_end'});
+      expect(props.x2).toEqual({scale: 'x', field: 'count_*_start'});
     });
 
     it('should have correct orient', () => {
-      assert.deepEqual(props.orient, {value: 'horizontal'});
+      expect(props.orient).toEqual({value: 'horizontal'});
     });
 
     it('should have scale for color', () => {
-      assert.deepEqual(props.fill, {scale: COLOR, field: 'Origin'});
+      expect(props.fill).toEqual({scale: COLOR, field: 'Origin'});
     });
   });
 
@@ -240,9 +239,9 @@ describe('Mark: Area', () => {
         }
       });
       const props = area.encodeEntry(model);
-      assert.deepEqual(props.x, {scale: 'x', field: 'year_Year'});
-      assert.deepEqual(props.y, {scale: 'y', field: 'min_Weight_in_lbs'});
-      assert.deepEqual(props.y2, {scale: 'y', field: 'max_Weight_in_lbs'});
+      expect(props.x).toEqual({scale: 'x', field: 'year_Year'});
+      expect(props.y).toEqual({scale: 'y', field: 'min_Weight_in_lbs'});
+      expect(props.y2).toEqual({scale: 'y', field: 'max_Weight_in_lbs'});
     });
 
     it('horizontal area should work with aggregate', () => {
@@ -256,9 +255,9 @@ describe('Mark: Area', () => {
         }
       });
       const props = area.encodeEntry(model);
-      assert.deepEqual(props.y, {scale: 'y', field: 'year_Year'});
-      assert.deepEqual(props.x, {scale: 'x', field: 'min_Weight_in_lbs'});
-      assert.deepEqual(props.x2, {scale: 'x', field: 'max_Weight_in_lbs'});
+      expect(props.y).toEqual({scale: 'y', field: 'year_Year'});
+      expect(props.x).toEqual({scale: 'x', field: 'min_Weight_in_lbs'});
+      expect(props.x2).toEqual({scale: 'x', field: 'max_Weight_in_lbs'});
     });
   });
 });

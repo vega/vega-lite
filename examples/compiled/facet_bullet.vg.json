@@ -88,7 +88,7 @@
   ],
   "signals": [
     {"name": "child_width", "value": 200},
-    {"name": "child_height", "value": 21}
+    {"name": "child_height", "value": 20}
   ],
   "layout": {
     "padding": {"row": 10, "column": 10},
@@ -149,7 +149,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.2"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 20}
+              "height": {"value": 19}
             }
           }
         },
@@ -173,7 +173,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.1"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 20}
+              "height": {"value": 19}
             }
           }
         },
@@ -197,7 +197,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.0"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 20}
+              "height": {"value": 19}
             }
           }
         },
@@ -269,7 +269,7 @@
               },
               "xc": {"scale": "child_x", "field": "markers\\.0"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 14},
+              "height": {"value": 15},
               "width": {"value": 2}
             }
           }

@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve';
 import * as log from '../../src/log';
 import {parseConcatModel, parseFacetModel, parseLayerModel, parseRepeatModel} from '../util';
@@ -9,7 +8,7 @@ describe('compile/resolve', () => {
       const model = parseLayerModel({
         layer: []
       });
-      assert.equal(defaultScaleResolve('x', model), 'shared');
+      expect(defaultScaleResolve('x', model)).toEqual('shared');
     });
 
     it('shares scales for facet model by default.', () => {
@@ -19,21 +18,21 @@ describe('compile/resolve', () => {
         },
         spec: {mark: 'point', encoding: {}}
       });
-      assert.equal(defaultScaleResolve('x', model), 'shared');
+      expect(defaultScaleResolve('x', model)).toEqual('shared');
     });
 
     it('separates xy scales for concat model by default.', () => {
       const model = parseConcatModel({
         hconcat: []
       });
-      assert.equal(defaultScaleResolve('x', model), 'independent');
+      expect(defaultScaleResolve('x', model)).toEqual('independent');
     });
 
     it('shares non-xy scales for concat model by default.', () => {
       const model = parseConcatModel({
         hconcat: []
       });
-      assert.equal(defaultScaleResolve('color', model), 'shared');
+      expect(defaultScaleResolve('color', model)).toEqual('shared');
     });
 
     it('separates xy scales for repeat model by default.', () => {
@@ -49,7 +48,7 @@ describe('compile/resolve', () => {
           }
         }
       });
-      assert.equal(defaultScaleResolve('x', model), 'independent');
+      expect(defaultScaleResolve('x', model)).toEqual('independent');
     });
 
     it('shares non-xy scales for repeat model by default.', () => {
@@ -65,7 +64,7 @@ describe('compile/resolve', () => {
           }
         }
       });
-      assert.equal(defaultScaleResolve('color', model), 'shared');
+      expect(defaultScaleResolve('color', model)).toEqual('shared');
     });
   });
 
@@ -78,7 +77,7 @@ describe('compile/resolve', () => {
         },
         'x'
       );
-      assert.equal(axisResolve, 'shared');
+      expect(axisResolve).toEqual('shared');
     });
 
     it('separates axis for a shared scale if specified', () => {
@@ -89,7 +88,7 @@ describe('compile/resolve', () => {
         },
         'x'
       );
-      assert.equal(axisResolve, 'independent');
+      expect(axisResolve).toEqual('independent');
     });
 
     it('separates legend for a shared scale if specified', () => {
@@ -100,7 +99,7 @@ describe('compile/resolve', () => {
         },
         'color'
       );
-      assert.equal(legendResolve, 'independent');
+      expect(legendResolve).toEqual('independent');
     });
 
     it('separates axis for an independent scale by default', () => {
@@ -111,7 +110,7 @@ describe('compile/resolve', () => {
         },
         'x'
       );
-      assert.equal(axisResolve, 'independent');
+      expect(axisResolve).toEqual('independent');
     });
 
     it(
@@ -124,8 +123,8 @@ describe('compile/resolve', () => {
           },
           'x'
         );
-        assert.equal(axisResolve, 'independent');
-        assert.equal(localLogger.warns[0], log.message.independentScaleMeansIndependentGuide('x'));
+        expect(axisResolve).toEqual('independent');
+        expect(localLogger.warns[0]).toEqual(log.message.independentScaleMeansIndependentGuide('x'));
       })
     );
   });

@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {
   COLOR,
   DETAIL,
@@ -35,7 +34,7 @@ describe('Mark', () => {
       });
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
         const markGroup = parseMarkGroup(model)[0];
-        assert.equal(markGroup.name, 'pathgroup');
+        expect(markGroup.name).toEqual('pathgroup');
         expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
@@ -44,15 +43,15 @@ describe('Mark', () => {
           }
         });
         const submarkGroup = markGroup.marks[0];
-        assert.equal(submarkGroup.name, 'marks');
-        assert.equal(submarkGroup.type, 'line');
+        expect(submarkGroup.name).toEqual('marks');
+        expect(submarkGroup.type).toEqual('line');
         expect(submarkGroup.style).toEqual(['line', 'trend']);
-        assert.equal(submarkGroup.from.data, 'faceted_path_main');
+        expect(submarkGroup.from.data).toEqual('faceted_path_main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model)[0];
-        assert.equal(markGroup.name, 'pathgroup');
+        expect(markGroup.name).toEqual('pathgroup');
         expect(markGroup.from).toEqual({
           facet: {
             name: 'faceted_path_main',
@@ -61,7 +60,7 @@ describe('Mark', () => {
           }
         });
         const submarkGroup = markGroup.marks[0];
-        assert.isUndefined(submarkGroup.transform);
+        expect(submarkGroup.transform).not.toBeDefined();
       });
     });
 
@@ -75,14 +74,14 @@ describe('Mark', () => {
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroup(model)[0];
-        assert.equal(markGroup.name, 'marks');
-        assert.equal(markGroup.type, 'line');
-        assert.equal(markGroup.from.data, 'main');
+        expect(markGroup.name).toEqual('marks');
+        expect(markGroup.type).toEqual('line');
+        expect(markGroup.from.data).toEqual('main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model);
-        assert.isUndefined(markGroup[0].transform);
+        expect(markGroup[0].transform).not.toBeDefined();
       });
 
       // NON-PATH
@@ -98,14 +97,14 @@ describe('Mark', () => {
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroup(model)[0];
-        assert.equal(markGroup.type, 'symbol');
-        assert.equal(markGroup.key.field, 'k');
-        assert.equal(markGroup.from.data, 'main');
+        expect(markGroup.type).toEqual('symbol');
+        expect(markGroup.key.field).toEqual('k');
+        expect(markGroup.from.data).toEqual('main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model);
-        assert.isUndefined(markGroup[0].transform);
+        expect(markGroup[0].transform).not.toBeDefined();
       });
     });
 
@@ -125,8 +124,8 @@ describe('Mark', () => {
         encoding: {}
       });
       const markGroup = parseMarkGroup(model);
-      assert.isDefined(markGroup[0].transform);
-      assert.equal(markGroup[0].transform[0].type, GEOSHAPE);
+      expect(markGroup[0].transform).toBeDefined();
+      expect(markGroup[0].transform[0].type).toEqual(GEOSHAPE);
     });
 
     describe('Aggregated Bar with a color with binned x', () => {
@@ -140,12 +139,12 @@ describe('Mark', () => {
       });
       it('should use main stacked data source', () => {
         const markGroup = parseMarkGroup(model);
-        assert.equal(markGroup[0].from.data, 'main');
-        assert.equal(markGroup[0].style, 'bar');
+        expect(markGroup[0].from.data).toBe('main');
+        expect(markGroup[0].style).toEqual(['bar']);
       });
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model);
-        assert.isUndefined(markGroup[0].transform);
+        expect(markGroup[0].transform).not.toBeDefined();
       });
     });
 
@@ -168,7 +167,7 @@ describe('Mark', () => {
         model.parseLayoutSize();
 
         const markGroup = parseMarkGroup(model.child as UnitModel);
-        assert.equal(markGroup[0].from.data, 'child_main');
+        expect(markGroup[0].from.data).toEqual('child_main');
       });
 
       it('should not have post encoding transform', () => {
@@ -176,7 +175,7 @@ describe('Mark', () => {
         model.parseLayoutSize();
 
         const markGroup = parseMarkGroup(model.child as UnitModel);
-        assert.isUndefined(markGroup[0].transform);
+        expect(markGroup[0].transform).not.toBeDefined();
       });
     });
 
@@ -191,12 +190,12 @@ describe('Mark', () => {
 
       it('should use main aggregated data source', () => {
         const markGroup = parseMarkGroup(model);
-        assert.equal(markGroup[0].from.data, 'main');
+        expect(markGroup[0].from.data).toEqual('main');
       });
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroup(model);
-        assert.isUndefined(markGroup[0].transform);
+        expect(markGroup[0].transform).not.toBeDefined();
       });
     });
   });
@@ -228,7 +227,7 @@ describe('Mark', () => {
           order: {value: null}
         }
       });
-      assert.equal(getSort(model), undefined);
+      expect(getSort(model)).toEqual(undefined);
     });
 
     it('should order by x by default if x is the dimension', () => {
@@ -307,11 +306,11 @@ describe('Mark', () => {
 
     it('should not return errors for all channels', () => {
       for (const channel of UNIT_CHANNELS) {
-        assert.doesNotThrow(() => {
+        expect(() => {
           pathGroupingFields('line', {
             [channel]: {field: 'a', type: 'nominal'}
           });
-        });
+        }).not.toThrow();
       }
     });
 

@@ -37,11 +37,8 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 21},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
-    }
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
@@ -59,7 +56,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},
@@ -116,8 +113,8 @@
         "sort": true
       },
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

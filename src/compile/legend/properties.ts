@@ -1,11 +1,13 @@
-import {LabelOverlap} from 'vega';
-import {FieldDef, valueArray} from '../../fielddef';
+import {LabelOverlap, LegendOrient, LegendType} from 'vega';
+import {Channel, isColorChannel} from '../../channel';
+import {TypedFieldDef, valueArray} from '../../fielddef';
 import {Legend, LegendConfig} from '../../legend';
-import {hasContinuousDomain, ScaleType} from '../../scale';
+import {isContinuousToContinuous, ScaleType} from '../../scale';
+import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {Model} from '../model';
 
-export function values(legend: Legend, fieldDef: FieldDef<string>) {
+export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
   const vals = legend.values;
 
   if (vals) {
@@ -14,25 +16,114 @@ export function values(legend: Legend, fieldDef: FieldDef<string>) {
   return undefined;
 }
 
-export function clipHeight(scaleType: ScaleType) {
-  if (hasContinuousDomain(scaleType)) {
+export function clipHeight(legendType: LegendType) {
+  if (legendType === 'gradient') {
     return 20;
   }
   return undefined;
 }
 
-export function defaultGradientLength(model: Model, legend: Legend, legendConfig: LegendConfig) {
+export function type(params: {
+  legend: Legend;
+  channel: Channel;
+  timeUnit?: TimeUnit;
+  scaleType: ScaleType;
+  alwaysReturn: boolean;
+}): LegendType {
+  const {legend} = params;
+
+  return getFirstDefined(legend.type, defaultType(params));
+}
+
+export function defaultType({
+  channel,
+  timeUnit,
+  scaleType,
+  alwaysReturn
+}: {
+  channel: Channel;
+  timeUnit?: TimeUnit;
+  scaleType: ScaleType;
+  alwaysReturn: boolean;
+}): LegendType {
+  // Following the logic in https://github.com/vega/vega-parser/blob/master/src/parsers/legend.js
+
+  if (isColorChannel(channel)) {
+    if (contains(['quarter', 'month', 'day'], timeUnit)) {
+      return 'symbol';
+    }
+
+    if (isContinuousToContinuous(scaleType)) {
+      return alwaysReturn ? 'gradient' : undefined;
+    }
+  }
+  return alwaysReturn ? 'symbol' : undefined;
+}
+
+export function direction({
+  legend,
+  legendConfig,
+  timeUnit,
+  channel,
+  scaleType
+}: {
+  legend: Legend;
+  legendConfig: LegendConfig;
+  timeUnit?: TimeUnit;
+  channel: Channel;
+  scaleType: ScaleType;
+}) {
+  const orient = getFirstDefined(legend.orient, legendConfig.orient, 'right');
+
+  const legendType = type({legend, channel, timeUnit, scaleType, alwaysReturn: true});
+  return getFirstDefined(
+    legend.direction,
+    legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'],
+    defaultDirection(orient, legendType)
+  );
+}
+
+function defaultDirection(orient: LegendOrient, legendType: LegendType) {
+  switch (orient) {
+    case 'top':
+    case 'bottom':
+      return 'horizontal';
+
+    case 'left':
+    case 'right':
+    case 'none':
+    case undefined: // undefined = "right" in Vega
+      return undefined; // vertical is Vega's default
+    default:
+      // top-left / ...
+      // For inner legend, uses compact layout like Tableau
+      return legendType === 'gradient' ? 'horizontal' : undefined;
+  }
+}
+
+export function defaultGradientLength({
+  legend,
+  legendConfig,
+  model,
+  channel,
+  scaleType
+}: {
+  legend: Legend;
+  legendConfig: LegendConfig;
+  model: Model;
+  channel: Channel;
+  scaleType: ScaleType;
+}) {
   const {
-    gradientDirection,
     gradientHorizontalMaxLength,
     gradientHorizontalMinLength,
     gradientVerticalMaxLength,
     gradientVerticalMinLength
   } = legendConfig;
 
-  const direction = getFirstDefined(legend.direction, gradientDirection);
+  const dir = direction({legend, legendConfig, channel, scaleType});
 
-  if (direction === 'horizontal') {
+  if (dir === 'horizontal') {
     const orient = getFirstDefined(legend.orient, legendConfig.orient);
     if (orient === 'top' || orient === 'bottom') {
       return gradientLengthSignal(model, 'width', gradientHorizontalMinLength, gradientHorizontalMaxLength);
@@ -40,6 +131,7 @@ export function defaultGradientLength(model: Model, legend: Legend, legendConfig
       return gradientHorizontalMinLength;
     }
   } else {
+    // vertical / undefined (Vega uses vertical by default)
     return gradientLengthSignal(model, 'height', gradientVerticalMinLength, gradientVerticalMaxLength);
   }
 }
@@ -49,7 +141,7 @@ function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: n
   return {signal: `clamp(${sizeSignal}, ${min}, ${max})`};
 }
 
-export function labelOverlap(scaleType: ScaleType): LabelOverlap {
+export function defaultLabelOverlap(scaleType: ScaleType): LabelOverlap {
   if (contains(['quantile', 'threshold', 'log'], scaleType)) {
     return 'greedy';
   }

@@ -22,7 +22,7 @@
   "signals": [
     {"name": "x_step", "value": 90},
     {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
-    {"name": "y_step", "value": 21},
+    {"name": "y_step", "value": 20},
     {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
@@ -41,7 +41,7 @@
             {"scale": "color", "field": "count_*"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -62,7 +62,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Cylinders\": ''+datum[\"Cylinders\"], \"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
@@ -123,7 +123,7 @@
       "direction": "horizontal",
       "gradientLength": 120,
       "fill": "color",
-      "title": "Number of Records"
+      "title": "Count of Records"
     }
   ],
   "config": {

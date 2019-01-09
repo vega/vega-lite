@@ -24,7 +24,7 @@ export function runStreamingExample(eleId: string) {
    */
   function newGenerator() {
     let counter = -1;
-    let previousY = [5,5,5,5];
+    let previousY = [5, 5, 5, 5];
     return () => {
       counter++;
       const newVals = previousY.map((v, category) => ({
@@ -32,7 +32,7 @@ export function runStreamingExample(eleId: string) {
         y: v + Math.round(Math.random() * 10 - category * 3),
         category
       }));
-      previousY = newVals.map((v)=> v.y);
+      previousY = newVals.map(v => v.y);
       return newVals;
     };
   }
@@ -42,7 +42,8 @@ export function runStreamingExample(eleId: string) {
   let minimumX = -100;
   window.setInterval(() => {
     minimumX++;
-    const changeSet = view.changeset()
+    const changeSet = view
+      .changeset()
       .insert(valueGenerator())
       .remove((t: {x: number}) => t.x < minimumX);
     view.change('table', changeSet).run();

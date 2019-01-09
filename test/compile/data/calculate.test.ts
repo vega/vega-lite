@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import {assert} from 'chai';
 import {CalculateNode} from '../../../src/compile/data/calculate';
 import {ModelWithField} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
@@ -39,8 +38,8 @@ describe('compile/data/calculate', () => {
         as: 'bar'
       });
 
-      expect(node.dependentFields()).toEqual({foo: true});
-      expect(node.producedFields()).toEqual({bar: true});
+      expect(node.dependentFields()).toEqual(new Set(['foo']));
+      expect(node.producedFields()).toEqual(new Set(['bar']));
     });
   });
 
@@ -57,8 +56,7 @@ describe('compile/data/calculate', () => {
         }
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
-      assert.deepEqual(
-        node.hash(),
+      expect(node.hash()).toEqual(
         'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
       );
     });

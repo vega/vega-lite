@@ -24,7 +24,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [datum[\"Cylinders\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"]]} : null",
           "force": true
         }
       ]

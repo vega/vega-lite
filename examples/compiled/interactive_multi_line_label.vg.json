@@ -190,7 +190,7 @@
           "dx": {"value": 5},
           "dy": {"value": -5},
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\")}"
+            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y')}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
@@ -216,7 +216,7 @@
             {"scale": "fill", "field": "symbol"}
           ],
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": ''+datum[\"symbol\"]}"
+            "signal": "{\"price\": format(datum[\"price\"], \"\"), \"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"symbol\": ''+datum[\"symbol\"]}"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},

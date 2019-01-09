@@ -1,20 +1,19 @@
-import {assert} from 'chai';
 import {AREA, BAR, LINE, TEXT} from '../src/mark';
 import {getEncodingMappingError} from '../src/validate';
 
 describe('vl.validate', () => {
   describe('getEncodingMappingError()', () => {
     it('should return no error for valid specs', () => {
-      assert.isNull(
+      expect(
         getEncodingMappingError({
           mark: BAR,
           encoding: {
             x: {field: 'a', type: 'quantitative'}
           }
         })
-      );
+      ).toBeNull();
 
-      assert.isNull(
+      expect(
         getEncodingMappingError({
           mark: LINE,
           encoding: {
@@ -22,9 +21,9 @@ describe('vl.validate', () => {
             y: {field: 'a', type: 'quantitative'}
           }
         })
-      );
+      ).toBeNull();
 
-      assert.isNull(
+      expect(
         getEncodingMappingError({
           mark: AREA,
           encoding: {
@@ -32,63 +31,63 @@ describe('vl.validate', () => {
             y: {field: 'b', type: 'quantitative'}
           }
         })
-      );
+      ).toBeNull();
     });
 
     it('should return error for invalid specs', () => {
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: LINE,
           encoding: {
             x: {field: 'b', type: 'quantitative'} // missing y
           }
         })
-      );
+      ).not.toBeNull();
 
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: AREA,
           encoding: {
             y: {field: 'b', type: 'quantitative'} // missing x
           }
         })
-      );
+      ).not.toBeNull();
 
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: TEXT,
           encoding: {
             y: {field: 'b', type: 'quantitative'} // missing text
           }
         })
-      );
+      ).not.toBeNull();
 
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: LINE,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with line
+            shape: {field: 'b', type: 'nominal'} // using shape with line
           }
         })
-      );
+      ).not.toBeNull();
 
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: AREA,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with area
+            shape: {field: 'b', type: 'nominal'} // using shape with area
           }
         })
-      );
+      ).not.toBeNull();
 
-      assert.isNotNull(
+      expect(
         getEncodingMappingError({
           mark: BAR,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with bar
+            shape: {field: 'b', type: 'nominal'} // using shape with bar
           }
         })
-      );
+      ).not.toBeNull();
     });
   });
 });

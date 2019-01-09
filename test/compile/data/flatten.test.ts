@@ -1,6 +1,5 @@
 /* tslint:disable:quotemark */
 
-import {assert} from 'chai';
 import {FlattenTransformNode} from '../../../src/compile/data/flatten';
 import {Transform} from '../../../src/transform';
 
@@ -12,7 +11,7 @@ describe('compile/data/flatten', () => {
         as: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.assemble(), {
+      expect(flatten.assemble()).toEqual({
         type: 'flatten',
         fields: ['a', 'b'],
         as: ['a', 'b']
@@ -24,7 +23,7 @@ describe('compile/data/flatten', () => {
         flatten: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.assemble(), {
+      expect(flatten.assemble()).toEqual({
         type: 'flatten',
         fields: ['a', 'b'],
         as: ['a', 'b']
@@ -37,7 +36,7 @@ describe('compile/data/flatten', () => {
         as: ['A']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.assemble(), {
+      expect(flatten.assemble()).toEqual({
         type: 'flatten',
         fields: ['a', 'b'],
         as: ['A', 'b']
@@ -49,7 +48,7 @@ describe('compile/data/flatten', () => {
         flatten: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.producedFields(), {a: true, b: true});
+      expect(flatten.producedFields()).toEqual(new Set(['a', 'b']));
     });
 
     it('should generate the correct hash', () => {
@@ -57,7 +56,7 @@ describe('compile/data/flatten', () => {
         flatten: ['a', 'b']
       };
       const flatten = new FlattenTransformNode(null, transform);
-      assert.deepEqual(flatten.hash(), 'FlattenTransform {"as":["a","b"],"flatten":["a","b"]}');
+      expect(flatten.hash()).toBe('FlattenTransform {"as":["a","b"],"flatten":["a","b"]}');
     });
   });
 });

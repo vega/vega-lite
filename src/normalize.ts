@@ -1,8 +1,8 @@
 import {isObject} from 'vega-util';
-import {COLUMN, ROW, X, X2, Y, Y2} from './channel';
+import {COLUMN, ROW} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
-import {channelHasField, Encoding, isRanged} from './encoding';
+import {channelHasField, Encoding} from './encoding';
 import {Field, RepeatRef} from './fielddef';
 import * as log from './log';
 import {
@@ -43,7 +43,7 @@ import {
   TopLevelSpec
 } from './spec';
 import {stack} from './stack';
-import {duplicate, keys, omit, pick} from './util';
+import {keys, omit, pick} from './util';
 
 export function normalizeTopLevelSpec(
   spec: TopLevelSpec | GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> | FacetedCompositeUnitSpec,
@@ -278,9 +278,6 @@ function normalizeNonFacetUnit(
 
   if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
     // TODO: thoroughly test
-    if (isRanged(encoding)) {
-      return normalizeRangedUnit(spec);
-    }
 
     if (mark === 'line' && (encoding.x2 || encoding.y2)) {
       log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
@@ -304,27 +301,6 @@ function normalizeNonFacetUnit(
   } else {
     return compositeMark.normalize(spec, config);
   }
-}
-
-function normalizeRangedUnit(spec: NormalizedUnitSpec) {
-  const hasX = channelHasField(spec.encoding, X);
-  const hasY = channelHasField(spec.encoding, Y);
-  const hasX2 = channelHasField(spec.encoding, X2);
-  const hasY2 = channelHasField(spec.encoding, Y2);
-  if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
-    const normalizedSpec = duplicate(spec);
-    if (hasX2 && !hasX) {
-      normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
-      delete normalizedSpec.encoding.x2;
-    }
-    if (hasY2 && !hasY) {
-      normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
-      delete normalizedSpec.encoding.y2;
-    }
-
-    return normalizedSpec;
-  }
-  return spec;
 }
 
 function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {

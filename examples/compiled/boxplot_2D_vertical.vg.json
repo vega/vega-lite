@@ -67,11 +67,8 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    }
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"}
   ],
   "marks": [
     {
@@ -89,7 +86,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
@@ -112,7 +109,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
@@ -135,7 +132,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 5},
@@ -160,7 +157,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"mid_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},
@@ -192,7 +189,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"age\": ''+datum[\"age\"], \"people\": format(datum[\"people\"], \"\")}"
+            "signal": "{\"people\": format(datum[\"people\"], \"\"), \"age\": ''+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "people"}
@@ -212,8 +209,8 @@
         "sort": true
       },
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",

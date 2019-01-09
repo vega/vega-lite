@@ -1,9 +1,9 @@
 import {isArray, isString} from 'vega-util';
-import {FieldDef, isFieldDef, vgField} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
-import {VgComparatorOrder, VgSort, VgTransform} from '../../vega.schema';
+import {VgComparatorOrder, VgCompare, VgTransform} from '../../vega.schema';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
@@ -29,7 +29,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: FieldDef<string>;
+  dimensionFieldDef?: TypedFieldDef<string>;
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -46,7 +46,7 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: VgSort;
+  sort: VgCompare;
 
   /** Mode for stacking marks.
    */
@@ -95,7 +95,7 @@ export class StackNode extends DataFlowNode {
         sortOrder.push(getFirstDefined(sortField.order, 'ascending'));
       }
     }
-    const sort: VgSort = {
+    const sort: VgCompare = {
       field: sortFields,
       order: sortOrder
     };
@@ -120,20 +120,22 @@ export class StackNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
+    const {encoding} = model;
 
     if (!stackProperties) {
       return null;
     }
 
-    let dimensionFieldDef: FieldDef<string>;
+    let dimensionFieldDef: TypedFieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      dimensionFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      const cDef = encoding[stackProperties.groupbyChannel];
+      dimensionFieldDef = getTypedFieldDef(cDef);
     }
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: VgSort;
+    let sort: VgCompare;
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
@@ -173,23 +175,20 @@ export class StackNode extends DataFlowNode {
   }
 
   public dependentFields() {
-    const out = {};
+    const out = new Set();
 
-    out[this._stack.stackField] = true;
+    out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(f => (out[f] = true));
-    this._stack.facetby.forEach(f => (out[f] = true));
+    this.getGroupbyFields().forEach(f => out.add(f));
+    this._stack.facetby.forEach(f => out.add(f));
     const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => (out[f] = true)) : (out[field] = true);
+    isArray(field) ? field.forEach(f => out.add(f)) : out.add(field);
 
     return out;
   }
 
   public producedFields() {
-    return this._stack.as.reduce((result, item) => {
-      result[item] = true;
-      return result;
-    }, {});
+    return new Set(this._stack.as);
   }
 
   public hash() {

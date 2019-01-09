@@ -172,7 +172,7 @@
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Horsepower_x",
@@ -197,7 +197,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_Horsepower_bin_maxbins_10_Horsepower_bins.start, child_Horsepower_bin_maxbins_10_Horsepower_bins.stop + child_Horsepower_bin_maxbins_10_Horsepower_bins.step, child_Horsepower_bin_maxbins_10_Horsepower_bins.step)"
           },
@@ -207,7 +207,7 @@
           "scale": "child_Horsepower_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -250,7 +250,7 @@
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Miles_per_Gallon_x",
@@ -281,7 +281,7 @@
           "title": "Miles_per_Gallon (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop + child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step, child_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.step)"
           },
@@ -291,7 +291,7 @@
           "scale": "child_Miles_per_Gallon_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1
@@ -334,7 +334,7 @@
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Acceleration_x",
@@ -359,7 +359,7 @@
           "title": "Acceleration (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/20)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "values": {
             "signal": "sequence(child_Acceleration_bin_maxbins_10_Acceleration_bins.start, child_Acceleration_bin_maxbins_10_Acceleration_bins.stop + child_Acceleration_bin_maxbins_10_Acceleration_bins.step, child_Acceleration_bin_maxbins_10_Acceleration_bins.step)"
           },
@@ -369,7 +369,7 @@
           "scale": "child_Acceleration_y",
           "orient": "left",
           "grid": false,
-          "title": "Number of Records",
+          "title": "Count of Records",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 1

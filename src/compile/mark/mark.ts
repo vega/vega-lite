@@ -1,10 +1,11 @@
 import {isArray} from 'vega-util';
 import {MAIN} from '../../data';
 import {Encoding, isAggregate} from '../../encoding';
-import {getFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, isValueDef, vgField} from '../../fielddef';
 import {AREA, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortField} from '../../sort';
 import {contains, getFirstDefined, keys} from '../../util';
+import {VgCompare} from '../../vega.schema';
 import {getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {area} from './area';
@@ -80,7 +81,7 @@ function parsePathMark(model: UnitModel) {
   }
 }
 
-export function getSort(model: UnitModel) {
+export function getSort(model: UnitModel): VgCompare {
   const {encoding, stack, mark, markDef} = model;
   const order = encoding.order;
   if (!isArray(order) && isValueDef(order)) {
@@ -221,7 +222,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         // TODO strokeDashOffset:
 
         /* tslint:enable */
-        const fieldDef = getFieldDef<string>(encoding[channel]);
+        const fieldDef = getTypedFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
           details.push(vgField(fieldDef, {}));
         }

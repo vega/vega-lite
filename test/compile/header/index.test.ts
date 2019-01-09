@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {getHeaderGroups, getTitleGroup, labelAlign, labelBaseline} from '../../../src/compile/header';
 import {getHeaderProperties} from '../../../src/compile/header/index';
 import {
@@ -42,8 +41,8 @@ describe('compile/header/index', () => {
 
       const rowHeaderGroups = getHeaderGroups(model, 'row');
       const columnHeaderGroups = getHeaderGroups(model, 'column');
-      assert.equal(rowHeaderGroups[0].sort.order, 'ascending');
-      assert.equal(columnHeaderGroups[0].sort.order, 'descending');
+      expect(rowHeaderGroups[0].sort.order).toEqual('ascending');
+      expect(columnHeaderGroups[0].sort.order).toEqual('descending');
     });
 
     it('should correctly process sort field', () => {
@@ -64,7 +63,7 @@ describe('compile/header/index', () => {
       model.parseAxisAndHeader();
 
       const rowHeaderGroups = getHeaderGroups(model, 'row');
-      assert.equal(rowHeaderGroups[0].sort.field, 'datum["min_d"]');
+      expect(rowHeaderGroups[0].sort.field).toEqual('datum["min_d"]');
     });
   });
 

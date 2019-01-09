@@ -34,7 +34,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -57,7 +57,7 @@
           ],
           "opacity": {"value": 0.5},
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
           },
           "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"scale": "size", "field": "weather"},
@@ -91,7 +91,7 @@
       "name": "size",
       "type": "point",
       "domain": {"data": "source_0", "field": "weather", "sort": true},
-      "range": [2, 20]
+      "range": [2, 19]
     }
   ],
   "axes": [
@@ -115,7 +115,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

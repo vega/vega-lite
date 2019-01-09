@@ -1,4 +1,4 @@
-import {AnchorValue, Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle} from 'vega';
+import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
@@ -8,13 +8,12 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
+import {extractCompositionLayout, GenericCompositionLayout} from '../spec/toplevel';
 import {extractTitleConfig, TitleParams} from '../title';
-import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal} from '../vega.schema';
-import {TopLevelFacetSpec} from './../spec';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -151,8 +150,8 @@ export abstract class Model {
   /** Name map for projections, which can be renamed by a model's parent. */
   protected projectionNameMap: NameMapInterface;
 
-  /** Name map for size, which can be renamed by a model's parent. */
-  protected layoutSizeNameMap: NameMapInterface;
+  /** Name map for signals, which can be renamed by a model's parent. */
+  protected signalNameMap: NameMapInterface;
 
   public readonly repeater: RepeaterValue;
 
@@ -181,7 +180,7 @@ export abstract class Model {
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
     this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
-    this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
+    this.signalNameMap = parent ? parent.signalNameMap : new NameMap();
 
     this.data = spec.data;
 
@@ -238,7 +237,7 @@ export abstract class Model {
     this.parseScale();
 
     this.parseLayoutSize(); // depends on scale
-    this.renameTopLevelLayoutSize();
+    this.renameTopLevelLayoutSizeSignal();
 
     this.parseSelection();
     this.parseProjection();
@@ -267,12 +266,12 @@ export abstract class Model {
    * This essentially merges the top-level spec's width/height signals with the width/height signals
    * to help us reduce redundant signals declaration.
    */
-  private renameTopLevelLayoutSize() {
+  private renameTopLevelLayoutSizeSignal() {
     if (this.getName('width') !== 'width') {
-      this.renameLayoutSize(this.getName('width'), 'width');
+      this.renameSignal(this.getName('width'), 'width');
     }
     if (this.getName('height') !== 'height') {
-      this.renameLayoutSize(this.getName('height'), 'height');
+      this.renameSignal(this.getName('height'), 'height');
     }
   }
 
@@ -284,8 +283,8 @@ export abstract class Model {
     parseLegend(this);
   }
 
-  public abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
-  public abstract assembleSelectionSignals(): any[];
+  public abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+  public abstract assembleSelectionSignals(): NewSignal[];
 
   public abstract assembleSelectionData(data: VgData[]): VgData[];
 
@@ -331,7 +330,7 @@ export abstract class Model {
     return {};
   }
 
-  public abstract assembleLayoutSignals(): VgSignal[];
+  public abstract assembleLayoutSignals(): NewSignal[];
 
   public assembleHeaderMarks(): VgMarkGroup[] {
     const {layoutHeaders} = this.component;
@@ -349,7 +348,7 @@ export abstract class Model {
     return headerMarks;
   }
 
-  public abstract assembleMarks(): VgMarkGroup[]; // TODO: VgMarkGroup[]
+  public abstract assembleMarks(): VgMarkGroup[];
 
   public assembleAxes(): VgAxis[] {
     return assembleAxes(this.component.axes, this.config);
@@ -395,7 +394,7 @@ export abstract class Model {
   /**
    * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
-  public assembleGroup(signals: VgSignal[] = []) {
+  public assembleGroup(signals: NewSignal[] = []) {
     const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSelectionSignals());
@@ -492,7 +491,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.layoutSizeNameMap.get(this.getName(sizeType))
+      signal: this.signalNameMap.get(this.getName(sizeType))
     };
   }
 
@@ -511,12 +510,12 @@ export abstract class Model {
     return node.getSource();
   }
 
-  public getSizeName(oldSizeName: string): string {
-    return this.layoutSizeNameMap.get(oldSizeName);
+  public getSignalName(oldSignalName: string): string {
+    return this.signalNameMap.get(oldSignalName);
   }
 
-  public renameLayoutSize(oldName: string, newName: string) {
-    this.layoutSizeNameMap.rename(oldName, newName);
+  public renameSignal(oldName: string, newName: string) {
+    this.signalNameMap.rename(oldName, newName);
   }
 
   public renameScale(oldName: string, newName: string) {
@@ -625,7 +624,7 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 
   /** Get "field" reference for Vega */
   public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
@@ -643,7 +642,7 @@ export abstract class ModelWithField extends Model {
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef<string>, c: Channel) => {
+      (acc: U, cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           return f(acc, fieldDef, c);
@@ -658,7 +657,7 @@ export abstract class ModelWithField extends Model {
   public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
     forEach(
       this.getMapping(),
-      (cd: ChannelDef<string>, c: Channel) => {
+      (cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           f(fieldDef, c);

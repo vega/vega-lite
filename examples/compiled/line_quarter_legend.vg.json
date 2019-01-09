@@ -90,10 +90,10 @@
     },
     {
       "name": "color",
-      "type": "sequential",
+      "type": "time",
       "domain": {"data": "source_0", "field": "quarter_date"},
-      "range": "ramp",
-      "zero": false
+      "range": ["#f7fbff", "#0e427f"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -153,6 +153,7 @@
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "date (quarter)",
+      "type": "symbol",
       "encode": {
         "labels": {"update": {"text": {"signal": "'Q' + quarter(datum.value)"}}}
       }

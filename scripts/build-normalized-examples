@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const vl = require('../build/vega-lite');
-const stableStringify = require('json-stable-stringify');
+const stableStringify = require('fast-json-stable-stringify');
 const compactStringify = require('json-stringify-pretty-compact');
 
 const DIR = __dirname + '/..';

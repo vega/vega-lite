@@ -97,7 +97,8 @@ export function normalizeErrorBand(
     continuousAxis,
     encodingWithoutContinuousAxis,
     markDef,
-    outerSpec
+    outerSpec,
+    tooltipEncoding
   } = errorBarParams(spec, ERRORBAND, config);
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
@@ -136,9 +137,25 @@ export function normalizeErrorBand(
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBandPart('band', bandMark, 'lower', 'upper'),
-      ...makeErrorBandPart('borders', bordersMark, 'lower'),
-      ...makeErrorBandPart('borders', bordersMark, 'upper')
+      ...makeErrorBandPart({
+        partName: 'band',
+        mark: bandMark,
+        positionPrefix: 'lower',
+        endPositionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'lower',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      })
     ]
   };
 }

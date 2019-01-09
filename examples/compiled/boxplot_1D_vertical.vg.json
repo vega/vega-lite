@@ -3,7 +3,7 @@
   "description": "A vertical 1D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
   "autosize": "pad",
   "padding": 5,
-  "width": 21,
+  "width": 20,
   "height": 200,
   "style": "cell",
   "data": [
@@ -83,7 +83,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"lower_whisker_people\"], \"\"), \"lower_box_people\": format(datum[\"lower_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
@@ -106,7 +106,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"upper_box_people\"], \"\"), \"upper_whisker_people\": format(datum[\"upper_whisker_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
@@ -129,7 +129,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"lower_box_people\"], \"\"), \"upper_box_people\": format(datum[\"upper_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "width": {"value": 14},
@@ -154,7 +154,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"population\": format(datum[\"mid_box_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},

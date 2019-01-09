@@ -1,26 +1,22 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Channel, isScaleChannel} from '../channel';
 import {Config, StyleConfigIndex, ViewConfig} from '../config';
 import {
-  FieldDef,
   FieldDefBase,
   FieldRefOption,
   isScaleFieldDef,
   isTimeFieldDef,
   OrderFieldDef,
-  ValueDef,
+  TypedFieldDef,
   vgField
 } from '../fielddef';
-import {GuideEncodingEntry} from '../guide';
 import {MarkConfig, MarkDef, TextConfig} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
-import {contains, getFirstDefined, keys, stringify} from '../util';
-import {VgEncodeChannel, VgEncodeEntry, VgMarkConfig, VgSort} from '../vega.schema';
+import {getFirstDefined, stringify} from '../util';
+import {VgCompare, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
-import {wrapCondition} from './mark/mixins';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
 
@@ -89,7 +85,7 @@ export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDe
 }
 
 export function formatSignalRef(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   specifiedFormat: string,
   expr: 'datum' | 'parent',
   config: Config
@@ -128,7 +124,7 @@ export function formatSignalRef(
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config) {
+export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
   if (isTimeFieldDef(fieldDef)) {
     return undefined;
   }
@@ -193,7 +189,7 @@ export function timeFormatExpression(
 export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
   fieldRefOption?: FieldRefOption
-): VgSort {
+): VgCompare {
   return (isArray(orderDef) ? orderDef : [orderDef]).reduce(
     (s, orderChannelDef) => {
       s.field.push(vgField(orderChannelDef, fieldRefOption));
@@ -248,28 +244,4 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */
   throw new Error('It should never reach here');
-}
-
-/**
- * Checks whether a fieldDef for a particular channel requires a computed bin range.
- */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
-  if (!isBinning(fieldDef.bin)) {
-    console.warn('Only use this method with binned field defs');
-    return false;
-  }
-
-  // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
-  // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], fieldDef.type);
-}
-
-export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
-  return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
-    const valueDef = encoding[channel];
-    return {
-      ...encode,
-      ...wrapCondition(model, valueDef, channel, (x: ValueDef) => ({value: x.value}))
-    };
-  }, {});
 }

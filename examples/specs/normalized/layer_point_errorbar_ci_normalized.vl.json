@@ -21,7 +21,8 @@
         {
           "aggregate": [
             {"op": "ci0", "field": "yield", "as": "lower_yield"},
-            {"op": "ci1", "field": "yield", "as": "upper_yield"}
+            {"op": "ci1", "field": "yield", "as": "upper_yield"},
+            {"op": "mean", "field": "yield", "as": "center_yield"}
           ],
           "groupby": ["variety"]
         }
@@ -36,7 +37,25 @@
               "title": "Barley Yield"
             },
             "x2": {"field": "upper_yield", "type": "quantitative"},
-            "y": {"field": "variety", "type": "ordinal"}
+            "y": {"field": "variety", "type": "ordinal"},
+            "tooltip": [
+              {
+                "field": "upper_yield",
+                "type": "quantitative",
+                "title": "Ci1 of yield"
+              },
+              {
+                "field": "lower_yield",
+                "type": "quantitative",
+                "title": "Ci0 of yield"
+              },
+              {
+                "field": "center_yield",
+                "type": "quantitative",
+                "title": "Mean of yield"
+              },
+              {"field": "variety", "type": "ordinal"}
+            ]
           }
         }
       ]

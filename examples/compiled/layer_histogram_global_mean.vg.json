@@ -69,7 +69,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_10_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
           },
           "x2": {
             "scale": "x",
@@ -139,7 +139,7 @@
       "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {"signal": "ceil(width/10)"},
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
       },
@@ -149,7 +149,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

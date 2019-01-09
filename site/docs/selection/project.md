@@ -7,8 +7,8 @@ permalink: /docs/project.html
 
 A [selection's type](selection.html#selection-types) determines which data values fall within it by default:
 
-  - For `single` and `multi` selections, only values that have been directly interacted with (i.e., those that have been clicked on) are considered to be "selected."
-  - For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
+- For `single` and `multi` selections, only values that have been directly interacted with (i.e., those that have been clicked on) are considered to be "selected."
+- For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
 
 These default inclusion criteria can be modified with the **project** selection transformation, which offers the following two properties:
 
