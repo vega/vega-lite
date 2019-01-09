@@ -1,12 +1,11 @@
 /* tslint:disable quotemark */
-import { assert } from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import nearest from '../../../src/compile/selection/transforms/nearest';
 import * as log from '../../../src/log';
 import { duplicate } from '../../../src/util';
 import { parseUnitModel } from '../../util';
 function getModel(markType) {
-    var model = parseUnitModel({
+    const model = parseUnitModel({
         mark: markType,
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -55,43 +54,43 @@ function voronoiMark(x, y) {
         }
     ];
 }
-describe('Nearest Selection Transform', function () {
-    it('identifies transform invocation', function () {
-        var selCmpts = getModel('circle').component.selection;
-        assert.isNotFalse(nearest.has(selCmpts['one']));
-        assert.isNotFalse(nearest.has(selCmpts['two']));
-        assert.isNotTrue(nearest.has(selCmpts['three']));
-        assert.isNotTrue(nearest.has(selCmpts['four']));
-        assert.isNotTrue(nearest.has(selCmpts['five']));
-        assert.isNotTrue(nearest.has(selCmpts['six']));
+describe('Nearest Selection Transform', () => {
+    it('identifies transform invocation', () => {
+        const selCmpts = getModel('circle').component.selection;
+        expect(nearest.has(selCmpts['one'])).not.toBe(false);
+        expect(nearest.has(selCmpts['two'])).not.toBe(false);
+        expect(nearest.has(selCmpts['three'])).not.toBe(true);
+        expect(nearest.has(selCmpts['four'])).not.toBe(true);
+        expect(nearest.has(selCmpts['five'])).not.toBe(true);
+        expect(nearest.has(selCmpts['six'])).not.toBe(true);
     });
-    it('adds voronoi for non-path marks', function () {
-        var model = getModel('circle');
-        var selCmpts = model.component.selection;
-        var marks = [{ hello: 'world' }];
-        assert.sameDeepMembers(nearest.marks(model, selCmpts['one'], marks), voronoiMark());
+    it('adds voronoi for non-path marks', () => {
+        const model = getModel('circle');
+        const selCmpts = model.component.selection;
+        const marks = [{ hello: 'world' }];
+        expect(nearest.marks(model, selCmpts['one'], marks)).toEqual(voronoiMark());
     });
-    it('should warn for path marks', log.wrap(function (localLogger) {
-        var model = getModel('line');
-        var selCmpts = model.component.selection;
-        var marks = [];
-        assert.equal(nearest.marks(model, selCmpts['one'], marks), marks);
-        assert.equal(localLogger.warns[0], log.message.nearestNotSupportForContinuous('line'));
+    it('should warn for path marks', log.wrap(localLogger => {
+        const model = getModel('line');
+        const selCmpts = model.component.selection;
+        const marks = [];
+        expect(nearest.marks(model, selCmpts['one'], marks)).toEqual(marks);
+        expect(localLogger.warns[0]).toEqual(log.message.nearestNotSupportForContinuous('line'));
     }));
-    it('limits to a single voronoi per unit', function () {
-        var model = getModel('circle');
-        var selCmpts = model.component.selection;
-        var marks = [{ hello: 'world' }];
-        var marks2 = nearest.marks(model, selCmpts['one'], marks);
-        assert.sameDeepMembers(nearest.marks(model, selCmpts['two'], marks2), voronoiMark());
+    it('limits to a single voronoi per unit', () => {
+        const model = getModel('circle');
+        const selCmpts = model.component.selection;
+        const marks = [{ hello: 'world' }];
+        const marks2 = nearest.marks(model, selCmpts['one'], marks);
+        expect(nearest.marks(model, selCmpts['two'], marks2)).toEqual(voronoiMark());
     });
-    it('supports 1D voronoi', function () {
-        var model = getModel('circle');
-        var selCmpts = model.component.selection;
-        var marks = [{ hello: 'world' }];
-        assert.sameDeepMembers(nearest.marks(model, selCmpts['seven'], duplicate(marks)), voronoiMark(null, { expr: '0' }));
-        assert.sameDeepMembers(nearest.marks(model, selCmpts['eight'], duplicate(marks)), voronoiMark({ expr: '0' }));
-        assert.sameDeepMembers(nearest.marks(model, selCmpts['nine'], duplicate(marks)), voronoiMark());
+    it('supports 1D voronoi', () => {
+        const model = getModel('circle');
+        const selCmpts = model.component.selection;
+        const marks = [{ hello: 'world' }];
+        expect(nearest.marks(model, selCmpts['seven'], duplicate(marks))).toEqual(voronoiMark(null, { expr: '0' }));
+        expect(nearest.marks(model, selCmpts['eight'], duplicate(marks))).toEqual(voronoiMark({ expr: '0' }));
+        expect(nearest.marks(model, selCmpts['nine'], duplicate(marks))).toEqual(voronoiMark());
     });
 });
 //# sourceMappingURL=nearest.test.js.map

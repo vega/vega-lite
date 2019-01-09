@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
-import { hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef } from '../fielddef';
+import { hasConditionalFieldDef, isConditionalDef, isFieldDef, isRepeatRef, isSortableFieldDef } from '../fielddef';
 import * as log from '../log';
 import { isSortField } from '../sort';
 export function replaceRepeaterInFacet(facet, repeater) {
@@ -16,7 +16,7 @@ function replaceRepeat(o, repeater) {
     if (isRepeatRef(o.field)) {
         if (o.field.repeat in repeater) {
             // any needed to calm down ts compiler
-            return tslib_1.__assign({}, o, { field: repeater[o.field.repeat] });
+            return Object.assign({}, o, { field: repeater[o.field.repeat] });
         }
         else {
             log.warn(log.message.noSuchRepeatedValue(o.field.repeat));
@@ -34,15 +34,18 @@ function replaceRepeaterInFieldDef(fieldDef, repeater) {
         // the field def should be ignored
         return undefined;
     }
-    if (fieldDef.sort && isSortField(fieldDef.sort)) {
-        var sort = replaceRepeat(fieldDef.sort, repeater);
-        fieldDef = tslib_1.__assign({}, fieldDef, (sort ? { sort: sort } : {}));
+    else if (fieldDef === null) {
+        return null;
+    }
+    if (isSortableFieldDef(fieldDef) && isSortField(fieldDef.sort)) {
+        const sort = replaceRepeat(fieldDef.sort, repeater);
+        fieldDef = Object.assign({}, fieldDef, (sort ? { sort } : {}));
     }
     return fieldDef;
 }
 function replaceRepeaterInChannelDef(channelDef, repeater) {
     if (isFieldDef(channelDef)) {
-        var fd = replaceRepeaterInFieldDef(channelDef, repeater);
+        const fd = replaceRepeaterInFieldDef(channelDef, repeater);
         if (fd) {
             return fd;
         }
@@ -52,12 +55,12 @@ function replaceRepeaterInChannelDef(channelDef, repeater) {
     }
     else {
         if (hasConditionalFieldDef(channelDef)) {
-            var fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
+            const fd = replaceRepeaterInFieldDef(channelDef.condition, repeater);
             if (fd) {
-                return tslib_1.__assign({}, channelDef, { condition: fd });
+                return Object.assign({}, channelDef, { condition: fd });
             }
             else {
-                var condition = channelDef.condition, channelDefWithoutCondition = tslib_1.__rest(channelDef, ["condition"]);
+                const { condition } = channelDef, channelDefWithoutCondition = tslib_1.__rest(channelDef, ["condition"]);
                 return channelDefWithoutCondition;
             }
         }
@@ -66,17 +69,17 @@ function replaceRepeaterInChannelDef(channelDef, repeater) {
     return undefined;
 }
 function replaceRepeater(mapping, repeater) {
-    var out = {};
-    for (var channel in mapping) {
+    const out = {};
+    for (const channel in mapping) {
         if (mapping.hasOwnProperty(channel)) {
-            var channelDef = mapping[channel];
+            const channelDef = mapping[channel];
             if (isArray(channelDef)) {
                 // array cannot have condition
-                out[channel] = channelDef.map(function (cd) { return replaceRepeaterInChannelDef(cd, repeater); }).filter(function (cd) { return cd; });
+                out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
             }
             else {
-                var cd = replaceRepeaterInChannelDef(channelDef, repeater);
-                if (cd) {
+                const cd = replaceRepeaterInChannelDef(channelDef, repeater);
+                if (cd !== undefined) {
                     out[channel] = cd;
                 }
             }

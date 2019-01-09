@@ -1,4 +1,5 @@
-export var HEADER_TITLE_PROPERTIES_MAP = {
+import { keys } from './util';
+export const HEADER_TITLE_PROPERTIES_MAP = {
     titleAnchor: 'anchor',
     titleAngle: 'angle',
     titleBaseline: 'baseline',
@@ -9,7 +10,7 @@ export var HEADER_TITLE_PROPERTIES_MAP = {
     titleLimit: 'limit',
     titlePadding: 'offset'
 };
-export var HEADER_LABEL_PROPERTIES_MAP = {
+export const HEADER_LABEL_PROPERTIES_MAP = {
     labelAngle: 'angle',
     labelColor: 'color',
     labelFont: 'font',
@@ -17,6 +18,6 @@ export var HEADER_LABEL_PROPERTIES_MAP = {
     labelLimit: 'limit',
     labelPadding: 'offset'
 };
-export var HEADER_TITLE_PROPERTIES = Object.keys(HEADER_TITLE_PROPERTIES_MAP);
-export var HEADER_LABEL_PROPERTIES = Object.keys(HEADER_LABEL_PROPERTIES_MAP);
+export const HEADER_TITLE_PROPERTIES = keys(HEADER_TITLE_PROPERTIES_MAP);
+export const HEADER_LABEL_PROPERTIES = keys(HEADER_LABEL_PROPERTIES_MAP);
 //# sourceMappingURL=header.js.map

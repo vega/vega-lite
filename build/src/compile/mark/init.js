@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { isBinned, isBinning } from '../../bin';
 import { isAggregate } from '../../encoding';
 import { isContinuous, isFieldDef } from '../../fielddef';
@@ -8,24 +7,24 @@ import { QUANTITATIVE, TEMPORAL } from '../../type';
 import { contains, getFirstDefined } from '../../util';
 import { getMarkConfig } from '../common';
 export function normalizeMarkDef(mark, encoding, config) {
-    var markDef = isMarkDef(mark) ? tslib_1.__assign({}, mark) : { type: mark };
+    const markDef = isMarkDef(mark) ? Object.assign({}, mark) : { type: mark };
     // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
-    var specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
+    const specifiedOrient = markDef.orient || getMarkConfig('orient', markDef, config);
     markDef.orient = orient(markDef.type, encoding, specifiedOrient);
     if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
         log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
     }
     // set opacity and filled if not specified in mark config
-    var specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
+    const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
     if (specifiedOpacity === undefined) {
         markDef.opacity = opacity(markDef.type, encoding);
     }
-    var specifiedFilled = markDef.filled;
+    const specifiedFilled = markDef.filled;
     if (specifiedFilled === undefined) {
         markDef.filled = filled(markDef, config);
     }
     // set cursor, which should be pointer if href channel is present unless otherwise specified
-    var specifiedCursor = markDef.cursor || getMarkConfig('cursor', markDef, config);
+    const specifiedCursor = markDef.cursor || getMarkConfig('cursor', markDef, config);
     if (specifiedCursor === undefined) {
         markDef.cursor = cursor(markDef, encoding, config);
     }
@@ -47,8 +46,8 @@ function opacity(mark, encoding) {
     return undefined;
 }
 function filled(markDef, config) {
-    var filledConfig = getMarkConfig('filled', markDef, config);
-    var mark = markDef.type;
+    const filledConfig = getMarkConfig('filled', markDef, config);
+    const mark = markDef.type;
     return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);
 }
 function orient(mark, encoding, specifiedOrient) {
@@ -61,7 +60,7 @@ function orient(mark, encoding, specifiedOrient) {
             // orient is meaningless for these marks.
             return undefined;
     }
-    var x = encoding.x, y = encoding.y, x2 = encoding.x2, y2 = encoding.y2;
+    const { x, y, x2, y2 } = encoding;
     switch (mark) {
         case BAR:
             if (isFieldDef(x) && isBinned(x.bin)) {
@@ -119,8 +118,8 @@ function orient(mark, encoding, specifiedOrient) {
         case LINE: // intentional fall through
         case TICK: // Tick is opposite to bar, line, area and never have ranged mark.
             /* tslint:enable */
-            var xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
-            var yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
+            const xIsContinuous = isFieldDef(encoding.x) && isContinuous(encoding.x);
+            const yIsContinuous = isFieldDef(encoding.y) && isContinuous(encoding.y);
             if (xIsContinuous && !yIsContinuous) {
                 return mark !== 'tick' ? 'horizontal' : 'vertical';
             }
@@ -128,10 +127,10 @@ function orient(mark, encoding, specifiedOrient) {
                 return mark !== 'tick' ? 'vertical' : 'horizontal';
             }
             else if (xIsContinuous && yIsContinuous) {
-                var xDef = encoding.x; // we can cast here since they are surely fieldDef
-                var yDef = encoding.y;
-                var xIsTemporal = xDef.type === TEMPORAL;
-                var yIsTemporal = yDef.type === TEMPORAL;
+                const xDef = encoding.x; // we can cast here since they are surely fieldDef
+                const yDef = encoding.y;
+                const xIsTemporal = xDef.type === TEMPORAL;
+                const yIsTemporal = yDef.type === TEMPORAL;
                 // temporal without timeUnit is considered continuous, but better serves as dimension
                 if (xIsTemporal && !yIsTemporal) {
                     return mark !== 'tick' ? 'vertical' : 'horizontal';

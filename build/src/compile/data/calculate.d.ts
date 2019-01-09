@@ -1,6 +1,5 @@
 import { SingleDefChannel } from '../../channel';
-import { FieldDef } from '../../fielddef';
-import { FieldRefOption } from '../../fielddef';
+import { FieldRefOption, TypedFieldDef } from '../../fielddef';
 import { CalculateTransform } from '../../transform';
 import { VgFormulaTransform } from '../../vega.schema';
 import { ModelWithField } from '../model';
@@ -14,9 +13,9 @@ export declare class CalculateNode extends DataFlowNode {
     clone(): CalculateNode;
     constructor(parent: DataFlowNode, transform: CalculateTransform);
     static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField): DataFlowNode;
-    producedFields(): {};
-    dependentFields(): import("../../util").Dict<true>;
+    producedFields(): Set<string>;
+    dependentFields(): Set<string>;
     assemble(): VgFormulaTransform;
     hash(): string;
 }
-export declare function sortArrayIndexField(fieldDef: FieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption): string;
+export declare function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption): string;

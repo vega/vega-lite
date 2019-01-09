@@ -3,8 +3,8 @@
  */
 import { Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig } from 'vega';
 import { Config } from '../../config';
-import { FacetFieldDef } from '../../facet';
 import { HeaderConfig } from '../../header';
+import { FacetFieldDef } from '../../spec/facet';
 import { VgComparator, VgMarkGroup } from '../../vega.schema';
 import { Model } from '../model';
 export declare type HeaderChannel = 'row' | 'column';
@@ -40,7 +40,7 @@ export interface HeaderComponent {
     };
     axes: VgAxis[];
 }
-export declare function getHeaderType(orient: AxisOrient): "header" | "footer";
+export declare function getHeaderType(orient: AxisOrient): "footer" | "header";
 export declare function getTitleGroup(model: Model, channel: HeaderChannel): {
     name: string;
     type: string;
@@ -1036,6 +1036,6 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
     type: string;
     role: string;
 };
-export declare function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, properties: string[], propertiesMap: {
+export declare function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, properties: (keyof HeaderConfig)[], propertiesMap: {
     [k in keyof HeaderConfig]: keyof VgTitleConfig;
 }): {};

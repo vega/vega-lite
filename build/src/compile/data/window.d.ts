@@ -1,6 +1,5 @@
 import { WindowTransform } from '../../transform';
 import { VgWindowTransform } from '../../vega.schema';
-import { StringSet } from './../../util';
 import { DataFlowNode } from './dataflow';
 /**
  * A class for the window transform nodes
@@ -10,8 +9,8 @@ export declare class WindowTransformNode extends DataFlowNode {
     clone(): WindowTransformNode;
     constructor(parent: DataFlowNode, transform: WindowTransform);
     addDimensions(fields: string[]): void;
-    dependentFields(): {};
-    producedFields(): StringSet;
+    dependentFields(): Set<string>;
+    producedFields(): Set<string>;
     private getDefaultName;
     hash(): string;
     assemble(): VgWindowTransform;

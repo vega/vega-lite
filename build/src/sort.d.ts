@@ -1,7 +1,6 @@
 import { AggregateOp } from 'vega';
 import { DateTime } from './datetime';
-import { VgComparatorOrder } from './vega.schema';
-export declare type SortOrder = VgComparatorOrder | null;
+export declare type SortOrder = 'ascending' | 'descending';
 /**
  * A sort definition for transform
  */
@@ -11,9 +10,13 @@ export interface SortField {
      */
     field: string;
     /**
-     * Whether to sort the field in ascending or descending order.
+     * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
      */
-    order?: VgComparatorOrder;
+    order?: SortOrder | null;
+}
+export interface SortFields {
+    field: string[];
+    order?: (SortOrder)[];
 }
 /**
  * A sort definition for sorting a discrete scale in an encoding field definition.
@@ -36,7 +39,7 @@ export interface EncodingSortField<F> {
     /**
      * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
      */
-    order?: SortOrder;
+    order?: SortOrder | null;
 }
 export declare type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;
 export declare function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F>;

@@ -69,4 +69,5 @@ export declare function errorBarParams<M extends ErrorBar | ErrorBand, MD extend
         width?: number;
         height?: number;
     };
+    tooltipEncoding: Encoding<string>;
 };

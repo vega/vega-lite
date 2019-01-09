@@ -4,21 +4,20 @@ import * as log from '../../../log';
 import { hasContinuousDomain, isBinScale } from '../../../scale';
 import { accessPathWithDatum, varName } from '../../../util';
 import { channelSignalName, VL_SELECTION_RESOLVE } from '../selection';
-var scaleBindings = {
-    has: function (selCmpt) {
+const scaleBindings = {
+    has: selCmpt => {
         return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
     },
-    parse: function (model, selDef, selCmpt) {
-        var name = varName(selCmpt.name);
-        var bound = (selCmpt.scales = []);
-        for (var _i = 0, _a = selCmpt.project; _i < _a.length; _i++) {
-            var p = _a[_i];
-            var channel = p.channel;
+    parse: (model, selDef, selCmpt) => {
+        const name = varName(selCmpt.name);
+        const bound = (selCmpt.scales = []);
+        for (const p of selCmpt.project) {
+            const channel = p.channel;
             if (!isScaleChannel(channel)) {
                 continue;
             }
-            var scale = model.getScaleComponent(channel);
-            var scaleType = scale ? scale.get('type') : undefined;
+            const scale = model.getScaleComponent(channel);
+            const scaleType = scale ? scale.get('type') : undefined;
             if (!scale || !hasContinuousDomain(scaleType) || isBinScale(scaleType)) {
                 log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
                 continue;
@@ -27,18 +26,18 @@ var scaleBindings = {
             bound.push(channel);
             // Bind both x/y for diag plot of repeated views.
             if (model.repeater && model.repeater.row === model.repeater.column) {
-                var scale2 = model.getScaleComponent(channel === X ? Y : X);
+                const scale2 = model.getScaleComponent(channel === X ? Y : X);
                 scale2.set('domainRaw', { signal: accessPathWithDatum(p.field, name) }, true);
             }
         }
     },
-    topLevelSignals: function (model, selCmpt, signals) {
-        var channelSignals = selCmpt.scales
-            .filter(function (channel) {
-            return !signals.filter(function (s) { return s.name === channelSignalName(selCmpt, channel, 'data'); }).length;
+    topLevelSignals: (model, selCmpt, signals) => {
+        const channelSignals = selCmpt.scales
+            .filter(channel => {
+            return !signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data')).length;
         })
-            .map(function (channel) {
-            return { channel: channel, signal: channelSignalName(selCmpt, channel, 'data') };
+            .map(channel => {
+            return { channel, signal: channelSignalName(selCmpt, channel, 'data') };
         });
         // Top-level signals are only needed for multiview displays and if this
         // view's top-level signals haven't already been generated.
@@ -51,35 +50,31 @@ var scaleBindings = {
         // state is captured by the top-level signals that we insert and "push
         // outer" to from within the units. We need to reassemble this state into
         // the top-level named signal, except no single selCmpt has a global view.
-        var namedSg = signals.filter(function (s) { return s.name === selCmpt.name; })[0];
-        var update = namedSg.update;
+        const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
+        const update = namedSg.update;
         if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
             namedSg.update =
-                '{' + channelSignals.map(function (cs) { return stringValue(selCmpt.fields[cs.channel]) + ": " + cs.signal; }).join(', ') + '}';
+                '{' + channelSignals.map(cs => `${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`).join(', ') + '}';
         }
         else {
-            for (var _i = 0, channelSignals_1 = channelSignals; _i < channelSignals_1.length; _i++) {
-                var cs = channelSignals_1[_i];
-                var mapping = ", " + stringValue(selCmpt.fields[cs.channel]) + ": " + cs.signal;
+            for (const cs of channelSignals) {
+                const mapping = `, ${stringValue(selCmpt.fields[cs.channel])}: ${cs.signal}`;
                 if (update.indexOf(mapping) < 0) {
                     namedSg.update = update.substring(0, update.length - 1) + mapping + '}';
                 }
             }
         }
-        return signals.concat(channelSignals.map(function (cs) { return ({ name: cs.signal }); }));
+        return signals.concat(channelSignals.map(cs => ({ name: cs.signal })));
     },
-    signals: function (model, selCmpt, signals) {
+    signals: (model, selCmpt, signals) => {
         // Nested signals need only push to top-level signals with multiview displays.
         if (model.parent) {
-            var _loop_1 = function (channel) {
-                var signal = signals.filter(function (s) { return s.name === channelSignalName(selCmpt, channel, 'data'); })[0];
+            for (const channel of selCmpt.scales) {
+                const signal = signals.filter(s => s.name === channelSignalName(selCmpt, channel, 'data'))[0];
+                // convert to PushSignal
                 signal.push = 'outer';
                 delete signal.value;
                 delete signal.update;
-            };
-            for (var _i = 0, _a = selCmpt.scales; _i < _a.length; _i++) {
-                var channel = _a[_i];
-                _loop_1(channel);
             }
         }
         return signals;
@@ -87,7 +82,7 @@ var scaleBindings = {
 };
 export default scaleBindings;
 export function domain(model, channel) {
-    var scale = stringValue(model.scaleName(channel));
-    return "domain(" + scale + ")";
+    const scale = stringValue(model.scaleName(channel));
+    return `domain(${scale})`;
 }
 //# sourceMappingURL=scales.js.map

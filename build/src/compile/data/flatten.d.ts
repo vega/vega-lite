@@ -8,7 +8,7 @@ export declare class FlattenTransformNode extends DataFlowNode {
     private transform;
     clone(): FlattenTransformNode;
     constructor(parent: DataFlowNode, transform: FlattenTransform);
-    producedFields(): {};
+    producedFields(): Set<string>;
     hash(): string;
     assemble(): VgFlattenTransform;
 }

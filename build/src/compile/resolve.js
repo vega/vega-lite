@@ -13,8 +13,8 @@ export function defaultScaleResolve(channel, model) {
     throw new Error('invalid model type for resolve');
 }
 export function parseGuideResolve(resolve, channel) {
-    var channelScaleResolve = resolve.scale[channel];
-    var guide = contains(POSITION_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
+    const channelScaleResolve = resolve.scale[channel];
+    const guide = contains(POSITION_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
     if (channelScaleResolve === 'independent') {
         if (resolve[guide][channel] === 'shared') {
             log.warn(log.message.independentScaleMeansIndependentGuide(channel));

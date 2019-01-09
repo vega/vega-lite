@@ -1,6 +1,6 @@
 import { Config } from '../config';
-import { Repeat } from '../repeat';
 import { NormalizedRepeatSpec } from '../spec';
+import { Repeat } from '../spec/repeat';
 import { VgLayout } from '../vega.schema';
 import { BaseConcatModel } from './baseconcat';
 import { Model } from './model';

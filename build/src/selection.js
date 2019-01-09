@@ -1,5 +1,5 @@
-export var SELECTION_ID = '_vgsid_';
-export var defaultConfig = {
+export const SELECTION_ID = '_vgsid_';
+export const defaultConfig = {
     single: {
         on: 'click',
         fields: [SELECTION_ID],

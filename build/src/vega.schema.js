@@ -30,7 +30,7 @@ export function isSignalRefDomain(domain) {
     }
     return false;
 }
-var VG_MARK_CONFIG_INDEX = {
+const VG_MARK_CONFIG_INDEX = {
     opacity: 1,
     fill: 1,
     fillOpacity: 1,
@@ -76,5 +76,5 @@ var VG_MARK_CONFIG_INDEX = {
     // startAngle: 1,
     // url: 1,
 };
-export var VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
+export const VG_MARK_CONFIGS = flagKeys(VG_MARK_CONFIG_INDEX);
 //# sourceMappingURL=vega.schema.js.map

@@ -1,11 +1,10 @@
 /* tslint:disable quotemark */
-import { assert } from 'chai';
 import { geoshape } from '../../../src/compile/mark/geoshape';
 import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
-describe('Mark: Geoshape', function () {
-    describe('encode', function () {
-        it('should create no properties', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+describe('Mark: Geoshape', () => {
+    describe('encode', () => {
+        it('should create no properties', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 projection: {
                     type: 'albersUsa'
@@ -27,15 +26,15 @@ describe('Mark: Geoshape', function () {
                 },
                 config: { mark: { tooltip: null } }
             });
-            var props = geoshape.encodeEntry(model);
-            assert.deepEqual({
+            const props = geoshape.encodeEntry(model);
+            expect({
                 fill: {
                     value: 'black'
                 },
                 opacity: {
                     value: 0.8
                 }
-            }, props);
+            }).toEqual(props);
         });
     });
 });

@@ -1,6 +1,6 @@
 import { embedExample } from '.';
 export function runStreamingExample(eleId) {
-    var vlSpec = {
+    const vlSpec = {
         $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
         data: { name: 'table' },
         autosize: {
@@ -14,31 +14,32 @@ export function runStreamingExample(eleId) {
             color: { field: 'category', type: 'nominal' }
         }
     };
-    var view = embedExample(eleId, vlSpec, false, false);
+    const view = embedExample(eleId, vlSpec, false, false);
     /**
      * Generates a new tuple with random walk.
      */
     function newGenerator() {
-        var counter = -1;
-        var previousY = [5, 5, 5, 5];
-        return function () {
+        let counter = -1;
+        let previousY = [5, 5, 5, 5];
+        return () => {
             counter++;
-            var newVals = previousY.map(function (v, category) { return ({
+            const newVals = previousY.map((v, category) => ({
                 x: counter,
                 y: v + Math.round(Math.random() * 10 - category * 3),
-                category: category
-            }); });
-            previousY = newVals.map(function (v) { return v.y; });
+                category
+            }));
+            previousY = newVals.map(v => v.y);
             return newVals;
         };
     }
-    var valueGenerator = newGenerator();
-    var minimumX = -100;
-    window.setInterval(function () {
+    const valueGenerator = newGenerator();
+    let minimumX = -100;
+    window.setInterval(() => {
         minimumX++;
-        var changeSet = view.changeset()
+        const changeSet = view
+            .changeset()
             .insert(valueGenerator())
-            .remove(function (t) { return t.x < minimumX; });
+            .remove((t) => t.x < minimumX);
         view.change('table', changeSet).run();
     }, 1000);
 }

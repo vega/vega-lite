@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE } from '../../channel';
 import { MAIN } from '../../data';
 import { PROJECTION_PROPERTIES } from '../../projection';
@@ -19,31 +18,31 @@ export function parseProjection(model) {
     }
 }
 function parseUnitProjection(model) {
-    var specifiedProjection = model.specifiedProjection, config = model.config, hasProjection = model.hasProjection;
+    const { specifiedProjection, config, hasProjection } = model;
     if (hasProjection) {
-        var data_1 = [];
-        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (posssiblePair) {
+        const data = [];
+        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(posssiblePair => {
             if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
-                data_1.push({
-                    signal: model.getName("geojson_" + data_1.length)
+                data.push({
+                    signal: model.getName(`geojson_${data.length}`)
                 });
             }
         });
         if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
-            data_1.push({
-                signal: model.getName("geojson_" + data_1.length)
+            data.push({
+                signal: model.getName(`geojson_${data.length}`)
             });
         }
-        if (data_1.length === 0) {
+        if (data.length === 0) {
             // main source is geojson, so we can just use that
-            data_1.push(model.requestDataName(MAIN));
+            data.push(model.requestDataName(MAIN));
         }
-        return new ProjectionComponent(model.projectionName(true), tslib_1.__assign({}, (config.projection || {}), (specifiedProjection || {})), [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data_1);
+        return new ProjectionComponent(model.projectionName(true), Object.assign({}, (config.projection || {}), (specifiedProjection || {})), [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')], data);
     }
     return undefined;
 }
 function mergeIfNoConflict(first, second) {
-    var allPropertiesShared = every(PROJECTION_PROPERTIES, function (prop) {
+    const allPropertiesShared = every(PROJECTION_PROPERTIES, prop => {
         // neither has the property
         if (!first.explicit.hasOwnProperty(prop) && !second.explicit.hasOwnProperty(prop)) {
             return true;
@@ -57,7 +56,7 @@ function mergeIfNoConflict(first, second) {
         }
         return false;
     });
-    var size = stringify(first.size) === stringify(second.size);
+    const size = stringify(first.size) === stringify(second.size);
     if (size) {
         if (allPropertiesShared) {
             return first;
@@ -76,10 +75,10 @@ function parseNonUnitProjections(model) {
     if (model.children.length === 0) {
         return undefined;
     }
-    var nonUnitProjection;
-    var mergable = every(model.children, function (child) {
+    let nonUnitProjection;
+    const mergable = every(model.children, child => {
         parseProjection(child);
-        var projection = child.component.projection;
+        const projection = child.component.projection;
         if (!projection) {
             // child layer does not use a projection
             return true;
@@ -90,7 +89,7 @@ function parseNonUnitProjections(model) {
             return true;
         }
         else {
-            var merge = mergeIfNoConflict(nonUnitProjection, projection);
+            const merge = mergeIfNoConflict(nonUnitProjection, projection);
             if (merge) {
                 nonUnitProjection = merge;
             }
@@ -100,17 +99,17 @@ function parseNonUnitProjections(model) {
     // it cached one and all other children share the same projection,
     if (nonUnitProjection && mergable) {
         // so we can elevate it to the layer level
-        var name_1 = model.projectionName(true);
-        var modelProjection_1 = new ProjectionComponent(name_1, nonUnitProjection.specifiedProjection, nonUnitProjection.size, duplicate(nonUnitProjection.data));
+        const name = model.projectionName(true);
+        const modelProjection = new ProjectionComponent(name, nonUnitProjection.specifiedProjection, nonUnitProjection.size, duplicate(nonUnitProjection.data));
         // rename and assign all others as merged
-        model.children.forEach(function (child) {
+        model.children.forEach(child => {
             if (child.component.projection) {
-                modelProjection_1.data = modelProjection_1.data.concat(child.component.projection.data);
-                child.renameProjection(child.component.projection.get('name'), name_1);
+                modelProjection.data = modelProjection.data.concat(child.component.projection.data);
+                child.renameProjection(child.component.projection.get('name'), name);
                 child.component.projection.merged = true;
             }
         });
-        return modelProjection_1;
+        return modelProjection;
     }
     return undefined;
 }

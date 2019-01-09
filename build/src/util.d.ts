@@ -1,6 +1,12 @@
-import stableStringify from 'json-stable-stringify';
+import clone_ from 'clone';
+import stableStringify from 'fast-json-stable-stringify';
 import { LogicalOperand } from './logical';
 export declare const deepEqual: (a: any, b: any) => boolean;
+export declare const duplicate: typeof clone_;
+/**
+ * Make a regular expression that matches a whole word of the given string
+ */
+export declare function globalWholeWordRegExp(word: string): RegExp;
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -16,11 +22,11 @@ export declare function pick<T extends object, K extends keyof T>(obj: T, props:
  */
 export declare function omit<T extends object, K extends keyof T>(obj: T, props: K[]): Omit<T, K>;
 /**
- * Converts any object into a string representation that can be consumed by humans.
+ * Converts any object to a string representation that can be consumed by humans.
  */
 export declare const stringify: typeof stableStringify;
 /**
- * Converts any object into a string of limited size, or a number.
+ * Converts any object to a string of limited size, or a number.
  */
 export declare function hash(a: any): string | number;
 export declare function contains<T>(array: T[], item: T): boolean;
@@ -51,14 +57,14 @@ export declare function unique<T>(values: T[], f: (item: T) => string | number):
 export interface Dict<T> {
     [key: string]: T;
 }
-export declare type StringSet = Dict<true>;
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
 export declare function isEqual<T>(dict: Dict<T>, other: Dict<T>): boolean;
-export declare function hasIntersection(a: StringSet, b: StringSet): boolean;
-export declare function prefixGenerator(a: StringSet): StringSet;
-export declare function fieldIntersection(a: StringSet, b: StringSet): boolean;
+export declare function setEqual<T>(a: Set<T>, b: Set<T>): boolean;
+export declare function hasIntersection<T>(a: Set<T>, b: Set<T>): boolean;
+export declare function prefixGenerator(a: Set<string>): Set<string>;
+export declare function fieldIntersection(a: Set<string>, b: Set<string>): boolean;
 export declare function isNumeric(num: string | number): boolean;
 export declare function differArray<T>(array: T[], other: T[]): boolean;
 export declare const keys: <T>(o: T) => Extract<keyof T, string>[];
@@ -75,7 +81,6 @@ export declare type Flag<S extends string> = {
     [K in S]: 1;
 };
 export declare function flagKeys<S extends string>(f: Flag<S>): S[];
-export declare function duplicate<T>(obj: T): T;
 export declare function isBoolean(b: any): b is boolean;
 /**
  * Convert a string into a valid variable name

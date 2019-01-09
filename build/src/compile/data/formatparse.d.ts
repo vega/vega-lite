@@ -1,7 +1,6 @@
 import { AncestorParse } from '.';
 import { Parse } from '../../data';
 import { FilterTransform } from '../../transform';
-import { StringSet } from '../../util';
 import { VgFormulaTransform } from '../../vega.schema';
 import { Model } from '../model';
 import { DataFlowNode } from './dataflow';
@@ -29,7 +28,7 @@ export declare class ParseNode extends DataFlowNode {
      * Assemble an object for Vega's format.parse property.
      */
     assembleFormatParse(): {};
-    producedFields(): StringSet;
-    dependentFields(): StringSet;
+    producedFields(): Set<string>;
+    dependentFields(): Set<string>;
     assembleTransforms(onlyNested?: boolean): VgFormulaTransform[];
 }

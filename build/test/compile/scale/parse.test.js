@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { toSet } from 'vega-util';
 import { parseScale, parseScaleCore } from '../../../src/compile/scale/parse';
 import { SELECTION_DOMAIN } from '../../../src/compile/selection/selection';
@@ -7,13 +6,13 @@ import * as log from '../../../src/log';
 import { NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES } from '../../../src/scale';
 import { without } from '../../../src/util';
 import { parseModel, parseModelWithScale, parseUnitModelWithScale } from '../../util';
-describe('src/compile', function () {
-    it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', function () {
-        assert.deepEqual(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES), toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeStep', 'scheme'])));
+describe('src/compile', () => {
+    it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES wihtout type, domain, and range properties', () => {
+        expect(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeStep', 'scheme'])));
     });
-    describe('parseScaleCore', function () {
-        it('respects explicit scale type', function () {
-            var model = parseModel({
+    describe('parseScaleCore', () => {
+        it('respects explicit scale type', () => {
+            const model = parseModel({
                 data: { url: 'data/seattle-weather.csv' },
                 layer: [
                     {
@@ -40,10 +39,10 @@ describe('src/compile', function () {
                 ]
             });
             parseScaleCore(model);
-            assert.equal(model.getScaleComponent('y').explicit.type, 'log');
+            expect(model.getScaleComponent('y').explicit.type).toEqual('log');
         });
-        it('respects explicit scale type', function () {
-            var model = parseModel({
+        it('respects explicit scale type', () => {
+            const model = parseModel({
                 data: { url: 'data/seattle-weather.csv' },
                 layer: [
                     {
@@ -70,11 +69,11 @@ describe('src/compile', function () {
                 ]
             });
             parseScaleCore(model);
-            assert.equal(model.getScaleComponent('y').explicit.type, 'log');
+            expect(model.getScaleComponent('y').explicit.type).toEqual('log');
         });
         // TODO: this actually shouldn't get merged
-        it('favors the first explicit scale type', log.wrap(function (localLogger) {
-            var model = parseModel({
+        it('favors the first explicit scale type', log.wrap(localLogger => {
+            const model = parseModel({
                 data: { url: 'data/seattle-weather.csv' },
                 layer: [
                     {
@@ -102,11 +101,11 @@ describe('src/compile', function () {
                 ]
             });
             parseScaleCore(model);
-            assert.equal(model.getScaleComponent('y').explicit.type, 'log');
-            assert.equal(localLogger.warns[0], log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
+            expect(model.getScaleComponent('y').explicit.type).toEqual('log');
+            expect(localLogger.warns[0]).toEqual(log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
         }));
-        it('favors the band over point', function () {
-            var model = parseModel({
+        it('favors the band over point', () => {
+            const model = parseModel({
                 data: { url: 'data/seattle-weather.csv' },
                 layer: [
                     {
@@ -134,10 +133,10 @@ describe('src/compile', function () {
                 ]
             });
             parseScaleCore(model);
-            assert.equal(model.getScaleComponent('x').implicit.type, 'band');
+            expect(model.getScaleComponent('x').implicit.type).toEqual('band');
         });
-        it('correctly ignores x/y when lon/lat', function () {
-            var model = parseModel({
+        it('correctly ignores x/y when lon/lat', () => {
+            const model = parseModel({
                 data: {
                     url: 'data/zipcodes.csv',
                     format: {
@@ -157,11 +156,11 @@ describe('src/compile', function () {
                 }
             });
             parseScaleCore(model);
-            assert.isUndefined(model.getScaleComponent('x'));
-            assert.isUndefined(model.getScaleComponent('y'));
+            expect(model.getScaleComponent('x')).toBeUndefined();
+            expect(model.getScaleComponent('y')).toBeUndefined();
         });
-        it('correctly ignores shape when geojson', function () {
-            var model = parseModel({
+        it('correctly ignores shape when geojson', () => {
+            const model = parseModel({
                 mark: 'geoshape',
                 data: { url: 'data/income.json' },
                 transform: [
@@ -182,12 +181,12 @@ describe('src/compile', function () {
                 }
             });
             parseScaleCore(model);
-            assert.isUndefined(model.getScaleComponent('shape'));
+            expect(model.getScaleComponent('shape')).toBeUndefined();
         });
     });
-    describe('parseScale', function () {
-        it('does not throw warning when two equivalent objects are specified', log.wrap(function (logger) {
-            var model = parseModel({
+    describe('parseScale', () => {
+        it('does not throw warning when two equivalent objects are specified', log.wrap(logger => {
+            const model = parseModel({
                 data: { url: 'data/seattle-weather.csv' },
                 layer: [
                     {
@@ -213,36 +212,36 @@ describe('src/compile', function () {
                 ]
             });
             parseScale(model);
-            assert.deepEqual(model.getScaleComponent('y').explicit.range, { step: 17 });
-            assert.equal(logger.warns.length, 0);
+            expect(model.getScaleComponent('y').explicit.range).toEqual({ step: 17 });
+            expect(logger.warns).toHaveLength(0);
         }));
-        describe('x ordinal point', function () {
-            it('should create an x point scale with rangeStep and no range', function () {
-                var model = parseUnitModelWithScale({
+        describe('x ordinal point', () => {
+            it('should create an x point scale with rangeStep and no range', () => {
+                const model = parseUnitModelWithScale({
                     mark: 'point',
                     encoding: {
                         x: { field: 'origin', type: 'nominal' }
                     }
                 });
-                var scale = model.getScaleComponent('x');
-                assert.equal(scale.implicit.type, 'point');
-                assert.deepEqual(scale.implicit.range, { step: 21 });
+                const scale = model.getScaleComponent('x');
+                expect(scale.implicit.type).toEqual('point');
+                expect(scale.implicit.range).toEqual({ step: 20 });
             });
         });
-        it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', function () {
-            var model = parseUnitModelWithScale({
+        it('should output only padding without default paddingInner and paddingOuter if padding is specified for a band scale', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { field: 'origin', type: 'nominal', scale: { type: 'band', padding: 0.6 } }
                 }
             });
-            var scale = model.getScaleComponent('x');
-            assert.equal(scale.explicit.padding, 0.6);
-            assert.isUndefined(scale.get('paddingInner'));
-            assert.isUndefined(scale.get('paddingOuter'));
+            const scale = model.getScaleComponent('x');
+            expect(scale.explicit.padding).toEqual(0.6);
+            expect(scale.get('paddingInner')).toBeUndefined();
+            expect(scale.get('paddingOuter')).toBeUndefined();
         });
-        it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', function () {
-            var model = parseUnitModelWithScale({
+        it('should output default paddingInner and paddingOuter = paddingInner/2 if none of padding properties is specified for a band scale', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { field: 'origin', type: 'nominal', scale: { type: 'band' } }
@@ -251,44 +250,44 @@ describe('src/compile', function () {
                     scale: { bandPaddingInner: 0.3 }
                 }
             });
-            var scale = model.getScaleComponent('x');
-            assert.equal(scale.implicit.paddingInner, 0.3);
-            assert.equal(scale.implicit.paddingOuter, 0.15);
-            assert.isUndefined(scale.get('padding'));
+            const scale = model.getScaleComponent('x');
+            expect(scale.implicit.paddingInner).toEqual(0.3);
+            expect(scale.implicit.paddingOuter).toEqual(0.15);
+            expect(scale.get('padding')).toBeUndefined();
         });
-        describe('nominal with color', function () {
-            var model = parseUnitModelWithScale({
+        describe('nominal with color', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'nominal' }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should create correct color scale', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'ordinal');
-                assert.deepEqual(scale.domains, [
+            const scale = model.getScaleComponent('color');
+            it('should create correct color scale', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('ordinal');
+                expect(scale.domains).toEqual([
                     {
                         data: 'main',
                         field: 'origin',
                         sort: true
                     }
                 ]);
-                assert.equal(scale.implicit.range, 'category');
+                expect(scale.implicit.range).toEqual('category');
             });
         });
-        describe('ordinal with color', function () {
-            var model = parseUnitModelWithScale({
+        describe('ordinal with color', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'ordinal' }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should create sequential color scale', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'ordinal');
-                assert.deepEqual(scale.domains, [
+            const scale = model.getScaleComponent('color');
+            it('should create sequential color scale', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('ordinal');
+                expect(scale.domains).toEqual([
                     {
                         data: 'main',
                         field: 'origin',
@@ -297,19 +296,19 @@ describe('src/compile', function () {
                 ]);
             });
         });
-        describe('quantitative with color', function () {
-            var model = parseUnitModelWithScale({
+        describe('quantitative with color', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'quantitative' }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should create linear color scale', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'sequential');
-                assert.equal(scale.implicit.range, 'ramp');
-                assert.deepEqual(scale.domains, [
+            const scale = model.getScaleComponent('color');
+            it('should create linear color scale', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('sequential');
+                expect(scale.implicit.range).toEqual('ramp');
+                expect(scale.domains).toEqual([
                     {
                         data: 'main',
                         field: 'origin'
@@ -317,73 +316,73 @@ describe('src/compile', function () {
                 ]);
             });
         });
-        describe('color with bin', function () {
-            var model = parseUnitModelWithScale({
+        describe('color with bin', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should add correct scales', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'bin-ordinal');
+            const scale = model.getScaleComponent('color');
+            it('should add correct scales', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('bin-ordinal');
             });
         });
-        describe('ordinal color with bin', function () {
-            var model = parseUnitModelWithScale({
+        describe('ordinal color with bin', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'ordinal', bin: true }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should add correct scales', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'ordinal');
+            const scale = model.getScaleComponent('color');
+            it('should add correct scales', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('ordinal');
             });
         });
-        describe('opacity with bin', function () {
-            var model = parseUnitModelWithScale({
+        describe('opacity with bin', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     opacity: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
-            var scale = model.getScaleComponent('opacity');
-            it('should add correct scales', function () {
-                assert.equal(scale.implicit.name, 'opacity');
-                assert.equal(scale.implicit.type, 'bin-linear');
+            const scale = model.getScaleComponent('opacity');
+            it('should add correct scales', () => {
+                expect(scale.implicit.name).toEqual('opacity');
+                expect(scale.implicit.type).toEqual('bin-linear');
             });
         });
-        describe('size with bin', function () {
-            var model = parseUnitModelWithScale({
+        describe('size with bin', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     size: { field: 'origin', type: 'quantitative', bin: true }
                 }
             });
-            var scale = model.getScaleComponent('size');
-            it('should add correct scales', function () {
-                assert.equal(scale.implicit.name, 'size');
-                assert.equal(scale.implicit.type, 'bin-linear');
+            const scale = model.getScaleComponent('size');
+            it('should add correct scales', () => {
+                expect(scale.implicit.name).toEqual('size');
+                expect(scale.implicit.type).toEqual('bin-linear');
             });
         });
-        describe('color with time unit', function () {
-            var model = parseUnitModelWithScale({
+        describe('color with time unit', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     color: { field: 'origin', type: 'temporal', timeUnit: 'year' }
                 }
             });
-            var scale = model.getScaleComponent('color');
-            it('should add correct scales', function () {
-                assert.equal(scale.implicit.name, 'color');
-                assert.equal(scale.implicit.type, 'sequential');
+            const scale = model.getScaleComponent('color');
+            it('should add correct scales', () => {
+                expect(scale.implicit.name).toEqual('color');
+                expect(scale.implicit.type).toEqual('time');
             });
         });
-        describe('selection domain', function () {
-            var model = parseUnitModelWithScale({
+        describe('selection domain', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'area',
                 encoding: {
                     x: {
@@ -398,20 +397,20 @@ describe('src/compile', function () {
                     }
                 }
             });
-            var xScale = model.getScaleComponent('x');
-            var yscale = model.getScaleComponent('y');
-            it('should add a raw selection domain', function () {
-                assert.property(xScale.explicit, 'domainRaw');
-                assert.propertyVal(xScale.explicit.domainRaw, 'signal', SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
-                assert.property(yscale.explicit, 'domainRaw');
-                assert.propertyVal(yscale.explicit.domainRaw, 'signal', SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}');
+            const xScale = model.getScaleComponent('x');
+            const yscale = model.getScaleComponent('y');
+            it('should add a raw selection domain', () => {
+                expect('domainRaw' in xScale.explicit).toBeTruthy();
+                expect(xScale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"encoding":"x","selection":"brush"}');
+                expect('domainRaw' in yscale.explicit).toBeTruthy();
+                expect(yscale.explicit.domainRaw['signal']).toBe(SELECTION_DOMAIN + '{"field":"Miles_per_Gallon","selection":"foobar"}');
             });
         });
     });
-    describe('parseScaleDomain', function () {
-        describe('faceted domains', function () {
-            it('should use cloned subtree', function () {
-                var model = parseModelWithScale({
+    describe('parseScaleDomain', () => {
+        describe('faceted domains', () => {
+            it('should use cloned subtree', () => {
+                const model = parseModelWithScale({
                     facet: {
                         row: { field: 'symbol', type: 'nominal' }
                     },
@@ -423,15 +422,15 @@ describe('src/compile', function () {
                         }
                     }
                 });
-                assert.deepEqual(model.component.scales.x.domains, [
+                expect(model.component.scales.x.domains).toEqual([
                     {
                         data: 'scale_child_main',
                         field: 'a'
                     }
                 ]);
             });
-            it('should not use cloned subtree if the data is not faceted', function () {
-                var model = parseModelWithScale({
+            it('should not use cloned subtree if the data is not faceted', () => {
+                const model = parseModelWithScale({
                     facet: {
                         row: { field: 'symbol', type: 'nominal' }
                     },
@@ -444,15 +443,15 @@ describe('src/compile', function () {
                         }
                     }
                 });
-                assert.deepEqual(model.component.scales.x.domains, [
+                expect(model.component.scales.x.domains).toEqual([
                     {
                         data: 'child_main',
                         field: 'a'
                     }
                 ]);
             });
-            it('should not use cloned subtree if the scale is independent', function () {
-                var model = parseModelWithScale({
+            it('should not use cloned subtree if the scale is independent', () => {
+                const model = parseModelWithScale({
                     facet: {
                         row: { field: 'symbol', type: 'nominal' }
                     },
@@ -469,7 +468,7 @@ describe('src/compile', function () {
                         }
                     }
                 });
-                assert.deepEqual(model.children[0].component.scales.x.domains, [
+                expect(model.children[0].component.scales.x.domains).toEqual([
                     {
                         data: 'child_main',
                         field: 'a'

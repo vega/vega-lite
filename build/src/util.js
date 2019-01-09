@@ -1,9 +1,18 @@
-import * as tslib_1 from "tslib";
+import clone_ from 'clone';
 import deepEqual_ from 'fast-deep-equal';
-import stableStringify from 'json-stable-stringify';
+import stableStringify from 'fast-json-stable-stringify';
 import { isArray, isNumber, isString, splitAccessPath, stringValue } from 'vega-util';
 import { isLogicalAnd, isLogicalNot, isLogicalOr } from './logical';
-export var deepEqual = deepEqual_;
+export const deepEqual = deepEqual_;
+export const duplicate = clone_;
+/**
+ * Make a regular expression that matches a whole word of the given string
+ */
+export function globalWholeWordRegExp(word) {
+    // `\b` = word boundary
+    // https://stackoverflow.com/questions/2232934/whole-word-match-in-javascript
+    return new RegExp(`\\b${word}\\b`, 'g');
+}
 /**
  * Creates an object composed of the picked object properties.
  *
@@ -13,9 +22,8 @@ export var deepEqual = deepEqual_;
  *
  */
 export function pick(obj, props) {
-    var copy = {};
-    for (var _i = 0, props_1 = props; _i < props_1.length; _i++) {
-        var prop = props_1[_i];
+    const copy = {};
+    for (const prop of props) {
         if (obj.hasOwnProperty(prop)) {
             copy[prop] = obj[prop];
         }
@@ -27,33 +35,38 @@ export function pick(obj, props) {
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
 export function omit(obj, props) {
-    var copy = tslib_1.__assign({}, obj);
-    for (var _i = 0, props_2 = props; _i < props_2.length; _i++) {
-        var prop = props_2[_i];
+    const copy = Object.assign({}, obj);
+    for (const prop of props) {
         delete copy[prop];
     }
     return copy;
 }
 /**
- * Converts any object into a string representation that can be consumed by humans.
+ * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
-export var stringify = stableStringify;
+Set.prototype['toJSON'] = function () {
+    return `Set(${[...this].map(stableStringify).join(',')})`;
+};
 /**
- * Converts any object into a string of limited size, or a number.
+ * Converts any object to a string representation that can be consumed by humans.
+ */
+export const stringify = stableStringify;
+/**
+ * Converts any object to a string of limited size, or a number.
  */
 export function hash(a) {
     if (isNumber(a)) {
         return a;
     }
-    var str = isString(a) ? a : stableStringify(a);
+    const str = isString(a) ? a : stableStringify(a);
     // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
     if (str.length < 250) {
         return str;
     }
     // from http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
-    var h = 0;
-    for (var i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
         h = (h << 5) - h + char;
         h = h & h; // Convert to 32bit integer
     }
@@ -64,7 +77,7 @@ export function contains(array, item) {
 }
 /** Returns the array without the elements in item */
 export function without(array, excludedItems) {
-    return array.filter(function (item) { return !contains(excludedItems, item); });
+    return array.filter(item => !contains(excludedItems, item));
 }
 export function union(array, other) {
     return array.concat(without(other, array));
@@ -73,8 +86,8 @@ export function union(array, other) {
  * Returns true if any item returns true.
  */
 export function some(arr, f) {
-    var i = 0;
-    for (var k = 0; k < arr.length; k++) {
+    let i = 0;
+    for (let k = 0; k < arr.length; k++) {
         if (f(arr[k], k, i++)) {
             return true;
         }
@@ -85,8 +98,8 @@ export function some(arr, f) {
  * Returns true if all items return true.
  */
 export function every(arr, f) {
-    var i = 0;
-    for (var k = 0; k < arr.length; k++) {
+    let i = 0;
+    for (let k = 0; k < arr.length; k++) {
         if (!f(arr[k], k, i++)) {
             return false;
         }
@@ -94,12 +107,11 @@ export function every(arr, f) {
     return true;
 }
 export function flatten(arrays) {
-    var _a;
-    return (_a = []).concat.apply(_a, arrays);
+    return [].concat(...arrays);
 }
 export function fill(val, len) {
-    var arr = new Array(len);
-    for (var i = 0; i < len; ++i) {
+    const arr = new Array(len);
+    for (let i = 0; i < len; ++i) {
         arr[i] = val;
     }
     return arr;
@@ -107,13 +119,8 @@ export function fill(val, len) {
 /**
  * recursively merges src into dest
  */
-export function mergeDeep(dest) {
-    var src = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        src[_i - 1] = arguments[_i];
-    }
-    for (var _a = 0, src_1 = src; _a < src_1.length; _a++) {
-        var s = src_1[_a];
+export function mergeDeep(dest, ...src) {
+    for (const s of src) {
         dest = deepMerge_(dest, s);
     }
     return dest;
@@ -123,7 +130,7 @@ function deepMerge_(dest, src) {
     if (typeof src !== 'object' || src === null) {
         return dest;
     }
-    for (var p in src) {
+    for (const p in src) {
         if (!src.hasOwnProperty(p)) {
             continue;
         }
@@ -143,11 +150,10 @@ function deepMerge_(dest, src) {
     return dest;
 }
 export function unique(values, f) {
-    var results = [];
-    var u = {};
-    var v;
-    for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
-        var val = values_1[_i];
+    const results = [];
+    const u = {};
+    let v;
+    for (const val of values) {
         v = f(val);
         if (v in u) {
             continue;
@@ -161,39 +167,45 @@ export function unique(values, f) {
  * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
 export function isEqual(dict, other) {
-    var dictKeys = keys(dict);
-    var otherKeys = keys(other);
+    const dictKeys = keys(dict);
+    const otherKeys = keys(other);
     if (dictKeys.length !== otherKeys.length) {
         return false;
     }
-    for (var _i = 0, dictKeys_1 = dictKeys; _i < dictKeys_1.length; _i++) {
-        var key = dictKeys_1[_i];
+    for (const key of dictKeys) {
         if (dict[key] !== other[key]) {
             return false;
         }
     }
     return true;
 }
+export function setEqual(a, b) {
+    if (a.size !== b.size) {
+        return false;
+    }
+    for (const e of a) {
+        if (!b.has(e)) {
+            return false;
+        }
+    }
+    return true;
+}
 export function hasIntersection(a, b) {
-    for (var key in a) {
-        if (key in b) {
+    for (const key of a) {
+        if (b.has(key)) {
             return true;
         }
     }
     return false;
 }
 export function prefixGenerator(a) {
-    var prefixes = {};
-    var _loop_1 = function (x) {
-        var splitField = splitAccessPath(x);
+    const prefixes = new Set();
+    for (const x of a) {
+        const splitField = splitAccessPath(x);
         // Wrap every element other than the first in `[]`
-        var wrappedWithAccessors = splitField.map(function (y, i) { return (i === 0 ? y : "[" + y + "]"); });
-        var computedPrefixes = wrappedWithAccessors.map(function (_, i) { return wrappedWithAccessors.slice(0, i + 1).join(''); });
-        computedPrefixes.forEach(function (y) { return (prefixes[y] = true); });
-    };
-    for (var _i = 0, _a = keys(a); _i < _a.length; _i++) {
-        var x = _a[_i];
-        _loop_1(x);
+        const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
+        const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
+        computedPrefixes.forEach(y => prefixes.add(y));
     }
     return prefixes;
 }
@@ -209,7 +221,7 @@ export function differArray(array, other) {
     }
     array.sort();
     other.sort();
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (other[i] !== array[i]) {
             return true;
         }
@@ -217,10 +229,10 @@ export function differArray(array, other) {
     return false;
 }
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
-export var keys = Object.keys;
+export const keys = Object.keys;
 export function vals(x) {
-    var _vals = [];
-    for (var k in x) {
+    const _vals = [];
+    for (const k in x) {
         if (x.hasOwnProperty(k)) {
             _vals.push(x[k]);
         }
@@ -228,8 +240,8 @@ export function vals(x) {
     return _vals;
 }
 export function entries(x) {
-    var _entries = [];
-    for (var k in x) {
+    const _entries = [];
+    for (const k in x) {
         if (x.hasOwnProperty(k)) {
             _entries.push({
                 key: k,
@@ -242,9 +254,6 @@ export function entries(x) {
 export function flagKeys(f) {
     return keys(f);
 }
-export function duplicate(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
 export function isBoolean(b) {
     return b === true || b === false;
 }
@@ -253,7 +262,7 @@ export function isBoolean(b) {
  */
 export function varName(s) {
     // Replace non-alphanumeric characters (anything besides a-zA-Z0-9_) with _
-    var alphanumericS = s.replace(/\W/g, '_');
+    const alphanumericS = s.replace(/\W/g, '_');
     // Add _ if the string has leading numbers.
     return (s.match(/^\d+/) ? '_' : '') + alphanumericS;
 }
@@ -262,10 +271,10 @@ export function logicalExpr(op, cb) {
         return '!(' + logicalExpr(op.not, cb) + ')';
     }
     else if (isLogicalAnd(op)) {
-        return '(' + op.and.map(function (and) { return logicalExpr(and, cb); }).join(') && (') + ')';
+        return '(' + op.and.map((and) => logicalExpr(and, cb)).join(') && (') + ')';
     }
     else if (isLogicalOr(op)) {
-        return '(' + op.or.map(function (or) { return logicalExpr(or, cb); }).join(') || (') + ')';
+        return '(' + op.or.map((or) => logicalExpr(or, cb)).join(') || (') + ')';
     }
     else {
         return cb(op);
@@ -278,11 +287,11 @@ export function deleteNestedProperty(obj, orderedProps) {
     if (orderedProps.length === 0) {
         return true;
     }
-    var prop = orderedProps.shift();
+    const prop = orderedProps.shift();
     if (deleteNestedProperty(obj[prop], orderedProps)) {
         delete obj[prop];
     }
-    return Object.keys(obj).length === 0;
+    return keys(obj).length === 0;
 }
 export function titlecase(s) {
     return s.charAt(0).toUpperCase() + s.substr(1);
@@ -292,16 +301,15 @@ export function titlecase(s) {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function accessPathWithDatum(path, datum) {
-    if (datum === void 0) { datum = 'datum'; }
-    var pieces = splitAccessPath(path);
-    var prefixes = [];
-    for (var i = 1; i <= pieces.length; i++) {
-        var prefix = "[" + pieces
+export function accessPathWithDatum(path, datum = 'datum') {
+    const pieces = splitAccessPath(path);
+    const prefixes = [];
+    for (let i = 1; i <= pieces.length; i++) {
+        const prefix = `[${pieces
             .slice(0, i)
             .map(stringValue)
-            .join('][') + "]";
-        prefixes.push("" + datum + prefix);
+            .join('][')}]`;
+        prefixes.push(`${datum}${prefix}`);
     }
     return prefixes.join(' && ');
 }
@@ -311,25 +319,24 @@ export function accessPathWithDatum(path, datum) {
  * @param path The field name.
  * @param datum The string to use for `datum`.
  */
-export function flatAccessWithDatum(path, datum) {
-    if (datum === void 0) { datum = 'datum'; }
-    return datum + "[" + stringValue(splitAccessPath(path).join('.')) + "]";
+export function flatAccessWithDatum(path, datum = 'datum') {
+    return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 /**
  * Replaces path accesses with access to non-nested field.
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
  */
 export function replacePathInField(path) {
-    return "" + splitAccessPath(path)
-        .map(function (p) { return p.replace('.', '\\.'); })
-        .join('\\.');
+    return `${splitAccessPath(path)
+        .map(p => p.replace('.', '\\.'))
+        .join('\\.')}`;
 }
 /**
  * Remove path accesses with access from field.
  * For example, `foo["bar"].baz` becomes `foo.bar.baz`.
  */
 export function removePathFromField(path) {
-    return "" + splitAccessPath(path).join('.');
+    return `${splitAccessPath(path).join('.')}`;
 }
 /**
  * Count the depth of the path. Returns 1 for fields that are not nested.
@@ -343,13 +350,8 @@ export function accessPathDepth(path) {
 /**
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
-export function getFirstDefined() {
-    var args = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-    }
-    for (var _a = 0, args_1 = args; _a < args_1.length; _a++) {
-        var arg = args_1[_a];
+export function getFirstDefined(...args) {
+    for (const arg of args) {
         if (arg !== undefined) {
             return arg;
         }
@@ -357,14 +359,14 @@ export function getFirstDefined() {
     return undefined;
 }
 // variable used to generate id
-var idCounter = 42;
+let idCounter = 42;
 /**
  * Returns a new random id every time it gets called.
  *
  * Has side effect!
  */
 export function uniqueId(prefix) {
-    var id = ++idCounter;
+    const id = ++idCounter;
     return prefix ? String(prefix) + id : id;
 }
 /**

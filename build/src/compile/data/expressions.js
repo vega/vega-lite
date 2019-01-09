@@ -1,6 +1,6 @@
 import { parse } from 'vega-expression';
 function getName(node) {
-    var name = [];
+    let name = [];
     if (node.type === 'Identifier') {
         return [node.name];
     }
@@ -20,13 +20,13 @@ function startsWithDatum(node) {
     return node.object.name === 'datum';
 }
 export function getDependentFields(expression) {
-    var ast = parse(expression);
-    var dependents = {};
-    ast.visit(function (node) {
+    const ast = parse(expression);
+    const dependents = new Set();
+    ast.visit((node) => {
         if (node.type === 'MemberExpression' && startsWithDatum(node)) {
-            dependents[getName(node)
+            dependents.add(getName(node)
                 .slice(1)
-                .join('.')] = true;
+                .join('.'));
         }
     });
     return dependents;

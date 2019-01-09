@@ -1,11 +1,10 @@
 /* tslint:disable quotemark */
-import { assert } from 'chai';
 import { selector as parseSelector } from 'vega-event-selector';
 import * as selection from '../../../src/compile/selection/selection';
 import zoom from '../../../src/compile/selection/transforms/zoom';
 import { parseUnitModel } from '../../util';
 function getModel(xscale, yscale) {
-    var model = parseUnitModel({
+    const model = parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative', scale: { type: xscale || 'linear' } },
@@ -14,7 +13,7 @@ function getModel(xscale, yscale) {
         }
     });
     model.parseScale();
-    var selCmpts = selection.parseUnitSelection(model, {
+    const selCmpts = selection.parseUnitSelection(model, {
         one: {
             type: 'single'
         },
@@ -41,25 +40,25 @@ function getModel(xscale, yscale) {
             zoom: null
         }
     });
-    return { model: model, selCmpts: selCmpts };
+    return { model, selCmpts };
 }
-describe('Zoom Selection Transform', function () {
-    it('identifies transform invocation', function () {
-        var selCmpts = getModel().selCmpts;
-        assert.isNotTrue(zoom.has(selCmpts['one']));
-        assert.isNotTrue(zoom.has(selCmpts['two']));
-        assert.isNotTrue(zoom.has(selCmpts['three']));
-        assert.isNotFalse(zoom.has(selCmpts['four']));
-        assert.isNotFalse(zoom.has(selCmpts['five']));
-        assert.isNotFalse(zoom.has(selCmpts['six']));
-        assert.isNotTrue(zoom.has(selCmpts['seven']));
+describe('Zoom Selection Transform', () => {
+    it('identifies transform invocation', () => {
+        const { selCmpts } = getModel();
+        expect(zoom.has(selCmpts['one'])).not.toBe(true);
+        expect(zoom.has(selCmpts['two'])).not.toBe(true);
+        expect(zoom.has(selCmpts['three'])).not.toBe(true);
+        expect(zoom.has(selCmpts['four'])).not.toBe(false);
+        expect(zoom.has(selCmpts['five'])).not.toBe(false);
+        expect(zoom.has(selCmpts['six'])).not.toBe(false);
+        expect(zoom.has(selCmpts['seven'])).not.toBe(true);
     });
-    describe('Anchor/Delta signals', function () {
-        it('builds then for default invocation', function () {
-            var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
+    describe('Anchor/Delta signals', () => {
+        it('builds then for default invocation', () => {
+            const { model, selCmpts } = getModel();
             model.component.selection = { four: selCmpts['four'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            const signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'four_zoom_anchor',
                     on: [
@@ -79,13 +78,13 @@ describe('Zoom Selection Transform', function () {
                         }
                     ]
                 }
-            ]);
+            ]));
         });
-        it('builds them for custom events', function () {
-            var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
+        it('builds them for custom events', () => {
+            const { model, selCmpts } = getModel();
             model.component.selection = { five: selCmpts['five'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            const signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'five_zoom_anchor',
                     on: [
@@ -105,13 +104,13 @@ describe('Zoom Selection Transform', function () {
                         }
                     ]
                 }
-            ]);
+            ]));
         });
-        it('builds them for scale-bound zoom', function () {
-            var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
+        it('builds them for scale-bound zoom', () => {
+            const { model, selCmpts } = getModel();
             model.component.selection = { six: selCmpts['six'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals, [
+            const signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals).toEqual(expect.arrayContaining([
                 {
                     name: 'six_zoom_anchor',
                     on: [
@@ -131,75 +130,59 @@ describe('Zoom Selection Transform', function () {
                         }
                     ]
                 }
-            ]);
+            ]));
         });
     });
-    describe('Zoom Signal', function () {
-        it('always builds zoomLinear exprs for brushes', function () {
-            var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
+    describe('Zoom Signal', () => {
+        it('always builds zoomLinear exprs for brushes', () => {
+            const { model, selCmpts } = getModel();
             model.component.selection = { four: selCmpts['four'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
-                {
-                    events: { signal: 'four_zoom_delta' },
-                    update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
-                }
-            ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
-                {
-                    events: { signal: 'four_zoom_delta' },
-                    update: 'clampRange(zoomLinear(four_y, four_zoom_anchor.y, four_zoom_delta), 0, height)'
-                }
-            ]);
-            var model2 = getModel('log', 'pow').model;
+            let signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
+                events: { signal: 'four_zoom_delta' },
+                update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
+            });
+            expect(signals.filter(s => s.name === 'four_y')[0].on).toContainEqual({
+                events: { signal: 'four_zoom_delta' },
+                update: 'clampRange(zoomLinear(four_y, four_zoom_anchor.y, four_zoom_delta), 0, height)'
+            });
+            const model2 = getModel('log', 'pow').model;
             model2.component.selection = { four: selCmpts['four'] };
             signals = selection.assembleUnitSelectionSignals(model2, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_x'; })[0].on, [
-                {
-                    events: { signal: 'four_zoom_delta' },
-                    update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
-                }
-            ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'four_y'; })[0].on, [
-                {
-                    events: { signal: 'four_zoom_delta' },
-                    update: 'clampRange(zoomLinear(four_y, four_zoom_anchor.y, four_zoom_delta), 0, height)'
-                }
-            ]);
+            expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
+                events: { signal: 'four_zoom_delta' },
+                update: 'clampRange(zoomLinear(four_x, four_zoom_anchor.x, four_zoom_delta), 0, width)'
+            });
+            expect(signals.filter(s => s.name === 'four_y')[0].on).toContainEqual({
+                events: { signal: 'four_zoom_delta' },
+                update: 'clampRange(zoomLinear(four_y, four_zoom_anchor.y, four_zoom_delta), 0, height)'
+            });
         });
-        it('builds zoomLinear exprs for scale-bound zoom', function () {
-            var _a = getModel(), model = _a.model, selCmpts = _a.selCmpts;
+        it('builds zoomLinear exprs for scale-bound zoom', () => {
+            const { model, selCmpts } = getModel();
             model.component.selection = { six: selCmpts['six'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
-                {
-                    events: { signal: 'six_zoom_delta' },
-                    update: 'zoomLinear(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
-                }
-            ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
-                {
-                    events: { signal: 'six_zoom_delta' },
-                    update: 'zoomLinear(domain("y"), six_zoom_anchor.y, six_zoom_delta)'
-                }
-            ]);
+            const signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+                events: { signal: 'six_zoom_delta' },
+                update: 'zoomLinear(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+            });
+            expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+                events: { signal: 'six_zoom_delta' },
+                update: 'zoomLinear(domain("y"), six_zoom_anchor.y, six_zoom_delta)'
+            });
         });
-        it('builds zoomLog/Pow exprs for scale-bound zoom', function () {
-            var _a = getModel('log', 'pow'), model = _a.model, selCmpts = _a.selCmpts;
+        it('builds zoomLog/Pow exprs for scale-bound zoom', () => {
+            const { model, selCmpts } = getModel('log', 'pow');
             model.component.selection = { six: selCmpts['six'] };
-            var signals = selection.assembleUnitSelectionSignals(model, []);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Horsepower'; })[0].on, [
-                {
-                    events: { signal: 'six_zoom_delta' },
-                    update: 'zoomLog(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
-                }
-            ]);
-            assert.includeDeepMembers(signals.filter(function (s) { return s.name === 'six_Miles_per_Gallon'; })[0].on, [
-                {
-                    events: { signal: 'six_zoom_delta' },
-                    update: 'zoomPow(domain("y"), six_zoom_anchor.y, six_zoom_delta, 1)'
-                }
-            ]);
+            const signals = selection.assembleUnitSelectionSignals(model, []);
+            expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+                events: { signal: 'six_zoom_delta' },
+                update: 'zoomLog(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+            });
+            expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+                events: { signal: 'six_zoom_delta' },
+                update: 'zoomPow(domain("y"), six_zoom_anchor.y, six_zoom_delta, 1)'
+            });
         });
     });
 });

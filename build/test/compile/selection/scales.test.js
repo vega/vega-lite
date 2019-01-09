@@ -1,14 +1,13 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { X } from '../../../src/channel';
 import { assembleScalesForModel } from '../../../src/compile/scale/assemble';
 import { assembleTopLevelSignals, assembleUnitSelectionSignals } from '../../../src/compile/selection/selection';
 import * as log from '../../../src/log';
 import { parseConcatModel, parseRepeatModel, parseUnitModelWithScale } from '../../util';
-describe('Selection + Scales', function () {
-    describe('domainRaw', function () {
-        it('is assembled from selection parameter', function () {
-            var model = parseConcatModel({
+describe('Selection + Scales', () => {
+    describe('domainRaw', () => {
+        it('is assembled from selection parameter', () => {
+            const model = parseConcatModel({
                 vconcat: [
                     {
                         mark: 'area',
@@ -59,26 +58,26 @@ describe('Selection + Scales', function () {
             });
             model.parseScale();
             model.parseSelection();
-            var scales = assembleScalesForModel(model.children[1]);
-            var xscale = scales[0];
-            var yscale = scales[1];
-            var cscale = scales[2];
-            var oscale = scales[3];
-            assert.isObject(xscale.domain);
-            assert.property(xscale, 'domainRaw');
-            assert.propertyVal(xscale.domainRaw, 'signal', 'brush["date"]');
-            assert.isObject(yscale.domain);
-            assert.property(yscale, 'domainRaw');
-            assert.deepPropertyVal(yscale.domainRaw, 'signal', 'brush2["price"]');
-            assert.isObject(cscale.domain);
-            assert.property(cscale, 'domainRaw');
-            assert.propertyVal(cscale.domainRaw, 'signal', 'brush2["price"]');
-            assert.isObject(oscale.domain);
-            assert.property(oscale, 'domainRaw');
-            assert.propertyVal(oscale.domainRaw, 'signal', 'null');
+            const scales = assembleScalesForModel(model.children[1]);
+            const xscale = scales[0];
+            const yscale = scales[1];
+            const cscale = scales[2];
+            const oscale = scales[3];
+            expect(typeof xscale.domain).toBe('object');
+            expect('domainRaw' in xscale).toBeTruthy();
+            expect(xscale.domainRaw.signal).toBe('brush["date"]');
+            expect(typeof yscale.domain).toBe('object');
+            expect('domainRaw' in yscale).toBeTruthy();
+            expect(yscale.domainRaw.signal).toBe('brush2["price"]');
+            expect(typeof cscale.domain).toBe('object');
+            expect('domainRaw' in cscale).toBeTruthy();
+            expect(cscale.domainRaw.signal).toBe('brush2["price"]');
+            expect(typeof oscale.domain).toBe('object');
+            expect('domainRaw' in oscale).toBeTruthy();
+            expect(oscale.domainRaw.signal).toBe('null');
         });
-        it('should bind both scales in diagonal repeated views', function () {
-            var model = parseRepeatModel({
+        it('should bind both scales in diagonal repeated views', () => {
+            const model = parseRepeatModel({
                 repeat: {
                     row: ['Horsepower', 'Acceleration'],
                     column: ['Miles_per_Gallon', 'Acceleration']
@@ -102,15 +101,15 @@ describe('Selection + Scales', function () {
             });
             model.parseScale();
             model.parseSelection();
-            var scales = assembleScalesForModel(model.children[3]);
-            assert.isTrue(scales.length === 2);
-            assert.property(scales[0], 'domainRaw');
-            assert.property(scales[1], 'domainRaw');
-            assert.propertyVal(scales[0].domainRaw, 'signal', 'grid["Acceleration"]');
-            assert.propertyVal(scales[1].domainRaw, 'signal', 'grid["Acceleration"]');
+            const scales = assembleScalesForModel(model.children[3]);
+            expect(scales.length === 2).toBe(true);
+            expect('domainRaw' in scales[0]).toBeTruthy();
+            expect('domainRaw' in scales[1]).toBeTruthy();
+            expect(scales[0].domainRaw.signal).toBe('grid["Acceleration"]');
+            expect(scales[1].domainRaw.signal).toBe('grid["Acceleration"]');
         });
-        it('should be merged for layered views', function () {
-            var model = parseConcatModel({
+        it('should be merged for layered views', () => {
+            const model = parseConcatModel({
                 data: { url: 'data/sp500.csv' },
                 vconcat: [
                     {
@@ -142,13 +141,13 @@ describe('Selection + Scales', function () {
             });
             model.parseScale();
             model.parseSelection();
-            var scales = assembleScalesForModel(model.children[0]);
-            assert.property(scales[0], 'domainRaw');
-            assert.propertyVal(scales[0].domainRaw, 'signal', 'brush["date"]');
+            const scales = assembleScalesForModel(model.children[0]);
+            expect('domainRaw' in scales[0]).toBeTruthy();
+            expect(scales[0].domainRaw.signal).toBe('brush["date"]');
         });
     });
-    describe('signals', function () {
-        var model = parseRepeatModel({
+    describe('signals', () => {
+        const model = parseRepeatModel({
             repeat: {
                 row: ['Horsepower', 'Acceleration'],
                 column: ['Miles_per_Gallon', 'Acceleration']
@@ -172,38 +171,38 @@ describe('Selection + Scales', function () {
         });
         model.parseScale();
         model.parseSelection();
-        it('should be marked as push: outer', function () {
-            var signals = assembleUnitSelectionSignals(model.children[0], []);
-            var hp = signals.filter(function (s) { return s.name === 'grid_Horsepower'; });
-            var mpg = signals.filter(function (s) { return s.name === 'grid_Miles_per_Gallon'; });
-            assert.lengthOf(hp, 1);
-            assert.propertyVal(hp[0], 'push', 'outer');
-            assert.notProperty(hp[0], 'value');
-            assert.notProperty(hp[0], 'update');
-            assert.lengthOf(mpg, 1);
-            assert.propertyVal(mpg[0], 'push', 'outer');
-            assert.notProperty(mpg[0], 'value');
-            assert.notProperty(mpg[0], 'update');
+        it('should be marked as push: outer', () => {
+            const signals = assembleUnitSelectionSignals(model.children[0], []);
+            const hp = signals.filter(s => s.name === 'grid_Horsepower');
+            const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
+            expect(hp.length).toBe(1);
+            expect(hp[0].push).toBe('outer');
+            expect('value' in hp[0]).toBeFalsy();
+            expect('update' in hp[0]).toBeFalsy();
+            expect(mpg.length).toBe(1);
+            expect(mpg[0].push).toBe('outer');
+            expect('value' in mpg[0]).toBeFalsy();
+            expect('update' in mpg[0]).toBeFalsy();
         });
-        it('should be assembled at the top-level', function () {
-            var signals = assembleTopLevelSignals(model.children[0], []);
-            var hp = signals.filter(function (s) { return s.name === 'grid_Horsepower'; });
-            var mpg = signals.filter(function (s) { return s.name === 'grid_Miles_per_Gallon'; });
-            var named = signals.filter(function (s) { return s.name === 'grid'; });
-            assert.lengthOf(hp, 1);
-            assert.lengthOf(mpg, 1);
-            assert.lengthOf(named, 1);
-            assert.equal(named[0].update, '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
-            var signals2 = assembleTopLevelSignals(model.children[1], signals);
-            var acc = signals2.filter(function (s) { return s.name === 'grid_Acceleration'; });
-            named = signals2.filter(function (s) { return s.name === 'grid'; });
-            assert.lengthOf(acc, 1);
-            assert.lengthOf(named, 1);
-            assert.equal(named[0].update, '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}');
+        it('should be assembled at the top-level', () => {
+            const signals = assembleTopLevelSignals(model.children[0], []);
+            const hp = signals.filter(s => s.name === 'grid_Horsepower');
+            const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
+            let named = signals.filter(s => s.name === 'grid');
+            expect(hp.length).toBe(1);
+            expect(mpg.length).toBe(1);
+            expect(named.length).toBe(1);
+            expect(named[0].update).toEqual('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
+            const signals2 = assembleTopLevelSignals(model.children[1], signals);
+            const acc = signals2.filter(s => s.name === 'grid_Acceleration');
+            named = signals2.filter(s => s.name === 'grid');
+            expect(acc.length).toBe(1);
+            expect(named.length).toBe(1);
+            expect(named[0].update).toEqual('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}');
         });
     });
-    it('should not bind for unavailable/unsupported scales', log.wrap(function (localLogger) {
-        var model = parseUnitModelWithScale({
+    it('should not bind for unavailable/unsupported scales', log.wrap(localLogger => {
+        let model = parseUnitModelWithScale({
             data: { url: 'data/cars.json' },
             selection: {
                 grid: { type: 'interval', bind: 'scales' }
@@ -214,7 +213,7 @@ describe('Selection + Scales', function () {
             }
         });
         model.parseSelection();
-        assert.equal(localLogger.warns[0], log.message.cannotProjectOnChannelWithoutField(X));
+        expect(localLogger.warns[0]).toEqual(log.message.cannotProjectOnChannelWithoutField(X));
         model = parseUnitModelWithScale({
             data: { url: 'data/cars.json' },
             selection: {
@@ -227,7 +226,7 @@ describe('Selection + Scales', function () {
             }
         });
         model.parseSelection();
-        assert.equal(localLogger.warns[1], log.message.SCALE_BINDINGS_CONTINUOUS);
+        expect(localLogger.warns[1]).toEqual(log.message.SCALE_BINDINGS_CONTINUOUS);
     }));
 });
 //# sourceMappingURL=scales.test.js.map

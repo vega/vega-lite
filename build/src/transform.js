@@ -40,7 +40,7 @@ export function isFold(t) {
     return t['fold'] !== undefined;
 }
 export function normalizeTransform(transform) {
-    return transform.map(function (t) {
+    return transform.map(t => {
         if (isFilter(t)) {
             return {
                 filter: normalizeLogicalOperand(t.filter, normalizePredicate)

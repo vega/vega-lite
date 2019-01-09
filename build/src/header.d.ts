@@ -1,5 +1,4 @@
-import { FontWeight, TextBaseline } from 'vega';
-import { TitleConfig as VgTitleConfig } from 'vega';
+import { FontWeight, TextBaseline, TitleConfig as VgTitleConfig } from 'vega';
 import { Guide } from './guide';
 export declare const HEADER_TITLE_PROPERTIES_MAP: {
     [k in keyof HeaderConfig]: keyof VgTitleConfig;
@@ -7,8 +6,8 @@ export declare const HEADER_TITLE_PROPERTIES_MAP: {
 export declare const HEADER_LABEL_PROPERTIES_MAP: {
     [k in keyof HeaderConfig]: keyof VgTitleConfig;
 };
-export declare const HEADER_TITLE_PROPERTIES: string[];
-export declare const HEADER_LABEL_PROPERTIES: string[];
+export declare const HEADER_TITLE_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];
+export declare const HEADER_LABEL_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];
 export interface HeaderConfig {
     /**
      * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.

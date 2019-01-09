@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { COLOR, OPACITY, SHAPE } from '../../channel';
 import { hasConditionalValueDef, isTimeFieldDef, isValueDef } from '../../fielddef';
@@ -7,11 +6,16 @@ import { ScaleType } from '../../scale';
 import { getFirstDefined, keys } from '../../util';
 import { applyMarkConfig, timeFormatExpression } from '../common';
 import * as mixins from '../mark/mixins';
+import { defaultType } from './properties';
+function type(legendCmp, model, channel) {
+    const scaleType = model.getScaleComponent(channel).get('type');
+    return getFirstDefined(legendCmp.get('type'), defaultType({ channel, scaleType, alwaysReturn: true }));
+}
 export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
-    if (legendCmp.get('type') === 'gradient') {
+    if (type(legendCmp, model, channel) !== 'symbol') {
         return undefined;
     }
-    var out = tslib_1.__assign({}, applyMarkConfig({}, model, FILL_STROKE_CONFIG), mixins.color(model)); // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
+    let out = Object.assign({}, applyMarkConfig({}, model, FILL_STROKE_CONFIG), mixins.color(model)); // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
     switch (model.mark) {
         case BAR:
         case TICK:
@@ -29,9 +33,9 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
             // use default circle
             break;
     }
-    var markDef = model.markDef, encoding = model.encoding;
-    var filled = markDef.filled;
-    var opacity = getMaxValue(encoding.opacity) || markDef.opacity;
+    const { markDef, encoding } = model;
+    const filled = markDef.filled;
+    const opacity = getMaxValue(encoding.opacity) || markDef.opacity;
     if (out.fill) {
         // for fill legend, we don't want any fill in symbol
         if (channel === 'fill' || (filled && channel === COLOR)) {
@@ -49,7 +53,7 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
                 }
             }
             else if (isArray(out.fill)) {
-                var fill = getFirstConditionValue(encoding.fill || encoding.color) ||
+                const fill = getFirstConditionValue(encoding.fill || encoding.color) ||
                     markDef.fill ||
                     (filled && markDef.color);
                 if (fill) {
@@ -68,7 +72,7 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
                 delete out.stroke;
             }
             else if (isArray(out.stroke)) {
-                var stroke = getFirstDefined(getFirstConditionValue(encoding.stroke || encoding.color), markDef.stroke, filled ? markDef.color : undefined);
+                const stroke = getFirstDefined(getFirstConditionValue(encoding.stroke || encoding.color), markDef.stroke, filled ? markDef.color : undefined);
                 if (stroke) {
                     out.stroke = { value: stroke };
                 }
@@ -76,7 +80,7 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
         }
     }
     if (channel !== SHAPE) {
-        var shape = getFirstConditionValue(encoding.shape) || markDef.shape;
+        const shape = getFirstConditionValue(encoding.shape) || markDef.shape;
         if (shape) {
             out.shape = { value: shape };
         }
@@ -87,38 +91,39 @@ export function symbols(fieldDef, symbolsSpec, model, channel, legendCmp) {
             out.opacity = { value: opacity };
         }
     }
-    out = tslib_1.__assign({}, out, symbolsSpec);
+    out = Object.assign({}, out, symbolsSpec);
     return keys(out).length > 0 ? out : undefined;
 }
 export function gradient(fieldDef, gradientSpec, model, channel, legendCmp) {
-    var out = {};
-    if (legendCmp.get('type') === 'gradient') {
-        var opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
-        if (opacity) {
-            // only apply opacity if it is neither zero or undefined
-            out.opacity = { value: opacity };
-        }
+    if (type(legendCmp, model, channel) !== 'gradient') {
+        return undefined;
     }
-    out = tslib_1.__assign({}, out, gradientSpec);
+    let out = {};
+    const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
+    if (opacity) {
+        // only apply opacity if it is neither zero or undefined
+        out.opacity = { value: opacity };
+    }
+    out = Object.assign({}, out, gradientSpec);
     return keys(out).length > 0 ? out : undefined;
 }
 export function labels(fieldDef, labelsSpec, model, channel, legendCmp) {
-    var legend = model.legend(channel);
-    var config = model.config;
-    var out = {};
+    const legend = model.legend(channel);
+    const config = model.config;
+    let out = {};
     if (isTimeFieldDef(fieldDef)) {
-        var isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-        var expr = timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale);
-        labelsSpec = tslib_1.__assign({}, (expr ? { text: { signal: expr } } : {}), labelsSpec);
+        const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
+        const expr = timeFormatExpression('datum.value', fieldDef.timeUnit, legend.format, config.legend.shortTimeLabels, config.timeFormat, isUTCScale);
+        labelsSpec = Object.assign({}, (expr ? { text: { signal: expr } } : {}), labelsSpec);
     }
-    out = tslib_1.__assign({}, out, labelsSpec);
+    out = Object.assign({}, out, labelsSpec);
     return keys(out).length > 0 ? out : undefined;
 }
 function getMaxValue(channelDef) {
-    return getConditionValue(channelDef, function (v, conditionalDef) { return Math.max(v, conditionalDef.value); });
+    return getConditionValue(channelDef, (v, conditionalDef) => Math.max(v, conditionalDef.value));
 }
 function getFirstConditionValue(channelDef) {
-    return getConditionValue(channelDef, function (v, conditionalDef) {
+    return getConditionValue(channelDef, (v, conditionalDef) => {
         return getFirstDefined(v, conditionalDef.value);
     });
 }

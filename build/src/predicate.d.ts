@@ -1,5 +1,3 @@
-import { DataFlowNode } from './compile/data/dataflow';
-import { Model } from './compile/model';
 import { DateTime } from './datetime';
 import { LogicalOperand } from './logical';
 import { TimeUnit } from './timeunit';
@@ -83,9 +81,5 @@ export interface FieldValidPredicate extends FieldPredicateBase {
 export declare function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate;
 export declare function isFieldValidPredicate(predicate: any): predicate is FieldValidPredicate;
 export declare function isFieldPredicate(predicate: Predicate): predicate is FieldOneOfPredicate | FieldEqualPredicate | FieldRangePredicate | FieldLTPredicate | FieldGTPredicate | FieldLTEPredicate | FieldGTEPredicate;
-/**
- * Converts a predicate into an expression.
- */
-export declare function expression(model: Model, filterOp: LogicalOperand<Predicate>, node?: DataFlowNode): string;
 export declare function fieldFilterExpression(predicate: FieldPredicate, useInRange?: boolean): string;
 export declare function normalizePredicate(f: Predicate): Predicate;

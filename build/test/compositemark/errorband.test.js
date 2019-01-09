@@ -1,27 +1,15 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import * as log from '../../src/log';
 import { isMarkDef } from '../../src/mark';
 import { isLayerSpec, isUnitSpec, normalize } from '../../src/spec';
 import { every, some } from '../../src/util';
 import { defaultConfig } from '.././../src/config';
-describe('normalizeErrorBand', function () {
-    it('should produce correct layered specs for mean point and vertical error band', function () {
+describe('normalizeErrorBand', () => {
+    it('should produce correct layered specs for mean point and vertical error band', () => {
         expect(normalize({
-            data: {
-                url: 'data/population.json'
-            },
+            data: { url: 'data/population.json' },
             mark: 'errorband',
-            encoding: {
-                x: {
-                    field: 'age',
-                    type: 'ordinal'
-                },
-                y: {
-                    field: 'people',
-                    type: 'quantitative'
-                }
-            }
+            encoding: { x: { field: 'age', type: 'ordinal' }, y: { field: 'people', type: 'quantitative' } }
         }, defaultConfig)).toEqual({
             data: {
                 url: 'data/population.json'
@@ -71,33 +59,39 @@ describe('normalizeErrorBand', function () {
                         x: {
                             field: 'age',
                             type: 'ordinal'
-                        }
+                        },
+                        tooltip: [
+                            { field: 'center_people', title: 'Mean of people', type: 'quantitative' },
+                            { field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative' },
+                            { field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative' },
+                            { field: 'age', type: 'ordinal' }
+                        ]
                     }
                 }
             ]
         });
     });
-    it('should produce correct layered specs with rect + rule, instead of area + line, in 1D error band', function () {
-        var outputSpec = normalize({
+    it('should produce correct layered specs with rect + rule, instead of area + line, in 1D error band', () => {
+        const outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', borders: true },
             encoding: { y: { field: 'people', type: 'quantitative' } }
         }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        const layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(some(layer, function (unitSpec) {
+            expect(some(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
-            }));
-            assert.isTrue(some(layer, function (unitSpec) {
+            })).toBe(true);
+            expect(some(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
-            }));
+            })).toBe(true);
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            expect(false).toBe(true);
         }
     });
-    it('should produce correct layered specs with area + line, in 2D error band', function () {
-        var outputSpec = normalize({
+    it('should produce correct layered specs with area + line, in 2D error band', () => {
+        const outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', borders: true },
             encoding: {
@@ -105,21 +99,21 @@ describe('normalizeErrorBand', function () {
                 x: { field: 'age', type: 'ordinal' }
             }
         }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        const layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(some(layer, function (unitSpec) {
+            expect(some(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
-            }));
-            assert.isTrue(some(layer, function (unitSpec) {
+            })).toBe(true);
+            expect(some(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
-            }));
+            })).toBe(true);
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            expect(false).toBe(true);
         }
     });
-    it('should produce correct layered specs with interpolation in 2D error band', function () {
-        var outputSpec = normalize({
+    it('should produce correct layered specs with interpolation in 2D error band', () => {
+        const outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'monotone' },
             encoding: {
@@ -127,35 +121,35 @@ describe('normalizeErrorBand', function () {
                 x: { field: 'age', type: 'ordinal' }
             }
         }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        const layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(every(layer, function (unitSpec) {
+            expect(every(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
-            }));
+            })).toBe(true);
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            expect(false).toBe(true);
         }
     });
-    it('should produce correct layered specs with out interpolation in 1D error band', function () {
-        var outputSpec = normalize({
+    it('should produce correct layered specs with out interpolation in 1D error band', () => {
+        const outputSpec = normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'bundle', tension: 1 },
             encoding: {
                 y: { field: 'people', type: 'quantitative' }
             }
         }, defaultConfig);
-        var layer = isLayerSpec(outputSpec) && outputSpec.layer;
+        const layer = isLayerSpec(outputSpec) && outputSpec.layer;
         if (layer) {
-            assert.isTrue(every(layer, function (unitSpec) {
+            expect(every(layer, unitSpec => {
                 return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
-            }));
+            })).toBe(true);
         }
         else {
-            assert.fail(!layer, false, 'layer should be a part of the spec');
+            expect(false).toBe(true);
         }
     });
-    it('should produce a warning 1D error band has interpolate property', log.wrap(function (localLogger) {
+    it('should produce a warning 1D error band has interpolate property', log.wrap(localLogger => {
         normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', interpolate: 'monotone' },
@@ -163,9 +157,9 @@ describe('normalizeErrorBand', function () {
                 y: { field: 'people', type: 'quantitative' }
             }
         }, defaultConfig);
-        assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('interpolate'));
+        expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('interpolate'));
     }));
-    it('should produce a warning 1D error band has tension property', log.wrap(function (localLogger) {
+    it('should produce a warning 1D error band has tension property', log.wrap(localLogger => {
         normalize({
             data: { url: 'data/population.json' },
             mark: { type: 'errorband', tension: 1 },
@@ -173,7 +167,7 @@ describe('normalizeErrorBand', function () {
                 y: { field: 'people', type: 'quantitative' }
             }
         }, defaultConfig);
-        assert.equal(localLogger.warns[0], log.message.errorBand1DNotSupport('tension'));
+        expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('tension'));
     }));
 });
 //# sourceMappingURL=errorband.test.js.map

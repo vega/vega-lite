@@ -1,23 +1,22 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
-import { parseFacetModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 import { X } from '../../../src/channel';
 import { sizeSignals } from '../../../src/compile/layoutsize/assemble';
 import * as log from '../../../src/log';
-describe('compile/layout', function () {
-    describe('sizeExpr', function () {
-        it('should return correct formula for ordinal-point scale', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+import { parseFacetModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
+describe('compile/layout', () => {
+    describe('sizeExpr', () => {
+        it('should return correct formula for ordinal-point scale', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'ordinal' }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([
                 {
                     name: 'x_step',
-                    value: 21
+                    value: 20
                 },
                 {
                     name: 'width',
@@ -25,18 +24,18 @@ describe('compile/layout', function () {
                 }
             ]);
         });
-        it('should return correct formula for ordinal-band scale with custom padding', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return correct formula for ordinal-band scale with custom padding', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'rect',
                 encoding: {
                     x: { field: 'a', type: 'ordinal', scale: { padding: 0.3 } }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([
                 {
                     name: 'x_step',
-                    value: 21
+                    value: 20
                 },
                 {
                     name: 'width',
@@ -44,18 +43,18 @@ describe('compile/layout', function () {
                 }
             ]);
         });
-        it('should return correct formula for ordinal-band scale with custom paddingInner', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return correct formula for ordinal-band scale with custom paddingInner', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'rect',
                 encoding: {
                     x: { field: 'a', type: 'ordinal', scale: { paddingInner: 0.3 } }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([
                 {
                     name: 'x_step',
-                    value: 21
+                    value: 20
                 },
                 {
                     name: 'width',
@@ -63,8 +62,8 @@ describe('compile/layout', function () {
                 }
             ]);
         });
-        it('should return only step if parent is facet', function () {
-            var model = parseFacetModel({
+        it('should return only step if parent is facet', () => {
+            const model = parseFacetModel({
                 facet: {
                     row: { field: 'a', type: 'ordinal' }
                 },
@@ -80,94 +79,94 @@ describe('compile/layout', function () {
             });
             model.parseScale();
             model.parseLayoutSize();
-            var size = sizeSignals(model.child, 'width');
-            assert.deepEqual(size, [
+            const size = sizeSignals(model.child, 'width');
+            expect(size).toEqual([
                 {
                     name: 'child_x_step',
-                    value: 21
+                    value: 20
                 }
             ]);
         });
-        it('should return static view size for ordinal x-scale with null', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view size for ordinal x-scale with null', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'ordinal', scale: { rangeStep: null } }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 200 }]);
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 200 }]);
         });
-        it('should return static view size for ordinal y-scale with null', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view size for ordinal y-scale with null', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     y: { field: 'a', type: 'ordinal', scale: { rangeStep: null } }
                 }
             });
-            var size = sizeSignals(model, 'height');
-            assert.deepEqual(size, [{ name: 'height', value: 200 }]);
+            const size = sizeSignals(model, 'height');
+            expect(size).toEqual([{ name: 'height', value: 200 }]);
         });
-        it('should return static view size for ordinal scale with top-level width', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view size for ordinal scale with top-level width', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 width: 205,
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'ordinal' }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 205 }]);
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 205 }]);
         });
-        it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', log.wrap(function (localLogger) {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view size for ordinal scale with top-level width even if there is numeric rangeStep', log.wrap(localLogger => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 width: 205,
                 mark: 'point',
                 encoding: {
-                    x: { field: 'a', type: 'ordinal', scale: { rangeStep: 21 } }
+                    x: { field: 'a', type: 'ordinal', scale: { rangeStep: 20 } }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 205 }]);
-            assert.equal(localLogger.warns[0], log.message.rangeStepDropped(X));
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 205 }]);
+            expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped(X));
         }));
-        it('should return static view width for non-ordinal x-scale', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view width for non-ordinal x-scale', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'quantitative' }
                 }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 200 }]);
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 200 }]);
         });
-        it('should return static view size for non-ordinal y-scale', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return static view size for non-ordinal y-scale', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {
                     y: { field: 'a', type: 'quantitative' }
                 }
             });
-            var size = sizeSignals(model, 'height');
-            assert.deepEqual(size, [{ name: 'height', value: 200 }]);
+            const size = sizeSignals(model, 'height');
+            expect(size).toEqual([{ name: 'height', value: 200 }]);
         });
-        it('should return default rangeStep if axis is not mapped', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return default rangeStep if axis is not mapped', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'point',
                 encoding: {},
                 config: { scale: { rangeStep: 17 } }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 17 }]);
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 17 }]);
         });
-        it('should return textXRangeStep if axis is not mapped for X of text mark', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should return textXRangeStep if axis is not mapped for X of text mark', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'text',
                 encoding: {},
                 config: { scale: { textXRangeStep: 91 } }
             });
-            var size = sizeSignals(model, 'width');
-            assert.deepEqual(size, [{ name: 'width', value: 91 }]);
+            const size = sizeSignals(model, 'width');
+            expect(size).toEqual([{ name: 'width', value: 91 }]);
         });
     });
 });

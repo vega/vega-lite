@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { isUrlData } from '../../data';
 import { AggregateNode } from './aggregate';
 import { BinNode } from './bin';
@@ -21,7 +20,7 @@ import { TimeUnitNode } from './timeunit';
 import { WindowTransformNode } from './window';
 function makeWalkTree(data) {
     // to name datasources
-    var datasetIndex = 0;
+    let datasetIndex = 0;
     /**
      * Recursively walk down the tree.
      */
@@ -31,7 +30,7 @@ function makeWalkTree(data) {
             // to put it in a different data source. Otherwise, Vega may override the data.
             if (!isUrlData(node.data)) {
                 data.push(dataSource);
-                var newData = {
+                const newData = {
                     name: null,
                     source: dataSource.name,
                     transform: []
@@ -42,7 +41,7 @@ function makeWalkTree(data) {
         if (node instanceof ParseNode) {
             if (node.parent instanceof SourceNode && !dataSource.source) {
                 // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
-                dataSource.format = tslib_1.__assign({}, (dataSource.format || {}), { parse: node.assembleFormatParse() });
+                dataSource.format = Object.assign({}, (dataSource.format || {}), { parse: node.assembleFormatParse() });
                 // add calculates for all nested fields
                 dataSource.transform = dataSource.transform.concat(node.assembleTransforms(true));
             }
@@ -53,7 +52,7 @@ function makeWalkTree(data) {
         }
         if (node instanceof FacetNode) {
             if (!dataSource.name) {
-                dataSource.name = "data_" + datasetIndex++;
+                dataSource.name = `data_${datasetIndex++}`;
             }
             if (!dataSource.source || dataSource.transform.length > 0) {
                 data.push(dataSource);
@@ -62,7 +61,7 @@ function makeWalkTree(data) {
             else {
                 node.data = dataSource.source;
             }
-            node.assemble().forEach(function (d) { return data.push(d); });
+            node.assemble().forEach(d => data.push(d));
             // break here because the rest of the tree has to be taken care of by the facet.
             return;
         }
@@ -96,7 +95,7 @@ function makeWalkTree(data) {
             }
             else {
                 if (!dataSource.name) {
-                    dataSource.name = "data_" + datasetIndex++;
+                    dataSource.name = `data_${datasetIndex++}`;
                 }
                 // Here we set the name of the datasource we generated. From now on
                 // other assemblers can use it.
@@ -104,7 +103,7 @@ function makeWalkTree(data) {
                 // if this node has more than one child, we will add a datasource automatically
                 if (node.numChildren() === 1) {
                     data.push(dataSource);
-                    var newData = {
+                    const newData = {
                         name: null,
                         source: dataSource.name,
                         transform: []
@@ -126,19 +125,19 @@ function makeWalkTree(data) {
                 break;
             default:
                 if (!dataSource.name) {
-                    dataSource.name = "data_" + datasetIndex++;
+                    dataSource.name = `data_${datasetIndex++}`;
                 }
-                var source_1 = dataSource.name;
+                let source = dataSource.name;
                 if (!dataSource.source || dataSource.transform.length > 0) {
                     data.push(dataSource);
                 }
                 else {
-                    source_1 = dataSource.source;
+                    source = dataSource.source;
                 }
-                node.children.forEach(function (child) {
-                    var newData = {
+                node.children.forEach(child => {
+                    const newData = {
                         name: null,
-                        source: source_1,
+                        source: source,
                         transform: []
                     };
                     walkTree(child, newData);
@@ -152,15 +151,13 @@ function makeWalkTree(data) {
  * Assemble data sources that are derived from faceted data.
  */
 export function assembleFacetData(root) {
-    var data = [];
-    var walkTree = makeWalkTree(data);
-    root.children.forEach(function (child) {
-        return walkTree(child, {
-            source: root.name,
-            name: null,
-            transform: []
-        });
-    });
+    const data = [];
+    const walkTree = makeWalkTree(data);
+    root.children.forEach(child => walkTree(child, {
+        source: root.name,
+        name: null,
+        transform: []
+    }));
     return data;
 }
 /**
@@ -171,46 +168,43 @@ export function assembleFacetData(root) {
  * @return modified data array
  */
 export function assembleRootData(dataComponent, datasets) {
-    var data = [];
+    const data = [];
     // roots.forEach(debug);
     // draw(roots);
-    var walkTree = makeWalkTree(data);
-    var sourceIndex = 0;
-    dataComponent.sources.forEach(function (root) {
+    const walkTree = makeWalkTree(data);
+    let sourceIndex = 0;
+    dataComponent.sources.forEach(root => {
         // assign a name if the source does not have a name yet
         if (!root.hasName()) {
-            root.dataName = "source_" + sourceIndex++;
+            root.dataName = `source_${sourceIndex++}`;
         }
-        var newData = root.assemble();
+        const newData = root.assemble();
         walkTree(root, newData);
     });
     // remove empty transform arrays for cleaner output
-    data.forEach(function (d) {
+    data.forEach(d => {
         if (d.transform.length === 0) {
             delete d.transform;
         }
     });
     // move sources without transforms (the ones that are potentially used in lookups) to the beginning
-    var whereTo = 0;
-    for (var i = 0; i < data.length; i++) {
-        var d = data[i];
+    let whereTo = 0;
+    for (let i = 0; i < data.length; i++) {
+        const d = data[i];
         if ((d.transform || []).length === 0 && !d.source) {
             data.splice(whereTo++, 0, data.splice(i, 1)[0]);
         }
     }
     // now fix the from references in lookup transforms
-    for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
-        var d = data_1[_i];
-        for (var _a = 0, _b = d.transform || []; _a < _b.length; _a++) {
-            var t = _b[_a];
+    for (const d of data) {
+        for (const t of d.transform || []) {
             if (t.type === 'lookup') {
                 t.from = dataComponent.outputNodes[t.from].getSource();
             }
         }
     }
     // inline values for datasets that are in the datastore
-    for (var _c = 0, data_2 = data; _c < data_2.length; _c++) {
-        var d = data_2[_c];
+    for (const d of data) {
         if (d.name in datasets) {
             d.values = datasets[d.name];
         }

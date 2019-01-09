@@ -1,28 +1,23 @@
-import * as tslib_1 from "tslib";
 import { LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2 } from '../../channel';
 import { duplicate } from '../../util';
 import { DataFlowNode } from './dataflow';
-var GeoPointNode = /** @class */ (function (_super) {
-    tslib_1.__extends(GeoPointNode, _super);
-    function GeoPointNode(parent, projection, fields, as) {
-        var _this = _super.call(this, parent) || this;
-        _this.projection = projection;
-        _this.fields = fields;
-        _this.as = as;
-        return _this;
+export class GeoPointNode extends DataFlowNode {
+    constructor(parent, projection, fields, as) {
+        super(parent);
+        this.projection = projection;
+        this.fields = fields;
+        this.as = as;
     }
-    GeoPointNode.prototype.clone = function () {
+    clone() {
         return new GeoPointNode(null, this.projection, duplicate(this.fields), duplicate(this.as));
-    };
-    GeoPointNode.parseAll = function (parent, model) {
+    }
+    static parseAll(parent, model) {
         if (!model.projectionName()) {
             return parent;
         }
-        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach(function (coordinates) {
-            var pair = coordinates.map(function (channel) {
-                return model.channelHasField(channel) ? model.fieldDef(channel).field : undefined;
-            });
-            var suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
+        [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]].forEach((coordinates) => {
+            const pair = coordinates.map(channel => model.channelHasField(channel) ? model.fieldDef(channel).field : undefined);
+            const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
             if (pair[0] || pair[1]) {
                 parent = new GeoPointNode(parent, model.projectionName(), pair, [
                     model.getName('x' + suffix),
@@ -31,16 +26,14 @@ var GeoPointNode = /** @class */ (function (_super) {
             }
         });
         return parent;
-    };
-    GeoPointNode.prototype.assemble = function () {
+    }
+    assemble() {
         return {
             type: 'geopoint',
             projection: this.projection,
             fields: this.fields,
             as: this.as
         };
-    };
-    return GeoPointNode;
-}(DataFlowNode));
-export { GeoPointNode };
+    }
+}
 //# sourceMappingURL=geopoint.js.map

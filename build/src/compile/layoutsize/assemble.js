@@ -6,25 +6,25 @@ export function assembleLayoutSignals(model) {
     return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
 }
 export function sizeSignals(model, sizeType) {
-    var channel = sizeType === 'width' ? 'x' : 'y';
-    var size = model.component.layoutSize.get(sizeType);
+    const channel = sizeType === 'width' ? 'x' : 'y';
+    const size = model.component.layoutSize.get(sizeType);
     if (!size || size === 'merged') {
         return [];
     }
     // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
-    var name = model.getSizeSignalRef(sizeType).signal;
+    const name = model.getSizeSignalRef(sizeType).signal;
     if (size === 'range-step') {
-        var scaleComponent = model.getScaleComponent(channel);
+        const scaleComponent = model.getScaleComponent(channel);
         if (scaleComponent) {
-            var type = scaleComponent.get('type');
-            var range = scaleComponent.get('range');
+            const type = scaleComponent.get('type');
+            const range = scaleComponent.get('range');
             if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
-                var scaleName = model.scaleName(channel);
+                const scaleName = model.scaleName(channel);
                 if (isFacetModel(model.parent)) {
                     // If parent is facet and this is an independent scale, return only signal signal
                     // as the width/height will be calculated using the cardinality from
                     // facet's aggregate rather than reading from scale domain
-                    var parentResolve = model.parent.component.resolve;
+                    const parentResolve = model.parent.component.resolve;
                     if (parentResolve.scale[channel] === 'independent') {
                         return [stepSignal(scaleName, range)];
                     }
@@ -32,8 +32,8 @@ export function sizeSignals(model, sizeType) {
                 return [
                     stepSignal(scaleName, range),
                     {
-                        name: name,
-                        update: sizeExpr(scaleName, scaleComponent, "domain('" + scaleName + "').length")
+                        name,
+                        update: sizeExpr(scaleName, scaleComponent, `domain('${scaleName}').length`)
                     }
                 ];
             }
@@ -44,7 +44,7 @@ export function sizeSignals(model, sizeType) {
     else {
         return [
             {
-                name: name,
+                name,
                 value: size
             }
         ];
@@ -57,10 +57,10 @@ function stepSignal(scaleName, range) {
     };
 }
 export function sizeExpr(scaleName, scaleComponent, cardinality) {
-    var type = scaleComponent.get('type');
-    var padding = scaleComponent.get('padding');
-    var paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
-    var paddingInner = scaleComponent.get('paddingInner');
+    const type = scaleComponent.get('type');
+    const padding = scaleComponent.get('padding');
+    const paddingOuter = getFirstDefined(scaleComponent.get('paddingOuter'), padding);
+    let paddingInner = scaleComponent.get('paddingInner');
     paddingInner =
         type === 'band'
             ? // only band has real paddingInner
@@ -70,6 +70,6 @@ export function sizeExpr(scaleName, scaleComponent, cardinality) {
             : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
                 // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
                 1;
-    return "bandspace(" + cardinality + ", " + paddingInner + ", " + paddingOuter + ") * " + scaleName + "_step";
+    return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`;
 }
 //# sourceMappingURL=assemble.js.map

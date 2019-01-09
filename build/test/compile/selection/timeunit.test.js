@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { assembleRootData } from '../../../src/compile/data/assemble';
 import { optimizeDataflow } from '../../../src/compile/data/optimize';
 import { TimeUnitNode } from '../../../src/compile/data/timeunit';
@@ -10,7 +9,7 @@ function getData(model) {
     return assembleRootData(model.component.data, {});
 }
 function getModel(unit2) {
-    var model = parseModel({
+    const model = parseModel({
         data: {
             values: [
                 { date: 'Sun, 01 Jan 2012 23:00:01', price: 150 },
@@ -41,26 +40,26 @@ function getModel(unit2) {
     model.parse();
     return model;
 }
-describe('Selection time unit', function () {
-    it('dataflow nodes are constructed', function () {
-        var model = parseUnitModel({
+describe('Selection time unit', () => {
+    it('dataflow nodes are constructed', () => {
+        const model = parseUnitModel({
             mark: 'point',
             encoding: {
                 x: { field: 'date', type: 'temporal', timeUnit: 'seconds' },
                 y: { field: 'date', type: 'temporal', timeUnit: 'minutes' }
             }
         });
-        var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+        const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
             one: { type: 'single' },
             two: { type: 'single', encodings: ['x', 'y'] }
         }));
-        assert.isUndefined(selCmpts['one'].timeUnit);
-        assert.instanceOf(selCmpts['two'].timeUnit, TimeUnitNode);
-        var as = selCmpts['two'].timeUnit.assemble().map(function (tx) { return tx.as; });
-        assert.sameDeepMembers(as, ['seconds_date', 'minutes_date']);
+        expect(selCmpts['one'].timeUnit).not.toBeDefined();
+        expect(selCmpts['two'].timeUnit).toBeInstanceOf(TimeUnitNode);
+        const as = selCmpts['two'].timeUnit.assemble().map(tx => tx.as);
+        expect(as).toEqual(['seconds_date', 'minutes_date']);
     });
-    it('is added with conditional encodings', function () {
-        var model = getModel({
+    it('is added with conditional encodings', () => {
+        const model = getModel({
             mark: 'point',
             encoding: {
                 x: {
@@ -75,11 +74,11 @@ describe('Selection time unit', function () {
                 }
             }
         });
-        var data2 = getData(model).filter(function (d) { return d.name === 'data_2'; })[0].transform;
-        assert.equal(data2.filter(function (tx) { return tx.type === 'formula' && tx.as === 'seconds_date'; }).length, 1);
+        const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
+        expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
     });
-    it('is added before selection filters', function () {
-        var model = getModel({
+    it('is added before selection filters', () => {
+        const model = getModel({
             transform: [{ filter: { selection: 'two' } }],
             mark: 'point',
             encoding: {
@@ -91,25 +90,25 @@ describe('Selection time unit', function () {
                 y: { field: 'price', type: 'quantitative' }
             }
         });
-        var data0 = getData(model).filter(function (d) { return d.name === 'data_0'; })[0].transform;
-        var data1 = getData(model).filter(function (d) { return d.name === 'data_1'; })[0].transform;
-        var tuIdx = -1;
-        var selIdx = -1;
-        data0.forEach(function (tx, idx) {
+        const data0 = getData(model).filter(d => d.name === 'data_0')[0].transform;
+        const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+        let tuIdx = -1;
+        let selIdx = -1;
+        data0.forEach((tx, idx) => {
             if (tx.type === 'formula' && tx.as === 'seconds_date') {
                 tuIdx = idx;
             }
         });
-        data1.forEach(function (tx, idx) {
+        data1.forEach((tx, idx) => {
             if (tx.type === 'filter' && tx.expr.indexOf('vlSelectionTest') >= 0) {
                 selIdx = idx;
             }
         });
-        assert.notEqual(tuIdx, -1);
-        assert.notEqual(selIdx, -1);
+        expect(tuIdx).not.toBe(-1);
+        expect(selIdx).not.toBe(-1);
     });
-    it('removes duplicate time unit formulae', function () {
-        var model = getModel({
+    it('removes duplicate time unit formulae', () => {
+        const model = getModel({
             transform: [{ filter: { selection: 'two' } }],
             mark: 'point',
             encoding: {
@@ -121,8 +120,8 @@ describe('Selection time unit', function () {
                 y: { field: 'price', type: 'quantitative' }
             }
         });
-        var data2 = getData(model).filter(function (d) { return d.name === 'data_2'; })[0].transform;
-        assert.equal(data2.filter(function (tx) { return tx.type === 'formula' && tx.as === 'seconds_date'; }).length, 1);
+        const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
+        expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
     });
 });
 //# sourceMappingURL=timeunit.test.js.map

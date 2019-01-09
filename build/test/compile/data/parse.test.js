@@ -1,5 +1,4 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { AncestorParse } from '../../../src/compile/data';
 import { AggregateNode } from '../../../src/compile/data/aggregate';
 import { BinNode } from '../../../src/compile/data/bin';
@@ -16,10 +15,10 @@ import { TimeUnitNode } from '../../../src/compile/data/timeunit';
 import { WindowTransformNode } from '../../../src/compile/data/window';
 import { parseUnitModel } from '../../util';
 import { SourceNode } from './../../../src/compile/data/source';
-describe('compile/data/parse', function () {
-    describe('parseTransformArray()', function () {
-        it('should return a CalculateNode and a FilterNode', function () {
-            var model = parseUnitModel({
+describe('compile/data/parse', () => {
+    describe('parseTransformArray()', () => {
+        it('should return a CalculateNode and a FilterNode', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [{ calculate: 'calculate', as: 'as' }, { filter: 'filter' }],
@@ -27,13 +26,13 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof CalculateNode);
-            assert.isTrue(result instanceof FilterNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof CalculateNode).toBe(true);
+            expect(result instanceof FilterNode).toBe(true);
         });
-        it('should add a parse node for filter transforms with time unit', function () {
-            var model = parseUnitModel({
+        it('should add a parse node for filter transforms with time unit', () => {
+            const model = parseUnitModel({
                 data: { url: 'a.json' },
                 transform: [
                     {
@@ -63,18 +62,18 @@ describe('compile/data/parse', function () {
                     shape: { field: 'd', type: 'nominal' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var parse = new AncestorParse();
-            var result = parseTransformArray(root, model, parse);
-            assert.isTrue(root.children[0] instanceof ParseNode);
-            assert.isTrue(result instanceof FilterNode);
-            assert.deepEqual(root.children[0].parse, {
+            const root = new DataFlowNode(null);
+            const parse = new AncestorParse();
+            const result = parseTransformArray(root, model, parse);
+            expect(root.children[0] instanceof ParseNode).toBe(true);
+            expect(result instanceof FilterNode).toBe(true);
+            expect(root.children[0].parse).toEqual({
                 date: 'date'
             });
-            assert.deepEqual(parse.combine(), { date: 'date' });
+            expect(parse.combine()).toEqual({ date: 'date' });
         });
-        it('should return a BinNode node and a TimeUnitNode', function () {
-            var model = parseUnitModel({
+        it('should return a BinNode node and a TimeUnitNode', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [{ bin: true, field: 'field', as: 'a' }, { timeUnit: 'month', field: 'field', as: 'b' }],
@@ -82,15 +81,15 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var parse = new AncestorParse();
-            var result = parseTransformArray(root, model, parse);
+            const root = new DataFlowNode(null);
+            const parse = new AncestorParse();
+            const result = parseTransformArray(root, model, parse);
             expect(root.children[0] instanceof BinNode);
             expect(result instanceof TimeUnitNode);
             expect(parse.combine()).toEqual({ a: 'number', a_end: 'number', b: 'date', field: 'date' });
         });
-        it('should return a BinNode and a AggregateNode', function () {
-            var model = parseUnitModel({
+        it('should return a BinNode and a AggregateNode', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [
@@ -101,13 +100,13 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof BinNode);
-            assert.isTrue(result instanceof AggregateNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof BinNode).toBe(true);
+            expect(result instanceof AggregateNode).toBe(true);
         });
-        it('should return a ImputeTransform Node', function () {
-            var model = parseUnitModel({
+        it('should return a ImputeTransform Node', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [{ impute: 'x', key: 'y', method: 'mean' }],
@@ -116,13 +115,13 @@ describe('compile/data/parse', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof ImputeNode);
-            assert.isTrue(result instanceof ImputeNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof ImputeNode).toBe(true);
+            expect(result instanceof ImputeNode).toBe(true);
         });
-        it('should return a WindowTransform Node', function () {
-            var transform = {
+        it('should return a WindowTransform Node', () => {
+            const transform = {
                 window: [
                     {
                         op: 'count',
@@ -131,7 +130,7 @@ describe('compile/data/parse', function () {
                     }
                 ]
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -139,12 +138,12 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
+            const root = new DataFlowNode(null);
             parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof WindowTransformNode);
+            expect(root.children[0] instanceof WindowTransformNode).toBe(true);
         });
-        it('should return a WindowTransform Node with optional properties', function () {
-            var transform = {
+        it('should return a WindowTransform Node with optional properties', () => {
+            const transform = {
                 window: [
                     {
                         op: 'row_number',
@@ -159,7 +158,7 @@ describe('compile/data/parse', function () {
                     }
                 ]
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -167,12 +166,12 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
+            const root = new DataFlowNode(null);
             parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof WindowTransformNode);
+            expect(root.children[0] instanceof WindowTransformNode).toBe(true);
         });
-        it('should return a WindowTransform Node', function () {
-            var transform = {
+        it('should return a WindowTransform Node', () => {
+            const transform = {
                 window: [
                     {
                         op: 'count',
@@ -181,7 +180,7 @@ describe('compile/data/parse', function () {
                     }
                 ]
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -189,12 +188,12 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
+            const root = new DataFlowNode(null);
             parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof WindowTransformNode);
+            expect(root.children[0] instanceof WindowTransformNode).toBe(true);
         });
-        it('should return a WindowTransform Node with optional properties', function () {
-            var transform = {
+        it('should return a WindowTransform Node with optional properties', () => {
+            const transform = {
                 window: [
                     {
                         op: 'row_number',
@@ -209,7 +208,7 @@ describe('compile/data/parse', function () {
                     }
                 ]
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -217,16 +216,16 @@ describe('compile/data/parse', function () {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var root = new DataFlowNode(null);
+            const root = new DataFlowNode(null);
             parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof WindowTransformNode);
+            expect(root.children[0] instanceof WindowTransformNode).toBe(true);
         });
-        it('should return a FoldTransformNode', function () {
-            var transform = {
+        it('should return a FoldTransformNode', () => {
+            const transform = {
                 fold: ['a', 'b'],
                 as: ['A', 'B']
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -235,16 +234,16 @@ describe('compile/data/parse', function () {
                     y: { field: 'B', type: 'quantitative' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof FoldTransformNode);
-            assert.isTrue(result instanceof FoldTransformNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof FoldTransformNode).toBe(true);
+            expect(result instanceof FoldTransformNode).toBe(true);
         });
-        it('should return a FlattenTransformNode', function () {
-            var transform = {
+        it('should return a FlattenTransformNode', () => {
+            const transform = {
                 flatten: ['a', 'b']
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -253,16 +252,16 @@ describe('compile/data/parse', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof FlattenTransformNode);
-            assert.isTrue(result instanceof FlattenTransformNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof FlattenTransformNode).toBe(true);
+            expect(result instanceof FlattenTransformNode).toBe(true);
         });
-        it('should return a SampleTransformNode', function () {
-            var transform = {
+        it('should return a SampleTransformNode', () => {
+            const transform = {
                 sample: 1000
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -271,20 +270,20 @@ describe('compile/data/parse', function () {
                     y: { field: 'B', type: 'quantitative' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof SampleTransformNode);
-            assert.isTrue(result instanceof SampleTransformNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof SampleTransformNode).toBe(true);
+            expect(result instanceof SampleTransformNode).toBe(true);
         });
-        it('should return a 3 Transforms from an Impute', function () {
-            var transform = {
+        it('should return a 3 Transforms from an Impute', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 method: 'max',
                 groupby: ['a', 'b'],
                 frame: [-2, 2]
             };
-            var model = parseUnitModel({
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 transform: [transform],
@@ -294,30 +293,30 @@ describe('compile/data/parse', function () {
                     color: { field: 'c', type: 'nominal' }
                 }
             });
-            var root = new DataFlowNode(null);
-            var result = parseTransformArray(root, model, new AncestorParse());
-            assert.isTrue(root.children[0] instanceof ImputeNode);
-            assert.isTrue(result instanceof ImputeNode);
+            const root = new DataFlowNode(null);
+            const result = parseTransformArray(root, model, new AncestorParse());
+            expect(root.children[0] instanceof ImputeNode).toBe(true);
+            expect(result instanceof ImputeNode).toBe(true);
         });
     });
-    describe('findSource', function () {
-        var values = new SourceNode({ values: [1, 2, 3] });
-        var named = new SourceNode({ name: 'foo' });
-        var url = new SourceNode({ url: 'foo.csv' });
-        it('should find named source', function () {
-            var actual = findSource({ name: 'foo' }, [values, named, url]);
+    describe('findSource', () => {
+        const values = new SourceNode({ values: [1, 2, 3] });
+        const named = new SourceNode({ name: 'foo' });
+        const url = new SourceNode({ url: 'foo.csv' });
+        it('should find named source', () => {
+            const actual = findSource({ name: 'foo' }, [values, named, url]);
             expect(actual).toBe(named);
         });
-        it('should find value source', function () {
-            var actual = findSource({ values: [1, 2, 3] }, [values, named, url]);
+        it('should find value source', () => {
+            const actual = findSource({ values: [1, 2, 3] }, [values, named, url]);
             expect(actual).toBe(values);
         });
-        it('should find url source', function () {
-            var actual = findSource({ url: 'foo.csv' }, [values, named, url]);
+        it('should find url source', () => {
+            const actual = findSource({ url: 'foo.csv' }, [values, named, url]);
             expect(actual).toBe(url);
         });
-        it('should not find new data source', function () {
-            var actual = findSource({ url: 'bar.csv' }, [values, named, url]);
+        it('should not find new data source', () => {
+            const actual = findSource({ url: 'bar.csv' }, [values, named, url]);
             expect(actual).toBeNull();
         });
     });

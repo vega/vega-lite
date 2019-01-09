@@ -10,7 +10,7 @@ export declare class FilterNode extends DataFlowNode {
     private _dependentFields;
     clone(): FilterNode;
     constructor(parent: DataFlowNode, model: Model, filter: LogicalOperand<Predicate>);
-    dependentFields(): import("../../util").Dict<true>;
+    dependentFields(): Set<string>;
     assemble(): VgFilterTransform;
     hash(): string;
 }

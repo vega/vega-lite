@@ -1,19 +1,19 @@
 import * as log from '../../../log';
 import { isPathMark } from '../../../mark';
 import { positionalProjections } from '../selection';
-var VORONOI = 'voronoi';
-var nearest = {
-    has: function (selCmpt) {
+const VORONOI = 'voronoi';
+const nearest = {
+    has: selCmpt => {
         return selCmpt.type !== 'interval' && selCmpt.nearest;
     },
-    marks: function (model, selCmpt, marks) {
-        var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
-        var markType = model.mark;
+    marks: (model, selCmpt, marks) => {
+        const { x, y } = positionalProjections(selCmpt);
+        const markType = model.mark;
         if (isPathMark(markType)) {
             log.warn(log.message.nearestNotSupportForContinuous(markType));
             return marks;
         }
-        var cellDef = {
+        const cellDef = {
             name: model.getName(VORONOI),
             type: 'path',
             from: { data: model.getName('marks') },
@@ -34,10 +34,10 @@ var nearest = {
                 }
             ]
         };
-        var index = 0;
-        var exists = false;
-        marks.forEach(function (mark, i) {
-            var name = mark.name || '';
+        let index = 0;
+        let exists = false;
+        marks.forEach((mark, i) => {
+            const name = mark.name || '';
             if (name === model.component.mark[0].name) {
                 index = i;
             }

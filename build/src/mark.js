@@ -15,20 +15,20 @@ export var Mark;
     Mark.SQUARE = 'square';
     Mark.GEOSHAPE = 'geoshape';
 })(Mark || (Mark = {}));
-export var AREA = Mark.AREA;
-export var BAR = Mark.BAR;
-export var LINE = Mark.LINE;
-export var POINT = Mark.POINT;
-export var TEXT = Mark.TEXT;
-export var TICK = Mark.TICK;
-export var TRAIL = Mark.TRAIL;
-export var RECT = Mark.RECT;
-export var RULE = Mark.RULE;
-export var GEOSHAPE = Mark.GEOSHAPE;
-export var CIRCLE = Mark.CIRCLE;
-export var SQUARE = Mark.SQUARE;
+export const AREA = Mark.AREA;
+export const BAR = Mark.BAR;
+export const LINE = Mark.LINE;
+export const POINT = Mark.POINT;
+export const TEXT = Mark.TEXT;
+export const TICK = Mark.TICK;
+export const TRAIL = Mark.TRAIL;
+export const RECT = Mark.RECT;
+export const RULE = Mark.RULE;
+export const GEOSHAPE = Mark.GEOSHAPE;
+export const CIRCLE = Mark.CIRCLE;
+export const SQUARE = Mark.SQUARE;
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
-var MARK_INDEX = {
+const MARK_INDEX = {
     area: 1,
     bar: 1,
     line: 1,
@@ -48,16 +48,16 @@ export function isMark(m) {
 export function isPathMark(m) {
     return contains(['line', 'area', 'trail'], m);
 }
-export var PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
+export const PRIMITIVE_MARKS = flagKeys(MARK_INDEX);
 export function isMarkDef(mark) {
     return mark['type'];
 }
-var PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
+const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
 export function isPrimitiveMark(mark) {
-    var markType = isMarkDef(mark) ? mark.type : mark;
+    const markType = isMarkDef(mark) ? mark.type : mark;
     return markType in PRIMITIVE_MARK_INDEX;
 }
-export var STROKE_CONFIG = [
+export const STROKE_CONFIG = [
     'stroke',
     'strokeWidth',
     'strokeDash',
@@ -66,25 +66,25 @@ export var STROKE_CONFIG = [
     'strokeJoin',
     'strokeMiterLimit'
 ];
-export var FILL_CONFIG = ['fill', 'fillOpacity'];
-export var FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
-export var VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color', 'tooltip'];
-export var VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+export const FILL_CONFIG = ['fill', 'fillOpacity'];
+export const FILL_STROKE_CONFIG = [].concat(STROKE_CONFIG, FILL_CONFIG);
+export const VL_ONLY_MARK_CONFIG_PROPERTIES = ['filled', 'color', 'tooltip'];
+export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
     area: ['line', 'point'],
     bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
     line: ['point'],
     text: ['shortTimeLabels'],
     tick: ['bandSize', 'thickness']
 };
-export var defaultMarkConfig = {
+export const defaultMarkConfig = {
     color: '#4c78a8',
     tooltip: { content: 'encoding' }
 };
-export var defaultBarConfig = {
+export const defaultBarConfig = {
     binSpacing: 1,
     continuousBandSize: 5
 };
-export var defaultTickConfig = {
+export const defaultTickConfig = {
     thickness: 1
 };
 //# sourceMappingURL=mark.js.map

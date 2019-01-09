@@ -1,9 +1,8 @@
-import { assert } from 'chai';
 import { parseLayerModel } from '../util';
-describe('Layer', function () {
-    describe('parseScale', function () {
-        it('should merge domains', function () {
-            var model = parseLayerModel({
+describe('Layer', () => {
+    describe('parseScale', () => {
+        it('should merge domains', () => {
+            const model = parseLayerModel({
                 layer: [
                     {
                         mark: 'point',
@@ -19,9 +18,9 @@ describe('Layer', function () {
                     }
                 ]
             });
-            assert.equal(model.children.length, 2);
+            expect(model.children).toHaveLength(2);
             model.parseScale();
-            assert.deepEqual(model.component.scales['x'].domains, [
+            expect(model.component.scales['x'].domains).toEqual([
                 {
                     data: 'layer_0_main',
                     field: 'a',
@@ -34,8 +33,8 @@ describe('Layer', function () {
                 }
             ]);
         });
-        it('should union explicit and referenced domains', function () {
-            var model = parseLayerModel({
+        it('should union explicit and referenced domains', () => {
+            const model = parseLayerModel({
                 layer: [
                     {
                         mark: 'point',
@@ -52,7 +51,7 @@ describe('Layer', function () {
                 ]
             });
             model.parseScale();
-            assert.deepEqual(model.component.scales['x'].domains, [
+            expect(model.component.scales['x'].domains).toEqual([
                 [1, 2, 3],
                 {
                     data: 'layer_1_main',
@@ -62,8 +61,8 @@ describe('Layer', function () {
             ]);
         });
     });
-    describe('dual axis chart', function () {
-        var model = parseLayerModel({
+    describe('dual axis chart', () => {
+        const model = parseLayerModel({
             layer: [
                 {
                     mark: 'point',
@@ -84,27 +83,27 @@ describe('Layer', function () {
                 }
             }
         });
-        assert.equal(model.children.length, 2);
-        it('should leave scales in children when set to be independent', function () {
+        expect(model.children).toHaveLength(2);
+        it('should leave scales in children when set to be independent', () => {
             model.parseScale();
-            assert.equal(model.component.scales['x'], undefined);
-            assert.deepEqual(model.children[0].component.scales['x'].domains, [
+            expect(model.component.scales['x']).toEqual(undefined);
+            expect(model.children[0].component.scales['x'].domains).toEqual([
                 {
                     data: 'layer_0_main',
                     field: 'a'
                 }
             ]);
-            assert.deepEqual(model.children[1].component.scales['x'].domains, [
+            expect(model.children[1].component.scales['x'].domains).toEqual([
                 {
                     data: 'layer_1_main',
                     field: 'b'
                 }
             ]);
         });
-        it('should create second axis on top', function () {
+        it('should create second axis on top', () => {
             model.parseAxisAndHeader();
-            assert.equal(model.component.axes['x'].length, 2);
-            assert.equal(model.component.axes['x'][1].implicit.orient, 'top');
+            expect(model.component.axes['x']).toHaveLength(2);
+            expect(model.component.axes['x'][1].implicit.orient).toEqual('top');
         });
     });
 });

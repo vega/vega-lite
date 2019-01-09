@@ -1,10 +1,8 @@
-import { Channel } from '../channel';
 import { Config, StyleConfigIndex, ViewConfig } from '../config';
-import { FieldDef, FieldDefBase, FieldRefOption, OrderFieldDef } from '../fielddef';
-import { GuideEncodingEntry } from '../guide';
+import { FieldDefBase, FieldRefOption, OrderFieldDef, TypedFieldDef } from '../fielddef';
 import { MarkConfig, MarkDef, TextConfig } from '../mark';
 import { TimeUnit } from '../timeunit';
-import { VgEncodeEntry, VgSort } from '../vega.schema';
+import { VgCompare, VgEncodeEntry } from '../vega.schema';
 import { AxisComponentProps } from './axis/component';
 import { Explicit } from './split';
 import { UnitModel } from './unit';
@@ -20,13 +18,13 @@ export declare function getMarkConfig<P extends keyof MarkConfig>(prop: P, mark:
     skipGeneralMarkConfig?: boolean;
 }): MarkConfig[P];
 export declare function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDef, styleConfigIndex: StyleConfigIndex): any;
-export declare function formatSignalRef(fieldDef: FieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config): {
+export declare function formatSignalRef(fieldDef: TypedFieldDef<string>, specifiedFormat: string, expr: 'datum' | 'parent', config: Config): {
     signal: string;
 };
 /**
  * Returns number format for a fieldDef
  */
-export declare function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string, config: Config): string;
+export declare function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config): string;
 export declare function numberFormatExpr(field: string, specifiedFormat: string, config: Config): string;
 export declare function binFormatExpression(startField: string, endField: string, format: string, config: Config): string;
 /**
@@ -37,7 +35,7 @@ isUTCScale: boolean, alwaysReturn?: boolean): string;
 /**
  * Return Vega sort parameters (tuple of field and order).
  */
-export declare function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgSort;
+export declare function sortParams(orderDef: OrderFieldDef<string> | OrderFieldDef<string>[], fieldRefOption?: FieldRefOption): VgCompare;
 export declare type AxisTitleComponent = AxisComponentProps['title'];
 export declare function mergeTitleFieldDefs(f1: FieldDefBase<string>[], f2: FieldDefBase<string>[]): FieldDefBase<string>[];
 export declare function mergeTitle(title1: string, title2: string): string;
@@ -48,8 +46,3 @@ export declare function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2
     explicit: boolean;
     value: string;
 };
-/**
- * Checks whether a fieldDef for a particular channel requires a computed bin range.
- */
-export declare function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean;
-export declare function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel): {};

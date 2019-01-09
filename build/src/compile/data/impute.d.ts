@@ -6,9 +6,7 @@ export declare class ImputeNode extends DataFlowNode {
     private readonly transform;
     clone(): ImputeNode;
     constructor(parent: DataFlowNode, transform: ImputeTransform);
-    producedFields(): {
-        [x: string]: true;
-    };
+    producedFields(): Set<string>;
     private processSequence;
     static makeFromTransform(parent: DataFlowNode, imputeTransform: ImputeTransform): ImputeNode;
     static makeFromEncoding(parent: DataFlowNode, model: UnitModel): ImputeNode;

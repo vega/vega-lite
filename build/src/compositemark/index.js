@@ -6,9 +6,9 @@ import { ERRORBAR, ERRORBAR_PARTS, normalizeErrorBar } from './errorbar';
 /**
  * Registry index for all composite mark's normalizer
  */
-var compositeMarkRegistry = {};
+const compositeMarkRegistry = {};
 export function add(mark, normalizer, parts) {
-    compositeMarkRegistry[mark] = { normalizer: normalizer, parts: parts };
+    compositeMarkRegistry[mark] = { normalizer, parts };
 }
 export function remove(mark) {
     delete compositeMarkRegistry[mark];
@@ -20,7 +20,7 @@ export function getCompositeMarkParts(mark) {
     if (mark in compositeMarkRegistry) {
         return compositeMarkRegistry[mark].parts;
     }
-    throw new Error("Unregistered composite mark " + mark);
+    throw new Error(`Unregistered composite mark ${mark}`);
 }
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
@@ -31,11 +31,11 @@ add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
 export function normalize(
 // This GenericUnitSpec has any as Encoding because unit specs with composite mark can have additional encoding channels.
 spec, config) {
-    var mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     if (mark in compositeMarkRegistry) {
-        var normalizer = compositeMarkRegistry[mark].normalizer;
+        const { normalizer } = compositeMarkRegistry[mark];
         return normalizer(spec, config);
     }
-    throw new Error("Invalid mark type \"" + mark + "\"");
+    throw new Error(`Invalid mark type "${mark}"`);
 }
 //# sourceMappingURL=index.js.map

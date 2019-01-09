@@ -7,7 +7,7 @@ import { Channel, GeoPositionChannel } from './channel';
 import { CompositeMark } from './compositemark';
 import { ErrorBarCenter, ErrorBarExtent } from './compositemark/errorbar';
 import { DateTime, DateTimeExpr } from './datetime';
-import { Aggregate, FieldDef } from './fielddef';
+import { Aggregate, TypedFieldDef } from './fielddef';
 import { Mark } from './mark';
 import { Projection } from './projection';
 import { ScaleType } from './scale';
@@ -71,12 +71,12 @@ export declare namespace message {
     }): string;
     function invalidFieldTypeForCountAggregate(type: Type, aggregate: string): string;
     function invalidAggregate(aggregate: AggregateOp | string): string;
-    function emptyOrInvalidFieldType(type: Type | string, channel: Channel, newType: Type): string;
+    function missingFieldType(channel: Channel, newType: Type): string;
     function droppingColor(type: 'encoding' | 'property', opt: {
         fill?: boolean;
         stroke?: boolean;
     }): string;
-    function emptyFieldDef(fieldDef: FieldDef<string>, channel: Channel): string;
+    function emptyFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel): string;
     function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel): string;
     const LINE_WITH_VARYING_SIZE = "Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.";
     function incompatibleChannel(channel: Channel, markOrFacet: Mark | 'facet' | CompositeMark, when?: string): string;
@@ -88,9 +88,9 @@ export declare namespace message {
     function orientOverridden(original: string, actual: string): string;
     const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN = "custom domain scale cannot be unioned with default field-based domain";
     function cannotUseScalePropertyWithNonColor(prop: string): string;
-    function unaggregateDomainHasNoEffectForRawField(fieldDef: FieldDef<string>): string;
+    function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string>): string;
     function unaggregateDomainWithNonSharedDomainOp(aggregate: string): string;
-    function unaggregatedDomainWithLogScale(fieldDef: FieldDef<string>): string;
+    function unaggregatedDomainWithLogScale(fieldDef: TypedFieldDef<string>): string;
     function cannotApplySizeToNonOrientedMark(mark: Mark): string;
     function rangeStepDropped(channel: Channel): string;
     function scaleTypeNotWorkWithChannel(channel: Channel, scaleType: ScaleType, defaultScaleType: ScaleType): string;

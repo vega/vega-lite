@@ -1,10 +1,9 @@
-import { assert } from 'chai';
 import { parseLayerModel, parseUnitModelWithScaleAndLayoutSize } from '../../util';
 /* tslint:disable:quotemark */
-describe('src/compile/projection/parse', function () {
-    describe('parseUnitProjection', function () {
-        it('should create projection from specified projection', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+describe('src/compile/projection/parse', () => {
+    describe('parseUnitProjection', () => {
+        it('should create projection from specified projection', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 projection: {
                     type: 'albersUsa'
@@ -19,10 +18,10 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            expect(model.component.projection.explicit).toEqual({ type: 'albersUsa' });
         });
-        it('should create projection with no props', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should create projection with no props', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -34,10 +33,10 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            assert.deepEqual(model.component.projection.explicit, {});
+            expect(model.component.projection.explicit).toEqual({});
         });
-        it('should create projection from config', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should create projection from config', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -54,10 +53,10 @@ describe('src/compile/projection/parse', function () {
                 }
             });
             model.parse();
-            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            expect(model.component.projection.explicit).toEqual({ type: 'albersUsa' });
         });
-        it('should add data with signal', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should add data with signal', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 data: {
                     url: 'data/airports.csv',
                     format: {
@@ -80,11 +79,11 @@ describe('src/compile/projection/parse', function () {
                 }
             });
             model.parse();
-            assert.isObject(model.component.projection.data[0]);
-            assert.property(model.component.projection.data[0], 'signal');
+            expect(typeof model.component.projection.data[0]).toBe('object');
+            expect(model.component.projection.data[0]).toHaveProperty('signal');
         });
-        it('should add data from main', function () {
-            var model = parseUnitModelWithScaleAndLayoutSize({
+        it('should add data from main', () => {
+            const model = parseUnitModelWithScaleAndLayoutSize({
                 mark: 'geoshape',
                 data: {
                     url: 'data/us-10m.json',
@@ -96,14 +95,14 @@ describe('src/compile/projection/parse', function () {
                 encoding: {}
             });
             model.parse();
-            assert.isString(model.component.projection.data[0]);
-            assert.isNotObject(model.component.projection.data[0]);
-            assert.notProperty(model.component.projection.data[0], 'signal');
+            expect(typeof model.component.projection.data[0]).toBe('string');
+            expect(typeof model.component.projection.data[0]).not.toBe('object');
+            expect(model.component.projection.data[0]).not.toHaveProperty('signal');
         });
     });
-    describe('parseNonUnitProjection', function () {
-        it('should merge the same projection', function () {
-            var model = parseLayerModel({
+    describe('parseNonUnitProjection', () => {
+        it('should merge the same projection', () => {
+            const model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -141,10 +140,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            expect(model.component.projection.explicit).toEqual({ type: 'albersUsa' });
         });
-        it('should merge in empty projection to specified projection', function () {
-            var emptyFirst = parseLayerModel({
+        it('should merge in empty projection to specified projection', () => {
+            const emptyFirst = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -179,8 +178,8 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             emptyFirst.parse();
-            assert.deepEqual(emptyFirst.component.projection.explicit, { type: 'albersUsa' });
-            var emptyLast = parseLayerModel({
+            expect(emptyFirst.component.projection.explicit).toEqual({ type: 'albersUsa' });
+            const emptyLast = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -215,10 +214,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             emptyLast.parse();
-            assert.deepEqual(emptyLast.component.projection.explicit, { type: 'albersUsa' });
+            expect(emptyLast.component.projection.explicit).toEqual({ type: 'albersUsa' });
         });
-        it('should merge projections with same size, different data', function () {
-            var model = parseLayerModel({
+        it('should merge projections with same size, different data', () => {
+            const model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -256,10 +255,10 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            assert.deepEqual(model.component.projection.explicit, { type: 'albersUsa' });
+            expect(model.component.projection.explicit).toEqual({ type: 'albersUsa' });
         });
-        it('should not merge different specified projections', function () {
-            var model = parseLayerModel({
+        it('should not merge different specified projections', () => {
+            const model = parseLayerModel({
                 layer: [
                     {
                         mark: 'geoshape',
@@ -297,7 +296,7 @@ describe('src/compile/projection/parse', function () {
                 ]
             });
             model.parse();
-            assert.isUndefined(model.component.projection);
+            expect(model.component.projection).toBeUndefined();
         });
     });
 });

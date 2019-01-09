@@ -1,10 +1,8 @@
 /* tslint:disable quotemark */
-import * as tslib_1 from "tslib";
-import { assert } from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import { parseLayerModel } from '../../util';
-describe('Layered Selections', function () {
-    var layers = parseLayerModel({
+describe('Layered Selections', () => {
+    const layers = parseLayerModel({
         layer: [
             {
                 selection: {
@@ -32,15 +30,15 @@ describe('Layered Selections', function () {
         config: { mark: { tooltip: null } }
     });
     layers.parse();
-    it('should appropriately name the unit', function () {
-        var unit = layers.children[0];
-        assert.equal(selection.unitName(unit), '"layer_0"');
+    it('should appropriately name the unit', () => {
+        const unit = layers.children[0];
+        expect(selection.unitName(unit)).toEqual('"layer_0"');
     });
     // Selections should augment layered marks together, rather than each
     // mark individually. This ensures correct interleaving of brush marks
     // (i.e., that the brush mark appears above all layers and thus can be
     // moved around).
-    it('should pass through unit mark assembly', function () {
+    it('should pass through unit mark assembly', () => {
         expect(layers.children[0].assembleMarks()).toEqual([
             {
                 name: 'layer_0_marks',
@@ -120,10 +118,10 @@ describe('Layered Selections', function () {
             }
         ]);
     });
-    it('should assemble selection marks across layers', function () {
-        var child0 = layers.children[0].assembleMarks()[0];
-        var child1 = layers.children[1].assembleMarks()[0];
-        assert.sameDeepMembers(layers.assembleMarks(), [
+    it('should assemble selection marks across layers', () => {
+        const child0 = layers.children[0].assembleMarks()[0];
+        const child1 = layers.children[1].assembleMarks()[0];
+        expect(layers.assembleMarks()).toEqual([
             // Background brush mark for "brush" selection.
             {
                 name: 'brush_brush_bg',
@@ -174,8 +172,8 @@ describe('Layered Selections', function () {
                     }
                 }
             },
-            tslib_1.__assign({}, child0, { clip: true }),
-            tslib_1.__assign({}, child1, { clip: true }),
+            Object.assign({}, child0, { clip: true }),
+            Object.assign({}, child1, { clip: true }),
             // Foreground brush mark for "brush" selection.
             {
                 name: 'brush_brush',

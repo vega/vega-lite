@@ -1,10 +1,9 @@
-import { assert } from 'chai';
 import { FacetNode } from '../../../src/compile/data/facet';
 import { parseFacetModelWithScale } from '../../util';
-describe('compile/data/facet', function () {
-    describe('assemble', function () {
-        it('should calculate column distinct if child has an independent discrete scale with step', function () {
-            var model = parseFacetModelWithScale({
+describe('compile/data/facet', () => {
+    describe('assemble', () => {
+        it('should calculate column distinct if child has an independent discrete scale with step', () => {
+            const model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 description: 'A trellis bar chart showing the US population distribution of age groups and gender in 2000.',
                 data: { url: 'data/population.json' },
@@ -35,9 +34,9 @@ describe('compile/data/facet', function () {
                 },
                 config: { view: { fill: 'yellow' } }
             });
-            var node = new FacetNode(null, model, 'facetName', 'dataName');
-            var data = node.assemble();
-            assert.deepEqual(data[0], {
+            const node = new FacetNode(null, model, 'facetName', 'dataName');
+            const data = node.assemble();
+            expect(data[0]).toEqual({
                 name: 'column_domain',
                 source: 'dataName',
                 transform: [
@@ -51,8 +50,8 @@ describe('compile/data/facet', function () {
                 ]
             });
         });
-        it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', function () {
-            var model = parseFacetModelWithScale({
+        it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', () => {
+            const model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     values: [
@@ -80,10 +79,10 @@ describe('compile/data/facet', function () {
                     }
                 }
             });
-            var node = new FacetNode(null, model, 'facetName', 'dataName');
-            var data = node.assemble();
+            const node = new FacetNode(null, model, 'facetName', 'dataName');
+            const data = node.assemble();
             // crossed data
-            assert.deepEqual(data[0], {
+            expect(data[0]).toEqual({
                 name: 'cross_column_domain_row_domain',
                 source: 'dataName',
                 transform: [
@@ -95,7 +94,7 @@ describe('compile/data/facet', function () {
                     }
                 ]
             });
-            assert.deepEqual(data[1], {
+            expect(data[1]).toEqual({
                 name: 'column_domain',
                 source: 'cross_column_domain_row_domain',
                 transform: [
@@ -108,7 +107,7 @@ describe('compile/data/facet', function () {
                     }
                 ]
             });
-            assert.deepEqual(data[2], {
+            expect(data[2]).toEqual({
                 name: 'row_domain',
                 source: 'cross_column_domain_row_domain',
                 transform: [
@@ -122,8 +121,8 @@ describe('compile/data/facet', function () {
                 ]
             });
         });
-        it('should calculate column and row sort array', function () {
-            var model = parseFacetModelWithScale({
+        it('should calculate column and row sort array', () => {
+            const model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     name: 'a'
@@ -140,9 +139,9 @@ describe('compile/data/facet', function () {
                     }
                 }
             });
-            var node = new FacetNode(null, model, 'facetName', 'dataName');
-            var data = node.assemble();
-            assert.deepEqual(data[0], {
+            const node = new FacetNode(null, model, 'facetName', 'dataName');
+            const data = node.assemble();
+            expect(data[0]).toEqual({
                 name: 'column_domain',
                 source: 'dataName',
                 transform: [
@@ -155,7 +154,7 @@ describe('compile/data/facet', function () {
                     }
                 ]
             });
-            assert.deepEqual(data[1], {
+            expect(data[1]).toEqual({
                 name: 'row_domain',
                 source: 'dataName',
                 transform: [
@@ -169,8 +168,8 @@ describe('compile/data/facet', function () {
                 ]
             });
         });
-        it('should calculate column and row sort field', function () {
-            var model = parseFacetModelWithScale({
+        it('should calculate column and row sort field', () => {
+            const model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: {
                     name: 'a'
@@ -187,9 +186,9 @@ describe('compile/data/facet', function () {
                     }
                 }
             });
-            var node = new FacetNode(null, model, 'facetName', 'dataName');
-            var data = node.assemble();
-            assert.deepEqual(data[0], {
+            const node = new FacetNode(null, model, 'facetName', 'dataName');
+            const data = node.assemble();
+            expect(data[0]).toEqual({
                 name: 'column_domain',
                 source: 'dataName',
                 transform: [
@@ -202,7 +201,7 @@ describe('compile/data/facet', function () {
                     }
                 ]
             });
-            assert.deepEqual(data[1], {
+            expect(data[1]).toEqual({
                 name: 'row_domain',
                 source: 'dataName',
                 transform: [
@@ -217,9 +216,9 @@ describe('compile/data/facet', function () {
             });
         });
     });
-    describe('hash', function () {
-        it('should generate the correct hash', function () {
-            var model = parseFacetModelWithScale({
+    describe('hash', () => {
+        it('should generate the correct hash', () => {
+            const model = parseFacetModelWithScale({
                 $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
                 data: {
                     name: 'a'
@@ -236,7 +235,7 @@ describe('compile/data/facet', function () {
                     }
                 }
             });
-            var facetNode = new FacetNode(null, model, 'facetName', 'dataName');
+            const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
             expect(facetNode.hash()).toEqual('Facet c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}} r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}}');
         });
     });

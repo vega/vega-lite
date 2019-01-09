@@ -12,14 +12,12 @@ export function forEachLeaf(op, fn) {
         forEachLeaf(op.not, fn);
     }
     else if (isLogicalAnd(op)) {
-        for (var _i = 0, _a = op.and; _i < _a.length; _i++) {
-            var subop = _a[_i];
+        for (const subop of op.and) {
             forEachLeaf(subop, fn);
         }
     }
     else if (isLogicalOr(op)) {
-        for (var _b = 0, _c = op.or; _b < _c.length; _b++) {
-            var subop = _c[_b];
+        for (const subop of op.or) {
             forEachLeaf(subop, fn);
         }
     }
@@ -32,10 +30,10 @@ export function normalizeLogicalOperand(op, normalizer) {
         return { not: normalizeLogicalOperand(op.not, normalizer) };
     }
     else if (isLogicalAnd(op)) {
-        return { and: op.and.map(function (o) { return normalizeLogicalOperand(o, normalizer); }) };
+        return { and: op.and.map(o => normalizeLogicalOperand(o, normalizer)) };
     }
     else if (isLogicalOr(op)) {
-        return { or: op.or.map(function (o) { return normalizeLogicalOperand(o, normalizer); }) };
+        return { or: op.or.map(o => normalizeLogicalOperand(o, normalizer)) };
     }
     else {
         return normalizer(op);

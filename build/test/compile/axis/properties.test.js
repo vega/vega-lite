@@ -1,81 +1,96 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import * as properties from '../../../src/compile/axis/properties';
-import { labelAlign, labelAngle, labelBaseline } from '../../../src/compile/axis/properties';
+import { defaultLabelAlign, defaultLabelBaseline, labelAngle } from '../../../src/compile/axis/properties';
 import { parseUnitModelWithScale } from '../../util';
-describe('compile/axis', function () {
-    describe('grid()', function () {
-        it('should return true by default for continuous scale that is not binned', function () {
-            var grid = properties.grid('linear', { field: 'a', type: 'quantitative' });
-            assert.deepEqual(grid, true);
+describe('compile/axis', () => {
+    describe('defaultGrid()', () => {
+        it('should return true by default for continuous scale that is not binned', () => {
+            const grid = properties.defaultGrid('linear', { field: 'a', type: 'quantitative' });
+            expect(grid).toBe(true);
         });
-        it('should return false by default for binned field', function () {
-            var grid = properties.grid('linear', { bin: true, field: 'a', type: 'quantitative' });
-            assert.deepEqual(grid, false);
+        it('should return false by default for binned field', () => {
+            const grid = properties.defaultGrid('linear', { bin: true, field: 'a', type: 'quantitative' });
+            expect(grid).toBe(false);
         });
-        it('should return false by default for a discrete scale', function () {
-            var grid = properties.grid('point', { field: 'a', type: 'quantitative' });
-            assert.deepEqual(grid, false);
-        });
-    });
-    describe('orient()', function () {
-        it('should return bottom for x by default', function () {
-            var orient = properties.orient('x');
-            assert.deepEqual(orient, 'bottom');
-        });
-        it('should return left for y by default', function () {
-            var orient = properties.orient('y');
-            assert.deepEqual(orient, 'left');
+        it('should return false by default for a discrete scale', () => {
+            const grid = properties.defaultGrid('point', { field: 'a', type: 'quantitative' });
+            expect(grid).toBe(false);
         });
     });
-    describe('tickCount', function () {
-        it('should return undefined by default for a binned field', function () {
-            var tickCount = properties.tickCount('x', { bin: { maxbins: 10 }, field: 'a', type: 'quantitative' }, 'linear', { signal: 'a' }, undefined, {});
-            assert.deepEqual(tickCount, { signal: 'ceil(a/20)' });
+    describe('orient()', () => {
+        it('should return bottom for x by default', () => {
+            const orient = properties.orient('x');
+            expect(orient).toBe('bottom');
         });
-        var _loop_1 = function (timeUnit) {
-            it("should return undefined by default for a temporal field with timeUnit=" + timeUnit, function () {
-                var tickCount = properties.tickCount('x', { timeUnit: timeUnit, field: 'a', type: 'temporal' }, 'linear', { signal: 'a' }, undefined, {});
-                assert.isUndefined(tickCount);
+        it('should return left for y by default', () => {
+            const orient = properties.orient('y');
+            expect(orient).toBe('left');
+        });
+    });
+    describe('defaultTickCount()', () => {
+        it('should return undefined by default for a binned field', () => {
+            const tickCount = properties.defaultTickCount({
+                fieldDef: { bin: { maxbins: 10 }, field: 'a', type: 'quantitative' },
+                scaleType: 'linear',
+                size: { signal: 'a' }
             });
-        };
-        for (var _i = 0, _a = ['month', 'hours', 'day', 'quarter']; _i < _a.length; _i++) {
-            var timeUnit = _a[_i];
-            _loop_1(timeUnit);
+            expect(tickCount).toEqual({ signal: 'ceil(a/10)' });
+        });
+        for (const timeUnit of ['month', 'hours', 'day', 'quarter']) {
+            it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
+                const tickCount = properties.defaultTickCount({
+                    fieldDef: { timeUnit, field: 'a', type: 'temporal' },
+                    scaleType: 'linear',
+                    size: { signal: 'a' }
+                });
+                expect(tickCount).not.toBeDefined();
+            });
         }
-        it('should return size/40 by default for linear scale', function () {
-            var tickCount = properties.tickCount('x', { field: 'a', type: 'quantitative' }, 'linear', { signal: 'a' }, undefined, {});
-            assert.deepEqual(tickCount, { signal: 'ceil(a/40)' });
-        });
-        it('should return undefined by default for log scale', function () {
-            var tickCount = properties.tickCount('x', { field: 'a', type: 'quantitative' }, 'log', undefined, undefined, {});
-            assert.deepEqual(tickCount, undefined);
-        });
-        it('should return undefined by default for point scale', function () {
-            var tickCount = properties.tickCount('x', { field: 'a', type: 'quantitative' }, 'point', undefined, undefined, {});
-            assert.deepEqual(tickCount, undefined);
-        });
-        it('should return prebin step signal for axis with tickStep', function () {
-            var tickCount = properties.tickCount('x', { field: 'a', type: 'quantitative' }, 'linear', undefined, 'x', {
-                tickStep: 3
+        it('should return size/40 by default for linear scale', () => {
+            const tickCount = properties.defaultTickCount({
+                fieldDef: { field: 'a', type: 'quantitative' },
+                scaleType: 'linear',
+                size: { signal: 'a' }
             });
-            assert.deepEqual(tickCount, { signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1" });
+            expect(tickCount).toEqual({ signal: 'ceil(a/40)' });
+        });
+        it('should return undefined by default for log scale', () => {
+            const tickCount = properties.defaultTickCount({ fieldDef: { field: 'a', type: 'quantitative' }, scaleType: 'log' });
+            expect(tickCount).toBeUndefined();
+        });
+        it('should return undefined by default for point scale', () => {
+            const tickCount = properties.defaultTickCount({
+                fieldDef: { field: 'a', type: 'quantitative' },
+                scaleType: 'point'
+            });
+            expect(tickCount).toBeUndefined();
+        });
+        it('should return prebin step signal for axis with tickStep', () => {
+            const tickCount = properties.defaultTickCount({
+                fieldDef: { field: 'a', type: 'quantitative' },
+                scaleType: 'linear',
+                scaleName: 'x',
+                specifiedAxis: {
+                    tickStep: 3
+                }
+            });
+            expect(tickCount).toEqual({ signal: "(domain('x')[1] - domain('x')[0]) / 3 + 1" });
         });
     });
-    describe('values', function () {
-        it('should return correct timestamp values for DateTimes', function () {
-            var values = properties.values({ values: [{ year: 1970 }, { year: 1980 }] }, null, { field: 'a', type: 'temporal' }, 'x');
-            assert.deepEqual(values, [
+    describe('values', () => {
+        it('should return correct timestamp values for DateTimes', () => {
+            const values = properties.values({ values: [{ year: 1970 }, { year: 1980 }] }, null, { field: 'a', type: 'temporal' }, 'x');
+            expect(values).toEqual([
                 { signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)' },
                 { signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)' }
             ]);
         });
-        it('should simply return values for non-DateTime', function () {
-            var values = properties.values({ values: [1, 2, 3, 4] }, null, { field: 'a', type: 'quantitative' }, 'x');
-            assert.deepEqual(values, [1, 2, 3, 4]);
+        it('should simply return values for non-DateTime', () => {
+            const values = properties.values({ values: [1, 2, 3, 4] }, null, { field: 'a', type: 'quantitative' }, 'x');
+            expect(values).toEqual([1, 2, 3, 4]);
         });
-        it('should simply drop values when domain is specified', function () {
-            var model1 = parseUnitModelWithScale({
+        it('should simply drop values when domain is specified', () => {
+            const model1 = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     y: {
@@ -87,11 +102,11 @@ describe('compile/axis', function () {
                 },
                 data: { url: 'data/movies.json' }
             });
-            var values = properties.values({}, model1, model1.fieldDef('y'), 'y');
-            assert.deepEqual(values, undefined);
+            const values = properties.values({}, model1, model1.fieldDef('y'), 'y');
+            expect(values).toBeUndefined();
         });
-        it('should return value signal for axis with tickStep', function () {
-            var model = parseUnitModelWithScale({
+        it('should return value signal for axis with tickStep', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: {
@@ -101,12 +116,12 @@ describe('compile/axis', function () {
                 },
                 data: { url: 'data/movies.json' }
             });
-            var values = properties.values({ tickStep: 3 }, model, { type: 'quantitative' }, 'x');
-            assert.deepEqual(values, { signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)" });
+            const values = properties.values({ tickStep: 3 }, model, { type: 'quantitative' }, 'x');
+            expect(values).toEqual({ signal: "sequence(domain('x')[0], domain('x')[1] + 3, 3)" });
         });
     });
-    describe('labelAngle', function () {
-        var axisModel = parseUnitModelWithScale({
+    describe('labelAngle', () => {
+        const axisModel = parseUnitModelWithScale({
             mark: 'bar',
             encoding: {
                 y: {
@@ -119,7 +134,7 @@ describe('compile/axis', function () {
             },
             data: { url: 'data/movies.json' }
         });
-        var configModel = parseUnitModelWithScale({
+        const configModel = parseUnitModelWithScale({
             config: { axis: { labelAngle: 500 } },
             mark: 'bar',
             encoding: {
@@ -132,7 +147,7 @@ describe('compile/axis', function () {
             },
             data: { url: 'data/movies.json' }
         });
-        var defaultModel = parseUnitModelWithScale({
+        const defaultModel = parseUnitModelWithScale({
             data: {
                 values: [
                     { a: 'A', b: 28 },
@@ -152,7 +167,7 @@ describe('compile/axis', function () {
                 y: { field: 'b', type: 'quantitative' }
             }
         });
-        var bothModel = parseUnitModelWithScale({
+        const bothModel = parseUnitModelWithScale({
             config: { axis: { labelAngle: 500 } },
             mark: 'bar',
             encoding: {
@@ -166,7 +181,7 @@ describe('compile/axis', function () {
             },
             data: { url: 'data/movies.json' }
         });
-        var neitherModel = parseUnitModelWithScale({
+        const neitherModel = parseUnitModelWithScale({
             mark: 'bar',
             encoding: {
                 y: {
@@ -178,112 +193,112 @@ describe('compile/axis', function () {
             },
             data: { url: 'data/movies.json' }
         });
-        it('should return the correct labelAngle from the axis definition', function () {
-            assert.deepEqual(240, labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.fieldDef('y')));
+        it('should return the correct labelAngle from the axis definition', () => {
+            expect(240).toEqual(labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.fieldDef('y')));
         });
-        it('should return the correct labelAngle from the axis config definition', function () {
-            assert.deepEqual(140, labelAngle(configModel, configModel.axis('y'), 'y', configModel.fieldDef('y')));
+        it('should return the correct labelAngle from the axis config definition', () => {
+            expect(140).toEqual(labelAngle(configModel, configModel.axis('y'), 'y', configModel.fieldDef('y')));
         });
-        it('should return the correct default labelAngle when not specified', function () {
-            assert.deepEqual(270, labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.fieldDef('x')));
+        it('should return the correct default labelAngle when not specified', () => {
+            expect(270).toEqual(labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.fieldDef('x')));
         });
-        it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', function () {
-            assert.deepEqual(240, labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.fieldDef('y')));
+        it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
+            expect(240).toEqual(labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.fieldDef('y')));
         });
-        it('should return undefined when there is no default and no specified labelAngle', function () {
-            assert.deepEqual(undefined, labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.fieldDef('y')));
-        });
-    });
-    describe('labelAlign', function () {
-        describe('horizontal orients', function () {
-            it('360 degree check for horizonatal orients return to see if they orient properly', function () {
-                assert.equal(labelAlign(0, 'top'), 'center');
-                assert.equal(labelAlign(15, 'top'), 'right');
-                assert.equal(labelAlign(30, 'top'), 'right');
-                assert.equal(labelAlign(45, 'top'), 'right');
-                assert.equal(labelAlign(60, 'top'), 'right');
-                assert.equal(labelAlign(75, 'top'), 'right');
-                assert.equal(labelAlign(90, 'top'), 'right');
-                assert.equal(labelAlign(105, 'top'), 'right');
-                assert.equal(labelAlign(120, 'top'), 'right');
-                assert.equal(labelAlign(135, 'top'), 'right');
-                assert.equal(labelAlign(150, 'top'), 'right');
-                assert.equal(labelAlign(165, 'top'), 'right');
-                assert.equal(labelAlign(180, 'top'), 'center');
-                assert.equal(labelAlign(195, 'bottom'), 'right');
-                assert.equal(labelAlign(210, 'bottom'), 'right');
-                assert.equal(labelAlign(225, 'bottom'), 'right');
-                assert.equal(labelAlign(240, 'bottom'), 'right');
-                assert.equal(labelAlign(255, 'bottom'), 'right');
-                assert.equal(labelAlign(270, 'bottom'), 'right');
-                assert.equal(labelAlign(285, 'bottom'), 'right');
-                assert.equal(labelAlign(300, 'bottom'), 'right');
-                assert.equal(labelAlign(315, 'bottom'), 'right');
-                assert.equal(labelAlign(330, 'bottom'), 'right');
-                assert.equal(labelAlign(345, 'bottom'), 'right');
-            });
-            it('360 degree check for vertical orients return to see if they orient properly', function () {
-                assert.equal(labelAlign(0, 'left'), 'right');
-                assert.equal(labelAlign(15, 'left'), 'right');
-                assert.equal(labelAlign(30, 'left'), 'right');
-                assert.equal(labelAlign(45, 'left'), 'right');
-                assert.equal(labelAlign(60, 'left'), 'right');
-                assert.equal(labelAlign(75, 'left'), 'right');
-                assert.equal(labelAlign(90, 'left'), 'center');
-                assert.equal(labelAlign(105, 'left'), 'left');
-                assert.equal(labelAlign(120, 'left'), 'left');
-                assert.equal(labelAlign(135, 'left'), 'left');
-                assert.equal(labelAlign(150, 'left'), 'left');
-                assert.equal(labelAlign(165, 'left'), 'left');
-                assert.equal(labelAlign(180, 'left'), 'left');
-                assert.equal(labelAlign(195, 'right'), 'right');
-                assert.equal(labelAlign(210, 'right'), 'right');
-                assert.equal(labelAlign(225, 'right'), 'right');
-                assert.equal(labelAlign(240, 'right'), 'right');
-                assert.equal(labelAlign(255, 'right'), 'right');
-                assert.equal(labelAlign(270, 'right'), 'center');
-                assert.equal(labelAlign(285, 'right'), 'left');
-                assert.equal(labelAlign(300, 'right'), 'left');
-                assert.equal(labelAlign(315, 'right'), 'left');
-                assert.equal(labelAlign(330, 'right'), 'left');
-                assert.equal(labelAlign(345, 'right'), 'left');
-            });
-            it('should return undefined if angle is undefined', function () {
-                assert.deepEqual(labelAlign(undefined, 'left'), undefined);
-            });
+        it('should return undefined when there is no default and no specified labelAngle', () => {
+            expect(undefined).toEqual(labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.fieldDef('y')));
         });
     });
-    describe('labelBaseline', function () {
-        it('is middle for perpendiculars horizontal orients', function () {
-            assert.deepEqual(labelBaseline(90, 'top'), 'middle');
-            assert.deepEqual(labelBaseline(270, 'bottom'), 'middle');
+    describe('defaultLabelAlign', () => {
+        describe('horizontal orients', () => {
+            it('360 degree check for horizonatal orients return to see if they orient properly', () => {
+                expect(defaultLabelAlign(0, 'top')).toEqual('center');
+                expect(defaultLabelAlign(15, 'top')).toEqual('right');
+                expect(defaultLabelAlign(30, 'top')).toEqual('right');
+                expect(defaultLabelAlign(45, 'top')).toEqual('right');
+                expect(defaultLabelAlign(60, 'top')).toEqual('right');
+                expect(defaultLabelAlign(75, 'top')).toEqual('right');
+                expect(defaultLabelAlign(90, 'top')).toEqual('right');
+                expect(defaultLabelAlign(105, 'top')).toEqual('right');
+                expect(defaultLabelAlign(120, 'top')).toEqual('right');
+                expect(defaultLabelAlign(135, 'top')).toEqual('right');
+                expect(defaultLabelAlign(150, 'top')).toEqual('right');
+                expect(defaultLabelAlign(165, 'top')).toEqual('right');
+                expect(defaultLabelAlign(180, 'top')).toEqual('center');
+                expect(defaultLabelAlign(195, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(210, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(225, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(240, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(255, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(270, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(285, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(300, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(315, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(330, 'bottom')).toEqual('right');
+                expect(defaultLabelAlign(345, 'bottom')).toEqual('right');
+            });
+            it('360 degree check for vertical orients return to see if they orient properly', () => {
+                expect(defaultLabelAlign(0, 'left')).toEqual('right');
+                expect(defaultLabelAlign(15, 'left')).toEqual('right');
+                expect(defaultLabelAlign(30, 'left')).toEqual('right');
+                expect(defaultLabelAlign(45, 'left')).toEqual('right');
+                expect(defaultLabelAlign(60, 'left')).toEqual('right');
+                expect(defaultLabelAlign(75, 'left')).toEqual('right');
+                expect(defaultLabelAlign(90, 'left')).toEqual('center');
+                expect(defaultLabelAlign(105, 'left')).toEqual('left');
+                expect(defaultLabelAlign(120, 'left')).toEqual('left');
+                expect(defaultLabelAlign(135, 'left')).toEqual('left');
+                expect(defaultLabelAlign(150, 'left')).toEqual('left');
+                expect(defaultLabelAlign(165, 'left')).toEqual('left');
+                expect(defaultLabelAlign(180, 'left')).toEqual('left');
+                expect(defaultLabelAlign(195, 'right')).toEqual('right');
+                expect(defaultLabelAlign(210, 'right')).toEqual('right');
+                expect(defaultLabelAlign(225, 'right')).toEqual('right');
+                expect(defaultLabelAlign(240, 'right')).toEqual('right');
+                expect(defaultLabelAlign(255, 'right')).toEqual('right');
+                expect(defaultLabelAlign(270, 'right')).toEqual('center');
+                expect(defaultLabelAlign(285, 'right')).toEqual('left');
+                expect(defaultLabelAlign(300, 'right')).toEqual('left');
+                expect(defaultLabelAlign(315, 'right')).toEqual('left');
+                expect(defaultLabelAlign(330, 'right')).toEqual('left');
+                expect(defaultLabelAlign(345, 'right')).toEqual('left');
+            });
+            it('should return undefined if angle is undefined', () => {
+                expect(defaultLabelAlign(undefined, 'left')).toEqual(undefined);
+            });
         });
-        it('is top for bottom orients for 1st and 4th quadrants', function () {
-            assert.deepEqual(labelBaseline(45, 'bottom'), 'top');
-            assert.deepEqual(labelBaseline(180, 'top'), 'top');
+    });
+    describe('defaultLabelBaseline', () => {
+        it('is middle for perpendiculars horizontal orients', () => {
+            expect(defaultLabelBaseline(90, 'top')).toEqual('middle');
+            expect(defaultLabelBaseline(270, 'bottom')).toEqual('middle');
         });
-        it('is bottom for bottom orients for 2nd and 3rd quadrants', function () {
-            assert.deepEqual(labelBaseline(100, 'bottom'), 'middle');
-            assert.deepEqual(labelBaseline(260, 'bottom'), 'middle');
+        it('is top for bottom orients for 1st and 4th quadrants', () => {
+            expect(defaultLabelBaseline(45, 'bottom')).toEqual('top');
+            expect(defaultLabelBaseline(180, 'top')).toEqual('top');
         });
-        it('is middle for 0 and 180 horizontal orients', function () {
-            assert.deepEqual(labelBaseline(0, 'left'), 'middle');
-            assert.deepEqual(labelBaseline(180, 'right'), 'middle');
+        it('is bottom for bottom orients for 2nd and 3rd quadrants', () => {
+            expect(defaultLabelBaseline(100, 'bottom')).toEqual('middle');
+            expect(defaultLabelBaseline(260, 'bottom')).toEqual('middle');
         });
-        it('is top for bottom orients for 1st and 2nd quadrants', function () {
-            assert.deepEqual(labelBaseline(80, 'left'), 'top');
-            assert.deepEqual(labelBaseline(100, 'left'), 'top');
+        it('is middle for 0 and 180 horizontal orients', () => {
+            expect(defaultLabelBaseline(0, 'left')).toEqual('middle');
+            expect(defaultLabelBaseline(180, 'right')).toEqual('middle');
         });
-        it('is bottom for bottom orients for 3rd and 4th quadrants', function () {
-            assert.deepEqual(labelBaseline(280, 'left'), 'bottom');
-            assert.deepEqual(labelBaseline(260, 'left'), 'bottom');
+        it('is top for bottom orients for 1st and 2nd quadrants', () => {
+            expect(defaultLabelBaseline(80, 'left')).toEqual('top');
+            expect(defaultLabelBaseline(100, 'left')).toEqual('top');
         });
-        it('is bottom for bottom orients for 3rd and 4th quadrants', function () {
-            assert.deepEqual(labelBaseline(280, 'left'), 'bottom');
-            assert.deepEqual(labelBaseline(260, 'left'), 'bottom');
+        it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
+            expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
+            expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
         });
-        it('should return undefined if angle is undefined', function () {
-            assert.deepEqual(labelBaseline(undefined, 'left'), undefined);
+        it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
+            expect(defaultLabelBaseline(280, 'left')).toEqual('bottom');
+            expect(defaultLabelBaseline(260, 'left')).toEqual('bottom');
+        });
+        it('should return undefined if angle is undefined', () => {
+            expect(defaultLabelBaseline(undefined, 'left')).toEqual(undefined);
         });
     });
 });

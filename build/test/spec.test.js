@@ -1,9 +1,8 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { fieldDefs } from '../src/spec';
-describe('fieldDefs()', function () {
-    it('should get all non-duplicate fieldDefs from an encoding', function () {
-        var spec = {
+describe('fieldDefs()', () => {
+    it('should get all non-duplicate fieldDefs from an encoding', () => {
+        const spec = {
             data: { url: 'data/cars.json' },
             mark: 'point',
             encoding: {
@@ -11,13 +10,13 @@ describe('fieldDefs()', function () {
                 y: { field: 'Miles_per_Gallon', type: 'quantitative' }
             }
         };
-        assert.sameDeepMembers(fieldDefs(spec), [
+        expect(fieldDefs(spec)).toEqual(expect.arrayContaining([
             { field: 'Horsepower', type: 'quantitative' },
             { field: 'Miles_per_Gallon', type: 'quantitative' }
-        ]);
+        ]));
     });
-    it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', function () {
-        var layerSpec = {
+    it('should get all non-duplicate fieldDefs from all layer in a LayerSpec', () => {
+        const layerSpec = {
             data: { url: 'data/stocks.csv', format: { type: 'csv' } },
             layer: [
                 {
@@ -40,14 +39,14 @@ describe('fieldDefs()', function () {
                 }
             ]
         };
-        assert.sameDeepMembers(fieldDefs(layerSpec), [
+        expect(fieldDefs(layerSpec)).toEqual(expect.arrayContaining([
             { field: 'date', type: 'temporal' },
             { field: 'price', type: 'quantitative' },
             { field: 'symbol', type: 'nominal' }
-        ]);
+        ]));
     });
-    it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', function () {
-        var layerSpec = {
+    it('should get all non-duplicate fieldDefs from all layer in a LayerSpec (merging duplicate fields with different scale types)', () => {
+        const layerSpec = {
             data: { url: 'data/stocks.csv', format: { type: 'csv' } },
             layer: [
                 {
@@ -70,13 +69,10 @@ describe('fieldDefs()', function () {
                 }
             ]
         };
-        assert.sameDeepMembers(fieldDefs(layerSpec), [
-            { field: 'date', type: 'temporal' },
-            { field: 'price', type: 'quantitative' }
-        ]);
+        expect(fieldDefs(layerSpec)).toEqual(expect.arrayContaining([{ field: 'date', type: 'temporal' }, { field: 'price', type: 'quantitative' }]));
     });
-    it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', function () {
-        var facetSpec = {
+    it('should get all non-duplicate fieldDefs from facet and layer in a FacetSpec', () => {
+        const facetSpec = {
             data: { url: 'data/movies.json' },
             facet: { row: { field: 'MPAA_Rating', type: 'ordinal' } },
             spec: {
@@ -87,11 +83,11 @@ describe('fieldDefs()', function () {
                 }
             }
         };
-        assert.sameDeepMembers(fieldDefs(facetSpec), [
+        expect(fieldDefs(facetSpec)).toEqual(expect.arrayContaining([
             { field: 'MPAA_Rating', type: 'ordinal' },
             { field: 'Worldwide_Gross', type: 'quantitative' },
             { field: 'US_DVD_Sales', type: 'quantitative' }
-        ]);
+        ]));
     });
 });
 //# sourceMappingURL=spec.test.js.map

@@ -1,15 +1,13 @@
+import pkg from '../package.json';
 import * as aggregate from './aggregate';
 import * as axis from './axis';
 import * as bin from './bin';
 import * as channel from './channel';
 import * as compositeMark from './compositemark';
-export { compile } from './compile/compile';
-export { extractTransforms } from './transformextract';
 import * as config from './config';
 import * as data from './data';
 import * as datetime from './datetime';
 import * as encoding from './encoding';
-import * as facet from './facet';
 import * as fieldDef from './fielddef';
 import * as header from './header';
 import * as legend from './legend';
@@ -23,7 +21,8 @@ import * as transform from './transform';
 import * as type from './type';
 import * as util from './util';
 import * as validate from './validate';
-import pkg from '../package.json';
-var version = pkg.version;
-export { aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, facet, fieldDef, header, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate, version };
+export { compile } from './compile/compile';
+export { extractTransforms } from './transformextract';
+export { aggregate, axis, bin, channel, compositeMark, config, data, datetime, encoding, fieldDef, header, legend, mark, scale, sort, spec, stack, timeUnit, transform, type, util, validate, version };
+const version = pkg.version;
 //# sourceMappingURL=index.js.map

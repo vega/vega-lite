@@ -7,6 +7,6 @@ export function isInlineData(data) {
 export function isNamedData(data) {
     return !!data['name'] && !isUrlData(data) && !isInlineData(data);
 }
-export var MAIN = 'main';
-export var RAW = 'raw';
+export const MAIN = 'main';
+export const RAW = 'raw';
 //# sourceMappingURL=data.js.map

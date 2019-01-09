@@ -24,8 +24,8 @@ export declare class BinNode extends DataFlowNode {
      */
     static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model): BinNode;
     merge(other: BinNode): void;
-    producedFields(): {};
-    dependentFields(): {};
+    producedFields(): Set<string>;
+    dependentFields(): Set<string>;
     hash(): string;
     assemble(): VgTransform[];
 }

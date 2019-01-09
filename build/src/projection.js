@@ -1,4 +1,4 @@
-export var PROJECTION_PROPERTIES = [
+export const PROJECTION_PROPERTIES = [
     'type',
     'clipAngle',
     'clipExtent',

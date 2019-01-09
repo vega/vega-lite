@@ -1,10 +1,9 @@
 /* tslint:disable quotemark */
-import { assert } from 'chai';
 import * as selection from '../../../src/compile/selection/selection';
 import toggle from '../../../src/compile/selection/transforms/toggle';
 import { parseUnitModel } from '../../util';
-describe('Toggle Selection Transform', function () {
-    var model = parseUnitModel({
+describe('Toggle Selection Transform', () => {
+    const model = parseUnitModel({
         mark: 'circle',
         encoding: {
             x: { field: 'Horsepower', type: 'quantitative' },
@@ -13,7 +12,7 @@ describe('Toggle Selection Transform', function () {
         }
     });
     model.parseScale();
-    var selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
+    const selCmpts = (model.component.selection = selection.parseUnitSelection(model, {
         one: { type: 'multi' },
         two: {
             type: 'multi',
@@ -27,17 +26,17 @@ describe('Toggle Selection Transform', function () {
         five: { type: 'single' },
         six: { type: 'interval' }
     }));
-    it('identifies transform invocation', function () {
-        assert.isNotFalse(toggle.has(selCmpts['one']));
-        assert.isNotFalse(toggle.has(selCmpts['two']));
-        assert.isNotTrue(toggle.has(selCmpts['three']));
-        assert.isNotTrue(toggle.has(selCmpts['four']));
-        assert.isNotTrue(toggle.has(selCmpts['five']));
-        assert.isNotTrue(toggle.has(selCmpts['six']));
+    it('identifies transform invocation', () => {
+        expect(toggle.has(selCmpts['one'])).toBeTruthy();
+        expect(toggle.has(selCmpts['two'])).toBeTruthy();
+        expect(toggle.has(selCmpts['three'])).toBeFalsy();
+        expect(toggle.has(selCmpts['four'])).toBeFalsy();
+        expect(toggle.has(selCmpts['five'])).toBeFalsy();
+        expect(toggle.has(selCmpts['six'])).toBeFalsy();
     });
-    it('builds toggle signals', function () {
-        var oneSg = toggle.signals(model, selCmpts['one'], []);
-        assert.sameDeepMembers(oneSg, [
+    it('builds toggle signals', () => {
+        const oneSg = toggle.signals(model, selCmpts['one'], []);
+        expect(oneSg).toEqual([
             {
                 name: 'one_toggle',
                 value: false,
@@ -49,8 +48,8 @@ describe('Toggle Selection Transform', function () {
                 ]
             }
         ]);
-        var twoSg = toggle.signals(model, selCmpts['two'], []);
-        assert.sameDeepMembers(twoSg, [
+        const twoSg = toggle.signals(model, selCmpts['two'], []);
+        expect(twoSg).toEqual([
             {
                 name: 'two_toggle',
                 value: false,
@@ -62,22 +61,22 @@ describe('Toggle Selection Transform', function () {
                 ]
             }
         ]);
-        var signals = selection.assembleUnitSelectionSignals(model, []);
-        assert.includeDeepMembers(signals, oneSg.concat(twoSg));
+        const signals = selection.assembleUnitSelectionSignals(model, []);
+        expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
     });
-    it('builds modify expr', function () {
-        var oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
-        assert.equal(oneExpr, 'one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
-        var twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
-        assert.equal(twoExpr, 'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
-        var signals = selection.assembleUnitSelectionSignals(model, []);
-        assert.includeDeepMembers(signals, [
+    it('builds modify expr', () => {
+        const oneExpr = toggle.modifyExpr(model, selCmpts['one'], '');
+        expect(oneExpr).toEqual('one_toggle ? null : one_tuple, one_toggle ? null : true, one_toggle ? one_tuple : null');
+        const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
+        expect(twoExpr).toEqual('two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null');
+        const signals = selection.assembleUnitSelectionSignals(model, []);
+        expect(signals).toEqual(expect.arrayContaining([
             {
                 name: 'one_modify',
                 on: [
                     {
                         events: { signal: 'one_tuple' },
-                        update: "modify(\"one_store\", " + oneExpr + ")"
+                        update: `modify(\"one_store\", ${oneExpr})`
                     }
                 ]
             },
@@ -86,11 +85,11 @@ describe('Toggle Selection Transform', function () {
                 on: [
                     {
                         events: { signal: 'two_tuple' },
-                        update: "modify(\"two_store\", " + twoExpr + ")"
+                        update: `modify(\"two_store\", ${twoExpr})`
                     }
                 ]
             }
-        ]);
+        ]));
     });
 });
 //# sourceMappingURL=toggle.test.js.map

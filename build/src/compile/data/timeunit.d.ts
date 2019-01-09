@@ -16,8 +16,8 @@ export declare class TimeUnitNode extends DataFlowNode {
     static makeFromEncoding(parent: DataFlowNode, model: ModelWithField): TimeUnitNode;
     static makeFromTransform(parent: DataFlowNode, t: TimeUnitTransform): TimeUnitNode;
     merge(other: TimeUnitNode): void;
-    producedFields(): {};
-    dependentFields(): {};
+    producedFields(): Set<string>;
+    dependentFields(): Set<string>;
     hash(): string;
     assemble(): VgFormulaTransform[];
 }

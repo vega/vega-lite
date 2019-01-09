@@ -4,79 +4,120 @@ import { extractTransformsFromEncoding } from '../encoding';
 import * as log from '../log';
 import { isMarkDef } from '../mark';
 import { getFirstDefined, keys } from '../util';
-import { compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, makeCompositeAggregatePartFactory, partLayerMixins } from './common';
-export var BOXPLOT = 'boxplot';
-var BOXPLOT_PART_INDEX = {
+import { compositeMarkContinuousAxis, compositeMarkOrient, filterUnsupportedChannels, getCompositeMarkTooltip, makeCompositeAggregatePartFactory, partLayerMixins } from './common';
+export const BOXPLOT = 'boxplot';
+const BOXPLOT_PART_INDEX = {
     box: 1,
     median: 1,
     outliers: 1,
     rule: 1,
     ticks: 1
 };
-export var BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
-var boxPlotSupportedChannels = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
+const boxPlotSupportedChannels = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
 export function normalizeBoxPlot(spec, config) {
-    var _a;
     spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
     // TODO: use selection
-    var mark = spec.mark, _encoding = spec.encoding, selection = spec.selection, _p = spec.projection, outerSpec = tslib_1.__rest(spec, ["mark", "encoding", "selection", "projection"]);
-    var markDef = isMarkDef(mark) ? mark : { type: mark };
+    const { mark, encoding: _encoding, selection, projection: _p } = spec, outerSpec = tslib_1.__rest(spec, ["mark", "encoding", "selection", "projection"]);
+    const markDef = isMarkDef(mark) ? mark : { type: mark };
     // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
     if (selection) {
         log.warn(log.message.selectionNotSupported('boxplot'));
     }
-    var extent = markDef.extent || config.boxplot.extent;
-    var sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
-    var isMinMax = !isNumber(extent);
-    var _b = boxParams(spec, extent, config), transform = _b.transform, continuousAxisChannelDef = _b.continuousAxisChannelDef, continuousAxis = _b.continuousAxis, groupby = _b.groupby, encodingWithoutContinuousAxis = _b.encodingWithoutContinuousAxis, tickOrient = _b.tickOrient;
-    var color = encodingWithoutContinuousAxis.color, size = encodingWithoutContinuousAxis.size, encodingWithoutSizeColorAndContinuousAxis = tslib_1.__rest(encodingWithoutContinuousAxis, ["color", "size"]);
-    var makeBoxPlotPart = function (sharedEncoding) {
+    const extent = markDef.extent || config.boxplot.extent;
+    const sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
+    const isMinMax = !isNumber(extent);
+    const { transform, continuousAxisChannelDef, continuousAxis, groupby, encodingWithoutContinuousAxis, ticksOrient, tooltipEncoding } = boxParams(spec, extent, config);
+    const { color, size } = encodingWithoutContinuousAxis, encodingWithoutSizeColorAndContinuousAxis = tslib_1.__rest(encodingWithoutContinuousAxis, ["color", "size"]);
+    const makeBoxPlotPart = (sharedEncoding) => {
         return makeCompositeAggregatePartFactory(markDef, continuousAxis, continuousAxisChannelDef, sharedEncoding, config.boxplot);
     };
-    var makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
-    var makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
-    var makeBoxPlotMidTick = makeBoxPlotPart(tslib_1.__assign({}, encodingWithoutSizeColorAndContinuousAxis, (size ? { size: size } : {})));
-    var endTick = { type: 'tick', color: 'black', opacity: 1, orient: tickOrient };
-    var bar = tslib_1.__assign({ type: 'bar' }, (sizeValue ? { size: sizeValue } : {}));
-    var midTick = tslib_1.__assign({ type: 'tick' }, (isObject(config.boxplot.median) && config.boxplot.median.color ? { color: config.boxplot.median.color } : {}), (sizeValue ? { size: sizeValue } : {}), { orient: tickOrient });
-    var boxLayer = makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box').concat(makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker'), makeBoxPlotExtent('ticks', endTick, 'lower_whisker'), makeBoxPlotExtent('ticks', endTick, 'upper_whisker'), makeBoxPlotBox('box', bar, 'lower_box', 'upper_box'), makeBoxPlotMidTick('median', midTick, 'mid_box'));
-    var outliersLayerMixins = [];
+    const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
+    const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
+    const makeBoxPlotMidTick = makeBoxPlotPart(Object.assign({}, encodingWithoutSizeColorAndContinuousAxis, (size ? { size } : {})));
+    const endTick = { type: 'tick', color: 'black', opacity: 1, orient: ticksOrient };
+    const bar = Object.assign({ type: 'bar' }, (sizeValue ? { size: sizeValue } : {}));
+    const midTick = Object.assign({ type: 'tick' }, (isObject(config.boxplot.median) && config.boxplot.median.color ? { color: config.boxplot.median.color } : {}), (sizeValue ? { size: sizeValue } : {}), { orient: ticksOrient });
+    // TODO: support hiding certain mark parts
+    const boxLayer = [
+        ...makeBoxPlotExtent({
+            partName: 'rule',
+            mark: 'rule',
+            positionPrefix: 'lower_whisker',
+            endPositionPrefix: 'lower_box',
+            extraEncoding: tooltipEncoding
+        }),
+        ...makeBoxPlotExtent({
+            partName: 'rule',
+            mark: 'rule',
+            positionPrefix: 'upper_box',
+            endPositionPrefix: 'upper_whisker',
+            extraEncoding: tooltipEncoding
+        }),
+        ...makeBoxPlotExtent({
+            partName: 'ticks',
+            mark: endTick,
+            positionPrefix: 'lower_whisker',
+            extraEncoding: tooltipEncoding
+        }),
+        ...makeBoxPlotExtent({
+            partName: 'ticks',
+            mark: endTick,
+            positionPrefix: 'upper_whisker',
+            extraEncoding: tooltipEncoding
+        }),
+        ...makeBoxPlotBox({
+            partName: 'box',
+            mark: bar,
+            positionPrefix: 'lower_box',
+            endPositionPrefix: 'upper_box',
+            extraEncoding: tooltipEncoding
+        }),
+        ...makeBoxPlotMidTick({
+            partName: 'median',
+            mark: midTick,
+            positionPrefix: 'mid_box',
+            extraEncoding: tooltipEncoding
+        })
+    ];
+    let outliersLayerMixins = [];
     if (!isMinMax) {
-        var lowerBoxExpr = 'datum.lower_box_' + continuousAxisChannelDef.field;
-        var upperBoxExpr = 'datum.upper_box_' + continuousAxisChannelDef.field;
-        var iqrExpr = "(" + upperBoxExpr + " - " + lowerBoxExpr + ")";
-        var lowerWhiskerExpr = lowerBoxExpr + " - " + extent + " * " + iqrExpr;
-        var upperWhiskerExpr = upperBoxExpr + " + " + extent + " * " + iqrExpr;
-        var fieldExpr = "datum." + continuousAxisChannelDef.field;
+        const lowerBoxExpr = 'datum.lower_box_' + continuousAxisChannelDef.field;
+        const upperBoxExpr = 'datum.upper_box_' + continuousAxisChannelDef.field;
+        const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
+        const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
+        const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
+        const fieldExpr = `datum.${continuousAxisChannelDef.field}`;
         outliersLayerMixins = partLayerMixins(markDef, 'outliers', config.boxplot, {
             transform: [
                 {
                     window: boxParamsQuartiles(continuousAxisChannelDef.field),
                     frame: [null, null],
-                    groupby: groupby
+                    groupby
                 },
                 {
-                    filter: "(" + fieldExpr + " < " + lowerWhiskerExpr + ") || (" + fieldExpr + " > " + upperWhiskerExpr + ")"
+                    filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
                 }
             ],
             mark: 'point',
-            encoding: tslib_1.__assign((_a = {}, _a[continuousAxis] = {
-                field: continuousAxisChannelDef.field,
-                type: continuousAxisChannelDef.type
-            }, _a), encodingWithoutSizeColorAndContinuousAxis)
+            encoding: Object.assign({ [continuousAxis]: {
+                    field: continuousAxisChannelDef.field,
+                    type: continuousAxisChannelDef.type
+                } }, encodingWithoutSizeColorAndContinuousAxis)
         });
     }
     if (outliersLayerMixins.length > 0) {
         // tukey box plot with outliers included
-        return tslib_1.__assign({}, outerSpec, { layer: [
+        return Object.assign({}, outerSpec, { layer: [
                 {
                     // boxplot
-                    transform: transform,
+                    transform,
                     layer: boxLayer
-                }
-            ].concat(outliersLayerMixins) });
+                },
+                ...outliersLayerMixins
+            ] });
     }
-    return tslib_1.__assign({}, outerSpec, { transform: (outerSpec.transform || []).concat(transform), layer: boxLayer });
+    return Object.assign({}, outerSpec, { transform: (outerSpec.transform || []).concat(transform), layer: boxLayer });
 }
 function boxParamsQuartiles(continousAxisField) {
     return [
@@ -93,11 +134,12 @@ function boxParamsQuartiles(continousAxisField) {
     ];
 }
 function boxParams(spec, extent, config) {
-    var orient = compositeMarkOrient(spec, BOXPLOT);
-    var _a = compositeMarkContinuousAxis(spec, orient, BOXPLOT), continuousAxisChannelDef = _a.continuousAxisChannelDef, continuousAxis = _a.continuousAxis;
-    var continuousFieldName = continuousAxisChannelDef.field;
-    var isMinMax = !isNumber(extent);
-    var boxplotSpecificAggregate = boxParamsQuartiles(continuousFieldName).concat([
+    const orient = compositeMarkOrient(spec, BOXPLOT);
+    const { continuousAxisChannelDef, continuousAxis } = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
+    const continuousFieldName = continuousAxisChannelDef.field;
+    const isMinMax = !isNumber(extent);
+    const boxplotSpecificAggregate = [
+        ...boxParamsQuartiles(continuousFieldName),
         {
             op: 'median',
             field: continuousFieldName,
@@ -113,38 +155,50 @@ function boxParams(spec, extent, config) {
             field: continuousFieldName,
             as: (isMinMax ? 'upper_whisker_' : 'max_') + continuousFieldName
         }
-    ]);
-    var postAggregateCalculates = isMinMax
+    ];
+    const postAggregateCalculates = isMinMax
         ? []
         : [
             {
-                calculate: "datum.upper_box_" + continuousFieldName + " - datum.lower_box_" + continuousFieldName,
+                calculate: `datum.upper_box_${continuousFieldName} - datum.lower_box_${continuousFieldName}`,
                 as: 'iqr_' + continuousFieldName
             },
             {
-                calculate: "min(datum.upper_box_" + continuousFieldName + " + datum.iqr_" + continuousFieldName + " * " + extent + ", datum.max_" + continuousFieldName + ")",
+                calculate: `min(datum.upper_box_${continuousFieldName} + datum.iqr_${continuousFieldName} * ${extent}, datum.max_${continuousFieldName})`,
                 as: 'upper_whisker_' + continuousFieldName
             },
             {
-                calculate: "max(datum.lower_box_" + continuousFieldName + " - datum.iqr_" + continuousFieldName + " * " + extent + ", datum.min_" + continuousFieldName + ")",
+                calculate: `max(datum.lower_box_${continuousFieldName} - datum.iqr_${continuousFieldName} * ${extent}, datum.min_${continuousFieldName})`,
                 as: 'lower_whisker_' + continuousFieldName
             }
         ];
-    var _b = spec.encoding, _c = continuousAxis, oldContinuousAxisChannelDef = _b[_c], oldEncodingWithoutContinuousAxis = tslib_1.__rest(_b, [typeof _c === "symbol" ? _c : _c + ""]);
-    var _d = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config), bins = _d.bins, timeUnits = _d.timeUnits, aggregate = _d.aggregate, groupby = _d.groupby, encodingWithoutContinuousAxis = _d.encoding;
-    var tickOrient = orient === 'vertical' ? 'horizontal' : 'vertical';
+    const _a = spec.encoding, _b = continuousAxis, oldContinuousAxisChannelDef = _a[_b], oldEncodingWithoutContinuousAxis = tslib_1.__rest(_a, [typeof _b === "symbol" ? _b : _b + ""]);
+    const { bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis } = extractTransformsFromEncoding(oldEncodingWithoutContinuousAxis, config);
+    const ticksOrient = orient === 'vertical' ? 'horizontal' : 'vertical';
+    const tooltipSummary = [
+        { fieldPrefix: 'upper_whisker_', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker' },
+        { fieldPrefix: 'upper_box_', titlePrefix: 'Q3' },
+        { fieldPrefix: 'mid_box_', titlePrefix: 'Median' },
+        { fieldPrefix: 'lower_box_', titlePrefix: 'Q1' },
+        { fieldPrefix: 'lower_whisker_', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker' }
+    ];
+    const tooltipEncoding = getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis);
     return {
-        transform: bins.concat(timeUnits, [
+        transform: [
+            ...bins,
+            ...timeUnits,
             {
-                aggregate: aggregate.concat(boxplotSpecificAggregate),
-                groupby: groupby
-            }
-        ], postAggregateCalculates),
-        groupby: groupby,
-        continuousAxisChannelDef: continuousAxisChannelDef,
-        continuousAxis: continuousAxis,
-        encodingWithoutContinuousAxis: encodingWithoutContinuousAxis,
-        tickOrient: tickOrient
+                aggregate: [...aggregate, ...boxplotSpecificAggregate],
+                groupby
+            },
+            ...postAggregateCalculates
+        ],
+        groupby,
+        continuousAxisChannelDef,
+        continuousAxis,
+        encodingWithoutContinuousAxis,
+        ticksOrient,
+        tooltipEncoding
     };
 }
 //# sourceMappingURL=boxplot.js.map

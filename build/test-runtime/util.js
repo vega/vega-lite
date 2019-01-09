@@ -1,16 +1,15 @@
 import * as tslib_1 from "tslib";
-// import {assert} from 'chai';
 import * as fs from 'fs';
 import { sync as mkdirp } from 'mkdirp';
 import { stringValue } from 'vega-util';
-export var generate = process.env.VL_GENERATE_TESTS;
-export var output = 'test-runtime/resources';
-export var selectionTypes = ['single', 'multi', 'interval'];
-export var compositeTypes = ['repeat', 'facet'];
-export var resolutions = ['union', 'intersect'];
-export var bound = 'bound';
-export var unbound = 'unbound';
-export var tuples = [
+export const generate = process.env.VL_GENERATE_TESTS;
+export const output = 'test-runtime/resources';
+export const selectionTypes = ['single', 'multi', 'interval'];
+export const compositeTypes = ['repeat', 'facet'];
+export const resolutions = ['union', 'intersect'];
+export const bound = 'bound';
+export const unbound = 'unbound';
+export const tuples = [
     { a: 0, b: 28, c: 0 },
     { a: 0, b: 55, c: 1 },
     { a: 0, b: 23, c: 2 },
@@ -42,11 +41,11 @@ export var tuples = [
     { a: 9, b: 15, c: 1 },
     { a: 9, b: 48, c: 2 }
 ];
-var unitNames = {
+const unitNames = {
     repeat: ['child_d', 'child_e', 'child_f'],
     facet: ['child_0', 'child_1', 'child_2']
 };
-export var hits = {
+export const hits = {
     discrete: {
         qq: [8, 19],
         qq_clear: [5, 16],
@@ -70,26 +69,25 @@ export var hits = {
         facet_clear: [[3], [5], [7]]
     }
 };
-function base(iter, sel, opts) {
-    if (opts === void 0) { opts = {}; }
-    var data = { values: opts.values || tuples };
-    var x = tslib_1.__assign({ field: 'a', type: 'quantitative' }, opts.x);
-    var y = tslib_1.__assign({ field: 'b', type: 'quantitative' }, opts.y);
-    var color = tslib_1.__assign({ field: 'c', type: 'nominal' }, opts.color);
-    var size = tslib_1.__assign({ value: 100 }, opts.size);
-    var selection = { sel: sel };
-    var mark = 'circle';
+function base(iter, sel, opts = {}) {
+    const data = { values: opts.values || tuples };
+    const x = Object.assign({ field: 'a', type: 'quantitative' }, opts.x);
+    const y = Object.assign({ field: 'b', type: 'quantitative' }, opts.y);
+    const color = Object.assign({ field: 'c', type: 'nominal' }, opts.color);
+    const size = Object.assign({ value: 100 }, opts.size);
+    const selection = { sel };
+    const mark = 'circle';
     if (iter % 2 === 0) {
         return {
-            data: data,
-            selection: selection,
-            mark: mark,
+            data,
+            selection,
+            mark,
             encoding: {
-                x: x,
-                y: y,
-                size: size,
+                x,
+                y,
+                size,
                 color: {
-                    condition: tslib_1.__assign({ selection: 'sel' }, color),
+                    condition: Object.assign({ selection: 'sel' }, color),
                     value: 'grey'
                 }
             }
@@ -97,88 +95,90 @@ function base(iter, sel, opts) {
     }
     else {
         return {
-            data: data,
+            data,
             layer: [
                 {
-                    selection: selection,
-                    mark: mark,
+                    selection,
+                    mark,
                     encoding: {
-                        x: x,
-                        y: y,
-                        size: size,
-                        color: color,
+                        x,
+                        y,
+                        size,
+                        color,
                         opacity: { value: 0.25 }
                     }
                 },
                 {
                     transform: [{ filter: { selection: 'sel' } }],
-                    mark: mark,
-                    encoding: { x: x, y: y, size: size, color: color }
+                    mark,
+                    encoding: { x, y, size, color }
                 }
             ]
         };
     }
 }
-export function spec(compose, iter, sel, opts) {
-    if (opts === void 0) { opts = {}; }
-    var _a = base(iter, sel, opts), data = _a.data, specification = tslib_1.__rest(_a, ["data"]);
-    var resolve = opts.resolve;
+export function spec(compose, iter, sel, opts = {}) {
+    const _a = base(iter, sel, opts), { data } = _a, specification = tslib_1.__rest(_a, ["data"]);
+    const resolve = opts.resolve;
+    const config = { scale: { rangeStep: 21 } }; // A lot of magic number in this file uses the old rangeStep = 21
     switch (compose) {
         case 'unit':
-            return tslib_1.__assign({ data: data }, specification);
+            return Object.assign({ data }, specification, { config });
         case 'facet':
             return {
-                data: data,
+                data,
                 facet: { row: { field: 'c', type: 'nominal' } },
                 spec: specification,
-                resolve: resolve
+                resolve,
+                config
             };
         case 'repeat':
             return {
-                data: data,
+                data,
                 repeat: { row: ['d', 'e', 'f'] },
                 spec: specification,
-                resolve: resolve
+                resolve,
+                config
             };
     }
     return null;
 }
 export function unitNameRegex(specType, idx) {
-    var name = unitNames[specType][idx].replace('child_', '');
-    return new RegExp("child(.*?)_" + name);
+    const name = unitNames[specType][idx].replace('child_', '');
+    return new RegExp(`child(.*?)_${name}`);
 }
 export function parentSelector(compositeType, index) {
-    return compositeType === 'facet' ? "cell > g:nth-child(" + (index + 1) + ")" : unitNames.repeat[index] + '_group';
+    return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : unitNames.repeat[index] + '_group';
 }
 export function brush(key, idx, parent, targetBrush) {
-    var fn = key.match('_clear') ? 'clear' : 'brush';
-    return "return " + fn + "(" + hits.interval[key][idx].join(', ') + ", " + stringValue(parent) + ", " + !!targetBrush + ")";
+    const fn = key.match('_clear') ? 'clear' : 'brush';
+    return `return ${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 export function pt(key, idx, parent) {
-    var fn = key.match('_clear') ? 'clear' : 'pt';
-    return "return " + fn + "(" + hits.discrete[key][idx] + ", " + stringValue(parent) + ")";
+    const fn = key.match('_clear') ? 'clear' : 'pt';
+    return `return ${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
 export function embedFn(browser) {
-    return function (specification) {
-        browser.execute(function (_) { return window['embed'](_); }, specification);
+    return (specification) => {
+        browser.execute(_ => window['embed'](_), specification);
     };
 }
 export function svg(browser, path, filename) {
-    var xml = browser.executeAsync(function (done) {
-        window['view'].runAfter(function (view) { return view.toSVG().then(function (_) { return done(_); }); });
+    const xml = browser.executeAsync(done => {
+        window['view'].runAfter((view) => view.toSVG().then((_) => done(_)));
     });
     if (generate) {
-        mkdirp((path = output + "/" + path));
-        fs.writeFileSync(path + "/" + filename + ".svg", xml.value);
+        mkdirp((path = `${output}/${path}`));
+        fs.writeFileSync(`${path}/${filename}.svg`, xml.value);
     }
     return xml.value;
 }
 export function testRenderFn(browser, path) {
-    return function (filename) {
+    return (filename) => {
         // const render =
         svg(browser, path, filename);
         // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
-        // assert.equal(render, file);
+        // expect(render).toEqual(file);
     };
 }
 //# sourceMappingURL=util.js.map

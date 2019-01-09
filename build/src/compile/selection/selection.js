@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { selector as parseSelector } from 'vega-event-selector';
 import { isString, stringValue } from 'vega-util';
 import { X, Y } from '../../channel';
@@ -10,59 +9,56 @@ import intervalCompiler from './interval';
 import multiCompiler from './multi';
 import singleCompiler from './single';
 import { forEachTransform } from './transforms/transforms';
-export var STORE = '_store';
-export var TUPLE = '_tuple';
-export var MODIFY = '_modify';
-export var SELECTION_DOMAIN = '_selection_domain_';
-export var VL_SELECTION_RESOLVE = 'vlSelectionResolve';
+export const STORE = '_store';
+export const TUPLE = '_tuple';
+export const MODIFY = '_modify';
+export const SELECTION_DOMAIN = '_selection_domain_';
+export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export function parseUnitSelection(model, selDefs) {
-    var selCmpts = {};
-    var selectionConfig = model.config.selection;
+    const selCmpts = {};
+    const selectionConfig = model.config.selection;
     if (selDefs) {
         selDefs = duplicate(selDefs); // duplicate to avoid side effects to original spec
     }
-    var _loop_1 = function (name_1) {
-        if (!selDefs.hasOwnProperty(name_1)) {
-            return "continue";
+    for (let name in selDefs) {
+        if (!selDefs.hasOwnProperty(name)) {
+            continue;
         }
-        var selDef = selDefs[name_1];
-        var cfg = selectionConfig[selDef.type];
+        const selDef = selDefs[name];
+        const cfg = selectionConfig[selDef.type];
         // Set default values from config if a property hasn't been specified,
         // or if it is true. E.g., "translate": true should use the default
         // event handlers for translate. However, true may be a valid value for
         // a property (e.g., "nearest": true).
-        for (var key in cfg) {
+        for (const key in cfg) {
             // A selection should contain either `encodings` or `fields`, only use
             // default values for these two values if neither of them is specified.
             if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
                 continue;
             }
             if (key === 'mark') {
-                selDef[key] = tslib_1.__assign({}, cfg[key], selDef[key]);
+                selDef[key] = Object.assign({}, cfg[key], selDef[key]);
             }
             if (selDef[key] === undefined || selDef[key] === true) {
                 selDef[key] = cfg[key] || selDef[key];
             }
         }
-        name_1 = varName(name_1);
-        var selCmpt = (selCmpts[name_1] = tslib_1.__assign({}, selDef, { name: name_1, events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on }));
-        forEachTransform(selCmpt, function (txCompiler) {
+        name = varName(name);
+        const selCmpt = (selCmpts[name] = Object.assign({}, selDef, { name: name, events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : selDef.on }));
+        forEachTransform(selCmpt, txCompiler => {
             if (txCompiler.parse) {
                 txCompiler.parse(model, selDef, selCmpt);
             }
         });
-    };
-    for (var name_1 in selDefs) {
-        _loop_1(name_1);
     }
     return selCmpts;
 }
 export function assembleUnitSelectionSignals(model, signals) {
-    forEachSelection(model, function (selCmpt, selCompiler) {
-        var name = selCmpt.name;
-        var modifyExpr = selCompiler.modifyExpr(model, selCmpt);
-        signals.push.apply(signals, selCompiler.signals(model, selCmpt));
-        forEachTransform(selCmpt, function (txCompiler) {
+    forEachSelection(model, (selCmpt, selCompiler) => {
+        const name = selCmpt.name;
+        let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
+        signals.push(...selCompiler.signals(model, selCmpt));
+        forEachTransform(selCmpt, txCompiler => {
             if (txCompiler.signals) {
                 signals = txCompiler.signals(model, selCmpt, signals);
             }
@@ -75,7 +71,7 @@ export function assembleUnitSelectionSignals(model, signals) {
             on: [
                 {
                     events: { signal: name + TUPLE },
-                    update: "modify(" + stringValue(selCmpt.name + STORE) + ", " + modifyExpr + ")"
+                    update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
                 }
             ]
         });
@@ -84,14 +80,14 @@ export function assembleUnitSelectionSignals(model, signals) {
 }
 export function assembleFacetSignals(model, signals) {
     if (model.component.selection && keys(model.component.selection).length) {
-        var name_2 = stringValue(model.getName('cell'));
+        const name = stringValue(model.getName('cell'));
         signals.unshift({
             name: 'facet',
             value: {},
             on: [
                 {
                     events: parseSelector('mousemove', 'scope'),
-                    update: "isTuple(facet) ? facet : group(" + name_2 + ").datum"
+                    update: `isTuple(facet) ? facet : group(${name}).datum`
                 }
             ]
         });
@@ -99,30 +95,30 @@ export function assembleFacetSignals(model, signals) {
     return signals;
 }
 export function assembleTopLevelSignals(model, signals) {
-    var hasSelections = false;
-    forEachSelection(model, function (selCmpt, selCompiler) {
-        var name = selCmpt.name;
-        var store = stringValue(name + STORE);
-        var hasSg = signals.filter(function (s) { return s.name === name; });
+    let hasSelections = false;
+    forEachSelection(model, (selCmpt, selCompiler) => {
+        const name = selCmpt.name;
+        const store = stringValue(name + STORE);
+        const hasSg = signals.filter(s => s.name === name);
         if (!hasSg.length) {
             signals.push({
                 name: selCmpt.name,
-                update: VL_SELECTION_RESOLVE + "(" + store +
-                    (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")")
+                update: `${VL_SELECTION_RESOLVE}(${store}` +
+                    (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
             });
         }
         hasSelections = true;
         if (selCompiler.topLevelSignals) {
             signals = selCompiler.topLevelSignals(model, selCmpt, signals);
         }
-        forEachTransform(selCmpt, function (txCompiler) {
+        forEachTransform(selCmpt, txCompiler => {
             if (txCompiler.topLevelSignals) {
                 signals = txCompiler.topLevelSignals(model, selCmpt, signals);
             }
         });
     });
     if (hasSelections) {
-        var hasUnit = signals.filter(function (s) { return s.name === 'unit'; });
+        const hasUnit = signals.filter(s => s.name === 'unit');
         if (!hasUnit.length) {
             signals.unshift({
                 name: 'unit',
@@ -134,8 +130,8 @@ export function assembleTopLevelSignals(model, signals) {
     return signals;
 }
 export function assembleUnitSelectionData(model, data) {
-    forEachSelection(model, function (selCmpt) {
-        var contains = data.filter(function (d) { return d.name === selCmpt.name + STORE; });
+    forEachSelection(model, selCmpt => {
+        const contains = data.filter(d => d.name === selCmpt.name + STORE);
         if (!contains.length) {
             data.push({ name: selCmpt.name + STORE });
         }
@@ -143,9 +139,9 @@ export function assembleUnitSelectionData(model, data) {
     return data;
 }
 export function assembleUnitSelectionMarks(model, marks) {
-    forEachSelection(model, function (selCmpt, selCompiler) {
+    forEachSelection(model, (selCmpt, selCompiler) => {
         marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
-        forEachTransform(selCmpt, function (txCompiler) {
+        forEachTransform(selCmpt, txCompiler => {
             if (txCompiler.marks) {
                 marks = txCompiler.marks(model, selCmpt, marks);
             }
@@ -154,8 +150,7 @@ export function assembleUnitSelectionMarks(model, marks) {
     return marks;
 }
 export function assembleLayerSelectionMarks(model, marks) {
-    for (var _i = 0, _a = model.children; _i < _a.length; _i++) {
-        var child = _a[_i];
+    for (const child of model.children) {
         if (isUnitModel(child)) {
             marks = assembleUnitSelectionMarks(child, marks);
         }
@@ -163,14 +158,14 @@ export function assembleLayerSelectionMarks(model, marks) {
     return marks;
 }
 export function selectionPredicate(model, selections, dfnode) {
-    var stores = [];
+    const stores = [];
     function expr(name) {
-        var vname = varName(name);
-        var selCmpt = model.getSelectionComponent(vname, name);
-        var store = stringValue(vname + STORE);
+        const vname = varName(name);
+        const selCmpt = model.getSelectionComponent(vname, name);
+        const store = stringValue(vname + STORE);
         if (selCmpt.timeUnit) {
-            var child = dfnode || model.component.data.raw;
-            var tunode = selCmpt.timeUnit.clone();
+            const child = dfnode || model.component.data.raw;
+            const tunode = selCmpt.timeUnit.clone();
             if (child.parent) {
                 tunode.insertAsParentOf(child);
             }
@@ -181,10 +176,10 @@ export function selectionPredicate(model, selections, dfnode) {
         if (selCmpt.empty !== 'none') {
             stores.push(store);
         }
-        return ("vlSelectionTest(" + store + ", datum" + (selCmpt.resolve === 'global' ? ')' : ", " + stringValue(selCmpt.resolve) + ")"));
+        return (`vlSelectionTest(${store}, datum` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`));
     }
-    var predicateStr = logicalExpr(selections, expr);
-    return ((stores.length ? '!(' + stores.map(function (s) { return "length(data(" + s + "))"; }).join(' || ') + ') || ' : '') + ("(" + predicateStr + ")"));
+    const predicateStr = logicalExpr(selections, expr);
+    return ((stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`);
 }
 // Selections are parsed _after_ scales. If a scale domain is set to
 // use a selection, the SELECTION_DOMAIN constant is used as the
@@ -196,11 +191,11 @@ export function isRawSelectionDomain(domainRaw) {
     return domainRaw.signal.indexOf(SELECTION_DOMAIN) >= 0;
 }
 export function selectionScaleDomain(model, domainRaw) {
-    var selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
-    var name = varName(selDomain.selection);
-    var encoding = selDomain.encoding;
-    var field = selDomain.field;
-    var selCmpt = model.component.selection && model.component.selection[name];
+    const selDomain = JSON.parse(domainRaw.signal.replace(SELECTION_DOMAIN, ''));
+    const name = varName(selDomain.selection);
+    const encoding = selDomain.encoding;
+    let field = selDomain.field;
+    let selCmpt = model.component.selection && model.component.selection[name];
     if (selCmpt) {
         warn('Use "bind": "scales" to setup a binding for scales and selections within the same view.');
     }
@@ -210,16 +205,16 @@ export function selectionScaleDomain(model, domainRaw) {
             field = selCmpt.project[0].field;
             if (selCmpt.project.length > 1) {
                 warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-                    ("Using \"field\": " + stringValue(field) + "."));
+                    `Using "field": ${stringValue(field)}.`);
             }
         }
         else if (encoding && !field) {
-            var encodings = selCmpt.project.filter(function (p) { return p.channel === encoding; });
+            const encodings = selCmpt.project.filter(p => p.channel === encoding);
             if (!encodings.length || encodings.length > 1) {
                 field = selCmpt.project[0].field;
                 warn((!encodings.length ? 'No ' : 'Multiple ') +
-                    ("matching " + stringValue(encoding) + " encoding found for selection " + stringValue(selDomain.selection) + ". ") +
-                    ("Using \"field\": " + stringValue(field) + "."));
+                    `matching ${stringValue(encoding)} encoding found for selection ${stringValue(selDomain.selection)}. ` +
+                    `Using "field": ${stringValue(field)}.`);
             }
             else {
                 field = encodings[0].field;
@@ -231,10 +226,10 @@ export function selectionScaleDomain(model, domainRaw) {
 }
 // Utility functions
 function forEachSelection(model, cb) {
-    var selections = model.component.selection;
-    for (var name_3 in selections) {
-        if (selections.hasOwnProperty(name_3)) {
-            var sel = selections[name_3];
+    const selections = model.component.selection;
+    for (const name in selections) {
+        if (selections.hasOwnProperty(name)) {
+            const sel = selections[name];
             cb(sel, compiler(sel.type));
         }
     }
@@ -251,7 +246,7 @@ function compiler(type) {
     return null;
 }
 function getFacetModel(model) {
-    var parent = model.parent;
+    let parent = model.parent;
     while (parent) {
         if (isFacetModel(parent)) {
             break;
@@ -261,42 +256,42 @@ function getFacetModel(model) {
     return parent;
 }
 export function unitName(model) {
-    var name = stringValue(model.name);
-    var facet = getFacetModel(model);
+    let name = stringValue(model.name);
+    const facet = getFacetModel(model);
     if (facet) {
         name +=
-            (facet.facet.row ? " + '_' + (" + accessPathWithDatum(facet.vgField('row'), 'facet') + ")" : '') +
-                (facet.facet.column ? " + '_' + (" + accessPathWithDatum(facet.vgField('column'), 'facet') + ")" : '');
+            (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '') +
+                (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
     }
     return name;
 }
 export function requiresSelectionId(model) {
-    var identifier = false;
-    forEachSelection(model, function (selCmpt) {
-        identifier = identifier || selCmpt.project.some(function (proj) { return proj.field === SELECTION_ID; });
+    let identifier = false;
+    forEachSelection(model, selCmpt => {
+        identifier = identifier || selCmpt.project.some(proj => proj.field === SELECTION_ID);
     });
     return identifier;
 }
 export function channelSignalName(selCmpt, channel, range) {
-    var sgNames = selCmpt._signalNames || (selCmpt._signalNames = {});
+    const sgNames = selCmpt._signalNames || (selCmpt._signalNames = {});
     if (sgNames[channel] && sgNames[channel][range]) {
         return sgNames[channel][range];
     }
     sgNames[channel] = sgNames[channel] || {};
-    var basename = varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
-    var name = basename;
-    var counter = 1;
+    const basename = varName(selCmpt.name + '_' + (range === 'visual' ? channel : selCmpt.fields[channel]));
+    let name = basename;
+    let counter = 1;
     while (sgNames[name]) {
-        name = basename + "_" + counter++;
+        name = `${basename}_${counter++}`;
     }
     return (sgNames[name] = sgNames[channel][range] = name);
 }
 export function positionalProjections(selCmpt) {
-    var x = null;
-    var xi = null;
-    var y = null;
-    var yi = null;
-    selCmpt.project.forEach(function (p, i) {
+    let x = null;
+    let xi = null;
+    let y = null;
+    let yi = null;
+    selCmpt.project.forEach((p, i) => {
         if (p.channel === X) {
             x = p;
             xi = i;
@@ -306,6 +301,6 @@ export function positionalProjections(selCmpt) {
             yi = i;
         }
     });
-    return { x: x, xi: xi, y: y, yi: yi };
+    return { x, xi, y, yi };
 }
 //# sourceMappingURL=selection.js.map

@@ -2,18 +2,17 @@ import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { isAggregateOp } from './aggregate';
 import { isBinning } from './bin';
-import { Channel, CHANNELS, isChannel, isNonPositionScaleChannel, supportMark } from './channel';
-import { binRequiresRange } from './compile/common';
-import { getFieldDef, getGuide, hasConditionalFieldDef, isConditionalDef, isFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './fielddef';
+import { Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark } from './channel';
+import { binRequiresRange, getFieldDef, getGuide, getTypedFieldDef, hasConditionalFieldDef, isConditionalDef, isFieldDef, isTypedFieldDef, isValueDef, normalize, normalizeFieldDef, title, vgField } from './fielddef';
 import * as log from './log';
 import { getDateTimeComponents } from './timeunit';
 import { Type } from './type';
 import { keys, some } from './util';
 export function channelHasField(encoding, channel) {
-    var channelDef = encoding && encoding[channel];
+    const channelDef = encoding && encoding[channel];
     if (channelDef) {
         if (isArray(channelDef)) {
-            return some(channelDef, function (fieldDef) { return !!fieldDef.field; });
+            return some(channelDef, fieldDef => !!fieldDef.field);
         }
         else {
             return isFieldDef(channelDef) || hasConditionalFieldDef(channelDef);
@@ -22,14 +21,14 @@ export function channelHasField(encoding, channel) {
     return false;
 }
 export function isAggregate(encoding) {
-    return some(CHANNELS, function (channel) {
+    return some(CHANNELS, channel => {
         if (channelHasField(encoding, channel)) {
-            var channelDef = encoding[channel];
+            const channelDef = encoding[channel];
             if (isArray(channelDef)) {
-                return some(channelDef, function (fieldDef) { return !!fieldDef.aggregate; });
+                return some(channelDef, fieldDef => !!fieldDef.aggregate);
             }
             else {
-                var fieldDef = getFieldDef(channelDef);
+                const fieldDef = getFieldDef(channelDef);
                 return fieldDef && !!fieldDef.aggregate;
             }
         }
@@ -37,73 +36,77 @@ export function isAggregate(encoding) {
     });
 }
 export function extractTransformsFromEncoding(oldEncoding, config) {
-    var groupby = [];
-    var bins = [];
-    var timeUnits = [];
-    var aggregate = [];
-    var encoding = {};
-    forEach(oldEncoding, function (channelDef, channel) {
+    const groupby = [];
+    const bins = [];
+    const timeUnits = [];
+    const aggregate = [];
+    const encoding = {};
+    forEach(oldEncoding, (channelDef, channel) => {
         // Extract potential embedded transformations along with remaining properties
-        var field = channelDef.field, aggOp = channelDef.aggregate, timeUnit = channelDef.timeUnit, bin = channelDef.bin, remaining = tslib_1.__rest(channelDef, ["field", "aggregate", "timeUnit", "bin"]);
-        if (isFieldDef(channelDef) && (aggOp || timeUnit || bin)) {
-            var guide = getGuide(channelDef);
-            var isTitleDefined = guide && guide.title;
-            var newField = vgField(channelDef, { forAs: true });
-            var newChannelDef = tslib_1.__assign({}, (isTitleDefined ? [] : { title: title(channelDef, config, { allowDisabling: true }) }), remaining, { 
-                // Always overwrite field
-                field: newField });
-            var isPositionChannel = channel === Channel.X || channel === Channel.Y;
-            if (aggOp && isAggregateOp(aggOp)) {
-                var aggregateEntry = {
-                    op: aggOp,
-                    as: newField
-                };
-                if (field) {
-                    aggregateEntry.field = field;
-                }
-                aggregate.push(aggregateEntry);
-            }
-            else if (isBinning(bin)) {
-                bins.push({ bin: bin, field: field, as: newField });
-                // Add additional groupbys for range and end of bins
-                groupby.push(vgField(channelDef, { binSuffix: 'end' }));
-                if (binRequiresRange(channelDef, channel)) {
-                    groupby.push(vgField(channelDef, { binSuffix: 'range' }));
-                }
-                // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
-                if (isPositionChannel) {
-                    var secondaryChannel = {
-                        field: newField + '_end',
-                        type: Type.QUANTITATIVE
+        if (isFieldDef(channelDef)) {
+            const { field, aggregate: aggOp, timeUnit, bin } = channelDef, remaining = tslib_1.__rest(channelDef, ["field", "aggregate", "timeUnit", "bin"]);
+            if (aggOp || timeUnit || bin) {
+                const guide = getGuide(channelDef);
+                const isTitleDefined = guide && guide.title;
+                const newField = vgField(channelDef, { forAs: true });
+                const newChannelDef = Object.assign({}, (isTitleDefined ? [] : { title: title(channelDef, config, { allowDisabling: true }) }), remaining, { 
+                    // Always overwrite field
+                    field: newField });
+                const isPositionChannel = channel === Channel.X || channel === Channel.Y;
+                if (aggOp && isAggregateOp(aggOp)) {
+                    const aggregateEntry = {
+                        op: aggOp,
+                        as: newField
                     };
-                    encoding[channel + '2'] = secondaryChannel;
+                    if (field) {
+                        aggregateEntry.field = field;
+                    }
+                    aggregate.push(aggregateEntry);
                 }
-                newChannelDef['bin'] = 'binned';
-                newChannelDef.type = Type.QUANTITATIVE;
+                else if (isTypedFieldDef(channelDef) && isBinning(bin)) {
+                    bins.push({ bin, field, as: newField });
+                    // Add additional groupbys for range and end of bins
+                    groupby.push(vgField(channelDef, { binSuffix: 'end' }));
+                    if (binRequiresRange(channelDef, channel)) {
+                        groupby.push(vgField(channelDef, { binSuffix: 'range' }));
+                    }
+                    // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
+                    if (isPositionChannel) {
+                        const secondaryChannel = {
+                            field: newField + '_end',
+                            type: Type.QUANTITATIVE
+                        };
+                        encoding[channel + '2'] = secondaryChannel;
+                    }
+                    newChannelDef['bin'] = 'binned';
+                    if (!isSecondaryRangeChannel(channel)) {
+                        newChannelDef['type'] = Type.QUANTITATIVE;
+                    }
+                }
+                else if (timeUnit) {
+                    timeUnits.push({ timeUnit, field, as: newField });
+                    // Add formatting to appropriate property based on the type of channel we're processing
+                    const format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
+                    if (isNonPositionScaleChannel(channel)) {
+                        newChannelDef['legend'] = Object.assign({ format }, newChannelDef['legend']);
+                    }
+                    else if (isPositionChannel) {
+                        newChannelDef['axis'] = Object.assign({ format }, newChannelDef['axis']);
+                    }
+                    else if (channel === 'text' || channel === 'tooltip') {
+                        newChannelDef['format'] = newChannelDef['format'] || format;
+                    }
+                }
+                if (!aggOp) {
+                    groupby.push(newField);
+                }
+                // now the field should refer to post-transformed field instead
+                encoding[channel] = newChannelDef;
             }
-            else if (timeUnit) {
-                timeUnits.push({ timeUnit: timeUnit, field: field, as: newField });
-                // Add formatting to appropriate property based on the type of channel we're processing
-                var format = getDateTimeComponents(timeUnit, config.axis.shortTimeLabels).join(' ');
-                if (isNonPositionScaleChannel(channel)) {
-                    newChannelDef['legend'] = tslib_1.__assign({ format: format }, newChannelDef['legend']);
-                }
-                else if (isPositionChannel) {
-                    newChannelDef['axis'] = tslib_1.__assign({ format: format }, newChannelDef['axis']);
-                }
-                else if (channel === 'text' || channel === 'tooltip') {
-                    newChannelDef['format'] = newChannelDef['format'] || format;
-                }
+            else {
+                groupby.push(field);
+                encoding[channel] = oldEncoding[channel];
             }
-            if (!aggOp) {
-                groupby.push(newField);
-            }
-            // now the field should refer to post-transformed field instead
-            encoding[channel] = newChannelDef;
-        }
-        else if (isFieldDef(channelDef)) {
-            groupby.push(field);
-            encoding[channel] = oldEncoding[channel];
         }
         else {
             // For value def, just copy
@@ -111,28 +114,46 @@ export function extractTransformsFromEncoding(oldEncoding, config) {
         }
     });
     return {
-        bins: bins,
-        timeUnits: timeUnits,
-        aggregate: aggregate,
-        groupby: groupby,
-        encoding: encoding
+        bins,
+        timeUnits,
+        aggregate,
+        groupby,
+        encoding
     };
 }
+export function markChannelCompatible(encoding, channel, mark) {
+    const markSupported = supportMark(channel, mark);
+    if (!markSupported) {
+        return false;
+    }
+    else if (markSupported === 'binned') {
+        const primaryFieldDef = encoding[channel === 'x2' ? 'x' : 'y'];
+        // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
+        // has "binned" data and thus need x2/y2 to specify the bin-end field.
+        if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && primaryFieldDef.bin === 'binned') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    return true;
+}
 export function normalizeEncoding(encoding, mark) {
-    return keys(encoding).reduce(function (normalizedEncoding, channel) {
+    return keys(encoding).reduce((normalizedEncoding, channel) => {
         if (!isChannel(channel)) {
             // Drop invalid channel
             log.warn(log.message.invalidEncodingChannel(channel));
             return normalizedEncoding;
         }
-        if (!supportMark(encoding, channel, mark)) {
+        if (!markChannelCompatible(encoding, channel, mark)) {
             // Drop unsupported channel
             log.warn(log.message.incompatibleChannel(channel, mark));
             return normalizedEncoding;
         }
         // Drop line's size if the field is aggregated.
         if (channel === 'size' && mark === 'line') {
-            var fieldDef = getFieldDef(encoding[channel]);
+            const fieldDef = getTypedFieldDef(encoding[channel]);
             if (fieldDef && fieldDef.aggregate) {
                 log.warn(log.message.LINE_WITH_VARYING_SIZE);
                 return normalizedEncoding;
@@ -143,13 +164,13 @@ export function normalizeEncoding(encoding, mark) {
             log.warn(log.message.droppingColor('encoding', { fill: 'fill' in encoding, stroke: 'stroke' in encoding }));
             return normalizedEncoding;
         }
-        var channelDef = encoding[channel];
+        const channelDef = encoding[channel];
         if (channel === 'detail' ||
             (channel === 'order' && !isArray(channelDef) && !isValueDef(channelDef)) ||
             (channel === 'tooltip' && isArray(channelDef))) {
             if (channelDef) {
                 // Array of fieldDefs for detail channel (or production rule)
-                normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(function (defs, fieldDef) {
+                normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce((defs, fieldDef) => {
                     if (!isFieldDef(fieldDef)) {
                         log.warn(log.message.emptyFieldDef(fieldDef, channel));
                     }
@@ -161,7 +182,11 @@ export function normalizeEncoding(encoding, mark) {
             }
         }
         else {
-            if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
+            if (channel === 'tooltip' && channelDef === null) {
+                // Preserve null so we can use it to disable tooltip
+                normalizedEncoding[channel] = null;
+            }
+            else if (!isFieldDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef)) {
                 log.warn(log.message.emptyFieldDef(channelDef, channel));
                 return normalizedEncoding;
             }
@@ -174,11 +199,11 @@ export function isRanged(encoding) {
     return encoding && ((!!encoding.x && !!encoding.x2) || (!!encoding.y && !!encoding.y2));
 }
 export function fieldDefs(encoding) {
-    var arr = [];
-    CHANNELS.forEach(function (channel) {
+    const arr = [];
+    for (const channel of keys(encoding)) {
         if (channelHasField(encoding, channel)) {
-            var channelDef = encoding[channel];
-            (isArray(channelDef) ? channelDef : [channelDef]).forEach(function (def) {
+            const channelDef = encoding[channel];
+            (isArray(channelDef) ? channelDef : [channelDef]).forEach(def => {
                 if (isFieldDef(def)) {
                     arr.push(def);
                 }
@@ -187,36 +212,32 @@ export function fieldDefs(encoding) {
                 }
             });
         }
-    });
+    }
     return arr;
 }
 export function forEach(mapping, f, thisArg) {
     if (!mapping) {
         return;
     }
-    var _loop_1 = function (channel) {
+    for (const channel of keys(mapping)) {
         if (isArray(mapping[channel])) {
-            mapping[channel].forEach(function (channelDef) {
+            mapping[channel].forEach((channelDef) => {
                 f.call(thisArg, channelDef, channel);
             });
         }
         else {
             f.call(thisArg, mapping[channel], channel);
         }
-    };
-    for (var _i = 0, _a = keys(mapping); _i < _a.length; _i++) {
-        var channel = _a[_i];
-        _loop_1(channel);
     }
 }
 export function reduce(mapping, f, init, thisArg) {
     if (!mapping) {
         return init;
     }
-    return keys(mapping).reduce(function (r, channel) {
-        var map = mapping[channel];
+    return keys(mapping).reduce((r, channel) => {
+        const map = mapping[channel];
         if (isArray(map)) {
-            return map.reduce(function (r1, channelDef) {
+            return map.reduce((r1, channelDef) => {
                 return f.call(thisArg, r1, channelDef, channel);
             }, r);
         }

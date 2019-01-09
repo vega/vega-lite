@@ -10,8 +10,8 @@ import * as util from '../../util';
  */
 // NOTE: CompassQL uses this method.
 export function scaleType(specifiedScale, channel, fieldDef, mark, scaleConfig) {
-    var defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
-    var type = specifiedScale.type;
+    const defaultScaleType = defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig);
+    const { type } = specifiedScale;
     if (!isScaleChannel(channel)) {
         // There is no scale for these channels
         return null;
@@ -59,7 +59,7 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
             return 'point';
         case 'temporal':
             if (isColorChannel(channel)) {
-                return 'sequential';
+                return 'time';
             }
             else if (rangeType(channel) === 'discrete') {
                 log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
@@ -72,7 +72,7 @@ function defaultType(channel, fieldDef, mark, specifiedScale, scaleConfig) {
                 if (isBinning(fieldDef.bin)) {
                     return 'bin-ordinal';
                 }
-                var _a = specifiedScale || {}, _b = _a.domain, domain = _b === void 0 ? undefined : _b, _c = _a.range, range = _c === void 0 ? undefined : _c;
+                const { domain = undefined, range = undefined } = specifiedScale || {};
                 if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
                     // If there are piecewise domain and range specified, use linear as default color scale as sequential does not support piecewise domain
                     return 'linear';

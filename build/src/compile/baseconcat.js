@@ -1,71 +1,62 @@
-import * as tslib_1 from "tslib";
 import { keys } from '../util';
 import { parseData } from './data/parse';
 import { assembleLayoutSignals } from './layoutsize/assemble';
 import { Model } from './model';
-var BaseConcatModel = /** @class */ (function (_super) {
-    tslib_1.__extends(BaseConcatModel, _super);
-    function BaseConcatModel(spec, parent, parentGivenName, config, repeater, resolve) {
-        return _super.call(this, spec, parent, parentGivenName, config, repeater, resolve) || this;
+export class BaseConcatModel extends Model {
+    constructor(spec, parent, parentGivenName, config, repeater, resolve) {
+        super(spec, parent, parentGivenName, config, repeater, resolve);
     }
-    BaseConcatModel.prototype.parseData = function () {
+    parseData() {
         this.component.data = parseData(this);
-        this.children.forEach(function (child) {
+        this.children.forEach(child => {
             child.parseData();
         });
-    };
-    BaseConcatModel.prototype.parseSelection = function () {
-        var _this = this;
+    }
+    parseSelection() {
         // Merge selections up the hierarchy so that they may be referenced
         // across unit specs. Persist their definitions within each child
         // to assemble signals which remain within output Vega unit groups.
         this.component.selection = {};
-        var _loop_1 = function (child) {
+        for (const child of this.children) {
             child.parseSelection();
-            keys(child.component.selection).forEach(function (key) {
-                _this.component.selection[key] = child.component.selection[key];
+            keys(child.component.selection).forEach(key => {
+                this.component.selection[key] = child.component.selection[key];
             });
-        };
-        for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
-            var child = _a[_i];
-            _loop_1(child);
         }
-    };
-    BaseConcatModel.prototype.parseMarkGroup = function () {
-        for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
-            var child = _a[_i];
+    }
+    parseMarkGroup() {
+        for (const child of this.children) {
             child.parseMarkGroup();
         }
-    };
-    BaseConcatModel.prototype.parseAxisAndHeader = function () {
-        for (var _i = 0, _a = this.children; _i < _a.length; _i++) {
-            var child = _a[_i];
+    }
+    parseAxisAndHeader() {
+        for (const child of this.children) {
             child.parseAxisAndHeader();
         }
         // TODO(#2415): support shared axes
-    };
-    BaseConcatModel.prototype.assembleSelectionTopLevelSignals = function (signals) {
-        return this.children.reduce(function (sg, child) { return child.assembleSelectionTopLevelSignals(sg); }, signals);
-    };
-    BaseConcatModel.prototype.assembleSelectionSignals = function () {
-        this.children.forEach(function (child) { return child.assembleSelectionSignals(); });
+    }
+    assembleSelectionTopLevelSignals(signals) {
+        return this.children.reduce((sg, child) => child.assembleSelectionTopLevelSignals(sg), signals);
+    }
+    assembleSelectionSignals() {
+        this.children.forEach(child => child.assembleSelectionSignals());
         return [];
-    };
-    BaseConcatModel.prototype.assembleLayoutSignals = function () {
-        return this.children.reduce(function (signals, child) {
+    }
+    assembleLayoutSignals() {
+        return this.children.reduce((signals, child) => {
             return signals.concat(child.assembleLayoutSignals());
         }, assembleLayoutSignals(this));
-    };
-    BaseConcatModel.prototype.assembleSelectionData = function (data) {
-        return this.children.reduce(function (db, child) { return child.assembleSelectionData(db); }, data);
-    };
-    BaseConcatModel.prototype.assembleMarks = function () {
+    }
+    assembleSelectionData(data) {
+        return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
+    }
+    assembleMarks() {
         // only children have marks
-        return this.children.map(function (child) {
-            var title = child.assembleTitle();
-            var style = child.assembleGroupStyle();
-            var layoutSizeEncodeEntry = child.assembleLayoutSize();
-            return tslib_1.__assign({ type: 'group', name: child.getName('group') }, (title ? { title: title } : {}), (style ? { style: style } : {}), (layoutSizeEncodeEntry
+        return this.children.map(child => {
+            const title = child.assembleTitle();
+            const style = child.assembleGroupStyle();
+            const layoutSizeEncodeEntry = child.assembleLayoutSize();
+            return Object.assign({ type: 'group', name: child.getName('group') }, (title ? { title } : {}), (style ? { style } : {}), (layoutSizeEncodeEntry
                 ? {
                     encode: {
                         update: layoutSizeEncodeEntry
@@ -73,8 +64,6 @@ var BaseConcatModel = /** @class */ (function (_super) {
                 }
                 : {}), child.assembleGroup());
         });
-    };
-    return BaseConcatModel;
-}(Model));
-export { BaseConcatModel };
+    }
+}
 //# sourceMappingURL=baseconcat.js.map

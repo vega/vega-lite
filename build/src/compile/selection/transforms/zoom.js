@@ -4,22 +4,22 @@ import { X, Y } from '../../../channel';
 import { BRUSH as INTERVAL_BRUSH } from '../interval';
 import { channelSignalName, positionalProjections } from '../selection';
 import { default as scalesCompiler, domain } from './scales';
-var ANCHOR = '_zoom_anchor';
-var DELTA = '_zoom_delta';
-var zoom = {
-    has: function (selCmpt) {
+const ANCHOR = '_zoom_anchor';
+const DELTA = '_zoom_delta';
+const zoom = {
+    has: selCmpt => {
         return selCmpt.type === 'interval' && selCmpt.zoom;
     },
-    signals: function (model, selCmpt, signals) {
-        var name = selCmpt.name;
-        var hasScales = scalesCompiler.has(selCmpt);
-        var delta = name + DELTA;
-        var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
-        var sx = stringValue(model.scaleName(X));
-        var sy = stringValue(model.scaleName(Y));
-        var events = parseSelector(selCmpt.zoom, 'scope');
+    signals: (model, selCmpt, signals) => {
+        const name = selCmpt.name;
+        const hasScales = scalesCompiler.has(selCmpt);
+        const delta = name + DELTA;
+        const { x, y } = positionalProjections(selCmpt);
+        const sx = stringValue(model.scaleName(X));
+        const sy = stringValue(model.scaleName(Y));
+        let events = parseSelector(selCmpt.zoom, 'scope');
         if (!hasScales) {
-            events = events.map(function (e) { return ((e.markname = name + INTERVAL_BRUSH), e); });
+            events = events.map(e => ((e.markname = name + INTERVAL_BRUSH), e));
         }
         signals.push({
             name: name + ANCHOR,
@@ -27,10 +27,10 @@ var zoom = {
                 {
                     events: events,
                     update: !hasScales
-                        ? "{x: x(unit), y: y(unit)}"
+                        ? `{x: x(unit), y: y(unit)}`
                         : '{' +
-                            [sx ? "x: invert(" + sx + ", x(unit))" : '', sy ? "y: invert(" + sy + ", y(unit))" : '']
-                                .filter(function (expr) { return !!expr; })
+                            [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
+                                .filter(expr => !!expr)
                                 .join(', ') +
                             '}'
                 }
@@ -56,30 +56,30 @@ var zoom = {
 };
 export default zoom;
 function onDelta(model, selCmpt, channel, size, signals) {
-    var name = selCmpt.name;
-    var hasScales = scalesCompiler.has(selCmpt);
-    var signal = signals.filter(function (s) {
+    const name = selCmpt.name;
+    const hasScales = scalesCompiler.has(selCmpt);
+    const signal = signals.filter(s => {
         return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
     })[0];
-    var sizeSg = model.getSizeSignalRef(size).signal;
-    var scaleCmpt = model.getScaleComponent(channel);
-    var scaleType = scaleCmpt.get('type');
-    var base = hasScales ? domain(model, channel) : signal.name;
-    var delta = name + DELTA;
-    var anchor = "" + name + ANCHOR + "." + channel;
-    var zoomFn = !hasScales
+    const sizeSg = model.getSizeSignalRef(size).signal;
+    const scaleCmpt = model.getScaleComponent(channel);
+    const scaleType = scaleCmpt.get('type');
+    const base = hasScales ? domain(model, channel) : signal.name;
+    const delta = name + DELTA;
+    const anchor = `${name}${ANCHOR}.${channel}`;
+    const zoomFn = !hasScales
         ? 'zoomLinear'
         : scaleType === 'log'
             ? 'zoomLog'
             : scaleType === 'pow'
                 ? 'zoomPow'
                 : 'zoomLinear';
-    var update = zoomFn + "(" + base + ", " + anchor + ", " + delta +
-        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') +
+    const update = `${zoomFn}(${base}, ${anchor}, ${delta}` +
+        (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
         ')';
     signal.on.push({
         events: { signal: delta },
-        update: hasScales ? update : "clampRange(" + update + ", 0, " + sizeSg + ")"
+        update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
     });
 }
 //# sourceMappingURL=zoom.js.map

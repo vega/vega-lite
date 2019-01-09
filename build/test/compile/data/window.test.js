@@ -2,9 +2,9 @@
 import { WindowTransformNode } from '../../../src/compile/data/window';
 import { makeWindowFromFacet } from '../../../src/compile/data/windowfacet';
 import { DataFlowNode } from './../../../src/compile/data/dataflow';
-describe('compile/data/window', function () {
-    it('creates correct window nodes for calculating sort field of crossed facet', function () {
-        var window = makeWindowFromFacet(null, {
+describe('compile/data/window', () => {
+    it('creates correct window nodes for calculating sort field of crossed facet', () => {
+        const window = makeWindowFromFacet(null, {
             row: { field: 'r', type: 'nominal' },
             column: { field: 'c', type: 'nominal', sort: { op: 'median', field: 'x' } }
         });
@@ -22,13 +22,13 @@ describe('compile/data/window', function () {
             }
         });
     });
-    it('does not create any window nodes for crossed facet', function () {
+    it('does not create any window nodes for crossed facet', () => {
         expect(makeWindowFromFacet(null, {
             row: { field: 'a', type: 'nominal' }
         })).toEqual(null);
     });
-    it('should return a proper vg transform', function () {
-        var transform = {
+    it('should return a proper vg transform', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -45,7 +45,7 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
+        const window = new WindowTransformNode(null, transform);
         expect(window.assemble()).toEqual({
             type: 'window',
             ops: ['row_number'],
@@ -61,8 +61,8 @@ describe('compile/data/window', function () {
             groupby: ['f']
         });
     });
-    it('should augment as with default as', function () {
-        var transform = {
+    it('should augment as with default as', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -79,7 +79,7 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
+        const window = new WindowTransformNode(null, transform);
         expect(window.assemble()).toEqual({
             type: 'window',
             ops: ['row_number'],
@@ -95,8 +95,8 @@ describe('compile/data/window', function () {
             groupby: ['f']
         });
     });
-    it('should return a proper produced fields', function () {
-        var transform = {
+    it('should return a proper produced fields', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -121,11 +121,11 @@ describe('compile/data/window', function () {
             groupby: ['g'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        expect(window.producedFields()).toEqual({ count_field: true, ordered_row_number: true, sum_field: true });
+        const window = new WindowTransformNode(null, transform);
+        expect(window.producedFields()).toEqual(new Set(['count_field', 'ordered_row_number', 'sum_field']));
     });
-    it('should generate the correct dependent fields', function () {
-        var transform = {
+    it('should generate the correct dependent fields', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -142,11 +142,11 @@ describe('compile/data/window', function () {
             groupby: ['g'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        expect(window.dependentFields()).toEqual({ g: true, f: true });
+        const window = new WindowTransformNode(null, transform);
+        expect(window.dependentFields()).toEqual(new Set(['g', 'f']));
     });
-    it('should clone to an equivalent version', function () {
-        var transform = {
+    it('should clone to an equivalent version', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -163,16 +163,16 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
+        const window = new WindowTransformNode(null, transform);
         expect(window).toEqual(window.clone());
     });
-    it('should never clone parent', function () {
-        var parent = new DataFlowNode(null);
-        var window = new WindowTransformNode(parent, null);
+    it('should never clone parent', () => {
+        const parent = new DataFlowNode(null);
+        const window = new WindowTransformNode(parent, null);
         expect(window.clone().parent).toBeNull();
     });
-    it('should generate the correct hash', function () {
-        var transform = {
+    it('should generate the correct hash', () => {
+        const transform = {
             window: [
                 {
                     op: 'row_number',
@@ -189,8 +189,8 @@ describe('compile/data/window', function () {
             groupby: ['f'],
             frame: [null, 0]
         };
-        var window = new WindowTransformNode(null, transform);
-        var hash = window.hash();
+        const window = new WindowTransformNode(null, transform);
+        const hash = window.hash();
         expect(hash).toBe('WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}');
     });
 });

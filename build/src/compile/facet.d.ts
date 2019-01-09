@@ -1,10 +1,11 @@
+import { NewSignal } from 'vega';
 import { Channel } from '../channel';
 import { Config } from '../config';
-import { FacetFieldDef, FacetMapping } from '../facet';
-import { FieldDef, FieldRefOption } from '../fielddef';
+import { FieldRefOption, TypedFieldDef } from '../fielddef';
 import { EncodingSortField } from '../sort';
 import { NormalizedFacetSpec } from '../spec';
-import { VgData, VgLayout, VgMarkGroup, VgSignal } from '../vega.schema';
+import { FacetFieldDef, FacetMapping } from '../spec/facet';
+import { VgData, VgLayout, VgMarkGroup } from '../vega.schema';
 import { Model, ModelWithField } from './model';
 import { RepeaterValue } from './repeater';
 export declare function facetSortFieldName(fieldDef: FacetFieldDef<string>, sort: EncodingSortField<string>, opt?: FieldRefOption): string;
@@ -16,7 +17,7 @@ export declare class FacetModel extends ModelWithField {
     constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, repeater: RepeaterValue, config: Config);
     private initFacet;
     channelHasField(channel: Channel): boolean;
-    fieldDef(channel: Channel): FieldDef<string>;
+    fieldDef(channel: Channel): TypedFieldDef<string>;
     parseData(): void;
     parseLayoutSize(): void;
     parseSelection(): void;
@@ -25,14 +26,14 @@ export declare class FacetModel extends ModelWithField {
     private parseHeader;
     private makeHeaderComponent;
     private mergeChildAxis;
-    assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
-    assembleSelectionSignals(): VgSignal[];
+    assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+    assembleSelectionSignals(): NewSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     private getHeaderLayoutMixins;
     protected assembleDefaultLayout(): VgLayout;
-    assembleLayoutSignals(): VgSignal[];
+    assembleLayoutSignals(): NewSignal[];
     private columnDistinctSignal;
-    assembleGroup(signals: VgSignal[]): any;
+    assembleGroup(signals: NewSignal[]): any;
     /**
      * Aggregate cardinality for calculating size
      */

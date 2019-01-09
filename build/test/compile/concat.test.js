@@ -1,10 +1,9 @@
-import { assert } from 'chai';
 import * as log from '../../src/log';
 import { parseConcatModel } from '../util';
-describe('Concat', function () {
-    describe('merge scale domains', function () {
-        it('should instantiate all children in vconcat', function () {
-            var model = parseConcatModel({
+describe('Concat', () => {
+    describe('merge scale domains', () => {
+        it('should instantiate all children in vconcat', () => {
+            const model = parseConcatModel({
                 vconcat: [
                     {
                         mark: 'point',
@@ -21,11 +20,11 @@ describe('Concat', function () {
                     }
                 ]
             });
-            assert.equal(model.children.length, 2);
-            assert(model.isVConcat);
+            expect(model.children).toHaveLength(2);
+            expect(model.isVConcat).toBeTruthy();
         });
-        it('should instantiate all children in hconcat', function () {
-            var model = parseConcatModel({
+        it('should instantiate all children in hconcat', () => {
+            const model = parseConcatModel({
                 hconcat: [
                     {
                         mark: 'point',
@@ -42,11 +41,11 @@ describe('Concat', function () {
                     }
                 ]
             });
-            assert.equal(model.children.length, 2);
-            assert(!model.isVConcat);
+            expect(model.children).toHaveLength(2);
+            expect(!model.isVConcat).toBeTruthy();
         });
-        it('should create correct layout for vconcat', function () {
-            var model = parseConcatModel({
+        it('should create correct layout for vconcat', () => {
+            const model = parseConcatModel({
                 vconcat: [
                     {
                         mark: 'point',
@@ -58,15 +57,15 @@ describe('Concat', function () {
                     }
                 ]
             });
-            assert.deepEqual(model.assembleLayout(), {
+            expect(model.assembleLayout()).toEqual({
                 padding: { row: 10, column: 10 },
                 columns: 1,
                 bounds: 'full',
                 align: 'each'
             });
         });
-        it('should create correct layout for hconcat', function () {
-            var model = parseConcatModel({
+        it('should create correct layout for hconcat', () => {
+            const model = parseConcatModel({
                 hconcat: [
                     {
                         mark: 'point',
@@ -78,15 +77,15 @@ describe('Concat', function () {
                     }
                 ]
             });
-            assert.deepEqual(model.assembleLayout(), {
+            expect(model.assembleLayout()).toEqual({
                 padding: { row: 10, column: 10 },
                 bounds: 'full',
                 align: 'each'
             });
         });
     });
-    describe('resolve', function () {
-        it('cannot share axes', log.wrap(function (localLogger) {
+    describe('resolve', () => {
+        it('cannot share axes', log.wrap(localLogger => {
             parseConcatModel({
                 hconcat: [],
                 resolve: {
@@ -95,7 +94,7 @@ describe('Concat', function () {
                     }
                 }
             });
-            assert.equal(localLogger.warns[0], log.message.CONCAT_CANNOT_SHARE_AXIS);
+            expect(localLogger.warns[0]).toEqual(log.message.CONCAT_CANNOT_SHARE_AXIS);
         }));
     });
 });

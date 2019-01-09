@@ -8,7 +8,7 @@ export var Type;
     Type.NOMINAL = 'nominal';
     Type.GEOJSON = 'geojson';
 })(Type || (Type = {}));
-export var TYPE_INDEX = {
+export const TYPE_INDEX = {
     quantitative: 1,
     ordinal: 1,
     temporal: 1,
@@ -18,11 +18,11 @@ export var TYPE_INDEX = {
 export function isType(t) {
     return !!TYPE_INDEX[t];
 }
-export var QUANTITATIVE = Type.QUANTITATIVE;
-export var ORDINAL = Type.ORDINAL;
-export var TEMPORAL = Type.TEMPORAL;
-export var NOMINAL = Type.NOMINAL;
-export var GEOJSON = Type.GEOJSON;
+export const QUANTITATIVE = Type.QUANTITATIVE;
+export const ORDINAL = Type.ORDINAL;
+export const TEMPORAL = Type.TEMPORAL;
+export const NOMINAL = Type.NOMINAL;
+export const GEOJSON = Type.GEOJSON;
 /**
  * Get full, lowercase type name for a given type.
  * @param  type

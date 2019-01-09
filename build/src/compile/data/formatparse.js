@@ -1,8 +1,8 @@
-import * as tslib_1 from "tslib";
-import { isNumber, isString, toSet } from 'vega-util';
+import { isNumber, isString } from 'vega-util';
 import { isMinMaxOp } from '../../aggregate';
+import { getMainRangeChannel } from '../../channel';
 import { isDateTime } from '../../datetime';
-import { isNumberFieldDef, isScaleFieldDef, isTimeFieldDef } from '../../fielddef';
+import { isNumberFieldDef, isScaleFieldDef, isTimeFieldDef, isTypedFieldDef } from '../../fielddef';
 import * as log from '../../log';
 import { forEachLeaf } from '../../logical';
 import { isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate } from '../../predicate';
@@ -16,66 +16,64 @@ import { DataFlowNode } from './dataflow';
  * @param parse What to parse the field as.
  */
 function parseExpression(field, parse) {
-    var f = accessPathWithDatum(field);
+    const f = accessPathWithDatum(field);
     if (parse === 'number') {
-        return "toNumber(" + f + ")";
+        return `toNumber(${f})`;
     }
     else if (parse === 'boolean') {
-        return "toBoolean(" + f + ")";
+        return `toBoolean(${f})`;
     }
     else if (parse === 'string') {
-        return "toString(" + f + ")";
+        return `toString(${f})`;
     }
     else if (parse === 'date') {
-        return "toDate(" + f + ")";
+        return `toDate(${f})`;
     }
     else if (parse === 'flatten') {
         return f;
     }
     else if (parse.indexOf('date:') === 0) {
-        var specifier = parse.slice(5, parse.length);
-        return "timeParse(" + f + "," + specifier + ")";
+        const specifier = parse.slice(5, parse.length);
+        return `timeParse(${f},${specifier})`;
     }
     else if (parse.indexOf('utc:') === 0) {
-        var specifier = parse.slice(4, parse.length);
-        return "utcParse(" + f + "," + specifier + ")";
+        const specifier = parse.slice(4, parse.length);
+        return `utcParse(${f},${specifier})`;
     }
     else {
         log.warn(log.message.unrecognizedParse(parse));
         return null;
     }
 }
-var ParseNode = /** @class */ (function (_super) {
-    tslib_1.__extends(ParseNode, _super);
-    function ParseNode(parent, parse) {
-        var _this = _super.call(this, parent) || this;
-        _this._parse = parse;
-        return _this;
-    }
-    ParseNode.prototype.clone = function () {
+export class ParseNode extends DataFlowNode {
+    clone() {
         return new ParseNode(null, duplicate(this._parse));
-    };
-    ParseNode.prototype.hash = function () {
-        return "Parse " + hash(this._parse);
-    };
+    }
+    constructor(parent, parse) {
+        super(parent);
+        this._parse = parse;
+    }
+    hash() {
+        return `Parse ${hash(this._parse)}`;
+    }
     /**
      * Creates a parse node from a data.format.parse and updates ancestorParse.
      */
-    ParseNode.makeExplicit = function (parent, model, ancestorParse) {
+    static makeExplicit(parent, model, ancestorParse) {
         // Custom parse
-        var explicit = {};
-        var data = model.data;
+        let explicit = {};
+        const data = model.data;
         if (data && data.format && data.format.parse) {
             explicit = data.format.parse;
         }
         return this.makeWithAncestors(parent, explicit, {}, ancestorParse);
-    };
-    ParseNode.makeImplicitFromFilterTransform = function (parent, transform, ancestorParse) {
-        var parse = {};
-        forEachLeaf(transform.filter, function (filter) {
+    }
+    static makeImplicitFromFilterTransform(parent, transform, ancestorParse) {
+        const parse = {};
+        forEachLeaf(transform.filter, filter => {
             if (isFieldPredicate(filter)) {
                 // Automatically add a parse node for filters with filter objects
-                var val = null;
+                let val = null;
                 // For EqualFilter, just use the equal property.
                 // For RangeFilter and OneOfFilter, all array members should have
                 // the same type, so we only use the first one.
@@ -108,48 +106,60 @@ var ParseNode = /** @class */ (function (_super) {
             return null;
         }
         return this.makeWithAncestors(parent, {}, parse, ancestorParse);
-    };
+    }
     /**
      * Creates a parse node for implicit parsing from a model and updates ancestorParse.
      */
-    ParseNode.makeImplicitFromEncoding = function (parent, model, ancestorParse) {
-        var implicit = {};
+    static makeImplicitFromEncoding(parent, model, ancestorParse) {
+        const implicit = {};
+        function add(fieldDef) {
+            if (isTimeFieldDef(fieldDef)) {
+                implicit[fieldDef.field] = 'date';
+            }
+            else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+                implicit[fieldDef.field] = 'number';
+            }
+            else if (accessPathDepth(fieldDef.field) > 1) {
+                // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
+                // (Parsing numbers / dates already flattens numeric and temporal fields.)
+                if (!(fieldDef.field in implicit)) {
+                    implicit[fieldDef.field] = 'flatten';
+                }
+            }
+            else if (isScaleFieldDef(fieldDef) && isSortField(fieldDef.sort) && accessPathDepth(fieldDef.sort.field) > 1) {
+                // Flatten fields that we sort by but that are not otherwise flattened.
+                if (!(fieldDef.sort.field in implicit)) {
+                    implicit[fieldDef.sort.field] = 'flatten';
+                }
+            }
+        }
         if (isUnitModel(model) || isFacetModel(model)) {
             // Parse encoded fields
-            model.forEachFieldDef(function (fieldDef) {
-                if (isTimeFieldDef(fieldDef)) {
-                    implicit[fieldDef.field] = 'date';
+            model.forEachFieldDef((fieldDef, channel) => {
+                if (isTypedFieldDef(fieldDef)) {
+                    add(fieldDef);
                 }
-                else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
-                    implicit[fieldDef.field] = 'number';
-                }
-                else if (accessPathDepth(fieldDef.field) > 1) {
-                    // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
-                    // (Parsing numbers / dates already flattens numeric and temporal fields.)
-                    if (!(fieldDef.field in implicit)) {
-                        implicit[fieldDef.field] = 'flatten';
+                else {
+                    const mainChannel = getMainRangeChannel(channel);
+                    if (mainChannel !== channel) {
+                        const mainFieldDef = model.fieldDef(mainChannel);
+                        add(Object.assign({}, fieldDef, { type: mainFieldDef.type }));
                     }
-                }
-                else if (isScaleFieldDef(fieldDef) &&
-                    isSortField(fieldDef.sort) &&
-                    accessPathDepth(fieldDef.sort.field) > 1) {
-                    // Flatten fields that we sort by but that are not otherwise flattened.
-                    if (!(fieldDef.sort.field in implicit)) {
-                        implicit[fieldDef.sort.field] = 'flatten';
+                    else {
+                        throw new Error(`Non-secondary channel ${channel} must have type in its field definition ${JSON.stringify(fieldDef)}`);
                     }
                 }
             });
         }
         return this.makeWithAncestors(parent, {}, implicit, ancestorParse);
-    };
+    }
     /**
      * Creates a parse node from "explicit" parse and "implicit" parse and updates ancestorParse.
      */
-    ParseNode.makeWithAncestors = function (parent, explicit, implicit, ancestorParse) {
+    static makeWithAncestors(parent, explicit, implicit, ancestorParse) {
         // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived"). We also don't need to flatten a field that has already been parsed.
-        for (var _i = 0, _a = keys(implicit); _i < _a.length; _i++) {
-            var field = _a[_i];
-            var parsedAs = ancestorParse.getWithExplicit(field);
+        for (const field of keys(implicit)) {
+            const parsedAs = ancestorParse.getWithExplicit(field);
             if (parsedAs.value !== undefined) {
                 // We always ignore derived fields even if they are implicitly defined because we expect users to create the right types.
                 if (parsedAs.explicit ||
@@ -163,9 +173,8 @@ var ParseNode = /** @class */ (function (_super) {
                 }
             }
         }
-        for (var _b = 0, _c = keys(explicit); _b < _c.length; _b++) {
-            var field = _c[_b];
-            var parsedAs = ancestorParse.get(field);
+        for (const field of keys(explicit)) {
+            const parsedAs = ancestorParse.get(field);
             if (parsedAs !== undefined) {
                 // Don't parse a field again if it has been parsed with the same type already.
                 if (parsedAs === explicit[field]) {
@@ -176,14 +185,13 @@ var ParseNode = /** @class */ (function (_super) {
                 }
             }
         }
-        var parse = new Split(explicit, implicit);
+        const parse = new Split(explicit, implicit);
         // add the format parse from this model so that children don't parse the same field again
         ancestorParse.copyAll(parse);
         // copy only non-null parses
-        var p = {};
-        for (var _d = 0, _e = keys(parse.combine()); _d < _e.length; _d++) {
-            var key = _e[_d];
-            var val = parse.get(key);
+        const p = {};
+        for (const key of keys(parse.combine())) {
+            const val = parse.get(key);
             if (val !== null) {
                 p[key] = val;
             }
@@ -192,59 +200,50 @@ var ParseNode = /** @class */ (function (_super) {
             return null;
         }
         return new ParseNode(parent, p);
-    };
-    Object.defineProperty(ParseNode.prototype, "parse", {
-        get: function () {
-            return this._parse;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ParseNode.prototype.merge = function (other) {
-        this._parse = tslib_1.__assign({}, this._parse, other.parse);
+    }
+    get parse() {
+        return this._parse;
+    }
+    merge(other) {
+        this._parse = Object.assign({}, this._parse, other.parse);
         other.remove();
-    };
+    }
     /**
      * Assemble an object for Vega's format.parse property.
      */
-    ParseNode.prototype.assembleFormatParse = function () {
-        var formatParse = {};
-        for (var _i = 0, _a = keys(this._parse); _i < _a.length; _i++) {
-            var field = _a[_i];
-            var p = this._parse[field];
+    assembleFormatParse() {
+        const formatParse = {};
+        for (const field of keys(this._parse)) {
+            const p = this._parse[field];
             if (accessPathDepth(field) === 1) {
                 formatParse[field] = p;
             }
         }
         return formatParse;
-    };
+    }
     // format parse depends and produces all fields in its parse
-    ParseNode.prototype.producedFields = function () {
-        return toSet(keys(this._parse));
-    };
-    ParseNode.prototype.dependentFields = function () {
-        return toSet(keys(this._parse));
-    };
-    ParseNode.prototype.assembleTransforms = function (onlyNested) {
-        var _this = this;
-        if (onlyNested === void 0) { onlyNested = false; }
+    producedFields() {
+        return new Set(keys(this._parse));
+    }
+    dependentFields() {
+        return new Set(keys(this._parse));
+    }
+    assembleTransforms(onlyNested = false) {
         return keys(this._parse)
-            .filter(function (field) { return (onlyNested ? accessPathDepth(field) > 1 : true); })
-            .map(function (field) {
-            var expr = parseExpression(field, _this._parse[field]);
+            .filter(field => (onlyNested ? accessPathDepth(field) > 1 : true))
+            .map(field => {
+            const expr = parseExpression(field, this._parse[field]);
             if (!expr) {
                 return null;
             }
-            var formula = {
+            const formula = {
                 type: 'formula',
-                expr: expr,
+                expr,
                 as: removePathFromField(field) // Vega output is always flattened
             };
             return formula;
         })
-            .filter(function (t) { return t !== null; });
-    };
-    return ParseNode;
-}(DataFlowNode));
-export { ParseNode };
+            .filter(t => t !== null);
+    }
+}
 //# sourceMappingURL=formatparse.js.map

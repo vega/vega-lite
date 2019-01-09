@@ -3,35 +3,35 @@ import { X, Y } from '../../../channel';
 import { BRUSH as INTERVAL_BRUSH } from '../interval';
 import { channelSignalName, positionalProjections } from '../selection';
 import scalesCompiler, { domain } from './scales';
-var ANCHOR = '_translate_anchor';
-var DELTA = '_translate_delta';
-var translate = {
-    has: function (selCmpt) {
+const ANCHOR = '_translate_anchor';
+const DELTA = '_translate_delta';
+const translate = {
+    has: selCmpt => {
         return selCmpt.type === 'interval' && selCmpt.translate;
     },
-    signals: function (model, selCmpt, signals) {
-        var name = selCmpt.name;
-        var hasScales = scalesCompiler.has(selCmpt);
-        var anchor = name + ANCHOR;
-        var _a = positionalProjections(selCmpt), x = _a.x, y = _a.y;
-        var events = parseSelector(selCmpt.translate, 'scope');
+    signals: (model, selCmpt, signals) => {
+        const name = selCmpt.name;
+        const hasScales = scalesCompiler.has(selCmpt);
+        const anchor = name + ANCHOR;
+        const { x, y } = positionalProjections(selCmpt);
+        let events = parseSelector(selCmpt.translate, 'scope');
         if (!hasScales) {
-            events = events.map(function (e) { return ((e.between[0].markname = name + INTERVAL_BRUSH), e); });
+            events = events.map(e => ((e.between[0].markname = name + INTERVAL_BRUSH), e));
         }
         signals.push({
             name: anchor,
             value: {},
             on: [
                 {
-                    events: events.map(function (e) { return e.between[0]; }),
+                    events: events.map(e => e.between[0]),
                     update: '{x: x(unit), y: y(unit)' +
                         (x !== null
                             ? ', extent_x: ' +
-                                (hasScales ? domain(model, X) : "slice(" + channelSignalName(selCmpt, 'x', 'visual') + ")")
+                                (hasScales ? domain(model, X) : `slice(${channelSignalName(selCmpt, 'x', 'visual')})`)
                             : '') +
                         (y !== null
                             ? ', extent_y: ' +
-                                (hasScales ? domain(model, Y) : "slice(" + channelSignalName(selCmpt, 'y', 'visual') + ")")
+                                (hasScales ? domain(model, Y) : `slice(${channelSignalName(selCmpt, 'y', 'visual')})`)
                             : '') +
                         '}'
                 }
@@ -42,7 +42,7 @@ var translate = {
             on: [
                 {
                     events: events,
-                    update: "{x: " + anchor + ".x - x(unit), y: " + anchor + ".y - y(unit)}"
+                    update: `{x: ${anchor}.x - x(unit), y: ${anchor}.y - y(unit)}`
                 }
             ]
         });
@@ -57,32 +57,32 @@ var translate = {
 };
 export default translate;
 function onDelta(model, selCmpt, channel, size, signals) {
-    var name = selCmpt.name;
-    var hasScales = scalesCompiler.has(selCmpt);
-    var signal = signals.filter(function (s) {
+    const name = selCmpt.name;
+    const hasScales = scalesCompiler.has(selCmpt);
+    const signal = signals.filter(s => {
         return s.name === channelSignalName(selCmpt, channel, hasScales ? 'data' : 'visual');
     })[0];
-    var anchor = name + ANCHOR;
-    var delta = name + DELTA;
-    var sizeSg = model.getSizeSignalRef(size).signal;
-    var scaleCmpt = model.getScaleComponent(channel);
-    var scaleType = scaleCmpt.get('type');
-    var sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
-    var extent = anchor + ".extent_" + channel;
-    var offset = "" + sign + delta + "." + channel + " / " + (hasScales ? "" + sizeSg : "span(" + extent + ")");
-    var panFn = !hasScales
+    const anchor = name + ANCHOR;
+    const delta = name + DELTA;
+    const sizeSg = model.getSizeSignalRef(size).signal;
+    const scaleCmpt = model.getScaleComponent(channel);
+    const scaleType = scaleCmpt.get('type');
+    const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
+    const extent = `${anchor}.extent_${channel}`;
+    const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
+    const panFn = !hasScales
         ? 'panLinear'
         : scaleType === 'log'
             ? 'panLog'
             : scaleType === 'pow'
                 ? 'panPow'
                 : 'panLinear';
-    var update = panFn + "(" + extent + ", " + offset +
-        (hasScales && scaleType === 'pow' ? ", " + (scaleCmpt.get('exponent') || 1) : '') +
+    const update = `${panFn}(${extent}, ${offset}` +
+        (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') || 1}` : '') +
         ')';
     signal.on.push({
         events: { signal: delta },
-        update: hasScales ? update : "clampRange(" + update + ", 0, " + sizeSg + ")"
+        update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
     });
 }
 //# sourceMappingURL=translate.js.map

@@ -1,5 +1,5 @@
 import { ScaleChannel } from '../../channel';
-import { FieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../fielddef';
 import { ScaleType } from '../../scale';
 import { EncodingSortField } from '../../sort';
 import { VgDomain, VgNonUnionDomain } from '../../vega.schema';
@@ -15,7 +15,7 @@ export declare function domainSort(model: UnitModel, channel: ScaleChannel, scal
  * 2. Aggregation function is not `count` or `sum`
  * 3. The scale is quantitative or time scale.
  */
-export declare function canUseUnaggregatedDomain(fieldDef: FieldDef<string>, scaleType: ScaleType): {
+export declare function canUseUnaggregatedDomain(fieldDef: TypedFieldDef<string>, scaleType: ScaleType): {
     valid: boolean;
     reason?: string;
 };

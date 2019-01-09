@@ -1,5 +1,5 @@
 import { DataSourceType } from '../../data';
-import { Dict, StringSet } from '../../util';
+import { Dict } from '../../util';
 /**
  * A node in the dataflow tree.
  */
@@ -20,8 +20,8 @@ export declare class DataFlowNode {
     /**
      * Set of fields that are being created by this node.
      */
-    producedFields(): StringSet;
-    dependentFields(): StringSet;
+    producedFields(): Set<string>;
+    dependentFields(): Set<string>;
     /**
     * Set the parent of the node and also add this not to the parent's children.
     */

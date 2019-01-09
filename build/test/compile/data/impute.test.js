@@ -1,19 +1,17 @@
-import { DataFlowNode } from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { ImputeNode } from '../../../src/compile/data/impute';
 import { parseUnitModelWithScale } from '../../util';
-describe('compile/data/impute', function () {
-    describe('Impute Transform', function () {
-        it('should return a proper vg transform', function () {
-            var transform = {
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
+describe('compile/data/impute', () => {
+    describe('Impute Transform', () => {
+        it('should return a proper vg transform', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 method: 'value',
                 value: 200
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.assemble(), [
+            const impute = new ImputeNode(null, transform);
+            expect(impute.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'y',
@@ -28,15 +26,15 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should use keyvals and mean correctly', function () {
-            var transform = {
+        it('should use keyvals and mean correctly', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 keyvals: [2, 3],
                 method: 'mean'
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.assemble(), [
+            const impute = new ImputeNode(null, transform);
+            expect(impute.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'y',
@@ -60,16 +58,16 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should handle every property correctly', function () {
-            var transform = {
+        it('should handle every property correctly', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 keyvals: [3, 5],
                 method: 'max',
                 groupby: ['a', 'b']
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.assemble(), [
+            const impute = new ImputeNode(null, transform);
+            expect(impute.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'y',
@@ -95,16 +93,16 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should handle sequence keyvals', function () {
-            var transform = {
+        it('should handle sequence keyvals', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 keyvals: { start: 3, stop: 5 },
                 method: 'max',
                 groupby: ['a', 'b']
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.assemble(), [
+            const impute = new ImputeNode(null, transform);
+            expect(impute.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'y',
@@ -130,16 +128,16 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should handle window correctly', function () {
-            var transform = {
+        it('should handle window correctly', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 method: 'max',
                 groupby: ['a', 'b'],
                 frame: [-2, 2]
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.assemble(), [
+            const impute = new ImputeNode(null, transform);
+            expect(impute.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'y',
@@ -164,20 +162,20 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should generate the correct hash', function () {
-            var transform = {
+        it('should generate the correct hash', () => {
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 method: 'value',
                 value: 200
             };
-            var impute = new ImputeNode(null, transform);
-            assert.deepEqual(impute.hash(), 'Impute {"impute":"y","key":"x","method":"value","value":200}');
+            const impute = new ImputeNode(null, transform);
+            expect(impute.hash()).toEqual('Impute {"impute":"y","key":"x","method":"value","value":200}');
         });
     });
-    describe('Impute Encoding', function () {
-        it('should work for value impute', function () {
-            var model = parseUnitModelWithScale({
+    describe('Impute Encoding', () => {
+        it('should work for value impute', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -185,8 +183,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -202,8 +200,8 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should work for falsy value impute', function () {
-            var model = parseUnitModelWithScale({
+        it('should work for falsy value impute', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -211,8 +209,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -228,8 +226,8 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should work for method impute', function () {
-            var model = parseUnitModelWithScale({
+        it('should work for method impute', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -237,8 +235,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -263,8 +261,8 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should handle sequence keyvals in encoding', function () {
-            var model = parseUnitModelWithScale({
+        it('should handle sequence keyvals in encoding', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -272,8 +270,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -299,8 +297,8 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should work when method and frame are specified', function () {
-            var model = parseUnitModelWithScale({
+        it('should work when method and frame are specified', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -308,8 +306,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -334,8 +332,8 @@ describe('compile/data/impute', function () {
                 }
             ]);
         });
-        it('should work when value and frame are specified', function () {
-            var model = parseUnitModelWithScale({
+        it('should work when value and frame are specified', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: { aggregate: 'sum', field: 'yield', type: 'quantitative' },
@@ -343,8 +341,8 @@ describe('compile/data/impute', function () {
                     color: { field: 'site', type: 'nominal' }
                 }
             });
-            var result = ImputeNode.makeFromEncoding(null, model);
-            assert.deepEqual(result.assemble(), [
+            const result = ImputeNode.makeFromEncoding(null, model);
+            expect(result.assemble()).toEqual([
                 {
                     type: 'impute',
                     field: 'variety',
@@ -361,17 +359,17 @@ describe('compile/data/impute', function () {
             ]);
         });
     });
-    describe('clone', function () {
-        it('should never clone parent', function () {
-            var parent = new DataFlowNode(null);
-            var transform = {
+    describe('clone', () => {
+        it('should never clone parent', () => {
+            const parent = new DataFlowNode(null);
+            const transform = {
                 impute: 'y',
                 key: 'x',
                 method: 'max',
                 groupby: ['a', 'b'],
                 frame: [-2, 2]
             };
-            var impute = new ImputeNode(parent, transform);
+            const impute = new ImputeNode(parent, transform);
             expect(impute.clone().parent).toBeNull();
         });
     });

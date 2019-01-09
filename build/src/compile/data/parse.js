@@ -1,8 +1,7 @@
-import * as tslib_1 from "tslib";
 import { isInlineData, isNamedData, isUrlData, MAIN, RAW } from '../../data';
 import * as log from '../../log';
 import { isAggregate, isBin, isCalculate, isFilter, isFlatten, isFold, isImpute, isLookup, isSample, isStack, isTimeUnit, isWindow } from '../../transform';
-import { deepEqual, keys, mergeDeep } from '../../util';
+import { deepEqual, mergeDeep } from '../../util';
 import { isFacetModel, isLayerModel, isUnitModel } from '../model';
 import { requiresSelectionId } from '../selection/selection';
 import { AggregateNode } from './aggregate';
@@ -27,12 +26,11 @@ import { TimeUnitNode } from './timeunit';
 import { WindowTransformNode } from './window';
 import { makeWindowFromFacet } from './windowfacet';
 export function findSource(data, sources) {
-    for (var _i = 0, sources_1 = sources; _i < sources_1.length; _i++) {
-        var other = sources_1[_i];
-        var otherData = other.data;
+    for (const other of sources) {
+        const otherData = other.data;
         if (isInlineData(data) && isInlineData(otherData)) {
-            var srcVals = data.values;
-            var otherVals = otherData.values;
+            const srcVals = data.values;
+            const otherVals = otherData.values;
             if (deepEqual(srcVals, otherVals)) {
                 return other;
             }
@@ -53,13 +51,13 @@ export function findSource(data, sources) {
 function parseRoot(model, sources) {
     if (model.data || !model.parent) {
         // if the model defines a data source or is the root, create a source node
-        var existingSource = findSource(model.data, sources);
+        const existingSource = findSource(model.data, sources);
         if (existingSource) {
             existingSource.data.format = mergeDeep({}, model.data.format, existingSource.data.format);
             return existingSource;
         }
         else {
-            var source = new SourceNode(model.data);
+            const source = new SourceNode(model.data);
             sources.push(source);
             return source;
         }
@@ -75,11 +73,10 @@ function parseRoot(model, sources) {
  * Parses a transforms array into a chain of connected dataflow nodes.
  */
 export function parseTransformArray(head, model, ancestorParse) {
-    var lookupCounter = 0;
-    model.transforms.forEach(function (t) {
-        var _a;
-        var derivedType = undefined;
-        var transformNode;
+    let lookupCounter = 0;
+    for (const t of model.transforms) {
+        let derivedType = undefined;
+        let transformNode;
         if (isCalculate(t)) {
             transformNode = head = new CalculateNode(head, t);
             derivedType = 'derived';
@@ -96,9 +93,9 @@ export function parseTransformArray(head, model, ancestorParse) {
             transformNode = head = TimeUnitNode.makeFromTransform(head, t);
             derivedType = 'date';
             // Create parse node because the input to time unit is always date.
-            var parsedAs = ancestorParse.getWithExplicit(t.field);
+            const parsedAs = ancestorParse.getWithExplicit(t.field);
             if (parsedAs.value === undefined) {
-                head = new ParseNode(head, (_a = {}, _a[t.field] = derivedType, _a));
+                head = new ParseNode(head, { [t.field]: derivedType });
                 ancestorParse.set(t.field, derivedType, false);
             }
         }
@@ -138,15 +135,14 @@ export function parseTransformArray(head, model, ancestorParse) {
         }
         else {
             log.warn(log.message.invalidTransformIgnored(t));
-            return;
+            continue;
         }
         if (transformNode && derivedType !== undefined) {
-            for (var _i = 0, _b = keys(transformNode.producedFields()); _i < _b.length; _i++) {
-                var field = _b[_i];
+            for (const field of transformNode.producedFields()) {
                 ancestorParse.set(field, derivedType, false);
             }
         }
-    });
+    }
     return head;
 }
 /*
@@ -204,9 +200,9 @@ Formula From Sort Array
   ...Child data...
 */
 export function parseData(model) {
-    var head = parseRoot(model, model.component.data.sources);
-    var _a = model.component.data, outputNodes = _a.outputNodes, outputNodeRefCounts = _a.outputNodeRefCounts;
-    var ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
+    let head = parseRoot(model, model.component.data.sources);
+    const { outputNodes, outputNodeRefCounts } = model.component.data;
+    const ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
     // format.parse: null means disable parsing
     if (model.data && model.data.format && model.data.format.parse === null) {
         ancestorParse.parseNothing = true;
@@ -223,7 +219,7 @@ export function parseData(model) {
     }
     // HACK: This is equivalent for merging bin extent for union scale.
     // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
-    var parentIsLayer = model.parent && isLayerModel(model.parent);
+    const parentIsLayer = model.parent && isLayerModel(model.parent);
     if (isUnitModel(model) || isFacetModel(model)) {
         if (parentIsLayer) {
             head = BinNode.makeFromEncoding(head, model) || head;
@@ -245,12 +241,12 @@ export function parseData(model) {
         head = CalculateNode.parseAllForSortIndex(head, model);
     }
     // add an output node pre aggregation
-    var rawName = model.getName(RAW);
-    var raw = new OutputNode(head, rawName, RAW, outputNodeRefCounts);
+    const rawName = model.getName(RAW);
+    const raw = new OutputNode(head, rawName, RAW, outputNodeRefCounts);
     outputNodes[rawName] = raw;
     head = raw;
     if (isUnitModel(model)) {
-        var agg = AggregateNode.makeFromEncoding(head, model);
+        const agg = AggregateNode.makeFromEncoding(head, model);
         if (agg) {
             head = agg;
             if (requiresSelectionId(model)) {
@@ -261,14 +257,14 @@ export function parseData(model) {
         head = StackNode.makeFromEncoding(head, model) || head;
     }
     // output node for marks
-    var mainName = model.getName(MAIN);
-    var main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
+    const mainName = model.getName(MAIN);
+    const main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
     outputNodes[mainName] = main;
     head = main;
     // add facet marker
-    var facetRoot = null;
+    let facetRoot = null;
     if (isFacetModel(model)) {
-        var facetName = model.getName('facet');
+        const facetName = model.getName('facet');
         // Derive new sort index field for facet's sort array
         head = CalculateNode.parseAllForSortIndex(head, model);
         // Derive new aggregate (via window) for facet's sort field
@@ -279,11 +275,11 @@ export function parseData(model) {
         outputNodes[facetName] = facetRoot;
         head = facetRoot;
     }
-    return tslib_1.__assign({}, model.component.data, { outputNodes: outputNodes,
-        outputNodeRefCounts: outputNodeRefCounts,
-        raw: raw,
-        main: main,
-        facetRoot: facetRoot,
-        ancestorParse: ancestorParse });
+    return Object.assign({}, model.component.data, { outputNodes,
+        outputNodeRefCounts,
+        raw,
+        main,
+        facetRoot,
+        ancestorParse });
 }
 //# sourceMappingURL=parse.js.map

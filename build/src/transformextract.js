@@ -25,33 +25,38 @@ export function extractTransforms(spec, config) {
 }
 function extractTransformsUnit(spec, config) {
     if (spec.encoding) {
-        var oldEncoding = spec.encoding, oldTransforms = spec.transform, rest = tslib_1.__rest(spec, ["encoding", "transform"]);
-        var _a = extractTransformsFromEncoding(oldEncoding, config), bins = _a.bins, timeUnits = _a.timeUnits, aggregate = _a.aggregate, groupby = _a.groupby, newEncoding = _a.encoding;
-        return tslib_1.__assign({ transform: (oldTransforms ? oldTransforms : []).concat(bins, timeUnits, (!aggregate.length ? [] : [{ aggregate: aggregate, groupby: groupby }])) }, rest, { encoding: newEncoding });
+        const { encoding: oldEncoding, transform: oldTransforms } = spec, rest = tslib_1.__rest(spec, ["encoding", "transform"]);
+        const { bins, timeUnits, aggregate, groupby, encoding: newEncoding } = extractTransformsFromEncoding(oldEncoding, config);
+        return Object.assign({ transform: [
+                ...(oldTransforms ? oldTransforms : []),
+                ...bins,
+                ...timeUnits,
+                ...(!aggregate.length ? [] : [{ aggregate, groupby }])
+            ] }, rest, { encoding: newEncoding });
     }
     else {
         return spec;
     }
 }
 function extractTransformsSingle(spec, config) {
-    var subspec = spec.spec, rest = tslib_1.__rest(spec, ["spec"]);
-    return tslib_1.__assign({}, rest, { spec: extractTransforms(subspec, config) });
+    const { spec: subspec } = spec, rest = tslib_1.__rest(spec, ["spec"]);
+    return Object.assign({}, rest, { spec: extractTransforms(subspec, config) });
 }
 function extractTransformsLayered(spec, config) {
-    var layer = spec.layer, rest = tslib_1.__rest(spec, ["layer"]);
-    return tslib_1.__assign({}, rest, { layer: layer.map(function (subspec) {
+    const { layer } = spec, rest = tslib_1.__rest(spec, ["layer"]);
+    return Object.assign({}, rest, { layer: layer.map(subspec => {
             return extractTransforms(subspec, config);
         }) });
 }
 function extractTransformsVConcat(spec, config) {
-    var vconcat = spec.vconcat, rest = tslib_1.__rest(spec, ["vconcat"]);
-    return tslib_1.__assign({}, rest, { vconcat: vconcat.map(function (subspec) {
+    const { vconcat } = spec, rest = tslib_1.__rest(spec, ["vconcat"]);
+    return Object.assign({}, rest, { vconcat: vconcat.map(subspec => {
             return extractTransforms(subspec, config);
         }) });
 }
 function extractTransformsHConcat(spec, config) {
-    var hconcat = spec.hconcat, rest = tslib_1.__rest(spec, ["hconcat"]);
-    return tslib_1.__assign({}, rest, { hconcat: hconcat.map(function (subspec) {
+    const { hconcat } = spec, rest = tslib_1.__rest(spec, ["hconcat"]);
+    return Object.assign({}, rest, { hconcat: hconcat.map(subspec => {
             return extractTransforms(subspec, config);
         }) });
 }

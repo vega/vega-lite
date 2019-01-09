@@ -1,6 +1,6 @@
 import { Encoding } from '../encoding';
-import { FacetMapping } from '../facet';
 import { Field } from '../fielddef';
+import { FacetMapping } from '../spec/facet';
 export interface RepeaterValue {
     row?: string;
     column?: string;

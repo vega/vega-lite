@@ -3,10 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 import * as tslib_1 from "tslib";
-import { isBinned } from './bin';
-import { isFieldDef } from './fielddef';
-import { CIRCLE, POINT, SQUARE, TICK } from './mark';
-import { contains, flagKeys } from './util';
+import { flagKeys } from './util';
 export var Channel;
 (function (Channel) {
     // Facet
@@ -44,43 +41,43 @@ export var Channel;
     Channel.TOOLTIP = 'tooltip';
     Channel.HREF = 'href';
 })(Channel || (Channel = {}));
-export var X = Channel.X;
-export var Y = Channel.Y;
-export var X2 = Channel.X2;
-export var Y2 = Channel.Y2;
-export var XERROR = Channel.XERROR;
-export var YERROR = Channel.YERROR;
-export var XERROR2 = Channel.XERROR2;
-export var YERROR2 = Channel.YERROR2;
-export var LATITUDE = Channel.LATITUDE;
-export var LATITUDE2 = Channel.LATITUDE2;
-export var LONGITUDE = Channel.LONGITUDE;
-export var LONGITUDE2 = Channel.LONGITUDE2;
-export var ROW = Channel.ROW;
-export var COLUMN = Channel.COLUMN;
-export var SHAPE = Channel.SHAPE;
-export var SIZE = Channel.SIZE;
-export var COLOR = Channel.COLOR;
-export var FILL = Channel.FILL;
-export var STROKE = Channel.STROKE;
-export var TEXT = Channel.TEXT;
-export var DETAIL = Channel.DETAIL;
-export var KEY = Channel.KEY;
-export var ORDER = Channel.ORDER;
-export var OPACITY = Channel.OPACITY;
-export var FILLOPACITY = Channel.FILLOPACITY;
-export var STROKEOPACITY = Channel.STROKEOPACITY;
-export var STROKEWIDTH = Channel.STROKEWIDTH;
-export var TOOLTIP = Channel.TOOLTIP;
-export var HREF = Channel.HREF;
-export var GEOPOSITION_CHANNEL_INDEX = {
+export const X = Channel.X;
+export const Y = Channel.Y;
+export const X2 = Channel.X2;
+export const Y2 = Channel.Y2;
+export const XERROR = Channel.XERROR;
+export const YERROR = Channel.YERROR;
+export const XERROR2 = Channel.XERROR2;
+export const YERROR2 = Channel.YERROR2;
+export const LATITUDE = Channel.LATITUDE;
+export const LATITUDE2 = Channel.LATITUDE2;
+export const LONGITUDE = Channel.LONGITUDE;
+export const LONGITUDE2 = Channel.LONGITUDE2;
+export const ROW = Channel.ROW;
+export const COLUMN = Channel.COLUMN;
+export const SHAPE = Channel.SHAPE;
+export const SIZE = Channel.SIZE;
+export const COLOR = Channel.COLOR;
+export const FILL = Channel.FILL;
+export const STROKE = Channel.STROKE;
+export const TEXT = Channel.TEXT;
+export const DETAIL = Channel.DETAIL;
+export const KEY = Channel.KEY;
+export const ORDER = Channel.ORDER;
+export const OPACITY = Channel.OPACITY;
+export const FILLOPACITY = Channel.FILLOPACITY;
+export const STROKEOPACITY = Channel.STROKEOPACITY;
+export const STROKEWIDTH = Channel.STROKEWIDTH;
+export const TOOLTIP = Channel.TOOLTIP;
+export const HREF = Channel.HREF;
+export const GEOPOSITION_CHANNEL_INDEX = {
     longitude: 1,
     longitude2: 1,
     latitude: 1,
     latitude2: 1
 };
-export var GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
-var UNIT_CHANNEL_INDEX = tslib_1.__assign({ 
+export const GEOPOSITION_CHANNELS = flagKeys(GEOPOSITION_CHANNEL_INDEX);
+const UNIT_CHANNEL_INDEX = Object.assign({ 
     // position
     x: 1, y: 1, x2: 1, y2: 1, xError: 1, yError: 1, xError2: 1, yError2: 1 }, GEOPOSITION_CHANNEL_INDEX, { 
     // color
@@ -92,13 +89,13 @@ var UNIT_CHANNEL_INDEX = tslib_1.__assign({
 export function isColorChannel(channel) {
     return channel === 'color' || channel === 'fill' || channel === 'stroke';
 }
-var FACET_CHANNEL_INDEX = {
+const FACET_CHANNEL_INDEX = {
     row: 1,
     column: 1
 };
-var CHANNEL_INDEX = tslib_1.__assign({}, UNIT_CHANNEL_INDEX, FACET_CHANNEL_INDEX);
-export var CHANNELS = flagKeys(CHANNEL_INDEX);
-var _o = CHANNEL_INDEX.order, _d = CHANNEL_INDEX.detail, SINGLE_DEF_CHANNEL_INDEX = tslib_1.__rest(CHANNEL_INDEX, ["order", "detail"]);
+const CHANNEL_INDEX = Object.assign({}, UNIT_CHANNEL_INDEX, FACET_CHANNEL_INDEX);
+export const CHANNELS = flagKeys(CHANNEL_INDEX);
+const { order: _o, detail: _d } = CHANNEL_INDEX, SINGLE_DEF_CHANNEL_INDEX = tslib_1.__rest(CHANNEL_INDEX, ["order", "detail"]);
 /**
  * Channels that cannot have an array of channelDef.
  * model.fieldDef, getFieldDef only work for these channels.
@@ -107,38 +104,55 @@ var _o = CHANNEL_INDEX.order, _d = CHANNEL_INDEX.detail, SINGLE_DEF_CHANNEL_INDE
  * Since there can be multiple fieldDefs for detail and order, getFieldDef/model.fieldDef
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
-export var SINGLE_DEF_CHANNELS = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
+export const SINGLE_DEF_CHANNELS = flagKeys(SINGLE_DEF_CHANNEL_INDEX);
 export function isChannel(str) {
     return !!CHANNEL_INDEX[str];
 }
+export function isSecondaryRangeChannel(c) {
+    const main = getMainRangeChannel(c);
+    return main !== c;
+}
+export function getMainRangeChannel(channel) {
+    switch (channel) {
+        case 'x2':
+            return 'x';
+        case 'y2':
+            return 'y';
+        case 'latitude2':
+            return 'latitude';
+        case 'longitude2':
+            return 'longitude';
+    }
+    return channel;
+}
 // CHANNELS without COLUMN, ROW
-export var UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
+export const UNIT_CHANNELS = flagKeys(UNIT_CHANNEL_INDEX);
 // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
-var _x = UNIT_CHANNEL_INDEX.x, _y = UNIT_CHANNEL_INDEX.y, 
+const { x: _x, y: _y, 
 // x2 and y2 share the same scale as x and y
-_x2 = UNIT_CHANNEL_INDEX.x2, _y2 = UNIT_CHANNEL_INDEX.y2, _xError = UNIT_CHANNEL_INDEX.xError, _yError = UNIT_CHANNEL_INDEX.yError, _xError2 = UNIT_CHANNEL_INDEX.xError2, _yError2 = UNIT_CHANNEL_INDEX.yError2, _latitude = UNIT_CHANNEL_INDEX.latitude, _longitude = UNIT_CHANNEL_INDEX.longitude, _latitude2 = UNIT_CHANNEL_INDEX.latitude2, _longitude2 = UNIT_CHANNEL_INDEX.longitude2, 
+x2: _x2, y2: _y2, xError: _xError, yError: _yError, xError2: _xError2, yError2: _yError2, latitude: _latitude, longitude: _longitude, latitude2: _latitude2, longitude2: _longitude2 } = UNIT_CHANNEL_INDEX, 
 // The rest of unit channels then have scale
 NONPOSITION_CHANNEL_INDEX = tslib_1.__rest(UNIT_CHANNEL_INDEX, ["x", "y", "x2", "y2", "xError", "yError", "xError2", "yError2", "latitude", "longitude", "latitude2", "longitude2"]);
-export var NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
+export const NONPOSITION_CHANNELS = flagKeys(NONPOSITION_CHANNEL_INDEX);
 // POSITION_SCALE_CHANNELS = X and Y;
-var POSITION_SCALE_CHANNEL_INDEX = { x: 1, y: 1 };
-export var POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
+const POSITION_SCALE_CHANNEL_INDEX = { x: 1, y: 1 };
+export const POSITION_SCALE_CHANNELS = flagKeys(POSITION_SCALE_CHANNEL_INDEX);
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
-var 
+const { 
 // x2 and y2 share the same scale as x and y
 // text and tooltip have format instead of scale,
 // href has neither format, nor scale
-_t = NONPOSITION_CHANNEL_INDEX.text, _tt = NONPOSITION_CHANNEL_INDEX.tooltip, _hr = NONPOSITION_CHANNEL_INDEX.href, 
+text: _t, tooltip: _tt, href: _hr, 
 // detail and order have no scale
-_dd = NONPOSITION_CHANNEL_INDEX.detail, _k = NONPOSITION_CHANNEL_INDEX.key, _oo = NONPOSITION_CHANNEL_INDEX.order, NONPOSITION_SCALE_CHANNEL_INDEX = tslib_1.__rest(NONPOSITION_CHANNEL_INDEX, ["text", "tooltip", "href", "detail", "key", "order"]);
-export var NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
+detail: _dd, key: _k, order: _oo } = NONPOSITION_CHANNEL_INDEX, NONPOSITION_SCALE_CHANNEL_INDEX = tslib_1.__rest(NONPOSITION_CHANNEL_INDEX, ["text", "tooltip", "href", "detail", "key", "order"]);
+export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export function isNonPositionScaleChannel(channel) {
     return !!NONPOSITION_CHANNEL_INDEX[channel];
 }
 // Declare SCALE_CHANNEL_INDEX
-var SCALE_CHANNEL_INDEX = tslib_1.__assign({}, POSITION_SCALE_CHANNEL_INDEX, NONPOSITION_SCALE_CHANNEL_INDEX);
+const SCALE_CHANNEL_INDEX = Object.assign({}, POSITION_SCALE_CHANNEL_INDEX, NONPOSITION_SCALE_CHANNEL_INDEX);
 /** List of channels with scales */
-export var SCALE_CHANNELS = flagKeys(SCALE_CHANNEL_INDEX);
+export const SCALE_CHANNELS = flagKeys(SCALE_CHANNEL_INDEX);
 export function isScaleChannel(channel) {
     return !!SCALE_CHANNEL_INDEX[channel];
 }
@@ -148,28 +162,15 @@ export function isScaleChannel(channel) {
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(encoding, channel, mark) {
-    if (contains([CIRCLE, POINT, SQUARE, TICK], mark) && contains([X2, Y2], channel)) {
-        var primaryFieldDef = encoding[channel === X2 ? X : Y];
-        // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
-        // has "binned" data and thus need x2/y2 to specify the bin-end field.
-        if (isFieldDef(primaryFieldDef) && isFieldDef(encoding[channel]) && isBinned(primaryFieldDef.bin)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    else {
-        return mark in getSupportedMark(channel);
-    }
+export function supportMark(channel, mark) {
+    return getSupportedMark(channel)[mark];
 }
 /**
  * Return a dictionary showing whether a channel supports mark type.
  * @param channel
- * @return A dictionary mapping mark types to boolean values.
+ * @return A dictionary mapping mark types to 'always', 'binned', or undefined
  */
-export function getSupportedMark(channel) {
+function getSupportedMark(channel) {
     switch (channel) {
         case COLOR:
         case FILL:
@@ -187,18 +188,18 @@ export function getSupportedMark(channel) {
         case COLUMN:
             return {
                 // all marks
-                point: true,
-                tick: true,
-                rule: true,
-                circle: true,
-                square: true,
-                bar: true,
-                rect: true,
-                line: true,
-                trail: true,
-                area: true,
-                text: true,
-                geoshape: true
+                point: 'always',
+                tick: 'always',
+                rule: 'always',
+                circle: 'always',
+                square: 'always',
+                bar: 'always',
+                rect: 'always',
+                line: 'always',
+                trail: 'always',
+                area: 'always',
+                text: 'always',
+                geoshape: 'always'
             };
         case X:
         case Y:
@@ -206,44 +207,48 @@ export function getSupportedMark(channel) {
         case LONGITUDE:
             return {
                 // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-                point: true,
-                tick: true,
-                rule: true,
-                circle: true,
-                square: true,
-                bar: true,
-                rect: true,
-                line: true,
-                trail: true,
-                area: true,
-                text: true
+                point: 'always',
+                tick: 'always',
+                rule: 'always',
+                circle: 'always',
+                square: 'always',
+                bar: 'always',
+                rect: 'always',
+                line: 'always',
+                trail: 'always',
+                area: 'always',
+                text: 'always'
             };
         case X2:
         case Y2:
         case LATITUDE2:
         case LONGITUDE2:
             return {
-                rule: true,
-                bar: true,
-                rect: true,
-                area: true
+                rule: 'always',
+                bar: 'always',
+                rect: 'always',
+                area: 'always',
+                circle: 'binned',
+                point: 'binned',
+                square: 'binned',
+                tick: 'binned'
             };
         case SIZE:
             return {
-                point: true,
-                tick: true,
-                rule: true,
-                circle: true,
-                square: true,
-                bar: true,
-                text: true,
-                line: true,
-                trail: true
+                point: 'always',
+                tick: 'always',
+                rule: 'always',
+                circle: 'always',
+                square: 'always',
+                bar: 'always',
+                text: 'always',
+                line: 'always',
+                trail: 'always'
             };
         case SHAPE:
-            return { point: true, geoshape: true };
+            return { point: 'always', geoshape: 'always' };
         case TEXT:
-            return { text: true };
+            return { text: 'always' };
         case XERROR:
         case YERROR:
         case XERROR2:
@@ -267,7 +272,7 @@ export function rangeType(channel) {
         case YERROR:
         case XERROR2:
         case YERROR2:
-            return 'continuous';
+            return undefined;
         case ROW:
         case COLUMN:
         case SHAPE:

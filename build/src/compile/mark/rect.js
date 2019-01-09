@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { isBinned, isBinning } from '../../bin';
 import { X, Y } from '../../channel';
 import { isFieldDef } from '../../fielddef';
@@ -6,18 +5,18 @@ import * as log from '../../log';
 import { RECT } from '../../mark';
 import { hasDiscreteDomain, ScaleType } from '../../scale';
 import * as mixins from './mixins';
-export var rect = {
+export const rect = {
     vgMark: 'rect',
-    encodeEntry: function (model) {
-        return tslib_1.__assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), x(model), y(model));
+    encodeEntry: (model) => {
+        return Object.assign({}, mixins.baseEncodeEntry(model, { size: 'ignore', orient: 'ignore' }), x(model), y(model));
     }
 };
 export function x(model) {
-    var xDef = model.encoding.x;
-    var x2Def = model.encoding.x2;
-    var xScale = model.getScaleComponent(X);
-    var xScaleType = xScale ? xScale.get('type') : undefined;
-    var xScaleName = model.scaleName(X);
+    const xDef = model.encoding.x;
+    const x2Def = model.encoding.x2;
+    const xScale = model.getScaleComponent(X);
+    const xScaleType = xScale ? xScale.get('type') : undefined;
+    const xScaleName = model.scaleName(X);
     if (isFieldDef(xDef) && (isBinning(xDef.bin) || isBinned(xDef.bin))) {
         return mixins.binPosition(xDef, x2Def, X, xScaleName, 0, xScale.get('reverse'));
     }
@@ -33,15 +32,15 @@ export function x(model) {
     }
     else {
         // continuous scale or no scale
-        return tslib_1.__assign({}, mixins.pointPosition('x', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'x2'));
+        return Object.assign({}, mixins.pointPosition('x', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'x2'));
     }
 }
 export function y(model) {
-    var yDef = model.encoding.y;
-    var y2Def = model.encoding.y2;
-    var yScale = model.getScaleComponent(Y);
-    var yScaleType = yScale ? yScale.get('type') : undefined;
-    var yScaleName = model.scaleName(Y);
+    const yDef = model.encoding.y;
+    const y2Def = model.encoding.y2;
+    const yScale = model.getScaleComponent(Y);
+    const yScaleType = yScale ? yScale.get('type') : undefined;
+    const yScaleName = model.scaleName(Y);
     if (isFieldDef(yDef) && (isBinning(yDef.bin) || isBinned(yDef.bin))) {
         return mixins.binPosition(yDef, y2Def, Y, yScaleName, 0, yScale.get('reverse'));
     }
@@ -57,7 +56,7 @@ export function y(model) {
     }
     else {
         // continuous scale or no scale
-        return tslib_1.__assign({}, mixins.pointPosition('y', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'y2'));
+        return Object.assign({}, mixins.pointPosition('y', model, 'zeroOrMax'), mixins.pointPosition2(model, 'zeroOrMin', 'y2'));
     }
 }
 //# sourceMappingURL=rect.js.map

@@ -1,11 +1,9 @@
-import * as tslib_1 from "tslib";
-import { assert } from 'chai';
 import { defaultConfig, isVgScheme, stripAndRedirectConfig } from '../src/config';
 import { PRIMITIVE_MARKS } from '../src/mark';
 import { duplicate } from '../src/util';
-describe('config', function () {
-    describe('stripAndRedirectConfig', function () {
-        var config = tslib_1.__assign({}, defaultConfig, { mark: tslib_1.__assign({}, defaultConfig.mark, { opacity: 0.3 }), bar: tslib_1.__assign({ opacity: 0.5 }, defaultConfig.bar), view: {
+describe('config', () => {
+    describe('stripAndRedirectConfig', () => {
+        const config = Object.assign({}, defaultConfig, { mark: Object.assign({}, defaultConfig.mark, { opacity: 0.3 }), bar: Object.assign({ opacity: 0.5 }, defaultConfig.bar), view: {
                 fill: '#eee'
             }, title: {
                 color: 'red',
@@ -18,41 +16,40 @@ describe('config', function () {
                     color: 'white'
                 }
             } });
-        var copy = duplicate(config);
-        var output = stripAndRedirectConfig(config);
-        it('should not cause side-effect to the input', function () {
-            assert.deepEqual(config, copy);
+        const copy = duplicate(config);
+        const output = stripAndRedirectConfig(config);
+        it('should not cause side-effect to the input', () => {
+            expect(config).toEqual(copy);
         });
-        it('should remove VL only mark config but keep Vega mark config', function () {
-            assert.isUndefined(output.mark.color);
-            assert.equal(output.mark.opacity, 0.3);
+        it('should remove VL only mark config but keep Vega mark config', () => {
+            expect(output.mark.color).not.toBeDefined();
+            expect(output.mark.opacity).toEqual(0.3);
         });
-        it('should redirect mark config to style and remove VL only mark-specific config', function () {
-            for (var _i = 0, PRIMITIVE_MARKS_1 = PRIMITIVE_MARKS; _i < PRIMITIVE_MARKS_1.length; _i++) {
-                var mark = PRIMITIVE_MARKS_1[_i];
-                assert.isUndefined(output[mark], mark + " config should be redirected");
+        it('should redirect mark config to style and remove VL only mark-specific config', () => {
+            for (const mark of PRIMITIVE_MARKS) {
+                expect(output[mark]).not.toBeDefined();
             }
-            assert.isUndefined(output.style.bar['binSpacing'], "VL only Bar config should be removed");
-            assert.isUndefined(output.style.cell['width'], "VL only cell config should be removed");
-            assert.isUndefined(output.style.cell['height'], "VL only cell config should be removed");
-            assert.equal(output.style.cell['fill'], '#eee', "config.view should be redirect to config.style.cell");
-            assert.deepEqual(output.style.bar.opacity, 0.5, 'Bar config should be redirected to config.style.bar');
+            expect(output.style.bar['binSpacing']).not.toBeDefined();
+            expect(output.style.cell['width']).not.toBeDefined();
+            expect(output.style.cell['height']).not.toBeDefined();
+            expect(output.style.cell['fill']).toEqual('#eee');
+            expect(output.style.bar.opacity).toEqual(0.5);
         });
-        it('should redirect config.title to config.style.group-title and rename color to fill', function () {
-            assert.deepEqual(output.title, undefined);
-            assert.deepEqual(output.style['group-title'].fontWeight, 'bold');
-            assert.deepEqual(output.style['group-title'].fill, 'red');
+        it('should redirect config.title to config.style.group-title and rename color to fill', () => {
+            expect(output.title).toEqual(undefined);
+            expect(output.style['group-title'].fontWeight).toEqual('bold');
+            expect(output.style['group-title'].fill).toEqual('red');
         });
-        it('should remove empty config object', function () {
-            assert.isUndefined(output.axisTop);
+        it('should remove empty config object', () => {
+            expect(output.axisTop).not.toBeDefined();
         });
     });
-    describe('isVgScheme', function () {
-        it('should return true for valid scheme object', function () {
-            assert.isTrue(isVgScheme({ scheme: 'viridis', count: 2 }));
+    describe('isVgScheme', () => {
+        it('should return true for valid scheme object', () => {
+            expect(isVgScheme({ scheme: 'viridis', count: 2 })).toBe(true);
         });
-        it('should return false for non-scheme object', function () {
-            assert.isFalse(isVgScheme(['#EA98D2', '#659CCA']));
+        it('should return false for non-scheme object', () => {
+            expect(isVgScheme(['#EA98D2', '#659CCA'])).toBe(false);
         });
     });
 });

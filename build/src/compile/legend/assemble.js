@@ -1,16 +1,14 @@
 import { flatten, keys, stringify, vals } from '../../util';
 import { mergeLegendComponent } from './parse';
 export function assembleLegends(model) {
-    var legendComponentIndex = model.component.legends;
-    var legendByDomain = {};
-    for (var _i = 0, _a = keys(legendComponentIndex); _i < _a.length; _i++) {
-        var channel = _a[_i];
-        var scaleComponent = model.getScaleComponent(channel);
-        var domainHash = stringify(scaleComponent.domains);
+    const legendComponentIndex = model.component.legends;
+    const legendByDomain = {};
+    for (const channel of keys(legendComponentIndex)) {
+        const scaleComponent = model.getScaleComponent(channel);
+        const domainHash = stringify(scaleComponent.domains);
         if (legendByDomain[domainHash]) {
-            for (var _b = 0, _c = legendByDomain[domainHash]; _b < _c.length; _b++) {
-                var mergedLegendComponent = _c[_b];
-                var merged = mergeLegendComponent(mergedLegendComponent, legendComponentIndex[channel]);
+            for (const mergedLegendComponent of legendByDomain[domainHash]) {
+                const merged = mergeLegendComponent(mergedLegendComponent, legendComponentIndex[channel]);
                 if (!merged) {
                     // If cannot merge, need to add this legend separately
                     legendByDomain[domainHash].push(legendComponentIndex[channel]);
@@ -21,11 +19,11 @@ export function assembleLegends(model) {
             legendByDomain[domainHash] = [legendComponentIndex[channel].clone()];
         }
     }
-    return flatten(vals(legendByDomain)).map(function (legendCmpt) {
-        var legend = legendCmpt.combine();
+    return flatten(vals(legendByDomain)).map((legendCmpt) => {
+        const legend = legendCmpt.combine();
         // For non color channel's legend, we need to override symbol stroke config from Vega config
         if (legend.encode && legend.encode.symbols) {
-            var out = legend.encode.symbols.update;
+            const out = legend.encode.symbols.update;
             if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
                 // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
                 out.stroke = { value: 'transparent' };

@@ -6,9 +6,9 @@ import { MarkConfigMixins } from './mark';
 import { ProjectionConfig } from './projection';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
+import { TopLevelProperties } from './spec/toplevel';
 import { StackOffset } from './stack';
 import { TitleConfig } from './title';
-import { TopLevelProperties } from './toplevelprops';
 import { StrokeJoin, VgMarkConfig, VgScheme } from './vega.schema';
 export interface ViewConfig {
     /**
@@ -131,7 +131,7 @@ export interface VLOnlyConfig {
     /**
      * Default axis and legend title for count fields.
      *
-     * __Default value:__ `'Number of Records'`.
+     * __Default value:__ `'Count of Records`.
      *
      * @type {string}
      */

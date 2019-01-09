@@ -1,12 +1,11 @@
-import { assert } from 'chai';
 import { DataFlowNode } from '../../../src/compile/data/dataflow';
 import { GeoJSONNode } from '../../../src/compile/data/geojson';
 import { contains, every } from '../../../src/util';
 import { parseUnitModelWithScaleAndLayoutSize } from '../../util';
 /* tslint:disable:quotemark */
-describe('compile/data/geojson', function () {
-    it('should make transform and assemble correctly', function () {
-        var model = parseUnitModelWithScaleAndLayoutSize({
+describe('compile/data/geojson', () => {
+    it('should make transform and assemble correctly', () => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
             data: {
                 url: 'data/zipcodes.csv',
                 format: {
@@ -25,20 +24,17 @@ describe('compile/data/geojson', function () {
                 }
             }
         });
-        var root = new DataFlowNode(null);
+        const root = new DataFlowNode(null);
         GeoJSONNode.parseAll(root, model);
-        var node = root.children[0];
-        var _loop_1 = function () {
-            assert.instanceOf(node, GeoJSONNode);
-            var transform = node.assemble();
-            assert.equal(transform.type, 'geojson');
-            assert.isTrue(every(['longitude', 'latitude'], function (field) { return contains(transform.fields, field); }));
-            assert.isUndefined(transform.geojson);
-            assert.isAtMost(node.children.length, 1);
-            node = node.children[0];
-        };
+        let node = root.children[0];
         while (node != null) {
-            _loop_1();
+            expect(node).toBeInstanceOf(GeoJSONNode);
+            const transform = node.assemble();
+            expect(transform.type).toEqual('geojson');
+            expect(every(['longitude', 'latitude'], field => contains(transform.fields, field))).toBe(true);
+            expect(transform.geojson).not.toBeDefined();
+            expect(node.children.length).toBeLessThanOrEqual(1);
+            node = node.children[0];
         }
     });
 });

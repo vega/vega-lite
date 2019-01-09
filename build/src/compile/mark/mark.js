@@ -1,8 +1,7 @@
-import * as tslib_1 from "tslib";
 import { isArray } from 'vega-util';
 import { MAIN } from '../../data';
 import { isAggregate } from '../../encoding';
-import { getFieldDef, isFieldDef, isValueDef, vgField } from '../../fielddef';
+import { getTypedFieldDef, isFieldDef, isValueDef, vgField } from '../../fielddef';
 import { AREA, isPathMark, LINE, TRAIL } from '../../mark';
 import { isSortField } from '../../sort';
 import { contains, getFirstDefined, keys } from '../../util';
@@ -16,19 +15,19 @@ import { rect } from './rect';
 import { rule } from './rule';
 import { text } from './text';
 import { tick } from './tick';
-var markCompiler = {
-    area: area,
-    bar: bar,
-    circle: circle,
-    geoshape: geoshape,
-    line: line,
-    point: point,
-    rect: rect,
-    rule: rule,
-    square: square,
-    text: text,
-    tick: tick,
-    trail: trail
+const markCompiler = {
+    area,
+    bar,
+    circle,
+    geoshape,
+    line,
+    point,
+    rect,
+    rule,
+    square,
+    text,
+    tick,
+    trail
 };
 export function parseMarkGroup(model) {
     if (contains([LINE, AREA, TRAIL], model.mark)) {
@@ -38,10 +37,10 @@ export function parseMarkGroup(model) {
         return getMarkGroups(model);
     }
 }
-var FACETED_PATH_PREFIX = 'faceted_path_';
+const FACETED_PATH_PREFIX = 'faceted_path_';
 function parsePathMark(model) {
-    var details = pathGroupingFields(model.mark, model.encoding);
-    var pathMarks = getMarkGroups(model, {
+    const details = pathGroupingFields(model.mark, model.encoding);
+    const pathMarks = getMarkGroups(model, {
         // If has subfacet for line/area group, need to use faceted data from below.
         fromPrefix: details.length > 0 ? FACETED_PATH_PREFIX : ''
     });
@@ -74,8 +73,8 @@ function parsePathMark(model) {
     }
 }
 export function getSort(model) {
-    var encoding = model.encoding, stack = model.stack, mark = model.mark, markDef = model.markDef;
-    var order = encoding.order;
+    const { encoding, stack, mark, markDef } = model;
+    const order = encoding.order;
     if (!isArray(order) && isValueDef(order)) {
         return undefined;
     }
@@ -85,10 +84,10 @@ export function getSort(model) {
     }
     else if (isPathMark(mark)) {
         // For both line and area, we sort values based on dimension by default
-        var dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
+        const dimensionChannelDef = encoding[markDef.orient === 'horizontal' ? 'y' : 'x'];
         if (isFieldDef(dimensionChannelDef)) {
-            var s = dimensionChannelDef.sort;
-            var sortField = isSortField(s)
+            const s = dimensionChannelDef.sort;
+            const sortField = isSortField(s)
                 ? vgField({
                     // FIXME: this op might not already exist?
                     // FIXME: what if dimensionChannel (x or y) contains custom domain?
@@ -109,18 +108,17 @@ export function getSort(model) {
     }
     return undefined;
 }
-function getMarkGroups(model, opt) {
-    if (opt === void 0) { opt = { fromPrefix: '' }; }
-    var mark = model.mark;
-    var clip = getFirstDefined(model.markDef.clip, scaleClip(model));
-    var style = getStyles(model.markDef);
-    var key = model.encoding.key;
-    var sort = getSort(model);
-    var postEncodingTransform = markCompiler[mark].postEncodingTransform
+function getMarkGroups(model, opt = { fromPrefix: '' }) {
+    const mark = model.mark;
+    const clip = getFirstDefined(model.markDef.clip, scaleClip(model));
+    const style = getStyles(model.markDef);
+    const key = model.encoding.key;
+    const sort = getSort(model);
+    const postEncodingTransform = markCompiler[mark].postEncodingTransform
         ? markCompiler[mark].postEncodingTransform(model)
         : null;
     return [
-        tslib_1.__assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip ? { clip: true } : {}), (style ? { style: style } : {}), (key ? { key: { field: key.field } } : {}), (sort ? { sort: sort } : {}), { from: { data: opt.fromPrefix + model.requestDataName(MAIN) }, encode: {
+        Object.assign({ name: model.getName('marks'), type: markCompiler[mark].vgMark }, (clip ? { clip: true } : {}), (style ? { style } : {}), (key ? { key: { field: key.field } } : {}), (sort ? { sort } : {}), { from: { data: opt.fromPrefix + model.requestDataName(MAIN) }, encode: {
                 update: markCompiler[mark].encodeEntry(model)
             } }, (postEncodingTransform
             ? {
@@ -134,7 +132,7 @@ function getMarkGroups(model, opt) {
  * that the model's spec contains.
  */
 export function pathGroupingFields(mark, encoding) {
-    return keys(encoding).reduce(function (details, channel) {
+    return keys(encoding).reduce((details, channel) => {
         switch (channel) {
             // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
             case 'x':
@@ -160,9 +158,9 @@ export function pathGroupingFields(mark, encoding) {
                 return details;
             case 'detail':
             case 'key':
-                var channelDef = encoding[channel];
+                const channelDef = encoding[channel];
                 if (isArray(channelDef) || isFieldDef(channelDef)) {
-                    (isArray(channelDef) ? channelDef : [channelDef]).forEach(function (fieldDef) {
+                    (isArray(channelDef) ? channelDef : [channelDef]).forEach(fieldDef => {
                         if (!fieldDef.aggregate) {
                             details.push(vgField(fieldDef, {}));
                         }
@@ -186,13 +184,13 @@ export function pathGroupingFields(mark, encoding) {
             case 'strokeWidth':
                 // TODO strokeDashOffset:
                 /* tslint:enable */
-                var fieldDef = getFieldDef(encoding[channel]);
+                const fieldDef = getTypedFieldDef(encoding[channel]);
                 if (fieldDef && !fieldDef.aggregate) {
                     details.push(vgField(fieldDef, {}));
                 }
                 return details;
             default:
-                throw new Error("Bug: Channel " + channel + " unimplemented for line mark");
+                throw new Error(`Bug: Channel ${channel} unimplemented for line mark`);
         }
     }, []);
 }
@@ -202,8 +200,8 @@ export function pathGroupingFields(mark, encoding) {
  * by the domainRaw property, which gets added during scale parsing.
  */
 function scaleClip(model) {
-    var xScale = model.getScaleComponent('x');
-    var yScale = model.getScaleComponent('y');
+    const xScale = model.getScaleComponent('x');
+    const yScale = model.getScaleComponent('y');
     return (xScale && xScale.get('domainRaw')) || (yScale && yScale.get('domainRaw')) ? true : false;
 }
 //# sourceMappingURL=mark.js.map

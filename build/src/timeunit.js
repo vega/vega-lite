@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { dateTimeExpr } from './datetime';
 import * as log from './log';
 import { accessPathWithDatum, flagKeys } from './util';
@@ -54,7 +53,7 @@ export var TimeUnit;
     TimeUnit.UTCYEARQUARTERMONTH = 'utcyearquartermonth';
 })(TimeUnit || (TimeUnit = {}));
 /** Time Unit that only corresponds to only one part of Date objects. */
-var LOCAL_SINGLE_TIMEUNIT_INDEX = {
+const LOCAL_SINGLE_TIMEUNIT_INDEX = {
     year: 1,
     quarter: 1,
     month: 1,
@@ -65,11 +64,11 @@ var LOCAL_SINGLE_TIMEUNIT_INDEX = {
     seconds: 1,
     milliseconds: 1
 };
-export var TIMEUNIT_PARTS = flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
+export const TIMEUNIT_PARTS = flagKeys(LOCAL_SINGLE_TIMEUNIT_INDEX);
 export function isLocalSingleTimeUnit(timeUnit) {
     return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
-var UTC_SINGLE_TIMEUNIT_INDEX = {
+const UTC_SINGLE_TIMEUNIT_INDEX = {
     utcyear: 1,
     utcquarter: 1,
     utcmonth: 1,
@@ -83,7 +82,7 @@ var UTC_SINGLE_TIMEUNIT_INDEX = {
 export function isUtcSingleTimeUnit(timeUnit) {
     return !!UTC_SINGLE_TIMEUNIT_INDEX[timeUnit];
 }
-var LOCAL_MULTI_TIMEUNIT_INDEX = {
+const LOCAL_MULTI_TIMEUNIT_INDEX = {
     yearquarter: 1,
     yearquartermonth: 1,
     yearmonth: 1,
@@ -99,7 +98,7 @@ var LOCAL_MULTI_TIMEUNIT_INDEX = {
     minutesseconds: 1,
     secondsmilliseconds: 1
 };
-var UTC_MULTI_TIMEUNIT_INDEX = {
+const UTC_MULTI_TIMEUNIT_INDEX = {
     utcyearquarter: 1,
     utcyearquartermonth: 1,
     utcyearmonth: 1,
@@ -115,19 +114,19 @@ var UTC_MULTI_TIMEUNIT_INDEX = {
     utcminutesseconds: 1,
     utcsecondsmilliseconds: 1
 };
-var UTC_TIMEUNIT_INDEX = tslib_1.__assign({}, UTC_SINGLE_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
+const UTC_TIMEUNIT_INDEX = Object.assign({}, UTC_SINGLE_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
 export function isUTCTimeUnit(t) {
     return !!UTC_TIMEUNIT_INDEX[t];
 }
 export function getLocalTimeUnit(t) {
     return t.substr(3);
 }
-var TIMEUNIT_INDEX = tslib_1.__assign({}, LOCAL_SINGLE_TIMEUNIT_INDEX, UTC_SINGLE_TIMEUNIT_INDEX, LOCAL_MULTI_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
-export var TIMEUNITS = flagKeys(TIMEUNIT_INDEX);
+const TIMEUNIT_INDEX = Object.assign({}, LOCAL_SINGLE_TIMEUNIT_INDEX, UTC_SINGLE_TIMEUNIT_INDEX, LOCAL_MULTI_TIMEUNIT_INDEX, UTC_MULTI_TIMEUNIT_INDEX);
+export const TIMEUNITS = flagKeys(TIMEUNIT_INDEX);
 export function isTimeUnit(t) {
     return !!TIMEUNIT_INDEX[t];
 }
-var SET_DATE_METHOD = {
+const SET_DATE_METHOD = {
     year: 'setFullYear',
     month: 'setMonth',
     date: 'setDate',
@@ -145,25 +144,24 @@ var SET_DATE_METHOD = {
  * Note: the base date is Jan 01 1900 00:00:00
  */
 export function convert(unit, date) {
-    var isUTC = isUTCTimeUnit(unit);
-    var result = isUTC
+    const isUTC = isUTCTimeUnit(unit);
+    const result = isUTC
         ? // start with uniform date
             new Date(Date.UTC(1972, 0, 1, 0, 0, 0, 0)) // 1972 is the first leap year after 1970, the start of unix time
         : new Date(1972, 0, 1, 0, 0, 0, 0);
-    for (var _i = 0, TIMEUNIT_PARTS_1 = TIMEUNIT_PARTS; _i < TIMEUNIT_PARTS_1.length; _i++) {
-        var timeUnitPart = TIMEUNIT_PARTS_1[_i];
+    for (const timeUnitPart of TIMEUNIT_PARTS) {
         if (containsTimeUnit(unit, timeUnitPart)) {
             switch (timeUnitPart) {
                 case TimeUnit.DAY:
                     throw new Error("Cannot convert to TimeUnits containing 'day'");
                 case TimeUnit.QUARTER: {
-                    var _a = dateMethods('month', isUTC), getDateMethod_1 = _a.getDateMethod, setDateMethod_1 = _a.setDateMethod;
+                    const { getDateMethod, setDateMethod } = dateMethods('month', isUTC);
                     // indicate quarter by setting month to be the first of the quarter i.e. may (4) -> april (3)
-                    result[setDateMethod_1](Math.floor(date[getDateMethod_1]() / 3) * 3);
+                    result[setDateMethod](Math.floor(date[getDateMethod]() / 3) * 3);
                     break;
                 }
                 default:
-                    var _b = dateMethods(timeUnitPart, isUTC), getDateMethod = _b.getDateMethod, setDateMethod = _b.setDateMethod;
+                    const { getDateMethod, setDateMethod } = dateMethods(timeUnitPart, isUTC);
                     result[setDateMethod](date[getDateMethod]());
             }
         }
@@ -171,13 +169,13 @@ export function convert(unit, date) {
     return result;
 }
 function dateMethods(singleUnit, isUtc) {
-    var rawSetDateMethod = SET_DATE_METHOD[singleUnit];
-    var setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
-    var getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
-    return { setDateMethod: setDateMethod, getDateMethod: getDateMethod };
+    const rawSetDateMethod = SET_DATE_METHOD[singleUnit];
+    const setDateMethod = isUtc ? 'setUTC' + rawSetDateMethod.substr(3) : rawSetDateMethod;
+    const getDateMethod = 'get' + (isUtc ? 'UTC' : '') + rawSetDateMethod.substr(3);
+    return { setDateMethod, getDateMethod };
 }
 export function getTimeUnitParts(timeUnit) {
-    return TIMEUNIT_PARTS.reduce(function (parts, part) {
+    return TIMEUNIT_PARTS.reduce((parts, part) => {
         if (containsTimeUnit(timeUnit, part)) {
             return parts.concat(part);
         }
@@ -186,7 +184,7 @@ export function getTimeUnitParts(timeUnit) {
 }
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit, timeUnit) {
-    var index = fullTimeUnit.indexOf(timeUnit);
+    const index = fullTimeUnit.indexOf(timeUnit);
     return (index > -1 && (timeUnit !== TimeUnit.SECONDS || index === 0 || fullTimeUnit.charAt(index - 1) !== 'i') // exclude milliseconds
     );
 }
@@ -194,18 +192,18 @@ export function containsTimeUnit(fullTimeUnit, timeUnit) {
  * Returns Vega expresssion for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit, field) {
-    var fieldRef = accessPathWithDatum(field);
-    var utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
+    const fieldRef = accessPathWithDatum(field);
+    const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
     function func(timeUnit) {
         if (timeUnit === TimeUnit.QUARTER) {
             // quarter starting at 0 (0,3,6,9).
-            return "(" + utc + "quarter(" + fieldRef + ")-1)";
+            return `(${utc}quarter(${fieldRef})-1)`;
         }
         else {
-            return "" + utc + timeUnit + "(" + fieldRef + ")";
+            return `${utc}${timeUnit}(${fieldRef})`;
         }
     }
-    var d = TIMEUNIT_PARTS.reduce(function (dateExpr, tu) {
+    const d = TIMEUNIT_PARTS.reduce((dateExpr, tu) => {
         if (containsTimeUnit(fullTimeUnit, tu)) {
             dateExpr[tu] = func(tu);
         }
@@ -217,8 +215,8 @@ export function getDateTimeComponents(timeUnit, shortTimeLabels) {
     if (!timeUnit) {
         return undefined;
     }
-    var dateComponents = [];
-    var hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
+    const dateComponents = [];
+    const hasYear = containsTimeUnit(timeUnit, TimeUnit.YEAR);
     if (containsTimeUnit(timeUnit, TimeUnit.MONTH)) {
         // By default use short month name
         dateComponents.push(shortTimeLabels !== false ? '%b' : '%B');
@@ -232,7 +230,7 @@ export function getDateTimeComponents(timeUnit, shortTimeLabels) {
     if (hasYear) {
         dateComponents.push(shortTimeLabels ? '%y' : '%Y');
     }
-    var timeComponents = [];
+    const timeComponents = [];
     if (containsTimeUnit(timeUnit, TimeUnit.HOURS)) {
         timeComponents.push('%H');
     }
@@ -245,7 +243,7 @@ export function getDateTimeComponents(timeUnit, shortTimeLabels) {
     if (containsTimeUnit(timeUnit, TimeUnit.MILLISECONDS)) {
         timeComponents.push('%L');
     }
-    var dateTimeComponents = [];
+    const dateTimeComponents = [];
     if (dateComponents.length > 0) {
         dateTimeComponents.push(dateComponents.join(' '));
     }
@@ -261,25 +259,25 @@ export function formatExpression(timeUnit, field, shortTimeLabels, isUTCScale) {
     if (!timeUnit) {
         return undefined;
     }
-    var dateTimeComponents = getDateTimeComponents(timeUnit, shortTimeLabels);
-    var expression = '';
+    const dateTimeComponents = getDateTimeComponents(timeUnit, shortTimeLabels);
+    let expression = '';
     if (containsTimeUnit(timeUnit, TimeUnit.QUARTER)) {
         // special expression for quarter as prefix
-        expression = "'Q' + quarter(" + field + ")";
+        expression = `'Q' + quarter(${field})`;
     }
     if (dateTimeComponents.length > 0) {
         if (expression) {
             // Add space between quarter and main time format
-            expression += " + ' ' + ";
+            expression += ` + ' ' + `;
         }
         // We only use utcFormat for utc scale
         // For utc time units, the data is already converted as a part of timeUnit transform.
         // Thus, utc time units should use timeFormat to avoid shifting the time twice.
         if (isUTCScale) {
-            expression += "utcFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+            expression += `utcFormat(${field}, '${dateTimeComponents.join(' ')}')`;
         }
         else {
-            expression += "timeFormat(" + field + ", '" + dateTimeComponents.join(' ') + "')";
+            expression += `timeFormat(${field}, '${dateTimeComponents.join(' ')}')`;
         }
     }
     // If expression is still an empty string, return undefined instead.

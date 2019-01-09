@@ -1,32 +1,31 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { Y } from '../../../src/channel';
 import { parseLayerAxis, parseUnitAxis } from '../../../src/compile/axis/parse';
 import { parseLayerModel, parseUnitModelWithScale } from '../../util';
-describe('Axis', function () {
+describe('Axis', () => {
     // TODO: move this to model.test.ts
-    describe('= true', function () {
-        it('should produce default properties for axis', function () {
-            var model1 = parseUnitModelWithScale({
+    describe('= true', () => {
+        it('should produce default properties for axis', () => {
+            const model1 = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     y: { type: 'quantitative', field: 'US_Gross', aggregate: 'sum' }
                 },
                 data: { url: 'data/movies.json' }
             });
-            var model2 = parseUnitModelWithScale({
+            const model2 = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     y: { type: 'quantitative', field: 'US_Gross', aggregate: 'sum' }
                 },
                 data: { url: 'data/movies.json' }
             });
-            assert.deepEqual(model1.axis(Y), model2.axis(Y));
+            expect(model1.axis(Y)).toEqual(model2.axis(Y));
         });
     });
-    describe('parseUnitAxis', function () {
-        it('should produce Vega grid', function () {
-            var model = parseUnitModelWithScale({
+    describe('parseUnitAxis', () => {
+        it('should produce Vega grid', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -36,12 +35,12 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.grid, true);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.grid).toEqual(true);
         });
-        it('should produce Vega grid when axis config is specified.', function () {
-            var model = parseUnitModelWithScale({
+        it('should produce Vega grid when axis config is specified.', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -51,12 +50,12 @@ describe('Axis', function () {
                 },
                 config: { axisX: { grid: true } }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].implicit.grid, true);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].implicit.grid).toEqual(true);
         });
-        it('should produce axis component with grid=false', function () {
-            var model = parseUnitModelWithScale({
+        it('should produce axis component with grid=false', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -66,12 +65,12 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.grid, false);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.grid).toEqual(false);
         });
-        it('should ignore null scales', function () {
-            var model = parseUnitModelWithScale({
+        it('should ignore null scales', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     longitude: {
@@ -84,12 +83,12 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.isUndefined(axisComponent['x']);
-            assert.isUndefined(axisComponent['y']);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x']).not.toBeDefined();
+            expect(axisComponent['y']).not.toBeDefined();
         });
-        it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', function () {
-            var model = parseUnitModelWithScale({
+        it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -99,12 +98,12 @@ describe('Axis', function () {
                 },
                 config: { axisX: { grid: false } }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.grid, undefined);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
         });
-        it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', function () {
-            var model = parseUnitModelWithScale({
+        it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -114,14 +113,13 @@ describe('Axis', function () {
                 },
                 config: { axis: { grid: false } }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.grid, undefined);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
         });
-        it('should store the title value if title = null, "", or false', function () {
-            for (var _i = 0, _a = [null, '', false]; _i < _a.length; _i++) {
-                var val = _a[_i];
-                var model = parseUnitModelWithScale({
+        it('should store the title value if title = null, "", or false', () => {
+            for (const val of [null, '', false]) {
+                const model = parseUnitModelWithScale({
                     mark: 'point',
                     encoding: {
                         x: {
@@ -131,15 +129,14 @@ describe('Axis', function () {
                         }
                     }
                 });
-                var axisComponent = parseUnitAxis(model);
-                assert.equal(axisComponent['x'].length, 1);
-                assert.equal(axisComponent['x'][0].explicit.title, val);
+                const axisComponent = parseUnitAxis(model);
+                expect(axisComponent['x'].length).toEqual(1);
+                expect(axisComponent['x'][0].explicit.title).toEqual(val);
             }
         });
-        it('should store the fieldDef title value if title = null, "", or false', function () {
-            for (var _i = 0, _a = [null, '', false]; _i < _a.length; _i++) {
-                var val = _a[_i];
-                var model = parseUnitModelWithScale({
+        it('should store the fieldDef title value if title = null, "", or false', () => {
+            for (const val of [null, '', false]) {
+                const model = parseUnitModelWithScale({
                     mark: 'point',
                     encoding: {
                         x: {
@@ -149,13 +146,13 @@ describe('Axis', function () {
                         }
                     }
                 });
-                var axisComponent = parseUnitAxis(model);
-                assert.equal(axisComponent['x'].length, 1);
-                assert.equal(axisComponent['x'][0].explicit.title, val);
+                const axisComponent = parseUnitAxis(model);
+                expect(axisComponent['x'].length).toEqual(1);
+                expect(axisComponent['x'][0].explicit.title).toEqual(val);
             }
         });
-        it('should store fieldDef.title as explicit', function () {
-            var model = parseUnitModelWithScale({
+        it('should store fieldDef.title as explicit', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'point',
                 encoding: {
                     x: {
@@ -165,12 +162,12 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.title, 'foo');
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.title).toEqual('foo');
         });
-        it('should merge title of fieldDef and fieldDef2', function () {
-            var model = parseUnitModelWithScale({
+        it('should merge title of fieldDef and fieldDef2', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: {
@@ -185,12 +182,12 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.title, 'foo, bar');
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.title).toEqual('foo, bar');
         });
-        it('should use title of fieldDef2', function () {
-            var model = parseUnitModelWithScale({
+        it('should use title of fieldDef2', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'bar',
                 encoding: {
                     x: {
@@ -204,25 +201,25 @@ describe('Axis', function () {
                     }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.equal(axisComponent['x'][0].explicit.title, 'bar');
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].explicit.title).toEqual('bar');
         });
-        it('should store both x and x2 for ranged mark', function () {
-            var model = parseUnitModelWithScale({
+        it('should store both x and x2 for ranged mark', () => {
+            const model = parseUnitModelWithScale({
                 mark: 'rule',
                 encoding: {
                     x: { field: 'a', type: 'quantitative' },
                     x2: { field: 'a2', type: 'quantitative' }
                 }
             });
-            var axisComponent = parseUnitAxis(model);
-            assert.equal(axisComponent['x'].length, 1);
-            assert.deepEqual(axisComponent['x'][0].get('title'), [{ field: 'a' }, { field: 'a2' }]);
+            const axisComponent = parseUnitAxis(model);
+            expect(axisComponent['x'].length).toEqual(1);
+            expect(axisComponent['x'][0].get('title')).toEqual([{ field: 'a' }, { field: 'a2' }]);
         });
     });
-    describe('parseLayerAxis', function () {
-        var globalRuleOverlay = parseLayerModel({
+    describe('parseLayerAxis', () => {
+        const globalRuleOverlay = parseLayerModel({
             layer: [
                 {
                     mark: 'rule',
@@ -254,17 +251,17 @@ describe('Axis', function () {
         globalRuleOverlay.parseScale();
         globalRuleOverlay.parseLayoutSize();
         parseLayerAxis(globalRuleOverlay);
-        it('correctly merges gridScale if one layer does not have one of the axis', function () {
-            var axisComponents = globalRuleOverlay.component.axes;
-            assert.equal(axisComponents.y.length, 1);
-            assert.equal(axisComponents.y[0].get('gridScale'), 'x');
+        it('correctly merges gridScale if one layer does not have one of the axis', () => {
+            const axisComponents = globalRuleOverlay.component.axes;
+            expect(axisComponents.y.length).toEqual(1);
+            expect(axisComponents.y[0].get('gridScale')).toEqual('x');
         });
-        it('correctly merges similar title', function () {
-            var axisComponents = globalRuleOverlay.component.axes;
-            assert.deepEqual(axisComponents.y[0].get('title'), [{ aggregate: 'mean', field: 'a' }]);
+        it('correctly merges similar title', () => {
+            const axisComponents = globalRuleOverlay.component.axes;
+            expect(axisComponents.y[0].get('title')).toEqual([{ aggregate: 'mean', field: 'a' }]);
         });
-        it('correctly combines different title', function () {
-            var model = parseLayerModel({
+        it('correctly combines different title', () => {
+            const model = parseLayerModel({
                 $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
                 data: { url: 'data/cars.json' },
                 layer: [
@@ -296,8 +293,8 @@ describe('Axis', function () {
             });
             model.parseScale();
             parseLayerAxis(model);
-            var axisComponents = model.component.axes;
-            assert.deepEqual(axisComponents.y[0].get('title'), [
+            const axisComponents = model.component.axes;
+            expect(axisComponents.y[0].get('title')).toEqual([
                 { aggregate: 'max', field: 'Horsepower' },
                 { aggregate: 'min', field: 'Horsepower' }
             ]);

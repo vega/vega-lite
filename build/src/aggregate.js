@@ -1,6 +1,6 @@
 import { toSet } from 'vega-util';
 import { contains, flagKeys } from './util';
-var AGGREGATE_OP_INDEX = {
+const AGGREGATE_OP_INDEX = {
     argmax: 1,
     argmin: 1,
     average: 1,
@@ -24,11 +24,11 @@ var AGGREGATE_OP_INDEX = {
     variance: 1,
     variancep: 1
 };
-export var AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
+export const AGGREGATE_OPS = flagKeys(AGGREGATE_OP_INDEX);
 export function isAggregateOp(a) {
     return !!AGGREGATE_OP_INDEX[a];
 }
-export var COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
+export const COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
 export function isCountingAggregateOp(aggregate) {
     return aggregate && contains(COUNTING_OPS, aggregate);
 }
@@ -36,10 +36,10 @@ export function isMinMaxOp(aggregate) {
     return aggregate && contains(['min', 'max'], aggregate);
 }
 /** Additive-based aggregation operations.  These can be applied to stack. */
-export var SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
+export const SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
 /**
  * Aggregation operators that always produce values within the range [domainMin, domainMax].
  */
-export var SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
-export var SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
+export const SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
+export const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
 //# sourceMappingURL=aggregate.js.map

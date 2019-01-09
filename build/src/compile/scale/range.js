@@ -1,75 +1,92 @@
-import * as tslib_1 from "tslib";
 import { isArray, isNumber } from 'vega-util';
-import { COLOR, FILL, FILLOPACITY, OPACITY, SCALE_CHANNELS, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH, X, Y } from '../../channel';
+import { isBinning } from '../../bin';
+import { COLOR, FILL, FILLOPACITY, OPACITY, POSITION_SCALE_CHANNELS, SCALE_CHANNELS, SHAPE, SIZE, STROKE, STROKEOPACITY, STROKEWIDTH, X, Y } from '../../channel';
 import { isVgScheme } from '../../config';
+import { vgField } from '../../fielddef';
 import * as log from '../../log';
-import { channelScalePropertyIncompatability, hasContinuousDomain, isContinuousToContinuous, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
+import { channelScalePropertyIncompatability, hasContinuousDomain, hasDiscreteDomain, isContinuousToContinuous, isContinuousToDiscrete, isExtendedScheme, scaleTypeSupportProperty } from '../../scale';
 import * as util from '../../util';
 import { isVgRangeStep } from '../../vega.schema';
-import { isUnitModel } from '../model';
+import { evalOrMakeSignalRefComponent, SignalRefComponent } from '../signal';
 import { makeExplicit, makeImplicit } from '../split';
-import { parseNonUnitScaleProperty } from './properties';
-export var RANGE_PROPERTIES = ['range', 'rangeStep', 'scheme'];
-export function parseScaleRange(model) {
-    if (isUnitModel(model)) {
-        parseUnitScaleRange(model);
-    }
-    else {
-        parseNonUnitScaleProperty(model, 'range');
-    }
+export const RANGE_PROPERTIES = ['range', 'rangeStep', 'scheme'];
+function getSizeType(channel) {
+    return channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
 }
-function parseUnitScaleRange(model) {
-    var localScaleComponents = model.component.scales;
+export function parseUnitScaleRange(model) {
+    const localScaleComponents = model.component.scales;
     // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
-    SCALE_CHANNELS.forEach(function (channel) {
-        var localScaleCmpt = localScaleComponents[channel];
+    SCALE_CHANNELS.forEach((channel) => {
+        const localScaleCmpt = localScaleComponents[channel];
         if (!localScaleCmpt) {
             return;
         }
-        var mergedScaleCmpt = model.getScaleComponent(channel);
-        var specifiedScale = model.specifiedScales[channel];
-        var fieldDef = model.fieldDef(channel);
+        const mergedScaleCmpt = model.getScaleComponent(channel);
+        const specifiedScale = model.specifiedScales[channel];
+        const fieldDef = model.fieldDef(channel);
         // Read if there is a specified width/height
-        var sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-        var sizeSpecified = sizeType ? !!model.component.layoutSize.get(sizeType) : undefined;
-        var scaleType = mergedScaleCmpt.get('type');
+        const sizeType = getSizeType(channel);
+        let sizeSpecified = sizeType ? !!model.component.layoutSize.get(sizeType) : undefined;
+        const scaleType = mergedScaleCmpt.get('type');
         // if autosize is fit, size cannot be data driven
-        var rangeStep = util.contains(['point', 'band'], scaleType) || !!specifiedScale.rangeStep;
+        const rangeStep = util.contains(['point', 'band'], scaleType) || !!specifiedScale.rangeStep;
         if (sizeType && model.fit && !sizeSpecified && rangeStep) {
             log.warn(log.message.CANNOT_FIX_RANGE_STEP_WITH_FIT);
             sizeSpecified = true;
         }
-        var xyRangeSteps = getXYRangeStep(model);
-        var rangeWithExplicit = parseRangeForChannel(channel, scaleType, fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark, sizeSpecified, model.getName(sizeType), xyRangeSteps);
+        const xyRangeSteps = getXYRangeStep(model);
+        const rangeWithExplicit = parseRangeForChannel(channel, scaleType, fieldDef.type, specifiedScale, model.config, localScaleCmpt.get('zero'), model.mark, sizeSpecified, model.getName(sizeType), xyRangeSteps);
         localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
     });
 }
+function getRangeStep(model, channel) {
+    const scaleCmpt = model.getScaleComponent(channel);
+    if (!scaleCmpt) {
+        return undefined;
+    }
+    const scaleType = scaleCmpt.get('type');
+    const fieldDef = model.fieldDef(channel);
+    if (hasDiscreteDomain(scaleType)) {
+        const range = scaleCmpt && scaleCmpt.get('range');
+        if (range && isVgRangeStep(range) && isNumber(range.step)) {
+            return range.step;
+        }
+        // TODO: support the case without range step
+    }
+    else if (fieldDef && fieldDef.bin) {
+        if (isBinning(fieldDef.bin)) {
+            const binSignal = model.getName(vgField(fieldDef, { suffix: 'bins' }));
+            // TODO: extract this to be range step signal
+            const binCount = `(${binSignal}.stop - ${binSignal}.start) / ${binSignal}.step`;
+            const sizeType = getSizeType(channel);
+            const sizeSignal = model.getName(sizeType);
+            return new SignalRefComponent(`${sizeSignal} / (${binCount})`, [sizeSignal, binSignal]);
+        }
+        // TODO: handle binned case
+    }
+    return undefined;
+}
 function getXYRangeStep(model) {
-    var xyRangeSteps = [];
-    var xScale = model.getScaleComponent('x');
-    var xRange = xScale && xScale.get('range');
-    if (xRange && isVgRangeStep(xRange) && isNumber(xRange.step)) {
-        xyRangeSteps.push(xRange.step);
+    const steps = [];
+    for (const channel of POSITION_SCALE_CHANNELS) {
+        const step = getRangeStep(model, channel);
+        if (step !== undefined) {
+            steps.push(step);
+        }
     }
-    var yScale = model.getScaleComponent('y');
-    var yRange = yScale && yScale.get('range');
-    if (yRange && isVgRangeStep(yRange) && isNumber(yRange.step)) {
-        xyRangeSteps.push(yRange.step);
-    }
-    return xyRangeSteps;
+    return steps;
 }
 /**
  * Return mixins that includes one of the range properties (range, rangeStep, scheme).
  */
 export function parseRangeForChannel(channel, scaleType, type, specifiedScale, config, zero, mark, sizeSpecified, sizeSignal, xyRangeSteps) {
-    var noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
+    const noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
     // Check if any of the range properties is specified.
     // If so, check if it is compatible and make sure that we only output one of the properties
-    for (var _i = 0, RANGE_PROPERTIES_1 = RANGE_PROPERTIES; _i < RANGE_PROPERTIES_1.length; _i++) {
-        var property = RANGE_PROPERTIES_1[_i];
+    for (const property of RANGE_PROPERTIES) {
         if (specifiedScale[property] !== undefined) {
-            var supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
-            var channelIncompatability = channelScalePropertyIncompatability(channel, property);
+            const supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
+            const channelIncompatability = channelScalePropertyIncompatability(channel, property);
             if (!supportedByScaleType) {
                 log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));
             }
@@ -84,7 +101,7 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
                     case 'scheme':
                         return makeExplicit(parseScheme(specifiedScale[property]));
                     case 'rangeStep':
-                        var rangeStep = specifiedScale[property];
+                        const rangeStep = specifiedScale[property];
                         if (rangeStep !== null) {
                             if (!sizeSpecified) {
                                 return makeExplicit({ step: rangeStep });
@@ -102,7 +119,7 @@ export function parseRangeForChannel(channel, scaleType, type, specifiedScale, c
 }
 function parseScheme(scheme) {
     if (isExtendedScheme(scheme)) {
-        var r = { scheme: scheme.name };
+        const r = { scheme: scheme.name };
         if (scheme.count) {
             r.count = scheme.count;
         }
@@ -113,7 +130,7 @@ function parseScheme(scheme) {
     }
     return { scheme: scheme };
 }
-export function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, domain) {
+function defaultRange(channel, scaleType, type, config, zero, mark, sizeSignal, xyRangeSteps, noRangeStep, domain) {
     switch (channel) {
         case X:
         case Y:
@@ -137,15 +154,15 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
             // the final name in assembleScaleRange()
             if (channel === Y && hasContinuousDomain(scaleType)) {
                 // For y continuous scale, we have to start from the height as the bottom part has the max value.
-                return [{ signal: sizeSignal }, 0];
+                return [SignalRefComponent.fromName(sizeSignal), 0];
             }
             else {
-                return [0, { signal: sizeSignal }];
+                return [0, SignalRefComponent.fromName(sizeSignal)];
             }
         case SIZE:
             // TODO: support custom rangeMin, rangeMax
-            var rangeMin = sizeRangeMin(mark, zero, config);
-            var rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
+            const rangeMin = sizeRangeMin(mark, zero, config);
+            const rangeMax = sizeRangeMax(mark, xyRangeSteps, config);
             if (isContinuousToDiscrete(scaleType)) {
                 return interpolateRange(rangeMin, rangeMax, defaultContinuousToDiscreteCount(scaleType, config, domain, channel));
             }
@@ -165,12 +182,12 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
                 return type === 'nominal' ? 'category' : 'ordinal';
             }
             else if (isContinuousToDiscrete(scaleType)) {
-                var count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
+                const count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
                 if (config.range && isVgScheme(config.range.ordinal)) {
-                    return tslib_1.__assign({}, config.range.ordinal, { count: count });
+                    return Object.assign({}, config.range.ordinal, { count });
                 }
                 else {
-                    return { scheme: 'blues', count: count };
+                    return { scheme: 'blues', count };
                 }
             }
             else if (isContinuousToContinuous(scaleType)) {
@@ -187,7 +204,7 @@ export function defaultRange(channel, scaleType, type, config, zero, mark, sizeS
             return [config.scale.minOpacity, config.scale.maxOpacity];
     }
     /* istanbul ignore next: should never reach here */
-    throw new Error("Scale range undefined for channel " + channel);
+    throw new Error(`Scale range undefined for channel ${channel}`);
 }
 export function defaultContinuousToDiscreteCount(scaleType, config, domain, channel) {
     switch (scaleType) {
@@ -214,12 +231,12 @@ export function defaultContinuousToDiscreteCount(scaleType, config, domain, chan
  * @param cardinality number of values in the output range
  */
 export function interpolateRange(rangeMin, rangeMax, cardinality) {
-    var ranges = [];
-    var step = (rangeMax - rangeMin) / (cardinality - 1);
-    for (var i = 0; i < cardinality; i++) {
-        ranges.push(rangeMin + i * step);
-    }
-    return ranges;
+    const step = '(rangeMax - rangeMin) / (cardinality - 1)';
+    return evalOrMakeSignalRefComponent(`sequence(rangeMin, rangeMax + ${step}, ${step})`, {
+        rangeMin,
+        rangeMax,
+        cardinality
+    });
 }
 function sizeRangeMin(mark, zero, config) {
     if (zero) {
@@ -244,15 +261,17 @@ function sizeRangeMin(mark, zero, config) {
     // sizeRangeMin not implemented for the mark
     throw new Error(log.message.incompatibleChannel('size', mark));
 }
+export const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
 function sizeRangeMax(mark, xyRangeSteps, config) {
-    var scaleConfig = config.scale;
+    const scaleConfig = config.scale;
     switch (mark) {
         case 'bar':
         case 'tick':
             if (config.scale.maxBandSize !== undefined) {
                 return config.scale.maxBandSize;
             }
-            return minXYRangeStep(xyRangeSteps, config.scale) - 1;
+            const min = minXYRangeStep(xyRangeSteps, config.scale);
+            return evalOrMakeSignalRefComponent(`min - 1`, { min });
         case 'line':
         case 'trail':
         case 'rule':
@@ -265,9 +284,10 @@ function sizeRangeMax(mark, xyRangeSteps, config) {
             if (config.scale.maxSize) {
                 return config.scale.maxSize;
             }
-            // FIXME this case totally should be refactored
-            var pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
-            return (pointStep - 2) * (pointStep - 2);
+            const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
+            return evalOrMakeSignalRefComponent(`pow(${MAX_SIZE_RANGE_STEP_RATIO} * pointStep, 2)`, {
+                pointStep
+            });
     }
     /* istanbul ignore next: should never reach here */
     // sizeRangeMax not implemented for the mark
@@ -278,7 +298,25 @@ function sizeRangeMax(mark, xyRangeSteps, config) {
  */
 function minXYRangeStep(xyRangeSteps, scaleConfig) {
     if (xyRangeSteps.length > 0) {
-        return Math.min.apply(null, xyRangeSteps);
+        const exprs = [];
+        const signalNames = [];
+        let min = Infinity;
+        for (const step of xyRangeSteps) {
+            if (step instanceof SignalRefComponent) {
+                exprs.push(step.expr);
+                for (const signalName of step.signalNames) {
+                    signalNames.push(signalName);
+                }
+                min = undefined;
+            }
+            else {
+                exprs.push(step);
+                if (min !== undefined && step < min) {
+                    min = step;
+                }
+            }
+        }
+        return min !== undefined ? min : new SignalRefComponent(`min(${exprs.join(', ')})`, signalNames);
     }
     if (scaleConfig.rangeStep) {
         return scaleConfig.rangeStep;

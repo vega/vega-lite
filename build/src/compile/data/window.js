@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { vgField } from '../../fielddef';
 import { duplicate, hash } from '../../util';
 import { unique } from './../../util';
@@ -6,76 +5,69 @@ import { DataFlowNode } from './dataflow';
 /**
  * A class for the window transform nodes
  */
-var WindowTransformNode = /** @class */ (function (_super) {
-    tslib_1.__extends(WindowTransformNode, _super);
-    function WindowTransformNode(parent, transform) {
-        var _this = _super.call(this, parent) || this;
-        _this.transform = transform;
-        return _this;
+export class WindowTransformNode extends DataFlowNode {
+    constructor(parent, transform) {
+        super(parent);
+        this.transform = transform;
     }
-    WindowTransformNode.prototype.clone = function () {
+    clone() {
         return new WindowTransformNode(null, duplicate(this.transform));
-    };
-    WindowTransformNode.prototype.addDimensions = function (fields) {
-        this.transform.groupby = unique(this.transform.groupby.concat(fields), function (d) { return d; });
-    };
-    WindowTransformNode.prototype.dependentFields = function () {
-        var out = {};
-        this.transform.groupby.forEach(function (f) { return (out[f] = true); });
-        this.transform.sort.forEach(function (m) { return (out[m.field] = true); });
+    }
+    addDimensions(fields) {
+        this.transform.groupby = unique(this.transform.groupby.concat(fields), d => d);
+    }
+    dependentFields() {
+        const out = new Set();
+        this.transform.groupby.forEach(f => out.add(f));
+        this.transform.sort.forEach(m => out.add(m.field));
         this.transform.window
-            .map(function (w) { return w.field; })
-            .filter(function (f) { return f !== undefined; })
-            .forEach(function (f) { return (out[f] = true); });
+            .map(w => w.field)
+            .filter(f => f !== undefined)
+            .forEach(f => out.add(f));
         return out;
-    };
-    WindowTransformNode.prototype.producedFields = function () {
-        var _this = this;
-        var out = {};
-        this.transform.window.forEach(function (windowFieldDef) { return (out[_this.getDefaultName(windowFieldDef)] = true); });
-        return out;
-    };
-    WindowTransformNode.prototype.getDefaultName = function (windowFieldDef) {
+    }
+    producedFields() {
+        return new Set(this.transform.window.map(this.getDefaultName));
+    }
+    getDefaultName(windowFieldDef) {
         return windowFieldDef.as || vgField(windowFieldDef);
-    };
-    WindowTransformNode.prototype.hash = function () {
-        return "WindowTransform " + hash(this.transform);
-    };
-    WindowTransformNode.prototype.assemble = function () {
-        var fields = [];
-        var ops = [];
-        var as = [];
-        var params = [];
-        for (var _i = 0, _a = this.transform.window; _i < _a.length; _i++) {
-            var window_1 = _a[_i];
-            ops.push(window_1.op);
-            as.push(this.getDefaultName(window_1));
-            params.push(window_1.param === undefined ? null : window_1.param);
-            fields.push(window_1.field === undefined ? null : window_1.field);
+    }
+    hash() {
+        return `WindowTransform ${hash(this.transform)}`;
+    }
+    assemble() {
+        const fields = [];
+        const ops = [];
+        const as = [];
+        const params = [];
+        for (const window of this.transform.window) {
+            ops.push(window.op);
+            as.push(this.getDefaultName(window));
+            params.push(window.param === undefined ? null : window.param);
+            fields.push(window.field === undefined ? null : window.field);
         }
-        var frame = this.transform.frame;
-        var groupby = this.transform.groupby;
-        var sortFields = [];
-        var sortOrder = [];
+        const frame = this.transform.frame;
+        const groupby = this.transform.groupby;
+        const sortFields = [];
+        const sortOrder = [];
         if (this.transform.sort !== undefined) {
-            for (var _b = 0, _c = this.transform.sort; _b < _c.length; _b++) {
-                var sortField = _c[_b];
+            for (const sortField of this.transform.sort) {
                 sortFields.push(sortField.field);
                 sortOrder.push(sortField.order || 'ascending');
             }
         }
-        var sort = {
+        const sort = {
             field: sortFields,
             order: sortOrder
         };
-        var ignorePeers = this.transform.ignorePeers;
-        var result = {
+        const ignorePeers = this.transform.ignorePeers;
+        const result = {
             type: 'window',
-            params: params,
-            as: as,
-            ops: ops,
-            fields: fields,
-            sort: sort
+            params,
+            as,
+            ops,
+            fields,
+            sort
         };
         if (ignorePeers !== undefined) {
             result.ignorePeers = ignorePeers;
@@ -87,8 +79,6 @@ var WindowTransformNode = /** @class */ (function (_super) {
             result.frame = frame;
         }
         return result;
-    };
-    return WindowTransformNode;
-}(DataFlowNode));
-export { WindowTransformNode };
+    }
+}
 //# sourceMappingURL=window.js.map

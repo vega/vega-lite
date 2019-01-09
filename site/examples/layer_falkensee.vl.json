@@ -76,7 +76,6 @@
         },
         "x2": {
           "field": "end",
-          "type": "temporal",
           "timeUnit": "year"
         },
         "color": {"field": "event", "type": "nominal"}

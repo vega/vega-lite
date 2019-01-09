@@ -1,15 +1,15 @@
-import { Axis as VgAxis, Legend as VgLegend, SignalRef, Title as VgTitle } from 'vega';
+import { Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../channel';
 import { Config } from '../config';
 import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
 import { Resolve } from '../resolve';
 import { BaseSpec } from '../spec';
+import { GenericCompositionLayout } from '../spec/toplevel';
 import { TitleParams } from '../title';
-import { GenericCompositionLayout } from '../toplevelprops';
 import { Transform } from '../transform';
 import { Dict } from '../util';
-import { VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection, VgSignal } from '../vega.schema';
+import { VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection } from '../vega.schema';
 import { AxisComponentIndex } from './axis/component';
 import { ConcatModel } from './concat';
 import { DataComponent } from './data';
@@ -78,8 +78,8 @@ export declare abstract class Model {
     protected scaleNameMap: NameMapInterface;
     /** Name map for projections, which can be renamed by a model's parent. */
     protected projectionNameMap: NameMapInterface;
-    /** Name map for size, which can be renamed by a model's parent. */
-    protected layoutSizeNameMap: NameMapInterface;
+    /** Name map for signals, which can be renamed by a model's parent. */
+    protected signalNameMap: NameMapInterface;
     readonly repeater: RepeaterValue;
     readonly config: Config;
     readonly component: Component;
@@ -99,18 +99,18 @@ export declare abstract class Model {
      * This essentially merges the top-level spec's width/height signals with the width/height signals
      * to help us reduce redundant signals declaration.
      */
-    private renameTopLevelLayoutSize;
+    private renameTopLevelLayoutSizeSignal;
     abstract parseMarkGroup(): void;
     abstract parseAxisAndHeader(): void;
     parseLegend(): void;
-    abstract assembleSelectionTopLevelSignals(signals: any[]): any[];
-    abstract assembleSelectionSignals(): any[];
+    abstract assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+    abstract assembleSelectionSignals(): NewSignal[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
     assembleGroupStyle(): string;
     assembleLayoutSize(): VgEncodeEntry;
     assembleLayout(): VgLayout;
     protected assembleDefaultLayout(): VgLayout;
-    abstract assembleLayoutSignals(): VgSignal[];
+    abstract assembleLayoutSignals(): NewSignal[];
     assembleHeaderMarks(): VgMarkGroup[];
     abstract assembleMarks(): VgMarkGroup[];
     assembleAxes(): VgAxis[];
@@ -120,7 +120,7 @@ export declare abstract class Model {
     /**
      * Assemble the mark group for this model.  We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
      */
-    assembleGroup(signals?: VgSignal[]): any;
+    assembleGroup(signals?: NewSignal[]): any;
     hasDescendantWithFieldOnChannel(channel: Channel): boolean;
     getName(text: string): string;
     /**
@@ -132,8 +132,8 @@ export declare abstract class Model {
      * Lookup the name of the datasource for an output node. You probably want to call this in assemble.
      */
     lookupDataSource(name: string): string;
-    getSizeName(oldSizeName: string): string;
-    renameLayoutSize(oldName: string, newName: string): void;
+    getSignalName(oldSignalName: string): string;
+    renameSignal(oldName: string, newName: string): void;
     renameScale(oldName: string, newName: string): void;
     renameProjection(oldName: string, newName: string): void;
     /**
@@ -159,7 +159,7 @@ export declare abstract class Model {
 }
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export declare abstract class ModelWithField extends Model {
-    abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
+    abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
     /** Get "field" reference for Vega */
     vgField(channel: SingleDefChannel, opt?: FieldRefOption): string;
     protected abstract getMapping(): {

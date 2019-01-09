@@ -1,4 +1,4 @@
-import { Binding, SignalRef } from 'vega';
+import { Binding, NewSignal, SignalRef } from 'vega';
 import { Channel, ScaleChannel, SingleDefChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
@@ -43,8 +43,8 @@ export interface ProjectSelectionComponent {
     type: TupleStoreType;
 }
 export interface SelectionCompiler {
-    signals: (model: UnitModel, selCmpt: SelectionComponent) => any[];
-    topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: any[]) => any[];
+    signals: (model: UnitModel, selCmpt: SelectionComponent) => NewSignal[];
+    topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
     modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
     marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
 }

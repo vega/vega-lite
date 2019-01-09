@@ -1,22 +1,20 @@
-import * as tslib_1 from "tslib";
 import { isInlineData, isNamedData, isUrlData } from '../../data';
 import { contains, keys, omit } from '../../util';
 import { DataFlowNode } from './dataflow';
-var SourceNode = /** @class */ (function (_super) {
-    tslib_1.__extends(SourceNode, _super);
-    function SourceNode(data) {
-        var _this = _super.call(this, null) || this;
+export class SourceNode extends DataFlowNode {
+    constructor(data) {
+        super(null); // source cannot have parent
         data = data || { name: 'source' };
-        var format = data.format ? tslib_1.__assign({}, omit(data.format, ['parse'])) : {};
+        const format = data.format ? Object.assign({}, omit(data.format, ['parse'])) : {};
         if (isInlineData(data)) {
-            _this._data = { values: data.values };
+            this._data = { values: data.values };
         }
         else if (isUrlData(data)) {
-            _this._data = { url: data.url };
+            this._data = { url: data.url };
             if (!format.type) {
                 // Extract extension from URL using snippet from
                 // http://stackoverflow.com/questions/680929/how-to-extract-extension-from-filename-string-in-javascript
-                var defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
+                let defaultExtension = /(?:\.([^.]+))?$/.exec(data.url)[1];
                 if (!contains(['json', 'csv', 'tsv', 'dsv', 'topojson'], defaultExtension)) {
                     defaultExtension = 'json';
                 }
@@ -25,54 +23,39 @@ var SourceNode = /** @class */ (function (_super) {
             }
         }
         else if (isNamedData(data)) {
-            _this._data = {};
+            this._data = {};
         }
         // any dataset can be named
         if (data.name) {
-            _this._name = data.name;
+            this._name = data.name;
         }
         if (format && keys(format).length > 0) {
-            _this._data.format = format;
+            this._data.format = format;
         }
-        return _this;
     }
-    Object.defineProperty(SourceNode.prototype, "data", {
-        get: function () {
-            return this._data;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    SourceNode.prototype.hasName = function () {
+    get data() {
+        return this._data;
+    }
+    hasName() {
         return !!this._name;
-    };
-    Object.defineProperty(SourceNode.prototype, "dataName", {
-        get: function () {
-            return this._name;
-        },
-        set: function (name) {
-            this._name = name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(SourceNode.prototype, "parent", {
-        set: function (parent) {
-            throw new Error('Source nodes have to be roots.');
-        },
-        enumerable: true,
-        configurable: true
-    });
-    SourceNode.prototype.remove = function () {
+    }
+    get dataName() {
+        return this._name;
+    }
+    set dataName(name) {
+        this._name = name;
+    }
+    set parent(parent) {
+        throw new Error('Source nodes have to be roots.');
+    }
+    remove() {
         throw new Error('Source nodes are roots and cannot be removed.');
-    };
-    SourceNode.prototype.hash = function () {
+    }
+    hash() {
         throw new Error('Cannot hash sources');
-    };
-    SourceNode.prototype.assemble = function () {
-        return tslib_1.__assign({ name: this._name }, this._data, { transform: [] });
-    };
-    return SourceNode;
-}(DataFlowNode));
-export { SourceNode };
+    }
+    assemble() {
+        return Object.assign({ name: this._name }, this._data, { transform: [] });
+    }
+}
 //# sourceMappingURL=source.js.map

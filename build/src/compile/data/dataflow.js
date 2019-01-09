@@ -1,10 +1,9 @@
-import * as tslib_1 from "tslib";
 import { uniqueId } from '../../util';
 /**
  * A node in the dataflow tree.
  */
-var DataFlowNode = /** @class */ (function () {
-    function DataFlowNode(parent, debugName) {
+export class DataFlowNode {
+    constructor(parent, debugName) {
         this.debugName = debugName;
         this._children = [];
         this._parent = null;
@@ -15,52 +14,44 @@ var DataFlowNode = /** @class */ (function () {
     /**
      * Clone this node with a deep copy but don't clone links to children or parents.
      */
-    DataFlowNode.prototype.clone = function () {
+    clone() {
         throw new Error('Cannot clone node');
-    };
+    }
     /**
      * Return a hash of the node.
      */
-    DataFlowNode.prototype.hash = function () {
+    hash() {
         if (this._hash === undefined) {
             this._hash = uniqueId();
         }
         return this._hash;
-    };
+    }
     /**
      * Set of fields that are being created by this node.
      */
-    DataFlowNode.prototype.producedFields = function () {
-        return {};
-    };
-    DataFlowNode.prototype.dependentFields = function () {
-        return {};
-    };
-    Object.defineProperty(DataFlowNode.prototype, "parent", {
-        get: function () {
-            return this._parent;
-        },
-        /**
-         * Set the parent of the node and also add this not to the parent's children.
-         */
-        set: function (parent) {
-            this._parent = parent;
-            parent.addChild(this);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(DataFlowNode.prototype, "children", {
-        get: function () {
-            return this._children;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    DataFlowNode.prototype.numChildren = function () {
+    producedFields() {
+        return new Set();
+    }
+    dependentFields() {
+        return new Set();
+    }
+    get parent() {
+        return this._parent;
+    }
+    /**
+     * Set the parent of the node and also add this not to the parent's children.
+     */
+    set parent(parent) {
+        this._parent = parent;
+        parent.addChild(this);
+    }
+    get children() {
+        return this._children;
+    }
+    numChildren() {
         return this._children.length;
-    };
-    DataFlowNode.prototype.addChild = function (child, loc) {
+    }
+    addChild(child, loc) {
         // do not add the same child twice
         if (this._children.indexOf(child) > -1) {
             console.warn('Attempt to add the same child twice.');
@@ -72,39 +63,37 @@ var DataFlowNode = /** @class */ (function () {
         else {
             this._children.push(child);
         }
-    };
-    DataFlowNode.prototype.removeChild = function (oldChild) {
-        var loc = this._children.indexOf(oldChild);
+    }
+    removeChild(oldChild) {
+        const loc = this._children.indexOf(oldChild);
         this._children.splice(loc, 1);
         return loc;
-    };
+    }
     /**
      * Remove node from the dataflow.
      */
-    DataFlowNode.prototype.remove = function () {
-        var loc = this._parent.removeChild(this);
-        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
-            var child = _a[_i];
+    remove() {
+        let loc = this._parent.removeChild(this);
+        for (const child of this._children) {
             // do not use the set method because we want to insert at a particular location
             child._parent = this._parent;
             this._parent.addChild(child, loc++);
         }
-    };
+    }
     /**
      * Insert another node as a parent of this node.
      */
-    DataFlowNode.prototype.insertAsParentOf = function (other) {
-        var parent = other.parent;
+    insertAsParentOf(other) {
+        const parent = other.parent;
         parent.removeChild(this);
         this.parent = parent;
         other.parent = this;
-    };
-    DataFlowNode.prototype.swapWithParent = function () {
-        var parent = this._parent;
-        var newParent = parent.parent;
+    }
+    swapWithParent() {
+        const parent = this._parent;
+        const newParent = parent.parent;
         // reconnect the children
-        for (var _i = 0, _a = this._children; _i < _a.length; _i++) {
-            var child = _a[_i];
+        for (const child of this._children) {
             child.parent = parent;
         }
         // remove old links
@@ -114,29 +103,25 @@ var DataFlowNode = /** @class */ (function () {
         // swap two nodes
         this.parent = newParent;
         parent.parent = this;
-    };
-    return DataFlowNode;
-}());
-export { DataFlowNode };
-var OutputNode = /** @class */ (function (_super) {
-    tslib_1.__extends(OutputNode, _super);
+    }
+}
+export class OutputNode extends DataFlowNode {
     /**
      * @param source The name of the source. Will change in assemble.
      * @param type The type of the output node.
      * @param refCounts A global ref counter map.
      */
-    function OutputNode(parent, source, type, refCounts) {
-        var _this = _super.call(this, parent, source) || this;
-        _this.type = type;
-        _this.refCounts = refCounts;
-        _this._source = _this._name = source;
-        if (_this.refCounts && !(_this._name in _this.refCounts)) {
-            _this.refCounts[_this._name] = 0;
+    constructor(parent, source, type, refCounts) {
+        super(parent, source);
+        this.type = type;
+        this.refCounts = refCounts;
+        this._source = this._name = source;
+        if (this.refCounts && !(this._name in this.refCounts)) {
+            this.refCounts[this._name] = 0;
         }
-        return _this;
     }
-    OutputNode.prototype.clone = function () {
-        var cloneObj = new this.constructor();
+    clone() {
+        const cloneObj = new this.constructor();
         cloneObj.debugName = 'clone_' + this.debugName;
         cloneObj._source = this._source;
         cloneObj._name = 'clone_' + this._name;
@@ -144,7 +129,7 @@ var OutputNode = /** @class */ (function (_super) {
         cloneObj.refCounts = this.refCounts;
         cloneObj.refCounts[cloneObj._name] = 0;
         return cloneObj;
-    };
+    }
     /**
      * Request the datasource name and increase the ref counter.
      *
@@ -154,17 +139,15 @@ var OutputNode = /** @class */ (function (_super) {
      *
      * In the assemble phase, this will return the correct name.
      */
-    OutputNode.prototype.getSource = function () {
+    getSource() {
         this.refCounts[this._name]++;
         return this._source;
-    };
-    OutputNode.prototype.isRequired = function () {
+    }
+    isRequired() {
         return !!this.refCounts[this._name];
-    };
-    OutputNode.prototype.setSource = function (source) {
+    }
+    setSource(source) {
         this._source = source;
-    };
-    return OutputNode;
-}(DataFlowNode));
-export { OutputNode };
+    }
+}
 //# sourceMappingURL=dataflow.js.map

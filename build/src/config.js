@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 import { isObject } from 'vega-util';
 import { getAllCompositeMarks } from './compositemark';
 import { VL_ONLY_GUIDE_CONFIG, VL_ONLY_LEGEND_CONFIG } from './guide';
@@ -9,17 +8,17 @@ import { defaultScaleConfig } from './scale';
 import { defaultConfig as defaultSelectionConfig } from './selection';
 import { extractTitleConfig } from './title';
 import { duplicate, keys, mergeDeep } from './util';
-export var defaultViewConfig = {
+export const defaultViewConfig = {
     width: 200,
     height: 200
 };
 export function isVgScheme(rangeConfig) {
     return rangeConfig && !!rangeConfig['scheme'];
 }
-export var defaultConfig = {
+export const defaultConfig = {
     padding: 5,
     timeFormat: '%b %d, %Y',
-    countTitle: 'Number of Records',
+    countTitle: 'Count of Records',
     invalidValues: 'filter',
     view: defaultViewConfig,
     mark: mark.defaultMarkConfig,
@@ -73,8 +72,8 @@ export var defaultConfig = {
 export function initConfig(config) {
     return mergeDeep(duplicate(defaultConfig), config);
 }
-var MARK_STYLES = ['view'].concat(PRIMITIVE_MARKS);
-var VL_ONLY_CONFIG_PROPERTIES = [
+const MARK_STYLES = ['view', ...PRIMITIVE_MARKS];
+const VL_ONLY_CONFIG_PROPERTIES = [
     'padding',
     'numberFormat',
     'timeFormat',
@@ -85,49 +84,41 @@ var VL_ONLY_CONFIG_PROPERTIES = [
     'invalidValues',
     'overlay' // FIXME: Redesign and unhide this
 ];
-var VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = tslib_1.__assign({ view: ['width', 'height'] }, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
+const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = Object.assign({ view: ['width', 'height'] }, VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX);
 export function stripAndRedirectConfig(config) {
     config = duplicate(config);
-    for (var _i = 0, VL_ONLY_CONFIG_PROPERTIES_1 = VL_ONLY_CONFIG_PROPERTIES; _i < VL_ONLY_CONFIG_PROPERTIES_1.length; _i++) {
-        var prop = VL_ONLY_CONFIG_PROPERTIES_1[_i];
+    for (const prop of VL_ONLY_CONFIG_PROPERTIES) {
         delete config[prop];
     }
     // Remove Vega-Lite only axis/legend config
     if (config.axis) {
-        for (var _a = 0, VL_ONLY_GUIDE_CONFIG_1 = VL_ONLY_GUIDE_CONFIG; _a < VL_ONLY_GUIDE_CONFIG_1.length; _a++) {
-            var prop = VL_ONLY_GUIDE_CONFIG_1[_a];
+        for (const prop of VL_ONLY_GUIDE_CONFIG) {
             delete config.axis[prop];
         }
     }
     if (config.legend) {
-        for (var _b = 0, VL_ONLY_GUIDE_CONFIG_2 = VL_ONLY_GUIDE_CONFIG; _b < VL_ONLY_GUIDE_CONFIG_2.length; _b++) {
-            var prop = VL_ONLY_GUIDE_CONFIG_2[_b];
+        for (const prop of VL_ONLY_GUIDE_CONFIG) {
             delete config.legend[prop];
         }
-        for (var _c = 0, VL_ONLY_LEGEND_CONFIG_1 = VL_ONLY_LEGEND_CONFIG; _c < VL_ONLY_LEGEND_CONFIG_1.length; _c++) {
-            var prop = VL_ONLY_LEGEND_CONFIG_1[_c];
+        for (const prop of VL_ONLY_LEGEND_CONFIG) {
             delete config.legend[prop];
         }
     }
     // Remove Vega-Lite only generic mark config
     if (config.mark) {
-        for (var _d = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_1 = VL_ONLY_MARK_CONFIG_PROPERTIES; _d < VL_ONLY_MARK_CONFIG_PROPERTIES_1.length; _d++) {
-            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_1[_d];
+        for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
             delete config.mark[prop];
         }
     }
-    for (var _e = 0, MARK_STYLES_1 = MARK_STYLES; _e < MARK_STYLES_1.length; _e++) {
-        var markType = MARK_STYLES_1[_e];
+    for (const markType of MARK_STYLES) {
         // Remove Vega-Lite-only mark config
-        for (var _f = 0, VL_ONLY_MARK_CONFIG_PROPERTIES_2 = VL_ONLY_MARK_CONFIG_PROPERTIES; _f < VL_ONLY_MARK_CONFIG_PROPERTIES_2.length; _f++) {
-            var prop = VL_ONLY_MARK_CONFIG_PROPERTIES_2[_f];
+        for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
             delete config[markType][prop];
         }
         // Remove Vega-Lite only mark-specific config
-        var vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
+        const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
         if (vlOnlyMarkSpecificConfigs) {
-            for (var _g = 0, vlOnlyMarkSpecificConfigs_1 = vlOnlyMarkSpecificConfigs; _g < vlOnlyMarkSpecificConfigs_1.length; _g++) {
-                var prop = vlOnlyMarkSpecificConfigs_1[_g];
+            for (const prop of vlOnlyMarkSpecificConfigs) {
                 delete config[markType][prop];
             }
         }
@@ -136,8 +127,7 @@ export function stripAndRedirectConfig(config) {
         // For example, config.rect should not affect bar marks.
         redirectConfig(config, markType);
     }
-    for (var _h = 0, _j = getAllCompositeMarks(); _h < _j.length; _h++) {
-        var m = _j[_h];
+    for (const m of getAllCompositeMarks()) {
         // Clean up the composite mark config as we don't need them in the output specs anymore
         delete config[m];
     }
@@ -145,7 +135,7 @@ export function stripAndRedirectConfig(config) {
     // affect header labels, which also uses `title` directive to implement.
     redirectConfig(config, 'title', 'group-title');
     // Remove empty config objects
-    for (var prop in config) {
+    for (const prop in config) {
         if (isObject(config[prop]) && keys(config[prop]).length === 0) {
             delete config[prop];
         }
@@ -154,7 +144,7 @@ export function stripAndRedirectConfig(config) {
 }
 function redirectConfig(config, prop, // string = composite mark
 toProp, compositeMarkPart) {
-    var propConfig = prop === 'title'
+    const propConfig = prop === 'title'
         ? extractTitleConfig(config.title).mark
         : compositeMarkPart
             ? config[prop][compositeMarkPart]
@@ -162,7 +152,7 @@ toProp, compositeMarkPart) {
     if (prop === 'view') {
         toProp = 'cell'; // View's default style is "cell"
     }
-    var style = tslib_1.__assign({}, propConfig, config.style[prop]);
+    const style = Object.assign({}, propConfig, config.style[prop]);
     // set config.style if it is not an empty object
     if (keys(style).length > 0) {
         config.style[toProp || prop] = style;

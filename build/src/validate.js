@@ -4,7 +4,7 @@ import { BAR } from './mark';
 /**
  * Required Encoding Channels for each mark type
  */
-export var DEFAULT_REQUIRED_CHANNEL_MAP = {
+export const DEFAULT_REQUIRED_CHANNEL_MAP = {
     text: ['text'],
     line: ['x', 'y'],
     trail: ['x', 'y'],
@@ -13,7 +13,7 @@ export var DEFAULT_REQUIRED_CHANNEL_MAP = {
 /**
  * Supported Encoding Channel for each mark type
  */
-export var DEFAULT_SUPPORTED_CHANNEL_TYPE = {
+export const DEFAULT_SUPPORTED_CHANNEL_TYPE = {
     bar: toSet(['row', 'column', 'x', 'y', 'size', 'color', 'fill', 'stroke', 'detail']),
     line: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'color', 'detail']),
     trail: toSet(['row', 'column', 'x', 'y', 'color', 'fill', 'stroke', 'color', 'detail', 'size']),
@@ -40,20 +40,18 @@ export var DEFAULT_SUPPORTED_CHANNEL_TYPE = {
  * @return {String} Return one reason why the encoding is invalid,
  *                  or null if the encoding is valid.
  */
-export function getEncodingMappingError(spec, requiredChannelMap, supportedChannelMap) {
-    if (requiredChannelMap === void 0) { requiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP; }
-    if (supportedChannelMap === void 0) { supportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE; }
-    var mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
-    var encoding = spec.encoding;
-    var requiredChannels = requiredChannelMap[mark];
-    var supportedChannels = supportedChannelMap[mark];
-    for (var i in requiredChannels) {
+export function getEncodingMappingError(spec, requiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP, supportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE) {
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+    const encoding = spec.encoding;
+    const requiredChannels = requiredChannelMap[mark];
+    const supportedChannels = supportedChannelMap[mark];
+    for (const i in requiredChannels) {
         // all required channels are in encoding`
         if (!(requiredChannels[i] in encoding)) {
             return 'Missing encoding channel "' + requiredChannels[i] + '" for mark "' + mark + '"';
         }
     }
-    for (var channel in encoding) {
+    for (const channel in encoding) {
         // all channels in encoding are supported
         if (!supportedChannels[channel]) {
             return 'Encoding channel "' + channel + '" is not supported by mark type "' + mark + '"';

@@ -1,8 +1,7 @@
-import { Legend as VgLegend } from 'vega';
-import { Title as VgTitle } from 'vega';
+import { Legend as VgLegend, NewSignal, Title as VgTitle } from 'vega';
 import { Config } from '../config';
 import { LayoutSizeMixins, NormalizedLayerSpec } from '../spec';
-import { VgData, VgLayout, VgSignal } from '../vega.schema';
+import { VgData, VgLayout } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeater';
 export declare class LayerModel extends Model {
@@ -14,9 +13,9 @@ export declare class LayerModel extends Model {
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;
-    assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
-    assembleSelectionSignals(): VgSignal[];
-    assembleLayoutSignals(): VgSignal[];
+    assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+    assembleSelectionSignals(): NewSignal[];
+    assembleLayoutSignals(): NewSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     assembleTitle(): VgTitle;
     assembleLayout(): VgLayout;

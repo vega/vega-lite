@@ -1,11 +1,10 @@
-import * as tslib_1 from "tslib";
 import { flagKeys } from './util';
-export var AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
+export const AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
 /**
  * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
  * (Properties not listed are applicable for both)
  */
-export var AXIS_PROPERTY_TYPE = {
+export const AXIS_PROPERTY_TYPE = {
     grid: 'grid',
     gridColor: 'grid',
     gridDash: 'grid',
@@ -13,7 +12,7 @@ export var AXIS_PROPERTY_TYPE = {
     gridScale: 'grid',
     gridWidth: 'grid',
     orient: 'main',
-    bandPosition: 'main',
+    bandPosition: 'both',
     domain: 'main',
     domainColor: 'main',
     domainOpacity: 'main',
@@ -40,7 +39,7 @@ export var AXIS_PROPERTY_TYPE = {
     position: 'main',
     tickColor: 'main',
     tickExtra: 'main',
-    tickOffset: 'main',
+    tickOffset: 'both',
     tickOpacity: 'main',
     tickRound: 'main',
     ticks: 'main',
@@ -64,7 +63,7 @@ export var AXIS_PROPERTY_TYPE = {
     scale: 'both',
     zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
-var COMMON_AXIS_PROPERTIES_INDEX = {
+const COMMON_AXIS_PROPERTIES_INDEX = {
     orient: 1,
     bandPosition: 1,
     domain: 1,
@@ -121,12 +120,12 @@ var COMMON_AXIS_PROPERTIES_INDEX = {
     values: 1,
     zindex: 1
 };
-var AXIS_PROPERTIES_INDEX = tslib_1.__assign({}, COMMON_AXIS_PROPERTIES_INDEX, { encoding: 1, labelAngle: 1, tickStep: 1 });
-var VG_AXIS_PROPERTIES_INDEX = tslib_1.__assign({ gridScale: 1, scale: 1 }, COMMON_AXIS_PROPERTIES_INDEX, { encode: 1 });
+const AXIS_PROPERTIES_INDEX = Object.assign({}, COMMON_AXIS_PROPERTIES_INDEX, { encoding: 1, labelAngle: 1, tickStep: 1 });
+const VG_AXIS_PROPERTIES_INDEX = Object.assign({ gridScale: 1, scale: 1 }, COMMON_AXIS_PROPERTIES_INDEX, { encode: 1 });
 export function isAxisProperty(prop) {
     return !!AXIS_PROPERTIES_INDEX[prop];
 }
-export var VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
+export const VG_AXIS_PROPERTIES = flagKeys(VG_AXIS_PROPERTIES_INDEX);
 // Export for dependent projects
-export var AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
+export const AXIS_PROPERTIES = flagKeys(AXIS_PROPERTIES_INDEX);
 //# sourceMappingURL=axis.js.map

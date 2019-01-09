@@ -2,12 +2,12 @@ import { isArray } from 'vega-util';
 import { SUM_OPS } from './aggregate';
 import { NONPOSITION_CHANNELS, X, X2, Y2 } from './channel';
 import { channelHasField } from './encoding';
-import { getFieldDef, isFieldDef, isStringFieldDef, vgField } from './fielddef';
+import { getTypedFieldDef, isFieldDef, isStringFieldDef, vgField } from './fielddef';
 import * as log from './log';
 import { AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, POINT, RULE, SQUARE, TEXT, TICK } from './mark';
 import { ScaleType } from './scale';
 import { contains, getFirstDefined } from './util';
-var STACK_OFFSET_INDEX = {
+const STACK_OFFSET_INDEX = {
     zero: 1,
     center: 1,
     normalize: 1
@@ -15,11 +15,11 @@ var STACK_OFFSET_INDEX = {
 export function isStackOffset(s) {
     return !!STACK_OFFSET_INDEX[s];
 }
-export var STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
-export var STACK_BY_DEFAULT_MARKS = [BAR, AREA];
+export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
+export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 function potentialStackedChannel(encoding) {
-    var xDef = encoding.x;
-    var yDef = encoding.y;
+    const xDef = encoding.x;
+    const yDef = encoding.y;
     if (isFieldDef(xDef) && isFieldDef(yDef)) {
         if (xDef.type === 'quantitative' && yDef.type === 'quantitative') {
             if (xDef.stack) {
@@ -51,37 +51,37 @@ function potentialStackedChannel(encoding) {
 // Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
 export function stack(m, encoding, stackConfig) {
-    var mark = isMarkDef(m) ? m.type : m;
+    const mark = isMarkDef(m) ? m.type : m;
     // Should have stackable mark
     if (!contains(STACKABLE_MARKS, mark)) {
         return null;
     }
-    var fieldChannel = potentialStackedChannel(encoding);
+    const fieldChannel = potentialStackedChannel(encoding);
     if (!fieldChannel) {
         return null;
     }
-    var stackedFieldDef = encoding[fieldChannel];
-    var stackedField = isStringFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
-    var dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
-    var dimensionDef = encoding[dimensionChannel];
-    var dimensionField = isStringFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+    const stackedFieldDef = encoding[fieldChannel];
+    const stackedField = isStringFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+    const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
+    const dimensionDef = encoding[dimensionChannel];
+    const dimensionField = isStringFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     // Should have grouping level of detail that is different from the dimension field
-    var stackBy = NONPOSITION_CHANNELS.reduce(function (sc, channel) {
+    const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
         if (channelHasField(encoding, channel)) {
-            var channelDef = encoding[channel];
-            (isArray(channelDef) ? channelDef : [channelDef]).forEach(function (cDef) {
-                var fieldDef = getFieldDef(cDef);
+            const channelDef = encoding[channel];
+            (isArray(channelDef) ? channelDef : [channelDef]).forEach(cDef => {
+                const fieldDef = getTypedFieldDef(cDef);
                 if (fieldDef.aggregate) {
                     return;
                 }
                 // Check whether the channel's field is identical to x/y's field or if the channel is a repeat
-                var f = isStringFieldDef(fieldDef) ? vgField(fieldDef, {}) : undefined;
+                const f = isStringFieldDef(fieldDef) ? vgField(fieldDef, {}) : undefined;
                 if (
                 // if fielddef is a repeat, just include it in the stack by
                 !f ||
                     // otherwise, the field must be different from x and y fields.
                     (f !== dimensionField && f !== stackedField)) {
-                    sc.push({ channel: channel, fieldDef: fieldDef });
+                    sc.push({ channel, fieldDef });
                 }
             });
         }
@@ -91,7 +91,7 @@ export function stack(m, encoding, stackConfig) {
         return null;
     }
     // Automatically determine offset
-    var offset;
+    let offset;
     if (stackedFieldDef.stack !== undefined) {
         offset = stackedFieldDef.stack;
     }
@@ -122,10 +122,10 @@ export function stack(m, encoding, stackConfig) {
     }
     return {
         groupbyChannel: dimensionDef ? dimensionChannel : undefined,
-        fieldChannel: fieldChannel,
+        fieldChannel,
         impute: isPathMark(mark),
-        stackBy: stackBy,
-        offset: offset
+        stackBy,
+        offset
     };
 }
 //# sourceMappingURL=stack.js.map

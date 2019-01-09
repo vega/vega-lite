@@ -1,13 +1,12 @@
 /* tslint:disable quotemark */
-import { assert } from 'chai';
 import { X, Y } from '../../../src/channel';
 import { text } from '../../../src/compile/mark/text';
 import { parseModelWithScale, parseUnitModelWithScaleAndLayoutSize } from '../../util';
-describe('Mark: Text', function () {
-    describe('with stacked x', function () {
+describe('Mark: Text', () => {
+    describe('with stacked x', () => {
         // This is a simplified example for stacked text.
         // In reality this will be used as stacked's overlayed marker
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
             mark: 'text',
             encoding: {
                 x: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -16,15 +15,15 @@ describe('Mark: Text', function () {
             data: { url: 'data/barley.json' },
             config: { stack: 'zero' }
         });
-        var props = text.encodeEntry(model);
-        it('should use stack_end on x', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'sum_a_end' });
+        const props = text.encodeEntry(model);
+        it('should use stack_end on x', () => {
+            expect(props.x).toEqual({ scale: X, field: 'sum_a_end' });
         });
     });
-    describe('with stacked y', function () {
+    describe('with stacked y', () => {
         // This is a simplified example for stacked text.
         // In reality this will be used as stacked's overlayed marker
-        var model = parseUnitModelWithScaleAndLayoutSize({
+        const model = parseUnitModelWithScaleAndLayoutSize({
             mark: 'text',
             encoding: {
                 y: { aggregate: 'sum', field: 'a', type: 'quantitative' },
@@ -33,54 +32,54 @@ describe('Mark: Text', function () {
             data: { url: 'data/barley.json' },
             config: { stack: 'zero' }
         });
-        var props = text.encodeEntry(model);
-        it('should use stack_end on y', function () {
-            assert.deepEqual(props.y, { scale: Y, field: 'sum_a_end' });
+        const props = text.encodeEntry(model);
+        it('should use stack_end on y', () => {
+            expect(props.y).toEqual({ scale: Y, field: 'sum_a_end' });
         });
     });
-    describe('with quantitative and format', function () {
-        var spec = {
+    describe('with quantitative and format', () => {
+        const spec = {
             mark: 'text',
             encoding: {
                 text: { field: 'foo', type: 'quantitative', format: 'd' }
             }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should use number template', function () {
-            expect(props.text).toEqual({ signal: "format(datum[\"foo\"], \"d\")" });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should use number template', () => {
+            expect(props.text).toEqual({ signal: `format(datum["foo"], "d")` });
         });
     });
-    describe('with binned quantitative', function () {
-        var spec = {
+    describe('with binned quantitative', () => {
+        const spec = {
             mark: 'text',
             encoding: {
                 text: { bin: true, field: 'foo', type: 'quantitative', format: 'd' }
             }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should output correct bin range', function () {
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should output correct bin range', () => {
             expect(props.text).toEqual({
-                signal: "datum[\"bin_maxbins_10_foo\"] === null || isNaN(datum[\"bin_maxbins_10_foo\"]) ? \"null\" : format(datum[\"bin_maxbins_10_foo\"], \"d\") + \" - \" + format(datum[\"bin_maxbins_10_foo_end\"], \"d\")"
+                signal: `datum["bin_maxbins_10_foo"] === null || isNaN(datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + " - " + format(datum["bin_maxbins_10_foo_end"], "d")`
             });
         });
     });
-    describe('with temporal', function () {
-        var spec = {
+    describe('with temporal', () => {
+        const spec = {
             mark: 'text',
             encoding: {
                 text: { field: 'foo', type: 'temporal' }
             }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should use date template', function () {
-            assert.deepEqual(props.text, { signal: "timeFormat(datum[\"foo\"], '%b %d, %Y')" });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should use date template', () => {
+            expect(props.text).toEqual({ signal: `timeFormat(datum["foo"], '%b %d, %Y')` });
         });
     });
-    describe('with x, y, text (ordinal)', function () {
-        var spec = {
+    describe('with x, y, text (ordinal)', () => {
+        const spec = {
             mark: 'text',
             encoding: {
                 x: { field: 'Acceleration', type: 'ordinal' },
@@ -89,37 +88,37 @@ describe('Mark: Text', function () {
             },
             data: { url: 'data/cars.json' }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should scale on x', function () {
-            assert.deepEqual(props.x, { scale: X, field: 'Acceleration' });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should scale on x', () => {
+            expect(props.x).toEqual({ scale: X, field: 'Acceleration' });
         });
-        it('should scale on y', function () {
-            assert.deepEqual(props.y, { scale: Y, field: 'Displacement' });
+        it('should scale on y', () => {
+            expect(props.y).toEqual({ scale: Y, field: 'Displacement' });
         });
-        it('should be centered', function () {
-            assert.deepEqual(props.align, { value: 'center' });
+        it('should be centered', () => {
+            expect(props.align).toEqual({ value: 'center' });
         });
-        it('should map text without template', function () {
-            assert.deepEqual(props.text, { signal: "''+datum[\"Origin\"]" });
+        it('should map text without template', () => {
+            expect(props.text).toEqual({ signal: `''+datum["Origin"]` });
         });
     });
-    describe('with size in mark def', function () {
-        var spec = {
+    describe('with size in mark def', () => {
+        const spec = {
             mark: { type: 'text', size: 5 },
             encoding: {
                 text: { field: 'Origin', type: 'ordinal' }
             },
             data: { url: 'data/cars.json' }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should map size to fontSize', function () {
-            assert.deepEqual(props.fontSize, { value: 5 });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should map size to fontSize', () => {
+            expect(props.fontSize).toEqual({ value: 5 });
         });
     });
-    describe('with config.text.size', function () {
-        var spec = {
+    describe('with config.text.size', () => {
+        const spec = {
             mark: { type: 'text' },
             encoding: {
                 text: { field: 'Origin', type: 'ordinal' }
@@ -127,14 +126,14 @@ describe('Mark: Text', function () {
             data: { url: 'data/cars.json' },
             config: { text: { size: 25 } }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should map size to fontSize', function () {
-            assert.deepEqual(props.fontSize, { value: 25 });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should map size to fontSize', () => {
+            expect(props.fontSize).toEqual({ value: 25 });
         });
     });
-    describe('with config.text.size', function () {
-        var spec = {
+    describe('with config.text.size', () => {
+        const spec = {
             mark: { type: 'text' },
             encoding: {
                 text: { field: 'Origin', type: 'ordinal' }
@@ -142,14 +141,14 @@ describe('Mark: Text', function () {
             data: { url: 'data/cars.json' },
             config: { text: { fontSize: 25 } }
         };
-        var model = parseUnitModelWithScaleAndLayoutSize(spec);
-        var props = text.encodeEntry(model);
-        it('should map size to fontSize', function () {
-            assert.deepEqual(props.fontSize, { value: 25 });
+        const model = parseUnitModelWithScaleAndLayoutSize(spec);
+        const props = text.encodeEntry(model);
+        it('should map size to fontSize', () => {
+            expect(props.fontSize).toEqual({ value: 25 });
         });
     });
-    describe('with row, column, text, color, and size', function () {
-        var spec = {
+    describe('with row, column, text, color, and size', () => {
+        const spec = {
             mark: 'text',
             encoding: {
                 row: { field: 'Origin', type: 'ordinal' },
@@ -160,25 +159,25 @@ describe('Mark: Text', function () {
             },
             data: { url: 'data/cars.json' }
         };
-        var model = parseModelWithScale(spec);
+        const model = parseModelWithScale(spec);
         model.parseLayoutSize();
-        var childModel = model.children[0];
-        var props = text.encodeEntry(childModel);
-        it('should fit the view on x', function () {
-            assert.deepEqual(props.x, { signal: 'child_width', mult: 0.5 });
+        const childModel = model.children[0];
+        const props = text.encodeEntry(childModel);
+        it('should fit the view on x', () => {
+            expect(props.x).toEqual({ signal: 'child_width', mult: 0.5 });
         });
-        it('should center on y', function () {
-            assert.deepEqual(props.y, {
+        it('should center on y', () => {
+            expect(props.y).toEqual({
                 mult: 0.5,
                 signal: 'child_height'
             });
         });
-        it('should map text to expression', function () {
-            assert.deepEqual(props.text, {
-                signal: "format(datum[\"mean_Acceleration\"], \"\")"
+        it('should map text to expression', () => {
+            expect(props.text).toEqual({
+                signal: `format(datum["mean_Acceleration"], "")`
             });
         });
-        it('should map color to fill', function () {
+        it('should map color to fill', () => {
             expect(props.fill).toEqual([
                 {
                     test: 'datum["mean_Acceleration"] === null || isNaN(datum["mean_Acceleration"])',
@@ -190,8 +189,8 @@ describe('Mark: Text', function () {
                 }
             ]);
         });
-        it('should map size to fontSize', function () {
-            assert.deepEqual(props.fontSize, {
+        it('should map size to fontSize', () => {
+            expect(props.fontSize).toEqual({
                 scale: 'size',
                 field: 'mean_Acceleration'
             });

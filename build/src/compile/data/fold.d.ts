@@ -8,7 +8,7 @@ export declare class FoldTransformNode extends DataFlowNode {
     private transform;
     clone(): FoldTransformNode;
     constructor(parent: DataFlowNode, transform: FoldTransform);
-    producedFields(): {};
+    producedFields(): Set<string>;
     hash(): string;
     assemble(): VgFoldTransform;
 }

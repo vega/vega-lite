@@ -1,26 +1,25 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { AncestorParse } from '../../../src/compile/data';
 import { DataFlowNode } from '../../../src/compile/data/dataflow';
 import { ParseNode } from '../../../src/compile/data/formatparse';
 import { parseTransformArray } from '../../../src/compile/data/parse';
 import * as log from '../../../src/log';
 import { parseFacetModel, parseUnitModel } from '../../util';
-describe('compile/data/formatparse', function () {
-    describe('parseUnit', function () {
-        it('should flatten nested fields that are used to sort domains', function () {
-            var model = parseUnitModel({
+describe('compile/data/formatparse', () => {
+    describe('parseUnit', () => {
+        it('should flatten nested fields that are used to sort domains', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'ordinal', sort: { field: 'foo.bar', op: 'mean' } }
                 }
             });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse, {
+            expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()).parse).toEqual({
                 'foo.bar': 'flatten'
             });
         });
-        it('should return a correct customized parse.', function () {
-            var model = parseUnitModel({
+        it('should return a correct customized parse.', () => {
+            const model = parseUnitModel({
                 data: { url: 'a.json', format: { parse: { c: 'number', d: 'date' } } },
                 mark: 'point',
                 encoding: {
@@ -30,7 +29,7 @@ describe('compile/data/formatparse', function () {
                     shape: { field: 'c', type: 'nominal' }
                 }
             });
-            var ancestorParese = new AncestorParse();
+            const ancestorParese = new AncestorParse();
             expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParese).parse).toEqual({
                 b: 'date'
             });
@@ -39,8 +38,8 @@ describe('compile/data/formatparse', function () {
                 d: 'date'
             });
         });
-        it('should include parse for all applicable fields, and exclude calculated fields', function () {
-            var model = parseUnitModel({
+        it('should include parse for all applicable fields, and exclude calculated fields', () => {
+            const model = parseUnitModel({
                 transform: [{ calculate: 'datum["b"] * 2', as: 'b2' }],
                 mark: 'point',
                 encoding: {
@@ -50,16 +49,16 @@ describe('compile/data/formatparse', function () {
                     size: { field: 'b2', type: 'quantitative' }
                 }
             });
-            var ancestorParse = new AncestorParse();
-            var parent = new DataFlowNode(null);
+            const ancestorParse = new AncestorParse();
+            const parent = new DataFlowNode(null);
             parseTransformArray(parent, model, ancestorParse);
             expect(ancestorParse.combine()).toEqual({ b2: 'derived' });
             expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse).parse).toEqual({
                 a: 'date'
             });
         });
-        it('should not parse fields with aggregate=missing/valid/distinct', function () {
-            var model = parseUnitModel({
+        it('should not parse fields with aggregate=missing/valid/distinct', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { aggregate: 'missing', field: 'b', type: 'quantitative' },
@@ -67,10 +66,10 @@ describe('compile/data/formatparse', function () {
                     color: { aggregate: 'distinct', field: 'b', type: 'quantitative' }
                 }
             });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse()), null);
+            expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toEqual(null);
         });
-        it('should not parse the same field twice', function () {
-            var model = parseFacetModel({
+        it('should not parse the same field twice', () => {
+            const model = parseFacetModel({
                 data: {
                     values: [],
                     format: {
@@ -90,23 +89,23 @@ describe('compile/data/formatparse', function () {
                     }
                 }
             });
-            assert.deepEqual(ParseNode.makeExplicit(null, model, new AncestorParse()).parse, {
+            expect(ParseNode.makeExplicit(null, model, new AncestorParse()).parse).toEqual({
                 a: 'number'
             });
             model.parseScale();
             model.parseData();
-            assert.deepEqual(model.child.component.data.ancestorParse.combine(), {
+            expect(model.child.component.data.ancestorParse.combine()).toEqual({
                 a: 'number',
                 b: 'date'
             });
             // set the ancestor parse to see whether fields from it are not parsed
             model.child.component.data.ancestorParse = new AncestorParse({ a: 'number' });
-            assert.deepEqual(ParseNode.makeImplicitFromEncoding(null, model.child, model.child.component.data.ancestorParse).parse, {
+            expect(ParseNode.makeImplicitFromEncoding(null, model.child, model.child.component.data.ancestorParse).parse).toEqual({
                 b: 'date'
             });
         });
-        it('should not parse the same field twice in explicit', function () {
-            var model = parseUnitModel({
+        it('should not parse the same field twice in explicit', () => {
+            const model = parseUnitModel({
                 data: {
                     values: [],
                     format: {
@@ -118,19 +117,19 @@ describe('compile/data/formatparse', function () {
                 mark: 'point',
                 encoding: {}
             });
-            assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({ a: 'number' }, {})));
+            expect(ParseNode.makeExplicit(null, model, new AncestorParse({ a: 'number' }, {}))).toBeNull();
         });
-        it('should not parse the same field twice in implicit', function () {
-            var model = parseUnitModel({
+        it('should not parse the same field twice in implicit', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'quantitative' }
                 }
             });
-            assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({ a: 'number' }, {})));
+            expect(ParseNode.makeExplicit(null, model, new AncestorParse({ a: 'number' }, {}))).toBeNull();
         });
-        it('should not parse counts', function () {
-            var model = parseUnitModel({
+        it('should not parse counts', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { aggregate: 'sum', field: 'foo', type: 'quantitative' },
@@ -139,8 +138,8 @@ describe('compile/data/formatparse', function () {
             });
             expect(ParseNode.makeImplicitFromEncoding(null, model, new AncestorParse())).toBeNull();
         });
-        it('should add flatten for nested fields', function () {
-            var model = parseUnitModel({
+        it('should add flatten for nested fields', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 encoding: {
                     x: { field: 'foo.bar', type: 'quantitative' },
@@ -152,8 +151,8 @@ describe('compile/data/formatparse', function () {
                 'foo.baz': 'flatten'
             });
         });
-        it('should not parse if parse is disabled for a field', function () {
-            var model = parseUnitModel({
+        it('should not parse if parse is disabled for a field', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 data: {
                     values: [],
@@ -168,15 +167,15 @@ describe('compile/data/formatparse', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            var ancestorParse = new AncestorParse();
-            assert.isNull(ParseNode.makeExplicit(null, model, ancestorParse), null);
-            assert.deepEqual(ancestorParse.combine(), {
+            const ancestorParse = new AncestorParse();
+            expect(ParseNode.makeExplicit(null, model, ancestorParse)).toBeNull();
+            expect(ancestorParse.combine()).toEqual({
                 b: null
             });
             expect(ParseNode.makeImplicitFromEncoding(null, model, ancestorParse)).toBeNull();
         });
-        it('should not parse if parse is disabled', function () {
-            var model = parseUnitModel({
+        it('should not parse if parse is disabled', () => {
+            const model = parseUnitModel({
                 mark: 'point',
                 data: {
                     values: [],
@@ -189,12 +188,12 @@ describe('compile/data/formatparse', function () {
                     y: { field: 'b', type: 'quantitative' }
                 }
             });
-            assert.isNull(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true)));
+            expect(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true))).toBeNull();
         });
     });
-    describe('assembleTransforms', function () {
-        it('should assemble correct parse expressions', function () {
-            var p = new ParseNode(null, {
+    describe('assembleTransforms', () => {
+        it('should assemble correct parse expressions', () => {
+            const p = new ParseNode(null, {
                 n: 'number',
                 b: 'boolean',
                 s: 'string',
@@ -202,7 +201,7 @@ describe('compile/data/formatparse', function () {
                 d2: 'date:"%y"',
                 d3: 'utc:"%y"'
             });
-            assert.deepEqual(p.assembleTransforms(), [
+            expect(p.assembleTransforms()).toEqual([
                 { type: 'formula', expr: 'toNumber(datum["n"])', as: 'n' },
                 { type: 'formula', expr: 'toBoolean(datum["b"])', as: 'b' },
                 { type: 'formula', expr: 'toString(datum["s"])', as: 's' },
@@ -211,50 +210,50 @@ describe('compile/data/formatparse', function () {
                 { type: 'formula', expr: 'utcParse(datum["d3"],"%y")', as: 'd3' }
             ]);
         });
-        it('should assemble flatten for nested fields', function () {
-            var p = new ParseNode(null, {
+        it('should assemble flatten for nested fields', () => {
+            const p = new ParseNode(null, {
                 flat: 'number',
                 'nested.field': 'flatten'
             });
-            assert.deepEqual(p.assembleTransforms(true), [
+            expect(p.assembleTransforms(true)).toEqual([
                 { type: 'formula', expr: 'datum["nested"] && datum["nested"]["field"]', as: 'nested.field' }
             ]);
         });
-        it('should show warning for unrecognized types', log.wrap(function (localLogger) {
-            var p = new ParseNode(null, {
+        it('should show warning for unrecognized types', log.wrap(localLogger => {
+            const p = new ParseNode(null, {
                 x: 'foo'
             });
-            assert.deepEqual(p.assembleTransforms(), []);
-            assert.equal(localLogger.warns[0], log.message.unrecognizedParse('foo'));
+            expect(p.assembleTransforms()).toEqual([]);
+            expect(localLogger.warns[0]).toEqual(log.message.unrecognizedParse('foo'));
         }));
     });
-    describe('assembleFormatParse', function () {
-        it('should assemble correct parse', function () {
-            var p = new ParseNode(null, {
+    describe('assembleFormatParse', () => {
+        it('should assemble correct parse', () => {
+            const p = new ParseNode(null, {
                 n: 'number',
                 b: 'boolean',
                 'nested.field': 'flatten'
             });
-            assert.deepEqual(p.assembleFormatParse(), {
+            expect(p.assembleFormatParse()).toEqual({
                 n: 'number',
                 b: 'boolean'
             });
         });
     });
-    describe('producedFields', function () {
-        it('should produce the correct fields', function () {
-            var p = new ParseNode(null, {
+    describe('producedFields', () => {
+        it('should produce the correct fields', () => {
+            const p = new ParseNode(null, {
                 n: 'number',
                 b: 'boolean',
                 'nested.field': 'flatten'
             });
-            assert.deepEqual(p.producedFields(), { n: true, b: true, 'nested.field': true });
+            expect(p.producedFields()).toEqual(new Set(['n', 'b', 'nested.field']));
         });
     });
-    describe('clone', function () {
-        it('should never clone parent', function () {
-            var parent = new DataFlowNode(null);
-            var parse = new ParseNode(parent, {});
+    describe('clone', () => {
+        it('should never clone parent', () => {
+            const parent = new DataFlowNode(null);
+            const parse = new ParseNode(parent, {});
             expect(parse.clone().parent).toBeNull();
         });
     });

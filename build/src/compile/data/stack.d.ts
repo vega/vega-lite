@@ -1,7 +1,7 @@
-import { FieldDef } from '../../fielddef';
+import { TypedFieldDef } from '../../fielddef';
 import { StackOffset } from '../../stack';
 import { StackTransform } from '../../transform';
-import { VgSort, VgTransform } from '../../vega.schema';
+import { VgCompare, VgTransform } from '../../vega.schema';
 import { UnitModel } from '../unit';
 import { DataFlowNode } from './dataflow';
 export interface StackComponent {
@@ -9,7 +9,7 @@ export interface StackComponent {
      * Faceted field.
      */
     facetby: string[];
-    dimensionFieldDef?: FieldDef<string>;
+    dimensionFieldDef?: TypedFieldDef<string>;
     /**
      * Stack measure's field. Used in makeFromEncoding.
      */
@@ -23,7 +23,7 @@ export interface StackComponent {
      * Field that determines order of levels in the stacked charts.
      * Used in both but optional in transform.
      */
-    sort: VgSort;
+    sort: VgCompare;
     /** Mode for stacking marks.
      */
     offset: StackOffset;
@@ -48,8 +48,8 @@ export declare class StackNode extends DataFlowNode {
     static makeFromEncoding(parent: DataFlowNode, model: UnitModel): StackNode;
     readonly stack: StackComponent;
     addDimensions(fields: string[]): void;
-    dependentFields(): {};
-    producedFields(): {};
+    dependentFields(): Set<any>;
+    producedFields(): Set<string>;
     hash(): string;
     private getGroupbyFields;
     assemble(): VgTransform[];

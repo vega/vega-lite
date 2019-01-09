@@ -1,13 +1,13 @@
 import * as tslib_1 from "tslib";
 import { isObject } from 'vega-util';
-import { COLUMN, ROW, X, X2, Y, Y2 } from './channel';
+import { COLUMN, ROW } from './channel';
 import * as compositeMark from './compositemark';
-import { channelHasField, isRanged } from './encoding';
+import { channelHasField } from './encoding';
 import * as log from './log';
 import { isMarkDef, isPathMark, isPrimitiveMark } from './mark';
 import { isFacetSpec, isHConcatSpec, isLayerSpec, isRepeatSpec, isUnitSpec, isVConcatSpec } from './spec';
 import { stack } from './stack';
-import { duplicate, keys, omit, pick } from './util';
+import { keys, omit, pick } from './util';
 export function normalizeTopLevelSpec(spec, config) {
     return normalize(spec, config);
 }
@@ -31,8 +31,8 @@ function normalize(spec, config) {
         return normalizeHConcat(spec, config);
     }
     if (isUnitSpec(spec)) {
-        var hasRow = channelHasField(spec.encoding, ROW);
-        var hasColumn = channelHasField(spec.encoding, COLUMN);
+        const hasRow = channelHasField(spec.encoding, ROW);
+        const hasColumn = channelHasField(spec.encoding, COLUMN);
         if (hasRow || hasColumn) {
             return normalizeFacetedUnit(spec, config);
         }
@@ -41,15 +41,15 @@ function normalize(spec, config) {
     throw new Error(log.message.INVALID_SPEC);
 }
 function normalizeFacet(spec, config) {
-    var subspec = spec.spec, rest = tslib_1.__rest(spec, ["spec"]);
-    return tslib_1.__assign({}, rest, { 
+    const { spec: subspec } = spec, rest = tslib_1.__rest(spec, ["spec"]);
+    return Object.assign({}, rest, { 
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
         spec: normalize(subspec, config) });
 }
 function mergeEncoding(opt) {
-    var parentEncoding = opt.parentEncoding, encoding = opt.encoding;
+    const { parentEncoding, encoding } = opt;
     if (parentEncoding && encoding) {
-        var overriden = keys(parentEncoding).reduce(function (o, key) {
+        const overriden = keys(parentEncoding).reduce((o, key) => {
             if (encoding[key]) {
                 o.push(key);
             }
@@ -59,21 +59,21 @@ function mergeEncoding(opt) {
             log.warn(log.message.encodingOverridden(overriden));
         }
     }
-    var merged = tslib_1.__assign({}, (parentEncoding || {}), (encoding || {}));
+    const merged = Object.assign({}, (parentEncoding || {}), (encoding || {}));
     return keys(merged).length > 0 ? merged : undefined;
 }
 function mergeProjection(opt) {
-    var parentProjection = opt.parentProjection, projection = opt.projection;
+    const { parentProjection, projection } = opt;
     if (parentProjection && projection) {
-        log.warn(log.message.projectionOverridden({ parentProjection: parentProjection, projection: projection }));
+        log.warn(log.message.projectionOverridden({ parentProjection, projection }));
     }
     return projection || parentProjection;
 }
 function normalizeLayer(spec, config, parentEncoding, parentProjection) {
-    var layer = spec.layer, encoding = spec.encoding, projection = spec.projection, rest = tslib_1.__rest(spec, ["layer", "encoding", "projection"]);
-    var mergedEncoding = mergeEncoding({ parentEncoding: parentEncoding, encoding: encoding });
-    var mergedProjection = mergeProjection({ parentProjection: parentProjection, projection: projection });
-    return tslib_1.__assign({}, rest, { layer: layer.map(function (subspec) {
+    const { layer, encoding, projection } = spec, rest = tslib_1.__rest(spec, ["layer", "encoding", "projection"]);
+    const mergedEncoding = mergeEncoding({ parentEncoding, encoding });
+    const mergedProjection = mergeProjection({ parentProjection, projection });
+    return Object.assign({}, rest, { layer: layer.map(subspec => {
             if (isLayerSpec(subspec)) {
                 return normalizeLayer(subspec, config, mergedEncoding, mergedProjection);
             }
@@ -81,24 +81,24 @@ function normalizeLayer(spec, config, parentEncoding, parentProjection) {
         }) });
 }
 function normalizeRepeat(spec, config) {
-    var subspec = spec.spec, rest = tslib_1.__rest(spec, ["spec"]);
-    return tslib_1.__assign({}, rest, { spec: normalize(subspec, config) });
+    const { spec: subspec } = spec, rest = tslib_1.__rest(spec, ["spec"]);
+    return Object.assign({}, rest, { spec: normalize(subspec, config) });
 }
 function normalizeVConcat(spec, config) {
-    var vconcat = spec.vconcat, rest = tslib_1.__rest(spec, ["vconcat"]);
-    return tslib_1.__assign({}, rest, { vconcat: vconcat.map(function (subspec) { return normalize(subspec, config); }) });
+    const { vconcat: vconcat } = spec, rest = tslib_1.__rest(spec, ["vconcat"]);
+    return Object.assign({}, rest, { vconcat: vconcat.map(subspec => normalize(subspec, config)) });
 }
 function normalizeHConcat(spec, config) {
-    var hconcat = spec.hconcat, rest = tslib_1.__rest(spec, ["hconcat"]);
-    return tslib_1.__assign({}, rest, { hconcat: hconcat.map(function (subspec) { return normalize(subspec, config); }) });
+    const { hconcat: hconcat } = spec, rest = tslib_1.__rest(spec, ["hconcat"]);
+    return Object.assign({}, rest, { hconcat: hconcat.map(subspec => normalize(subspec, config)) });
 }
 function normalizeFacetedUnit(spec, config) {
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
-    var _a = spec.encoding, row = _a.row, column = _a.column, encoding = tslib_1.__rest(_a, ["row", "column"]);
+    const _a = spec.encoding, { row: row, column: column } = _a, encoding = tslib_1.__rest(_a, ["row", "column"]);
     // Mark and encoding should be moved into the inner spec
-    var mark = spec.mark, width = spec.width, projection = spec.projection, height = spec.height, selection = spec.selection, _ = spec.encoding, outerSpec = tslib_1.__rest(spec, ["mark", "width", "projection", "height", "selection", "encoding"]);
-    return tslib_1.__assign({}, outerSpec, { facet: tslib_1.__assign({}, (row ? { row: row } : {}), (column ? { column: column } : {})), spec: normalizeNonFacetUnit(tslib_1.__assign({}, (projection ? { projection: projection } : {}), { mark: mark }, (width ? { width: width } : {}), (height ? { height: height } : {}), { encoding: encoding }, (selection ? { selection: selection } : {})), config) });
+    const { mark, width, projection, height, selection, encoding: _ } = spec, outerSpec = tslib_1.__rest(spec, ["mark", "width", "projection", "height", "selection", "encoding"]);
+    return Object.assign({}, outerSpec, { facet: Object.assign({}, (row ? { row } : {}), (column ? { column } : {})), spec: normalizeNonFacetUnit(Object.assign({}, (projection ? { projection } : {}), { mark }, (width ? { width } : {}), (height ? { height } : {}), { encoding }, (selection ? { selection } : {})), config) });
 }
 function isNonFacetUnitSpecWithPrimitiveMark(spec) {
     return isPrimitiveMark(spec.mark);
@@ -145,22 +145,19 @@ function getLineOverlay(markDef, markConfig) {
     }
 }
 function normalizeNonFacetUnit(spec, config, parentEncoding, parentProjection) {
-    var encoding = spec.encoding, projection = spec.projection;
-    var mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+    const { encoding, projection } = spec;
+    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
     // merge parent encoding / projection first
     if (parentEncoding || parentProjection) {
-        var mergedProjection = mergeProjection({ parentProjection: parentProjection, projection: projection });
-        var mergedEncoding = mergeEncoding({ parentEncoding: parentEncoding, encoding: encoding });
-        return normalizeNonFacetUnit(tslib_1.__assign({}, spec, (mergedProjection ? { projection: mergedProjection } : {}), (mergedEncoding ? { encoding: mergedEncoding } : {})), config);
+        const mergedProjection = mergeProjection({ parentProjection, projection });
+        const mergedEncoding = mergeEncoding({ parentEncoding, encoding });
+        return normalizeNonFacetUnit(Object.assign({}, spec, (mergedProjection ? { projection: mergedProjection } : {}), (mergedEncoding ? { encoding: mergedEncoding } : {})), config);
     }
     if (isNonFacetUnitSpecWithPrimitiveMark(spec)) {
         // TODO: thoroughly test
-        if (isRanged(encoding)) {
-            return normalizeRangedUnit(spec);
-        }
         if (mark === 'line' && (encoding.x2 || encoding.y2)) {
             log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
-            return normalizeNonFacetUnit(tslib_1.__assign({ mark: 'rule' }, spec), config, parentEncoding, parentProjection);
+            return normalizeNonFacetUnit(Object.assign({ mark: 'rule' }, spec), config, parentEncoding, parentProjection);
         }
         if (isPathMark(mark)) {
             return normalizePathOverlay(spec, config);
@@ -171,64 +168,43 @@ function normalizeNonFacetUnit(spec, config, parentEncoding, parentProjection) {
         return compositeMark.normalize(spec, config);
     }
 }
-function normalizeRangedUnit(spec) {
-    var hasX = channelHasField(spec.encoding, X);
-    var hasY = channelHasField(spec.encoding, Y);
-    var hasX2 = channelHasField(spec.encoding, X2);
-    var hasY2 = channelHasField(spec.encoding, Y2);
-    if ((hasX2 && !hasX) || (hasY2 && !hasY)) {
-        var normalizedSpec = duplicate(spec);
-        if (hasX2 && !hasX) {
-            normalizedSpec.encoding.x = normalizedSpec.encoding.x2;
-            delete normalizedSpec.encoding.x2;
-        }
-        if (hasY2 && !hasY) {
-            normalizedSpec.encoding.y = normalizedSpec.encoding.y2;
-            delete normalizedSpec.encoding.y2;
-        }
-        return normalizedSpec;
-    }
-    return spec;
-}
 function dropLineAndPoint(markDef) {
-    var _point = markDef.point, _line = markDef.line, mark = tslib_1.__rest(markDef, ["point", "line"]);
+    const { point: _point, line: _line } = markDef, mark = tslib_1.__rest(markDef, ["point", "line"]);
     return keys(mark).length > 1 ? mark : mark.type;
 }
-function normalizePathOverlay(spec, config) {
-    if (config === void 0) { config = {}; }
-    var _a;
+function normalizePathOverlay(spec, config = {}) {
     // _ is used to denote a dropped property of the unit spec
     // which should not be carried over to the layer spec
-    var selection = spec.selection, projection = spec.projection, encoding = spec.encoding, mark = spec.mark, outerSpec = tslib_1.__rest(spec, ["selection", "projection", "encoding", "mark"]);
-    var markDef = isMarkDef(mark) ? mark : { type: mark };
-    var pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
-    var lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
+    const { selection, projection, encoding, mark } = spec, outerSpec = tslib_1.__rest(spec, ["selection", "projection", "encoding", "mark"]);
+    const markDef = isMarkDef(mark) ? mark : { type: mark };
+    const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
+    const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
     if (!pointOverlay && !lineOverlay) {
-        return tslib_1.__assign({}, spec, { 
+        return Object.assign({}, spec, { 
             // Do not include point / line overlay in the normalize spec
             mark: dropLineAndPoint(markDef) });
     }
-    var layer = [
-        tslib_1.__assign({}, (selection ? { selection: selection } : {}), { 
+    const layer = [
+        Object.assign({}, (selection ? { selection } : {}), { 
             // Do not include point / line overlay in the normalize spec
-            mark: dropLineAndPoint(tslib_1.__assign({}, markDef, (markDef.type === 'area' ? { opacity: 0.7 } : {}))), 
+            mark: dropLineAndPoint(Object.assign({}, markDef, (markDef.type === 'area' ? { opacity: 0.7 } : {}))), 
             // drop shape from encoding as this might be used to trigger point overlay
             encoding: omit(encoding, ['shape']) })
     ];
     // FIXME: determine rules for applying selections.
     // Need to copy stack config to overlayed layer
-    var stackProps = stack(markDef, encoding, config ? config.stack : undefined);
-    var overlayEncoding = encoding;
+    const stackProps = stack(markDef, encoding, config ? config.stack : undefined);
+    let overlayEncoding = encoding;
     if (stackProps) {
-        var stackFieldChannel = stackProps.fieldChannel, offset = stackProps.offset;
-        overlayEncoding = tslib_1.__assign({}, encoding, (_a = {}, _a[stackFieldChannel] = tslib_1.__assign({}, encoding[stackFieldChannel], (offset ? { stack: offset } : {})), _a));
+        const { fieldChannel: stackFieldChannel, offset } = stackProps;
+        overlayEncoding = Object.assign({}, encoding, { [stackFieldChannel]: Object.assign({}, encoding[stackFieldChannel], (offset ? { stack: offset } : {})) });
     }
     if (lineOverlay) {
-        layer.push(tslib_1.__assign({}, (projection ? { projection: projection } : {}), { mark: tslib_1.__assign({ type: 'line' }, pick(markDef, ['clip', 'interpolate', 'tension']), lineOverlay), encoding: overlayEncoding }));
+        layer.push(Object.assign({}, (projection ? { projection } : {}), { mark: Object.assign({ type: 'line' }, pick(markDef, ['clip', 'interpolate', 'tension']), lineOverlay), encoding: overlayEncoding }));
     }
     if (pointOverlay) {
-        layer.push(tslib_1.__assign({}, (projection ? { projection: projection } : {}), { mark: tslib_1.__assign({ type: 'point', opacity: 1, filled: true }, pick(markDef, ['clip']), pointOverlay), encoding: overlayEncoding }));
+        layer.push(Object.assign({}, (projection ? { projection } : {}), { mark: Object.assign({ type: 'point', opacity: 1, filled: true }, pick(markDef, ['clip']), pointOverlay), encoding: overlayEncoding }));
     }
-    return tslib_1.__assign({}, outerSpec, { layer: layer });
+    return Object.assign({}, outerSpec, { layer });
 }
 //# sourceMappingURL=normalize.js.map

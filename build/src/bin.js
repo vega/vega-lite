@@ -7,7 +7,7 @@ export function binToString(bin) {
     }
     return ('bin' +
         keys(bin)
-            .map(function (p) { return varName("_" + p + "_" + bin[p]); })
+            .map(p => varName(`_${p}_${bin[p]}`))
             .join(''));
 }
 export function isBinning(bin) {

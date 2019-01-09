@@ -1,25 +1,23 @@
-import { DataFlowNode } from './../../../src/compile/data/dataflow';
-/* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { TimeUnitNode } from '../../../src/compile/data/timeunit';
 import { parseUnitModel } from '../../util';
+import { DataFlowNode } from './../../../src/compile/data/dataflow';
 function assembleFromEncoding(model) {
     return TimeUnitNode.makeFromEncoding(null, model).assemble();
 }
 function assembleFromTransform(t) {
     return TimeUnitNode.makeFromTransform(null, t).assemble();
 }
-describe('compile/data/timeunit', function () {
-    describe('parseUnit', function () {
-        it('should return a dictionary of formula transform', function () {
-            var model = parseUnitModel({
+describe('compile/data/timeunit', () => {
+    describe('parseUnit', () => {
+        it('should return a dictionary of formula transform', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            assert.deepEqual(assembleFromEncoding(model), [
+            expect(assembleFromEncoding(model)).toEqual([
                 {
                     type: 'formula',
                     as: 'month_a',
@@ -27,9 +25,9 @@ describe('compile/data/timeunit', function () {
                 }
             ]);
         });
-        it('should return a dictionary of formula transform from transform array', function () {
-            var t = { field: 'date', as: 'month_date', timeUnit: 'month' };
-            assert.deepEqual(assembleFromTransform(t), [
+        it('should return a dictionary of formula transform from transform array', () => {
+            const t = { field: 'date', as: 'month_date', timeUnit: 'month' };
+            expect(assembleFromTransform(t)).toEqual([
                 {
                     type: 'formula',
                     as: 'month_date',
@@ -38,23 +36,23 @@ describe('compile/data/timeunit', function () {
             ]);
         });
     });
-    describe('hash', function () {
-        it('should generate the correct hash', function () {
-            var model = parseUnitModel({
+    describe('hash', () => {
+        it('should generate the correct hash', () => {
+            const model = parseUnitModel({
                 data: { values: [] },
                 mark: 'point',
                 encoding: {
                     x: { field: 'a', type: 'temporal', timeUnit: 'month' }
                 }
             });
-            var timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
-            assert.deepEqual(timeUnitNode.hash(), 'TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
+            const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
+            expect(timeUnitNode.hash()).toEqual('TimeUnit {"month_a":{"as":"month_a","field":"a","timeUnit":"month"}}');
         });
     });
-    describe('clone', function () {
-        it('should never clone parent', function () {
-            var parent = new DataFlowNode(null);
-            var timeUnit = new TimeUnitNode(parent, {});
+    describe('clone', () => {
+        it('should never clone parent', () => {
+            const parent = new DataFlowNode(null);
+            const timeUnit = new TimeUnitNode(parent, {});
             expect(timeUnit.clone().parent).toBeNull();
         });
     });

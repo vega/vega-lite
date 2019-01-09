@@ -60,7 +60,7 @@ export declare type UtcTimeUnit = UtcSingleTimeUnit | UtcMultiTimeUnit;
 export declare function isUTCTimeUnit(t: string): t is UtcTimeUnit;
 export declare function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit;
 export declare type TimeUnit = SingleTimeUnit | MultiTimeUnit;
-export declare const TIMEUNITS: TimeUnit[];
+export declare const TIMEUNITS: import("vega-lite/build/src/timeunit").TimeUnit[];
 export declare function isTimeUnit(t: string): t is TimeUnit;
 /**
  * Converts a date to only have the measurements relevant to the specified unit

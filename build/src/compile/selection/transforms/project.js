@@ -3,26 +3,25 @@ import { hasContinuousDomain, isBinScale } from '../../../scale';
 import { keys } from '../../../util';
 import { TimeUnitNode } from '../../data/timeunit';
 import { TUPLE } from '../selection';
-export var TUPLE_FIELDS = '_fields';
-var project = {
-    has: function (selDef) {
-        var def = selDef;
+export const TUPLE_FIELDS = '_fields';
+const project = {
+    has: (selDef) => {
+        const def = selDef;
         return def.fields !== undefined || def.encodings !== undefined;
     },
-    parse: function (model, selDef, selCmpt) {
-        var timeUnits = {};
-        var f = {};
-        var p = selCmpt.project || (selCmpt.project = []);
+    parse: (model, selDef, selCmpt) => {
+        const timeUnits = {};
+        const f = {};
+        const p = selCmpt.project || (selCmpt.project = []);
         selCmpt.fields = {};
         // TODO: find a possible channel mapping for these fields.
         if (selDef.fields) {
-            p.push.apply(p, selDef.fields.map(function (field) { return ({ field: field, type: 'E' }); }));
+            p.push(...selDef.fields.map(field => ({ field, type: 'E' })));
         }
-        for (var _i = 0, _a = selDef.encodings || []; _i < _a.length; _i++) {
-            var channel = _a[_i];
-            var fieldDef = model.fieldDef(channel);
+        for (const channel of selDef.encodings || []) {
+            const fieldDef = model.fieldDef(channel);
             if (fieldDef) {
-                var field = fieldDef.field;
+                let field = fieldDef.field;
                 if (fieldDef.timeUnit) {
                     field = model.vgField(channel);
                     // Construct TimeUnitComponents which will be combined into a
@@ -41,9 +40,9 @@ var project = {
                     // Determine whether the tuple will store enumerated or ranged values.
                     // Interval selections store ranges for continuous scales, and enumerations otherwise.
                     // Single/multi selections store ranges for binned fields, and enumerations otherwise.
-                    var type = 'E';
+                    let type = 'E';
                     if (selCmpt.type === 'interval') {
-                        var scaleType = model.getScaleComponent(channel).get('type');
+                        const scaleType = model.getScaleComponent(channel).get('type');
                         if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
                             type = 'R';
                         }
@@ -51,7 +50,7 @@ var project = {
                     else if (fieldDef.bin) {
                         type = 'R-RE';
                     }
-                    p.push((f[field] = { field: field, channel: channel, type: type }));
+                    p.push((f[field] = { field, channel, type }));
                 }
                 selCmpt.fields[channel] = field;
             }
@@ -63,14 +62,14 @@ var project = {
             selCmpt.timeUnit = new TimeUnitNode(null, timeUnits);
         }
     },
-    signals: function (model, selCmpt, signals) {
-        var name = selCmpt.name + TUPLE + TUPLE_FIELDS;
-        var hasSignal = signals.filter(function (s) { return s.name === name; });
+    signals: (model, selCmpt, signals) => {
+        const name = selCmpt.name + TUPLE + TUPLE_FIELDS;
+        const hasSignal = signals.filter(s => s.name === name);
         return hasSignal.length
             ? signals
             : signals.concat({
-                name: name,
-                update: "" + JSON.stringify(selCmpt.project)
+                name,
+                update: `${JSON.stringify(selCmpt.project)}`
             });
     }
 };

@@ -1,15 +1,15 @@
-import { assert } from 'chai';
-import { expression, fieldFilterExpression, isFieldEqualPredicate, isFieldLTEPredicate, isFieldOneOfPredicate, isFieldRangePredicate, isFieldValidPredicate } from '../src/predicate';
+import { expression } from '../src/compile/predicate';
+import { fieldFilterExpression, isFieldEqualPredicate, isFieldLTEPredicate, isFieldOneOfPredicate, isFieldRangePredicate, isFieldValidPredicate } from '../src/predicate';
 import { TimeUnit } from '../src/timeunit';
 import { without } from '../src/util';
-describe('filter', function () {
-    var equalFilter = { field: 'color', equal: 'red' };
-    var oneOfFilter = { field: 'color', oneOf: ['red', 'yellow'] };
-    var rangeFilter = { field: 'x', range: [0, 5] };
-    var exprFilter = 'datum["x"]===5';
-    var lessThanEqualsFilter = { field: 'x', lte: 'z' };
-    var validFilter = { field: 'x', valid: true };
-    var allFilters = [
+describe('filter', () => {
+    const equalFilter = { field: 'color', equal: 'red' };
+    const oneOfFilter = { field: 'color', oneOf: ['red', 'yellow'] };
+    const rangeFilter = { field: 'x', range: [0, 5] };
+    const exprFilter = 'datum["x"]===5';
+    const lessThanEqualsFilter = { field: 'x', lte: 'z' };
+    const validFilter = { field: 'x', valid: true };
+    const allFilters = [
         equalFilter,
         lessThanEqualsFilter,
         oneOfFilter,
@@ -17,167 +17,167 @@ describe('filter', function () {
         validFilter,
         exprFilter
     ];
-    describe('isEqualFilter', function () {
-        it('should return true for an equal filter', function () {
-            assert.isTrue(isFieldEqualPredicate(equalFilter));
+    describe('isEqualFilter', () => {
+        it('should return true for an equal filter', () => {
+            expect(isFieldEqualPredicate(equalFilter)).toBe(true);
         });
-        it('should return false for other filters', function () {
-            without(allFilters, [equalFilter]).forEach(function (filter) {
-                assert.isFalse(isFieldEqualPredicate(filter));
+        it('should return false for other filters', () => {
+            without(allFilters, [equalFilter]).forEach(filter => {
+                expect(isFieldEqualPredicate(filter)).toBe(false);
             });
         });
     });
-    describe('islessThanEqualsFilter', function () {
-        it('should return true for less than equals to filter', function () {
-            assert.isTrue(isFieldLTEPredicate(lessThanEqualsFilter));
+    describe('islessThanEqualsFilter', () => {
+        it('should return true for less than equals to filter', () => {
+            expect(isFieldLTEPredicate(lessThanEqualsFilter)).toBe(true);
         });
-        it('should return false for other filters', function () {
-            without(allFilters, [lessThanEqualsFilter]).forEach(function (filter) {
-                assert.isFalse(isFieldLTEPredicate(filter));
+        it('should return false for other filters', () => {
+            without(allFilters, [lessThanEqualsFilter]).forEach(filter => {
+                expect(isFieldLTEPredicate(filter)).toBe(false);
             });
         });
     });
-    describe('isOneOfFilter', function () {
-        it('should return true for an in filter', function () {
-            assert.isTrue(isFieldOneOfPredicate(oneOfFilter));
+    describe('isOneOfFilter', () => {
+        it('should return true for an in filter', () => {
+            expect(isFieldOneOfPredicate(oneOfFilter)).toBe(true);
         });
-        it('should return false for other filters', function () {
-            without(allFilters, [oneOfFilter]).forEach(function (filter) {
-                assert.isFalse(isFieldOneOfPredicate(filter));
+        it('should return false for other filters', () => {
+            without(allFilters, [oneOfFilter]).forEach(filter => {
+                expect(isFieldOneOfPredicate(filter)).toBe(false);
             });
         });
     });
-    describe('isRangeFilter', function () {
-        it('should return true for a range filter', function () {
-            assert.isTrue(isFieldRangePredicate(rangeFilter));
+    describe('isRangeFilter', () => {
+        it('should return true for a range filter', () => {
+            expect(isFieldRangePredicate(rangeFilter)).toBe(true);
         });
-        it('should return false for other filters', function () {
-            without(allFilters, [rangeFilter]).forEach(function (filter) {
-                assert.isFalse(isFieldRangePredicate(filter));
+        it('should return false for other filters', () => {
+            without(allFilters, [rangeFilter]).forEach(filter => {
+                expect(isFieldRangePredicate(filter)).toBe(false);
             });
         });
     });
-    describe('isValidFilter', function () {
-        it('should return true for a valid filter', function () {
-            assert.isTrue(isFieldValidPredicate(validFilter));
+    describe('isValidFilter', () => {
+        it('should return true for a valid filter', () => {
+            expect(isFieldValidPredicate(validFilter)).toBe(true);
         });
-        it('should return false for other filters', function () {
-            without(allFilters, [validFilter]).forEach(function (filter) {
-                assert.isFalse(isFieldValidPredicate(filter));
+        it('should return false for other filters', () => {
+            without(allFilters, [validFilter]).forEach(filter => {
+                expect(isFieldValidPredicate(filter)).toBe(false);
             });
         });
     });
-    describe('expression', function () {
-        it('should return a correct expression for an EqualFilter', function () {
-            var expr = expression(null, { field: 'color', equal: 'red' });
-            assert.equal(expr, 'datum["color"]==="red"');
+    describe('expression', () => {
+        it('should return a correct expression for an EqualFilter', () => {
+            const expr = expression(null, { field: 'color', equal: 'red' });
+            expect(expr).toEqual('datum["color"]==="red"');
         });
-        it('should return correct expression for lessThan', function () {
-            var expr = expression(null, { field: 'x', lt: 1 });
-            assert.equal(expr, 'datum["x"]<1');
+        it('should return correct expression for lessThan', () => {
+            const expr = expression(null, { field: 'x', lt: 1 });
+            expect(expr).toEqual('datum["x"]<1');
         });
-        it('should return correct expression for greaterThan', function () {
-            var expr = expression(null, { field: 'x', gt: 'aardvark' });
-            assert.equal(expr, 'datum["x"]>"aardvark"');
+        it('should return correct expression for greaterThan', () => {
+            const expr = expression(null, { field: 'x', gt: 'aardvark' });
+            expect(expr).toEqual('datum["x"]>"aardvark"');
         });
-        it('should return correct expression for lessThanEquals', function () {
-            var expr = expression(null, { field: 'x', lte: 'zyzzyva' });
-            assert.equal(expr, 'datum["x"]<="zyzzyva"');
+        it('should return correct expression for lessThanEquals', () => {
+            const expr = expression(null, { field: 'x', lte: 'zyzzyva' });
+            expect(expr).toEqual('datum["x"]<="zyzzyva"');
         });
-        it('should return correct expression for greaterThanEquals', function () {
-            var expr = expression(null, { field: 'x', gte: 1 });
-            assert.equal(expr, 'datum["x"]>=1');
+        it('should return correct expression for greaterThanEquals', () => {
+            const expr = expression(null, { field: 'x', gte: 1 });
+            expect(expr).toEqual('datum["x"]>=1');
         });
-        it('should return correct expression for valid', function () {
-            var expr = expression(null, { field: 'x', valid: true });
-            assert.equal(expr, 'datum["x"]!==null&&!isNaN(datum["x"])');
+        it('should return correct expression for valid', () => {
+            const expr = expression(null, { field: 'x', valid: true });
+            expect(expr).toEqual('datum["x"]!==null&&!isNaN(datum["x"])');
         });
-        it('should return a correct expression for an EqualFilter with datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an EqualFilter with datetime object', () => {
+            const expr = expression(null, {
                 field: 'date',
                 equal: {
                     month: 'January'
                 }
             });
-            assert.equal(expr, 'datum["date"]===time(datetime(0, 0, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('datum["date"]===time(datetime(0, 0, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an EqualFilter with time unit and datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an EqualFilter with time unit and datetime object', () => {
+            const expr = expression(null, {
                 timeUnit: TimeUnit.MONTH,
                 field: 'date',
                 equal: {
                     month: 'January'
                 }
             });
-            assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an EqualFilter with datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an EqualFilter with datetime object', () => {
+            const expr = expression(null, {
                 timeUnit: TimeUnit.MONTH,
                 field: 'date',
                 equal: 'January'
             });
-            assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an lessThanFilter with datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an lessThanFilter with datetime object', () => {
+            const expr = expression(null, {
                 field: 'date',
                 lt: {
                     month: 'February'
                 }
             });
-            assert.equal(expr, 'datum["date"]<time(datetime(0, 1, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('datum["date"]<time(datetime(0, 1, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an greaterThanFilter with time unit and datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an greaterThanFilter with time unit and datetime object', () => {
+            const expr = expression(null, {
                 timeUnit: TimeUnit.MONTH,
                 field: 'date',
                 gt: {
                     month: 'January'
                 }
             });
-            assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))>time(datetime(0, 0, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))>time(datetime(0, 0, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an greaterThanEqualsFilter with datetime object', function () {
-            var expr = expression(null, {
+        it('should return a correct expression for an greaterThanEqualsFilter with datetime object', () => {
+            const expr = expression(null, {
                 timeUnit: TimeUnit.MONTH,
                 field: 'date',
                 gte: 'January'
             });
-            assert.equal(expr, 'time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))>=time(datetime(0, 0, 1, 0, 0, 0, 0))');
+            expect(expr).toEqual('time(datetime(0, month(datum["date"]), 1, 0, 0, 0, 0))>=time(datetime(0, 0, 1, 0, 0, 0, 0))');
         });
-        it('should return a correct expression for an InFilter', function () {
-            var expr = expression(null, { field: 'color', oneOf: ['red', 'yellow'] });
-            assert.equal(expr, 'indexof(["red","yellow"], datum["color"]) !== -1');
+        it('should return a correct expression for an InFilter', () => {
+            const expr = expression(null, { field: 'color', oneOf: ['red', 'yellow'] });
+            expect(expr).toEqual('indexof(["red","yellow"], datum["color"]) !== -1');
         });
-        it('should return a correct expression for a RangeFilter', function () {
-            var expr = expression(null, { field: 'x', range: [0, 5] });
-            assert.equal(expr, 'inrange(datum["x"], [0, 5])');
+        it('should return a correct expression for a RangeFilter', () => {
+            const expr = expression(null, { field: 'x', range: [0, 5] });
+            expect(expr).toEqual('inrange(datum["x"], [0, 5])');
         });
-        it('should return a correct expression for a RangeFilter with no lower bound', function () {
-            var expr = expression(null, { field: 'x', range: [null, 5] });
-            assert.equal(expr, 'datum["x"] <= 5');
+        it('should return a correct expression for a RangeFilter with no lower bound', () => {
+            const expr = expression(null, { field: 'x', range: [null, 5] });
+            expect(expr).toEqual('datum["x"] <= 5');
         });
-        it('should return a correct expression for a RangeFilter with no upper bound', function () {
-            var expr = expression(null, { field: 'x', range: [0, null] });
-            assert.equal(expr, 'datum["x"] >= 0');
+        it('should return a correct expression for a RangeFilter with no upper bound', () => {
+            const expr = expression(null, { field: 'x', range: [0, null] });
+            expect(expr).toEqual('datum["x"] >= 0');
         });
-        it('should return true for a RangeFilter with no bound', function () {
-            var expr = expression(null, { field: 'x', range: [null, null] });
-            assert.equal(expr, 'true');
+        it('should return true for a RangeFilter with no bound', () => {
+            const expr = expression(null, { field: 'x', range: [null, null] });
+            expect(expr).toEqual('true');
         });
-        it('should return a correct expression for an expression filter', function () {
-            var expr = expression(null, 'datum["x"]===5');
-            assert.equal(expr, 'datum["x"]===5');
+        it('should return a correct expression for an expression filter', () => {
+            const expr = expression(null, 'datum["x"]===5');
+            expect(expr).toEqual('datum["x"]===5');
         });
     });
-    it('generates expressions for composed filters', function () {
-        var expr = expression(null, { not: { field: 'color', equal: 'red' } });
-        assert.equal(expr, '!(datum["color"]==="red")');
+    it('generates expressions for composed filters', () => {
+        let expr = expression(null, { not: { field: 'color', equal: 'red' } });
+        expect(expr).toEqual('!(datum["color"]==="red")');
         expr = expression(null, {
             and: [{ field: 'color', equal: 'red' }, { field: 'x', range: [0, 5] }]
         });
-        assert.equal(expr, '(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
+        expect(expr).toEqual('(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
         expr = expression(null, {
             and: [
                 { field: 'color', oneOf: ['red', 'yellow'] },
@@ -186,13 +186,13 @@ describe('filter', function () {
                 }
             ]
         });
-        assert.equal(expr, '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
+        expect(expr).toEqual('(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
             '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))');
     });
-    describe('fieldFilterExpression', function () {
-        it('generates a range predicate using inequalities when useInRange=false', function () {
-            var expr = fieldFilterExpression({ field: 'x', range: [0, 5] }, false);
-            assert.equal(expr, 'datum["x"] >= 0 && datum["x"] <= 5');
+    describe('fieldFilterExpression', () => {
+        it('generates a range predicate using inequalities when useInRange=false', () => {
+            const expr = fieldFilterExpression({ field: 'x', range: [0, 5] }, false);
+            expect(expr).toEqual('datum["x"] >= 0 && datum["x"] <= 5');
         });
     });
 });

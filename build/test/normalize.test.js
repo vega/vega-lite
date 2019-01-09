@@ -1,13 +1,12 @@
 /* tslint:disable:quotemark */
-import { assert } from 'chai';
 import { defaultConfig, initConfig } from '../src/config';
 import * as log from '../src/log';
 import { normalize } from '../src/spec';
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
-describe('normalize()', function () {
-    describe('normalizeFacetedUnit', function () {
-        it('should convert single extended spec with column into a composite spec', function () {
-            var spec = {
+describe('normalize()', () => {
+    describe('normalizeFacetedUnit', () => {
+        it('should convert single extended spec with column into a composite spec', () => {
+            const spec = {
                 name: 'faceted',
                 width: 123,
                 height: 234,
@@ -20,8 +19,8 @@ describe('normalize()', function () {
                     y: { field: 'US_DVD_Sales', type: 'quantitative' }
                 }
             };
-            var config = initConfig(spec.config);
-            assert.deepEqual(normalize(spec, config), {
+            const config = initConfig(spec.config);
+            expect(normalize(spec, config)).toEqual({
                 name: 'faceted',
                 description: 'faceted spec',
                 data: { url: 'data/movies.json' },
@@ -39,8 +38,8 @@ describe('normalize()', function () {
                 }
             });
         });
-        it('should convert single extended spec with row into a composite spec', function () {
-            var spec = {
+        it('should convert single extended spec with row into a composite spec', () => {
+            const spec = {
                 data: { url: 'data/movies.json' },
                 mark: 'point',
                 encoding: {
@@ -49,8 +48,8 @@ describe('normalize()', function () {
                     y: { field: 'US_DVD_Sales', type: 'quantitative' }
                 }
             };
-            var config = initConfig(spec.config);
-            assert.deepEqual(normalize(spec, config), {
+            const config = initConfig(spec.config);
+            expect(normalize(spec, config)).toEqual({
                 data: { url: 'data/movies.json' },
                 facet: {
                     row: { field: 'MPAA_Rating', type: 'ordinal' }
@@ -65,8 +64,8 @@ describe('normalize()', function () {
             });
         });
     });
-    describe('normalizeFacet', function () {
-        it('should produce correct layered specs for mean point and vertical error bar', function () {
+    describe('normalizeFacet', () => {
+        it('should produce correct layered specs for mean point and vertical error bar', () => {
             expect(normalize({
                 description: 'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
                 data: { url: 'data/population.json' },
@@ -76,10 +75,7 @@ describe('normalize()', function () {
                     layer: [
                         {
                             mark: 'errorbar',
-                            encoding: {
-                                x: { field: 'age', type: 'ordinal' },
-                                y: { field: 'people', type: 'quantitative' }
-                            }
+                            encoding: { x: { field: 'age', type: 'ordinal' }, y: { field: 'people', type: 'quantitative' } }
                         },
                         {
                             mark: { type: 'point', opacity: 1, filled: true },
@@ -137,7 +133,13 @@ describe('normalize()', function () {
                                             title: 'people'
                                         },
                                         y2: { field: 'upper_people', type: 'quantitative' },
-                                        x: { field: 'age', type: 'ordinal' }
+                                        x: { field: 'age', type: 'ordinal' },
+                                        tooltip: [
+                                            { field: 'center_people', title: 'Mean of people', type: 'quantitative' },
+                                            { field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative' },
+                                            { field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative' },
+                                            { field: 'age', type: 'ordinal' }
+                                        ]
                                     }
                                 }
                             ]
@@ -154,9 +156,9 @@ describe('normalize()', function () {
             });
         });
     });
-    describe('normalizeLayer', function () {
-        it('correctly passes shared projection and encoding to children of layer', function () {
-            var output = normalize({
+    describe('normalizeLayer', () => {
+        it('correctly passes shared projection and encoding to children of layer', () => {
+            const output = normalize({
                 data: { url: 'data/population.json' },
                 projection: { type: 'mercator' },
                 encoding: {
@@ -177,7 +179,7 @@ describe('normalize()', function () {
                     }
                 ]
             }, defaultConfig);
-            assert.deepEqual(output, {
+            expect(output).toEqual({
                 data: { url: 'data/population.json' },
                 layer: [
                     {
@@ -209,8 +211,8 @@ describe('normalize()', function () {
                 ]
             });
         });
-        it('correctly overrides shared projection and encoding and throws warnings', log.wrap(function (localLogger) {
-            var output = normalize({
+        it('correctly overrides shared projection and encoding and throws warnings', log.wrap((localLogger) => {
+            const output = normalize({
                 data: { url: 'data/population.json' },
                 projection: { type: 'mercator' },
                 encoding: {
@@ -229,13 +231,13 @@ describe('normalize()', function () {
                     }
                 ]
             }, defaultConfig);
-            assert.equal(localLogger.warns.length, 2);
-            assert.equal(localLogger.warns[0], log.message.projectionOverridden({
+            expect(localLogger.warns.length).toEqual(2);
+            expect(localLogger.warns[0]).toEqual(log.message.projectionOverridden({
                 parentProjection: { type: 'mercator' },
                 projection: { type: 'albersUsa' }
             }));
-            assert.equal(localLogger.warns[1], log.message.encodingOverridden(['x']));
-            assert.deepEqual(output, {
+            expect(localLogger.warns[1]).toEqual(log.message.encodingOverridden(['x']));
+            expect(output).toEqual({
                 data: { url: 'data/population.json' },
                 layer: [
                     {
@@ -256,9 +258,9 @@ describe('normalize()', function () {
             });
         }));
     });
-    describe('normalizePathOverlay', function () {
-        it('correctly normalizes line with overlayed point.', function () {
-            var spec = {
+    describe('normalizePathOverlay', () => {
+        it('correctly normalizes line with overlayed point.', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: 'line',
                 encoding: {
@@ -267,8 +269,8 @@ describe('normalize()', function () {
                 },
                 config: { line: { point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -289,8 +291,8 @@ describe('normalize()', function () {
                 config: { line: { point: {} } }
             });
         });
-        it('correctly normalizes line with transparent point overlayed.', function () {
-            var spec = {
+        it('correctly normalizes line with transparent point overlayed.', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: { type: 'line', point: 'transparent' },
                 encoding: {
@@ -298,8 +300,8 @@ describe('normalize()', function () {
                     y: { field: 'price', type: 'quantitative' }
                 }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -319,8 +321,8 @@ describe('normalize()', function () {
                 ]
             });
         });
-        it('correctly normalizes line with point overlayed via mark definition.', function () {
-            var spec = {
+        it('correctly normalizes line with point overlayed via mark definition.', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: { type: 'line', point: { color: 'red' } },
                 encoding: {
@@ -328,8 +330,8 @@ describe('normalize()', function () {
                     y: { field: 'price', type: 'quantitative' }
                 }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -349,8 +351,8 @@ describe('normalize()', function () {
                 ]
             });
         });
-        it('correctly normalizes faceted line plots with overlayed point.', function () {
-            var spec = {
+        it('correctly normalizes faceted line plots with overlayed point.', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: 'line',
                 encoding: {
@@ -360,8 +362,8 @@ describe('normalize()', function () {
                 },
                 config: { line: { point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 facet: {
                     row: { field: 'symbol', type: 'nominal' }
@@ -387,8 +389,8 @@ describe('normalize()', function () {
                 config: { line: { point: {} } }
             });
         });
-        it('correctly normalizes area with overlay line and point', function () {
-            var spec = {
+        it('correctly normalizes area with overlay line and point', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: 'area',
                 encoding: {
@@ -397,8 +399,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {}, point: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -426,8 +428,8 @@ describe('normalize()', function () {
                 config: { area: { line: {}, point: {} } }
             });
         });
-        it('correctly normalizes interpolated area with overlay line', function () {
-            var spec = {
+        it('correctly normalizes interpolated area with overlay line', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: { type: 'area', interpolate: 'monotone' },
                 encoding: {
@@ -436,8 +438,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -458,10 +460,9 @@ describe('normalize()', function () {
                 config: { area: { line: {} } }
             });
         });
-        it('correctly normalizes area with disabled overlay point and line.', function () {
-            for (var _i = 0, _a = [null, false]; _i < _a.length; _i++) {
-                var overlay = _a[_i];
-                var spec = {
+        it('correctly normalizes area with disabled overlay point and line.', () => {
+            for (const overlay of [null, false]) {
+                const spec = {
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: { type: 'area', point: overlay, line: overlay },
                     encoding: {
@@ -469,8 +470,8 @@ describe('normalize()', function () {
                         y: { field: 'price', type: 'quantitative' }
                     }
                 };
-                var normalizedSpec = normalize(spec, spec.config);
-                assert.deepEqual(normalizedSpec, {
+                const normalizedSpec = normalize(spec, spec.config);
+                expect(normalizedSpec).toEqual({
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: 'area',
                     encoding: {
@@ -480,10 +481,9 @@ describe('normalize()', function () {
                 });
             }
         });
-        it('correctly normalizes area with overlay point and line disabled in config.', function () {
-            for (var _i = 0, _a = [null, false]; _i < _a.length; _i++) {
-                var overlay = _a[_i];
-                var spec = {
+        it('correctly normalizes area with overlay point and line disabled in config.', () => {
+            for (const overlay of [null, false]) {
+                const spec = {
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: { type: 'area' },
                     encoding: {
@@ -494,8 +494,8 @@ describe('normalize()', function () {
                         area: { point: overlay, line: overlay }
                     }
                 };
-                var normalizedSpec = normalize(spec, spec.config);
-                assert.deepEqual(normalizedSpec, {
+                const normalizedSpec = normalize(spec, spec.config);
+                expect(normalizedSpec).toEqual({
                     data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                     mark: 'area',
                     encoding: {
@@ -508,8 +508,8 @@ describe('normalize()', function () {
                 });
             }
         });
-        it('correctly normalizes stacked area with overlay line', function () {
-            var spec = {
+        it('correctly normalizes stacked area with overlay line', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: 'area',
                 encoding: {
@@ -519,8 +519,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -543,8 +543,8 @@ describe('normalize()', function () {
                 config: { area: { line: {} } }
             });
         });
-        it('correctly normalizes streamgraph with overlay line', function () {
-            var spec = {
+        it('correctly normalizes streamgraph with overlay line', () => {
+            const spec = {
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 mark: 'area',
                 encoding: {
@@ -554,8 +554,8 @@ describe('normalize()', function () {
                 },
                 config: { area: { line: {} } }
             };
-            var normalizedSpec = normalize(spec, spec.config);
-            assert.deepEqual(normalizedSpec, {
+            const normalizedSpec = normalize(spec, spec.config);
+            expect(normalizedSpec).toEqual({
                 data: { url: 'data/stocks.csv', format: { type: 'csv' } },
                 layer: [
                     {
@@ -576,60 +576,6 @@ describe('normalize()', function () {
                     }
                 ],
                 config: { area: { line: {} } }
-            });
-        });
-    });
-    describe('normalizeRangedUnitSpec', function () {
-        it('should convert y2 -> y if there is no y in the encoding', function () {
-            var spec = {
-                data: { url: 'data/population.json' },
-                mark: 'rule',
-                encoding: {
-                    y2: { field: 'age', type: 'ordinal' },
-                    x: { aggregate: 'min', field: 'people', type: 'quantitative' },
-                    x2: { aggregate: 'max', field: 'people', type: 'quantitative' }
-                }
-            };
-            assert.deepEqual(normalize(spec, defaultConfig), {
-                data: { url: 'data/population.json' },
-                mark: 'rule',
-                encoding: {
-                    y: { field: 'age', type: 'ordinal' },
-                    x: { aggregate: 'min', field: 'people', type: 'quantitative' },
-                    x2: { aggregate: 'max', field: 'people', type: 'quantitative' }
-                }
-            });
-        });
-        it('should do nothing if there is no missing x or y', function () {
-            var spec = {
-                data: { url: 'data/population.json' },
-                mark: 'rule',
-                encoding: {
-                    y: { field: 'age', type: 'ordinal' },
-                    x: { aggregate: 'min', field: 'people', type: 'quantitative' },
-                    x2: { aggregate: 'max', field: 'people', type: 'quantitative' }
-                }
-            };
-            assert.deepEqual(normalize(spec, defaultConfig), spec);
-        });
-        it('should convert x2 -> x if there is no x in the encoding', function () {
-            var spec = {
-                data: { url: 'data/population.json' },
-                mark: 'rule',
-                encoding: {
-                    x2: { field: 'age', type: 'ordinal' },
-                    y: { aggregate: 'min', field: 'people', type: 'quantitative' },
-                    y2: { aggregate: 'max', field: 'people', type: 'quantitative' }
-                }
-            };
-            assert.deepEqual(normalize(spec, defaultConfig), {
-                data: { url: 'data/population.json' },
-                mark: 'rule',
-                encoding: {
-                    x: { field: 'age', type: 'ordinal' },
-                    y: { aggregate: 'min', field: 'people', type: 'quantitative' },
-                    y2: { aggregate: 'max', field: 'people', type: 'quantitative' }
-                }
             });
         });
     });

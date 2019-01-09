@@ -2,74 +2,74 @@ import { assert } from 'chai';
 import { SELECTION_ID } from '../src/selection';
 import { fill } from '../src/util';
 import { embedFn, hits as hitsMaster, pt, spec, testRenderFn } from './util';
-['single', 'multi'].forEach(function (type) {
-    describe(type + " selections at runtime in unit views", function () {
-        var hits = hitsMaster.discrete;
-        var embed = embedFn(browser);
-        var testRender = testRenderFn(browser, type + "/unit");
-        it('should add values to the store', function () {
-            for (var i = 0; i < hits.qq.length; i++) {
-                embed(spec('unit', i, { type: type }));
-                var store = browser.execute(pt('qq', i)).value;
+['single', 'multi'].forEach(type => {
+    describe(`${type} selections at runtime in unit views`, () => {
+        const hits = hitsMaster.discrete;
+        const embed = embedFn(browser);
+        const testRender = testRenderFn(browser, `${type}/unit`);
+        it('should add values to the store', () => {
+            for (let i = 0; i < hits.qq.length; i++) {
+                embed(spec('unit', i, { type }));
+                const store = browser.execute(pt('qq', i)).value;
                 assert.lengthOf(store, 1);
                 assert.lengthOf(store[0].fields, 1);
                 assert.lengthOf(store[0].values, 1);
                 assert.equal(store[0].fields[0].field, SELECTION_ID);
                 assert.equal(store[0].fields[0].type, 'E');
-                testRender("click_" + i);
+                testRender(`click_${i}`);
             }
         });
-        it('should respect projections', function () {
-            var values = [];
-            var encodings = [];
-            var fields = [];
-            var test = function (emb) {
-                for (var i = 0; i < hits.qq.length; i++) {
+        it('should respect projections', () => {
+            let values = [];
+            let encodings = [];
+            let fields = [];
+            const test = (emb) => {
+                for (let i = 0; i < hits.qq.length; i++) {
                     emb(i);
-                    var store = browser.execute(pt('qq', i)).value;
+                    const store = browser.execute(pt('qq', i)).value;
                     assert.lengthOf(store, 1);
                     assert.lengthOf(store[0].fields, fields.length);
                     assert.lengthOf(store[0].values, fields.length);
-                    assert.deepEqual(store[0].fields.map(function (f) { return f.field; }), fields);
-                    assert.deepEqual(store[0].fields.map(function (f) { return f.type; }), fill('E', fields.length));
+                    assert.deepEqual(store[0].fields.map((f) => f.field), fields);
+                    assert.deepEqual(store[0].fields.map((f) => f.type), fill('E', fields.length));
                     assert.deepEqual(store[0].values, values[i]);
-                    testRender(encodings + "_" + fields + "_" + i);
+                    testRender(`${encodings}_${fields}_${i}`);
                 }
             };
             encodings = ['x', 'color'];
             fields = ['a', 'c'];
             values = [[2, 1], [6, 0]];
-            test(function (i) { return embed(spec('unit', i, { type: type, encodings: encodings })); });
+            test((i) => embed(spec('unit', i, { type, encodings })));
             encodings = [];
             fields = ['c', 'a', 'b'];
             values = [[1, 2, 53], [0, 6, 87]];
-            test(function (i) { return embed(spec('unit', i, { type: type, fields: fields })); });
+            test((i) => embed(spec('unit', i, { type, fields })));
         });
-        it('should clear out the store', function () {
-            for (var i = 0; i < hits.qq_clear.length; i++) {
-                embed(spec('unit', i, { type: type }));
-                var store = browser.execute(pt('qq', i)).value;
+        it('should clear out the store', () => {
+            for (let i = 0; i < hits.qq_clear.length; i++) {
+                embed(spec('unit', i, { type }));
+                let store = browser.execute(pt('qq', i)).value;
                 assert.lengthOf(store, 1);
                 store = browser.execute(pt('qq_clear', i)).value;
                 assert.lengthOf(store, 0);
-                testRender("clear_" + i);
+                testRender(`clear_${i}`);
             }
         });
-        it('should support selecting bins', function () {
-            var encodings = ['x', 'color', 'y'];
-            var fields = ['a', 'c', 'b'];
-            var types = ['R-RE', 'E', 'R-RE'];
-            var values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
-            for (var i = 0; i < hits.bins.length; i++) {
-                embed(spec('unit', i, { type: type, encodings: encodings }, { x: { bin: true }, y: { bin: true } }));
-                var store = browser.execute(pt('bins', i)).value;
+        it('should support selecting bins', () => {
+            const encodings = ['x', 'color', 'y'];
+            const fields = ['a', 'c', 'b'];
+            const types = ['R-RE', 'E', 'R-RE'];
+            const values = [[[1, 2], 0, [40, 50]], [[8, 9], 1, [10, 20]]];
+            for (let i = 0; i < hits.bins.length; i++) {
+                embed(spec('unit', i, { type, encodings }, { x: { bin: true }, y: { bin: true } }));
+                const store = browser.execute(pt('bins', i)).value;
                 assert.lengthOf(store, 1);
                 assert.lengthOf(store[0].fields, fields.length);
                 assert.lengthOf(store[0].values, fields.length);
-                assert.sameMembers(store[0].fields.map(function (f) { return f.field; }), fields);
-                assert.sameMembers(store[0].fields.map(function (f) { return f.type; }), types);
+                assert.sameMembers(store[0].fields.map((f) => f.field), fields);
+                assert.sameMembers(store[0].fields.map((f) => f.type), types);
                 assert.sameDeepMembers(store[0].values, values[i]);
-                testRender("bins_" + i);
+                testRender(`bins_${i}`);
             }
         });
     });

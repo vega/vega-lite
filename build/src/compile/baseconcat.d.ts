@@ -1,7 +1,8 @@
+import { NewSignal } from 'vega';
 import { Config } from '../config';
 import { Resolve } from '../resolve';
 import { BaseSpec } from '../spec';
-import { VgData, VgSignal } from '../vega.schema';
+import { VgData } from '../vega.schema';
 import { Model } from './model';
 import { RepeaterValue } from './repeater';
 export declare abstract class BaseConcatModel extends Model {
@@ -10,9 +11,9 @@ export declare abstract class BaseConcatModel extends Model {
     parseSelection(): void;
     parseMarkGroup(): void;
     parseAxisAndHeader(): void;
-    assembleSelectionTopLevelSignals(signals: any[]): VgSignal[];
-    assembleSelectionSignals(): VgSignal[];
-    assembleLayoutSignals(): VgSignal[];
+    assembleSelectionTopLevelSignals(signals: NewSignal[]): NewSignal[];
+    assembleSelectionSignals(): NewSignal[];
+    assembleLayoutSignals(): NewSignal[];
     assembleSelectionData(data: VgData[]): VgData[];
     assembleMarks(): any[];
 }
