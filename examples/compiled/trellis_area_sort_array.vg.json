@@ -23,7 +23,7 @@
         {
           "type": "impute",
           "field": "price",
-          "groupby": ["symbol"],
+          "groupby": ["symbol", "symbol"],
           "key": "date",
           "method": "value",
           "value": 0
