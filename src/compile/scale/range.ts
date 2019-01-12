@@ -37,7 +37,7 @@ import {
 } from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, VgRange, VgScheme} from '../../vega.schema';
+import {isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
 import {evalOrMakeSignalRefComponent, SignalRefComponent} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -202,7 +202,7 @@ export function parseRangeForChannel(
 
 function parseScheme(scheme: Scheme) {
   if (isExtendedScheme(scheme)) {
-    const r: VgScheme = {scheme: scheme.name};
+    const r: SchemeConfig = {scheme: scheme.name};
     if (scheme.count) {
       r.count = scheme.count;
     }

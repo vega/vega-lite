@@ -3,7 +3,7 @@ import {Config} from '../config';
 import {InlineDataset} from '../data';
 import * as log from '../log';
 import {Dict} from '../util';
-import {RowCol, VgLayoutAlign} from '../vega.schema';
+import {LayoutAlign, RowCol} from '../vega.schema';
 import {BaseSpec} from './index';
 import {Datasets, GenericCompositionLayout, TopLevelProperties} from './toplevel';
 
@@ -117,7 +117,7 @@ export interface GenericCompositionLayout extends BoundsMixins {
    *
    * __Default value:__ `"all"`.
    */
-  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
+  align?: LayoutAlign | RowCol<LayoutAlign>;
 
   /**
    * Boolean flag indicating if subviews should be centered relative to their respective rows or columns.

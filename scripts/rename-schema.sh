@@ -34,5 +34,5 @@ perl -pi -e s,'LogicalNot<string>','SelectionNot',g build/vega-lite-schema.json
 
 perl -pi -e s,'TopLevel<(.*)>','TopLevel\1',g build/vega-lite-schema.json
 
-perl -pi -e s,'BaseAxis<(.*)>','VgAxisConfig',g build/vega-lite-schema.json
-perl -pi -e s,'BaseTitle<(.*)>','VgTitleConfig',g build/vega-lite-schema.json
+perl -pi -e s,'BaseAxis<(.*)>','BaseAxisConfig',g build/vega-lite-schema.json
+perl -pi -e s,'BaseTitle<(.*)>','BaseTitleConfig',g build/vega-lite-schema.json

@@ -15,7 +15,7 @@ import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined, stringify} from '../util';
-import {VgCompare, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {BaseMarkConfig, VgCompare, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
@@ -62,7 +62,7 @@ export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDe
 
     // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
     // However here we also check if it is defined, so it is okay to cast here
-    const p = prop as keyof VgMarkConfig;
+    const p = prop as keyof BaseMarkConfig;
     if (styleConfig && styleConfig[p] !== undefined) {
       value = styleConfig[p];
     }

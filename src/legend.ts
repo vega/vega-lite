@@ -13,7 +13,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {Color, VgLayoutAlign} from './vega.schema';
+import {Color, LayoutAlign} from './vega.schema';
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
@@ -25,7 +25,7 @@ export type LegendConfig = LegendMixins &
     FontWeight,
     Align,
     TextBaseline,
-    VgLayoutAlign,
+    LayoutAlign,
     LabelOverlap,
     SymbolShape
   > & {
@@ -83,7 +83,7 @@ export interface Legend
       FontWeight,
       Align,
       TextBaseline,
-      VgLayoutAlign,
+      LayoutAlign,
       LabelOverlap,
       SymbolShape
     >,
