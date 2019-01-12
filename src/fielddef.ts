@@ -78,10 +78,9 @@ export type StringValueDefWithCondition<F extends Field, T extends Type = 'nomin
   string
 >;
 
-export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<
-  F,
-  'nominal' | 'ordinal' | 'geojson'
->;
+export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
+
+export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
 export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<
   TextFieldDef<F>,
@@ -140,10 +139,7 @@ export type StringFieldDefWithCondition<F extends Field, T extends Type = 'nomin
   string
 >;
 
-export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<
-  F,
-  'nominal' | 'ordinal' | 'geojson'
->;
+export type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, TypeForShape>;
 
 export type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<
   TextFieldDef<F>,

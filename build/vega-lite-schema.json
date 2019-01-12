@@ -1635,14 +1635,14 @@
       ],
       "type": "object"
     },
-    "ConditionOnlyDef<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>": {
+    "ConditionOnlyDef<MarkPropFieldDef<ShapeType>>": {
       "additionalProperties": false,
       "description": "A Condition<ValueDef | FieldDef> only definition.\n{\n   condition: {field: ...} | {value: ...}\n}",
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef<ShapeType>"
             },
             {
               "$ref": "#/definitions/ConditionalValueDef"
@@ -1726,13 +1726,13 @@
         }
       ]
     },
-    "ConditionalMarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>": {
+    "ConditionalMarkPropFieldDef<ShapeType>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>"
+          "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldDef<ShapeType>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>"
+          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldDef<ShapeType>>"
         }
       ]
     },
@@ -1898,7 +1898,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>": {
+    "ConditionalPredicate<MarkPropFieldDef<ShapeType>>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -1977,13 +1977,8 @@
           ]
         },
         "type": {
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)",
-          "enum": [
-            "nominal",
-            "ordinal",
-            "geojson"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ShapeType",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)"
         }
       },
       "required": [
@@ -2338,7 +2333,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>": {
+    "ConditionalSelection<MarkPropFieldDef<ShapeType>>": {
       "additionalProperties": false,
       "properties": {
         "aggregate": {
@@ -2418,13 +2413,8 @@
           ]
         },
         "type": {
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)",
-          "enum": [
-            "nominal",
-            "ordinal",
-            "geojson"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ShapeType",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)"
         }
       },
       "required": [
@@ -4196,7 +4186,7 @@
       ],
       "type": "object"
     },
-    "FieldDefWithCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>": {
+    "FieldDefWithCondition<MarkPropFieldDef<ShapeType>,string>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
@@ -4287,13 +4277,8 @@
           ]
         },
         "type": {
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)",
-          "enum": [
-            "nominal",
-            "ordinal",
-            "geojson"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ShapeType",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n__Note:__ Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`)"
         }
       },
       "required": [
@@ -9120,10 +9105,18 @@
       "type": "string"
     },
     "ShapeFieldDefWithCondition": {
-      "$ref": "#/definitions/StringFieldDefWithCondition<(\"nominal\"|\"ordinal\"|\"geojson\")>"
+      "$ref": "#/definitions/StringFieldDefWithCondition<ShapeType>"
+    },
+    "ShapeType": {
+      "enum": [
+        "nominal",
+        "ordinal",
+        "geojson"
+      ],
+      "type": "string"
     },
     "ShapeValueDefWithCondition": {
-      "$ref": "#/definitions/StringValueDefWithCondition<(\"nominal\"|\"ordinal\"|\"geojson\")>"
+      "$ref": "#/definitions/StringValueDefWithCondition<ShapeType>"
     },
     "SingleDefChannel": {
       "enum": [
@@ -9422,14 +9415,14 @@
       ],
       "type": "string"
     },
-    "StringFieldDefWithCondition<(\"nominal\"|\"ordinal\"|\"geojson\")>": {
-      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>"
+    "StringFieldDefWithCondition<ShapeType>": {
+      "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<ShapeType>,string>"
     },
     "StringFieldDefWithCondition": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef<\"nominal\">,string>"
     },
-    "StringValueDefWithCondition<(\"nominal\"|\"ordinal\"|\"geojson\")>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>"
+    "StringValueDefWithCondition<ShapeType>": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<ShapeType>,string>"
     },
     "StringValueDefWithCondition": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef<\"nominal\">,string>"
@@ -10972,13 +10965,13 @@
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
     },
-    "ValueDefWithCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>": {
+    "ValueDefWithCondition<MarkPropFieldDef<ShapeType>,string>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>"
+          "$ref": "#/definitions/ValueDefWithOptionalCondition<MarkPropFieldDef<ShapeType>,string>"
         },
         {
-          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>>"
+          "$ref": "#/definitions/ConditionOnlyDef<MarkPropFieldDef<ShapeType>>"
         }
       ],
       "description": "A ValueDef with Condition<ValueDef | FieldDef> where either the conition or the value are optional.\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}"
@@ -11047,14 +11040,14 @@
       ],
       "type": "object"
     },
-    "ValueDefWithOptionalCondition<MarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>,string>": {
+    "ValueDefWithOptionalCondition<MarkPropFieldDef<ShapeType>,string>": {
       "additionalProperties": false,
       "description": "A ValueDef with optional Condition<ValueDef | FieldDef>\n{\n   condition: {field: ...} | {value: ...},\n   value: ...,\n}",
       "properties": {
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalMarkPropFieldDef<(\"nominal\"|\"ordinal\"|\"geojson\")>"
+              "$ref": "#/definitions/ConditionalMarkPropFieldDef<ShapeType>"
             },
             {
               "$ref": "#/definitions/ConditionalStringValueDef"
