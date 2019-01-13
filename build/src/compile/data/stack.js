@@ -158,7 +158,7 @@ export class StackNode extends DataFlowNode {
             transform.push({
                 type: 'impute',
                 field,
-                groupby: stackby,
+                groupby: [...stackby, ...facetby],
                 key: vgField(dimensionFieldDef, { binSuffix: 'mid' }),
                 method: 'value',
                 value: 0
