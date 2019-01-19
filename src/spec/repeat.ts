@@ -1,9 +1,8 @@
 import {Resolve} from '../resolve';
-import {BaseSpec} from './base';
+import {BaseSpec, GenericCompositionLayout} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {Repeat} from './repeat';
-import {GenericCompositionLayout} from './toplevel';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface Repeat {
