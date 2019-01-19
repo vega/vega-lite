@@ -6,7 +6,7 @@ import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream} from '../../vega.schema';
+import {EventStream, VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -28,7 +28,7 @@ export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 export interface SelectionComponent {
   name: string;
   type: SelectionType;
-  events: VgEventStream;
+  events: EventStream;
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;

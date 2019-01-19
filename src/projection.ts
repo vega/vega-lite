@@ -1,6 +1,6 @@
-import {VgProjectionType} from './vega.schema';
+import {ProjectionType} from './vega.schema';
 
-export type ProjectionType = VgProjectionType;
+export type ProjectionType = ProjectionType;
 
 export interface Projection {
   /**

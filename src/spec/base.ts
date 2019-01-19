@@ -1,7 +1,7 @@
 import {Data} from '../data';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
-import {VgMarkConfig} from '../vega.schema';
+import {BaseMarkConfig} from '../vega.schema';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
@@ -90,7 +90,7 @@ export interface LayerUnitMixins extends LayoutSizeMixins {
 export interface ViewBackground
   extends Partial<
     Pick<
-      VgMarkConfig,
+      BaseMarkConfig,
       | 'cornerRadius'
       | 'fillOpacity'
       | 'opacity'

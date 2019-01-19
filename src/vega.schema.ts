@@ -7,6 +7,8 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  LayoutAlign,
+  ProjectionType,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField as VgSortField,
@@ -20,7 +22,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare};
+export {VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType};
 
 export type Color = string;
 
@@ -49,7 +51,7 @@ export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type VgEventStream = any;
+export type EventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {
@@ -80,13 +82,13 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export interface VgScheme {
+export interface SchemeConfig {
   scheme: string;
   extent?: number[];
   count?: number;
 }
 
-export type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | VgScheme | VgRangeStep | S;
+export type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | SchemeConfig | VgRangeStep | S;
 
 export function isVgRangeStep(range: VgRange<any>): range is VgRangeStep {
   return !!range['step'];
@@ -101,21 +103,6 @@ export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDo
 
 export type VgMarkGroup = any;
 
-export type VgProjectionType =
-  | 'albers'
-  | 'albersUsa'
-  | 'azimuthalEqualArea'
-  | 'azimuthalEquidistant'
-  | 'conicConformal'
-  | 'conicEqualArea'
-  | 'conicEquidistant'
-  | 'equirectangular'
-  | 'gnomonic'
-  | 'mercator'
-  | 'orthographic'
-  | 'stereographic'
-  | 'transverseMercator';
-
 export interface VgProjection {
   /*
    * The name of the projection.
@@ -124,7 +111,7 @@ export interface VgProjection {
   /*
    * The type of the projection.
    */
-  type?: VgProjectionType;
+  type?: ProjectionType;
   /*
    * The clip angle of the projection.
    */
@@ -206,8 +193,6 @@ export interface ScaleInterpolateParams {
   gamma?: number;
 }
 
-export type VgLayoutAlign = 'none' | 'each' | 'all';
-
 export interface RowCol<T> {
   row?: T;
   column?: T;
@@ -230,7 +215,7 @@ export interface VgLayout {
       };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
+  align?: LayoutAlign | RowCol<LayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -499,7 +484,7 @@ export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
-export interface VgMarkConfig {
+export interface BaseMarkConfig {
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
@@ -760,7 +745,7 @@ export interface VgMarkConfig {
   cornerRadius?: number;
 }
 
-const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   opacity: 1,
   fill: 1,
   fillOpacity: 1,
