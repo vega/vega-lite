@@ -84,7 +84,7 @@ To summarize, a single-view specification in Vega-Lite can have the following pr
 
 ### View Background
 
-The `background` property a _top-level_ view specification defines the background of the whole visualization canvas. Meanwhile, the `view` property of a single-view or [layer](layer.html) specification can define the background of the view with the following properties:
+The `background` property of a _top-level_ view specification defines the background of the whole visualization canvas. Meanwhile, the `view` property of a single-view or [layer](layer.html) specification can define the background of the view with the following properties:
 
 {% include table.html props="cornerRadius,fill,fillOpacity,opacity,stroke,strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeOpacity,strokeWidth" source="ViewBackground" %}
 
