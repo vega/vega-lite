@@ -11423,7 +11423,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ `undefined`",
+          "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
           "type": "string"
         },
         "strokeCap": {
@@ -11499,7 +11499,7 @@
           "type": "number"
         },
         "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ `undefined`",
+          "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
           "type": "string"
         },
         "strokeCap": {
