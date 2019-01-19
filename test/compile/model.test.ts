@@ -1,5 +1,5 @@
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModel, parseFacetModelWithScale} from '../util';
+import {parseFacetModel, parseFacetModelWithScale, parseModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -123,6 +123,21 @@ describe('Model', () => {
 
       expect(model.child.getSizeSignalRef('width')).toEqual({
         signal: `bandspace(datum[\"distinct_b\"], 1, 0.345) * child_x_step`
+      });
+    });
+  });
+
+  describe('assembleGroupEncodeEntry', () => {
+    it('returns view background if specified', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        view: {fill: 'red', stroke: 'blue'}
+      });
+
+      expect(model.assembleGroupEncodeEntry(true)).toEqual({
+        fill: {value: 'red'},
+        stroke: {value: 'blue'}
       });
     });
   });
