@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Config, StyleConfigIndex, ViewConfig} from '../config';
+import {Config, StyleConfigIndex} from '../config';
 import {
   FieldDefBase,
   FieldRefOption,
@@ -10,7 +10,7 @@ import {
   TypedFieldDef,
   vgField
 } from '../fielddef';
-import {MarkConfig, MarkDef, TextConfig} from '../mark';
+import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
@@ -19,20 +19,6 @@ import {VgCompare, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
-
-export function applyConfig(
-  e: VgEncodeEntry,
-  config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
-  propsList: string[]
-) {
-  for (const property of propsList) {
-    const value = config[property];
-    if (value !== undefined) {
-      e[property] = {value: value};
-    }
-  }
-  return e;
-}
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
