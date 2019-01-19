@@ -113,6 +113,7 @@
   },
   "dependencies": {
     "@types/clone": "^0.1.30",
+    "@types/json-stable-stringify": "^1.0.32",
     "clone": "^2.1.2",
     "fast-deep-equal": "^2.0.1",
     "fast-json-stable-stringify": "^2.0.0",
