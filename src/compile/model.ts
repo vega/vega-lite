@@ -287,16 +287,19 @@ export abstract class Model {
 
   public assembleGroupStyle(): string {
     if (this.type === 'unit' || this.type === 'layer') {
-      return 'cell';
+      return (this.view && this.view.style) || 'cell';
     }
     return undefined;
   }
 
   private assembleEncodeFromView(view: ViewBackground): VgEncodeEntry {
+    // Exclude "style"
+    const {style: _, ...baseView} = view;
+
     const e = {};
-    for (const property in view) {
-      if (view.hasOwnProperty(property)) {
-        const value = view[property];
+    for (const property in baseView) {
+      if (baseView.hasOwnProperty(property)) {
+        const value = baseView[property];
         if (value !== undefined) {
           e[property] = {value};
         }

@@ -87,7 +87,7 @@ export interface LayerUnitMixins extends LayoutSizeMixins {
   view?: ViewBackground;
 }
 
-export interface ViewBackground
+export interface BaseViewBackground
   extends Partial<
     Pick<
       BaseMarkConfig,
@@ -117,4 +117,14 @@ export interface ViewBackground
    * __Default value:__ `undefined`
    */
   stroke?: string;
+}
+
+export interface ViewBackground extends BaseViewBackground {
+  /**
+   * A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
+   *
+   * __Default value:__ `"cell"`
+   * __Note:__ Any specified view background properties will augment the default style.
+   */
+  style?: string;
 }

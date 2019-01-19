@@ -86,7 +86,7 @@ To summarize, a single-view specification in Vega-Lite can have the following pr
 
 The `view` property of a single-view or [layer](layer.html) specification can define the background of the view with the following properties:
 
-{% include table.html props="cornerRadius,fill,fillOpacity,opacity,stroke,strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeOpacity,strokeWidth" source="ViewBackground" %}
+{% include table.html props="style,cornerRadius,fill,fillOpacity,opacity,stroke,strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeOpacity,strokeWidth" source="ViewBackground" %}
 
 ## Layered and Multi-view Specifications
 
@@ -114,7 +114,7 @@ To create layered and multi-view graphics, please refer to the following pages:
 }
 ```
 
-The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background).
+The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background) except `"style"`.
 
 In addition, the `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
 
