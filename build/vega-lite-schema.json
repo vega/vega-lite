@@ -5479,7 +5479,8 @@
         {
           "$ref": "#/definitions/HConcatSpec"
         }
-      ]
+      ],
+      "description": "Generic form of all specifications in Vega-Lite."
     },
     "CompositeUnitSpecAlias": {
       "additionalProperties": false,

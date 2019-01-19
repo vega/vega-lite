@@ -1,3 +1,10 @@
+/**
+ * Definition for specifications in Vega-Lite.  In general, there are 3 variants of specs for each type of specs:
+ * - Generic specs are generic versions of specs and they are parameterized differently for internal and external specs.
+ * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
+ * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
+ */
+
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
 import {forEach} from '../encoding';
@@ -30,6 +37,9 @@ export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
 export {CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
+/**
+ * Any specification in Vega-Lite.
+ */
 export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> =
   | U
   | L
@@ -38,6 +48,9 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
   | GenericVConcatSpec<U, L>
   | GenericHConcatSpec<U, L>;
 
+/**
+ * Specs with only primitive marks and without other macros.
+ */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
 export type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
