@@ -7,6 +7,7 @@ import {
   SCALE_CHANNELS,
   ScaleChannel,
   SingleDefChannel,
+  supportLegend,
   X,
   Y
 } from '../channel';
@@ -181,7 +182,7 @@ export class UnitModel extends ModelWithField {
           ? channelDef.condition['legend']
           : null;
 
-        if (legend !== null && legend !== false) {
+        if (legend !== null && legend !== false && supportLegend(channel)) {
           _legend[channel] = {...legend};
         }
       }

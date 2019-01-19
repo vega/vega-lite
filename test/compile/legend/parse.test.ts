@@ -96,7 +96,7 @@ describe('compile/legend', () => {
       expect(def.title).toEqual('foo');
     });
 
-    [SIZE, STROKEWIDTH, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].forEach(channel => {
+    [SIZE, SHAPE, OPACITY].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
           mark: 'point',
@@ -122,6 +122,22 @@ describe('compile/legend', () => {
         }
         expect(typeof def).toBe('object');
         expect(def.title).toEqual('a');
+      });
+    });
+
+    [STROKEWIDTH, FILLOPACITY, STROKEOPACITY].forEach(channel => {
+      it(`should have no legend initialized`, () => {
+        const spec: NormalizedUnitSpec = {
+          mark: 'point',
+          encoding: {
+            x: {field: 'a', type: 'nominal'}
+          }
+        };
+        spec.encoding[channel] = {field: 'a', type: 'nominal'};
+
+        const model = parseUnitModelWithScale(spec);
+
+        expect(model.legend(channel)).toBeUndefined();
       });
     });
   });
