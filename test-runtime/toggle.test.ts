@@ -1,3 +1,5 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {stringValue} from 'vega-util';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
@@ -24,15 +26,15 @@ describe('Toggle multi selections at runtime', () => {
     embed(spec('unit', 0, {type}));
     browser.execute(toggle('qq', 0, false));
     browser.execute(toggle('qq', 1, true));
-    let store = browser.execute(toggle('qq', 2, true)).value;
+    let store = browser.execute(toggle('qq', 2, true));
     assert.lengthOf(store, 3);
     testRender('click_0');
 
-    store = browser.execute(toggle('qq', 2, true)).value;
+    store = browser.execute(toggle('qq', 2, true));
     assert.lengthOf(store, 2);
     testRender('click_1');
 
-    store = browser.execute(toggle('qq', 3, false)).value;
+    store = browser.execute(toggle('qq', 3, false));
     assert.lengthOf(store, 1);
     testRender('click_2');
   });
@@ -45,11 +47,11 @@ describe('Toggle multi selections at runtime', () => {
     browser.execute(toggle('qq', 3, true));
     testRender(`clear_0`);
 
-    let store = browser.execute(toggle('qq_clear', 0, true)).value;
+    let store = browser.execute(toggle('qq_clear', 0, true));
     assert.lengthOf(store, 4);
     testRender(`clear_1`);
 
-    store = browser.execute(toggle('qq_clear', 1, false)).value;
+    store = browser.execute(toggle('qq_clear', 1, false));
     assert.lengthOf(store, 0);
     testRender(`clear_2`);
   });
@@ -59,15 +61,15 @@ describe('Toggle multi selections at runtime', () => {
 
     browser.execute(toggle('bins', 0, false));
     browser.execute(toggle('bins', 1, true));
-    let store = browser.execute(toggle('bins', 2, true)).value;
+    let store = browser.execute(toggle('bins', 2, true));
     assert.lengthOf(store, 3);
     testRender('bins_0');
 
-    store = browser.execute(toggle('bins', 2, true)).value;
+    store = browser.execute(toggle('bins', 2, true));
     assert.lengthOf(store, 2);
     testRender('bins_1');
 
-    store = browser.execute(toggle('bins', 3, false)).value;
+    store = browser.execute(toggle('bins', 3, false));
     assert.lengthOf(store, 1);
     testRender('bins_2');
   });
@@ -78,7 +80,7 @@ describe('Toggle multi selections at runtime', () => {
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
-        const store = browser.execute(toggle('composite', i, true, parent)).value;
+        const store = browser.execute<number[]>(toggle('composite', i, true, parent));
         assert.equal((length = store.length), i + 1);
         if (i % 3 === 2) {
           testRender(`${specType}_${i}`);
@@ -88,7 +90,7 @@ describe('Toggle multi selections at runtime', () => {
       for (let i = 0; i < hits.composite.length; i++) {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
-        const store = browser.execute(toggle('qq_clear', 0, even, parent)).value;
+        const store = browser.execute(toggle('qq_clear', 0, even, parent));
         assert.lengthOf(store, even ? length : (length = length - 2), `iter: ${i}`);
         if (!even) {
           testRender(`${specType}_clear_${i}`);

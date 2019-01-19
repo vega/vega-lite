@@ -1,3 +1,5 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {bound, brush, compositeTypes, embedFn, parentSelector, spec, testRenderFn, tuples, unbound} from './util';
 
@@ -15,7 +17,7 @@ function zoom(key: string, idx: number, direction: InOut, parent?: string, targe
 
 const cmp = (a: number, b: number) => a - b;
 
-[bound, unbound].forEach(bind => {
+for (const bind of [bound, unbound]) {
   describe(`Zoom ${bind} interval selections at runtime`, () => {
     const type = 'interval';
     const embed = embedFn(browser);
@@ -33,12 +35,12 @@ const cmp = (a: number, b: number) => a - b;
       let yold: number[];
 
       if (bind === unbound) {
-        const drag = browser.execute(brush(brushKey, idx, parent)).value[0];
+        const drag = browser.execute(brush(brushKey, idx, parent))[0];
         xold = drag.values[0].sort(cmp);
         yold = encodings.indexOf('y') >= 0 ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
       } else {
-        xold = JSON.parse(browser.execute('return JSON.stringify(view._runtime.scales.x.value.domain())').value);
-        yold = browser.execute('return view._runtime.scales.y.value.domain()').value;
+        xold = JSON.parse(browser.execute('return JSON.stringify(view._runtime.scales.x.value.domain())'));
+        yold = browser.execute('return view._runtime.scales.y.value.domain()');
       }
 
       return {inOut, xold, yold};
@@ -50,7 +52,7 @@ const cmp = (a: number, b: number) => a - b;
         const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
         testRender(`${inOut}-0`);
 
-        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
+        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound))[0];
         const xnew = zoomed.values[0].sort(cmp);
         const ynew = zoomed.values[1].sort(cmp);
         testRender(`${inOut}-1`);
@@ -80,7 +82,7 @@ const cmp = (a: number, b: number) => a - b;
         const {inOut, yold} = setup('bins', i, encodings);
         testRender(`bins_${inOut}-0`);
 
-        const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];
+        const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound))[0];
         const ynew = zoomed.values[0].sort(cmp);
         assert[assertExtent[inOut][0]](ynew[0], yold[0]);
         assert[assertExtent[inOut][1]](ynew[1], yold[1]);
@@ -97,7 +99,7 @@ const cmp = (a: number, b: number) => a - b;
         const {inOut, xold} = setup('drag', i, encodings);
         testRender(`temporal_${inOut}-0`);
 
-        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
+        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound))[0];
         const xnew = zoomed.values[0].sort(cmp);
         assert[assertExtent[inOut][0]](+xnew[0], +new Date(xold[0]));
         assert[assertExtent[inOut][1]](+xnew[1], +new Date(xold[1]));
@@ -121,7 +123,7 @@ const cmp = (a: number, b: number) => a - b;
         const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
         testRender(`logpow_${inOut}-0`);
 
-        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
+        const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound))[0];
         const xnew = zoomed.values[0].sort(cmp);
         const ynew = zoomed.values[1].sort(cmp);
         assert[assertExtent[inOut][0]](xnew[0], xold[0]);
@@ -149,7 +151,7 @@ const cmp = (a: number, b: number) => a - b;
           const {inOut, xold, yold} = setup('drag', i, ['x', 'y']);
           testRender(`ord_${inOut}-0`);
 
-          const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound)).value[0];
+          const zoomed = browser.execute(zoom('zoom', i, inOut, null, bind === unbound))[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
 
@@ -165,13 +167,13 @@ const cmp = (a: number, b: number) => a - b;
         }
       });
     } else {
-      compositeTypes.forEach(specType => {
+      for (const specType of compositeTypes) {
         it(`should work with shared scales in ${specType} views`, () => {
           for (let i = 0; i < hits.bins.length; i++) {
             embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
             const {inOut, xold, yold} = setup(specType, i, ['x', 'y'], parent);
-            const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound)).value[0];
+            const zoomed = browser.execute(zoom('bins', i, inOut, null, bind === unbound))[0];
             const xnew = zoomed.values[0].sort(cmp);
             const ynew = zoomed.values[1].sort(cmp);
             assert[assertExtent[inOut][0]](xnew[0], xold[0]);
@@ -181,7 +183,7 @@ const cmp = (a: number, b: number) => a - b;
             testRender(`${specType}_${inOut}`);
           }
         });
-      });
+      }
     }
   });
-});
+}

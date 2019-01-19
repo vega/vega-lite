@@ -1,3 +1,5 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {
   bound,
@@ -12,7 +14,7 @@ import {
   unbound
 } from './util';
 
-[bound, unbound].forEach((bind, idx) => {
+for (const bind of [bound, unbound]) {
   describe(`Translate ${bind} interval selections at runtime`, () => {
     const type = 'interval';
     const hits = hitsMaster.interval;
@@ -34,9 +36,9 @@ import {
     it('should move back-and-forth', () => {
       for (let i = 0; i < hits.translate.length; i++) {
         embed(spec('unit', i, {type, ...binding}));
-        const drag = browser.execute(brush('drag', i)).value[0];
+        const drag = browser.execute(brush('drag', i))[0];
         testRender(`${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
+        const translate = browser.execute(brush('translate', i, null, bind === unbound))[0];
         assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
         assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
@@ -59,9 +61,9 @@ import {
             }
           )
         );
-        const drag = browser.execute(brush('bins', i)).value[0];
+        const drag = browser.execute(brush('bins', i))[0];
         testRender(`bins_${i}-0`);
-        const translate = browser.execute(brush('bins_translate', i, null, bind === unbound)).value[0];
+        const translate = browser.execute(brush('bins_translate', i, null, bind === unbound))[0];
         assert[assertExtent[bind].y[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].y[i]](translate.values[0][1], drag.values[0][1]);
         testRender(`bins_${i}-1`);
@@ -74,9 +76,9 @@ import {
 
       for (let i = 0; i < hits.translate.length; i++) {
         embed(spec('unit', i, {type, ...binding, encodings: ['x']}, {values, x: {type: 'temporal'}}));
-        const drag = browser.execute(brush('drag', i) + toNumber).value;
+        const drag = browser.execute(brush('drag', i) + toNumber);
         testRender(`temporal_${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound) + toNumber).value;
+        const translate = browser.execute(brush('translate', i, null, bind === unbound) + toNumber);
         assert[assertExtent[bind].x[i]](translate[0], drag[0]);
         assert[assertExtent[bind].x[i]](translate[1], drag[1]);
         testRender(`temporal_${i}-1`);
@@ -96,9 +98,9 @@ import {
             }
           )
         );
-        const drag = browser.execute(brush('drag', i)).value[0];
+        const drag = browser.execute(brush('drag', i))[0];
         testRender(`logpow_${i}-0`);
-        const translate = browser.execute(brush('translate', i, null, bind === unbound)).value[0];
+        const translate = browser.execute(brush('translate', i, null, bind === unbound))[0];
         assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
         assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
         assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
@@ -121,9 +123,9 @@ import {
               }
             )
           );
-          const drag = browser.execute(brush('drag', i)).value[0];
+          const drag = browser.execute(brush('drag', i))[0];
           testRender(`ord_${i}-0`);
-          const translate = browser.execute(brush('translate', i, null, true)).value[0];
+          const translate = browser.execute(brush('translate', i, null, true))[0];
           assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
           assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
           assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
@@ -147,9 +149,9 @@ import {
           for (let i = 0; i < hits[specType].length; i++) {
             embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
             const parent = parentSelector(specType, i);
-            const xscale = browser.execute('return view._runtime.scales.x.value.domain()').value;
-            const yscale = browser.execute('return view._runtime.scales.y.value.domain()').value;
-            const drag = browser.execute(brush(specType, i, parent)).value[0];
+            const xscale = browser.execute('return view._runtime.scales.x.value.domain()');
+            const yscale = browser.execute('return view._runtime.scales.y.value.domain()');
+            const drag = browser.execute(brush(specType, i, parent))[0];
             assert[assertExtents[specType].x[i]](drag.values[0][0], xscale[0], `iter: ${i}`);
             assert[assertExtents[specType].x[i]](drag.values[0][1], xscale[1], `iter: ${i}`);
             assert[assertExtents[specType].y[i]](drag.values[1][0], yscale[0], `iter: ${i}`);
@@ -160,4 +162,4 @@ import {
       });
     }
   });
-});
+}

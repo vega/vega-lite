@@ -1,3 +1,5 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {
   brush,
@@ -13,7 +15,7 @@ import {
   unitNameRegex
 } from './util';
 
-selectionTypes.forEach(type => {
+for (const type of selectionTypes) {
   const embed = embedFn(browser);
   const isInterval = type === 'interval';
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
@@ -35,20 +37,20 @@ selectionTypes.forEach(type => {
           for (let i = 0; i < hits[specType].length; i++) {
             embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
-            const store = browser.execute(fn(specType, i, parent)).value;
+            const store = browser.execute(fn(specType, i, parent));
             assert.lengthOf(store, 1);
             assert.match(store[0].unit, unitNameRegex(specType, i));
             testRender(`global_${i}`);
 
             if (i === hits[specType].length - 1) {
-              const cleared = browser.execute(fn(`${specType}_clear`, 0, parent)).value;
+              const cleared = browser.execute(fn(`${specType}_clear`, 0, parent));
               assert.lengthOf(cleared, 0);
               testRender(`global_clear_${i}`);
             }
           }
         });
 
-        resolutions.forEach(resolve => {
+        for (const resolve of resolutions) {
           const selection = {
             type,
             resolve,
@@ -62,7 +64,7 @@ selectionTypes.forEach(type => {
             embed(spec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              const store = browser.execute(fn(specType, i, parent)).value;
+              const store = browser.execute(fn(specType, i, parent));
               assert.lengthOf(store, i + 1);
               assert.match(store[i].unit, unitNameRegex(specType, i));
               testRender(`${resolve}_${i}`);
@@ -76,7 +78,7 @@ selectionTypes.forEach(type => {
 
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
               const parent = parentSelector(specType, i);
-              const store = browser.execute(fn(`${specType}_clear`, i, parent)).value;
+              const store = browser.execute(fn(`${specType}_clear`, i, parent));
               assert.lengthOf(store, i);
               if (i > 0) {
                 assert.match(store[i - 1].unit, unitNameRegex(specType, i - 1));
@@ -84,8 +86,8 @@ selectionTypes.forEach(type => {
               testRender(`${resolve}_clear_${i}`);
             }
           });
-        });
+        }
       });
     });
   });
-});
+}

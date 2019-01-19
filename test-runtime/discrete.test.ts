@@ -1,9 +1,11 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {SELECTION_ID} from '../src/selection';
 import {fill} from '../src/util';
 import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
-['single', 'multi'].forEach(type => {
+for (const type of ['single', 'multi']) {
   describe(`${type} selections at runtime in unit views`, () => {
     const hits = hitsMaster.discrete;
     const embed = embedFn(browser);
@@ -12,7 +14,7 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
     it('should add values to the store', () => {
       for (let i = 0; i < hits.qq.length; i++) {
         embed(spec('unit', i, {type}));
-        const store = browser.execute(pt('qq', i)).value;
+        const store = browser.execute(pt('qq', i));
         assert.lengthOf(store, 1);
         assert.lengthOf(store[0].fields, 1);
         assert.lengthOf(store[0].values, 1);
@@ -29,7 +31,7 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       const test = (emb: (i: number) => void) => {
         for (let i = 0; i < hits.qq.length; i++) {
           emb(i);
-          const store = browser.execute(pt('qq', i)).value;
+          const store = browser.execute(pt('qq', i));
           assert.lengthOf(store, 1);
           assert.lengthOf(store[0].fields, fields.length);
           assert.lengthOf(store[0].values, fields.length);
@@ -54,10 +56,10 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
     it('should clear out the store', () => {
       for (let i = 0; i < hits.qq_clear.length; i++) {
         embed(spec('unit', i, {type}));
-        let store = browser.execute(pt('qq', i)).value;
+        let store = browser.execute(pt('qq', i));
         assert.lengthOf(store, 1);
 
-        store = browser.execute(pt('qq_clear', i)).value;
+        store = browser.execute(pt('qq_clear', i));
         assert.lengthOf(store, 0);
         testRender(`clear_${i}`);
       }
@@ -71,7 +73,7 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
       for (let i = 0; i < hits.bins.length; i++) {
         embed(spec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));
-        const store = browser.execute(pt('bins', i)).value;
+        const store = browser.execute(pt('bins', i));
         assert.lengthOf(store, 1);
         assert.lengthOf(store[0].fields, fields.length);
         assert.lengthOf(store[0].values, fields.length);
@@ -82,4 +84,4 @@ import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
       }
     });
   });
-});
+}

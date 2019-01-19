@@ -1,3 +1,5 @@
+/// <reference types="webdriverio"/>
+
 import {assert} from 'chai';
 import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 
@@ -10,7 +12,7 @@ describe('interval selections at runtime in unit views', () => {
   it('should add extents to the store', () => {
     for (let i = 0; i < hits.drag.length; i++) {
       embed(spec('unit', i, {type}));
-      const store = browser.execute(brush('drag', i)).value;
+      const store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
@@ -29,7 +31,7 @@ describe('interval selections at runtime in unit views', () => {
   it('should respect projections', () => {
     embed(spec('unit', 0, {type, encodings: ['x']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i)).value;
+      const store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -42,7 +44,7 @@ describe('interval selections at runtime in unit views', () => {
 
     embed(spec('unit', 1, {type, encodings: ['y']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i)).value;
+      const store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -57,10 +59,10 @@ describe('interval selections at runtime in unit views', () => {
   it('should clear out stored extents', () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
       embed(spec('unit', i, {type}));
-      let store = browser.execute(brush('drag', i)).value;
+      let store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
 
-      store = browser.execute(brush('drag_clear', i)).value;
+      store = browser.execute(brush('drag_clear', i));
       assert.lengthOf(store, 0);
       testRender(`clear_${i}`);
     }
@@ -80,7 +82,7 @@ describe('interval selections at runtime in unit views', () => {
       )
     );
     for (let i = 0; i < hits.bins.length; i++) {
-      const store = browser.execute(brush('bins', i)).value;
+      const store = browser.execute(brush('bins', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -91,7 +93,7 @@ describe('interval selections at runtime in unit views', () => {
       testRender(`bins_${i}`);
     }
 
-    const store = browser.execute(brush('bins_clear', 0)).value;
+    const store = browser.execute(brush('bins_clear', 0));
     assert.lengthOf(store, 0);
   });
 
@@ -104,7 +106,7 @@ describe('interval selections at runtime in unit views', () => {
 
     for (let i = 0; i < hits.drag.length; i++) {
       embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
-      const store = browser.execute(brush('drag', i)).value;
+      const store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
@@ -119,7 +121,7 @@ describe('interval selections at runtime in unit views', () => {
       testRender(`ord_${i}`);
     }
 
-    const store = browser.execute(brush('drag_clear', 0)).value;
+    const store = browser.execute(brush('drag_clear', 0));
     assert.lengthOf(store, 0);
   });
 
@@ -130,24 +132,24 @@ describe('interval selections at runtime in unit views', () => {
     embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [[1485969714000, 1493634384000], [1496346498000, 1504364922000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i) + toNumber).value;
+      const store = browser.execute<number[]>(brush('drag', i) + toNumber);
       assert.sameMembers(store, extents[i]);
       testRender(`temporal_${i}`);
     }
 
-    let cleared = browser.execute(brush('drag_clear', 0)).value;
+    let cleared = browser.execute(brush('drag_clear', 0));
     assert.lengthOf(cleared, 0);
 
     embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
     extents = [[1136190528000, 1136361600000], [1136449728000, 1136535264000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i) + toNumber).value;
+      const store = browser.execute<number[]>(brush('drag', i) + toNumber);
       assert.sameMembers(store, extents[i]);
       testRender(`dayTimeUnit_${i}`);
     }
 
-    cleared = browser.execute(brush('drag_clear', 0)).value;
+    cleared = browser.execute(brush('drag_clear', 0));
     assert.lengthOf(cleared, 0);
   });
 
@@ -164,7 +166,7 @@ describe('interval selections at runtime in unit views', () => {
           }
         )
       );
-      const store = browser.execute(brush('drag', i)).value;
+      const store = browser.execute(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
