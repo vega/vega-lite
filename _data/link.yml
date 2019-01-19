@@ -4,6 +4,8 @@
 CompositeUnitSpec:
   name: SingleViewSpec
   link: "spec.html#single"
+ViewBackground:
+  name: "spec.html#view-background"
 LayerSpec:
   link: "layer.html"
 AutoSizeParams:

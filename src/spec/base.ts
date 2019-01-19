@@ -1,6 +1,7 @@
 import {Data} from '../data';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
+import {VgMarkConfig} from '../vega.schema';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
@@ -75,4 +76,45 @@ export interface LayoutSizeMixins {
    * __See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.
    */
   height?: number;
+}
+
+export interface LayerUnitMixins extends LayoutSizeMixins {
+  /**
+   * An object defining the view background's fill and stroke.
+   *
+   * __Default value:__ none (transparent)
+   */
+  view?: ViewBackground;
+}
+
+export interface ViewBackground
+  extends Partial<
+    Pick<
+      VgMarkConfig,
+      | 'cornerRadius'
+      | 'fillOpacity'
+      | 'opacity'
+      | 'strokeCap'
+      | 'strokeDash'
+      | 'strokeDashOffset'
+      | 'strokeJoin'
+      | 'strokeMiterLimit'
+      | 'strokeOpacity'
+      | 'strokeWidth'
+    >
+  > {
+  // Override documentations for fill and stroke
+  /**
+   * The fill color.
+   *
+   * __Default value:__ `undefined`
+   */
+  fill?: string;
+
+  /**
+   * The stroke color.
+   *
+   * __Default value:__ `undefined`
+   */
+  stroke?: string;
 }

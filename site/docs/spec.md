@@ -78,7 +78,15 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
 
-{% include table.html props="width,height,selection,projection,mark,encoding" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="mark,encoding,width,height,view,selection,projection" source="TopLevelFacetedUnitSpec" %}
+
+{:#view-background}
+
+### View Background
+
+The `view` property of a single-view or [layer](layer.html) specification can define the background of the view with the following properties:
+
+{% include table.html props="cornerRadius,fill,fillOpacity,opacity,stroke,strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeOpacity,strokeWidth" source="ViewBackground" %}
 
 ## Layered and Multi-view Specifications
 
@@ -106,16 +114,10 @@ To create layered and multi-view graphics, please refer to the following pages:
 }
 ```
 
-The style of a single view visualization can be customized by specifying the `view` property of the `config` object.
+The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background).
 
-### Default View Size
-
-The `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
+In addition, the `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
 
 {% include table.html props="width,height" source="ViewConfig" %}
 
 **For more information about view size, please see the [size](size.html) documentation.**
-
-### View Styles
-
-{% include table.html props="clip,fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="ViewConfig" %}

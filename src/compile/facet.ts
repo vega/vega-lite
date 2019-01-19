@@ -390,12 +390,13 @@ export class FacetModel extends ModelWithField {
 
   public assembleMarks(): VgMarkGroup[] {
     const {child} = this;
-    const facetRoot = this.component.data.facetRoot;
-    const data = assembleFacetData(facetRoot);
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const layoutSizeEncodeEntry = child.assembleLayoutSize();
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
+
+    const encodeEntry = child.assembleGroupEncodeEntry(false);
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -414,7 +415,7 @@ export class FacetModel extends ModelWithField {
         order: [...this.headerSortOrder('row'), ...this.headerSortOrder('column')]
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
+      ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
       ...child.assembleGroup(assembleFacetSignals(this, []))
     };
 
