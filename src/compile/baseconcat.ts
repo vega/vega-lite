@@ -78,19 +78,14 @@ export abstract class BaseConcatModel extends Model {
     return this.children.map(child => {
       const title = child.assembleTitle();
       const style = child.assembleGroupStyle();
-      const layoutSizeEncodeEntry = child.assembleLayoutSize();
+      const encodeEntry = child.assembleGroupEncodeEntry(false);
+
       return {
         type: 'group',
         name: child.getName('group'),
         ...(title ? {title} : {}),
         ...(style ? {style} : {}),
-        ...(layoutSizeEncodeEntry
-          ? {
-              encode: {
-                update: layoutSizeEncodeEntry
-              }
-            }
-          : {}),
+        ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
         ...child.assembleGroup()
       };
     });

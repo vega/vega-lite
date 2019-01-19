@@ -2,13 +2,13 @@ import {Encoding} from '../encoding';
 import {RepeatRef} from '../fielddef';
 import {Projection} from '../projection';
 import {Resolve} from '../resolve';
-import {BaseSpec, LayoutSizeMixins} from './base';
+import {BaseSpec, LayerUnitMixins} from './base';
 import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayerUnitMixins {
   /**
    * Layer or single view specifications to be layered.
    *

@@ -42,7 +42,7 @@ export type TopLevel<S extends BaseSpec> = S &
 
 export interface TopLevelProperties {
   /**
-   * CSS color property to use as the background of visualization.
+   * CSS color property to use as the background of the entire view.
    *
    * __Default value:__ none (transparent)
    */

@@ -2734,7 +2734,7 @@
           "description": "Y-axis specific config."
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the whole Vega-Lite view\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "bar": {
@@ -3987,6 +3987,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
         },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
@@ -5370,6 +5374,10 @@
           },
           "type": "array"
         },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
@@ -5436,6 +5444,10 @@
             "$ref": "#/definitions/Transform"
           },
           "type": "array"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
         },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
@@ -10074,7 +10086,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "config": {
@@ -10153,6 +10165,10 @@
           "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
           "type": "object"
         },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
+        },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
@@ -10183,7 +10199,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "bounds": {
@@ -10296,7 +10312,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "bounds": {
@@ -10413,7 +10429,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "bounds": {
@@ -10526,7 +10542,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "bounds": {
@@ -10652,7 +10668,7 @@
           "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
         },
         "background": {
-          "description": "CSS color property to use as the background of visualization.\n\n__Default value:__ none (transparent)",
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
           "type": "string"
         },
         "config": {
@@ -10723,6 +10739,10 @@
         "usermeta": {
           "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
           "type": "object"
+        },
+        "view": {
+          "$ref": "#/definitions/ViewBackground",
+          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
         },
         "width": {
           "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
@@ -11382,6 +11402,70 @@
       ],
       "type": "object"
     },
+    "ViewBackground": {
+      "additionalProperties": false,
+      "properties": {
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
+        "fill": {
+          "description": "The fill color.\n\n__Default value:__ `undefined`",
+          "type": "string"
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "stroke": {
+          "description": "The stroke color.\n\n__Default value:__ `undefined`",
+          "type": "string"
+        },
+        "strokeCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
+          "type": "number"
+        },
+        "strokeJoin": {
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
+        },
+        "strokeMiterLimit": {
+          "description": "The miter limit at which to bevel a line join.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
     "ViewConfig": {
       "additionalProperties": false,
       "properties": {
@@ -11389,47 +11473,66 @@
           "description": "Whether the view should be clipped.",
           "type": "boolean"
         },
+        "cornerRadius": {
+          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "type": "number"
+        },
         "fill": {
-          "description": "The fill color.\n\n__Default value:__ (none)",
+          "description": "The fill color.\n\n__Default value:__ `undefined`",
           "type": "string"
         },
         "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ (none)",
+          "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
           "type": "number"
         },
         "height": {
           "description": "The default height of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) y-scale with `rangeStep` = `null`.\n\n__Default value:__ `200`",
           "type": "number"
         },
+        "opacity": {
+          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "stroke": {
-          "description": "The stroke color.\n\n__Default value:__ (none)",
+          "description": "The stroke color.\n\n__Default value:__ `undefined`",
           "type": "string"
         },
+        "strokeCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"square\"`"
+        },
         "strokeDash": {
-          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.\n\n__Default value:__ (none)",
+          "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "strokeDashOffset": {
-          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.\n\n__Default value:__ (none)",
+          "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
           "type": "number"
         },
         "strokeJoin": {
           "$ref": "#/definitions/StrokeJoin",
-          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'"
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
-          "description": "The stroke line join method. One of miter (default), round or bevel.\n\n__Default value:__ 'miter'",
+          "description": "The miter limit at which to bevel a line join.",
           "type": "number"
         },
         "strokeOpacity": {
-          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ (none)",
+          "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
+          "maximum": 1,
+          "minimum": 0,
           "type": "number"
         },
         "strokeWidth": {
-          "description": "The stroke width, in pixels.\n\n__Default value:__ (none)",
+          "description": "The stroke width, in pixels.",
+          "minimum": 0,
           "type": "number"
         },
         "width": {

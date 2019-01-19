@@ -15,13 +15,14 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
+import {ViewBackground} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, keys, mergeDeep} from './util';
-import {StrokeJoin, VgMarkConfig, VgScheme} from './vega.schema';
+import {VgMarkConfig, VgScheme} from './vega.schema';
 
-export interface ViewConfig {
+export interface ViewConfig extends ViewBackground {
   /**
    * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
    *
@@ -42,79 +43,6 @@ export interface ViewConfig {
    * Whether the view should be clipped.
    */
   clip?: boolean;
-
-  // FILL_STROKE_CONFIG
-  /**
-   * The fill color.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  fill?: string;
-
-  /**
-   * The fill opacity (value between [0,1]).
-   *
-   * __Default value:__ (none)
-   *
-   */
-  fillOpacity?: number;
-
-  /**
-   * The stroke color.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  stroke?: string;
-
-  /**
-   * The stroke opacity (value between [0,1]).
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeOpacity?: number;
-
-  /**
-   * The stroke width, in pixels.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeWidth?: number;
-
-  /**
-   * An array of alternating stroke, space lengths for creating dashed or dotted lines.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeDash?: number[];
-
-  /**
-   * The offset (in pixels) into which to begin drawing with the stroke dash array.
-   *
-   * __Default value:__ (none)
-   *
-   */
-  strokeDashOffset?: number;
-
-  /**
-   * The stroke line join method. One of miter (default), round or bevel.
-   *
-   * __Default value:__ 'miter'
-   *
-   */
-  strokeJoin?: StrokeJoin;
-
-  /**
-   * The stroke line join method. One of miter (default), round or bevel.
-   *
-   * __Default value:__ 'miter'
-   *
-   */
-  strokeMiterLimit?: number;
 }
 
 export const defaultViewConfig: ViewConfig = {
@@ -225,6 +153,13 @@ export interface Config
     MarkConfigMixins,
     CompositeMarkConfigMixins,
     AxisConfigMixins {
+  /**
+   * CSS color property to use as the background of the whole Vega-Lite view
+   *
+   * __Default value:__ none (transparent)
+   */
+  background?: string;
+
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).

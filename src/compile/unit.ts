@@ -22,7 +22,7 @@ import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
-import {VgData, VgEncodeEntry, VgLayout} from '../vega.schema';
+import {VgData, VgLayout} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -72,7 +72,8 @@ export class UnitModel extends ModelWithField {
     config: Config,
     public fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, undefined);
+    super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
+
     this.initSize({
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
@@ -241,13 +242,6 @@ export class UnitModel extends ModelWithField {
     }
 
     return marks.map(this.correctDataNames);
-  }
-
-  public assembleLayoutSize(): VgEncodeEntry {
-    return {
-      width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height')
-    };
   }
 
   protected getMapping() {
