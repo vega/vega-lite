@@ -1,10 +1,9 @@
 import {ChannelDef, Field, FieldDef, RepeatRef, SortableFieldDef} from '../fielddef';
 import {Header} from '../header';
 import {Resolve} from '../resolve';
-import {BaseSpec} from './base';
+import {BaseSpec, GenericCompositionLayout} from './base';
 import {FacetMapping} from './facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericCompositionLayout} from './toplevel';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface FacetFieldDef<F extends Field> extends SortableFieldDef<F> {
