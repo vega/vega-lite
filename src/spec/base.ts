@@ -114,7 +114,7 @@ export interface ViewBackground
   /**
    * The stroke color.
    *
-   * __Default value:__ `undefined`
+   * __Default value:__ `"#ddd"`
    */
   stroke?: string;
 }
