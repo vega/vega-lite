@@ -4,7 +4,7 @@ import {isString, stringValue} from 'vega-util';
 import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
-import {BrushConfig, SelectionDef, SelectionResolution, SelectionType, SELECTION_ID} from '../../selection';
+import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
 import {EventStream, VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
