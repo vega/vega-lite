@@ -98,6 +98,27 @@ describe('Model', () => {
     });
   });
 
+  describe('assembleGroupStyle', () => {
+    it('returns cell by default', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point'
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('returns the specified style', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        view: {style: 'notcell'}
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('notcell');
+    });
+  });
+
   describe('getSizeSignalRef', () => {
     it('returns formula for step if parent is facet', () => {
       const model = parseFacetModelWithScale({

@@ -15,14 +15,14 @@ import {
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {ViewBackground} from './spec/base';
+import {BaseViewBackground} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {StackOffset} from './stack';
 import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, keys, mergeDeep} from './util';
 import {VgMarkConfig, VgScheme} from './vega.schema';
 
-export interface ViewConfig extends ViewBackground {
+export interface ViewConfig extends BaseViewBackground {
   /**
    * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
    *
