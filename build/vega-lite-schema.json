@@ -11462,6 +11462,10 @@
           "description": "The stroke width, in pixels.",
           "minimum": 0,
           "type": "number"
+        },
+        "style": {
+          "description": "A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ `\"cell\"`\n__Note:__ Any specified view background properties will augment the default style.",
+          "type": "string"
         }
       },
       "type": "object"
