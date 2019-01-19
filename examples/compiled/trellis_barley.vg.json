@@ -208,7 +208,7 @@
       "domain": {
         "data": "source_0",
         "field": "variety",
-        "sort": {"field": "yield", "op": "median", "order": "descending"}
+        "sort": {"op": "median", "field": "yield", "order": "descending"}
       },
       "range": {"step": {"signal": "trellis_barley_y_step"}},
       "padding": 0.5

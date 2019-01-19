@@ -97,7 +97,7 @@
       "domain": {
         "data": "data_0",
         "field": "student",
-        "sort": {"field": "score", "op": "average", "order": "descending"}
+        "sort": {"op": "average", "field": "score", "order": "descending"}
       },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
