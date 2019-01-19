@@ -99,7 +99,7 @@ Now you should be able to build and test the code.
 For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
 
 ```sh
-brew install ruby@2.3
+brew install ruby
 ```
 
 For bundler:
