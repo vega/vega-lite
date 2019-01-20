@@ -78,9 +78,9 @@ To order data by another field, `sort` can be an **encoding sort field definitio
 
 {% include table.html props="field,op,order" source="EncodingSortField" %}
 
-For example, the following plot sorts x by mean of Horsepower.
+For example, the following plot sorts `"age"` values on the y-axis by `"sum"` of `"people"`. Note that this is equivalent to the example above.
 
-<div class="vl-example" data-name="histogram_sort_mean"></div>
+<div class="vl-example" data-name="bar_aggregate_sort_mean"></div>
 
 ### Specifying Custom Sort Order
 
