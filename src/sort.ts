@@ -60,6 +60,11 @@ export interface SortByEncoding {
    * The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `"x"`, `"y"`)
    */
   encoding: SingleDefUnitChannel;
+
+  /**
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   */
+  order?: SortOrder | null;
 }
 
 export type SortArray = number[] | string[] | boolean[] | DateTime[];

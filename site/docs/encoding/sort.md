@@ -76,7 +76,7 @@ For example, the following plot sorts x by mean of Horsepower.
 
 To sort data by another encoding channel, the `sort` property can be an object with the `encoding` property:
 
-{% include table.html props="encoding" source="SortByEncoding" %}
+{% include table.html props="encoding,order" source="SortByEncoding" %}
 
 For example, the following plot sorts the y-values by the x-values.
 

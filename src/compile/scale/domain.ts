@@ -363,11 +363,12 @@ export function domainSort(
   if (isSortField(sort)) {
     return normalizeSortField(sort, isStacked);
   } else if (isSortByEncoding(sort)) {
-    const channelToSortBy = sort.encoding;
-    const {aggregate, field} = model.fieldDef(channelToSortBy);
+    const {encoding, order} = sort;
+    const {aggregate, field} = model.fieldDef(encoding);
     const sortField: EncodingSortField<string> = {
       op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
-      field
+      field,
+      order
     };
     return normalizeSortField(sortField, isStacked);
   } else if (sort === 'descending') {

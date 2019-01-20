@@ -9568,7 +9568,19 @@
       "additionalProperties": false,
       "properties": {
         "encoding": {
-          "$ref": "#/definitions/SingleDefUnitChannel"
+          "$ref": "#/definitions/SingleDefUnitChannel",
+          "description": "The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `\"x\"`, `\"y\"`)"
+        },
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SortOrder"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
         }
       },
       "required": [
