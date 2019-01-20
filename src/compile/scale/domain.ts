@@ -347,9 +347,10 @@ export function domainSort(
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
+    const isStacked = model.stack !== null;
     // flatten nested fields
     return {
-      op: DEFAULT_SORT_OP,
+      op: isStacked ? 'sum' : DEFAULT_SORT_OP,
       ...sort,
       ...(sort.field ? {field: util.replacePathInField(sort.field)} : {})
     };

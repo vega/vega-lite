@@ -44,7 +44,7 @@ export interface EncodingSortField<F> {
    *
    * For a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    *
-   * __Default value:__ `"mean"`
+   * __Default value:__ `"sum"` for stacked plots. Otherwise, `"mean"`.
    */
   op?: AggregateOp;
 
