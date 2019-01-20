@@ -1,4 +1,4 @@
-import {isString} from 'vega-util';
+import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
@@ -7,7 +7,7 @@ import {DateTime} from '../../datetime';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {EncodingSortField, isSortArray, isSortField} from '../../sort';
+import {DEFAULT_SORT_OP, isSortArray, isSortField} from '../../sort';
 import {TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
@@ -231,7 +231,9 @@ function parseSingleChannelDomain(
     ];
   }
 
-  const sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
+  const sort: undefined | true | VgSortField = isScaleChannel(channel)
+    ? domainSort(model, channel, scaleType)
+    : undefined;
 
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
@@ -265,7 +267,7 @@ function parseSingleChannelDomain(
           field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
           // we have to use a sort object if sort = true to make the sort correct by bin start
           sort:
-            sort === true || !isSortField(sort)
+            sort === true || !isObject(sort)
               ? {
                   field: model.vgField(channel, {}),
                   op: 'min' // min or max doesn't matter since we sort by the start of the bin range
@@ -325,7 +327,7 @@ export function domainSort(
   model: UnitModel,
   channel: ScaleChannel,
   scaleType: ScaleType
-): true | EncodingSortField<string> {
+): undefined | true | VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
@@ -345,8 +347,10 @@ export function domainSort(
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
+    const isStacked = model.stack !== null;
     // flatten nested fields
     return {
+      op: isStacked ? 'sum' : DEFAULT_SORT_OP,
       ...sort,
       ...(sort.field ? {field: util.replacePathInField(sort.field)} : {})
     };
