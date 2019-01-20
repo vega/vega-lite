@@ -1,6 +1,7 @@
 import {Data} from '../data';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
+import {Flag, flagKeys} from '../util';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 
 export {TopLevel} from './toplevel';
@@ -180,7 +181,31 @@ export interface GenericCompositionLayout extends BoundsMixins {
   spacing?: number | RowCol<number>;
 }
 
-export function extractCompositionLayout(layout: GenericCompositionLayout): GenericCompositionLayout {
-  const {align = undefined, center = undefined, bounds = undefined, spacing = undefined} = layout || {};
-  return {align, bounds, center, spacing};
+export interface GenericCompositionLayoutWithColumns extends GenericCompositionLayout {
+  /**
+   * The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.
+   */
+  columns?: number;
+}
+
+const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> = {
+  align: 1,
+  bounds: 1,
+  center: 1,
+  columns: 1,
+  spacing: 1
+};
+const COMPOSITION_LAYOUT_PROPERTIES = flagKeys(COMPOSITION_LAYOUT_INDEX);
+
+export function extractCompositionLayout(
+  spec: GenericCompositionLayoutWithColumns
+): GenericCompositionLayoutWithColumns {
+  const layout = {};
+
+  for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
+    if (spec[prop] !== undefined) {
+      layout[prop] = spec[prop];
+    }
+  }
+  return layout;
 }

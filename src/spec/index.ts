@@ -12,7 +12,7 @@ import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {DataMixins} from './base';
-import {GenericHConcatSpec, GenericVConcatSpec, isConcatSpec, isVConcatSpec} from './concat';
+import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec, isAnyConcatSpec, isVConcatSpec} from './concat';
 import {GenericFacetSpec, isFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec, isRepeatSpec} from './repeat';
@@ -23,7 +23,7 @@ export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {
   GenericHConcatSpec,
   GenericVConcatSpec,
-  isConcatSpec,
+  isAnyConcatSpec,
   isHConcatSpec,
   isVConcatSpec,
   NormalizedConcatSpec
@@ -48,6 +48,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
   | L
   | GenericFacetSpec<U, L>
   | GenericRepeatSpec<U, L>
+  | GenericConcatSpec<U, L>
   | GenericVConcatSpec<U, L>
   | GenericHConcatSpec<U, L>;
 
@@ -68,6 +69,7 @@ export type TopLevelSpec =
   | TopLevelFacetSpec
   | TopLevel<ExtendedLayerSpec>
   | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
@@ -110,7 +112,7 @@ function fieldDefIndex<F extends Field>(
     fieldDefIndex(spec.spec, dict);
   } else if (isRepeatSpec(spec)) {
     fieldDefIndex(spec.spec, dict);
-  } else if (isConcatSpec(spec)) {
+  } else if (isAnyConcatSpec(spec)) {
     const childSpec = isVConcatSpec(spec) ? spec.vconcat : spec.hconcat;
     childSpec.forEach(child => fieldDefIndex(child, dict));
   } else {
