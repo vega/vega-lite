@@ -1,3 +1,4 @@
+import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString, isBinning, isBinParams} from '../../bin';
@@ -7,7 +8,7 @@ import {DateTime} from '../../datetime';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {DEFAULT_SORT_OP, isSortArray, isSortField} from '../../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
 import {TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
@@ -323,6 +324,18 @@ function parseSingleChannelDomain(
   }
 }
 
+function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean) {
+  const {op, field, order} = sort;
+  return {
+    // Apply default op
+    op: op || (isStacked ? 'sum' : DEFAULT_SORT_OP),
+    // flatten nested fields
+    ...(field ? {field: util.replacePathInField(field)} : {}),
+
+    ...(order ? {order} : {})
+  };
+}
+
 export function domainSort(
   model: UnitModel,
   channel: ScaleChannel,
@@ -345,26 +358,26 @@ export function domainSort(
     };
   }
 
+  const isStacked = model.stack !== null;
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    const isStacked = model.stack !== null;
-    // flatten nested fields
-    return {
-      op: isStacked ? 'sum' : DEFAULT_SORT_OP,
-      ...sort,
-      ...(sort.field ? {field: util.replacePathInField(sort.field)} : {})
+    return normalizeSortField(sort, isStacked);
+  } else if (isSortByEncoding(sort)) {
+    const {encoding, order} = sort;
+    const {aggregate, field} = model.fieldDef(encoding);
+    const sortField: EncodingSortField<string> = {
+      op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
+      field,
+      order
     };
-  }
-
-  if (sort === 'descending') {
+    return normalizeSortField(sortField, isStacked);
+  } else if (sort === 'descending') {
     return {
       op: 'min',
       field: model.vgField(channel),
       order: 'descending'
     };
-  }
-
-  if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
+  } else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 

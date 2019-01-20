@@ -120,8 +120,11 @@ EncodingWithFacet:
 Type:
   link: type.html
 SingleDefChannel:
-  name: Encoding
-  link: "encoding.html"
+  name: "Channel"
+  link: "encoding.html#channels"
+SingleDefUnitChannel:
+  name: "Channel"
+  link: "encoding.html#channels"
 
 # Channel Definitions
 ColorFieldDefWithCondition:

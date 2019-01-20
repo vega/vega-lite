@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
+import {SingleDefUnitChannel} from './channel';
 import {DateTime} from './datetime';
 
 export type SortOrder = 'ascending' | 'descending';
@@ -54,12 +55,30 @@ export interface EncodingSortField<F> {
   order?: SortOrder | null;
 }
 
-export type Sort<F> = number[] | string[] | boolean[] | DateTime[] | SortOrder | EncodingSortField<F> | null;
+export interface SortByEncoding {
+  /**
+   * The [encoding channel](https://vega.github.io/vega-lite/docs/encoding.html#channels) to sort by (e.g., `"x"`, `"y"`)
+   */
+  encoding: SingleDefUnitChannel;
+
+  /**
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   */
+  order?: SortOrder | null;
+}
+
+export type SortArray = number[] | string[] | boolean[] | DateTime[];
+
+export type Sort<F> = SortArray | SortOrder | EncodingSortField<F> | SortByEncoding | null;
+
+export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
+  return !!sort && !!sort['encoding'];
+}
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
   return !!sort && (sort['op'] === 'count' || !!sort['field']);
 }
 
-export function isSortArray<F>(sort: Sort<F>): sort is number[] | string[] | boolean[] | DateTime[] {
+export function isSortArray<F>(sort: Sort<F>): sort is SortArray {
   return !!sort && isArray(sort);
 }

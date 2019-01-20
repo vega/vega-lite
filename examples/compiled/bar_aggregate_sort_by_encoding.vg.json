@@ -1,21 +1,27 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "description": "A bar chart that sorts the y-values by the x-values.",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
   "style": "cell",
   "data": [
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "source_0",
+      "url": "data/population.json",
+      "format": {"type": "json"},
+      "transform": [{"type": "filter", "expr": "datum.year == 2000"}]
+    },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Origin"],
-          "ops": ["mean"],
-          "fields": ["Horsepower"],
-          "as": ["mean_Horsepower"]
+          "groupby": ["age"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
         }
       ]
     }
@@ -37,17 +43,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"mean_Horsepower\"] === null || isNaN(datum[\"mean_Horsepower\"])",
+              "test": "datum[\"sum_people\"] === null || isNaN(datum[\"sum_people\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Mean of Horsepower\": format(datum[\"mean_Horsepower\"], \"\")}"
+            "signal": "{\"age\": ''+datum[\"age\"], \"population\": format(datum[\"sum_people\"], \"\")}"
           },
-          "x": {"scale": "x", "field": "mean_Horsepower"},
+          "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Origin"},
+          "y": {"scale": "y", "field": "age"},
           "height": {"scale": "y", "band": true}
         }
       }
@@ -57,7 +63,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "mean_Horsepower"},
+      "domain": {"data": "data_0", "field": "sum_people"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -67,8 +73,8 @@
       "type": "band",
       "domain": {
         "data": "source_0",
-        "field": "Origin",
-        "sort": {"op": "mean", "field": "Horsepower"}
+        "field": "age",
+        "sort": {"op": "sum", "field": "people"}
       },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
@@ -80,7 +86,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Mean of Horsepower",
+      "title": "population",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -103,7 +109,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Origin",
+      "title": "age",
       "labelOverlap": true,
       "zindex": 1
     }
