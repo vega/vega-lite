@@ -39,6 +39,7 @@ export interface EncodingSortField<F> {
   field?: F;
   /**
    * An [aggregate operation](https://vega.github.io/vega-lite/docs/aggregate.html#ops) to perform on the field prior to sorting (e.g., `"count"`, `"mean"` and `"median"`).
+   * An aggregation is required when there are multiple values of the sort field for each encoded data field.
    * The input data objects will be aggregated, grouped by the encoded data field.
    *
    * For a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
