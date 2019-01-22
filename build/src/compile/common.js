@@ -5,16 +5,6 @@ import { ScaleType } from '../scale';
 import { formatExpression } from '../timeunit';
 import { QUANTITATIVE } from '../type';
 import { getFirstDefined, stringify } from '../util';
-export function applyConfig(e, config, // TODO(#1842): consolidate MarkConfig | TextConfig?
-propsList) {
-    for (const property of propsList) {
-        const value = config[property];
-        if (value !== undefined) {
-            e[property] = { value: value };
-        }
-    }
-    return e;
-}
 export function applyMarkConfig(e, model, propsList) {
     for (const property of propsList) {
         const value = getMarkConfig(property, model.markDef, model.config);

@@ -38,8 +38,8 @@ export declare function partLayerMixins<P extends PartsMixins<any>>(markDef: Gen
 export declare function compositeMarkContinuousAxis<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>, orient: Orient, compositeMark: M): {
     continuousAxisChannelDef: PositionFieldDef<string>;
     continuousAxisChannelDef2: SecondaryFieldDef<string>;
-    continuousAxisChannelDefError: FieldDefWithoutScale<string, import("../type").StandardType>;
-    continuousAxisChannelDefError2: FieldDefWithoutScale<string, import("../type").StandardType>;
+    continuousAxisChannelDefError: FieldDefWithoutScale<string, import("vega-lite/build/src/type").StandardType>;
+    continuousAxisChannelDefError2: FieldDefWithoutScale<string, import("vega-lite/build/src/type").StandardType>;
     continuousAxis: "x" | "y";
 };
 export declare function compositeMarkOrient<M extends CompositeMark>(spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>, compositeMark: M): Orient;

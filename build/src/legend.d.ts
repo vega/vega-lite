@@ -1,8 +1,8 @@
 import { Align, BaseLegend, FontWeight, LabelOverlap, LegendConfig as VgLegendConfig, LegendOrient, Orientation, SymbolShape, TextBaseline } from 'vega';
 import { DateTime } from './datetime';
 import { Guide, GuideEncodingEntry, VlOnlyGuideConfig } from './guide';
-import { Color, VgLayoutAlign } from './vega.schema';
-export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendConfig<number, number, string, Color, FontWeight, Align, TextBaseline, VgLayoutAlign, LabelOverlap, SymbolShape> & {
+import { Color, LayoutAlign } from './vega.schema';
+export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendConfig<number, number, string, Color, FontWeight, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape> & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -43,7 +43,7 @@ export declare type LegendConfig = LegendMixins & VlOnlyGuideConfig & VgLegendCo
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends BaseLegend<number, number, string, Color, FontWeight, Align, TextBaseline, VgLayoutAlign, LabelOverlap, SymbolShape>, LegendMixins, Guide {
+export interface Legend extends BaseLegend<number, number, string, Color, FontWeight, Align, TextBaseline, LayoutAlign, LabelOverlap, SymbolShape>, LegendMixins, Guide {
     /**
      * Mark definitions for custom legend encoding.
      *
@@ -121,6 +121,6 @@ export interface LegendEncoding {
     gradient?: GuideEncodingEntry;
 }
 export declare const defaultLegendConfig: LegendConfig;
-export declare const LEGEND_PROPERTIES: ("title" | "padding" | "type" | "values" | "strokeWidth" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "titleAlign" | "titleOpacity" | "labelAlign" | "labelBaseline" | "labelOverlap" | "labelFontWeight" | "labelOpacity" | "cornerRadius" | "columns" | "direction" | "fillColor" | "strokeColor" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelOffset")[];
-export declare const VG_LEGEND_PROPERTIES: ("title" | "padding" | "type" | "shape" | "values" | "fill" | "stroke" | "opacity" | "strokeWidth" | "size" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "format" | "offset" | "tickCount" | "zindex" | "encode" | "titleAlign" | "titleOpacity" | "labelAlign" | "labelBaseline" | "labelOverlap" | "labelFontWeight" | "labelOpacity" | "cornerRadius" | "columns" | "direction" | "fillColor" | "strokeColor" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelOffset")[];
+export declare const LEGEND_PROPERTIES: ("title" | "padding" | "type" | "values" | "strokeWidth" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "cornerRadius" | "format" | "offset" | "direction" | "tickCount" | "zindex" | "fillColor" | "strokeColor" | "titleAlign" | "titleOpacity" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOffset" | "labelOverlap")[];
+export declare const VG_LEGEND_PROPERTIES: ("title" | "padding" | "type" | "shape" | "values" | "fill" | "stroke" | "opacity" | "strokeWidth" | "size" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding" | "orient" | "cornerRadius" | "format" | "offset" | "direction" | "tickCount" | "zindex" | "fillColor" | "strokeColor" | "titleAlign" | "titleOpacity" | "gradientLength" | "gradientOpacity" | "gradientThickness" | "gradientStrokeColor" | "gradientStrokeWidth" | "clipHeight" | "columns" | "columnPadding" | "rowPadding" | "gridAlign" | "symbolFillColor" | "symbolOffset" | "symbolOpacity" | "symbolSize" | "symbolStrokeColor" | "symbolStrokeWidth" | "symbolType" | "labelAlign" | "labelBaseline" | "labelFontWeight" | "labelOpacity" | "labelOffset" | "labelOverlap" | "encode")[];
 export {};

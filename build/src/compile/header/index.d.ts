@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import { Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig } from 'vega';
+import { Axis as VgAxis, AxisOrient, TitleConfig } from 'vega';
 import { Config } from '../../config';
 import { HeaderConfig } from '../../header';
 import { FacetFieldDef } from '../../spec/facet';
@@ -1037,5 +1037,5 @@ export declare function getHeaderGroup(model: Model, channel: HeaderChannel, hea
     role: string;
 };
 export declare function getHeaderProperties(config: Config, facetFieldDef: FacetFieldDef<string>, properties: (keyof HeaderConfig)[], propertiesMap: {
-    [k in keyof HeaderConfig]: keyof VgTitleConfig;
+    [k in keyof HeaderConfig]: keyof TitleConfig;
 }): {};

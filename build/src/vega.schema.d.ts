@@ -1,9 +1,9 @@
-import { AggregateOp, Align, Compare as VgCompare, Field as VgField, FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, FontStyle as VgFontStyle, FontWeight as VgFontWeight, SampleTransform as VgSampleTransform, SignalRef, SortField as VgSortField, TextBaseline as VgTextBaseline, UnionSortField as VgUnionSortField } from 'vega';
+import { AggregateOp, Align, Compare as VgCompare, Field as VgField, FlattenTransform as VgFlattenTransform, FoldTransform as VgFoldTransform, FontStyle as VgFontStyle, FontWeight as VgFontWeight, LayoutAlign, ProjectionType, SampleTransform as VgSampleTransform, SignalRef, SortField as VgSortField, TextBaseline as VgTextBaseline, UnionSortField as VgUnionSortField } from 'vega';
 import { BaseBin } from './bin';
 import { NiceTime, ScaleType } from './scale';
 import { StackOffset } from './stack';
 import { WindowOnlyOp } from './transform';
-export { VgSortField, VgUnionSortField, VgCompare };
+export { VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType };
 export declare type Color = string;
 export interface VgData {
     name: string;
@@ -25,7 +25,7 @@ export interface VgDataRef {
     sort?: VgSortField;
 }
 export declare function isSignalRef(o: any): o is SignalRef;
-export declare type VgEventStream = any;
+export declare type EventStream = any;
 export interface VgValueRef {
     value?: number | string | boolean;
     field?: string | {
@@ -48,12 +48,12 @@ export interface VgFieldRefUnionDomain {
     fields: VgField[];
     sort?: VgUnionSortField;
 }
-export interface VgScheme {
+export interface SchemeConfig {
     scheme: string;
     extent?: number[];
     count?: number;
 }
-export declare type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | VgScheme | VgRangeStep | S;
+export declare type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | SchemeConfig | VgRangeStep | S;
 export declare function isVgRangeStep(range: VgRange<any>): range is VgRangeStep;
 export interface VgRangeStep {
     step: number | SignalRef;
@@ -61,10 +61,9 @@ export interface VgRangeStep {
 export declare type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export declare type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 export declare type VgMarkGroup = any;
-export declare type VgProjectionType = 'albers' | 'albersUsa' | 'azimuthalEqualArea' | 'azimuthalEquidistant' | 'conicConformal' | 'conicEqualArea' | 'conicEquidistant' | 'equirectangular' | 'gnomonic' | 'mercator' | 'orthographic' | 'stereographic' | 'transverseMercator';
 export interface VgProjection {
     name: string;
-    type?: VgProjectionType;
+    type?: ProjectionType;
     clipAngle?: number;
     clipExtent?: number[][];
     scale?: number;
@@ -114,7 +113,6 @@ export interface ScaleInterpolateParams {
     type: 'rgb' | 'cubehelix' | 'cubehelix-long';
     gamma?: number;
 }
-export declare type VgLayoutAlign = 'none' | 'each' | 'all';
 export interface RowCol<T> {
     row?: T;
     column?: T;
@@ -136,7 +134,7 @@ export interface VgLayout {
     columns?: number | {
         signal: string;
     };
-    align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
+    align?: LayoutAlign | RowCol<LayoutAlign>;
 }
 export declare function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain;
 export declare function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain;
@@ -242,7 +240,7 @@ export declare type Cursor = 'auto' | 'default' | 'none' | 'context-menu' | 'hel
 export declare type StrokeCap = 'butt' | 'round' | 'square';
 export declare type StrokeJoin = 'miter' | 'round' | 'bevel';
 export declare type Dir = 'ltr' | 'rtl';
-export interface VgMarkConfig {
+export interface BaseMarkConfig {
     /**
      * Default Fill Color.  This has higher precedence than `config.color`
      *
@@ -462,7 +460,7 @@ export interface VgMarkConfig {
      */
     cornerRadius?: number;
 }
-export declare const VG_MARK_CONFIGS: ("dir" | "font" | "cursor" | "text" | "shape" | "interpolate" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "tooltip" | "href" | "orient" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "radius" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
+export declare const VG_MARK_CONFIGS: ("dir" | "font" | "cursor" | "text" | "shape" | "interpolate" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size" | "tooltip" | "href" | "radius" | "strokeCap" | "strokeDash" | "strokeDashOffset" | "strokeMiterLimit" | "strokeJoin" | "tension" | "orient" | "align" | "baseline" | "ellipsis" | "limit" | "dx" | "dy" | "theta" | "angle" | "fontSize" | "fontWeight" | "fontStyle" | "cornerRadius")[];
 export declare type VgComparatorOrder = 'ascending' | 'descending';
 export interface VgComparator {
     field?: string | string[];

@@ -4,7 +4,7 @@ import { reduce } from '../encoding';
 import { normalize, title as fieldDefTitle, vgField } from '../fielddef';
 import * as log from '../log';
 import { hasDiscreteDomain } from '../scale';
-import { isSortField } from '../sort';
+import { DEFAULT_SORT_OP, isSortField } from '../sort';
 import { contains } from '../util';
 import { isVgRangeStep } from '../vega.schema';
 import { assembleAxis } from './axis/assemble';
@@ -250,7 +250,7 @@ export class FacetModel extends ModelWithField {
                 groupby.push(vgField(fieldDef));
                 const { sort } = fieldDef;
                 if (isSortField(sort)) {
-                    const { field, op } = sort;
+                    const { field, op = DEFAULT_SORT_OP } = sort;
                     const outputName = facetSortFieldName(fieldDef, sort);
                     if (row && column) {
                         // For crossed facet, use pre-calculate field as it requires a different groupby
@@ -309,11 +309,11 @@ export class FacetModel extends ModelWithField {
     }
     assembleMarks() {
         const { child } = this;
-        const facetRoot = this.component.data.facetRoot;
-        const data = assembleFacetData(facetRoot);
         // If we facet by two dimensions, we need to add a cross operator to the aggregation
         // so that we create all groups
-        const layoutSizeEncodeEntry = child.assembleLayoutSize();
+        const facetRoot = this.component.data.facetRoot;
+        const data = assembleFacetData(facetRoot);
+        const encodeEntry = child.assembleGroupEncodeEntry(false);
         const title = child.assembleTitle();
         const style = child.assembleGroupStyle();
         const markGroup = Object.assign({ name: this.getName('cell'), type: 'group' }, (title ? { title } : {}), (style ? { style } : {}), { from: {
@@ -323,7 +323,7 @@ export class FacetModel extends ModelWithField {
             sort: {
                 field: [...this.headerSortFields('row'), ...this.headerSortFields('column')],
                 order: [...this.headerSortOrder('row'), ...this.headerSortOrder('column')]
-            } }, (data.length > 0 ? { data: data } : {}), (layoutSizeEncodeEntry ? { encode: { update: layoutSizeEncodeEntry } } : {}), child.assembleGroup(assembleFacetSignals(this, [])));
+            } }, (data.length > 0 ? { data: data } : {}), (encodeEntry ? { encode: { update: encodeEntry } } : {}), child.assembleGroup(assembleFacetSignals(this, [])));
         return [markGroup];
     }
     getMapping() {

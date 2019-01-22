@@ -42,7 +42,8 @@ export declare type ValueDefWithCondition<F extends FieldDef<any>, V extends Val
 export declare type ColorValueDefWithCondition<F extends Field> = ValueDefWithCondition<MarkPropFieldDef<F, StandardType>, string | null>;
 export declare type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<MarkPropFieldDef<F, StandardType>, number>;
 export declare type StringValueDefWithCondition<F extends Field, T extends Type = 'nominal'> = ValueDefWithCondition<MarkPropFieldDef<F, T>, string>;
-export declare type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, 'nominal' | 'ordinal' | 'geojson'>;
+export declare type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
+export declare type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 export declare type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<TextFieldDef<F>, string | number | boolean>;
 export declare type Conditional<CD extends FieldDef<any> | ValueDef<any>> = ConditionalPredicate<CD> | ConditionalSelection<CD>;
 export declare type ConditionalPredicate<CD extends FieldDef<any> | ValueDef<any>> = {
@@ -76,7 +77,7 @@ export declare type FieldDefWithCondition<F extends FieldDef<any>, V extends Val
 export declare type ColorFieldDefWithCondition<F extends Field> = FieldDefWithCondition<MarkPropFieldDef<F, StandardType>, string | null>;
 export declare type NumericFieldDefWithCondition<F extends Field> = FieldDefWithCondition<MarkPropFieldDef<F, StandardType>, number>;
 export declare type StringFieldDefWithCondition<F extends Field, T extends Type = 'nominal'> = FieldDefWithCondition<MarkPropFieldDef<F, T>, string>;
-export declare type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, 'nominal' | 'ordinal' | 'geojson'>;
+export declare type ShapeFieldDefWithCondition<F extends Field> = StringFieldDefWithCondition<F, TypeForShape>;
 export declare type TextFieldDefWithCondition<F extends Field> = FieldDefWithCondition<TextFieldDef<F>, string | number | boolean>;
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -177,6 +178,7 @@ export interface SortableFieldDef<F extends Field, T extends Type = StandardType
      *
      * For discrete fields, `sort` can be one of the following:
      * - `"ascending"` or `"descending"` -- for sorting by the values' natural order in Javascript.
+     * - [A sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) for sorting by another encoding channel. (This type of sort definition is not available for `row` and `column` channels.)
      * - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field.
      * - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order.  For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `"month"` and `"day"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `"Mon"`, `"Tue"`).
      * - `null` indicating no sort.

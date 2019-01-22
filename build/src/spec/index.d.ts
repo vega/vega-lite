@@ -1,3 +1,9 @@
+/**
+ * Definition for specifications in Vega-Lite.  In general, there are 3 variants of specs for each type of specs:
+ * - Generic specs are generic versions of specs and they are parameterized differently for internal and external specs.
+ * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
+ * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
+ */
 import { Config } from '../config';
 import { TypedFieldDef } from '../fielddef';
 import { DataMixins } from './base';
@@ -15,7 +21,13 @@ export { ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec }
 export { GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec } from './repeat';
 export { TopLevel } from './toplevel';
 export { CompositeUnitSpec, FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec } from './unit';
+/**
+ * Any specification in Vega-Lite.
+ */
 export declare type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> = U | L | GenericFacetSpec<U, L> | GenericRepeatSpec<U, L> | GenericVConcatSpec<U, L> | GenericHConcatSpec<U, L>;
+/**
+ * Specs with only primitive marks and without other macros.
+ */
 export declare type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 export declare type TopLevelFacetedUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
 export declare type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;

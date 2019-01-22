@@ -79,7 +79,8 @@ export declare const CHANNELS: import("vega-lite/build/src/channel").Channel[];
  * are not applicable for them.  Similarly, selection projection won't work with "detail" and "order".)
  */
 export declare const SINGLE_DEF_CHANNELS: SingleDefChannel[];
-export declare type SingleDefChannel = 'x' | 'y' | 'x2' | 'y2' | 'xError' | 'yError' | 'xError2' | 'yError2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'row' | 'column' | 'color' | 'fill' | 'stroke' | 'strokeWidth' | 'size' | 'shape' | 'fillOpacity' | 'strokeOpacity' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
+export declare type SingleDefUnitChannel = 'x' | 'y' | 'x2' | 'y2' | 'xError' | 'yError' | 'xError2' | 'yError2' | 'longitude' | 'latitude' | 'longitude2' | 'latitude2' | 'color' | 'fill' | 'stroke' | 'strokeWidth' | 'size' | 'shape' | 'fillOpacity' | 'strokeOpacity' | 'opacity' | 'text' | 'tooltip' | 'href' | 'key';
+export declare type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column';
 export declare function isChannel(str: string): str is Channel;
 export declare function isSecondaryRangeChannel(c: Channel): c is 'x2' | 'y2' | 'latitude2' | 'longitude2';
 export declare function getMainRangeChannel(channel: Channel): Channel;
@@ -91,6 +92,10 @@ export declare type PositionScaleChannel = typeof POSITION_SCALE_CHANNELS[0];
 export declare const NONPOSITION_SCALE_CHANNELS: ("shape" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
 export declare type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 export declare function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel;
+/**
+ * @returns whether Vega supports legends for a particular channel
+ */
+export declare function supportLegend(channel: NonPositionScaleChannel): boolean;
 /** List of channels with scales */
 export declare const SCALE_CHANNELS: ("shape" | "x" | "y" | "color" | "fill" | "stroke" | "opacity" | "fillOpacity" | "strokeOpacity" | "strokeWidth" | "size")[];
 export declare type ScaleChannel = typeof SCALE_CHANNELS[0];

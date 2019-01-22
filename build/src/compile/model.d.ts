@@ -5,7 +5,7 @@ import { Data, DataSourceType } from '../data';
 import { FieldDef, FieldRefOption } from '../fielddef';
 import { Resolve } from '../resolve';
 import { BaseSpec } from '../spec';
-import { GenericCompositionLayout } from '../spec/toplevel';
+import { GenericCompositionLayout, ViewBackground } from '../spec/base';
 import { TitleParams } from '../title';
 import { Transform } from '../transform';
 import { Dict } from '../util';
@@ -66,8 +66,11 @@ export declare function isRepeatModel(model: Model): model is RepeatModel;
 export declare function isConcatModel(model: Model): model is ConcatModel;
 export declare function isLayerModel(model: Model): model is LayerModel;
 export declare abstract class Model {
-    abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly parent: Model;
+    readonly config: Config;
+    readonly repeater: RepeaterValue;
+    readonly view?: ViewBackground;
+    abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
     readonly name: string;
     readonly title: TitleParams;
     readonly description: string;
@@ -80,11 +83,9 @@ export declare abstract class Model {
     protected projectionNameMap: NameMapInterface;
     /** Name map for signals, which can be renamed by a model's parent. */
     protected signalNameMap: NameMapInterface;
-    readonly repeater: RepeaterValue;
-    readonly config: Config;
     readonly component: Component;
     abstract readonly children: Model[];
-    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve);
+    constructor(spec: BaseSpec, parent: Model, parentGivenName: string, config: Config, repeater: RepeaterValue, resolve: Resolve, view?: ViewBackground);
     readonly width: SignalRef;
     readonly height: SignalRef;
     protected initSize(size: LayoutSizeIndex): void;
@@ -107,7 +108,8 @@ export declare abstract class Model {
     abstract assembleSelectionSignals(): NewSignal[];
     abstract assembleSelectionData(data: VgData[]): VgData[];
     assembleGroupStyle(): string;
-    assembleLayoutSize(): VgEncodeEntry;
+    private assembleEncodeFromView;
+    assembleGroupEncodeEntry(isTopLevel: boolean): VgEncodeEntry;
     assembleLayout(): VgLayout;
     protected assembleDefaultLayout(): VgLayout;
     abstract assembleLayoutSignals(): NewSignal[];

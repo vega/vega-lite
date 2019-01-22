@@ -1,5 +1,5 @@
 import { CompositeMark, CompositeMarkDef } from './compositemark/index';
-import { VgMarkConfig } from './vega.schema';
+import { BaseMarkConfig } from './vega.schema';
 export declare namespace Mark {
     const AREA: 'area';
     const BAR: 'bar';
@@ -46,7 +46,7 @@ export interface ColorMixins {
 export interface TooltipContent {
     content: 'encoding' | 'data';
 }
-export interface MarkConfig extends ColorMixins, VgMarkConfig {
+export interface MarkConfig extends ColorMixins, BaseMarkConfig {
     /**
      * Whether the mark's color should be used as fill color instead of stroke color.
      *

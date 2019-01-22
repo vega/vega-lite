@@ -102,6 +102,7 @@ function assembleTopLevelModel(model, topLevelProperties, datasets = {}, usermet
     const projections = model.assembleProjections();
     const title = model.assembleTitle();
     const style = model.assembleGroupStyle();
+    const encodeEntry = model.assembleGroupEncodeEntry(true);
     let layoutSignals = model.assembleLayoutSignals();
     // move width and height signals with values to top level
     layoutSignals = layoutSignals.filter(signal => {
@@ -111,7 +112,7 @@ function assembleTopLevelModel(model, topLevelProperties, datasets = {}, usermet
         }
         return true;
     });
-    const output = Object.assign({ $schema: 'https://vega.github.io/schema/vega/v4.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title } : {}), (style ? { style } : {}), { data: data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]), (vgConfig ? { config: vgConfig } : {}), (usermeta ? { usermeta } : {}));
+    const output = Object.assign({ $schema: 'https://vega.github.io/schema/vega/v4.json' }, (model.description ? { description: model.description } : {}), topLevelProperties, (title ? { title } : {}), (style ? { style } : {}), (encodeEntry ? { encode: { update: encodeEntry } } : {}), { data }, (projections.length > 0 ? { projections: projections } : {}), model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]), (vgConfig ? { config: vgConfig } : {}), (usermeta ? { usermeta } : {}));
     return {
         spec: output
         // TODO: add warning / errors here

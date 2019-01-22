@@ -6,7 +6,7 @@ import { getFieldDef, vgField } from '../fielddef';
 import * as log from '../log';
 import { hasDiscreteDomain } from '../scale';
 import { isFacetSpec, isLayerSpec, isUnitSpec } from '../spec';
-import { extractCompositionLayout } from '../spec/toplevel';
+import { extractCompositionLayout } from '../spec/base';
 import { extractTitleConfig } from '../title';
 import { normalizeTransform } from '../transform';
 import { contains, duplicate, keys, varName } from '../util';
@@ -66,7 +66,11 @@ export function isLayerModel(model) {
     return model && model.type === 'layer';
 }
 export class Model {
-    constructor(spec, parent, parentGivenName, config, repeater, resolve) {
+    constructor(spec, parent, parentGivenName, config, repeater, resolve, view) {
+        this.parent = parent;
+        this.config = config;
+        this.repeater = repeater;
+        this.view = view;
         this.children = [];
         /**
          * Corrects the data references in marks after assemble.
@@ -167,18 +171,37 @@ export class Model {
     }
     assembleGroupStyle() {
         if (this.type === 'unit' || this.type === 'layer') {
-            return 'cell';
+            return (this.view && this.view.style) || 'cell';
         }
         return undefined;
     }
-    assembleLayoutSize() {
-        if (this.type === 'unit' || this.type === 'layer') {
-            return {
-                width: this.getSizeSignalRef('width'),
-                height: this.getSizeSignalRef('height')
-            };
+    assembleEncodeFromView(view) {
+        // Exclude "style"
+        const { style: _ } = view, baseView = tslib_1.__rest(view, ["style"]);
+        const e = {};
+        for (const property in baseView) {
+            if (baseView.hasOwnProperty(property)) {
+                const value = baseView[property];
+                if (value !== undefined) {
+                    e[property] = { value };
+                }
+            }
         }
-        return undefined;
+        return e;
+    }
+    assembleGroupEncodeEntry(isTopLevel) {
+        let encodeEntry = undefined;
+        if (this.view) {
+            encodeEntry = this.assembleEncodeFromView(this.view);
+        }
+        if (!isTopLevel) {
+            // For top-level spec, we can set the global width and height signal to adjust the group size.
+            // For other child specs, we have to manually set width and height in the encode entry.
+            if (this.type === 'unit' || this.type === 'layer') {
+                return Object.assign({ width: this.getSizeSignalRef('width'), height: this.getSizeSignalRef('height') }, (encodeEntry || {}));
+            }
+        }
+        return encodeEntry;
     }
     assembleLayout() {
         if (!this.layout) {

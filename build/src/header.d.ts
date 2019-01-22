@@ -1,10 +1,10 @@
-import { FontWeight, TextBaseline, TitleConfig as VgTitleConfig } from 'vega';
+import { FontWeight, TextBaseline, TitleConfig } from 'vega';
 import { Guide } from './guide';
 export declare const HEADER_TITLE_PROPERTIES_MAP: {
-    [k in keyof HeaderConfig]: keyof VgTitleConfig;
+    [k in keyof HeaderConfig]: keyof TitleConfig;
 };
 export declare const HEADER_LABEL_PROPERTIES_MAP: {
-    [k in keyof HeaderConfig]: keyof VgTitleConfig;
+    [k in keyof HeaderConfig]: keyof TitleConfig;
 };
 export declare const HEADER_TITLE_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];
 export declare const HEADER_LABEL_PROPERTIES: ("titleAnchor" | "titleAngle" | "titleBaseline" | "titleColor" | "titleFont" | "titleFontSize" | "titleFontWeight" | "titleLimit" | "titlePadding" | "labelAngle" | "labelColor" | "labelFont" | "labelFontSize" | "labelLimit" | "labelPadding")[];

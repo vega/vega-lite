@@ -71,7 +71,7 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    orient?: VgValueRef | (VgValueRef & {
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -113,6 +113,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -132,9 +135,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -227,7 +227,7 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    orient?: VgValueRef | (VgValueRef & {
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -269,6 +269,9 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -288,9 +291,6 @@ export declare function baseEncodeEntry(model: UnitModel, ignore: Ignore): {
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -403,7 +403,7 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    orient?: VgValueRef | (VgValueRef & {
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -445,6 +445,9 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -464,9 +467,6 @@ export declare function bandPosition(fieldDef: TypedFieldDef<string>, channel: '
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {
@@ -558,7 +558,7 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     href?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
-    orient?: VgValueRef | (VgValueRef & {
+    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     xc?: VgValueRef | (VgValueRef & {
@@ -600,6 +600,9 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
     tension?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
+    orient?: VgValueRef | (VgValueRef & {
+        test?: string;
+    })[];
     url?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
@@ -619,9 +622,6 @@ export declare function centeredBandPosition(channel: 'x' | 'y', model: UnitMode
         test?: string;
     })[];
     dy?: VgValueRef | (VgValueRef & {
-        test?: string;
-    })[];
-    radius?: VgValueRef | (VgValueRef & {
         test?: string;
     })[];
     theta?: VgValueRef | (VgValueRef & {

@@ -1,4 +1,4 @@
-import { GEOPOSITION_CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, X, Y } from '../channel';
+import { GEOPOSITION_CHANNELS, NONPOSITION_SCALE_CHANNELS, SCALE_CHANNELS, supportLegend, X, Y } from '../channel';
 import { normalizeEncoding } from '../encoding';
 import * as vlEncoding from '../encoding';
 import { getTypedFieldDef, hasConditionalFieldDef, isFieldDef } from '../fielddef';
@@ -19,7 +19,7 @@ import { assembleTopLevelSignals, assembleUnitSelectionData, assembleUnitSelecti
  */
 export class UnitModel extends ModelWithField {
     constructor(spec, parent, parentGivenName, parentGivenSize = {}, repeater, config, fit) {
-        super(spec, parent, parentGivenName, config, repeater, undefined);
+        super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
         this.fit = fit;
         this.type = 'unit';
         this.specifiedScales = {};
@@ -105,7 +105,7 @@ export class UnitModel extends ModelWithField {
                     : hasConditionalFieldDef(channelDef)
                         ? channelDef.condition['legend']
                         : null;
-                if (legend !== null && legend !== false) {
+                if (legend !== null && legend !== false && supportLegend(channel)) {
                     _legend[channel] = Object.assign({}, legend);
                 }
             }
@@ -151,12 +151,6 @@ export class UnitModel extends ModelWithField {
             marks = assembleUnitSelectionMarks(this, marks);
         }
         return marks.map(this.correctDataNames);
-    }
-    assembleLayoutSize() {
-        return {
-            width: this.getSizeSignalRef('width'),
-            height: this.getSizeSignalRef('height')
-        };
     }
     getMapping() {
         return this.encoding;

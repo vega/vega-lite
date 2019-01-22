@@ -11,7 +11,7 @@ import { assembleLayerSelectionMarks } from './selection/selection';
 import { UnitModel } from './unit';
 export class LayerModel extends Model {
     constructor(spec, parent, parentGivenName, parentGivenSize, repeater, config, fit) {
-        super(spec, parent, parentGivenName, config, repeater, spec.resolve);
+        super(spec, parent, parentGivenName, config, repeater, spec.resolve, spec.view);
         this.type = 'layer';
         const layoutSize = Object.assign({}, parentGivenSize, (spec.width ? { width: spec.width } : {}), (spec.height ? { height: spec.height } : {}));
         this.initSize(layoutSize);

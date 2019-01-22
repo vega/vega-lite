@@ -1,5 +1,5 @@
 import { vgField } from '../../fielddef';
-import { isSortField } from '../../sort';
+import { DEFAULT_SORT_OP, isSortField } from '../../sort';
 import { facetSortFieldName } from '../facet';
 import { WindowTransformNode } from './window';
 export function makeWindowFromFacet(parent, facet) {
@@ -9,7 +9,7 @@ export function makeWindowFromFacet(parent, facet) {
         // only need to make one for crossed facet
         for (const fieldDef of [row, column]) {
             if (isSortField(fieldDef.sort)) {
-                const { field, op } = fieldDef.sort;
+                const { field, op = DEFAULT_SORT_OP } = fieldDef.sort;
                 parent = newParent = new WindowTransformNode(parent, {
                     window: [
                         {

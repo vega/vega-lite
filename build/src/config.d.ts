@@ -6,11 +6,12 @@ import { MarkConfigMixins } from './mark';
 import { ProjectionConfig } from './projection';
 import { ScaleConfig } from './scale';
 import { SelectionConfig } from './selection';
+import { BaseViewBackground } from './spec/base';
 import { TopLevelProperties } from './spec/toplevel';
 import { StackOffset } from './stack';
 import { TitleConfig } from './title';
-import { StrokeJoin, VgMarkConfig, VgScheme } from './vega.schema';
-export interface ViewConfig {
+import { BaseMarkConfig, SchemeConfig } from './vega.schema';
+export interface ViewConfig extends BaseViewBackground {
     /**
      * The default width of the single plot or each plot in a trellis plot when the visualization has a continuous (non-ordinal) x-scale or ordinal x-scale with `rangeStep` = `null`.
      *
@@ -29,72 +30,9 @@ export interface ViewConfig {
      * Whether the view should be clipped.
      */
     clip?: boolean;
-    /**
-     * The fill color.
-     *
-     * __Default value:__ (none)
-     *
-     */
-    fill?: string;
-    /**
-     * The fill opacity (value between [0,1]).
-     *
-     * __Default value:__ (none)
-     *
-     */
-    fillOpacity?: number;
-    /**
-     * The stroke color.
-     *
-     * __Default value:__ (none)
-     *
-     */
-    stroke?: string;
-    /**
-     * The stroke opacity (value between [0,1]).
-     *
-     * __Default value:__ (none)
-     *
-     */
-    strokeOpacity?: number;
-    /**
-     * The stroke width, in pixels.
-     *
-     * __Default value:__ (none)
-     *
-     */
-    strokeWidth?: number;
-    /**
-     * An array of alternating stroke, space lengths for creating dashed or dotted lines.
-     *
-     * __Default value:__ (none)
-     *
-     */
-    strokeDash?: number[];
-    /**
-     * The offset (in pixels) into which to begin drawing with the stroke dash array.
-     *
-     * __Default value:__ (none)
-     *
-     */
-    strokeDashOffset?: number;
-    /**
-     * The stroke line join method. One of miter (default), round or bevel.
-     *
-     * __Default value:__ 'miter'
-     *
-     */
-    strokeJoin?: StrokeJoin;
-    /**
-     * The stroke line join method. One of miter (default), round or bevel.
-     *
-     * __Default value:__ 'miter'
-     *
-     */
-    strokeMiterLimit?: number;
 }
 export declare const defaultViewConfig: ViewConfig;
-export declare type RangeConfigValue = (number | string)[] | VgScheme | {
+export declare type RangeConfigValue = (number | string)[] | SchemeConfig | {
     step: number;
 };
 export declare type RangeConfig = RangeConfigProps & {
@@ -104,29 +42,29 @@ export interface RangeConfigProps {
     /**
      * Default range for _nominal_ (categorical) fields.
      */
-    category?: string[] | VgScheme;
+    category?: string[] | SchemeConfig;
     /**
      * Default range for diverging _quantitative_ fields.
      */
-    diverging?: string[] | VgScheme;
+    diverging?: string[] | SchemeConfig;
     /**
      * Default range for _quantitative_ heatmaps.
      */
-    heatmap?: string[] | VgScheme;
+    heatmap?: string[] | SchemeConfig;
     /**
      * Default range for _ordinal_ fields.
      */
-    ordinal?: string[] | VgScheme;
+    ordinal?: string[] | SchemeConfig;
     /**
      * Default range for _quantitative_ and _temporal_ fields.
      */
-    ramp?: string[] | VgScheme;
+    ramp?: string[] | SchemeConfig;
     /**
      * Default range palette for the `shape` channel.
      */
     symbol?: string[];
 }
-export declare function isVgScheme(rangeConfig: string[] | VgScheme): rangeConfig is VgScheme;
+export declare function isVgScheme(rangeConfig: string[] | SchemeConfig): rangeConfig is SchemeConfig;
 export interface VLOnlyConfig {
     /**
      * Default axis and legend title for count fields.
@@ -172,9 +110,15 @@ export interface VLOnlyConfig {
     stack?: StackOffset;
 }
 export interface StyleConfigIndex {
-    [style: string]: VgMarkConfig;
+    [style: string]: BaseMarkConfig;
 }
 export interface Config extends TopLevelProperties, VLOnlyConfig, MarkConfigMixins, CompositeMarkConfigMixins, AxisConfigMixins {
+    /**
+     * CSS color property to use as the background of the whole Vega-Lite view
+     *
+     * __Default value:__ none (transparent)
+     */
+    background?: string;
     /**
      * An object hash that defines default range arrays or schemes for using with scales.
      * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).

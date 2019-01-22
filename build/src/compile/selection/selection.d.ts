@@ -3,7 +3,7 @@ import { Channel, ScaleChannel, SingleDefChannel } from '../../channel';
 import { LogicalOperand } from '../../logical';
 import { BrushConfig, SelectionDef, SelectionResolution, SelectionType } from '../../selection';
 import { Dict } from '../../util';
-import { VgData, VgEventStream } from '../../vega.schema';
+import { EventStream, VgData } from '../../vega.schema';
 import { DataFlowNode } from '../data/dataflow';
 import { TimeUnitNode } from '../data/timeunit';
 import { FacetModel } from '../facet';
@@ -19,7 +19,7 @@ export declare const VL_SELECTION_RESOLVE = "vlSelectionResolve";
 export interface SelectionComponent {
     name: string;
     type: SelectionType;
-    events: VgEventStream;
+    events: EventStream;
     bind?: 'scales' | Binding | Dict<Binding>;
     resolve: SelectionResolution;
     empty: 'all' | 'none';

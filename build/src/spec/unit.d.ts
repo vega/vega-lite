@@ -3,14 +3,14 @@ import { RepeatRef } from '../fielddef';
 import { AnyMark, Mark, MarkDef } from '../mark';
 import { Projection } from '../projection';
 import { SelectionDef } from '../selection';
-import { BaseSpec, LayoutSizeMixins } from './base';
+import { BaseSpec, LayerUnitMixins } from './base';
 export { normalizeTopLevelSpec as normalize } from '../normalize';
 export { BaseSpec, DataMixins, LayoutSizeMixins } from './base';
 export { TopLevel } from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
  */
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayoutSizeMixins {
+export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, LayerUnitMixins {
     /**
      * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
      * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).

@@ -1,5 +1,5 @@
 import * as tslib_1 from "tslib";
-import { isString } from 'vega-util';
+import { isObject, isString } from 'vega-util';
 import { SHARED_DOMAIN_OP_INDEX } from '../../aggregate';
 import { binToString, isBinning, isBinParams } from '../../bin';
 import { isScaleChannel } from '../../channel';
@@ -7,7 +7,7 @@ import { MAIN, RAW } from '../../data';
 import { binRequiresRange, valueExpr, vgField } from '../../fielddef';
 import * as log from '../../log';
 import { hasDiscreteDomain, isBinScale, isSelectionDomain } from '../../scale';
-import { isSortArray, isSortField } from '../../sort';
+import { DEFAULT_SORT_OP, isSortArray, isSortByEncoding, isSortField } from '../../sort';
 import * as util from '../../util';
 import { isDataRefDomain, isDataRefUnionedDomain, isFieldRefUnionDomain } from '../../vega.schema';
 import { sortArrayIndexField } from '../data/calculate';
@@ -169,7 +169,9 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
             }
         ];
     }
-    const sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
+    const sort = isScaleChannel(channel)
+        ? domainSort(model, channel, scaleType)
+        : undefined;
     if (domain === 'unaggregated') {
         const data = model.requestDataName(MAIN);
         const { field } = fieldDef;
@@ -201,7 +203,7 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
                     // Use range if we added it and the scale does not support computing a range as a signal.
                     field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? { binSuffix: 'range' } : {}),
                     // we have to use a sort object if sort = true to make the sort correct by bin start
-                    sort: sort === true || !isSortField(sort)
+                    sort: sort === true || !isObject(sort)
                         ? {
                             field: model.vgField(channel, {}),
                             op: 'min' // min or max doesn't matter since we sort by the start of the bin range
@@ -260,6 +262,12 @@ function parseSingleChannelDomain(scaleType, domain, model, channel) {
         ];
     }
 }
+function normalizeSortField(sort, isStacked) {
+    const { op, field, order } = sort;
+    return Object.assign({ 
+        // Apply default op
+        op: op || (isStacked ? 'sum' : DEFAULT_SORT_OP) }, (field ? { field: util.replacePathInField(field) } : {}), (order ? { order } : {}));
+}
 export function domainSort(model, channel, scaleType) {
     if (!hasDiscreteDomain(scaleType)) {
         return undefined;
@@ -275,19 +283,29 @@ export function domainSort(model, channel, scaleType) {
             order: 'ascending'
         };
     }
+    const isStacked = model.stack !== null;
     // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
     if (isSortField(sort)) {
-        // flatten nested fields
-        return Object.assign({}, sort, (sort.field ? { field: util.replacePathInField(sort.field) } : {}));
+        return normalizeSortField(sort, isStacked);
     }
-    if (sort === 'descending') {
+    else if (isSortByEncoding(sort)) {
+        const { encoding, order } = sort;
+        const { aggregate, field } = model.fieldDef(encoding);
+        const sortField = {
+            op: aggregate,
+            field,
+            order
+        };
+        return normalizeSortField(sortField, isStacked);
+    }
+    else if (sort === 'descending') {
         return {
             op: 'min',
             field: model.vgField(channel),
             order: 'descending'
         };
     }
-    if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
+    else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
         return true;
     }
     // sort == null

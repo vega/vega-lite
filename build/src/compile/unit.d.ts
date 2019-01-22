@@ -12,7 +12,7 @@ import { SelectionDef } from '../selection';
 import { LayoutSizeMixins, NormalizedUnitSpec } from '../spec';
 import { StackProperties } from '../stack';
 import { Dict } from '../util';
-import { VgData, VgEncodeEntry, VgLayout } from '../vega.schema';
+import { VgData, VgLayout } from '../vega.schema';
 import { AxisIndex } from './axis/component';
 import { LegendIndex } from './legend/component';
 import { Model, ModelWithField } from './model';
@@ -56,7 +56,6 @@ export declare class UnitModel extends ModelWithField {
     assembleLayout(): VgLayout;
     assembleLayoutSignals(): NewSignal[];
     assembleMarks(): any[];
-    assembleLayoutSize(): VgEncodeEntry;
     protected getMapping(): Encoding<string>;
     toSpec(excludeConfig?: any, excludeData?: any): any;
     readonly mark: Mark;

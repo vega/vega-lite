@@ -1,9 +1,5 @@
 import { isString } from 'vega-util';
 import * as log from '../log';
-export function extractCompositionLayout(layout) {
-    const { align = undefined, center = undefined, bounds = undefined, spacing = undefined } = layout || {};
-    return { align, bounds, center, spacing };
-}
 function _normalizeAutoSize(autosize) {
     return isString(autosize) ? { type: autosize } : autosize || {};
 }

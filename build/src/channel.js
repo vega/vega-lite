@@ -149,6 +149,24 @@ export const NONPOSITION_SCALE_CHANNELS = flagKeys(NONPOSITION_SCALE_CHANNEL_IND
 export function isNonPositionScaleChannel(channel) {
     return !!NONPOSITION_CHANNEL_INDEX[channel];
 }
+/**
+ * @returns whether Vega supports legends for a particular channel
+ */
+export function supportLegend(channel) {
+    switch (channel) {
+        case COLOR:
+        case FILL:
+        case STROKE:
+        case SIZE:
+        case SHAPE:
+        case OPACITY:
+            return true;
+        case FILLOPACITY:
+        case STROKEOPACITY:
+        case STROKEWIDTH:
+            return false;
+    }
+}
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = Object.assign({}, POSITION_SCALE_CHANNEL_INDEX, NONPOSITION_SCALE_CHANNEL_INDEX);
 /** List of channels with scales */

@@ -1,6 +1,6 @@
 import { Binding } from 'vega';
 import { SingleDefChannel } from './channel';
-import { VgEventStream } from './vega.schema';
+import { EventStream } from './vega.schema';
 export declare const SELECTION_ID = "_vgsid_";
 export declare type SelectionType = 'single' | 'multi' | 'interval';
 export declare type SelectionResolution = 'global' | 'union' | 'intersect';
@@ -9,7 +9,7 @@ export interface BaseSelectionDef {
      * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
      * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).
      */
-    on?: VgEventStream;
+    on?: EventStream;
     /**
      * With layered and multi-view displays, a strategy that determines how
      * selections' data queries are resolved when applied in a filter transform,
