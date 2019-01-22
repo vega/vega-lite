@@ -308,7 +308,7 @@
     {
       "mark": "bar",
       "height": 700,
-       "selection": {
+      "selection": {
         "brush": {"type": "interval", "encodings": ["y"]}
       },
       "encoding": {
@@ -316,8 +316,7 @@
           "field": "Country",
           "type": "ordinal",
           "sort": {
-            "op": "min",
-            "field": "Population_ages_15_64_of_total",
+            "encoding": "x",
             "order": "descending"
           }
         },
@@ -342,8 +341,7 @@
           "field": "Country",
           "type": "ordinal",
           "sort": {
-            "op": "min",
-            "field": "Population_ages_65_and_above_of_total",
+            "encoding": "x",
             "order": "descending"
           }
         },

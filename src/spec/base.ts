@@ -1,6 +1,7 @@
 import {Data} from '../data';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
+import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
@@ -75,4 +76,112 @@ export interface LayoutSizeMixins {
    * __See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.
    */
   height?: number;
+}
+
+export interface LayerUnitMixins extends LayoutSizeMixins {
+  /**
+   * An object defining the view background's fill and stroke.
+   *
+   * __Default value:__ none (transparent)
+   */
+  view?: ViewBackground;
+}
+
+export interface BaseViewBackground
+  extends Partial<
+    Pick<
+      BaseMarkConfig,
+      | 'cornerRadius'
+      | 'fillOpacity'
+      | 'opacity'
+      | 'strokeCap'
+      | 'strokeDash'
+      | 'strokeDashOffset'
+      | 'strokeJoin'
+      | 'strokeMiterLimit'
+      | 'strokeOpacity'
+      | 'strokeWidth'
+    >
+  > {
+  // Override documentations for fill and stroke
+  /**
+   * The fill color.
+   *
+   * __Default value:__ `undefined`
+   */
+  fill?: string;
+
+  /**
+   * The stroke color.
+   *
+   * __Default value:__ `"#ddd"`
+   */
+  stroke?: string;
+}
+
+export interface ViewBackground extends BaseViewBackground {
+  /**
+   * A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
+   *
+   * __Default value:__ `"cell"`
+   * __Note:__ Any specified view background properties will augment the default style.
+   */
+  style?: string;
+}
+
+export interface BoundsMixins {
+  /**
+   * The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.
+   *
+   * - If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.
+   * - If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.
+   *
+   * __Default value:__ `"full"`
+   */
+
+  bounds?: 'full' | 'flush';
+}
+
+/**
+ * Base layout for FacetSpec and RepeatSpec.
+ * This is named "GenericComposition" layout as ConcatLayout is a GenericCompositionLayout too
+ * (but _not_ vice versa).
+ */
+export interface GenericCompositionLayout extends BoundsMixins {
+  /**
+   * The alignment to apply to grid rows and columns.
+   * The supported string values are `"all"`, `"each"`, and `"none"`.
+   *
+   * - For `"none"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.
+   * - For `"each"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.
+   * - For `"all"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.
+   *
+   * Alternatively, an object value of the form `{"row": string, "column": string}` can be used to supply different alignments for rows and columns.
+   *
+   * __Default value:__ `"all"`.
+   */
+  align?: LayoutAlign | RowCol<LayoutAlign>;
+
+  /**
+   * Boolean flag indicating if subviews should be centered relative to their respective rows or columns.
+   *
+   * An object value of the form `{"row": boolean, "column": boolean}` can be used to supply different centering values for rows and columns.
+   *
+   * __Default value:__ `false`
+   */
+  center?: boolean | RowCol<boolean>;
+
+  /**
+   * The spacing in pixels between sub-views of the composition operator.
+   * An object of the form `{"row": number, "column": number}` can be used to set
+   * different spacing values for rows and columns.
+   *
+   * __Default value__: `10`
+   */
+  spacing?: number | RowCol<number>;
+}
+
+export function extractCompositionLayout(layout: GenericCompositionLayout): GenericCompositionLayout {
+  const {align = undefined, center = undefined, bounds = undefined, spacing = undefined} = layout || {};
+  return {align, bounds, center, spacing};
 }

@@ -11,18 +11,16 @@
     }
   },
   "spec": {
-    "encoding": {
-      "x": {
-        "aggregate": "median",
-        "field": "yield",
-        "type": "quantitative",
-        "scale": {"zero": false}
-      }
-    },
     "layer": [
       {
         "mark": "point",
         "encoding": {
+          "x": {
+            "aggregate": "median",
+            "field": "yield",
+            "type": "quantitative",
+            "scale": {"zero": false}
+          },
           "y": {
             "field": "variety",
             "type": "ordinal",
@@ -33,7 +31,15 @@
         }
       },
       {
-        "mark": "rule"
+        "mark": "rule",
+        "encoding": {
+          "x": {
+            "aggregate": "median",
+            "field": "yield",
+            "type": "quantitative",
+            "scale": {"zero": false}
+          }
+        }
       }
     ]
   }

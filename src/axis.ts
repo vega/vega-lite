@@ -2,7 +2,7 @@ import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, T
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
-import {Color, VgLayoutAlign} from './vega.schema';
+import {Color, LayoutAlign} from './vega.schema';
 
 type BaseAxisNoSignals = AxisMixins &
   BaseAxis<
@@ -15,7 +15,7 @@ type BaseAxisNoSignals = AxisMixins &
     FontWeight,
     Align,
     TextBaseline,
-    VgLayoutAlign,
+    LayoutAlign,
     LabelOverlap,
     number[]
   >;

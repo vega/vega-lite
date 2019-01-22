@@ -7,7 +7,9 @@ permalink: /examples/
 
 This page shows example specifications for different types of graphics. To see example code for embedding visualizations in a webpage, please read the [embed documentation](../usage/embed.html).
 
-- TOC {:toc}
+<!-- prettier-ignore -->
+- TOC
+{:toc}
 
 {% for group in site.data.examples %}
 

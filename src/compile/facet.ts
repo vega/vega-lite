@@ -6,7 +6,7 @@ import {reduce} from '../encoding';
 import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
-import {EncodingSortField, isSortField, SortOrder} from '../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {FacetFieldDef, FacetMapping} from '../spec/facet';
 import {contains} from '../util';
@@ -322,7 +322,7 @@ export class FacetModel extends ModelWithField {
         groupby.push(vgField(fieldDef));
         const {sort} = fieldDef;
         if (isSortField(sort)) {
-          const {field, op} = sort;
+          const {field, op = DEFAULT_SORT_OP} = sort;
           const outputName = facetSortFieldName(fieldDef, sort);
           if (row && column) {
             // For crossed facet, use pre-calculate field as it requires a different groupby
@@ -390,12 +390,13 @@ export class FacetModel extends ModelWithField {
 
   public assembleMarks(): VgMarkGroup[] {
     const {child} = this;
-    const facetRoot = this.component.data.facetRoot;
-    const data = assembleFacetData(facetRoot);
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const layoutSizeEncodeEntry = child.assembleLayoutSize();
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
+
+    const encodeEntry = child.assembleGroupEncodeEntry(false);
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -414,7 +415,7 @@ export class FacetModel extends ModelWithField {
         order: [...this.headerSortOrder('row'), ...this.headerSortOrder('column')]
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
+      ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
       ...child.assembleGroup(assembleFacetSignals(this, []))
     };
 

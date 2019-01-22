@@ -53,21 +53,11 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
-  // For binned field with continuous scale, use a special scale so we can override the mark props and labels
-  switch (channel) {
-    case COLOR:
-      const scale = model.scaleName(COLOR);
-      return model.markDef.filled ? {fill: scale} : {stroke: scale};
-    case FILL:
-    case STROKE:
-    case STROKEWIDTH:
-    case SIZE:
-    case SHAPE:
-    case OPACITY:
-    case FILLOPACITY:
-    case STROKEOPACITY:
-      return {[channel]: model.scaleName(channel)};
+  const scale = model.scaleName(COLOR);
+  if (channel === 'color') {
+    return model.markDef.filled ? {fill: scale} : {stroke: scale};
   }
+  return {[channel]: model.scaleName(channel)};
 }
 
 function isExplicit<T extends string | number | object | boolean>(

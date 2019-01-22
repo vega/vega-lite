@@ -1,8 +1,8 @@
-import {FontWeight, TextBaseline, TitleConfig as VgTitleConfig} from 'vega';
+import {FontWeight, TextBaseline, TitleConfig} from 'vega';
 import {Guide} from './guide';
 import {keys} from './util';
 
-export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
+export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
   titleAnchor: 'anchor',
   titleAngle: 'angle',
   titleBaseline: 'baseline',
@@ -14,7 +14,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTi
   titlePadding: 'offset'
 };
 
-export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof VgTitleConfig} = {
+export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof HeaderConfig]: keyof TitleConfig} = {
   labelAngle: 'angle',
   labelColor: 'color',
   labelFont: 'font',

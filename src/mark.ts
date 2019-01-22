@@ -1,7 +1,7 @@
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index';
 import {contains, flagKeys} from './util';
-import {VgMarkConfig} from './vega.schema';
+import {BaseMarkConfig} from './vega.schema';
 
 export namespace Mark {
   export const AREA: 'area' = 'area';
@@ -90,7 +90,7 @@ export interface TooltipContent {
   content: 'encoding' | 'data';
 }
 
-export interface MarkConfig extends ColorMixins, VgMarkConfig {
+export interface MarkConfig extends ColorMixins, BaseMarkConfig {
   // ========== VL-Specific ==========
 
   /**

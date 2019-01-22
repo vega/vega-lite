@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Config, StyleConfigIndex, ViewConfig} from '../config';
+import {Config, StyleConfigIndex} from '../config';
 import {
   FieldDefBase,
   FieldRefOption,
@@ -10,29 +10,15 @@ import {
   TypedFieldDef,
   vgField
 } from '../fielddef';
-import {MarkConfig, MarkDef, TextConfig} from '../mark';
+import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 import {getFirstDefined, stringify} from '../util';
-import {VgCompare, VgEncodeEntry, VgMarkConfig} from '../vega.schema';
+import {BaseMarkConfig, VgCompare, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
-
-export function applyConfig(
-  e: VgEncodeEntry,
-  config: ViewConfig | MarkConfig | TextConfig, // TODO(#1842): consolidate MarkConfig | TextConfig?
-  propsList: string[]
-) {
-  for (const property of propsList) {
-    const value = config[property];
-    if (value !== undefined) {
-      e[property] = {value: value};
-    }
-  }
-  return e;
-}
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
@@ -76,7 +62,7 @@ export function getStyleConfig<P extends keyof MarkConfig>(prop: P, mark: MarkDe
 
     // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
     // However here we also check if it is defined, so it is okay to cast here
-    const p = prop as keyof VgMarkConfig;
+    const p = prop as keyof BaseMarkConfig;
     if (styleConfig && styleConfig[p] !== undefined) {
       value = styleConfig[p];
     }

@@ -149,6 +149,7 @@ function assembleTopLevelModel(
   const projections = model.assembleProjections();
   const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
+  const encodeEntry = model.assembleGroupEncodeEntry(true);
 
   let layoutSignals = model.assembleLayoutSignals();
 
@@ -167,7 +168,8 @@ function assembleTopLevelModel(
     ...topLevelProperties,
     ...(title ? {title} : {}),
     ...(style ? {style} : {}),
-    data: data,
+    ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
+    data,
     ...(projections.length > 0 ? {projections: projections} : {}),
     ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]),
     ...(vgConfig ? {config: vgConfig} : {}),

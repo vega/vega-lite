@@ -5,7 +5,7 @@ import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
-import {EncodingSortField, isSortField} from '../../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';
 import {hash} from '../../util';
 import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
@@ -145,7 +145,7 @@ export class FacetNode extends DataFlowNode {
 
     const {sortField, sortIndexField} = this[channel];
     if (sortField) {
-      const {op, field} = sortField;
+      const {op = DEFAULT_SORT_OP, field} = sortField;
       fields.push(field);
       ops.push(op);
       as.push(vgField(sortField, {forAs: true}));

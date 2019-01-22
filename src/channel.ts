@@ -174,7 +174,8 @@ export const SINGLE_DEF_CHANNELS: SingleDefChannel[] = flagKeys(SINGLE_DEF_CHANN
 // Using the following line leads to TypeError: Cannot read property 'elementTypes' of undefined
 // when running the schema generator
 // export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[0];
-export type SingleDefChannel =
+
+export type SingleDefUnitChannel =
   | 'x'
   | 'y'
   | 'x2'
@@ -187,8 +188,6 @@ export type SingleDefChannel =
   | 'latitude'
   | 'longitude2'
   | 'latitude2'
-  | 'row'
-  | 'column'
   | 'color'
   | 'fill'
   | 'stroke'
@@ -202,6 +201,8 @@ export type SingleDefChannel =
   | 'tooltip'
   | 'href'
   | 'key';
+
+export type SingleDefChannel = SingleDefUnitChannel | 'row' | 'column';
 
 export function isChannel(str: string): str is Channel {
   return !!CHANNEL_INDEX[str];
@@ -276,6 +277,27 @@ export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[0];
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
   return !!NONPOSITION_CHANNEL_INDEX[channel];
 }
+
+/**
+ * @returns whether Vega supports legends for a particular channel
+ */
+export function supportLegend(channel: NonPositionScaleChannel) {
+  switch (channel) {
+    case COLOR:
+    case FILL:
+    case STROKE:
+    case SIZE:
+    case SHAPE:
+    case OPACITY:
+      return true;
+
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
+      return false;
+  }
+}
+
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
