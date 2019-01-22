@@ -78,7 +78,7 @@
             {"scale": "color", "field": "__count"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating"},
           "x": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating_end"},
@@ -137,7 +137,7 @@
       "title": "IMDB_Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {"signal": "ceil(width/10)"},
       "values": {
         "signal": "sequence(bin_maxbins_60_IMDB_Rating_bins.start, bin_maxbins_60_IMDB_Rating_bins.stop + bin_maxbins_60_IMDB_Rating_bins.step, bin_maxbins_60_IMDB_Rating_bins.step)"
       },
@@ -149,14 +149,20 @@
       "grid": false,
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/20)"},
+      "tickCount": {"signal": "ceil(height/10)"},
       "values": {
         "signal": "sequence(bin_maxbins_40_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.stop + bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step)"
       },
       "zindex": 1
     }
   ],
-  "legends": [{"fill": "color", "title": "Number of Records"}],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "Count of Records"
+    }
+  ],
   "config": {
     "axisY": {"minExtent": 30},
     "style": {"cell": {"stroke": "transparent"}},

@@ -81,7 +81,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1},
           "x": {"scale": "x", "field": "bin_maxbins_10_distance_end"},
@@ -105,7 +105,7 @@
             {"value": "goldenrod"}
           ],
           "tooltip": {
-            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"distance (binned)\": datum[\"bin_maxbins_10_distance\"] === null || isNaN(datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_10_distance", "offset": 1},
           "x": {"scale": "x", "field": "bin_maxbins_10_distance_end"},
@@ -152,7 +152,7 @@
       "title": "distance (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
+      "tickCount": {"signal": "ceil(width/10)"},
       "values": {
         "signal": "sequence(layer_0_bin_maxbins_10_distance_bins.start, layer_0_bin_maxbins_10_distance_bins.stop + layer_0_bin_maxbins_10_distance_bins.step, layer_0_bin_maxbins_10_distance_bins.step)"
       },
@@ -162,7 +162,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

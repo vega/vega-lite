@@ -34,7 +34,7 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 21},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -56,7 +56,7 @@
             {"scale": "color", "field": "weather"}
           ],
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Number of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
           },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
@@ -114,7 +114,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1
@@ -136,6 +136,7 @@
   "legends": [
     {
       "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "weather",
       "encode": {"symbols": {"update": {"shape": {"value": "square"}}}}
     }

@@ -37,7 +37,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Number of Records\": format(datum[\"__count\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"scale": "x", "band": true},
@@ -80,7 +80,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

@@ -50,7 +50,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
           "x": {"scale": "x", "field": "bin_IMDB_Rating_end", "offset": 0},
@@ -96,7 +96,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Number of Records",
+      "title": "Count of Records",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 1

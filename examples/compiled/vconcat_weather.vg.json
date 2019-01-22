@@ -75,7 +75,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_x_step", "value": 21},
+    {"name": "concat_0_x_step", "value": 20},
     {
       "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
@@ -201,7 +201,7 @@
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Number of Records\": format(datum[\"__count\"], \"\")}"
+                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {
                 "signal": "scale(\"concat_1_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
@@ -222,7 +222,7 @@
           "title": "temp_min (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/20)"},
+          "tickCount": {"signal": "ceil(concat_1_width/10)"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
           },
@@ -234,7 +234,7 @@
           "grid": false,
           "title": "temp_max (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/20)"},
+          "tickCount": {"signal": "ceil(concat_1_height/10)"},
           "values": {
             "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
           },
@@ -248,7 +248,12 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_1", "field": "__count"},
-      "range": [0, 361],
+      "range": [
+        0,
+        {
+          "signal": "pow(0.95 * min(concat_1_width / ((concat_1_bin_maxbins_10_temp_min_bins.stop - concat_1_bin_maxbins_10_temp_min_bins.start) / concat_1_bin_maxbins_10_temp_min_bins.step), concat_1_height / ((concat_1_bin_maxbins_10_temp_max_bins.stop - concat_1_bin_maxbins_10_temp_max_bins.start) / concat_1_bin_maxbins_10_temp_max_bins.step)), 2)"
+        }
+      ],
       "zero": true
     },
     {
@@ -291,7 +296,8 @@
   "legends": [
     {
       "size": "size",
-      "title": "Number of Records",
+      "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
+      "title": "Count of Records",
       "encode": {
         "symbols": {
           "update": {
