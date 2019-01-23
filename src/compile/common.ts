@@ -78,6 +78,7 @@ export function formatSignalRef(
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
+  const formatType = getFormatType(fieldDef);
   const format = numberFormat(fieldDef, specifiedFormat, config);
   if (isBinning(fieldDef.bin)) {
     const startField = vgField(fieldDef, {expr});
@@ -89,7 +90,7 @@ export function formatSignalRef(
     return {
       signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
     };
-  } else if (isTimeFieldDef(fieldDef) || getFormatType(fieldDef) === 'time') {
+  } else if (formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef))) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
@@ -113,7 +114,8 @@ export function formatSignalRef(
  * Returns number format for a fieldDef
  */
 export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
-  if (isTimeFieldDef(fieldDef) || getFormatType(fieldDef) === 'time') {
+  const formatType = getFormatType(fieldDef);
+  if (formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef))) {
     return undefined;
   }
 
@@ -129,8 +131,8 @@ export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: s
   return undefined;
 }
 
-function getFormatType(fieldDef: FieldDef<string>) {
-  return isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType;
+function getFormatType(fieldDef: FieldDef<string>): 'number' | 'time' {
+  return isPositionFieldDef(fieldDef) && fieldDef.axis ? fieldDef.axis.formatType : undefined;
 }
 
 function formatExpr(field: string, format: string) {
