@@ -137,7 +137,7 @@ describe('FacetModel', () => {
     it('should correctly set scale component for a model', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'quantitative'}
+          row: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
@@ -153,7 +153,7 @@ describe('FacetModel', () => {
     it('should create independent scales if resolve is set to independent', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'quantitative'}
+          row: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
@@ -176,7 +176,7 @@ describe('FacetModel', () => {
     it('should sort headers in ascending order', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative', format: 'd'}
+          column: {field: 'a', type: 'ordinal', format: 'd'}
         },
         spec: {
           mark: 'point',
@@ -201,11 +201,11 @@ describe('FacetModel', () => {
     it('includes a columns fields in the encode block for facet with column that parent is also a facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative'}
+          column: {field: 'a', type: 'ordinal'}
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'quantitative'}
+            column: {field: 'c', type: 'ordinal'}
           },
           spec: {
             mark: 'point',
@@ -226,7 +226,7 @@ describe('FacetModel', () => {
     it('returns a layout with a column signal for facet with column', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative'}
+          column: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
@@ -246,14 +246,68 @@ describe('FacetModel', () => {
       });
     });
 
+    it('should not align independent scales for column', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'ordinal'}
+          }
+        },
+        resolve: {
+          scale: {
+            x: 'independent'
+          }
+        }
+      });
+      const layout = model.assembleLayout();
+      expect(layout).toEqual({
+        padding: {row: 10, column: 10},
+        columns: {
+          signal: "length(data('column_domain'))"
+        },
+        bounds: 'full',
+        align: 'none'
+      });
+    });
+
+    it('should not align independent scales for row', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            y: {field: 'b', type: 'ordinal'}
+          }
+        },
+        resolve: {
+          scale: {
+            y: 'independent'
+          }
+        }
+      });
+      const layout = model.assembleLayout();
+      expect(layout).toEqual({
+        padding: {row: 10, column: 10},
+        columns: 1,
+        bounds: 'full',
+        align: 'none'
+      });
+    });
+
     it('returns a layout without a column signal for facet with column that parent is also a facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative'}
+          column: {field: 'a', type: 'ordinal'}
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'quantitative'}
+            column: {field: 'c', type: 'ordinal'}
           },
           spec: {
             mark: 'point',
