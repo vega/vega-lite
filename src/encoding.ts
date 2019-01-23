@@ -456,18 +456,23 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   return arr;
 }
 
-export function forEach(mapping: any, f: (cd: ChannelDef, c: Channel) => void, thisArg?: any) {
+export function forEach<U extends {[k in Channel]?: any}>(
+  mapping: U,
+  f: (cd: ChannelDef, c: Channel) => void,
+  thisArg?: any
+) {
   if (!mapping) {
     return;
   }
 
   for (const channel of keys(mapping)) {
-    if (isArray(mapping[channel])) {
-      mapping[channel].forEach((channelDef: ChannelDef) => {
+    const el = mapping[channel];
+    if (isArray(el)) {
+      el.forEach((channelDef: ChannelDef) => {
         f.call(thisArg, channelDef, channel);
       });
     } else {
-      f.call(thisArg, mapping[channel], channel);
+      f.call(thisArg, el, channel);
     }
   }
 }
