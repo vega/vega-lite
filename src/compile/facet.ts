@@ -224,7 +224,7 @@ export class FacetModel extends ModelWithField {
     return {
       ...this.getHeaderLayoutMixins(),
 
-      columns,
+      ...(columns ? {columns} : {}),
       bounds: 'full',
       align: 'all'
     };
