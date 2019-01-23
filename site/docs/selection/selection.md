@@ -39,7 +39,7 @@ Selections are defined within single views, and their simplest definition consis
 | :------- | :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
 
-For example, try the different types against the example selection (named `pts`) below: 
+For example, try the different types against the example selection (named `pts`) below:
 
 <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)">
   <option>single</option>
