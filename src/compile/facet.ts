@@ -221,8 +221,8 @@ export class FacetModel extends ModelWithField {
 
     let align: LayoutAlign = 'all';
 
-    // Do not align the cells if the scale corresponding to teh directin is indepent.
-    // We always align when we facet into row and column.
+    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // We always align when we facet into both row and column.
     if (!this.channelHasField('row') && this.component.resolve.scale.x === 'independent') {
       align = 'none';
     } else if (!this.channelHasField('column') && this.component.resolve.scale.y === 'independent') {
