@@ -21,7 +21,7 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        expect(model.facet['shape']).toEqual(undefined);
+        expect(model.facet).not.toHaveProperty('shape');
         expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(SHAPE, 'facet'));
       })
     );
@@ -38,7 +38,7 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        expect(model.facet.row).toEqual(undefined);
+        expect(model.facet).not.toHaveProperty('row');
         expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: ORDINAL}, ROW));
       })
     );
@@ -265,7 +265,7 @@ describe('FacetModel', () => {
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       const layout = model.child.assembleLayout();
-      expect(layout.columns).toEqual(undefined);
+      expect(layout).not.toHaveProperty('columns');
     });
 
     it('returns a layout with header band if child spec is also a facet', () => {
