@@ -246,6 +246,34 @@ describe('FacetModel', () => {
       });
     });
 
+    it('should not align independent scales', () => {
+      const model = parseFacetModelWithScale({
+        facet: {
+          column: {field: 'a', type: 'quantitative'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        },
+        resolve: {
+          scale: {
+            x: 'independent'
+          }
+        }
+      });
+      const layout = model.assembleLayout();
+      expect(layout).toEqual({
+        padding: {row: 10, column: 10},
+        columns: {
+          signal: "length(data('column_domain'))"
+        },
+        bounds: 'full',
+        align: 'none'
+      });
+    });
+
     it('returns a layout without a column signal for facet with column that parent is also a facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
