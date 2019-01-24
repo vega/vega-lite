@@ -33,7 +33,7 @@ script: |
     yarn lint
   else
     yarn build:only
-    yarn jest
+    yarn jest test/ examples/
   fi
 
 after_success:
