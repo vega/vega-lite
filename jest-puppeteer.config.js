@@ -1,5 +1,5 @@
 module.exports = {
   server: {
-    command: 'python -m http.server'
+    command: 'node ./node_modules/.bin/http-server -s -p 8000'
   }
 };
