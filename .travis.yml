@@ -34,7 +34,6 @@ script: |
   else
     yarn build:only
     yarn jest
-    yarn test:runtime
   fi
 
 after_success:
