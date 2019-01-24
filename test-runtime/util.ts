@@ -1,12 +1,9 @@
-/// <reference types="webdriverio"/>
-
 import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
+import {Page} from 'puppeteer';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
-
-type Browser = WebDriver.Client<void> & WebdriverIO.Browser<void>;
 
 const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
@@ -177,38 +174,39 @@ export function parentSelector(compositeType: ComposeType, index: number) {
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
   const fn = key.match('_clear') ? 'clear' : 'brush';
-  return `return ${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
+  return `${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
 export function pt(key: string, idx: number, parent?: string) {
   const fn = key.match('_clear') ? 'clear' : 'pt';
-  return `return ${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
+  return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
 
-export function embedFn(browser: Browser) {
-  return (specification: TopLevelSpec) => {
-    browser.execute(_ => window['embed'](_), specification);
+export function embedFn(page: Page) {
+  return async (specification: TopLevelSpec) => {
+    await page.evaluate((_: any) => {
+      window['embed'](_);
+    }, specification);
   };
 }
 
-export function svg(browser: Browser, path: string, filename: string) {
-  const xml = browser.executeAsync(done => {
-    window['view'].runAfter((view: any) => view.toSVG().then((_: string) => done(_)));
-  });
+export async function svg(page: Page, path: string, filename: string) {
+  const svgString = await page.evaluate(
+    `new Promise((resolve, reject) => { view.runAfter(view => view.toSVG().then(resolve)) })`
+  );
 
   if (generate) {
     mkdirp((path = `${output}/${path}`));
-    fs.writeFileSync(`${path}/${filename}.svg`, xml.value);
+    fs.writeFileSync(`${path}/${filename}.svg`, svgString);
   }
 
-  return xml.value;
+  return svgString;
 }
 
-export function testRenderFn(browser: Browser, path: string) {
-  return (filename: string) => {
-    // const render =
-    svg(browser, path, filename);
-    // const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
-    // expect(render).toEqual(file);
+export function testRenderFn(page: Page, path: string) {
+  return async (filename: string) => {
+    const render = await svg(page, path, filename);
+    const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
+    expect(render).toBe(file.toString());
   };
 }

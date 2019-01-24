@@ -50,7 +50,7 @@
     "lint": "tslint -p . -e 'package.json' && npm run prettierbase -- --check",
     "test": "jest test/ && npm run lint && npm run schema && jest examples/ && npm run test:runtime",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
-    "test:runtime": "TZ=America/Los_Angeles TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' wdio wdio.conf.js",
+    "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "rm -Rf test-runtime/resources && VL_GENERATE_TESTS=true npm run test:runtime",
     "watch:build": "npm run build:only && concurrently --kill-others -n Typescript,Rollup 'tsc -w' 'rollup -c -w'",
     "watch:site": "concurrently --kill-others -n Typescript,Webpack 'tsc -p site --watch' 'webpack --config site/webpack.config.js --mode development --watch'",
@@ -71,12 +71,7 @@
     "@types/jest": "^23.3.13",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "10.12.18",
-    "@wdio/cli": "^5.3.5",
-    "@wdio/dot-reporter": "^5.2.3",
-    "@wdio/local-runner": "^5.3.5",
-    "@wdio/mocha-framework": "^5.3.2",
-    "@wdio/selenium-standalone-service": "^5.2.2",
-    "@wdio/sync": "^5.3.2",
+    "@types/puppeteer": "^1.11.2",
     "ajv": "^6.7.0",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.2",
@@ -86,8 +81,10 @@
     "d3": "^5.7.0",
     "highlight.js": "^9.13.1",
     "jest": "^23.6.0",
+    "jest-puppeteer": "^3.9.0",
     "mkdirp": "^0.5.1",
     "prettier": "^1.15.3",
+    "puppeteer": "^1.11.0",
     "rollup": "^1.1.0",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-json": "^3.1.0",
@@ -99,7 +96,6 @@
     "ts-jest": "^23.10.5",
     "ts-json-schema-generator": "^0.38.1",
     "ts-node": "^7.0.1",
-    "tsconfig-paths": "^3.7.0",
     "tslint": "5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-eslint-rules": "^5.4.0",
@@ -109,7 +105,6 @@
     "vega-embed": "^3.29.1",
     "vega-tooltip": "^0.15.0",
     "wdio-static-server-service": "^1.0.1",
-    "webdriverio": "^5.3.5",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1",
     "yaml-front-matter": "^4.0.0"
@@ -128,7 +123,7 @@
     "yargs": "^12.0.5"
   },
   "jest": {
-    "testURL": "http://localhost/",
+    "preset": "jest-puppeteer",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
@@ -143,7 +138,6 @@
     ],
     "testPathIgnorePatterns": [
       "node_modules",
-      "test-runtime",
       "<rootDir>/build",
       "_site",
       "src"
