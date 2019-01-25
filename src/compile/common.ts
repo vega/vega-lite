@@ -2,7 +2,6 @@ import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Config, StyleConfigIndex} from '../config';
 import {
-  FieldDef,
   FieldDefBase,
   FieldRefOption,
   isPositionFieldDef,
@@ -78,19 +77,7 @@ export function formatSignalRef(
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
-  const formatType = getFormatType(fieldDef);
-  const format = numberFormat(fieldDef, specifiedFormat, config);
-  if (isBinning(fieldDef.bin)) {
-    const startField = vgField(fieldDef, {expr});
-    const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
-    return {
-      signal: binFormatExpression(startField, endField, format, config)
-    };
-  } else if (fieldDef.type === 'quantitative') {
-    return {
-      signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
-    };
-  } else if (formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef))) {
+  if (isTimeFormat(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
@@ -106,7 +93,20 @@ export function formatSignalRef(
       )
     };
   } else {
-    return {signal: `''+${vgField(fieldDef, {expr})}`};
+    const format = numberFormat(fieldDef, specifiedFormat, config);
+    if (isBinning(fieldDef.bin)) {
+      const startField = vgField(fieldDef, {expr});
+      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
+      return {
+        signal: binFormatExpression(startField, endField, format, config)
+      };
+    } else if (fieldDef.type === 'quantitative') {
+      return {
+        signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
+      };
+    } else {
+      return {signal: `''+${vgField(fieldDef, {expr})}`};
+    }
   }
 }
 
@@ -114,11 +114,6 @@ export function formatSignalRef(
  * Returns number format for a fieldDef
  */
 export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
-  const formatType = getFormatType(fieldDef);
-  if (formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef))) {
-    return undefined;
-  }
-
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (specifiedFormat) {
     return specifiedFormat;
@@ -131,8 +126,9 @@ export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: s
   return undefined;
 }
 
-function getFormatType(fieldDef: FieldDef<string>): 'number' | 'time' {
-  return isPositionFieldDef(fieldDef) && fieldDef.axis ? fieldDef.axis.formatType : undefined;
+export function isTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
+  const formatType = isPositionFieldDef(fieldDef) && fieldDef.axis ? fieldDef.axis.formatType : undefined;
+  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 
 function formatExpr(field: string, format: string) {

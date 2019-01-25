@@ -4,7 +4,7 @@ import {isBinned} from '../../bin';
 import {POSITION_SCALE_CHANNELS, PositionScaleChannel, X, Y} from '../../channel';
 import {FieldDefBase, toFieldDefBase} from '../../fielddef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
-import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
+import {isTimeFormat, mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
@@ -302,6 +302,9 @@ function getProperty<K extends keyof AxisComponentProps>(
       return properties.gridScale(model, channel);
     case 'format':
       // We don't include temporal field here as we apply format in encode block
+      if (isTimeFormat(fieldDef)) {
+        return undefined;
+      }
       return numberFormat(fieldDef, specifiedAxis.format, model.config);
     case 'grid': {
       if (isBinned(model.fieldDef(channel).bin)) {

@@ -6909,6 +6909,14 @@
           ],
           "type": "string"
         },
+        "formatType": {
+          "description": "A type of axis format to be forced to.",
+          "enum": [
+            "number",
+            "time"
+          ],
+          "type": "string"
+        },
         "gradientLength": {
           "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
           "minimum": 0,
