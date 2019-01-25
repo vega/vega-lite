@@ -40,7 +40,7 @@
               "title": "Year (year)",
               "type": "temporal",
               "field": "year_Year",
-              "axis": {"format": "%Y"}
+              "axis": {"format": "%Y", "formatType": "time"}
             },
             "tooltip": [
               {
@@ -62,7 +62,7 @@
                 "title": "Year (year)",
                 "type": "temporal",
                 "field": "year_Year",
-                "axis": {"format": "%Y"}
+                "axis": {"format": "%Y", "formatType": "time"}
               }
             ]
           }

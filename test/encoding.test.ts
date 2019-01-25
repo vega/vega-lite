@@ -85,7 +85,10 @@ describe('encoding', () => {
             field: 'yearmonthdatehoursminutes_a',
             type: 'temporal',
             title: 'a (year-month-date-hours-minutes)',
-            axis: {format: '%b %d, %Y %H:%M'}
+            axis: {
+              format: '%b %d, %Y %H:%M',
+              formatType: 'time'
+            }
           },
           y: {field: 'b', type: 'quantitative'}
         }

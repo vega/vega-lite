@@ -5,7 +5,6 @@ import {
   Conditional,
   FieldDefWithCondition,
   hasConditionalValueDef,
-  isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
   TypedFieldDef,
@@ -16,7 +15,7 @@ import {
 import {AREA, BAR, CIRCLE, FILL_STROKE_CONFIG, GEOSHAPE, LINE, POINT, SQUARE, TEXT, TICK} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys} from '../../util';
-import {applyMarkConfig, timeFormatExpression} from '../common';
+import {applyMarkConfig, isTimeFormat, timeFormatExpression} from '../common';
 import * as mixins from '../mark/mixins';
 import {UnitModel} from '../unit';
 import {ScaleChannel} from './../../channel';
@@ -166,7 +165,7 @@ export function labels(
 
   let out: SymbolEncodeEntry = {};
 
-  if (isTimeFieldDef(fieldDef)) {
+  if (isTimeFormat(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     const expr = timeFormatExpression(
       'datum.value',
