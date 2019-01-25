@@ -192,7 +192,7 @@ export function embedFn(page: Page) {
 
 export async function svg(page: Page, path: string, filename: string) {
   const svgString = await page.evaluate(
-    `new Promise((resolve, reject) => { view.runAfter(view => view.toSVG().then(resolve)) })`
+    `new Promise((resolve, reject) => { vega.resetSVGClipId(); view.runAfter(view => view.toSVG().then(resolve)) })`
   );
 
   if (generate) {
