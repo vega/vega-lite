@@ -1,5 +1,5 @@
 import {Encoding} from '../encoding';
-import {RepeatRef} from '../fielddef';
+import {Field} from '../fielddef';
 import {Projection} from '../projection';
 import {Resolve} from '../resolve';
 import {BaseSpec, LayerUnitMixins} from './base';
@@ -29,7 +29,7 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */
-  encoding?: Encoding<string | RepeatRef>;
+  encoding?: Encoding<Field>;
 
   /**
    * An object defining properties of the geographic projection shared by underlying layers.

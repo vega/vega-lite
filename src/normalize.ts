@@ -3,7 +3,7 @@ import {COLUMN, ROW} from './channel';
 import * as compositeMark from './compositemark';
 import {Config} from './config';
 import {channelHasField, Encoding} from './encoding';
-import {Field, RepeatRef} from './fielddef';
+import {Field} from './fielddef';
 import * as log from './log';
 import {
   AnyMark,
@@ -131,7 +131,7 @@ function mergeProjection(opt: {parentProjection: Projection; projection: Project
 function normalizeLayer(
   spec: ExtendedLayerSpec,
   config: Config,
-  parentEncoding?: Encoding<string | RepeatRef>,
+  parentEncoding?: Encoding<Field>,
   parentProjection?: Projection
 ): NormalizedLayerSpec {
   const {layer, encoding, projection, ...rest} = spec;
@@ -256,7 +256,7 @@ function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig): MarkConfig {
 function normalizeNonFacetUnit(
   spec: GenericUnitSpec<Encoding<Field>, AnyMark>,
   config: Config,
-  parentEncoding?: Encoding<string | RepeatRef>,
+  parentEncoding?: Encoding<Field>,
   parentProjection?: Projection
 ): NormalizedUnitSpec | NormalizedLayerSpec {
   const {encoding, projection} = spec;

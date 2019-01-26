@@ -434,9 +434,7 @@ export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
   return !!channelDef && ((!!channelDef['field'] && !!channelDef['type']) || channelDef['aggregate'] === 'count');
 }
 
-export function isStringFieldDef(
-  channelDef: ChannelDef<FieldDef<string | RepeatRef>>
-): channelDef is TypedFieldDef<string> {
+export function isStringFieldDef(channelDef: ChannelDef<FieldDef<Field>>): channelDef is TypedFieldDef<string> {
   return isFieldDef(channelDef) && isString(channelDef.field);
 }
 

@@ -26,7 +26,6 @@ import {
   NumericValueDefWithCondition,
   OrderFieldDef,
   PositionFieldDef,
-  RepeatRef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
@@ -266,7 +265,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
     return false;
   });
 }
-export function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
