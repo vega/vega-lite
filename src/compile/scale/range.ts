@@ -200,16 +200,12 @@ export function parseRangeForChannel(
   );
 }
 
-function parseScheme(scheme: Scheme) {
+function parseScheme(scheme: Scheme): SchemeConfig {
   if (isExtendedScheme(scheme)) {
-    const r: SchemeConfig = {scheme: scheme.name};
-    if (scheme.count) {
-      r.count = scheme.count;
-    }
-    if (scheme.extent) {
-      r.extent = scheme.extent;
-    }
-    return r;
+    return {
+      scheme: scheme.name || 'blues',
+      ...util.omit(scheme, ['name'])
+    };
   }
   return {scheme: scheme};
 }

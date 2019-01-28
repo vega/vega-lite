@@ -1,4 +1,4 @@
-import {toSet} from 'vega-util';
+import {isObject, toSet} from 'vega-util';
 import {BinParams} from './bin';
 import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -438,7 +438,7 @@ export interface SchemeParams {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  name: string;
+  name?: string;
 
   /**
    * For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
@@ -479,7 +479,7 @@ export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregate
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
-  return scheme && !!scheme['name'];
+  return isObject(scheme);
 }
 
 export function isSelectionDomain(domain: Domain): domain is SelectionDomain {

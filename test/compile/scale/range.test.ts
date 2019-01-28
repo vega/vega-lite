@@ -377,6 +377,23 @@ describe('compile/scale', () => {
         ).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
       });
 
+      it('should use the specified count for a quantitative color field.', () => {
+        expect(
+          parseRangeForChannel(
+            'color',
+            'ordinal',
+            QUANTITATIVE,
+            {scheme: {count: 3}},
+            defaultConfig,
+            undefined,
+            'point',
+            false,
+            'plot_width',
+            []
+          )
+        ).toEqual(makeExplicit({scheme: 'blues', count: 3}));
+      });
+
       it('should use default ordinal range for quantile/quantize scales', () => {
         const scales: ScaleType[] = ['quantile', 'quantize'];
         scales.forEach(discretizingScale => {
