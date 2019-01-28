@@ -1,8 +1,11 @@
 import {MAIN} from '../../data';
 import {Dict, fieldIntersection, flatten, hash, hasIntersection, keys} from '../../util';
+import {Model} from '../model';
 import {AggregateNode} from './aggregate';
+import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
+import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
@@ -326,6 +329,47 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
             this.setMutated();
           }
         }
+      }
+    }
+    this.setContinue();
+    return this.flags;
+  }
+}
+
+/**
+ * Move bin nodes up through forks but stop at filters.
+ */
+export class MoveBinUp extends BottomUpOptimizer {
+  // TODO: rename to MergeBins
+  constructor(private model: Model) {
+    super();
+  }
+
+  public run(node: DataFlowNode): OptimizerFlags {
+    // TODO: create a new bin node right before the current (non-bin) node and merge everything that can be merged into it
+    // TODO: notice the signal renaming, we probably want to delete the merge function in bins once this works here
+    // TODO: create a bin node after the parent node and merge all the bins that cannot be moved before the current (non-bin) node into it
+
+    const parent = node.parent;
+    // move bin up by merging or swapping
+    if (node instanceof BinNode) {
+      // don't move bin before filters as filters reduce the amount of data and so
+      // it's probably better to leave the filter before the bin node
+      if (parent instanceof SourceNode || parent instanceof FilterNode) {
+        return this.flags;
+      }
+
+      if (parent instanceof BinNode) {
+        this.setMutated();
+        parent.merge(node, this.model);
+      } else {
+        // don't swap with nodes that produce something that the parse node depends on
+        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
+          this.setContinue();
+          return this.flags;
+        }
+        this.setMutated();
+        node.swapWithParent();
       }
     }
     this.setContinue();

@@ -1,4 +1,5 @@
 import * as log from '../../log';
+import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 import {checkLinks} from './debug';
 import {DataComponent} from './index';
@@ -32,49 +33,46 @@ export function isTrue(x: boolean) {
 /**
  * Run the specified optimizer on the provided nodes.
  *
- * @param optimizer The optimizer to run.
+ * @param optimizer The optimizer instance to run.
  * @param nodes A set of nodes to optimize.
  * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
  */
-function runOptimizer(
-  optimizer: typeof BottomUpOptimizer | typeof TopDownOptimizer,
-  nodes: DataFlowNode[],
-  flag: boolean
-) {
+function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[], flag: boolean) {
   const flags = nodes.map(node => {
-    const optimizerInstance = new optimizer();
-    if (optimizerInstance instanceof BottomUpOptimizer) {
-      return optimizerInstance.optimizeNextFromLeaves(node);
+    if (optimizer instanceof BottomUpOptimizer) {
+      return optimizer.optimizeNextFromLeaves(node);
     } else {
-      return optimizerInstance.run(node);
+      return optimizer.run(node);
     }
   });
   return flags.some(isTrue) || flag;
 }
 
-function optimizationDataflowHelper(dataComponent: DataComponent) {
+function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) {
   let roots = dataComponent.sources;
   let mutatedFlag = false;
 
   // mutatedFlag should always be on the right side otherwise short circuit logic might cause the mutating method to not execute
-  mutatedFlag = runOptimizer(optimizers.RemoveUnnecessaryNodes, roots, mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.RemoveUnnecessaryNodes(), roots, mutatedFlag);
 
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag = runOptimizer(optimizers.RemoveUnusedSubtrees, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots), mutatedFlag);
 
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlag = runOptimizer(optimizers.MoveParseUp, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(optimizers.RemoveDuplicateTimeUnits, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.MoveBinUp(model), getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(optimizers.MergeParse, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(optimizers.MergeAggregateNodes, getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.MergeParse(), getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(optimizers.MergeIdenticalNodes, roots, mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.MergeAggregateNodes(), getLeaves(roots), mutatedFlag);
+
+  mutatedFlag = runOptimizer(new optimizers.MergeIdenticalNodes(), roots, mutatedFlag);
 
   dataComponent.sources = roots;
 
@@ -84,7 +82,7 @@ function optimizationDataflowHelper(dataComponent: DataComponent) {
 /**
  * Optimizes the dataflow of the passed in data component.
  */
-export function optimizeDataflow(data: DataComponent) {
+export function optimizeDataflow(data: DataComponent, model: Model) {
   // check before optimizations
   checkLinks(data.sources);
 
@@ -92,7 +90,7 @@ export function optimizeDataflow(data: DataComponent) {
   let secondPassCounter = 0;
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
-    if (!optimizationDataflowHelper(data)) {
+    if (!optimizationDataflowHelper(data, model)) {
       break;
     }
     firstPassCounter++;
@@ -102,7 +100,7 @@ export function optimizeDataflow(data: DataComponent) {
   data.sources.map(optimizers.moveFacetDown);
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
-    if (!optimizationDataflowHelper(data)) {
+    if (!optimizationDataflowHelper(data, model)) {
       break;
     }
     secondPassCounter++;

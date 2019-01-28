@@ -9,7 +9,7 @@ import {NormalizedUnitSpec} from '../../../src/spec';
 import {parseModel, parseUnitModel} from '../../util';
 
 function getData(model: Model) {
-  optimizeDataflow(model.component.data);
+  optimizeDataflow(model.component.data, null);
   return assembleRootData(model.component.data, {});
 }
 
