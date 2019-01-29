@@ -42,7 +42,7 @@ for (const type of selectionTypes) {
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
-            await await embed(spec(specType, i, selection));
+            await embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
             const store = await page.evaluate(fn(specType, i, parent));
             assert.lengthOf(store, 1);
