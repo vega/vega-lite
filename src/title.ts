@@ -73,6 +73,7 @@ export function extractTitleConfig(
 
   const nonMark: BaseTitleNoSignals = {
     ...(anchor ? {anchor} : {}),
+    ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),
     ...(orient ? {orient} : {})
   };
