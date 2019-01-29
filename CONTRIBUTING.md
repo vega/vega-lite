@@ -133,7 +133,7 @@ bundle install
     - Other files under `src/` reflect namespace structure. All methods for `vl.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`. For example, `vl.channel.*` methods are in `src/channel.ts` while `vl.compile` is in `src/compile/compile.ts`.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure. For example, `test/compile/` tests files inside `src/compile/`.
-- `test-runtime/` - Code for runtime tests. You can start a webserver at the root and open the directory to debug the tests in your browser.
+- `test-runtime/` - Code for runtime tests. You can debug the tests by [running puppeteer in debug mode](https://github.com/smooth-code/jest-puppeteer#put-in-debug-mode).
 - `typings/` - TypeScript typing declaration for dependencies.
 
 ## Understanding How Vega-Lite Works
