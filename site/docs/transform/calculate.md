@@ -7,8 +7,6 @@ permalink: /docs/calculate.html
 
 The formula transform extends data objects with new fields (columns) according to an [expression](types.html#expression).
 
-{: .suppress-error}
-
 ```json
 {
   ...

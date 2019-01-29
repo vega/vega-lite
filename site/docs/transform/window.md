@@ -17,8 +17,6 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Field Definition
 
-{: .suppress-error}
-
 ```json
 // A View Specification
 {

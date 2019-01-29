@@ -4,8 +4,6 @@ title: Value
 permalink: /docs/value.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Specification of a Single View
 {

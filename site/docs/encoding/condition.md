@@ -28,8 +28,6 @@ In addition, there are two ways to encode the data that satisfy the specified co
 
 ## Conditional Field Definition
 
-{: .suppress-error}
-
 ```json
 // Specification of a Single View
 {
@@ -63,8 +61,6 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 {:#value}
 
 ## Conditional Value Definition
-
-{: .suppress-error}
 
 ```json
 // Specification of a Single View

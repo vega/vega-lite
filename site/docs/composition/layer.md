@@ -7,8 +7,6 @@ permalink: /docs/layer.html
 
 Sometimes, it's useful to superimpose one chart on top of another. You can accomplish this by using the `layer` operator. This operator is one of Vega-Lite's [view composition operators](composition.html). To define a layered chart, put multiple specifications into an array under the `layer` property.
 
-{: .suppress-error}
-
 ```json
 {
   "layer": [

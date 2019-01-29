@@ -5,8 +5,6 @@ title: Trail
 permalink: /docs/trail.html
 ---
 
-{: .suppress-error}
-
 ```json
 {
   "data": ... ,
@@ -29,8 +27,6 @@ The `trail` mark represents the data points stored in a field with a line connec
 {:#properties}
 
 ## Trail Mark Properties
-
-{: .suppress-error}
 
 ```json
 // Single View Specification
@@ -58,8 +54,6 @@ A trail mark definition can contain any [standard mark properties](mark.html#mar
 {:#config}
 
 ## Trail Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

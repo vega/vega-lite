@@ -20,8 +20,6 @@ To aggregate data in Vega-Lite, users can either use the `aggregate` property of
 
 <!-- TODO why aggregation -->
 
-{: .suppress-error}
-
 ```json
 // A Single View Specification
 {
@@ -58,8 +56,6 @@ The `detail` channel can be used to specify additional summary and group-by fiel
 {:#transform}
 
 ## Aggregate Transform
-
-{: .suppress-error}
 
 ```json
 // A View Specification

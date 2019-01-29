@@ -5,8 +5,6 @@ title: Error Bar
 permalink: /docs/errorbar.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -132,8 +130,6 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 {:#config}
 
 ## Mark Config
-
-{: .suppress-error}
 
 ```json
 {

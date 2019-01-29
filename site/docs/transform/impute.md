@@ -20,8 +20,6 @@ The impute transform groups data and determines missing values of the `key` fiel
 
 ## Impute in Encoding Field Definition
 
-{: .suppress-error}
-
 ```json
 // A Single View Specification
 {
@@ -84,8 +82,6 @@ Alternatively, the `keyvals` property can be an [object](#sequence-def) defining
 ## Impute Transform
 
 An impute transform can also be specified as a part of the `transform` array.
-
-{: .suppress-error}
 
 ```json
 // A View Specification

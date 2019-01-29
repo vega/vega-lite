@@ -11,8 +11,6 @@ For this tutorial, we will create visualizations to explore weather data for Sea
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
-{: .suppress-error}
-
 ```json
 "data": {"url": "data/seattle-weather.csv"}
 ```

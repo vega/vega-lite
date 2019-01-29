@@ -25,8 +25,6 @@ Second, as a shortcut you can use the [`column` or `row` encoding channels](#fac
 
 To create a faceted view, define how the data should be faceted in `facet` and how each facet should be displayed in the `spec`.
 
-{: .suppress-error}
-
 ```json
 {
   "facet": {

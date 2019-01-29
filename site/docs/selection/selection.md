@@ -5,8 +5,6 @@ title: Interactive Plots with Selections
 permalink: /docs/selection.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Specification of a Single View
 {
@@ -121,8 +119,6 @@ With multiview displays, selections can also be used to determine the domains of
 
 An alternate way to construct this technique would be to filter out the input data to the top (detail) view like so:
 
-{: .suppress-error}
-
 ```json
 {
   "vconcat": [{
@@ -185,8 +181,6 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 {:#config}
 
 ## Selection Configuration
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

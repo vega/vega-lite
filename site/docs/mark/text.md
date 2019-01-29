@@ -5,8 +5,6 @@ title: Text
 permalink: /docs/text.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -30,8 +28,6 @@ permalink: /docs/text.html
 {:#properties}
 
 ## Text Mark Properties
-
-{: .suppress-error}
 
 ```json
 // Single View Specification
@@ -77,8 +73,6 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 {:#config}
 
 ## Text Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

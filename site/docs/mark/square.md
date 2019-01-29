@@ -5,8 +5,6 @@ title: Square
 permalink: /docs/square.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -36,8 +34,6 @@ Here are an example scatter plot with `square` marks:
 {:#config}
 
 ## Square Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

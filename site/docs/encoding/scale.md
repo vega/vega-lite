@@ -9,8 +9,6 @@ Scales are functions that transform a domain of data values (numbers, dates, str
 
 Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels. To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -374,8 +372,6 @@ For example, the follow bar chart directly encodes color names in the data.
 {:#config}
 
 ## Configuration
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

@@ -5,8 +5,6 @@ title: Rule
 permalink: /docs/rule.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -30,8 +28,6 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 {:#properties}
 
 ## Rule Mark Properties
-
-{: .suppress-error}
 
 ```json
 // Single View Specification
@@ -87,8 +83,6 @@ Alternatively, we can create error bars showing one standard deviation (`stdev`)
 {:#config}
 
 ## Rule Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

@@ -4,8 +4,6 @@ title: Sorting
 permalink: /docs/sort.html
 ---
 
-{: .suppress-error}
-
 ```json
 {
   "data": ... ,

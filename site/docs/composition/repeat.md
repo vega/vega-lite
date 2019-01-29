@@ -19,8 +19,6 @@ The `repeat` operator is part of Vega-Lite's [view composition](composition.html
 
 To repeat a view, define what fields should be used for each entry in the row or columns. Then define the repeated view in `spec` with a reference to a repeated field (`{"repeat": ...}`).
 
-{: .suppress-error}
-
 ```json
 {
   "repeat": {
@@ -35,8 +33,6 @@ For instance, you can use this operator to quickly create an overview over the t
 <span class="vl-example" data-name="repeat_line_weather"></span>
 
 Note how the field for the y channel refers to a repeated field.
-
-{: .suppress-error}
 
 ```json
 "y": {

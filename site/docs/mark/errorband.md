@@ -5,8 +5,6 @@ title: Error Band
 permalink: /docs/errorband.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -112,8 +110,6 @@ Here is an example of a `errorband` with the `color` encoding channel set to `{"
 {:#config}
 
 ## Mark Config
-
-{: .suppress-error}
 
 ```json
 {

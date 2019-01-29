@@ -5,8 +5,6 @@ title: Box Plot
 permalink: /docs/boxplot.html
 ---
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -108,8 +106,6 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 {:#config}
 
 ## Mark Config
-
-{: .suppress-error}
 
 ```json
 {

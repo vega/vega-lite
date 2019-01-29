@@ -23,8 +23,6 @@ For example, we can customize the `anchor` of the title of a bar chart.
 
 <span class="vl-example" data-name="bar_title_start"></span>
 
-{: .suppress-error}
-
 ```json
 // Top-level View Specification
 {

@@ -33,8 +33,6 @@ If multiple channels encode the same fields, Vega-lite automatically combines th
 
 ## Legend Properties
 
-{: .suppress-error}
-
 ```json
 // Single View Specification
 {
@@ -95,8 +93,6 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 {:#config}
 
 ## Legend Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

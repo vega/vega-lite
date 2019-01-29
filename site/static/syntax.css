@@ -209,7 +209,7 @@
 
 /* Allow json example with errors */
 
-.suppress-error .highlight .err {
+.language-json .highlight .err {
   color: #000;
   background-color: transparent;
 }

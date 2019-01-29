@@ -5,8 +5,6 @@ title: Configuration
 permalink: /docs/config.html
 ---
 
-{: .suppress-error}
-
 ```json
 {
   ...,

@@ -5,8 +5,6 @@ title: Point
 permalink: /docs/point.html
 ---
 
-{: .suppress-error}
-
 ```json
 {
   "data": ... ,
@@ -29,8 +27,6 @@ permalink: /docs/point.html
 {:#properties}
 
 ## Point Mark Properties
-
-{: .suppress-error}
 
 ```json
 // Single View Specification
@@ -90,8 +86,6 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 {:#config}
 
 ## Point Config
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification

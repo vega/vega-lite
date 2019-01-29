@@ -37,8 +37,6 @@ In addition to the [common properties](#common), any kind of top-level specifica
 
 ## Single View Specifications
 
-{: .suppress-error}
-
 ```json
 {
   // Properties for top-level specification (e.g., standalone single view specifications)
@@ -106,8 +104,6 @@ To create layered and multi-view graphics, please refer to the following pages:
 {:#config}
 
 ## View Configuration
-
-{: .suppress-error}
 
 ```json
 // Top-level View Specification
