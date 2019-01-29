@@ -36,7 +36,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 - [Hanami](https://github.com/jsa-aerial/hanami) A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 - [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
-- [oz](https://github.com/metasoarous/oz) Vega & Vega-Lite based visualization toolkit for Clojure & ClojureScript (fork of Vizard).
+- [Oz](https://github.com/metasoarous/oz) is a Vega & Vega-Lite based visualization and scientific document toolkit for Clojure & ClojureScript (Reagent). Originally a fork of Vizard, Oz added support for Vega, publishing/sharing features, markdown & hiccup extensions for embedding Vega-Lite & Vega visualizations in html documents, static html output, and Jupyter notebook support via both the Clojupyter & IClojure kernels.
 - [Vizsla](https://github.com/gjmcn/vizsla) is a simple JavaScript API for Vega-Lite.
 
 ## Programming / Data Science Environment that supports Vega-Lite
