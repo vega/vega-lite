@@ -4,6 +4,7 @@ import {Config, StyleConfigIndex} from '../config';
 import {
   FieldDefBase,
   FieldRefOption,
+  isMarkPropFieldDef,
   isPositionFieldDef,
   isScaleFieldDef,
   isTimeFieldDef,
@@ -11,6 +12,7 @@ import {
   TypedFieldDef,
   vgField
 } from '../fielddef';
+import {isTextFieldDef} from '../fielddef';
 import {MarkConfig, MarkDef} from '../mark';
 import {ScaleType} from '../scale';
 import {formatExpression, TimeUnit} from '../timeunit';
@@ -127,7 +129,10 @@ export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: s
 }
 
 export function isTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
-  const formatType = isPositionFieldDef(fieldDef) && fieldDef.axis ? fieldDef.axis.formatType : undefined;
+  const formatType =
+    (isPositionFieldDef(fieldDef) && fieldDef.axis && fieldDef.axis.formatType) ||
+    (isMarkPropFieldDef(fieldDef) && fieldDef.legend && fieldDef.legend.formatType) ||
+    (isTextFieldDef(fieldDef) && fieldDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 

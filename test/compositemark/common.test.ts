@@ -27,7 +27,7 @@ describe('common feature of composite marks', () => {
     }
   });
 
-  it('should use timeFormat when normalizing encoding with timeUnit', () => {
+  it('should add timeFormat to axis when normalizing encoding with timeUnit', () => {
     const outputSpec = normalize(
       {
         data: {url: 'data/cars.json'},

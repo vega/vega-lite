@@ -393,6 +393,11 @@ export interface TextFieldDef<F extends Field> extends FieldDefWithoutScale<F, S
    * The [formatting pattern](https://vega.github.io/vega-lite/docs/format.html) for a text field. If not defined, this will be determined automatically.
    */
   format?: string;
+
+  /**
+   * A type of formatting to be forced to.
+   */
+  formatType?: 'number' | 'time';
 }
 
 export type FieldDef<F extends Field> = SecondaryFieldDef<F> | TypedFieldDef<F>;
