@@ -134,7 +134,7 @@ export interface Legend
   direction?: Orientation;
 
   /**
-   * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
    *
    * __Default value:__ `"right"`
    */
