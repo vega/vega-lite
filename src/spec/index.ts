@@ -7,17 +7,15 @@
 
 import {Config} from '../config';
 import * as vlEncoding from '../encoding';
-import {forEach} from '../encoding';
-import {Field, FieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
-import * as log from '../log';
+import {Field, FieldDef, TypedFieldDef} from '../fielddef';
 import {isPrimitiveMark} from '../mark';
 import {stack} from '../stack';
 import {Dict, hash, vals} from '../util';
 import {DataMixins} from './base';
 import {GenericHConcatSpec, GenericVConcatSpec, isConcatSpec, isVConcatSpec} from './concat';
-import {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
+import {GenericFacetSpec, isFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
+import {GenericRepeatSpec, isRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
@@ -129,42 +127,4 @@ export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Con
     return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
   }
   return false;
-}
-
-/**
- * Takes a spec and returns a list of fields used in encoding
- */
-export function usedFields(spec: NormalizedSpec): string[] {
-  if (isFacetSpec(spec) || isRepeatSpec(spec)) {
-    return usedFieldsSingle(spec);
-  }
-  if (isLayerSpec(spec)) {
-    return usedFieldsLayered(spec);
-  }
-  if (isUnitSpec(spec)) {
-    return usedFieldsUnit(spec);
-  }
-  throw new Error(log.message.INVALID_SPEC);
-}
-
-function usedFieldsUnit(spec: NormalizedUnitSpec): string[] {
-  const fields: string[] = [];
-  forEach(spec.encoding, (channelDef, channel) => {
-    if (isFieldDef(channelDef)) {
-      fields.push(channelDef.field);
-    }
-  });
-  return fields;
-}
-
-function usedFieldsLayered(spec: NormalizedLayerSpec): string[] {
-  let fields: string[] = [];
-  spec.layer.map(subspec => {
-    fields = fields.concat(usedFields(subspec));
-  });
-  return fields;
-}
-
-function usedFieldsSingle(spec: NormalizedFacetSpec | NormalizedRepeatSpec): string[] {
-  return usedFields(spec.spec);
 }
