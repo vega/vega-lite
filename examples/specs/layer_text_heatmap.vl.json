@@ -11,24 +11,29 @@
     "y": {"field": "Origin", "type": "ordinal"},
     "x": {"field": "Cylinders", "type": "ordinal"}
   },
-  "layer": [{
-    "mark": "rect",
-    "encoding": {
-      "color":  {
-        "field": "num_cars",
-        "type": "quantitative",
-        "legend": {"direction": "horizontal", "gradientLength": 120}}
-    }
-  }, {
-    "mark": "text",
-    "encoding": {
-      "text": {"field": "num_cars", "type": "quantitative"},
-      "color": {
-        "condition": {"test": "datum['num_cars'] > 100", "value": "black"},
-        "value": "white"
+  "layer": [
+    {
+      "mark": "rect",
+      "encoding": {
+        "color": {
+          "field": "num_cars",
+          "type": "quantitative",
+          "title": "Count of Records",
+          "legend": {"direction": "horizontal", "gradientLength": 120}
+        }
+      }
+    },
+    {
+      "mark": "text",
+      "encoding": {
+        "text": {"field": "num_cars", "type": "quantitative"},
+        "color": {
+          "condition": {"test": "datum['num_cars'] > 100", "value": "black"},
+          "value": "white"
+        }
       }
     }
-  }],
+  ],
   "config": {
     "scale": {"bandPaddingInner": 0, "bandPaddingOuter": 0},
     "text": {"baseline": "middle"}
