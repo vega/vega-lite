@@ -14,6 +14,7 @@ import {
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {StandardType} from '../type';
 import {Orient} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
@@ -153,7 +154,13 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   orient: Orient,
   compositeMark: M
-) {
+): {
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxisChannelDef2: SecondaryFieldDef<string>;
+  continuousAxisChannelDefError: FieldDefWithoutScale<string, StandardType>;
+  continuousAxisChannelDefError2: FieldDefWithoutScale<string, StandardType>;
+  continuousAxis: 'x' | 'y';
+} {
   const {encoding} = spec;
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
