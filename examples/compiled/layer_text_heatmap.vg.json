@@ -41,7 +41,7 @@
             {"scale": "color", "field": "num_cars"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"num_cars\": format(datum[\"num_cars\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"num_cars\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -122,8 +122,8 @@
     {
       "direction": "horizontal",
       "gradientLength": 120,
-      "fill": "color",
-      "title": "num_cars"
+      "title": "Count of Records",
+      "fill": "color"
     }
   ],
   "config": {

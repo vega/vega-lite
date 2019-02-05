@@ -20,6 +20,7 @@
         "color": {
           "field": "num_cars",
           "type": "quantitative",
+          "title": "Count of Records",
           "legend": {"direction": "horizontal", "gradientLength": 120}
         }
       }
