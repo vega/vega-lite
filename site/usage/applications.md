@@ -27,14 +27,15 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Bindings for Programming Languages
 
 - <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
-- <span class="octicon octicon-star"></span> [Elm-Vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](http://elm-lang.org).
+- <span class="octicon octicon-star"></span> [Elm-Vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
 - [Altair wrapper in R](https://vegawidget.github.io/altair/)
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
 - <span class="octicon octicon-star"></span> [VegaLite.jl](https://github.com/fredo-dedup/VegaLite.jl) are Julia bindings to Vega-Lite
 - [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 - [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
-- [Hanami](https://github.com/jsa-aerial/hanami) A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](http://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
+- [vegawidget](https://vegawidget.github.io/vegawidget), low-level interface in R to render Vega and Vega-Lite specifications as htmlwidgets, including functions to interact with data, events, and signals in [Shiny](https://shiny.rstudio.com). 
+- [Hanami](https://github.com/jsa-aerial/hanami) A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](https://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 - [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 - [Oz](https://github.com/metasoarous/oz) is a Vega & Vega-Lite based visualization and scientific document toolkit for Clojure & ClojureScript (Reagent). Originally a fork of Vizard, Oz adds support for Vega, publishing/sharing, markdown & hiccup extensions for embedding Vega-Lite & Vega visualizations in html documents, static html output, and Jupyter notebooks.
 - [Vizsla](https://github.com/gjmcn/vizsla) is a simple JavaScript API for Vega-Lite.
@@ -71,4 +72,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) is a Polymer web component to parse image/code markdowns into Vega and Vega-Lite charts.
 - [gulp-marked-vega](https://github.com/e2fyi/gulp-marked-vega) is a gulp plugin (comes with a cli tool also) to replace [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) markdown syntax with base64 embedded image tags, so that any standard markdown parser can render the Vega and Vega-Lite charts without modifying their render rules.
 - [idyll-vega-lite](https://github.com/idyll-lang/idyll-vega-lite) is a component that allows you to embed Vega-Lite graphics inside of [Idyll markup](https://idyll-lang.org), an interactive markup language.
-- [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](http://yeoman.io/).
+- [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
