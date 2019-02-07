@@ -6521,10 +6521,6 @@
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
           "type": "boolean"
         },
-        "legend": {
-          "description": "Make legends interactive",
-          "type": "boolean"
-        },
         "on": {
           "$ref": "#/definitions/VgEventStream",
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
@@ -6579,10 +6575,6 @@
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
-          "type": "boolean"
-        },
-        "legend": {
-          "description": "Make legends interactive",
           "type": "boolean"
         },
         "on": {
@@ -8092,10 +8084,6 @@
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
           "type": "boolean"
         },
-        "legend": {
-          "description": "Make legends interactive",
-          "type": "boolean"
-        },
         "on": {
           "$ref": "#/definitions/VgEventStream",
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.\nFor interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
@@ -8157,10 +8145,6 @@
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
-          "type": "boolean"
-        },
-        "legend": {
-          "description": "Make legends interactive",
           "type": "boolean"
         },
         "on": {

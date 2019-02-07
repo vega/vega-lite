@@ -50,12 +50,6 @@ export interface BaseSelectionDef {
    * When set to `none`, empty selections contain no data values.
    */
   empty?: 'all' | 'none';
-
-  /**
-   * A boolean determining whether the legend if present should be interactive
-   * or not
-   */
-  legend?: boolean;
 }
 
 export interface SingleSelectionConfig extends BaseSelectionDef {
