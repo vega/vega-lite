@@ -1,6 +1,7 @@
 import {identity, isArray, SignalRef, stringValue} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {forEachSelection, LEGEND, MODIFY, SELECTION_DOMAIN, STORE, VL_SELECTION_RESOLVE} from '.';
+import {COLOR, OPACITY, SHAPE, SIZE} from '../../channel';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -138,30 +139,57 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-export function assembleLegendSelection(model: Model, part: string, value: any) {
-  // Prototype for Single Selection - Single Field Projected Legend
+// Todo: Add more specific type checking
+// Todo: Remove unecessary arguments
+export function assembleLegendSelection(channel: string, fieldDef: any, part: string, value: any, model: Model) {
+  switch (channel) {
+    case COLOR:
+    case OPACITY:
+    case SIZE:
+    case SHAPE:
+      break;
+    default:
+      return {};
+  }
+
   let hasLegend = false;
   let field;
   let store;
+  let selection;
   forEachSelection(model, selCmpt => {
-    if (selCmpt.legend) {
+    selection = varName(fieldDef.selection);
+    const selfield = selCmpt['fields'];
+    if (selection === selCmpt.name && selfield.length === 1 && selfield[0] === fieldDef.field) {
       hasLegend = true;
-      // Only single field for now
-      // To do: Refactor for multiple fields projection
-      field = selCmpt.project[0].field;
-      const vname = varName(selCmpt.name);
-      store = stringValue(vname + STORE);
+      field = fieldDef.field;
+      store = stringValue(selection + STORE);
     }
   });
-
+  // Todo: Remove hardcoded values
   if (hasLegend) {
-    const newValue = value ? value : {opacity: {value: 0.9}};
-    // To do : Add test case for legends and symbols
-    newValue.opacity = [
-      {test: `!(length(data(${store}))) || vlSelectionTest(${store}, {${field}: datum.value})`, ...newValue.opacity},
-      {value: 0.25}
-    ];
-    return {name: part + LEGEND, interactive: true, update: newValue};
+    let newValue;
+    if (part === 'symbols' && channel === 'opacity') {
+      newValue = value;
+      if (newValue.stroke.value === 'transparent') {
+        newValue.stroke = [
+          {test: `vlSelectionTest(${store}, {${field}: datum.value})`, value: '#000000'},
+          {value: 'transparent'}
+        ];
+      } else {
+        newValue.stroke = [
+          {test: `length(data(${store}))) && vlSelectionTest(${store}, {${field}: datum.value})`, value: '#000000'},
+          newValue.stroke
+        ];
+      }
+    } else {
+      newValue = value ? value : {opacity: {value: 0.9}};
+      // To do : Add tests
+      newValue.opacity = [
+        {test: `!(length(data(${store}))) || vlSelectionTest(${store}, {${field}: datum.value})`, value: 0.9},
+        {value: 0.25}
+      ];
+    }
+    return {name: `${part}_${selection}${LEGEND}`, interactive: true, update: newValue};
   }
   return {};
 }

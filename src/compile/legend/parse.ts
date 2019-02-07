@@ -14,7 +14,7 @@ import {
 import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
+import {deleteNestedProperty, getFirstDefined, keys, varName} from '../../util';
 import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -24,6 +24,9 @@ import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex} from './component';
 import * as encode from './encode';
 import * as properties from './properties';
+
+// For MVP, later remove global variable and create new types
+export let selectionOnChannel: any = [];
 
 export function parseLegend(model: Model) {
   if (isUnitModel(model)) {
@@ -93,6 +96,15 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
+  // Refactor for better alternative
+  if (fieldDef['selection']) {
+    selectionOnChannel.push({
+      selection: varName(fieldDef['selection']),
+      field: fieldDef.field,
+      channel
+    });
+  }
+
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
 
   for (const property of LEGEND_PROPERTIES) {
@@ -113,7 +125,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
       if (part === 'labels' || part === 'symbols') {
-        const interactiveLegendPart = assembleLegendSelection(model, part, value);
+        const interactiveLegendPart = assembleLegendSelection(channel, fieldDef, part, value, model);
         if (keys(interactiveLegendPart).length > 0) {
           e[part] = interactiveLegendPart;
         }
