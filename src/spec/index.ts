@@ -5,9 +5,6 @@
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
 
-import {Config} from '../config';
-import {isPrimitiveMark} from '../mark';
-import {stack} from '../stack';
 import {DataMixins} from './base';
 import {GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
@@ -67,11 +64,3 @@ export type TopLevelSpec =
   | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
-
-export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean {
-  config = config || spec.config;
-  if (isPrimitiveMark(spec.mark)) {
-    return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;
-  }
-  return false;
-}
