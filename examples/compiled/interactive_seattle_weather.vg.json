@@ -482,7 +482,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"__count\"], \"\"), \"Weather\": ''+datum[\"weather\"]}"
               },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
