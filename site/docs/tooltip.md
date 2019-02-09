@@ -47,6 +47,18 @@ To show more than one field, you can provide an array of field definitions. [Veg
 
 Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 
+## Disable tooltips
+
+To disable tooltips from an encoding, you can set `"tooltip": null`.
+
+To disable all tooltips, disable it in the config with
+
+```json
+"config": {
+  "mark": {"tooltip": null}
+}
+```
+
 {:#plugin}
 
 ## Vega Tooltip plugin
