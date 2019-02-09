@@ -1,23 +1,17 @@
 import {Config} from '../config';
+import {Encoding} from '../encoding';
+import {Field} from '../fielddef';
 import {AnyMark, isMarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
+import {FacetMapping} from '../spec/facet';
 import {keys} from '../util';
-import {
-  BOXPLOT,
-  BoxPlot,
-  BOXPLOT_PARTS,
-  BoxPlotConfigMixins,
-  BoxPlotDef,
-  BoxPlotUnitSpec,
-  normalizeBoxPlot
-} from './boxplot';
+import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
 import {
   ERRORBAND,
   ErrorBand,
   ERRORBAND_PARTS,
   ErrorBandConfigMixins,
   ErrorBandDef,
-  ErrorBandUnitSpec,
   normalizeErrorBand
 } from './errorband';
 import {
@@ -26,7 +20,7 @@ import {
   ERRORBAR_PARTS,
   ErrorBarConfigMixins,
   ErrorBarDef,
-  ErrorBarUnitSpec,
+  ErrorExtraEncoding,
   normalizeErrorBar
 } from './errorbar';
 
@@ -53,9 +47,9 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeMarkUnitSpec<
-  EE = {} // extra encoding parameter (for faceted composite unit spec)
-> = ErrorBarUnitSpec<EE> | ErrorBandUnitSpec<EE> | BoxPlotUnitSpec<EE>;
+export type CompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field>;
+export type FacetedCompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field> & FacetMapping<Field>;
+
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
 export function getAllCompositeMarks() {

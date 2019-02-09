@@ -17,13 +17,7 @@ import {GenericFacetSpec, isFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec, isRepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
-import {
-  FacetedExtendedUnitSpec,
-  GenericUnitSpec,
-  isUnitSpec,
-  NormalizedUnitSpec,
-  TopLevelFacetedUnitSpec
-} from './unit';
+import {FacetedCompositeUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec} from './unit';
 
 export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
@@ -39,7 +33,13 @@ export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
 export {ExtendedLayerSpec, GenericLayerSpec, isLayerSpec, NormalizedLayerSpec} from './layer';
 export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
-export {ExtendedUnitSpec, FacetedExtendedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
+export {
+  CompositeUnitSpec as ExtendedUnitSpec,
+  FacetedCompositeUnitSpec as FacetedExtendedUnitSpec,
+  GenericUnitSpec,
+  isUnitSpec,
+  NormalizedUnitSpec
+} from './unit';
 
 /**
  * Any specification in Vega-Lite.
@@ -57,7 +57,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
 
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedExtendedUnitSpec, ExtendedLayerSpec>> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>> & DataMixins;
 
 /**
  * A Vega-Lite top-level specification.
@@ -65,12 +65,12 @@ export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<FacetedExtendedUnitSpe
  * (The json schema is generated from this type.)
  */
 export type TopLevelSpec =
-  | TopLevelFacetedUnitSpec
+  | TopLevelUnitSpec
   | TopLevelFacetSpec
   | TopLevel<ExtendedLayerSpec>
-  | TopLevel<GenericRepeatSpec<FacetedExtendedUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericVConcatSpec<FacetedExtendedUnitSpec, ExtendedLayerSpec>>
-  | TopLevel<GenericHConcatSpec<FacetedExtendedUnitSpec, ExtendedLayerSpec>>;
+  | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
 
 /* Custom type guards */
 
@@ -126,7 +126,7 @@ export function fieldDefs(spec: GenericSpec<any, any>): TypedFieldDef<any>[] {
   return vals(fieldDefIndex(spec));
 }
 
-export function isStacked(spec: TopLevel<FacetedExtendedUnitSpec>, config?: Config): boolean {
+export function isStacked(spec: TopLevel<FacetedCompositeUnitSpec>, config?: Config): boolean {
   config = config || spec.config;
   if (isPrimitiveMark(spec.mark)) {
     return stack(spec.mark, spec.encoding, config ? config.stack : undefined) !== null;

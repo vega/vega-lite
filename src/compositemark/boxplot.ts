@@ -1,7 +1,7 @@
 import {isNumber, isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
-import {Field, PositionFieldDef} from '../fielddef';
+import {PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
@@ -18,10 +18,6 @@ import {
   partLayerMixins,
   PartsMixins
 } from './common';
-
-export type BoxPlotUnitSpec<
-  EE = {} // extra encoding parameter (for faceted composite unit spec)
-> = GenericUnitSpec<BoxPlotEncoding<Field> & EE, BoxPlot | BoxPlotDef>;
 
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
@@ -69,8 +65,6 @@ export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
      */
     orient?: Orient;
   };
-
-export type BoxPlotEncoding<F extends Field> = Pick<Encoding<F>, 'x' | 'y' | 'color' | 'detail' | 'opacity' | 'size'>;
 
 export interface BoxPlotConfigMixins {
   /**

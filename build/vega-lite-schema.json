@@ -85,6 +85,22 @@
       ],
       "type": "string"
     },
+    "AnyMark": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/CompositeMark"
+        },
+        {
+          "$ref": "#/definitions/CompositeMarkDef"
+        },
+        {
+          "$ref": "#/definitions/Mark"
+        },
+        {
+          "$ref": "#/definitions/MarkDef"
+        }
+      ]
+    },
     "AreaConfig": {
       "additionalProperties": false,
       "properties": {
@@ -1660,12 +1676,6 @@
       ],
       "type": "object"
     },
-    "BoxPlotUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<(BoxPlotEncoding),(BoxPlot|BoxPlotDef)>"
-    },
-    "BoxPlotUnitSpecWithFacet": {
-      "$ref": "#/definitions/GenericUnitSpec<(BoxPlotEncodingWithFacet),(BoxPlot|BoxPlotDef)>"
-    },
     "BrushConfig": {
       "additionalProperties": false,
       "properties": {
@@ -1730,31 +1740,321 @@
     "ColorValueDefWithCondition": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
-    "CompositeMarkUnitSpec": {
+    "Encoding": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
+        },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
+        "latitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "opacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+        },
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OrderFieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OrderFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
+            }
+          ],
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+        },
+        "text": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "Text of the `text` mark."
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text to show upon mouse hover."
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "xError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "xError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "yError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "yError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        }
+      },
+      "type": "object"
+    },
+    "CompositeMark": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ErrorBarUnitSpec"
+          "$ref": "#/definitions/BoxPlot"
         },
         {
-          "$ref": "#/definitions/ErrorBandUnitSpec"
+          "$ref": "#/definitions/ErrorBar"
         },
         {
-          "$ref": "#/definitions/BoxPlotUnitSpec"
+          "$ref": "#/definitions/ErrorBand"
         }
       ]
     },
-    "CompositeMarkUnitSpecWithFacet": {
+    "CompositeMarkDef": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ErrorBarUnitSpecWithFacet"
+          "$ref": "#/definitions/BoxPlotDef"
         },
         {
-          "$ref": "#/definitions/ErrorBandUnitSpecWithFacet"
+          "$ref": "#/definitions/ErrorBarDef"
         },
         {
-          "$ref": "#/definitions/BoxPlotUnitSpecWithFacet"
+          "$ref": "#/definitions/ErrorBandDef"
         }
       ]
+    },
+    "CompositeUnitSpec": {
+      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "description": "Unit spec that can be normalized/expanded into a layer spec or another unit spec."
     },
     "ConditionOnlyDef<MarkPropFieldDef<\"nominal\">>": {
       "additionalProperties": false,
@@ -3193,248 +3493,6 @@
     "Element": {
       "type": "string"
     },
-    "Encoding": {
-      "additionalProperties": false,
-      "properties": {
-        "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-        },
-        "detail": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-        },
-        "fill": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-        },
-        "fillOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-        },
-        "href": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/StringValueDefWithCondition"
-            }
-          ],
-          "description": "A URL to load upon mouse click."
-        },
-        "key": {
-          "$ref": "#/definitions/FieldDef",
-          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-        },
-        "latitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Latitude position of geographically projected marks."
-        },
-        "latitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "longitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Longitude position of geographically projected marks."
-        },
-        "longitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "opacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-        },
-        "order": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/OrderFieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/OrderFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-        },
-        "shape": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ShapeFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ShapeValueDefWithCondition"
-            }
-          ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-        },
-        "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-        },
-        "stroke": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-        },
-        "strokeOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-        },
-        "strokeWidth": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-        },
-        "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            }
-          ],
-          "description": "Text of the `text` mark."
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/TextFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The tooltip text to show upon mouse hover."
-        },
-        "x": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "x2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "y": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        },
-        "y2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        }
-      },
-      "type": "object"
-    },
     "EncodingSortField": {
       "additionalProperties": false,
       "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
@@ -3570,12 +3628,6 @@
       ],
       "type": "object"
     },
-    "ErrorBandUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<(ErrorEncoding),(ErrorBand|ErrorBandDef)>"
-    },
-    "ErrorBandUnitSpecWithFacet": {
-      "$ref": "#/definitions/GenericUnitSpec<(ErrorEncodingWithFacet),(ErrorBand|ErrorBandDef)>"
-    },
     "ErrorBar": {
       "enum": [
         "errorbar"
@@ -3674,12 +3726,6 @@
       ],
       "type": "string"
     },
-    "ErrorBarUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<(ErrorEncoding),(ErrorBar|ErrorBarDef)>"
-    },
-    "ErrorBarUnitSpecWithFacet": {
-      "$ref": "#/definitions/GenericUnitSpec<(ErrorEncodingWithFacet),(ErrorBar|ErrorBarDef)>"
-    },
     "EventStream": {
     },
     "LayerSpec": {
@@ -3710,7 +3756,7 @@
                 "$ref": "#/definitions/LayerSpec"
               },
               {
-                "$ref": "#/definitions/ExtendedUnitSpec"
+                "$ref": "#/definitions/CompositeUnitSpec"
               }
             ]
           },
@@ -3759,28 +3805,6 @@
         "layer"
       ],
       "type": "object"
-    },
-    "ExtendedUnitSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/NormalizedUnitSpec"
-        },
-        {
-          "$ref": "#/definitions/CompositeMarkUnitSpec"
-        }
-      ],
-      "description": "Unit spec that can be normalized/expanded into a layer spec or another unit spec."
-    },
-    "ExtendedUnitSpecWithFacet": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/NormalizedUnitSpecWithFacet"
-        },
-        {
-          "$ref": "#/definitions/CompositeMarkUnitSpecWithFacet"
-        }
-      ],
-      "description": "Unit spec that can be normalized/expanded into a layer spec or another unit spec."
     },
     "FacetFieldDef": {
       "additionalProperties": false,
@@ -3869,8 +3893,302 @@
       },
       "type": "object"
     },
-    "FacetedExtendedUnitSpec": {
-      "$ref": "#/definitions/ExtendedUnitSpecWithFacet",
+    "FacetedEncoding": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "column": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Horizontal facets for trellis plots."
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
+        },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
+        "latitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "opacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+        },
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OrderFieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OrderFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+        },
+        "row": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Vertical facets for trellis plots."
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
+            }
+          ],
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+        },
+        "text": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "Text of the `text` mark."
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text to show upon mouse hover."
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "xError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "xError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "yError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "yError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        }
+      },
+      "type": "object"
+    },
+    "FacetedUnitSpec": {
+      "$ref": "#/definitions/GenericUnitSpec<FacetedEncoding,AnyMark>",
       "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec)."
     },
     "Field": {
@@ -4859,7 +5177,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/FacetedExtendedUnitSpec"
+              "$ref": "#/definitions/FacetedUnitSpec"
             }
           ],
           "description": "A specification of the view that gets faceted."
@@ -5052,7 +5370,7 @@
     "Spec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/FacetedExtendedUnitSpec"
+          "$ref": "#/definitions/FacetedUnitSpec"
         },
         {
           "$ref": "#/definitions/LayerSpec"
@@ -5072,7 +5390,7 @@
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "GenericUnitSpec<(BoxPlotEncoding),(BoxPlot|BoxPlotDef)>": {
+    "GenericUnitSpec<Encoding,AnyMark>": {
       "additionalProperties": false,
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
@@ -5085,102 +5403,15 @@
           "type": "string"
         },
         "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "size": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "size",
-            "x",
-            "y"
-          ],
-          "type": "object"
+          "$ref": "#/definitions/Encoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
           "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BoxPlot"
-            },
-            {
-              "$ref": "#/definitions/BoxPlotDef"
-            }
-          ],
+          "$ref": "#/definitions/AnyMark",
           "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
@@ -5230,7 +5461,7 @@
       ],
       "type": "object"
     },
-    "GenericUnitSpec<(BoxPlotEncodingWithFacet),(BoxPlot|BoxPlotDef)>": {
+    "GenericUnitSpec<FacetedEncoding,AnyMark>": {
       "additionalProperties": false,
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
@@ -5243,1624 +5474,15 @@
           "type": "string"
         },
         "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "column": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Horizontal facets for trellis plots."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "row": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Vertical facets for trellis plots."
-            },
-            "size": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "size",
-            "x",
-            "y"
-          ],
-          "type": "object"
+          "$ref": "#/definitions/FacetedEncoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
           "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BoxPlot"
-            },
-            {
-              "$ref": "#/definitions/BoxPlotDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(Encoding),(Mark|MarkDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "fill": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-            },
-            "fillOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-            },
-            "href": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/StringFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/StringValueDefWithCondition"
-                }
-              ],
-              "description": "A URL to load upon mouse click."
-            },
-            "key": {
-              "$ref": "#/definitions/FieldDef",
-              "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-            },
-            "latitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Latitude position of geographically projected marks."
-            },
-            "latitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "longitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Longitude position of geographically projected marks."
-            },
-            "longitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "order": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/OrderFieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/OrderFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-            },
-            "shape": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ShapeFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ShapeValueDefWithCondition"
-                }
-              ],
-              "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-            },
-            "size": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-            },
-            "stroke": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-            },
-            "strokeOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-            },
-            "strokeWidth": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-            },
-            "text": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                }
-              ],
-              "description": "Text of the `text` mark."
-            },
-            "tooltip": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/TextFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "The tooltip text to show upon mouse hover."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            }
-          },
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Mark"
-            },
-            {
-              "$ref": "#/definitions/MarkDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(EncodingWithFacet),(Mark|MarkDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "column": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Horizontal facets for trellis plots."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "fill": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-            },
-            "fillOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-            },
-            "href": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/StringFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/StringValueDefWithCondition"
-                }
-              ],
-              "description": "A URL to load upon mouse click."
-            },
-            "key": {
-              "$ref": "#/definitions/FieldDef",
-              "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-            },
-            "latitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Latitude position of geographically projected marks."
-            },
-            "latitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "longitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Longitude position of geographically projected marks."
-            },
-            "longitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "order": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/OrderFieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/OrderFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-            },
-            "row": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Vertical facets for trellis plots."
-            },
-            "shape": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ShapeFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ShapeValueDefWithCondition"
-                }
-              ],
-              "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-            },
-            "size": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-            },
-            "stroke": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-            },
-            "strokeOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-            },
-            "strokeWidth": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-            },
-            "text": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                }
-              ],
-              "description": "Text of the `text` mark."
-            },
-            "tooltip": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/TextFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "The tooltip text to show upon mouse hover."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            }
-          },
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Mark"
-            },
-            {
-              "$ref": "#/definitions/MarkDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(ErrorEncoding),(ErrorBand|ErrorBandDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "xError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "xError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "yError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "yError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "x",
-            "x2",
-            "y",
-            "y2"
-          ],
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ErrorBand"
-            },
-            {
-              "$ref": "#/definitions/ErrorBandDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(ErrorEncoding),(ErrorBar|ErrorBarDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "xError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "xError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "yError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "yError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "x",
-            "x2",
-            "y",
-            "y2"
-          ],
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ErrorBar"
-            },
-            {
-              "$ref": "#/definitions/ErrorBarDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(ErrorEncodingWithFacet),(ErrorBand|ErrorBandDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "column": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Horizontal facets for trellis plots."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "row": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Vertical facets for trellis plots."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "xError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "xError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "yError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "yError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "x",
-            "x2",
-            "y",
-            "y2"
-          ],
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ErrorBand"
-            },
-            {
-              "$ref": "#/definitions/ErrorBandDef"
-            }
-          ],
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-        },
-        "width": {
-          "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
-    },
-    "GenericUnitSpec<(ErrorEncodingWithFacet),(ErrorBar|ErrorBarDef)>": {
-      "additionalProperties": false,
-      "description": "Base interface for a unit (single-view) specification.",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/Data",
-          "description": "An object describing the data source"
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "column": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Horizontal facets for trellis plots."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "row": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Vertical facets for trellis plots."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "xError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "xError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "yError": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            },
-            "yError2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-            }
-          },
-          "required": [
-            "color",
-            "detail",
-            "opacity",
-            "x",
-            "x2",
-            "y",
-            "y2"
-          ],
-          "type": "object"
-        },
-        "height": {
-          "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-          "type": "number"
-        },
-        "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ErrorBar"
-            },
-            {
-              "$ref": "#/definitions/ErrorBarDef"
-            }
-          ],
+          "$ref": "#/definitions/AnyMark",
           "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
@@ -9099,14 +7721,6 @@
         "year"
       ],
       "type": "string"
-    },
-    "NormalizedUnitSpec": {
-      "$ref": "#/definitions/GenericUnitSpec<(Encoding),(Mark|MarkDef)>",
-      "description": "A unit specification without any shortcut/expansion syntax."
-    },
-    "NormalizedUnitSpecWithFacet": {
-      "$ref": "#/definitions/GenericUnitSpec<(EncodingWithFacet),(Mark|MarkDef)>",
-      "description": "A unit specification without any shortcut/expansion syntax."
     },
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldDefWithCondition<MarkPropFieldDef,number>"
@@ -11636,7 +10250,7 @@
                 "$ref": "#/definitions/LayerSpec"
               },
               {
-                "$ref": "#/definitions/ExtendedUnitSpec"
+                "$ref": "#/definitions/CompositeUnitSpec"
               }
             ]
           },
@@ -12026,728 +10640,6 @@
       ],
       "type": "object"
     },
-    "TopLevelCompositeMarkUnitSpec": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
-              "format": "uri",
-              "type": "string"
-            },
-            "autosize": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/AutosizeType"
-                },
-                {
-                  "$ref": "#/definitions/AutoSizeParams"
-                }
-              ],
-              "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
-            },
-            "background": {
-              "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
-              "type": "string"
-            },
-            "config": {
-              "$ref": "#/definitions/Config",
-              "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
-            },
-            "data": {
-              "$ref": "#/definitions/Data",
-              "description": "An object describing the data source"
-            },
-            "datasets": {
-              "$ref": "#/definitions/Datasets",
-              "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
-            },
-            "description": {
-              "description": "Description of this mark for commenting purpose.",
-              "type": "string"
-            },
-            "encoding": {
-              "additionalProperties": false,
-              "description": "A key-value mapping between encoding channels and definition of fields.",
-              "properties": {
-                "color": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/ColorFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/ColorValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-                },
-                "column": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Horizontal facets for trellis plots."
-                },
-                "detail": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/FieldDef"
-                    },
-                    {
-                      "items": {
-                        "$ref": "#/definitions/FieldDef"
-                      },
-                      "type": "array"
-                    }
-                  ],
-                  "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-                },
-                "opacity": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/NumericFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/NumericValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-                },
-                "row": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Vertical facets for trellis plots."
-                },
-                "x": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/XValueDef"
-                    }
-                  ],
-                  "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-                },
-                "x2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/XValueDef"
-                    }
-                  ],
-                  "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-                },
-                "xError": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "xError2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "y": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/YValueDef"
-                    }
-                  ],
-                  "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-                },
-                "y2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/YValueDef"
-                    }
-                  ],
-                  "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-                },
-                "yError": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "yError2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                }
-              },
-              "required": [
-                "color",
-                "detail",
-                "opacity",
-                "x",
-                "x2",
-                "y",
-                "y2"
-              ],
-              "type": "object"
-            },
-            "height": {
-              "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            },
-            "mark": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ErrorBar"
-                },
-                {
-                  "$ref": "#/definitions/ErrorBarDef"
-                }
-              ],
-              "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-            },
-            "name": {
-              "description": "Name of the visualization for later reference.",
-              "type": "string"
-            },
-            "padding": {
-              "$ref": "#/definitions/Padding",
-              "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
-            },
-            "projection": {
-              "$ref": "#/definitions/Projection",
-              "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-            },
-            "selection": {
-              "additionalProperties": {
-                "$ref": "#/definitions/SelectionDef"
-              },
-              "description": "A key-value mapping between selection names and definitions.",
-              "type": "object"
-            },
-            "title": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "$ref": "#/definitions/TitleParams"
-                }
-              ],
-              "description": "Title for the plot."
-            },
-            "transform": {
-              "description": "An array of data transformations such as filter and new field calculation.",
-              "items": {
-                "$ref": "#/definitions/Transform"
-              },
-              "type": "array"
-            },
-            "usermeta": {
-              "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
-              "type": "object"
-            },
-            "view": {
-              "$ref": "#/definitions/ViewBackground",
-              "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-            },
-            "width": {
-              "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "data",
-            "mark"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
-              "format": "uri",
-              "type": "string"
-            },
-            "autosize": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/AutosizeType"
-                },
-                {
-                  "$ref": "#/definitions/AutoSizeParams"
-                }
-              ],
-              "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
-            },
-            "background": {
-              "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
-              "type": "string"
-            },
-            "config": {
-              "$ref": "#/definitions/Config",
-              "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
-            },
-            "data": {
-              "$ref": "#/definitions/Data",
-              "description": "An object describing the data source"
-            },
-            "datasets": {
-              "$ref": "#/definitions/Datasets",
-              "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
-            },
-            "description": {
-              "description": "Description of this mark for commenting purpose.",
-              "type": "string"
-            },
-            "encoding": {
-              "additionalProperties": false,
-              "description": "A key-value mapping between encoding channels and definition of fields.",
-              "properties": {
-                "color": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/ColorFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/ColorValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-                },
-                "column": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Horizontal facets for trellis plots."
-                },
-                "detail": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/FieldDef"
-                    },
-                    {
-                      "items": {
-                        "$ref": "#/definitions/FieldDef"
-                      },
-                      "type": "array"
-                    }
-                  ],
-                  "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-                },
-                "opacity": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/NumericFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/NumericValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-                },
-                "row": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Vertical facets for trellis plots."
-                },
-                "x": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/XValueDef"
-                    }
-                  ],
-                  "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-                },
-                "x2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/XValueDef"
-                    }
-                  ],
-                  "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-                },
-                "xError": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "xError2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "y": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/YValueDef"
-                    }
-                  ],
-                  "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-                },
-                "y2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/YValueDef"
-                    }
-                  ],
-                  "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-                },
-                "yError": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                },
-                "yError2": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/SecondaryFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/NumberValueDef"
-                    }
-                  ],
-                  "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-                }
-              },
-              "required": [
-                "color",
-                "detail",
-                "opacity",
-                "x",
-                "x2",
-                "y",
-                "y2"
-              ],
-              "type": "object"
-            },
-            "height": {
-              "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            },
-            "mark": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ErrorBand"
-                },
-                {
-                  "$ref": "#/definitions/ErrorBandDef"
-                }
-              ],
-              "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-            },
-            "name": {
-              "description": "Name of the visualization for later reference.",
-              "type": "string"
-            },
-            "padding": {
-              "$ref": "#/definitions/Padding",
-              "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
-            },
-            "projection": {
-              "$ref": "#/definitions/Projection",
-              "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-            },
-            "selection": {
-              "additionalProperties": {
-                "$ref": "#/definitions/SelectionDef"
-              },
-              "description": "A key-value mapping between selection names and definitions.",
-              "type": "object"
-            },
-            "title": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "$ref": "#/definitions/TitleParams"
-                }
-              ],
-              "description": "Title for the plot."
-            },
-            "transform": {
-              "description": "An array of data transformations such as filter and new field calculation.",
-              "items": {
-                "$ref": "#/definitions/Transform"
-              },
-              "type": "array"
-            },
-            "usermeta": {
-              "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
-              "type": "object"
-            },
-            "view": {
-              "$ref": "#/definitions/ViewBackground",
-              "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-            },
-            "width": {
-              "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "data",
-            "mark"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "$schema": {
-              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
-              "format": "uri",
-              "type": "string"
-            },
-            "autosize": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/AutosizeType"
-                },
-                {
-                  "$ref": "#/definitions/AutoSizeParams"
-                }
-              ],
-              "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
-            },
-            "background": {
-              "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
-              "type": "string"
-            },
-            "config": {
-              "$ref": "#/definitions/Config",
-              "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
-            },
-            "data": {
-              "$ref": "#/definitions/Data",
-              "description": "An object describing the data source"
-            },
-            "datasets": {
-              "$ref": "#/definitions/Datasets",
-              "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
-            },
-            "description": {
-              "description": "Description of this mark for commenting purpose.",
-              "type": "string"
-            },
-            "encoding": {
-              "additionalProperties": false,
-              "description": "A key-value mapping between encoding channels and definition of fields.",
-              "properties": {
-                "color": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/ColorFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/ColorValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-                },
-                "column": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Horizontal facets for trellis plots."
-                },
-                "detail": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/FieldDef"
-                    },
-                    {
-                      "items": {
-                        "$ref": "#/definitions/FieldDef"
-                      },
-                      "type": "array"
-                    }
-                  ],
-                  "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-                },
-                "opacity": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/NumericFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/NumericValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-                },
-                "row": {
-                  "$ref": "#/definitions/FacetFieldDef",
-                  "description": "Vertical facets for trellis plots."
-                },
-                "size": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/NumericFieldDefWithCondition"
-                    },
-                    {
-                      "$ref": "#/definitions/NumericValueDefWithCondition"
-                    }
-                  ],
-                  "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-                },
-                "x": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/XValueDef"
-                    }
-                  ],
-                  "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-                },
-                "y": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/PositionFieldDef"
-                    },
-                    {
-                      "$ref": "#/definitions/YValueDef"
-                    }
-                  ],
-                  "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-                }
-              },
-              "required": [
-                "color",
-                "detail",
-                "opacity",
-                "size",
-                "x",
-                "y"
-              ],
-              "type": "object"
-            },
-            "height": {
-              "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            },
-            "mark": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/BoxPlot"
-                },
-                {
-                  "$ref": "#/definitions/BoxPlotDef"
-                }
-              ],
-              "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-            },
-            "name": {
-              "description": "Name of the visualization for later reference.",
-              "type": "string"
-            },
-            "padding": {
-              "$ref": "#/definitions/Padding",
-              "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
-            },
-            "projection": {
-              "$ref": "#/definitions/Projection",
-              "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
-            },
-            "selection": {
-              "additionalProperties": {
-                "$ref": "#/definitions/SelectionDef"
-              },
-              "description": "A key-value mapping between selection names and definitions.",
-              "type": "object"
-            },
-            "title": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "$ref": "#/definitions/TitleParams"
-                }
-              ],
-              "description": "Title for the plot."
-            },
-            "transform": {
-              "description": "An array of data transformations such as filter and new field calculation.",
-              "items": {
-                "$ref": "#/definitions/Transform"
-              },
-              "type": "array"
-            },
-            "usermeta": {
-              "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
-              "type": "object"
-            },
-            "view": {
-              "$ref": "#/definitions/ViewBackground",
-              "description": "An object defining the view background's fill and stroke.\n\n__Default value:__ none (transparent)"
-            },
-            "width": {
-              "description": "The width of a visualization.\n\n__Default value:__ This will be determined by the following rules:\n\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its x-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For x-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the width is [determined by the range step, paddings, and the cardinality of the field mapped to x-channel](https://vega.github.io/vega-lite/docs/scale.html#band).   Otherwise, if the `rangeStep` is `null`, the width will be the value of [`config.view.width`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `x` channel, the `width` will be the value of [`config.scale.textXRangeStep`](https://vega.github.io/vega-lite/docs/size.html#default-width-and-height) for `text` mark and the value of `rangeStep` for other marks.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
-              "type": "number"
-            }
-          },
-          "required": [
-            "data",
-            "mark"
-          ],
-          "type": "object"
-        }
-      ]
-    },
     "TopLevelFacetSpec": {
       "additionalProperties": false,
       "properties": {
@@ -12850,7 +10742,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/FacetedExtendedUnitSpec"
+              "$ref": "#/definitions/FacetedUnitSpec"
             }
           ],
           "description": "A specification of the view that gets faceted."
@@ -12885,17 +10777,30 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedUnitSpec": {
+    "TopLevelSpec": {
       "anyOf": [
         {
-          "$ref": "#/definitions/TopLevelNormalizedUnitSpec"
+          "$ref": "#/definitions/TopLevelUnitSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelCompositeMarkUnitSpec"
+          "$ref": "#/definitions/TopLevelFacetSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelLayerSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelRepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelVConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelHConcatSpec"
         }
-      ]
+      ],
+      "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
     },
-    "TopLevelNormalizedUnitSpec": {
+    "TopLevelUnitSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -12935,269 +10840,15 @@
           "type": "string"
         },
         "encoding": {
-          "additionalProperties": false,
-          "description": "A key-value mapping between encoding channels and definition of fields.",
-          "properties": {
-            "color": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-            },
-            "column": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Horizontal facets for trellis plots."
-            },
-            "detail": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/FieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/FieldDef"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-            },
-            "fill": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-            },
-            "fillOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-            },
-            "href": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/StringFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/StringValueDefWithCondition"
-                }
-              ],
-              "description": "A URL to load upon mouse click."
-            },
-            "key": {
-              "$ref": "#/definitions/FieldDef",
-              "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-            },
-            "latitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Latitude position of geographically projected marks."
-            },
-            "latitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "longitude": {
-              "$ref": "#/definitions/LatLongFieldDef",
-              "description": "Longitude position of geographically projected marks."
-            },
-            "longitude2": {
-              "$ref": "#/definitions/SecondaryFieldDef",
-              "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-            },
-            "opacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-            },
-            "order": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/OrderFieldDef"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/OrderFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "$ref": "#/definitions/NumberValueDef"
-                }
-              ],
-              "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-            },
-            "row": {
-              "$ref": "#/definitions/FacetFieldDef",
-              "description": "Vertical facets for trellis plots."
-            },
-            "shape": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ShapeFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ShapeValueDefWithCondition"
-                }
-              ],
-              "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-            },
-            "size": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-            },
-            "stroke": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/ColorFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/ColorValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-            },
-            "strokeOpacity": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-            },
-            "strokeWidth": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/NumericFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/NumericValueDefWithCondition"
-                }
-              ],
-              "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-            },
-            "text": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                }
-              ],
-              "description": "Text of the `text` mark."
-            },
-            "tooltip": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TextFieldDefWithCondition"
-                },
-                {
-                  "$ref": "#/definitions/TextValueDefWithCondition"
-                },
-                {
-                  "items": {
-                    "$ref": "#/definitions/TextFieldDef"
-                  },
-                  "type": "array"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "The tooltip text to show upon mouse hover."
-            },
-            "x": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "x2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/XValueDef"
-                }
-              ],
-              "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-            },
-            "y": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PositionFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            },
-            "y2": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SecondaryFieldDef"
-                },
-                {
-                  "$ref": "#/definitions/YValueDef"
-                }
-              ],
-              "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-            }
-          },
-          "type": "object"
+          "$ref": "#/definitions/FacetedEncoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
           "description": "The height of a visualization.\n\n__Default value:__\n- If a view's [`autosize`](https://vega.github.io/vega-lite/docs/size.html#autosize) type is `\"fit\"` or its y-channel has a [continuous scale](https://vega.github.io/vega-lite/docs/scale.html#continuous), the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- For y-axis with a band or point scale: if [`rangeStep`](https://vega.github.io/vega-lite/docs/scale.html#band) is a numeric value or unspecified, the height is [determined by the range step, paddings, and the cardinality of the field mapped to y-channel](https://vega.github.io/vega-lite/docs/scale.html#band). Otherwise, if the `rangeStep` is `null`, the height will be the value of [`config.view.height`](https://vega.github.io/vega-lite/docs/spec.html#config).\n- If no field is mapped to `y` channel, the `height` will be the value of `rangeStep`.\n\n__Note__: For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view.\n\n__See also:__ The documentation for [width and height](https://vega.github.io/vega-lite/docs/size.html) contains more examples.",
           "type": "number"
         },
         "mark": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Mark"
-            },
-            {
-              "$ref": "#/definitions/MarkDef"
-            }
-          ],
+          "$ref": "#/definitions/AnyMark",
           "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
         },
         "name": {
@@ -13255,29 +10906,6 @@
         "mark"
       ],
       "type": "object"
-    },
-    "TopLevelSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelFacetSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelLayerSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelRepeatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelVConcatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelHConcatSpec"
-        }
-      ],
-      "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
     },
     "TopoDataFormat": {
       "additionalProperties": false,

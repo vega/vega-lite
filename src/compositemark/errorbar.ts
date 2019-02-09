@@ -30,10 +30,6 @@ import {
 } from './common';
 import {ErrorBand, ErrorBandDef} from './errorband';
 
-export type ErrorBarUnitSpec<
-  EE = {} // extra encoding parameter (for faceted composite unit spec)
-> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBar | ErrorBarDef>;
-
 export const ERRORBAR: 'errorbar' = 'errorbar';
 export type ErrorBar = typeof ERRORBAR;
 
@@ -49,8 +45,7 @@ const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
   rule: 1
 };
 
-export interface ErrorEncoding<F extends Field>
-  extends Pick<Encoding<F>, 'x' | 'y' | 'x2' | 'y2' | 'color' | 'detail' | 'opacity'> {
+export interface ErrorExtraEncoding<F extends Field> {
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
@@ -73,6 +68,12 @@ export interface ErrorEncoding<F extends Field>
   // `yError2` cannot have type as it should have the same type as `yError`
   yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 }
+
+export type ErrorEncoding<F extends Field> = Pick<
+  Encoding<F>,
+  'x' | 'y' | 'x2' | 'y2' | 'color' | 'detail' | 'opacity'
+> &
+  ErrorExtraEncoding<F>;
 
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
 
