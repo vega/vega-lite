@@ -1,4 +1,4 @@
-import {ChannelDef, Field, FieldDef, RepeatRef, TypedFieldDef} from '../fielddef';
+import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../fielddef';
 import {Header} from '../header';
 import {Resolve} from '../resolve';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
@@ -58,7 +58,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
   /**
    * An object that describes mappings between `row` and `column` channels and their field definitions.
    */
-  facet: FacetMapping<string | RepeatRef>;
+  facet: FacetMapping<Field>;
 
   /**
    * A specification of the view that gets faceted.

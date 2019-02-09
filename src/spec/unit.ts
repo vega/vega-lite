@@ -1,5 +1,5 @@
 import {Encoding, EncodingWithFacet} from '../encoding';
-import {RepeatRef} from '../fielddef';
+import {Field} from '../fielddef';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
@@ -39,17 +39,17 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 /**
  * A unit specification without any shortcut/expansion syntax.
  */
-export type NormalizedUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, Mark | MarkDef>;
+export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
  * Unit spec that can have a composite mark.
  */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<string | RepeatRef>, AnyMark>;
+export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
 
 /**
  * Unit spec that can have a composite mark and row or column channels.
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<string | RepeatRef>, AnyMark>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
 
 export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec {
   return !!spec['mark'];

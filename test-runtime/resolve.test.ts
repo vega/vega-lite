@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import {Page} from 'puppeteer';
 import {
   brush,
   compositeTypes,
@@ -13,19 +14,27 @@ import {
   unitNameRegex
 } from './util';
 
-selectionTypes.forEach(type => {
-  const embed = embedFn(browser);
+declare const page: Page;
+
+for (const type of selectionTypes) {
+  const embed = embedFn(page);
   const isInterval = type === 'interval';
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
 
-  describe(`${type} selections at runtime`, () => {
+  describe(`${type} selections at runtime`, async () => {
+    beforeAll(async () => {
+      await page.goto('http://0.0.0.0:8000/test-runtime/');
+    });
+
     compositeTypes.forEach(specType => {
-      const testRender = testRenderFn(browser, `${type}/${specType}`);
-      describe(`in ${specType} views`, () => {
-        // Loop through the views, click to add a selection instance.
-        // Store size should stay constant, but unit names should vary.
-        it('should have one global selection instance', () => {
+      const testRender = testRenderFn(page, `${type}/${specType}`);
+      describe(`in ${specType} views`, async () => {
+        /**
+         * Loop through the views, click to add a selection instance.
+         * Store size should stay constant, but unit names should vary.
+         */
+        it('should have one global selection instance', async () => {
           const selection = {
             type,
             resolve: 'global',
@@ -33,59 +42,61 @@ selectionTypes.forEach(type => {
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
-            embed(spec(specType, i, selection));
+            await embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
-            const store = browser.execute(fn(specType, i, parent)).value;
+            const store = await page.evaluate(fn(specType, i, parent));
             assert.lengthOf(store, 1);
             assert.match(store[0].unit, unitNameRegex(specType, i));
-            testRender(`global_${i}`);
+            await testRender(`global_${i}`);
 
             if (i === hits[specType].length - 1) {
-              const cleared = browser.execute(fn(`${specType}_clear`, 0, parent)).value;
+              const cleared = await page.evaluate(fn(`${specType}_clear`, 0, parent));
               assert.lengthOf(cleared, 0);
-              testRender(`global_clear_${i}`);
+              await testRender(`global_clear_${i}`);
             }
           }
         });
 
-        resolutions.forEach(resolve => {
+        for (const resolve of resolutions) {
           const selection = {
             type,
             resolve,
             ...(specType === 'facet' ? {encodings: ['x']} : {})
           };
 
-          // Loop through the views, click to add selection instance and observe
-          // incrementing store size. Then, loop again but click to clear and
-          // observe decrementing store size. Check unit names in each case.
-          it(`should have one selection instance per ${resolve} view`, () => {
-            embed(spec(specType, 0, selection));
+          /**
+           * Loop through the views, click to add selection instance and observe
+           * incrementing store size. Then, loop again but click to clear and
+           * observe decrementing store size. Check unit names in each case.
+           */
+          it(`should have one selection instance per ${resolve} view`, async () => {
+            await embed(spec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              const store = browser.execute(fn(specType, i, parent)).value;
+              const store = await page.evaluate(fn(specType, i, parent));
               assert.lengthOf(store, i + 1);
               assert.match(store[i].unit, unitNameRegex(specType, i));
-              testRender(`${resolve}_${i}`);
+              await testRender(`${resolve}_${i}`);
             }
 
-            embed(spec(specType, 1, {type, resolve, encodings: ['x']}));
+            await embed(spec(specType, 1, {type, resolve, encodings: ['x']}));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              browser.execute(fn(specType, i, parent));
+              await page.evaluate(fn(specType, i, parent));
             }
 
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
               const parent = parentSelector(specType, i);
-              const store = browser.execute(fn(`${specType}_clear`, i, parent)).value;
+              const store = await page.evaluate(fn(`${specType}_clear`, i, parent));
               assert.lengthOf(store, i);
               if (i > 0) {
                 assert.match(store[i - 1].unit, unitNameRegex(specType, i - 1));
               }
-              testRender(`${resolve}_clear_${i}`);
+              await testRender(`${resolve}_clear_${i}`);
             }
           });
-        });
+        }
       });
     });
   });
-});
+}
