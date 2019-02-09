@@ -34,7 +34,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         },
         {
           "type": "stack",
@@ -42,9 +42,9 @@
             "bin_maxbins_10_Horsepower",
             "bin_maxbins_10_Horsepower_end"
           ],
-          "field": "count_*",
+          "field": "__count",
           "sort": {"field": ["Origin"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
+          "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
       ]
@@ -80,7 +80,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         },
         {
           "type": "stack",
@@ -88,9 +88,9 @@
             "bin_maxbins_10_Miles_per_Gallon",
             "bin_maxbins_10_Miles_per_Gallon_end"
           ],
-          "field": "count_*",
+          "field": "__count",
           "sort": {"field": ["Origin"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
+          "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
       ]
@@ -126,7 +126,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         },
         {
           "type": "stack",
@@ -134,9 +134,9 @@
             "bin_maxbins_10_Acceleration",
             "bin_maxbins_10_Acceleration_end"
           ],
-          "field": "count_*",
+          "field": "__count",
           "sort": {"field": ["Origin"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
+          "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
       ]
@@ -166,13 +166,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Horsepower_x",
@@ -183,8 +183,8 @@
                 "scale": "child_Horsepower_x",
                 "field": "bin_maxbins_10_Horsepower_end"
               },
-              "y": {"scale": "child_Horsepower_y", "field": "count_*_end"},
-              "y2": {"scale": "child_Horsepower_y", "field": "count_*_start"}
+              "y": {"scale": "child_Horsepower_y", "field": "__count_end"},
+              "y2": {"scale": "child_Horsepower_y", "field": "__count_start"}
             }
           }
         }
@@ -244,13 +244,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Miles_per_Gallon (binned)\": datum[\"bin_maxbins_10_Miles_per_Gallon\"] === null || isNaN(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Miles_per_Gallon_x",
@@ -263,11 +263,11 @@
               },
               "y": {
                 "scale": "child_Miles_per_Gallon_y",
-                "field": "count_*_end"
+                "field": "__count_end"
               },
               "y2": {
                 "scale": "child_Miles_per_Gallon_y",
-                "field": "count_*_start"
+                "field": "__count_start"
               }
             }
           }
@@ -328,13 +328,13 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"scale": "color", "field": "Origin"}
               ],
               "tooltip": {
-                "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
+                "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
               "x2": {
                 "scale": "child_Acceleration_x",
@@ -345,8 +345,8 @@
                 "scale": "child_Acceleration_x",
                 "field": "bin_maxbins_10_Acceleration_end"
               },
-              "y": {"scale": "child_Acceleration_y", "field": "count_*_end"},
-              "y2": {"scale": "child_Acceleration_y", "field": "count_*_start"}
+              "y": {"scale": "child_Acceleration_y", "field": "__count_end"},
+              "y2": {"scale": "child_Acceleration_y", "field": "__count_start"}
             }
           }
         }
@@ -417,7 +417,7 @@
     {
       "name": "child_Horsepower_y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -438,7 +438,7 @@
     {
       "name": "child_Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "data_1", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -459,7 +459,7 @@
     {
       "name": "child_Acceleration_y",
       "type": "linear",
-      "domain": {"data": "data_2", "fields": ["count_*_start", "count_*_end"]},
+      "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

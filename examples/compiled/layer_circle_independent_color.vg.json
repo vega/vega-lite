@@ -51,7 +51,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     },
@@ -99,7 +99,7 @@
           ],
           "ops": ["count"],
           "fields": ["*"],
-          "as": ["count_*"]
+          "as": ["__count"]
         }
       ]
     }
@@ -114,13 +114,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"All Cars\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"All Cars\": format(datum[\"__count\"], \"\")}"
           },
           "x": {
             "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
@@ -128,7 +128,7 @@
           "y": {
             "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
           },
-          "size": {"scale": "size", "field": "count_*"},
+          "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
       }
@@ -142,13 +142,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "firebrick"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Cars from Japan\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Cars from Japan\": format(datum[\"__count\"], \"\")}"
           },
           "x": {
             "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
@@ -156,7 +156,7 @@
           "y": {
             "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
           },
-          "size": {"scale": "size", "field": "count_*"},
+          "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
       }
@@ -196,8 +196,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
       "range": [
