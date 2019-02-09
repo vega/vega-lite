@@ -1,6 +1,6 @@
 import {toSet} from 'vega-util';
 import {BAR, isMarkDef} from './mark';
-import {FacetedExtendedUnitSpec} from './spec';
+import {FacetedCompositeUnitSpec} from './spec/unit';
 
 // TODO: move to vl.spec.validator?
 export interface RequiredChannelMap {
@@ -56,7 +56,7 @@ export const DEFAULT_SUPPORTED_CHANNEL_TYPE: SupportedChannelMap = {
  *                  or null if the encoding is valid.
  */
 export function getEncodingMappingError(
-  spec: FacetedExtendedUnitSpec,
+  spec: FacetedCompositeUnitSpec,
   requiredChannelMap: RequiredChannelMap = DEFAULT_REQUIRED_CHANNEL_MAP,
   supportedChannelMap: SupportedChannelMap = DEFAULT_SUPPORTED_CHANNEL_TYPE
 ) {

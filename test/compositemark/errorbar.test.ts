@@ -1,12 +1,12 @@
 /* tslint:disable:quotemark */
 import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
-import {CompositeMarkUnitSpec} from '../../src/compositemark/index';
 import {defaultConfig} from '../../src/config';
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
 import {ExtendedLayerSpec, GenericSpec, isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {CompositeUnitSpec} from '../../src/spec/unit';
 import {isAggregate, isCalculate, Transform} from '../../src/transform';
 import {some} from '../../src/util';
 
@@ -615,7 +615,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
   for (const center of centers) {
     for (const extent of extents) {
-      const spec: GenericSpec<CompositeMarkUnitSpec, ExtendedLayerSpec> = {
+      const spec: GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> = {
         data: {url: 'data/population.json'},
         mark: {type, ...(center ? {center} : {}), ...(extent ? {extent} : {})},
         encoding: {
