@@ -364,7 +364,7 @@ export function unitName(model: Model) {
     const {facet} = facetModel;
     for (const channel of FACET_CHANNELS) {
       if (facet[channel]) {
-        name += ` + '_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
       }
     }
   }
