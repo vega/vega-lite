@@ -49,9 +49,9 @@ export const tuples = [
   {a: 9, b: 48, c: 2}
 ];
 
-const unitNames = {
-  repeat: ['child_d', 'child_e', 'child_f'],
-  facet: ['child_0', 'child_1', 'child_2']
+const UNIT_NAMES = {
+  repeat: ['child__repeat_row_d', 'child__repeat_row_e', 'child__repeat_row_f'],
+  facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
 };
 
 export const hits = {
@@ -164,12 +164,12 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
 }
 
 export function unitNameRegex(specType: ComposeType, idx: number) {
-  const name = unitNames[specType][idx].replace('child_', '');
+  const name = UNIT_NAMES[specType][idx].replace('child_', '');
   return new RegExp(`child(.*?)_${name}`);
 }
 
 export function parentSelector(compositeType: ComposeType, index: number) {
-  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : unitNames.repeat[index] + '_group';
+  return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : UNIT_NAMES.repeat[index] + '_group';
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
