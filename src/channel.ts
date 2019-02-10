@@ -19,11 +19,6 @@ export namespace Channel {
   export const Y: 'y' = 'y';
   export const X2: 'x2' = 'x2';
   export const Y2: 'y2' = 'y2';
-  export const XERROR: 'xError' = 'xError';
-  export const YERROR: 'yError' = 'yError';
-  export const XERROR2: 'xError2' = 'xError2';
-  export const YERROR2: 'yError2' = 'yError2';
-
   // Geo Position
   export const LATITUDE: 'latitude' = 'latitude';
   export const LONGITUDE: 'longitude' = 'longitude';
