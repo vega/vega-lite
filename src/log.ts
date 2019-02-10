@@ -4,7 +4,7 @@
 
 import {AggregateOp} from 'vega';
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import {Channel, GeoPositionChannel} from './channel';
+import {Channel, FacetChannel, GeoPositionChannel} from './channel';
 import {CompositeMark} from './compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from './compositemark/errorbar';
 import {DateTime, DateTimeExpr} from './datetime';
@@ -238,6 +238,10 @@ export namespace message {
 
   export function facetChannelShouldBeDiscrete(channel: string) {
     return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
+  }
+
+  export function facetChannelDropped(channels: FacetChannel[]) {
+    return `Facet encoding dropped as ${channels.join(' and ')} ${channels.length > 1 ? 'are' : 'is'} also specified.`;
   }
 
   export function discreteChannelCannotEncode(channel: Channel, type: Type) {
