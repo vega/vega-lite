@@ -26,7 +26,7 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
   /**
    * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
    */
-  repeat: Repeat;
+  repeat: Repeat | string[];
 
   spec: GenericSpec<U, L>;
 
