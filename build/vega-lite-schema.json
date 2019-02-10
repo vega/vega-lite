@@ -5279,8 +5279,15 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/FacetMapping",
-          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FacetFieldDef"
+            },
+            {
+              "$ref": "#/definitions/FacetMapping"
+            }
+          ],
+          "description": "A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -9558,6 +9565,12 @@
             "column"
           ],
           "type": "string"
+        },
+        {
+          "enum": [
+            "facet"
+          ],
+          "type": "string"
         }
       ]
     },
@@ -11204,8 +11217,15 @@
           "type": "string"
         },
         "facet": {
-          "$ref": "#/definitions/FacetMapping",
-          "description": "An object that describes mappings between `row` and `column` channels and their field definitions."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FacetFieldDef"
+            },
+            {
+              "$ref": "#/definitions/FacetMapping"
+            }
+          ],
+          "description": "A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions."
         },
         "name": {
           "description": "Name of the visualization for later reference.",

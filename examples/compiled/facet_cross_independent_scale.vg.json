@@ -18,7 +18,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["c", "r"],
+          "groupby": ["r", "c"],
           "fields": ["a", "b"],
           "ops": ["distinct", "distinct"]
         }
