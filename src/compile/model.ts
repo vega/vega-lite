@@ -8,8 +8,9 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
+import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
 import {DEFAULT_SPACING, extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
+import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
@@ -157,7 +158,7 @@ export abstract class Model {
   public abstract readonly children: Model[] = [];
 
   constructor(
-    spec: BaseSpec,
+    spec: NormalizedSpec,
     public readonly parent: Model,
     parentGivenName: string,
     public readonly config: Config,
@@ -182,8 +183,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform || []);
-    this.layout =
-      isUnitSpec(spec) || isLayerSpec(spec) ? undefined : extractCompositionLayout(spec as TopLevelFacetSpec);
+    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec);
 
     this.component = {
       data: {
@@ -332,7 +332,7 @@ export abstract class Model {
       return undefined;
     }
 
-    const {align, bounds, center, spacing = {}} = this.layout;
+    const {spacing = {}, ...layout} = this.layout;
 
     return {
       padding: isNumber(spacing)
@@ -342,9 +342,7 @@ export abstract class Model {
             column: spacing.column || DEFAULT_SPACING
           },
       ...this.assembleDefaultLayout(),
-      ...(align ? {align} : {}),
-      ...(bounds ? {bounds} : {}),
-      ...(center ? {center} : {})
+      ...layout
     };
   }
 

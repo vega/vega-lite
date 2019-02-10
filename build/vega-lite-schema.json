@@ -5112,6 +5112,102 @@
       },
       "type": "object"
     },
+    "ConcatSpec": {
+      "additionalProperties": false,
+      "description": "Base interface for a generalized concatenation specification.",
+      "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
+        "concat": {
+          "description": "A list of views to be concatenated.",
+          "items": {
+            "$ref": "#/definitions/Spec"
+          },
+          "type": "array"
+        },
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "concat"
+      ],
+      "type": "object"
+    },
     "FacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
@@ -5238,7 +5334,7 @@
           "type": "string"
         },
         "hconcat": {
-          "description": "A list of views that should be concatenated and put into a row.",
+          "description": "A list of views to be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -5386,6 +5482,9 @@
         },
         {
           "$ref": "#/definitions/RepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/ConcatSpec"
         },
         {
           "$ref": "#/definitions/VConcatSpec"
@@ -5593,7 +5692,7 @@
           "type": "array"
         },
         "vconcat": {
-          "description": "A list of views that should be concatenated and put into a column.",
+          "description": "A list of views to be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -10477,6 +10576,137 @@
       ],
       "type": "object"
     },
+    "TopLevelConcatSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v3.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "format": "uri",
+          "type": "string"
+        },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "autosize": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AutosizeType"
+            },
+            {
+              "$ref": "#/definitions/AutoSizeParams"
+            }
+          ],
+          "description": "Sets how the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n`\"fit\"` is only supported for single and layered views that don't use `rangeStep`.\n\n__Default value__: `pad`"
+        },
+        "background": {
+          "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ none (transparent)",
+          "type": "string"
+        },
+        "bounds": {
+          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
+          "enum": [
+            "full",
+            "flush"
+          ],
+          "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
+        },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
+        "concat": {
+          "description": "A list of views to be concatenated.",
+          "items": {
+            "$ref": "#/definitions/Spec"
+          },
+          "type": "array"
+        },
+        "config": {
+          "$ref": "#/definitions/Config",
+          "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
+        },
+        "data": {
+          "$ref": "#/definitions/Data",
+          "description": "An object describing the data source"
+        },
+        "datasets": {
+          "$ref": "#/definitions/Datasets",
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        },
+        "usermeta": {
+          "description": "Optional metadata that will be passed to Vega.\nThis object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.",
+          "type": "object"
+        }
+      },
+      "required": [
+        "concat"
+      ],
+      "type": "object"
+    },
     "TopLevelHConcatSpec": {
       "additionalProperties": false,
       "properties": {
@@ -10529,7 +10759,7 @@
           "type": "string"
         },
         "hconcat": {
-          "description": "A list of views that should be concatenated and put into a row.",
+          "description": "A list of views to be concatenated and put into a row.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -10797,7 +11027,7 @@
           "type": "object"
         },
         "vconcat": {
-          "description": "A list of views that should be concatenated and put into a column.",
+          "description": "A list of views to be concatenated and put into a column.",
           "items": {
             "$ref": "#/definitions/Spec"
           },
@@ -10959,6 +11189,9 @@
         },
         {
           "$ref": "#/definitions/TopLevelRepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelConcatSpec"
         },
         {
           "$ref": "#/definitions/TopLevelVConcatSpec"

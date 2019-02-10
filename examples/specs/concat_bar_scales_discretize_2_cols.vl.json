@@ -14,7 +14,8 @@
       {"a": "I", "b": 52}
     ]
   },
-  "hconcat": [
+  "columns": 2,
+  "concat": [
     {
       "mark": "circle",
       "encoding": {
