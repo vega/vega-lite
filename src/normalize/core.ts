@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {COLUMN, ROW} from '../channel';
+import {COLUMN, FACET, ROW} from '../channel';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
@@ -31,8 +31,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
     if (isUnitSpec(spec)) {
       const hasRow = channelHasField(spec.encoding, ROW);
       const hasColumn = channelHasField(spec.encoding, COLUMN);
+      const hasFacet = channelHasField(spec.encoding, FACET);
 
-      if (hasRow || hasColumn) {
+      if (hasRow || hasColumn || hasFacet) {
         return this.mapFacetedUnit(spec, params);
       }
     }
@@ -97,17 +98,26 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
   private mapFacetedUnit(spec: FacetedExtendedUnitSpec, params: NormalizerParams): NormalizedFacetSpec {
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
-    const {row, column, ...encoding} = spec.encoding;
+    const {row, column, facet, ...encoding} = spec.encoding;
 
     // Mark and encoding should be moved into the inner spec
     const {mark, width, projection, height, selection, encoding: _, ...outerSpec} = spec;
 
+    if (facet && (row || column)) {
+      log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
+    }
+
     return {
       ...outerSpec,
-      facet: {
-        ...(row ? {row} : {}),
-        ...(column ? {column} : {})
-      },
+
+      // row / column has higher precedence than facet
+      facet:
+        row || column
+          ? {
+              ...(row ? {row} : {}),
+              ...(column ? {column} : {})
+            }
+          : facet,
       spec: this.mapUnit(
         {
           ...(projection ? {projection} : {}),
