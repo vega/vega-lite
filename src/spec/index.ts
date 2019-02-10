@@ -6,7 +6,7 @@
  */
 
 import {DataMixins} from './base';
-import {GenericHConcatSpec, GenericVConcatSpec} from './concat';
+import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
 import {ExtendedLayerSpec, GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericRepeatSpec} from './repeat';
@@ -17,7 +17,7 @@ export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
 export {
   GenericHConcatSpec,
   GenericVConcatSpec,
-  isConcatSpec,
+  isAnyConcatSpec,
   isHConcatSpec,
   isVConcatSpec,
   NormalizedConcatSpec
@@ -42,6 +42,7 @@ export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLa
   | L
   | GenericFacetSpec<U, L>
   | GenericRepeatSpec<U, L>
+  | GenericConcatSpec<U, L>
   | GenericVConcatSpec<U, L>
   | GenericHConcatSpec<U, L>;
 
@@ -62,5 +63,6 @@ export type TopLevelSpec =
   | TopLevelFacetSpec
   | TopLevel<ExtendedLayerSpec>
   | TopLevel<GenericRepeatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
+  | TopLevel<GenericConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericVConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>
   | TopLevel<GenericHConcatSpec<FacetedCompositeUnitSpec, ExtendedLayerSpec>>;
