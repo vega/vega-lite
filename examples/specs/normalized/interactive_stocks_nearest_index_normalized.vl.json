@@ -3,7 +3,6 @@
   "width": 600,
   "height": 300,
   "data": {"url": "data/stocks.csv"},
-  "config": {"text": {"align": "right", "dx": -5, "dy": 5}},
   "layer": [
     {
       "mark": "line",
@@ -47,5 +46,6 @@
         "text": {"field": "date", "type": "temporal"}
       }
     }
-  ]
+  ],
+  "config": {"text": {"align": "right", "dx": -5, "dy": 5}}
 }

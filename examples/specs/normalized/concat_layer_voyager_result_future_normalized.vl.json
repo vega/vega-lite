@@ -32,14 +32,6 @@
       }
     ]
   },
-  "config": {
-    "view": {"stroke": "transparent"},
-    "style": {
-      "arrow-label": {"dy": 16, "fontSize": 9.5},
-      "arrow-label2": {"dy": 28, "fontSize": 9.5}
-    },
-    "title": {"fontSize": 12}
-  },
   "vconcat": [
     {
       "title": {"text": "Mean of Subject Ratings (95% CIs)", "frame": "bounds"},
@@ -175,5 +167,13 @@
         }
       ]
     }
-  ]
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "style": {
+      "arrow-label": {"dy": 16, "fontSize": 9.5},
+      "arrow-label2": {"dy": 28, "fontSize": 9.5}
+    },
+    "title": {"fontSize": 12}
+  }
 }
