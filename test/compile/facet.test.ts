@@ -1,32 +1,14 @@
 /* tslint:disable quotemark */
 
-import {ROW, SHAPE} from '../../src/channel';
+import {ROW} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import * as log from '../../src/log';
 import {DEFAULT_SPACING} from '../../src/spec/base';
-import {FacetMapping} from '../../src/spec/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
 describe('FacetModel', () => {
   describe('initFacet', () => {
-    it(
-      'should drop unsupported channel and throws warning',
-      log.wrap(localLogger => {
-        const model = parseFacetModel({
-          facet: {
-            shape: {field: 'a', type: 'quantitative'}
-          } as FacetMapping<string>, // Cast to allow invalid facet type for test
-          spec: {
-            mark: 'point',
-            encoding: {}
-          }
-        });
-        expect(model.facet).not.toHaveProperty('shape');
-        expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(SHAPE, 'facet'));
-      })
-    );
-
     it(
       'should drop channel without field and value and throws warning',
       log.wrap(localLogger => {
@@ -56,7 +38,7 @@ describe('FacetModel', () => {
             encoding: {}
           }
         });
-        expect(model.facet.row).toEqual({field: 'a', type: 'quantitative'});
+        expect(model.facet).toEqual({row: {field: 'a', type: 'quantitative'}});
         expect(localLogger.warns[0]).toEqual(log.message.facetChannelShouldBeDiscrete(ROW));
       })
     );

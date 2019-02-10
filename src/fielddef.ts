@@ -810,6 +810,7 @@ export function channelCompatibility(
   switch (channel) {
     case 'row':
     case 'column':
+    case 'facet':
       if (isContinuous(fieldDef)) {
         return {
           compatible: false,
