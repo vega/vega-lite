@@ -2,7 +2,7 @@ import {Encoding} from '../encoding';
 import {Field} from '../fielddef';
 import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
-import {FacetMapping} from '../spec/facet';
+import {EncodingFacetMapping} from '../spec/facet';
 import {keys} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
@@ -53,7 +53,7 @@ export function remove(mark: string) {
 }
 
 export type CompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field>;
-export type FacetedCompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field> & FacetMapping<Field>;
+export type FacetedCompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field> & EncodingFacetMapping<Field>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
