@@ -1,5 +1,5 @@
 import {Resolve} from '../resolve';
-import {BaseSpec, GenericCompositionLayout} from './base';
+import {BaseSpec, GenericCompositionLayoutWithColumns} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {Repeat} from './repeat';
@@ -22,7 +22,7 @@ export interface Repeat {
  */
 export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
-    GenericCompositionLayout {
+    GenericCompositionLayoutWithColumns {
   /**
    * An object that describes what fields should be repeated into views that are laid out as a `row` or `column`.
    */
