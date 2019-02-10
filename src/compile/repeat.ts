@@ -40,7 +40,7 @@ export class RepeatModel extends BaseConcatModel {
     // cross product
     for (const rowField of row) {
       for (const columnField of column) {
-        const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
+        const name = (rowField ? `__row_${rowField}` : '') + (columnField ? `__column_${columnField}` : '');
 
         const childRepeat = {
           row: rowField,
