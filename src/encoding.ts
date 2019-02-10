@@ -41,7 +41,7 @@ import {
 } from './fielddef';
 import * as log from './log';
 import {Mark} from './mark';
-import {FacetMapping} from './spec/facet';
+import {EncodingFacetMapping} from './spec/facet';
 import {getDateTimeComponents} from './timeunit';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {Type} from './type';
@@ -215,7 +215,7 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef<number>;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, FacetMapping<F> {}
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
   const channelDef = encoding && encoding[channel];
