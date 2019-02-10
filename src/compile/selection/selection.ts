@@ -1,7 +1,7 @@
 import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
-import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
@@ -359,11 +359,14 @@ function getFacetModel(model: Model): FacetModel {
 
 export function unitName(model: Model) {
   let name = stringValue(model.name);
-  const facet = getFacetModel(model);
-  if (facet) {
-    name +=
-      (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '') +
-      (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
+  const facetModel = getFacetModel(model);
+  if (facetModel) {
+    const {facet} = facetModel;
+    for (const channel of FACET_CHANNELS) {
+      if (facet[channel]) {
+        name += ` + '_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+      }
+    }
   }
   return name;
 }
