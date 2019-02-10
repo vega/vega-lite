@@ -47,6 +47,40 @@ To show more than one field, you can provide an array of field definitions. [Veg
 
 Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 
+## Disable tooltips
+
+To disable tooltips for a particular single view specification, you can set the `"tooltip"` property of a mark definition block to `null`. 
+
+```json
+{
+  "mark": {"type": ..., "tooltip": null, ...},
+  "encoding": ...,
+  ...
+}
+```
+
+
+Alternatively, you can also set the `"tooltip"` encoding to `null`:
+
+```json
+{
+  "mark": ...,
+  "encoding": {
+    "tooltip": null
+  },
+  ...
+}
+```
+
+
+To disable all tooltips, disable it in the [config](config.html) with
+
+```json
+"config": {
+  "mark": {"tooltip": null}
+}
+```
+
 {:#plugin}
 
 ## Vega Tooltip plugin

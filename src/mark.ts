@@ -110,8 +110,9 @@ export interface MarkConfig extends ColorMixins, BaseMarkConfig {
    *
    * - If `tooltip` is `{"content": "encoding"}`, then all fields from `encoding` will be used.
    * - If `tooltip` is `{"content": "data"}`, then all fields that appear in the highlighted data point will be used.
+   * - If set to `null`, then no tooltip will be used.
    */
-  tooltip?: string | TooltipContent;
+  tooltip?: string | TooltipContent | null;
 
   /**
    * Default size for marks.
