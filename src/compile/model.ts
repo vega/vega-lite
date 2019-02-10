@@ -1,6 +1,6 @@
 import {AnchorValue, Axis as VgAxis, Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {isNumber, isString} from 'vega-util';
-import {Channel, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
+import {Channel, FACET_CHANNELS, isChannel, isScaleChannel, ScaleChannel, SingleDefChannel} from '../channel';
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
@@ -55,6 +55,7 @@ export interface Component {
   layoutHeaders: {
     row?: LayoutHeaderComponent;
     column?: LayoutHeaderComponent;
+    facet?: LayoutHeaderComponent;
   };
 
   mark: VgMarkGroup[];
@@ -194,7 +195,7 @@ export abstract class Model {
         isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && !spec.data)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
-      layoutHeaders: {row: {}, column: {}},
+      layoutHeaders: {row: {}, column: {}, facet: {}},
       mark: null,
       resolve: {
         scale: {},
@@ -356,7 +357,7 @@ export abstract class Model {
     const {layoutHeaders} = this.component;
     let headerMarks = [];
 
-    for (const channel of HEADER_CHANNELS) {
+    for (const channel of FACET_CHANNELS) {
       if (layoutHeaders[channel].title) {
         headerMarks.push(assembleTitleGroup(this, channel));
       }

@@ -89,7 +89,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["a", "b"],
+          "groupby": ["b", "a"],
           "ops": ["median", "median"],
           "fields": ["median_y_by_b", "median_x_by_a"],
           "as": ["median_median_y_by_b", "median_median_x_by_a"]

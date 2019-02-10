@@ -45,6 +45,21 @@ export interface FacetMapping<F extends Field> {
   column?: FacetFieldDef<F>;
 }
 
+export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F> {
+  return !!f['row'] || !!f['column'];
+}
+
+/**
+ * Facet mapping for encoding macro
+ */
+export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F> {
+  /**
+   * Faceted field for trellis plots.
+   * If either `row` or `column` is specified, this channel will be ignored.
+   */
+  facet?: FacetFieldDef<F>;
+}
+
 export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
   return !!channelDef && !!channelDef['header'];
 }
@@ -56,9 +71,9 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
   extends BaseSpec,
     GenericCompositionLayout {
   /**
-   * An object that describes mappings between `row` and `column` channels and their field definitions.
+   * A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions.
    */
-  facet: FacetMapping<Field>;
+  facet: FacetFieldDef<Field> | FacetMapping<Field>;
 
   /**
    * A specification of the view that gets faceted.

@@ -14,7 +14,7 @@ import {
 } from '../fielddef';
 import * as log from '../log';
 import {isSortField} from '../sort';
-import {FacetMapping} from '../spec/facet';
+import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
 
 export interface RepeaterValue {
   row?: string;
@@ -23,8 +23,14 @@ export interface RepeaterValue {
   repeat?: string;
 }
 
-export function replaceRepeaterInFacet(facet: FacetMapping<Field>, repeater: RepeaterValue): FacetMapping<string> {
-  return replaceRepeater(facet, repeater) as FacetMapping<string>;
+export function replaceRepeaterInFacet(
+  facet: FacetFieldDef<Field> | FacetMapping<Field>,
+  repeater: RepeaterValue
+): FacetFieldDef<string> | FacetMapping<string> {
+  if (isFacetMapping(facet)) {
+    return replaceRepeater(facet, repeater) as FacetMapping<string>;
+  }
+  return replaceRepeaterInFieldDef(facet, repeater) as FacetFieldDef<string>;
 }
 
 export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {

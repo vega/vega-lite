@@ -130,10 +130,13 @@ export namespace message {
     'The "columns" property cannot be used when "repeat" has nested row/column.';
 
   // CONCAT
-  export const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views.';
+  export const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated views yet.';
 
   // REPEAT
-  export const REPEAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in repeated views.';
+  export const REPEAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in repeated views yet.';
+
+  // REPEAT
+  export const FACET_1D_CANNOT_SHARE_AXIS = 'Axes cannot be shared in facet views without row/column.';
 
   // TITLE
   export function cannotSetTitleAnchor(type: string) {
