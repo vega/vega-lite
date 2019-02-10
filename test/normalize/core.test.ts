@@ -1,4 +1,5 @@
 /* tslint:disable:quotemark */
+import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel';
 import {defaultConfig, initConfig} from '../../src/config';
 import * as log from '../../src/log';
 import {LocalLogger} from '../../src/log';
@@ -38,66 +39,84 @@ describe('normalize()', () => {
   });
 
   describe('normalizeFacetedUnit', () => {
-    it('should convert single extended spec with column into a composite spec', () => {
-      const spec: any = {
-        name: 'faceted',
-        width: 123,
-        height: 234,
-        description: 'faceted spec',
-        data: {url: 'data/movies.json'},
-        mark: 'point',
-        encoding: {
-          column: {field: 'MPAA_Rating', type: 'ordinal'},
-          x: {field: 'Worldwide_Gross', type: 'quantitative'},
-          y: {field: 'US_DVD_Sales', type: 'quantitative'}
-        }
-      };
-      const config = initConfig(spec.config);
-      expect(normalize(spec, config)).toEqual({
-        name: 'faceted',
-        description: 'faceted spec',
-        data: {url: 'data/movies.json'},
-        facet: {
-          column: {field: 'MPAA_Rating', type: 'ordinal'}
-        },
-        spec: {
-          mark: 'point',
+    for (const channel of FACET_CHANNELS) {
+      it(`should convert single extended spec with ${channel} into a composite spec`, () => {
+        const fieldDef = {field: 'MPAA_Rating', type: 'ordinal'};
+        const spec: any = {
+          name: 'faceted',
           width: 123,
           height: 234,
-          encoding: {
-            x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'US_DVD_Sales', type: 'quantitative'}
-          }
-        }
-      });
-    });
-
-    it('should convert single extended spec with row into a composite spec', () => {
-      const spec: any = {
-        data: {url: 'data/movies.json'},
-        mark: 'point',
-        encoding: {
-          row: {field: 'MPAA_Rating', type: 'ordinal'},
-          x: {field: 'Worldwide_Gross', type: 'quantitative'},
-          y: {field: 'US_DVD_Sales', type: 'quantitative'}
-        }
-      };
-
-      const config = initConfig(spec.config);
-      expect(normalize(spec, config)).toEqual({
-        data: {url: 'data/movies.json'},
-        facet: {
-          row: {field: 'MPAA_Rating', type: 'ordinal'}
-        },
-        spec: {
+          description: 'faceted spec',
+          data: {url: 'data/movies.json'},
+          spacing: 20,
           mark: 'point',
           encoding: {
+            [channel]: fieldDef,
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
             y: {field: 'US_DVD_Sales', type: 'quantitative'}
           }
-        }
+        };
+
+        const config = initConfig(spec.config);
+        const expectedFacet =
+          channel === 'facet'
+            ? fieldDef
+            : {
+                [channel]: fieldDef
+              };
+
+        expect(normalize(spec, config)).toEqual({
+          name: 'faceted',
+          description: 'faceted spec',
+          data: {url: 'data/movies.json'},
+          spacing: 20,
+          facet: expectedFacet,
+          spec: {
+            mark: 'point',
+            width: 123,
+            height: 234,
+            encoding: {
+              x: {field: 'Worldwide_Gross', type: 'quantitative'},
+              y: {field: 'US_DVD_Sales', type: 'quantitative'}
+            }
+          }
+        });
       });
-    });
+    }
+
+    for (const channel of [ROW, COLUMN]) {
+      it(
+        `should drop facet if ${channel} is also specified`,
+        log.wrap(localLogger => {
+          const spec: any = {
+            data: {url: 'data/movies.json'},
+            mark: 'point',
+            encoding: {
+              [channel]: {field: 'MPAA_Rating', type: 'ordinal'},
+              facet: {field: 'todrop', type: 'ordinal'},
+              x: {field: 'Worldwide_Gross', type: 'quantitative'},
+              y: {field: 'US_DVD_Sales', type: 'quantitative'}
+            }
+          };
+
+          const config = initConfig(spec.config);
+          expect(normalize(spec, config)).toEqual({
+            data: {url: 'data/movies.json'},
+            facet: {
+              [channel]: {field: 'MPAA_Rating', type: 'ordinal'}
+            },
+            spec: {
+              mark: 'point',
+              encoding: {
+                x: {field: 'Worldwide_Gross', type: 'quantitative'},
+                y: {field: 'US_DVD_Sales', type: 'quantitative'}
+              }
+            }
+          });
+          expect(localLogger.warns[0]).toEqual(log.message.facetChannelDropped([channel]));
+        })
+      );
+    }
   });
 
   describe('normalizeFacet', () => {
