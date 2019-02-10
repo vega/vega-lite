@@ -176,7 +176,8 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 - VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files (`*.js`, `*.js.map`). This should work automatically if you open the `vega-lite` folder with VSCode.
-- Make sure to install [TSLint](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
+- Make sure to install [TSLint](https://marketplace.visualstudio.com/items?itemName=eg2.tslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
+- The [vscode-jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner) extension is also very helpful for debugging tests.
 
 ## Manually Testing with Vega-Editor
 

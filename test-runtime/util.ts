@@ -184,9 +184,13 @@ export function pt(key: string, idx: number, parent?: string) {
 
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
-    await page.evaluate((_: any) => {
-      window['embed'](_);
-    }, specification);
+    await page.evaluate(
+      (_: any) => {
+        window['embed'](_);
+      },
+      // pseciifcation is serializable even if the types don't agree
+      specification as any
+    );
   };
 }
 

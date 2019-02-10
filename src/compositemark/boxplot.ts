@@ -1,19 +1,19 @@
 import {isNumber, isObject} from 'vega-util';
-import {Channel} from '../channel';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import {PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, getFirstDefined, keys} from '../util';
 import {Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
   CompositeMarkTooltipSummary,
-  filterUnsupportedChannels,
   GenericCompositeMarkDef,
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
@@ -75,14 +75,12 @@ export interface BoxPlotConfigMixins {
   boxplot?: BoxPlotConfig;
 }
 
-const boxPlotSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+export const boxPlotNormalizer = new CompositeMarkNormalizer(BOXPLOT, normalizeBoxPlot);
 
 export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
-  config: Config
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
-
   // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};

@@ -7,10 +7,6 @@
       "groupby": ["Origin", "Cylinders"]
     }
   ],
-  "config": {
-    "scale": {"bandPaddingInner": 0, "bandPaddingOuter": 0},
-    "text": {"baseline": "middle"}
-  },
   "layer": [
     {
       "mark": "rect",
@@ -37,5 +33,9 @@
         }
       }
     }
-  ]
+  ],
+  "config": {
+    "scale": {"bandPaddingInner": 0, "bandPaddingOuter": 0},
+    "text": {"baseline": "middle"}
+  }
 }
