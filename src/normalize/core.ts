@@ -1,3 +1,4 @@
+import {isArray} from 'vega-util';
 import {COLUMN, ROW} from '../channel';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
@@ -9,8 +10,9 @@ import {ExtendedLayerSpec, ExtendedUnitSpec, FacetedExtendedUnitSpec, GenericSpe
 import {NormalizedFacetSpec} from '../spec/facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
+import {GenericRepeatSpec} from '../spec/repeat';
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {keys} from '../util';
+import {keys, omit} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
@@ -54,6 +56,24 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedExtended
     }
 
     return spec as NormalizedUnitSpec;
+  }
+
+  protected mapRepeat(
+    spec: GenericRepeatSpec<ExtendedUnitSpec, ExtendedLayerSpec>,
+    params: NormalizerParams
+  ): GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec> {
+    const {repeat} = spec;
+
+    if (!isArray(repeat) && spec.columns) {
+      // is repeat with row/column
+      spec = omit(spec, ['columns']);
+      log.warn(log.message.COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL);
+    }
+
+    return {
+      ...spec,
+      spec: this.map(spec.spec, params)
+    };
   }
 
   private mapUnitWithParentEncodingOrProjection(
