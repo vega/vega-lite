@@ -5438,6 +5438,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -5451,7 +5455,17 @@
           "type": "string"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Repeat"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
           "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
@@ -10929,6 +10943,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -10954,7 +10972,17 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle.  If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "repeat": {
-          "$ref": "#/definitions/Repeat",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Repeat"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
           "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
         },
         "resolve": {
