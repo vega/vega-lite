@@ -3,10 +3,40 @@ import {defaultConfig, initConfig} from '../../src/config';
 import * as log from '../../src/log';
 import {LocalLogger} from '../../src/log';
 import {normalize} from '../../src/normalize/index';
+import {TopLevelSpec} from '../../src/spec/index';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
 
 describe('normalize()', () => {
+  describe('normalizeRepeat', () => {
+    it(
+      'should drop columns from facet with row/column',
+      log.wrap((localLogger: LocalLogger) => {
+        const spec: TopLevelSpec = {
+          $schema: 'https://vega.github.io/schema/vega-lite/v3.json',
+          repeat: {column: ['Horsepower', 'Miles_per_Gallon', 'Acceleration', 'Displacement']},
+          columns: 2,
+          spec: {
+            data: {url: 'data/cars.json'},
+            mark: 'bar',
+            encoding: {
+              x: {
+                field: {repeat: 'column'},
+                bin: true,
+                type: 'quantitative'
+              },
+              y: {aggregate: 'count', type: 'quantitative'},
+              color: {field: 'Origin', type: 'nominal'}
+            }
+          }
+        };
+        const normalized = normalize(spec);
+        expect(normalized['columns']).toBeUndefined();
+        expect(localLogger.warns[0]).toEqual(log.message.COLUMNS_NOT_SUPPORTED_BY_REPEAT_ROWCOL);
+      })
+    );
+  });
+
   describe('normalizeFacetedUnit', () => {
     it('should convert single extended spec with column into a composite spec', () => {
       const spec: any = {
