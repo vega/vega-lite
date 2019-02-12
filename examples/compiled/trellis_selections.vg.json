@@ -203,7 +203,7 @@
           "on": [
             {
               "events": [{"signal": "brush_X"}],
-              "update": "brush_X ? {unit: \"child\" + '_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
+              "update": "brush_X ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
             }
           ]
         },
@@ -290,7 +290,7 @@
           "on": [
             {
               "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '_' + (facet[\"Series\"])})"
+              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '__facet_column_' + (facet[\"Series\"])})"
             }
           ]
         },
@@ -327,7 +327,7 @@
           "on": [
             {
               "events": [{"signal": "grid_X"}, {"signal": "grid_Y"}],
-              "update": "grid_X && grid_Y ? {unit: \"child\" + '_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X, grid_Y]} : null"
+              "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X, grid_Y]} : null"
             }
           ]
         },

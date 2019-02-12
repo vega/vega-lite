@@ -139,6 +139,10 @@ const FACET_CHANNEL_INDEX: Flag<keyof FacetMapping<any>> = {
   column: 1
 };
 
+export const FACET_CHANNELS = flagKeys(FACET_CHANNEL_INDEX);
+
+export type FacetChannel = keyof FacetMapping<any>;
+
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
   ...FACET_CHANNEL_INDEX
