@@ -172,7 +172,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ## Suggested Programming Environment.
 
-We use the [Visual Studio Code](https://code.visualstudio.com/) editor with TSLint plugin.
+We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 - VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files (`*.js`, `*.js.map`). This should work automatically if you open the `vega-lite` folder with VSCode.
