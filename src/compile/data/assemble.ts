@@ -15,6 +15,7 @@ import {GeoJSONNode} from './geojson';
 import {GeoPointNode} from './geopoint';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
+import {JoinAggregateTransformNode} from './joinaggregate';
 import {LookupNode} from './lookup';
 import {SampleTransformNode} from './sample';
 import {SourceNode} from './source';
@@ -89,6 +90,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof WindowTransformNode ||
+      node instanceof JoinAggregateTransformNode ||
       node instanceof FoldTransformNode ||
       node instanceof FlattenTransformNode ||
       node instanceof IdentifierNode ||
