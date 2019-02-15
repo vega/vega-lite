@@ -96,7 +96,7 @@ export interface AggregateTransform {
 
 export interface AggregatedFieldDef {
   /**
-   * The aggregation operations to apply to the fields, such as sum, average or count.
+   * The aggregation operation to apply to the fields (e.g., sum, average or count).
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
@@ -155,7 +155,7 @@ export type WindowOnlyOp =
 
 export interface WindowFieldDef {
   /**
-   * The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
+   * The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops).
    */
   op: AggregateOp | WindowOnlyOp;
 
@@ -210,7 +210,7 @@ export interface WindowTransform {
 
 export interface JoinAggregateDef {
   /**
-   * The ggregation operations to apply. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
+   * The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    */
   op: AggregateOp;
 
