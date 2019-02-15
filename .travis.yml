@@ -1,6 +1,9 @@
 dist: trusty
 addons:
   chrome: stable
+  apt:
+    packages:
+      - parallel
 
 language: node_js
 node_js:
@@ -11,13 +14,6 @@ matrix:
   include:
     - node_js: "11" # Update version in check-and-fix.sh as well.
       env: LATEST=true
-
-before_install: |
-  # Minimal installation as described in https://github.com/martinda/gnu-parallel
-  wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
-  chmod +x parallel
-  cp parallel sem
-  sudo mv parallel sem /usr/local/bin
 
 script: |
   set -ex
