@@ -18,13 +18,10 @@
           "expr": "time(datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)) <= time(datetime(2019, 0, 1, 0, 0, 0, 0))"
         },
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["AverageRating"],
           "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
-          "sort": {"field": [], "order": []},
-          "frame": [null, null]
+          "fields": ["IMDB_Rating"]
         },
         {
           "type": "formula",
