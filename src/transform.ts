@@ -215,7 +215,7 @@ export interface JoinAggregateDef {
   op: AggregateOp;
 
   /**
-   * The data field for which to compute the aggregate function. This can be omitted for window functions that do not operate over a field such as `count`.
+   * The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.
    */
   field?: string;
 

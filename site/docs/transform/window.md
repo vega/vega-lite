@@ -119,20 +119,8 @@ These are examples of window transforms that can be simplifies with the join agg
 
 ### Percent of Total
 
+You can use the window transform to compute an aggregate and attach it to all records. In this case, you can use the [join aggregate](joinaggregate.html) instead of the window transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
+
 Here we use the window transform to derive the global sum so that we can calculate percentage.
 
 <div class="vl-example" data-name="window_percent_of_total"></div>
-
-### Difference from Mean
-
-One example is to show the "exemplar" movies from a movie collection. Here "exemplar" is defined by having a score of 2.5 points higher than the global average.
-
-<div class="vl-example" data-name="window_mean_difference"></div>
-
-Another example is to show the "exemplar" movies based on the release year average. Here "exemplar" is defined by having a score 2.5 points higher than the annual average for its release year (instead of the global average).
-
-<div class="vl-example" data-name="window_mean_difference_by_year"></div>
-
-Rather than filtering the above two examples we can also calculate a residual by deriving the mean using the window transform first.
-
-<div class="vl-example" data-name="window_residual_graph"></div>
