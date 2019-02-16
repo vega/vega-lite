@@ -51,14 +51,11 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "window",
-          "params": [null, null],
+          "type": "joinaggregate",
           "as": ["lower_box_people", "upper_box_people"],
           "ops": ["q1", "q3"],
           "fields": ["people", "people"],
-          "sort": {"field": [], "order": []},
-          "groupby": [],
-          "frame": [null, null]
+          "groupby": []
         },
         {
           "type": "filter",

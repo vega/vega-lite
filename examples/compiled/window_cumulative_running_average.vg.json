@@ -19,10 +19,14 @@
           "expr": "datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)"
         },
         {
-          "type": "joinaggregate",
+          "type": "window",
+          "params": [null],
           "as": ["Average_MPG"],
           "ops": ["mean"],
-          "fields": ["Miles_per_Gallon"]
+          "fields": ["Miles_per_Gallon"],
+          "sort": {"field": ["year"], "order": ["ascending"]},
+          "ignorePeers": false,
+          "frame": [null, 0]
         },
         {
           "type": "formula",

@@ -12,10 +12,13 @@
       "format": {"type": "json"},
       "transform": [
         {
-          "type": "joinaggregate",
+          "type": "window",
+          "params": [null],
           "as": ["cumulative_count"],
           "ops": ["count"],
-          "fields": ["count"]
+          "fields": ["count"],
+          "sort": {"field": ["IMDB_Rating"], "order": ["ascending"]},
+          "frame": [null, 0]
         }
       ]
     }

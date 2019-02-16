@@ -33,10 +33,13 @@
         },
         {"type": "filter", "expr": "datum.bin_IMDB_Rating !== null"},
         {
-          "type": "joinaggregate",
+          "type": "window",
+          "params": [null],
           "as": ["cumulative_count"],
           "ops": ["sum"],
-          "fields": ["count"]
+          "fields": ["count"],
+          "sort": {"field": ["bin_IMDB_Rating"], "order": ["ascending"]},
+          "frame": [null, 0]
         }
       ]
     }
