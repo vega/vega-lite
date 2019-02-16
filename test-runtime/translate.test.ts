@@ -60,7 +60,7 @@ for (const bind of [bound, unbound]) {
             1,
             {type, ...binding, encodings: ['y']},
             {
-              x: {aggregate: 'count', field: '*', type: 'quantitative'},
+              x: {aggregate: 'count', type: 'quantitative'},
               y: {bin: true},
               color: {value: 'steelblue', field: null, type: null}
             }
