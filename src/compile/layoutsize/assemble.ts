@@ -6,7 +6,7 @@ import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
-  return [].concat(sizeSignals(model, 'width'), sizeSignals(model, 'height'));
+  return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
 }
 
 export function sizeSignals(model: Model, sizeType: 'width' | 'height'): NewSignal[] {

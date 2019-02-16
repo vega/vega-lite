@@ -131,7 +131,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
     // rename and assign all others as merged
     model.children.forEach(child => {
       if (child.component.projection) {
-        modelProjection.data = modelProjection.data.concat(child.component.projection.data);
+        modelProjection.data.push(...child.component.projection.data);
         child.renameProjection(child.component.projection.get('name'), name);
         child.component.projection.merged = true;
       }

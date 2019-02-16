@@ -171,18 +171,18 @@ export class StackNode extends DataFlowNode {
   }
 
   public addDimensions(fields: string[]) {
-    this._stack.facetby = this._stack.facetby.concat(fields);
+    this._stack.facetby.push(...fields);
   }
 
   public dependentFields() {
-    const out = new Set();
+    const out = new Set<string>();
 
     out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(f => out.add(f));
-    this._stack.facetby.forEach(f => out.add(f));
-    const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => out.add(f)) : out.add(field);
+    this.getGroupbyFields().forEach(out.add);
+    this._stack.facetby.forEach(out.add);
+    const field = this._stack.sort.field as string;
+    isArray(field) ? field.forEach(out.add) : out.add(field);
 
     return out;
   }
@@ -249,7 +249,7 @@ export class StackNode extends DataFlowNode {
     // Stack
     transform.push({
       type: 'stack',
-      groupby: this.getGroupbyFields().concat(facetby),
+      groupby: [...this.getGroupbyFields(), ...facetby],
       field,
       sort,
       as,
