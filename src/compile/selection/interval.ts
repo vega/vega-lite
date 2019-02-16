@@ -158,18 +158,20 @@ const interval: SelectionCompiler = {
           },
           update: update
         }
-      } as any
-    ].concat(marks, {
-      name: name + BRUSH,
-      type: 'rect',
-      clip: true,
-      encode: {
-        enter: {
-          fill: {value: 'transparent'}
-        },
-        update: {...update, ...vgStroke}
+      } as any,
+      ...marks,
+      {
+        name: name + BRUSH,
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {
+            fill: {value: 'transparent'}
+          },
+          update: {...update, ...vgStroke}
+        }
       }
-    });
+    ];
   }
 };
 export default interval;
@@ -189,10 +191,11 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   const coord = `${channel}(unit)`;
 
   const on = events(selCmpt, (def: any[], evt: EventStream) => {
-    return def.concat(
+    return [
+      ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
-    );
+    ];
   });
 
   // React to pan/zooms of continuous scales. Non-continuous scales

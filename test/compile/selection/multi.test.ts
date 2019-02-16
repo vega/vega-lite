@@ -58,7 +58,7 @@ describe('Multi Selection', () => {
     ]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg]));
   });
 
   it('builds unit datasets', () => {
