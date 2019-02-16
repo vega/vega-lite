@@ -1,9 +1,6 @@
 dist: trusty
 addons:
   chrome: stable
-  apt:
-    packages:
-      - parallel
 
 language: node_js
 node_js:
@@ -14,6 +11,13 @@ matrix:
   include:
     - node_js: "11" # Update version in check-and-fix.sh as well.
       env: LATEST=true
+
+before_install: |
+  wget https://ftp.gnu.org/gnu/parallel/parallel-20190122.tar.bz2
+  tar xjf parallel-20190122.tar.bz2
+  cd parallel-20190122
+  ./configure
+  sudo make install
 
 script: |
   set -ex
