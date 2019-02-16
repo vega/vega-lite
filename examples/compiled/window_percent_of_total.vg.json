@@ -21,13 +21,10 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["TotalTime"],
           "ops": ["sum"],
-          "fields": ["Time"],
-          "sort": {"field": [], "order": []},
-          "frame": [null, null]
+          "fields": ["Time"]
         },
         {
           "type": "formula",
