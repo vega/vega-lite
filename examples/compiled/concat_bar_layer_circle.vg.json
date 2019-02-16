@@ -55,7 +55,7 @@
             "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -113,7 +113,7 @@
             "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -126,7 +126,7 @@
           "type": "aggregate",
           "groupby": ["Major_Genre"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

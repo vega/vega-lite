@@ -49,7 +49,7 @@
             "bin_maxbins_5_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

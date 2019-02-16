@@ -31,7 +31,7 @@
             "bin_maxbins_10_IMDB_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -85,7 +85,7 @@
             "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -119,7 +119,7 @@
             "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

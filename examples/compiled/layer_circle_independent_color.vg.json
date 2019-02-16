@@ -50,7 +50,7 @@
             "bin_maxbins_10_Horsepower_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -98,7 +98,7 @@
             "bin_maxbins_10_Horsepower_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

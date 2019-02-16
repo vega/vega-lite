@@ -28,7 +28,7 @@
           "type": "aggregate",
           "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

@@ -35,7 +35,7 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -71,7 +71,7 @@
             "bin_maxbins_10_Acceleration_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

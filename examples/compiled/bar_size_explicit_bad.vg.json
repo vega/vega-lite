@@ -15,7 +15,7 @@
           "type": "aggregate",
           "groupby": ["Name"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
