@@ -21,6 +21,7 @@ before_install: |
   sudo make install
 
 script: |
+  yarn
   set -ex
   yarn data
   if [ $LATEST = true ]; then
