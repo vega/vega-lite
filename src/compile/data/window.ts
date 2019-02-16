@@ -63,7 +63,7 @@ export class WindowTransformNode extends DataFlowNode {
     const frame = this.transform.frame;
     const groupby = this.transform.groupby;
 
-    if (frame && frame[0] === null && frame[1] === 0 && ops.every(o => isAggregateOp(o))) {
+    if (frame && frame[0] === null && frame[1] === null && ops.every(o => isAggregateOp(o))) {
       // when the window does not rely on any particular window ops or frame, switch to a simpler and more efficient joinaggregate
       return {
         type: 'joinaggregate',
