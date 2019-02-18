@@ -94,7 +94,7 @@
     "source-map-support": "^0.5.10",
     "svg2png-many": "^0.0.7",
     "terser": "^3.16.1",
-    "ts-jest": "^23.10.5",
+    "ts-jest": "^24.0.0",
     "ts-json-schema-generator": "^0.40.0",
     "ts-node": "^8.0.2",
     "tslint": "5.12.1",
