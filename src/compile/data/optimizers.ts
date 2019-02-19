@@ -164,6 +164,10 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
     }
     return this.flags;
   }
+
+  public reset(): void {
+    this.fields.clear();
+  }
 }
 
 /**
@@ -337,40 +341,43 @@ export class MergeAggregateNodes extends BottomUpOptimizer {
 }
 
 /**
- * Move bin nodes up through forks but stop at filters.
+ * Merge bin nodes and move bin nodes up through forks but stop at filters and parse.
  */
-export class MoveBinUp extends BottomUpOptimizer {
-  // TODO: rename to MergeBins
+export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
     super();
   }
-
   public run(node: DataFlowNode): OptimizerFlags {
-    // TODO: create a new bin node right before the current (non-bin) node and merge everything that can be merged into it
-    // TODO: notice the signal renaming, we probably want to delete the merge function in bins once this works here
-    // TODO: create a bin node after the parent node and merge all the bins that cannot be moved before the current (non-bin) node into it
-
     const parent = node.parent;
-    // move bin up by merging or swapping
-    if (node instanceof BinNode) {
-      // don't move bin before filters as filters reduce the amount of data and so
-      // it's probably better to leave the filter before the bin node
-      if (parent instanceof SourceNode || parent instanceof FilterNode) {
-        return this.flags;
-      }
+    const moveBinsUp = !(parent instanceof SourceNode || parent instanceof FilterNode || parent instanceof ParseNode);
 
-      if (parent instanceof BinNode) {
-        this.setMutated();
-        parent.merge(node, this.model);
-      } else {
-        // don't swap with nodes that produce something that the parse node depends on
-        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
-          this.setContinue();
-          return this.flags;
+    const promotableBins: BinNode[] = [];
+    const remainingBins: BinNode[] = [];
+
+    for (const child of parent.children) {
+      if (child instanceof BinNode) {
+        if (moveBinsUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
+          promotableBins.push(child);
+        } else {
+          remainingBins.push(child);
         }
-        this.setMutated();
-        node.swapWithParent();
       }
+    }
+
+    if (promotableBins.length > 0) {
+      const promotedBin = promotableBins.pop();
+      for (const bin of promotableBins) {
+        promotedBin.merge(bin, this.model);
+      }
+      this.setMutated();
+      promotedBin.swapWithParent();
+    }
+    if (remainingBins.length > 1) {
+      const remainingBin = remainingBins.pop();
+      for (const bin of remainingBins) {
+        remainingBin.merge(bin, this.model);
+      }
+      this.setMutated();
     }
     this.setContinue();
     return this.flags;

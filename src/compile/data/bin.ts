@@ -131,6 +131,11 @@ export class BinNode extends DataFlowNode {
         this.bins[key] = other.bins[key];
       }
     }
+
+    for (const child of other.children) {
+      other.removeChild(child);
+      child.parent = this;
+    }
     other.remove();
   }
 

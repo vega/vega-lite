@@ -83,9 +83,8 @@ describe('Selection time unit', () => {
         }
       }
     });
-
-    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 
   it('is added before selection filters', () => {
@@ -134,8 +133,7 @@ describe('Selection time unit', () => {
         y: {field: 'price', type: 'quantitative'}
       }
     });
-
-    const data2 = getData(model).filter(d => d.name === 'data_2')[0].transform;
-    expect(data2.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
+    const data1 = getData(model).filter(d => d.name === 'data_1')[0].transform;
+    expect(data1.filter(tx => tx.type === 'formula' && tx.as === 'seconds_date').length).toEqual(1);
   });
 });

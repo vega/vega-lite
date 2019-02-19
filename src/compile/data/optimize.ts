@@ -40,7 +40,9 @@ export function isTrue(x: boolean) {
 function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[], flag: boolean) {
   const flags = nodes.map(node => {
     if (optimizer instanceof BottomUpOptimizer) {
-      return optimizer.optimizeNextFromLeaves(node);
+      const runFlags = optimizer.optimizeNextFromLeaves(node);
+      optimizer.reset();
+      return runFlags;
     } else {
       return optimizer.run(node);
     }
@@ -64,7 +66,7 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) 
 
   mutatedFlag = runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots), mutatedFlag);
 
-  mutatedFlag = runOptimizer(new optimizers.MoveBinUp(model), getLeaves(roots), mutatedFlag);
+  mutatedFlag = runOptimizer(new optimizers.MergeBins(model), getLeaves(roots), mutatedFlag);
 
   mutatedFlag = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots), mutatedFlag);
 

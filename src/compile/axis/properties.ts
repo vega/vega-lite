@@ -185,7 +185,10 @@ export function values(
         return vals;
       }
       const binSignal = model.getName(vgField(fieldDef, {suffix: 'bins'}));
-      return {signal: `sequence(${binSignal}.start, ${binSignal}.stop + ${binSignal}.step, ${binSignal}.step)`};
+      const newBinSignal = model.getSignalName(binSignal);
+      return {
+        signal: `sequence(${newBinSignal}.start, ${newBinSignal}.stop + ${newBinSignal}.step, ${newBinSignal}.step)`
+      };
     } else if (specifiedAxis.tickStep) {
       const scaleName = model.scaleName(channel);
       const step = specifiedAxis.tickStep;
