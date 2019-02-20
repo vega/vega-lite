@@ -21,7 +21,7 @@
   "width": 800,
   "height": 450,
   "transform": [
-    {"joinaggregate": [{"op": "sum", "field": "amount", "as": "sum"}]},
+    {"window": [{"op": "sum", "field": "amount", "as": "sum"}]},
     {"window": [{"op": "lead", "field": "label", "as": "lead"}]},
     {
       "calculate": "datum.lead === null ? datum.label : datum.lead",

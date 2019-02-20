@@ -30,10 +30,12 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "joinaggregate",
+          "type": "window",
+          "params": [null],
           "as": ["sum"],
           "ops": ["sum"],
-          "fields": ["amount"]
+          "fields": ["amount"],
+          "sort": {"field": [], "order": []}
         },
         {
           "type": "window",
