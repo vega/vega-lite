@@ -5,7 +5,7 @@ title: Join Aggregate
 permalink: /docs/joinaggregate.html
 ---
 
-The joinaggregate transform extends the input data objects with aggregate values. Aggregation is performed and the results are then joined with the input data. This transform can be helpful for creating derived values that combine both raw data and aggregate calculations, such as percentages of group totals. This transform is a special case of the [window](window.html) transform where the `frame` is always `[null, null]`.
+The joinaggregate transform extends the input data objects with aggregate values in a new field. Aggregation is performed and the results are then joined with the input data. This transform can be helpful for creating derived values that combine both raw data and aggregate calculations, such as percentages of group totals. This transform is a special case of the [window](window.html) transform where the `frame` is always `[null, null]`. Compared with the regular [aggregate](aggregate.html) transform, joinaggregate preserves the original table structure and augments records with aggregate values rather than summarizing the data in one record for each group.
 
 ## Documentation Overview
 
