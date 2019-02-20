@@ -4,15 +4,11 @@
   "transform": [
     {"filter": "datum.IMDB_Rating != null"},
     {
-      "window": [{
+      "joinaggregate": [{
         "op": "mean",
         "field": "IMDB_Rating",
         "as": "AverageRating"
-      }],
-      "frame": [
-        null,
-        null
-      ]
+      }]
     },
     {"filter": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"}
   ],

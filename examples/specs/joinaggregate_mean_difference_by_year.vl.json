@@ -11,15 +11,14 @@
       {"filter": "datum.IMDB_Rating != null"},
       {"timeUnit": "year", "field": "Release_Date", "as": "year"},
       {
-        "window": [{
-            "op": "mean",
-            "field": "IMDB_Rating",
-            "as": "AverageYearRating"
+        "joinaggregate": [{
+          "op": "mean",
+          "field": "IMDB_Rating",
+          "as": "AverageYearRating"
         }],
         "groupby": [
-            "year"
-        ],
-        "frame": [null, null]
+          "year"
+        ]
       },
       {
         "filter": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"

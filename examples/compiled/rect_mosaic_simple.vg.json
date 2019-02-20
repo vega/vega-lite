@@ -27,14 +27,11 @@
           "offset": "normalize"
         },
         {
-          "type": "window",
-          "params": [null, null],
+          "type": "joinaggregate",
           "as": ["x", "x2"],
           "ops": ["min", "max"],
           "fields": ["stack_count_Origin1", "stack_count_Origin2"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["Origin"],
-          "frame": [null, null]
+          "groupby": ["Origin"]
         },
         {
           "type": "stack",

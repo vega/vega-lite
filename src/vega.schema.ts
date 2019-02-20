@@ -388,6 +388,7 @@ export type VgTransform =
   | VgGeoPointTransform
   | VgGeoJSONTransform
   | VgWindowTransform
+  | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform;
 
@@ -811,4 +812,12 @@ export interface VgWindowTransform {
   ignorePeers?: boolean;
   groupby?: string[];
   sort?: VgComparator;
+}
+
+export interface VgJoinAggregateTransform {
+  type: 'joinaggregate';
+  as?: string[];
+  ops?: AggregateOp[];
+  fields?: string[];
+  groupby?: string[];
 }
