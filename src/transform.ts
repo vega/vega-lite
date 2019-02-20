@@ -208,7 +208,7 @@ export interface WindowTransform {
   sort?: SortField[];
 }
 
-export interface JoinAggregateDef {
+export interface JoinAggregateFieldDef {
   /**
    * The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    */
@@ -229,7 +229,7 @@ export interface JoinAggregateTransform {
   /**
    * The definition of the fields in the join aggregate, and what calculations to use.
    */
-  joinaggregate: JoinAggregateDef[];
+  joinaggregate: JoinAggregateFieldDef[];
 
   /**
    * The data fields for partitioning the data objects into separate groups. If unspecified, all data points will be in a single group.

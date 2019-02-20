@@ -3,7 +3,7 @@ import {vgField} from '../../fielddef';
 import {JoinAggregateTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgJoinAggregateTransform} from '../../vega.schema';
-import {JoinAggregateDef} from './../../transform';
+import {JoinAggregateFieldDef} from './../../transform';
 import {unique} from './../../util';
 import {DataFlowNode} from './dataflow';
 
@@ -39,7 +39,7 @@ export class JoinAggregateTransformNode extends DataFlowNode {
     return new Set(this.transform.joinaggregate.map(this.getDefaultName));
   }
 
-  private getDefaultName(joinAggregateFieldDef: JoinAggregateDef): string {
+  private getDefaultName(joinAggregateFieldDef: JoinAggregateFieldDef): string {
     return joinAggregateFieldDef.as || vgField(joinAggregateFieldDef);
   }
 
