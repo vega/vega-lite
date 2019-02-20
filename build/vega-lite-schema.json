@@ -6087,7 +6087,7 @@
       },
       "type": "object"
     },
-    "JoinAggregateDef": {
+    "JoinAggregateFieldDef": {
       "additionalProperties": false,
       "properties": {
         "as": {
@@ -6122,7 +6122,7 @@
         "joinaggregate": {
           "description": "The definition of the fields in the join aggregate, and what calculations to use.",
           "items": {
-            "$ref": "#/definitions/JoinAggregateDef"
+            "$ref": "#/definitions/JoinAggregateFieldDef"
           },
           "type": "array"
         }
