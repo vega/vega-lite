@@ -36,7 +36,7 @@
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -64,7 +64,7 @@
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -92,7 +92,7 @@
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

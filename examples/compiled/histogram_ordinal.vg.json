@@ -39,7 +39,7 @@
             "bin_maxbins_10_IMDB_Rating_range"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

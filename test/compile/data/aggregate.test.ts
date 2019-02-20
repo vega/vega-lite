@@ -78,7 +78,7 @@ describe('compile/data/summary', () => {
         type: 'aggregate',
         groupby: ['Origin'],
         ops: ['sum', 'count'],
-        fields: ['Acceleration', '*'],
+        fields: ['Acceleration', null],
         as: ['sum_Acceleration', internalField('count')]
       });
     });
@@ -163,7 +163,7 @@ describe('compile/data/summary', () => {
           'bin_maxbins_10_Acceleration_range'
         ],
         ops: ['count'],
-        fields: ['*'],
+        fields: [null],
         as: [internalField('count')]
       });
     });

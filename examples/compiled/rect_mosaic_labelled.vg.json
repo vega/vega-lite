@@ -13,7 +13,7 @@
           "type": "aggregate",
           "groupby": ["Origin", "Cylinders"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["count_*"]
         },
         {

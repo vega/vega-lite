@@ -29,7 +29,7 @@
             "Origin"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

@@ -34,7 +34,7 @@
             "bin_maxbins_10_precipitation_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

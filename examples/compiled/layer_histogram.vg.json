@@ -32,7 +32,7 @@
           "type": "aggregate",
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
@@ -59,7 +59,7 @@
           "type": "aggregate",
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

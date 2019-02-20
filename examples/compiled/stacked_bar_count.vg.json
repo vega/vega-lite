@@ -19,7 +19,7 @@
           "type": "aggregate",
           "groupby": ["month_date", "weather"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         },
         {

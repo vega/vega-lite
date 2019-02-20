@@ -33,7 +33,7 @@
             "Origin"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         },
         {
@@ -79,7 +79,7 @@
             "Origin"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         },
         {
@@ -125,7 +125,7 @@
             "Origin"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         },
         {

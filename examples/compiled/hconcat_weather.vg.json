@@ -69,7 +69,7 @@
             "bin_maxbins_10_temp_max_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]

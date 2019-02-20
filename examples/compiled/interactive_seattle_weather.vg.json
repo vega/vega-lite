@@ -29,7 +29,7 @@
           "type": "aggregate",
           "groupby": ["weather"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["__count"]
         }
       ]
