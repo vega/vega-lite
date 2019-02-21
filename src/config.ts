@@ -52,7 +52,7 @@ export const defaultViewConfig: ViewConfig = {
 
 export type RangeConfigValue = (number | string)[] | SchemeConfig | {step: number};
 
-export type RangeConfig = RangeConfigProps & {[name: string]: RangeConfigValue};
+export type RangeConfig = RangeConfigProps & {[name in keyof RangeConfigProps]: RangeConfigValue};
 
 export interface RangeConfigProps {
   /**

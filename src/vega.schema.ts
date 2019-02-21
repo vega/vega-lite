@@ -172,10 +172,11 @@ export interface VgScale {
   domain: VgDomain;
   domainRaw?: SignalRef;
   range: VgRange<SignalRef>;
-
+  bins?: number[] | SignalRef;
   clamp?: boolean;
   base?: number;
   exponent?: number;
+  constant?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
   nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
@@ -235,13 +236,6 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUni
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
-  }
-  return false;
-}
-
-export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
-  if (!isArray(domain)) {
-    return 'signal' in domain;
   }
   return false;
 }

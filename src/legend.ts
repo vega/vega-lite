@@ -102,6 +102,13 @@ export interface Legend
   tickCount?: number;
 
   /**
+   * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
+   *
+   * __Default value__: `undefined`
+   */
+  tickMinStep?: number;
+
+  /**
    * Explicitly set the visible legend values.
    */
   values?: (number | string | boolean | DateTime)[];
@@ -211,12 +218,12 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
+  labelSeparation: 1,
   offset: 1,
   orient: 1,
   padding: 1,
   rowPadding: 1,
   strokeColor: 1,
-  strokeWidth: 1,
   symbolFillColor: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
@@ -225,6 +232,7 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   symbolStrokeWidth: 1,
   symbolType: 1,
   tickCount: 1,
+  tickMinStep: 1,
   title: 1,
   titleAlign: 1,
   titleBaseline: 1,
@@ -248,6 +256,7 @@ const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   stroke: 1,
   fill: 1,
   size: 1,
+  strokeWidth: 1,
   // encode
   encode: 1
 };

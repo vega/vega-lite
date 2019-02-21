@@ -1,6 +1,7 @@
+import {isBinning} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {ScaleFieldDef, TypedFieldDef} from '../../fielddef';
+import {ScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
@@ -66,6 +67,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
       } else {
         const value = getDefaultValue(
           property,
+          model,
           channel,
           fieldDef,
           mergedScaleCmpt.get('type'),
@@ -86,6 +88,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 // Note: This method is used in Voyager.
 export function getDefaultValue(
   property: keyof Scale,
+  model: Model,
   channel: Channel,
   fieldDef: ScaleFieldDef<string, Type>,
   scaleType: ScaleType,
@@ -99,6 +102,8 @@ export function getDefaultValue(
 
   // If we have default rule-base, determine default value first
   switch (property) {
+    case 'bins':
+      return bins(model, fieldDef);
     case 'interpolate':
       return interpolate(channel, scaleType);
     case 'nice':
@@ -167,6 +172,14 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
     }
     localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
   });
+}
+
+export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
+  if (isBinning(fieldDef.bin)) {
+    // Only set the signal name. We generate the sequence in assemble.
+    return {signal: model.getName(vgField(fieldDef, {suffix: 'bins'}))};
+  }
+  return undefined;
 }
 
 export function interpolate(channel: Channel, scaleType: ScaleType) {

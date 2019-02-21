@@ -285,8 +285,7 @@ function defaultRange(
           return {scheme: 'blues', count};
         }
       } else if (isContinuousToContinuous(scaleType)) {
-        // Manually set colors for now. We will revise this after https://github.com/vega/vega/issues/1369
-        return ['#f7fbff', '#0e427f'];
+        return {...config.range.ramp};
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }

@@ -131,10 +131,6 @@ describe('compile/scale', () => {
     it('should return hcl for continuous color scale', () => {
       expect(rules.interpolate('color', 'linear')).toEqual('hcl');
     });
-
-    it('should return undefined for discrete color scale', () => {
-      expect(rules.interpolate('color', 'sequential')).not.toBeDefined();
-    });
   });
 
   describe('zero', () => {

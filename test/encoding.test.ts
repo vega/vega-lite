@@ -187,7 +187,7 @@ describe('encoding', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         x2: {
@@ -211,7 +211,7 @@ describe('encoding', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         y2: {
@@ -234,7 +234,7 @@ describe('encoding', () => {
           field: 'bin_start',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         x2: {
@@ -257,7 +257,7 @@ describe('encoding', () => {
           field: 'bin_start',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         y2: {

@@ -1,13 +1,13 @@
 import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
-import {binToString, isBinning, isBinParams} from '../../bin';
+import {isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
+import {Domain, hasDiscreteDomain, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
 import {TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
@@ -250,12 +250,6 @@ function parseSingleChannelDomain(
       }
     ];
   } else if (isBinning(fieldDef.bin)) {
-    // bin
-    if (isBinScale(scaleType)) {
-      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-      return [{signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`}];
-    }
-
     if (hasDiscreteDomain(scaleType)) {
       // ordinal bin scale takes domain from bin_range, ordered by bin start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
@@ -278,24 +272,20 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
-      if (channel === 'x' || channel === 'y') {
+      if (isBinning(fieldDef.bin)) {
         if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
           return [fieldDef.bin.extent];
         }
-        // X/Y position have to include start and end for non-ordinal scale
-        const data = model.requestDataName(MAIN);
-        return [
-          {
-            data,
-            field: model.vgField(channel, {})
-          },
-          {
-            data,
-            field: model.vgField(channel, {binSuffix: 'end'})
-          }
-        ];
+        const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+        // TODO: make sure to rename the signals in assemble
+        if (scaleType === 'bin-ordinal') {
+          return [
+            {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`}
+          ];
+        } else {
+          return [{signal: `[${signalName}.start, ${signalName}.stop]`}];
+        }
       } else {
-        // TODO: use bin_mid
         return [
           {
             data: model.requestDataName(MAIN),

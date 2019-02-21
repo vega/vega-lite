@@ -14,6 +14,7 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from './channel';
+import {normalizeBin} from './fielddef';
 import {keys, varName} from './util';
 
 export interface BaseBin {
@@ -81,7 +82,7 @@ export interface BinParams extends BaseBin {
 
 export function binToString(bin: BinParams | boolean) {
   if (isBoolean(bin)) {
-    return 'bin';
+    bin = normalizeBin(bin, undefined);
   }
   return (
     'bin' +

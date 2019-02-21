@@ -164,7 +164,7 @@ function assembleTopLevelModel(
   });
 
   const output: VgSpec = {
-    $schema: 'https://vega.github.io/schema/vega/v4.json',
+    $schema: 'https://vega.github.io/schema/vega/v5.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
     ...(title ? {title} : {}),

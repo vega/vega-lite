@@ -80,11 +80,11 @@ export interface Axis extends BaseAxisNoSignals, Guide {
   tickCount?: number;
 
   /**
-   * A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).
+   * The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
    *
    * __Default value__: `undefined`
    */
-  tickStep?: number;
+  tickMinStep?: number;
 
   /**
    * Explicitly set the visible axis tick values.
@@ -244,6 +244,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
+  labelSeparation: 1,
   labels: 1,
   maxExtent: 1,
   minExtent: 1,
@@ -252,6 +253,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   tickColor: 1,
   tickCount: 1,
   tickExtra: 1,
+  tickMinStep: 1,
   tickOffset: 1,
   tickOpacity: 1,
   tickRound: 1,
@@ -277,9 +279,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
-  encoding: 1,
-  labelAngle: 1,
-  tickStep: 1
+  encoding: 1
 };
 
 const VG_AXIS_PROPERTIES_INDEX: Flag<keyof VgAxis> = {

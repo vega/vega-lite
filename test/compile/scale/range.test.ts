@@ -347,7 +347,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
-            'sequential',
+            'linear',
             QUANTITATIVE,
             {},
             defaultConfig,

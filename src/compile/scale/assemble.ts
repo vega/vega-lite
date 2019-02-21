@@ -2,7 +2,7 @@ import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
 import {globalWholeWordRegExp, keys} from '../../util';
-import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
 import {SignalRefComponent} from '../signal';
@@ -34,9 +34,11 @@ export function assembleScalesForModel(model: Model): VgScale[] {
 
       // need to separate const and non const object destruction
       let {domainRaw} = scale;
-      const {name, type, domainRaw: _d, range: _r, ...otherScaleProps} = scale;
+      const {name, type, domainRaw: _d, range: _r, bins: _b, ...otherScaleProps} = scale;
 
       const range = assembleScaleRange(scale.range, name, model, channel);
+
+      const bins = assembleScaleBins(model, scale.bins);
 
       // As scale parsing occurs before selection parsing, a temporary signal
       // is used for domainRaw. Here, we detect if this temporary signal
@@ -52,6 +54,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domain: assembleDomain(model, channel),
         ...(domainRaw ? {domainRaw} : {}),
         range: range,
+        ...(bins ? {bins} : {}),
         ...otherScaleProps
       });
 
@@ -60,10 +63,14 @@ export function assembleScalesForModel(model: Model): VgScale[] {
     [] as VgScale[]
   );
 }
+
 function assembleExprSignal(scaleRange: SignalRefComponent, model: Model) {
   let signal = scaleRange.expr;
   for (const signalName of scaleRange.signalNames) {
     const newName = model.getSignalName(signalName);
+
+    // TODO: Refactor this so we don't need to rename signals inside expressions but instead assmeble the right expression as we do for the bins property below.
+
     if (newName !== signalName) {
       // replace the signal name
 
@@ -102,4 +109,14 @@ export function assembleScaleRange(
     }
     return scaleRange;
   }
+}
+
+export function assembleScaleBins(model: Model, bins: SignalRef | number[]) {
+  if (bins && isSignalRef(bins)) {
+    // In parse, we only set the signal name but don't write the full expression.
+    const signalName = model.getSignalName(bins.signal);
+    return {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`};
+  }
+
+  return undefined;
 }
