@@ -3,8 +3,10 @@
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
+  MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
+import {SignalRefComponent} from '../../../src/compile/signal';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {Config, defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
@@ -30,7 +32,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
@@ -49,7 +51,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toEqual(makeImplicit([{signal: 'plot_height'}, 0]));
+          ).toEqual(makeImplicit([SignalRefComponent.fromName('plot_height'), 0]));
         }
       });
 
@@ -68,7 +70,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toEqual(makeImplicit([0, {signal: 'plot_height'}]));
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_height')]));
         }
       });
 
@@ -167,7 +169,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
           }
           expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped('x'));
         })
@@ -188,7 +190,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
@@ -207,7 +209,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
@@ -226,7 +228,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
         }
       });
 
@@ -246,7 +248,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(makeImplicit([0, {signal: 'plot_width'}]));
+            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
             expect(localLogger.warns[0]).toEqual(
               log.message.scalePropertyNotWorkWithScaleType(scaleType, 'rangeStep', 'x')
             );
@@ -575,7 +577,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([0, 81]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -594,7 +596,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, 81]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -613,7 +615,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, 81]));
+            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -632,7 +634,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11] // xyRangeSteps only have one value
               )
-            ).toEqual(makeImplicit([0, 81]));
+            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -652,7 +654,9 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(makeImplicit([9, 114, 219, 324]));
+            ).toEqual(
+              makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))', []))
+            );
           });
         });
 
@@ -670,7 +674,9 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([9, 166.5, 324]));
+          ).toEqual(
+            makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))', []))
+          );
         });
       });
     });
@@ -728,7 +734,9 @@ describe('compile/scale', () => {
 
   describe('interpolateRange', () => {
     it('should return the correct interpolation of 1 - 100 with cardinality of 5', () => {
-      expect(interpolateRange(0, 100, 5)).toEqual([0, 25, 50, 75, 100]);
+      expect(interpolateRange(0, 100, 5)).toEqual(
+        new SignalRefComponent('sequence(0, 100 + (100 - 0) / (5 - 1), (100 - 0) / (5 - 1))', [])
+      );
     });
   });
 });

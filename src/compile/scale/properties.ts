@@ -1,6 +1,6 @@
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {FieldDef, ScaleFieldDef} from '../../fielddef';
+import {ScaleFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
@@ -16,6 +16,7 @@ import {
   scaleTypeSupportProperty
 } from '../../scale';
 import {Sort} from '../../sort';
+import {Type} from '../../type';
 import * as util from '../../util';
 import {contains, getFirstDefined, keys} from '../../util';
 import {VgScale} from '../../vega.schema';
@@ -23,7 +24,7 @@ import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
-import {parseScaleRange} from './range';
+import {parseUnitScaleRange} from './range';
 
 export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
   if (isUnitModel(model)) {
@@ -86,7 +87,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 export function getDefaultValue(
   property: keyof Scale,
   channel: Channel,
-  fieldDef: ScaleFieldDef<string>,
+  fieldDef: ScaleFieldDef<string, Type>,
   scaleType: ScaleType,
   scalePadding: number,
   scalePaddingInner: number,
@@ -115,6 +116,15 @@ export function getDefaultValue(
   }
   // Otherwise, use scale config
   return scaleConfig[property];
+}
+
+// This method is here rather than in range.ts to avoid circular dependency.
+export function parseScaleRange(model: Model) {
+  if (isUnitModel(model)) {
+    parseUnitScaleRange(model);
+  } else {
+    parseNonUnitScaleProperty(model, 'range');
+  }
 }
 
 export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
@@ -166,7 +176,7 @@ export function interpolate(channel: Channel, scaleType: ScaleType) {
   return undefined;
 }
 
-export function nice(scaleType: ScaleType, channel: Channel, fieldDef: FieldDef<string>): boolean | NiceTime {
+export function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | NiceTime {
   if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
@@ -177,7 +187,7 @@ export function padding(
   channel: Channel,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   markDef: MarkDef,
   barConfig: BarConfig
 ) {
@@ -265,7 +275,7 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>) {
 
 export function zero(
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   specifiedScale: Domain,
   markDef: MarkDef,
   scaleType: ScaleType

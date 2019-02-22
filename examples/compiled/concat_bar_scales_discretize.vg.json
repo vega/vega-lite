@@ -260,7 +260,9 @@
       "name": "concat_0_size",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 114, 219, 324],
+      "range": {
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+      },
       "zero": false
     },
     {

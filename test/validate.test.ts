@@ -66,7 +66,7 @@ describe('vl.validate', () => {
         getEncodingMappingError({
           mark: LINE,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with line
+            shape: {field: 'b', type: 'nominal'} // using shape with line
           }
         })
       ).not.toBeNull();
@@ -75,7 +75,7 @@ describe('vl.validate', () => {
         getEncodingMappingError({
           mark: AREA,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with area
+            shape: {field: 'b', type: 'nominal'} // using shape with area
           }
         })
       ).not.toBeNull();
@@ -84,7 +84,7 @@ describe('vl.validate', () => {
         getEncodingMappingError({
           mark: BAR,
           encoding: {
-            shape: {field: 'b', type: 'quantitative'} // using shape with bar
+            shape: {field: 'b', type: 'nominal'} // using shape with bar
           }
         })
       ).not.toBeNull();

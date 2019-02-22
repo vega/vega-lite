@@ -1,12 +1,18 @@
-import {Config} from '../config';
 import {Encoding} from '../encoding';
+import {Field} from '../fielddef';
 import * as log from '../log';
 import {MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Flag, keys} from '../util';
 import {Interpolate, Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
-import {ErrorBarCenter, ErrorBarExtent, errorBarParams} from './errorbar';
+import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
+
+export type ErrorBandUnitSpec<
+  EE = {} // extra encoding parameter (for faceted composite unit spec)
+> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
@@ -87,9 +93,11 @@ export interface ErrorBandConfigMixins {
   errorband?: ErrorBandConfig;
 }
 
+export const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normalizeErrorBand);
+
 export function normalizeErrorBand(
   spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>,
-  config: Config
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
   const {
     transform,
@@ -97,7 +105,8 @@ export function normalizeErrorBand(
     continuousAxis,
     encodingWithoutContinuousAxis,
     markDef,
-    outerSpec
+    outerSpec,
+    tooltipEncoding
   } = errorBarParams(spec, ERRORBAND, config);
 
   const makeErrorBandPart = makeCompositeAggregatePartFactory<ErrorBandPartsMixins>(
@@ -136,9 +145,25 @@ export function normalizeErrorBand(
     ...outerSpec,
     transform,
     layer: [
-      ...makeErrorBandPart('band', bandMark, 'lower', 'upper'),
-      ...makeErrorBandPart('borders', bordersMark, 'lower'),
-      ...makeErrorBandPart('borders', bordersMark, 'upper')
+      ...makeErrorBandPart({
+        partName: 'band',
+        mark: bandMark,
+        positionPrefix: 'lower',
+        endPositionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'lower',
+        extraEncoding: tooltipEncoding
+      }),
+      ...makeErrorBandPart({
+        partName: 'borders',
+        mark: bordersMark,
+        positionPrefix: 'upper',
+        extraEncoding: tooltipEncoding
+      })
     ]
   };
 }

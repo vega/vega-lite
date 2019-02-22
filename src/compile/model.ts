@@ -8,13 +8,12 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../fie
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
+import {extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
 import {extractTitleConfig, TitleParams} from '../title';
-import {extractCompositionLayout, GenericCompositionLayout} from '../toplevelprops';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup, VgProjection} from '../vega.schema';
-import {TopLevelFacetSpec} from './../spec';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
@@ -135,7 +134,6 @@ export function isLayerModel(model: Model): model is LayerModel {
 
 export abstract class Model {
   public abstract readonly type: 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
-  public readonly parent: Model;
   public readonly name: string;
 
   public readonly title: TitleParams;
@@ -151,12 +149,8 @@ export abstract class Model {
   /** Name map for projections, which can be renamed by a model's parent. */
   protected projectionNameMap: NameMapInterface;
 
-  /** Name map for size, which can be renamed by a model's parent. */
-  protected layoutSizeNameMap: NameMapInterface;
-
-  public readonly repeater: RepeaterValue;
-
-  public readonly config: Config;
+  /** Name map for signals, which can be renamed by a model's parent. */
+  protected signalNameMap: NameMapInterface;
 
   public readonly component: Component;
 
@@ -164,11 +158,12 @@ export abstract class Model {
 
   constructor(
     spec: BaseSpec,
-    parent: Model,
+    public readonly parent: Model,
     parentGivenName: string,
-    config: Config,
-    repeater: RepeaterValue,
-    resolve: Resolve
+    public readonly config: Config,
+    public readonly repeater: RepeaterValue,
+    resolve: Resolve,
+    public readonly view?: ViewBackground
   ) {
     this.parent = parent;
     this.config = config;
@@ -181,7 +176,7 @@ export abstract class Model {
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
     this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
-    this.layoutSizeNameMap = parent ? parent.layoutSizeNameMap : new NameMap();
+    this.signalNameMap = parent ? parent.signalNameMap : new NameMap();
 
     this.data = spec.data;
 
@@ -238,7 +233,7 @@ export abstract class Model {
     this.parseScale();
 
     this.parseLayoutSize(); // depends on scale
-    this.renameTopLevelLayoutSize();
+    this.renameTopLevelLayoutSizeSignal();
 
     this.parseSelection();
     this.parseProjection();
@@ -267,12 +262,12 @@ export abstract class Model {
    * This essentially merges the top-level spec's width/height signals with the width/height signals
    * to help us reduce redundant signals declaration.
    */
-  private renameTopLevelLayoutSize() {
+  private renameTopLevelLayoutSizeSignal() {
     if (this.getName('width') !== 'width') {
-      this.renameLayoutSize(this.getName('width'), 'width');
+      this.renameSignal(this.getName('width'), 'width');
     }
     if (this.getName('height') !== 'height') {
-      this.renameLayoutSize(this.getName('height'), 'height');
+      this.renameSignal(this.getName('height'), 'height');
     }
   }
 
@@ -291,19 +286,45 @@ export abstract class Model {
 
   public assembleGroupStyle(): string {
     if (this.type === 'unit' || this.type === 'layer') {
-      return 'cell';
+      return (this.view && this.view.style) || 'cell';
     }
     return undefined;
   }
 
-  public assembleLayoutSize(): VgEncodeEntry {
-    if (this.type === 'unit' || this.type === 'layer') {
-      return {
-        width: this.getSizeSignalRef('width'),
-        height: this.getSizeSignalRef('height')
-      };
+  private assembleEncodeFromView(view: ViewBackground): VgEncodeEntry {
+    // Exclude "style"
+    const {style: _, ...baseView} = view;
+
+    const e = {};
+    for (const property in baseView) {
+      if (baseView.hasOwnProperty(property)) {
+        const value = baseView[property];
+        if (value !== undefined) {
+          e[property] = {value};
+        }
+      }
     }
-    return undefined;
+    return e;
+  }
+
+  public assembleGroupEncodeEntry(isTopLevel: boolean): VgEncodeEntry {
+    let encodeEntry: VgEncodeEntry = undefined;
+    if (this.view) {
+      encodeEntry = this.assembleEncodeFromView(this.view);
+    }
+    if (!isTopLevel) {
+      // For top-level spec, we can set the global width and height signal to adjust the group size.
+      // For other child specs, we have to manually set width and height in the encode entry.
+      if (this.type === 'unit' || this.type === 'layer') {
+        return {
+          width: this.getSizeSignalRef('width'),
+          height: this.getSizeSignalRef('height'),
+          ...(encodeEntry || {})
+        };
+      }
+    }
+
+    return encodeEntry;
   }
 
   public assembleLayout(): VgLayout {
@@ -492,7 +513,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.layoutSizeNameMap.get(this.getName(sizeType))
+      signal: this.signalNameMap.get(this.getName(sizeType))
     };
   }
 
@@ -511,12 +532,12 @@ export abstract class Model {
     return node.getSource();
   }
 
-  public getSizeName(oldSizeName: string): string {
-    return this.layoutSizeNameMap.get(oldSizeName);
+  public getSignalName(oldSignalName: string): string {
+    return this.signalNameMap.get(oldSignalName);
   }
 
-  public renameLayoutSize(oldName: string, newName: string) {
-    this.layoutSizeNameMap.rename(oldName, newName);
+  public renameSignal(oldName: string, newName: string) {
+    this.signalNameMap.rename(oldName, newName);
   }
 
   public renameScale(oldName: string, newName: string) {
@@ -625,7 +646,7 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel.  Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: SingleDefChannel): FieldDef<string>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 
   /** Get "field" reference for Vega */
   public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
@@ -643,7 +664,7 @@ export abstract class ModelWithField extends Model {
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T, t?: any) {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef<string>, c: Channel) => {
+      (acc: U, cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           return f(acc, fieldDef, c);
@@ -658,7 +679,7 @@ export abstract class ModelWithField extends Model {
   public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
     forEach(
       this.getMapping(),
-      (cd: ChannelDef<string>, c: Channel) => {
+      (cd: ChannelDef, c: Channel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           f(fieldDef, c);

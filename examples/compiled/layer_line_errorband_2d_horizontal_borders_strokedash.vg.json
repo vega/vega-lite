@@ -41,9 +41,17 @@
         {
           "type": "aggregate",
           "groupby": ["year_Year"],
-          "ops": ["ci0", "ci1"],
-          "fields": ["Miles_per_Gallon", "Miles_per_Gallon"],
-          "as": ["lower_Miles_per_Gallon", "upper_Miles_per_Gallon"]
+          "ops": ["ci0", "ci1", "mean"],
+          "fields": [
+            "Miles_per_Gallon",
+            "Miles_per_Gallon",
+            "Miles_per_Gallon"
+          ],
+          "as": [
+            "lower_Miles_per_Gallon",
+            "upper_Miles_per_Gallon",
+            "center_Miles_per_Gallon"
+          ]
         }
       ]
     }
@@ -61,7 +69,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
+            "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -84,7 +92,7 @@
           "strokeDash": {"value": [6, 4]},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
+            "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -106,7 +114,7 @@
           "strokeDash": {"value": [6, 4]},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Miles per Gallon (95% CIs)\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
+            "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%Y')}"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "upper_Miles_per_Gallon"},

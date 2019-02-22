@@ -53,7 +53,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\")}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\")}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"signal": "height", "mult": 0.5},

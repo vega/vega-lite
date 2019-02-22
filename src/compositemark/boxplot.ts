@@ -1,19 +1,21 @@
 import {isNumber, isObject} from 'vega-util';
-import {Channel} from '../channel';
 import {Config} from '../config';
-import {Encoding, extractTransformsFromEncoding, fieldDefs} from '../encoding';
-import {PositionFieldDef, TextFieldDef} from '../fielddef';
+import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import {PositionFieldDef} from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
-import {AggregatedFieldDef, CalculateTransform} from '../transform';
+import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, getFirstDefined, keys} from '../util';
 import {Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
-  filterUnsupportedChannels,
+  CompositeMarkTooltipSummary,
   GenericCompositeMarkDef,
+  getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
   partLayerMixins,
   PartsMixins
@@ -73,14 +75,12 @@ export interface BoxPlotConfigMixins {
   boxplot?: BoxPlotConfig;
 }
 
-const boxPlotSupportedChannels: Channel[] = ['x', 'y', 'color', 'detail', 'opacity', 'size'];
+export const boxPlotNormalizer = new CompositeMarkNormalizer(BOXPLOT, normalizeBoxPlot);
 
 export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
-  config: Config
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
-  spec = filterUnsupportedChannels(spec, boxPlotSupportedChannels, BOXPLOT);
-
   // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
@@ -100,7 +100,8 @@ export function normalizeBoxPlot(
     continuousAxis,
     groupby,
     encodingWithoutContinuousAxis,
-    tickOrient
+    ticksOrient,
+    tooltipEncoding
   } = boxParams(spec, extent, config);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
@@ -119,7 +120,7 @@ export function normalizeBoxPlot(
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
   const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, ...(size ? {size} : {})});
 
-  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: tickOrient};
+  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient};
 
   const bar: MarkDef = {type: 'bar', ...(sizeValue ? {size: sizeValue} : {})};
 
@@ -127,20 +128,50 @@ export function normalizeBoxPlot(
     type: 'tick',
     ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
     ...(sizeValue ? {size: sizeValue} : {}),
-    orient: tickOrient
+    orient: ticksOrient
   };
-
-  const tooltip: TextFieldDef<string>[] = getTooltip(isMinMax, continuousAxisChannelDef, encodingWithoutContinuousAxis);
-  const tooltipEncoding: Encoding<string> = {tooltip};
 
   // TODO: support hiding certain mark parts
   const boxLayer: NormalizedUnitSpec[] = [
-    ...makeBoxPlotExtent('rule', 'rule', 'lower_whisker', 'lower_box', tooltipEncoding),
-    ...makeBoxPlotExtent('rule', 'rule', 'upper_box', 'upper_whisker', tooltipEncoding),
-    ...makeBoxPlotExtent('ticks', endTick, 'lower_whisker', null, tooltipEncoding),
-    ...makeBoxPlotExtent('ticks', endTick, 'upper_whisker', null, tooltipEncoding),
-    ...makeBoxPlotBox('box', bar, 'lower_box', 'upper_box', tooltipEncoding),
-    ...makeBoxPlotMidTick('median', midTick, 'mid_box', null, tooltipEncoding)
+    ...makeBoxPlotExtent({
+      partName: 'rule',
+      mark: 'rule',
+      positionPrefix: 'lower_whisker',
+      endPositionPrefix: 'lower_box',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'rule',
+      mark: 'rule',
+      positionPrefix: 'upper_box',
+      endPositionPrefix: 'upper_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'ticks',
+      mark: endTick,
+      positionPrefix: 'lower_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotExtent({
+      partName: 'ticks',
+      mark: endTick,
+      positionPrefix: 'upper_whisker',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotBox({
+      partName: 'box',
+      mark: bar,
+      positionPrefix: 'lower_box',
+      endPositionPrefix: 'upper_box',
+      extraEncoding: tooltipEncoding
+    }),
+    ...makeBoxPlotMidTick({
+      partName: 'median',
+      mark: midTick,
+      positionPrefix: 'mid_box',
+      extraEncoding: tooltipEncoding
+    })
   ];
 
   let outliersLayerMixins: NormalizedUnitSpec[] = [];
@@ -196,32 +227,6 @@ export function normalizeBoxPlot(
   };
 }
 
-function getTooltip(
-  isMinMax: boolean,
-  continuousAxisChannelDef: PositionFieldDef<string>,
-  encodingWithoutContinuousAxis: Encoding<string>
-): TextFieldDef<string>[] {
-  const fiveSummaryTooltip: TextFieldDef<string>[] = [
-    {fieldPrefix: 'upper_whisker', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker'},
-    {fieldPrefix: 'upper_box', titlePrefix: 'Q3'},
-    {fieldPrefix: 'mid_box', titlePrefix: 'Median'},
-    {fieldPrefix: 'lower_box', titlePrefix: 'Q1'},
-    {fieldPrefix: 'lower_whisker', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker'}
-  ].map(
-    ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
-      field: fieldPrefix + '_' + continuousAxisChannelDef.field,
-      type: continuousAxisChannelDef.type,
-      title: titlePrefix + ' of ' + continuousAxisChannelDef.field
-    })
-  );
-
-  return [
-    ...fiveSummaryTooltip,
-    // need to cast because TextFieldDef support fewer types of bin
-    ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
-  ];
-}
-
 function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
   return [
     {
@@ -241,7 +246,15 @@ function boxParams(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
   extent: 'min-max' | number,
   config: Config
-) {
+): {
+  transform: Transform[];
+  groupby: string[];
+  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxis: 'x' | 'y';
+  encodingWithoutContinuousAxis: Encoding<string>;
+  ticksOrient: Orient;
+  tooltipEncoding: Encoding<string>;
+} {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
   const continuousFieldName: string = continuousAxisChannelDef.field;
@@ -290,7 +303,20 @@ function boxParams(
     config
   );
 
-  const tickOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+  const ticksOrient: Orient = orient === 'vertical' ? 'horizontal' : 'vertical';
+
+  const tooltipSummary: CompositeMarkTooltipSummary[] = [
+    {fieldPrefix: 'upper_whisker_', titlePrefix: isMinMax ? 'Max' : 'Upper Whisker'},
+    {fieldPrefix: 'upper_box_', titlePrefix: 'Q3'},
+    {fieldPrefix: 'mid_box_', titlePrefix: 'Median'},
+    {fieldPrefix: 'lower_box_', titlePrefix: 'Q1'},
+    {fieldPrefix: 'lower_whisker_', titlePrefix: isMinMax ? 'Min' : 'Lower Whisker'}
+  ];
+  const tooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
+    tooltipSummary,
+    continuousAxisChannelDef,
+    encodingWithoutContinuousAxis
+  );
 
   return {
     transform: [
@@ -306,6 +332,7 @@ function boxParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    tickOrient
+    ticksOrient,
+    tooltipEncoding
   };
 }

@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["median", "q1", "q3"],
-          "fields": ["yield", "yield", "yield"],
-          "as": ["median_yield", "lower_yield", "upper_yield"]
+          "ops": ["median", "median", "q1", "q3"],
+          "fields": ["yield", "yield", "yield", "yield"],
+          "as": ["median_yield", "center_yield", "lower_yield", "upper_yield"]
         }
       ]
     }
@@ -40,7 +40,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

@@ -80,30 +80,30 @@ describe('compile/legend', () => {
   });
 
   describe('clipHeight()', () => {
-    it('should return clip height for continuous domain', () => {
-      const height = properties.clipHeight('linear');
+    it('should return clip height for gradient legend', () => {
+      const height = properties.clipHeight('gradient');
       expect(height).toBe(20);
     });
 
-    it('should simply return for discrete domain', () => {
-      const height = properties.clipHeight('ordinal');
+    it('should simply return for symbol legends', () => {
+      const height = properties.clipHeight('symbol');
       expect(height).toBeUndefined();
     });
   });
 
-  describe('labelOverlap()', () => {
+  describe('defaultLabelOverlap()', () => {
     it('should return undefined for linear', () => {
-      const overlap = properties.labelOverlap('linear');
+      const overlap = properties.defaultLabelOverlap('linear');
       expect(overlap).toBeUndefined();
     });
 
     it('should return greedy for log', () => {
-      const overlap = properties.labelOverlap('log');
+      const overlap = properties.defaultLabelOverlap('log');
       expect(overlap).toEqual('greedy');
     });
 
     it('should return greedy for threshold', () => {
-      const overlap = properties.labelOverlap('threshold');
+      const overlap = properties.defaultLabelOverlap('threshold');
       expect(overlap).toEqual('greedy');
     });
   });

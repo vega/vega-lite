@@ -1,8 +1,9 @@
 import {LogicalOperand} from '../../logical';
-import {expression, Predicate} from '../../predicate';
+import {Predicate} from '../../predicate';
 import {duplicate} from '../../util';
 import {VgFilterTransform} from '../../vega.schema';
 import {Model} from '../model';
+import {expression} from '../predicate';
 import {DataFlowNode} from './dataflow';
 import {getDependentFields} from './expressions';
 

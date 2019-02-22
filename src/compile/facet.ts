@@ -1,14 +1,14 @@
-import {AggregateOp, NewSignal} from 'vega';
+import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
 import {reduce} from '../encoding';
-import {FacetFieldDef, FacetMapping} from '../facet';
-import {FieldDef, FieldRefOption, normalize, title as fieldDefTitle, vgField} from '../fielddef';
+import {FieldRefOption, normalize, title as fieldDefTitle, TypedFieldDef, vgField} from '../fielddef';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
-import {EncodingSortField, isSortField, SortOrder} from '../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
+import {FacetFieldDef, FacetMapping} from '../spec/facet';
 import {contains} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxis} from './axis/assemble';
@@ -61,7 +61,7 @@ export class FacetModel extends ModelWithField {
     // clone to prevent side effect to the original spec
     return reduce(
       facet,
-      (normalizedFacet, fieldDef: FieldDef<string>, channel: Channel) => {
+      (normalizedFacet, fieldDef: TypedFieldDef<string>, channel: Channel) => {
         if (!contains([ROW, COLUMN], channel)) {
           // Drop unsupported channel
           log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -85,7 +85,7 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): FieldDef<string> {
+  public fieldDef(channel: Channel): TypedFieldDef<string> {
     return this.facet[channel];
   }
 
@@ -219,14 +219,22 @@ export class FacetModel extends ModelWithField {
   protected assembleDefaultLayout(): VgLayout {
     const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
 
-    // TODO: determine default align based on shared / independent scales
+    let align: LayoutAlign = 'all';
+
+    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // We always align when we facet into both row and column.
+    if (!this.channelHasField('row') && this.component.resolve.scale.x === 'independent') {
+      align = 'none';
+    } else if (!this.channelHasField('column') && this.component.resolve.scale.y === 'independent') {
+      align = 'none';
+    }
 
     return {
       ...this.getHeaderLayoutMixins(),
 
-      columns,
+      ...(columns ? {columns} : {}),
       bounds: 'full',
-      align: 'all'
+      align
     };
   }
 
@@ -322,7 +330,7 @@ export class FacetModel extends ModelWithField {
         groupby.push(vgField(fieldDef));
         const {sort} = fieldDef;
         if (isSortField(sort)) {
-          const {field, op} = sort;
+          const {field, op = DEFAULT_SORT_OP} = sort;
           const outputName = facetSortFieldName(fieldDef, sort);
           if (row && column) {
             // For crossed facet, use pre-calculate field as it requires a different groupby
@@ -390,12 +398,13 @@ export class FacetModel extends ModelWithField {
 
   public assembleMarks(): VgMarkGroup[] {
     const {child} = this;
-    const facetRoot = this.component.data.facetRoot;
-    const data = assembleFacetData(facetRoot);
 
     // If we facet by two dimensions, we need to add a cross operator to the aggregation
     // so that we create all groups
-    const layoutSizeEncodeEntry = child.assembleLayoutSize();
+    const facetRoot = this.component.data.facetRoot;
+    const data = assembleFacetData(facetRoot);
+
+    const encodeEntry = child.assembleGroupEncodeEntry(false);
 
     const title = child.assembleTitle();
     const style = child.assembleGroupStyle();
@@ -414,7 +423,7 @@ export class FacetModel extends ModelWithField {
         order: [...this.headerSortOrder('row'), ...this.headerSortOrder('column')]
       },
       ...(data.length > 0 ? {data: data} : {}),
-      ...(layoutSizeEncodeEntry ? {encode: {update: layoutSizeEncodeEntry}} : {}),
+      ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
       ...child.assembleGroup(assembleFacetSignals(this, []))
     };
 

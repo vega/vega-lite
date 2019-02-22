@@ -1,4 +1,5 @@
 import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
+import {SignalRefComponent} from '../../../src/compile/signal';
 import {
   parseConcatModel,
   parseFacetModelWithScale,
@@ -126,9 +127,12 @@ describe('compile/scale/assemble', () => {
       });
 
       // mock renaming
-      model.renameLayoutSize('width', 'new_width');
+      model.renameSignal('width', 'new_width');
 
-      expect(assembleScaleRange([0, {signal: 'width'}], 'x', model, 'x')).toEqual([0, {signal: 'new_width'}]);
+      expect(assembleScaleRange([0, SignalRefComponent.fromName('width')], 'x', model, 'x')).toEqual([
+        0,
+        {signal: 'new_width'}
+      ]);
     });
 
     it('updates height signal when renamed.', () => {
@@ -140,9 +144,12 @@ describe('compile/scale/assemble', () => {
       });
 
       // mock renaming
-      model.renameLayoutSize('height', 'new_height');
+      model.renameSignal('height', 'new_height');
 
-      expect(assembleScaleRange([0, {signal: 'height'}], 'x', model, 'x')).toEqual([0, {signal: 'new_height'}]);
+      expect(assembleScaleRange([0, SignalRefComponent.fromName('height')], 'x', model, 'x')).toEqual([
+        0,
+        {signal: 'new_height'}
+      ]);
     });
   });
 });

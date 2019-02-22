@@ -3,7 +3,7 @@ import {X, Y} from '../../channel';
 import {warn} from '../../log';
 import {hasContinuousDomain, isBinScale} from '../../scale';
 import {keys} from '../../util';
-import {VgEventStream} from '../../vega.schema';
+import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {
   assembleInit,
@@ -32,7 +32,7 @@ const interval: SelectionCompiler = {
 
     if (selCmpt.translate && !hasScales) {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
-      events(selCmpt, (_: any[], evt: VgEventStream) => {
+      events(selCmpt, (_: any[], evt: EventStream) => {
         const filters = evt.between[0].filter || (evt.between[0].filter = []);
         if (filters.indexOf(filterExpr) < 0) {
           filters.push(filterExpr);
@@ -159,18 +159,20 @@ const interval: SelectionCompiler = {
           },
           update: update
         }
-      } as any
-    ].concat(marks, {
-      name: name + BRUSH,
-      type: 'rect',
-      clip: true,
-      encode: {
-        enter: {
-          fill: {value: 'transparent'}
-        },
-        update: {...update, ...vgStroke}
+      } as any,
+      ...marks,
+      {
+        name: name + BRUSH,
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {
+            fill: {value: 'transparent'}
+          },
+          update: {...update, ...vgStroke}
+        }
       }
-    });
+    ];
   }
 };
 export default interval;
@@ -190,11 +192,12 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
-  const on = events(selCmpt, (def: any[], evt: VgEventStream) => {
-    return def.concat(
+  const on = events(selCmpt, (def: any[], evt: EventStream) => {
+    return [
+      ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
-    );
+    ];
   });
 
   // React to pan/zooms of continuous scales. Non-continuous scales
@@ -230,7 +233,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
 }
 
 function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {
-  return selCmpt.events.reduce((on: any[], evt: VgEventStream) => {
+  return selCmpt.events.reduce((on: any[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);
       return on;

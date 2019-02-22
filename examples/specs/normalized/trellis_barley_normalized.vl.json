@@ -22,7 +22,7 @@
       "y": {
         "field": "variety",
         "type": "ordinal",
-        "sort": {"field": "yield", "op": "median", "order": "descending"},
+        "sort": {"encoding": "x", "order": "descending"},
         "scale": {"rangeStep": 12}
       },
       "color": {"field": "year", "type": "nominal"}

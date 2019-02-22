@@ -25,6 +25,5 @@ npm-debug.log*
 rollup.config.js
 tsconfig.json
 tslint.json
-wdio.conf.js
 yarn-debug.log*
 yarn-error.log*

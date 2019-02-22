@@ -1,7 +1,10 @@
+import {X2, Y2} from '../src/channel';
 import {defaultConfig} from '../src/config';
-import {extractTransformsFromEncoding, normalizeEncoding} from '../src/encoding';
+import {Encoding, extractTransformsFromEncoding, markChannelCompatible, normalizeEncoding} from '../src/encoding';
 import {isPositionFieldDef} from '../src/fielddef';
 import * as log from '../src/log';
+import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
+import {internalField} from '../src/util';
 
 describe('encoding', () => {
   describe('normalizeEncoding', () => {
@@ -132,12 +135,12 @@ describe('encoding', () => {
       expect(output).toEqual({
         bins: [{bin: {maxbins: 10}, field: 'a', as: 'bin_maxbins_10_a'}],
         timeUnits: [],
-        aggregate: [{op: 'count', as: 'count_*'}],
+        aggregate: [{op: 'count', as: internalField('count')}],
         groupby: ['bin_maxbins_10_a_end', 'bin_maxbins_10_a_range', 'bin_maxbins_10_a'],
         encoding: {
           x: {field: 'bin_maxbins_10_a', type: 'quantitative', title: 'a (binned)', bin: 'binned'},
           x2: {field: 'bin_maxbins_10_a_end', type: 'quantitative'},
-          y: {field: 'count_*', type: 'quantitative', title: 'Count of Records'}
+          y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
         }
       });
     });
@@ -173,6 +176,102 @@ describe('encoding', () => {
           }
         }
       });
+    });
+  });
+
+  describe('markChannelCompatible', () => {
+    it('should support x2 for circle, point, square and tick mark with binned data', () => {
+      const encoding: Encoding<string> = {
+        x: {
+          field: 'bin_start',
+          bin: 'binned',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        x2: {
+          field: 'bin_end'
+        },
+        y: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+      expect(markChannelCompatible(encoding, X2, CIRCLE)).toBe(true);
+      expect(markChannelCompatible(encoding, X2, POINT)).toBe(true);
+      expect(markChannelCompatible(encoding, X2, SQUARE)).toBe(true);
+      expect(markChannelCompatible(encoding, X2, TICK)).toBe(true);
+    });
+
+    it('should support y2 for circle, point, square and tick mark with binned data', () => {
+      const encoding: Encoding<string> = {
+        y: {
+          field: 'bin_start',
+          bin: 'binned',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        y2: {
+          field: 'bin_end'
+        },
+        x: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+      expect(markChannelCompatible(encoding, Y2, CIRCLE)).toBe(true);
+      expect(markChannelCompatible(encoding, Y2, POINT)).toBe(true);
+      expect(markChannelCompatible(encoding, Y2, SQUARE)).toBe(true);
+      expect(markChannelCompatible(encoding, Y2, TICK)).toBe(true);
+    });
+
+    it('should not support x2 for circle, point, square and tick mark without binned data', () => {
+      const encoding: Encoding<string> = {
+        x: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        x2: {
+          field: 'bin_end'
+        },
+        y: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+      expect(markChannelCompatible(encoding, X2, CIRCLE)).toBe(false);
+      expect(markChannelCompatible(encoding, X2, POINT)).toBe(false);
+      expect(markChannelCompatible(encoding, X2, SQUARE)).toBe(false);
+      expect(markChannelCompatible(encoding, X2, TICK)).toBe(false);
+    });
+
+    it('should not support y2 for circle, point, square and tick mark with binned data', () => {
+      const encoding: Encoding<string> = {
+        y: {
+          field: 'bin_start',
+          type: 'quantitative',
+          axis: {
+            tickStep: 2
+          }
+        },
+        y2: {
+          field: 'bin_end'
+        },
+        x: {
+          field: 'count',
+          type: 'quantitative'
+        }
+      };
+      expect(markChannelCompatible(encoding, Y2, CIRCLE)).toBe(false);
+      expect(markChannelCompatible(encoding, Y2, POINT)).toBe(false);
+      expect(markChannelCompatible(encoding, Y2, SQUARE)).toBe(false);
+      expect(markChannelCompatible(encoding, Y2, TICK)).toBe(false);
     });
   });
 });

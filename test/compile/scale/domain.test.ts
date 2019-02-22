@@ -366,6 +366,96 @@ describe('compile/scale', () => {
         ]);
       });
 
+      it('should return the correct domain for month O when specify sort does not have op', () => {
+        const sortDef: EncodingSortField<string> = {field: 'precipitation', order: 'descending'};
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: sortDef
+            },
+            y: {
+              aggregate: 'mean',
+              field: 'precipitation',
+              type: 'quantitative'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {...sortDef, op: 'mean'}
+          }
+        ]);
+      });
+
+      it('should return the correct domain for month O when the field is sorted by another encoding', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: {encoding: 'y'}
+            },
+            y: {
+              aggregate: 'median',
+              field: 'precipitation',
+              type: 'quantitative'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {op: 'median', field: 'precipitation'}
+          }
+        ]);
+      });
+
+      it('should return the correct domain for month O when specify sort does not have op and the plot is stacked', () => {
+        const sortDef: EncodingSortField<string> = {field: 'precipitation', order: 'descending'};
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            x: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'ordinal',
+              sort: sortDef
+            },
+            y: {
+              aggregate: 'sum',
+              field: 'precipitation',
+              type: 'quantitative'
+            },
+            color: {
+              field: 'weather_type',
+              type: 'nominal'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'x');
+
+        expect(_domain).toEqual([
+          {
+            data: 'raw',
+            field: 'month_date',
+            sort: {...sortDef, op: 'sum'}
+          }
+        ]);
+      });
+
       it('should return the right custom domain with DateTime objects', () => {
         const model = parseUnitModel({
           mark: 'point',

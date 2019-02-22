@@ -5,7 +5,7 @@ import {COLUMN, ROW, ScaleChannel} from '../../channel';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {hasDiscreteDomain} from '../../scale';
-import {EncodingSortField, isSortField} from '../../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';
 import {hash} from '../../util';
 import {isVgRangeStep, VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
@@ -145,7 +145,7 @@ export class FacetNode extends DataFlowNode {
 
     const {sortField, sortIndexField} = this[channel];
     if (sortField) {
-      const {op, field} = sortField;
+      const {op = DEFAULT_SORT_OP, field} = sortField;
       fields.push(field);
       ops.push(op);
       as.push(vgField(sortField, {forAs: true}));
@@ -184,9 +184,9 @@ export class FacetNode extends DataFlowNode {
       // Need to create a cross dataset to correctly calculate cardinality
       crossedDataName = `cross_${this.column.name}_${this.row.name}`;
 
-      const fields = [].concat(
-        childIndependentFieldsWithStep.x ? [childIndependentFieldsWithStep.x] : [],
-        childIndependentFieldsWithStep.y ? [childIndependentFieldsWithStep.y] : []
+      const fields: string[] = [].concat(
+        childIndependentFieldsWithStep.x || [],
+        childIndependentFieldsWithStep.y || []
       );
       const ops = fields.map((): AggregateOp => 'distinct');
 

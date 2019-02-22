@@ -1,16 +1,24 @@
 import {assert} from 'chai';
+import {Page} from 'puppeteer';
+import {SelectionType} from '../src/selection';
 import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 
-describe('interval selections at runtime in unit views', () => {
-  const type = 'interval';
-  const hits = hitsMaster.interval;
-  const embed = embedFn(browser);
-  const testRender = testRenderFn(browser, `${type}/unit`);
+declare const page: Page;
 
-  it('should add extents to the store', () => {
+describe('interval selections at runtime in unit views', () => {
+  beforeAll(async () => {
+    await page.goto('http://0.0.0.0:8000/test-runtime/');
+  });
+
+  const type: SelectionType = 'interval';
+  const hits = hitsMaster.interval;
+  const embed = embedFn(page);
+  const testRender = testRenderFn(page, `${type}/unit`);
+
+  it('should add extents to the store', async done => {
     for (let i = 0; i < hits.drag.length; i++) {
-      embed(spec('unit', i, {type}));
-      const store = browser.execute(brush('drag', i)).value;
+      await embed(spec('unit', i, {type}));
+      const store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
@@ -22,14 +30,15 @@ describe('interval selections at runtime in unit views', () => {
       assert.equal(store[0].fields[1].type, 'R');
       assert.lengthOf(store[0].values[0], 2);
       assert.lengthOf(store[0].values[1], 2);
-      testRender(`drag_${i}`);
+      await testRender(`drag_${i}`);
     }
+    done();
   });
 
-  it('should respect projections', () => {
-    embed(spec('unit', 0, {type, encodings: ['x']}));
+  it('should respect projections', async () => {
+    await embed(spec('unit', 0, {type, encodings: ['x']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i)).value;
+      const store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -37,12 +46,12 @@ describe('interval selections at runtime in unit views', () => {
       assert.equal(store[0].fields[0].field, 'a');
       assert.equal(store[0].fields[0].type, 'R');
       assert.lengthOf(store[0].values[0], 2);
-      testRender(`x_${i}`);
+      await testRender(`x_${i}`);
     }
 
-    embed(spec('unit', 1, {type, encodings: ['y']}));
+    await embed(spec('unit', 1, {type, encodings: ['y']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i)).value;
+      const store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -50,48 +59,37 @@ describe('interval selections at runtime in unit views', () => {
       assert.equal(store[0].fields[0].field, 'b');
       assert.equal(store[0].fields[0].type, 'R');
       assert.lengthOf(store[0].values[0], 2);
-      testRender(`y_${i}`);
+      await testRender(`y_${i}`);
     }
   });
 
-  it('should initialize', () => {
-    embed(spec('unit', 0, {type, init: {x: [2, 7], y: [25, 37]}}));
-    const store = browser.execute('return view.data("sel_store")').value;
-    assert.lengthOf(store, 1);
-    assert.lengthOf(store[0].fields, 2);
-    assert.lengthOf(store[0].values, 2);
-    assert.deepEqual(store[0].values[0], [2, 7]);
-    assert.deepEqual(store[0].values[1], [25, 37]);
-    testRender('init');
-  });
-
-  it('should clear out stored extents', () => {
+  it('should clear out stored extents', async () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
-      embed(spec('unit', i, {type}));
-      let store = browser.execute(brush('drag', i)).value;
+      await embed(spec('unit', i, {type}));
+      let store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
 
-      store = browser.execute(brush('drag_clear', i)).value;
+      store = await page.evaluate(brush('drag_clear', i));
       assert.lengthOf(store, 0);
-      testRender(`clear_${i}`);
+      await testRender(`clear_${i}`);
     }
   });
 
-  it('should brush over binned domains', () => {
-    embed(
+  it('should brush over binned domains', async () => {
+    await embed(
       spec(
         'unit',
         1,
         {type, encodings: ['y']},
         {
-          x: {aggregate: 'count', field: '*', type: 'quantitative'},
+          x: {aggregate: 'count', type: 'quantitative'},
           y: {bin: true},
           color: {value: 'steelblue', field: null, type: null}
         }
       )
     );
     for (let i = 0; i < hits.bins.length; i++) {
-      const store = browser.execute(brush('bins', i)).value;
+      const store = await page.evaluate(brush('bins', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 1);
       assert.lengthOf(store[0].values, 1);
@@ -99,14 +97,14 @@ describe('interval selections at runtime in unit views', () => {
       assert.equal(store[0].fields[0].field, 'b');
       assert.equal(store[0].fields[0].type, 'R');
       assert.lengthOf(store[0].values[0], 2);
-      testRender(`bins_${i}`);
+      await testRender(`bins_${i}`);
     }
 
-    const store = browser.execute(brush('bins_clear', 0)).value;
+    const store = await page.evaluate(brush('bins_clear', 0));
     assert.lengthOf(store, 0);
   });
 
-  it('should brush over ordinal/nominal domains', () => {
+  it('should brush over ordinal/nominal domains', async () => {
     const xextents = [[2, 3, 4], [6, 7, 8]];
     const yextents = [
       [48, 49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
@@ -114,8 +112,8 @@ describe('interval selections at runtime in unit views', () => {
     ];
 
     for (let i = 0; i < hits.drag.length; i++) {
-      embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
-      const store = browser.execute(brush('drag', i)).value;
+      await embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
+      const store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
@@ -127,44 +125,44 @@ describe('interval selections at runtime in unit views', () => {
       assert.equal(store[0].fields[1].type, 'E');
       assert.sameMembers(store[0].values[0], xextents[i]);
       assert.sameMembers(store[0].values[1], yextents[i]);
-      testRender(`ord_${i}`);
+      await testRender(`ord_${i}`);
     }
 
-    const store = browser.execute(brush('drag_clear', 0)).value;
+    const store = await page.evaluate(brush('drag_clear', 0));
     assert.lengthOf(store, 0);
   });
 
-  it('should brush over temporal domains', () => {
+  it('should brush over temporal domains', async () => {
     const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
     const toNumber = '[0].values[0].map((d) => +d)';
 
-    embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
+    await embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [[1485969714000, 1493634384000], [1496346498000, 1504364922000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i) + toNumber).value;
+      const store = await page.evaluate(brush('drag', i) + toNumber);
       assert.sameMembers(store, extents[i]);
-      testRender(`temporal_${i}`);
+      await testRender(`temporal_${i}`);
     }
 
-    let cleared = browser.execute(brush('drag_clear', 0)).value;
+    let cleared = await page.evaluate(brush('drag_clear', 0));
     assert.lengthOf(cleared, 0);
 
-    embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
+    await embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
     extents = [[1136190528000, 1136361600000], [1136449728000, 1136535264000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = browser.execute(brush('drag', i) + toNumber).value;
+      const store = await page.evaluate(brush('drag', i) + toNumber);
       assert.sameMembers(store, extents[i]);
-      testRender(`dayTimeUnit_${i}`);
+      await testRender(`dayTimeUnit_${i}`);
     }
 
-    cleared = browser.execute(brush('drag_clear', 0)).value;
+    cleared = await page.evaluate(brush('drag_clear', 0));
     assert.lengthOf(cleared, 0);
   });
 
-  it('should brush over log/pow scales', () => {
+  it('should brush over log/pow scales', async () => {
     for (let i = 0; i < hits.drag.length; i++) {
-      embed(
+      await embed(
         spec(
           'unit',
           i,
@@ -175,13 +173,13 @@ describe('interval selections at runtime in unit views', () => {
           }
         )
       );
-      const store = browser.execute(brush('drag', i)).value;
+      const store = await page.evaluate(brush('drag', i));
       assert.lengthOf(store, 1);
       assert.lengthOf(store[0].fields, 2);
       assert.lengthOf(store[0].values, 2);
       assert.lengthOf(store[0].values[0], 2);
       assert.lengthOf(store[0].values[1], 2);
-      testRender(`logpow_${i}`);
+      await testRender(`logpow_${i}`);
     }
   });
 });

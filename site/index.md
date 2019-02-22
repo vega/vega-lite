@@ -27,7 +27,9 @@ images:
   - spec: interactive_overview_detail
 ---
 
-{:.lead} **Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
+<p class="lead" markdown="1">
+  **Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
+</p>
 
 <span class="lead-columns">
   <span>
@@ -74,9 +76,11 @@ Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uw
 - Award winning [research paper](https://idl.cs.washington.edu/papers/vega-lite) and [video of our OpenVis Conf talk](https://www.youtube.com/watch?v=9uaHRWj04D4) on the design of Vega-Lite
 - Listen to a Data Stories episode about [Declarative Visualization with Vega-Lite and Altair](http://datastori.es/121-declarative-visualization-with-vega-lite-and-altair-with-dominik-moritz-jacob-vanderplas-kanit-ham-wongsuphasawat/)
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v3.json))
-- Ask questions about Vega-Lite in the [Vega Discussion Group / Mailing List](https://bit.ly/vega-discuss) or [Slack](https://bit.ly/join-vega-slack)
+- Ask questions about Vega-Lite on [Stack Overflow](https://stackoverflow.com/tags/vega-lite) or [Slack](https://bit.ly/join-vega-slack)
 - Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
 
 ## Team
 
-The development of Vega-Lite is led by [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw), [Dominik Moritz](https://twitter.com/domoritz), [Arvind Satyanarayan](https://twitter.com/arvindsatya1), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) of the [University Washington Interactive Data Lab](https://idl.cs.washington.edu), with significant help from [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Matthew Chun](http://mattwchun.com/), and [Akshat Shrivastava](https://github.com/AkshatSh). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Apple), [Dominik Moritz](https://twitter.com/domoritz) (UW IDL), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL).
+
+Vega-Lite gets significant contributions from its community. In particular [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Souvik Sen](https://github.com/invokesus), [Chanwut Kittivorawong](https://github.com/chanwutk), [Matthew Chun](http://mattwchun.com/), [Akshat Shrivastava](https://github.com/AkshatSh), [Saba Noorassa](https://github.com/Saba9), and [Sira Horradarn](https://github.com/sirahd). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.

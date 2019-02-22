@@ -1,7 +1,7 @@
 import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, isString, stringValue} from 'vega-util';
-import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
 import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
@@ -15,7 +15,7 @@ import {
   SelectionType
 } from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream} from '../../vega.schema';
+import {EventStream, VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -38,7 +38,7 @@ export interface SelectionComponent {
   name: string;
   type: SelectionType;
   init?: (SelectionInit | SelectionInitArray)[];
-  events: VgEventStream;
+  events: EventStream;
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
@@ -364,11 +364,14 @@ function getFacetModel(model: Model): FacetModel {
 
 export function unitName(model: Model) {
   let name = stringValue(model.name);
-  const facet = getFacetModel(model);
-  if (facet) {
-    name +=
-      (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '') +
-      (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
+  const facetModel = getFacetModel(model);
+  if (facetModel) {
+    const {facet} = facetModel;
+    for (const channel of FACET_CHANNELS) {
+      if (facet[channel]) {
+        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+      }
+    }
   }
   return name;
 }

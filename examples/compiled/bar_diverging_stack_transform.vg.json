@@ -274,14 +274,11 @@
           "offset": "zero"
         },
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["offset"],
           "ops": ["sum"],
           "fields": ["signed_percentage"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["question"],
-          "frame": [null, null]
+          "groupby": ["question"]
         },
         {"type": "formula", "expr": "datum.v1 - datum.offset", "as": "nx"},
         {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"}

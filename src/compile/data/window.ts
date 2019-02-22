@@ -1,8 +1,9 @@
 import {AggregateOp} from 'vega';
+import {isAggregateOp} from '../../aggregate';
 import {vgField} from '../../fielddef';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
-import {VgComparator, VgComparatorOrder, VgWindowTransform} from '../../vega.schema';
+import {VgComparator, VgComparatorOrder, VgJoinAggregateTransform, VgWindowTransform} from '../../vega.schema';
 import {unique} from './../../util';
 import {DataFlowNode} from './dataflow';
 
@@ -47,10 +48,10 @@ export class WindowTransformNode extends DataFlowNode {
     return `WindowTransform ${hash(this.transform)}`;
   }
 
-  public assemble(): VgWindowTransform {
+  public assemble(): VgWindowTransform | VgJoinAggregateTransform {
     const fields: string[] = [];
     const ops: (AggregateOp | WindowOnlyOp)[] = [];
-    const as = [];
+    const as: string[] = [];
     const params = [];
     for (const window of this.transform.window) {
       ops.push(window.op);
@@ -61,6 +62,18 @@ export class WindowTransformNode extends DataFlowNode {
 
     const frame = this.transform.frame;
     const groupby = this.transform.groupby;
+
+    if (frame && frame[0] === null && frame[1] === null && ops.every(o => isAggregateOp(o))) {
+      // when the window does not rely on any particular window ops or frame, switch to a simpler and more efficient joinaggregate
+      return {
+        type: 'joinaggregate',
+        as,
+        ops: ops as AggregateOp[],
+        fields,
+        ...(groupby !== undefined ? {groupby} : {})
+      } as VgJoinAggregateTransform;
+    }
+
     const sortFields: string[] = [];
     const sortOrder: VgComparatorOrder[] = [];
     if (this.transform.sort !== undefined) {
@@ -75,27 +88,16 @@ export class WindowTransformNode extends DataFlowNode {
     };
     const ignorePeers = this.transform.ignorePeers;
 
-    const result: VgWindowTransform = {
+    return {
       type: 'window',
       params,
       as,
       ops,
       fields,
-      sort
-    };
-
-    if (ignorePeers !== undefined) {
-      result.ignorePeers = ignorePeers;
-    }
-
-    if (groupby !== undefined) {
-      result.groupby = groupby;
-    }
-
-    if (frame !== undefined) {
-      result.frame = frame;
-    }
-
-    return result;
+      sort,
+      ...(ignorePeers !== undefined ? {ignorePeers} : {}),
+      ...(groupby !== undefined ? {groupby} : {}),
+      ...(frame !== undefined ? {frame} : {})
+    } as VgWindowTransform;
   }
 }

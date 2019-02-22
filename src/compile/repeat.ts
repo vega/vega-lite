@@ -1,7 +1,7 @@
 import {Config} from '../config';
 import * as log from '../log';
-import {Repeat} from '../repeat';
 import {NormalizedRepeatSpec} from '../spec';
+import {Repeat} from '../spec/repeat';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -40,7 +40,8 @@ export class RepeatModel extends BaseConcatModel {
     // cross product
     for (const rowField of row) {
       for (const columnField of column) {
-        const name = (rowField ? '_' + rowField : '') + (columnField ? '_' + columnField : '');
+        const name =
+          (rowField ? `__repeat_row_${rowField}` : '') + (columnField ? `__repeat_column_${columnField}` : '');
 
         const childRepeat = {
           row: rowField,

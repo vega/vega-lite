@@ -23,7 +23,9 @@ permalink: /docs/area.html
 
 {:.no_toc}
 
-- TOC {:toc}
+<!-- prettier-ignore -->
+- TOC
+{:toc}
 
 {:#properties}
 

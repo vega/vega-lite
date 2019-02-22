@@ -47,7 +47,7 @@
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
-    "align": "all"
+    "align": "none"
   },
   "marks": [
     {

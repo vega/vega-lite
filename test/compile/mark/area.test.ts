@@ -4,6 +4,7 @@ import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
 import {NormalizedUnitSpec} from '../../../src/spec';
+import {internalField} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Area', () => {
@@ -85,7 +86,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for y', () => {
-      expect(props.y).toEqual({scale: Y, field: 'count_*'});
+      expect(props.y).toEqual({scale: Y, field: internalField('count')});
     });
 
     it('should have the correct value for y2', () => {
@@ -102,7 +103,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for y', () => {
-      expect(props.y).toEqual({scale: Y, field: 'count_*'});
+      expect(props.y).toEqual({scale: Y, field: internalField('count')});
     });
 
     it('should have the correct value for y2', () => {
@@ -120,8 +121,8 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for y and y2', () => {
-      expect(props.y).toEqual({scale: 'y', field: 'count_*_end'});
-      expect(props.y2).toEqual({scale: 'y', field: 'count_*_start'});
+      expect(props.y).toEqual({scale: 'y', field: internalField('count_end')});
+      expect(props.y2).toEqual({scale: 'y', field: internalField('count_start')});
     });
 
     it('should have correct orient', () => {
@@ -154,7 +155,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have scale for x', () => {
-      expect(props.x).toEqual({scale: X, field: 'count_*'});
+      expect(props.x).toEqual({scale: X, field: internalField('count')});
     });
 
     it('should have the correct value for x2', () => {
@@ -214,8 +215,8 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should have the correct value for x and x2', () => {
-      expect(props.x).toEqual({scale: 'x', field: 'count_*_end'});
-      expect(props.x2).toEqual({scale: 'x', field: 'count_*_start'});
+      expect(props.x).toEqual({scale: 'x', field: internalField('count_end')});
+      expect(props.x2).toEqual({scale: 'x', field: internalField('count_start')});
     });
 
     it('should have correct orient', () => {

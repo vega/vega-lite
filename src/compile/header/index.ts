@@ -1,10 +1,9 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis, AxisOrient, TitleConfig as VgTitleConfig} from 'vega';
+import {Axis as VgAxis, AxisOrient, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {Config} from '../../config';
-import {FacetFieldDef} from '../../facet';
 import {vgField} from '../../fielddef';
 import {
   HEADER_LABEL_PROPERTIES,
@@ -14,6 +13,7 @@ import {
   HeaderConfig
 } from '../../header';
 import {isSortField} from '../../sort';
+import {FacetFieldDef} from '../../spec/facet';
 import {keys} from '../../util';
 import {VgComparator, VgMarkGroup} from '../../vega.schema';
 import {formatSignalRef} from '../common';
@@ -217,7 +217,7 @@ export function getHeaderProperties(
   config: Config,
   facetFieldDef: FacetFieldDef<string>,
   properties: (keyof HeaderConfig)[],
-  propertiesMap: {[k in keyof HeaderConfig]: keyof VgTitleConfig}
+  propertiesMap: {[k in keyof HeaderConfig]: keyof TitleConfig}
 ) {
   const props = {};
   for (const prop of properties) {

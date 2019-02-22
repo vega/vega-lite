@@ -28,8 +28,8 @@
           "type": "aggregate",
           "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -44,17 +44,17 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_IMDB_Rating\"] === null || isNaN(datum[\"bin_IMDB_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": format(datum[\"bin_IMDB_Rating\"], \"\"), \"bin_IMDB_Rating_end\": format(datum[\"bin_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
           "x": {"scale": "x", "field": "bin_IMDB_Rating_end", "offset": 0},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -74,7 +74,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

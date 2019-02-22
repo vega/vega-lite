@@ -19,7 +19,19 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
 
-{:.small-table} | a | b | |---|---| | C | 2 | | C | 7 | | C | 4 | | D | 1 | | D | 2 | | D | 6 | | E | 8 | | E | 4 | | E | 7 |
+{:.small-table}
+
+| a   | b   |
+| --- | --- |
+| C   | 2   |
+| C   | 7   |
+| C   | 4   |
+| D   | 1   |
+| D   | 2   |
+| D   | 6   |
+| E   | 8   |
+| E   | 4   |
+| E   | 7   |
 
 We can represent this data as a [JSON array](http://www.json.org/) in which each row is an object in the array.
 
@@ -126,7 +138,7 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
 
 <!-- TODO need to find a way to talk about conciseness here somehow. -->
 
-Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `Average of b`, we can set the title property of the axis in the `x` channel.
+Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `Average of b` to `Mean of b`, we can set the title property of the axis in the `x` channel.
 
 <div class="vl-example" data-name="bar_swap_custom"></div>
 

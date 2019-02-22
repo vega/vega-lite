@@ -1,13 +1,14 @@
-import {isString} from 'vega-util';
+import {AggregateOp} from 'vega';
+import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
 import {binToString, isBinning, isBinParams} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
-import {FieldDef, ScaleFieldDef, valueExpr, vgField} from '../../fielddef';
+import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {EncodingSortField, isSortArray, isSortField} from '../../sort';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
 import {TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
@@ -22,7 +23,6 @@ import {
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
-import {binRequiresRange} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
 import {isFacetModel, isUnitModel, Model} from '../model';
@@ -130,7 +130,7 @@ function parseNonUnitScaleDomain(model: Model) {
  */
 function normalizeUnaggregatedDomain(
   domain: Domain,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig
 ) {
@@ -232,7 +232,9 @@ function parseSingleChannelDomain(
     ];
   }
 
-  const sort = isScaleChannel(channel) ? domainSort(model, channel, scaleType) : undefined;
+  const sort: undefined | true | VgSortField = isScaleChannel(channel)
+    ? domainSort(model, channel, scaleType)
+    : undefined;
 
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
@@ -266,7 +268,7 @@ function parseSingleChannelDomain(
           field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
           // we have to use a sort object if sort = true to make the sort correct by bin start
           sort:
-            sort === true || !isSortField(sort)
+            sort === true || !isObject(sort)
               ? {
                   field: model.vgField(channel, {}),
                   op: 'min' // min or max doesn't matter since we sort by the start of the bin range
@@ -322,16 +324,29 @@ function parseSingleChannelDomain(
   }
 }
 
+function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean) {
+  const {op, field, order} = sort;
+  return {
+    // Apply default op
+    op: op || (isStacked ? 'sum' : DEFAULT_SORT_OP),
+    // flatten nested fields
+    ...(field ? {field: util.replacePathInField(field)} : {}),
+
+    ...(order ? {order} : {})
+  };
+}
+
 export function domainSort(
   model: UnitModel,
   channel: ScaleChannel,
   scaleType: ScaleType
-): true | EncodingSortField<string> {
+): undefined | true | VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
 
-  const fieldDef: ScaleFieldDef<string> = model.fieldDef(channel);
+  // save to cast as the only exception is the geojson type for shape, which would not generate a scale
+  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
   const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
@@ -343,24 +358,26 @@ export function domainSort(
     };
   }
 
+  const isStacked = model.stack !== null;
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    // flatten nested fields
-    return {
-      ...sort,
-      ...(sort.field ? {field: util.replacePathInField(sort.field)} : {})
+    return normalizeSortField(sort, isStacked);
+  } else if (isSortByEncoding(sort)) {
+    const {encoding, order} = sort;
+    const {aggregate, field} = model.fieldDef(encoding);
+    const sortField: EncodingSortField<string> = {
+      op: aggregate as AggregateOp, // Once we decouple aggregate from aggregate op we won't have to cast here
+      field,
+      order
     };
-  }
-
-  if (sort === 'descending') {
+    return normalizeSortField(sortField, isStacked);
+  } else if (sort === 'descending') {
     return {
       op: 'min',
       field: model.vgField(channel),
       order: 'descending'
     };
-  }
-
-  if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
+  } else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
     return true;
   }
 
@@ -376,7 +393,7 @@ export function domainSort(
  * 3. The scale is quantitative or time scale.
  */
 export function canUseUnaggregatedDomain(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
   if (!fieldDef.aggregate) {

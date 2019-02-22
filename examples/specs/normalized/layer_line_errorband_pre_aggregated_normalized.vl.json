@@ -12,8 +12,8 @@
     {
       "transform": [
         {"timeUnit": "year", "field": "Year", "as": "year_Year"},
-        {"calculate": "datum.ci1", "as": "lower_ci1"},
-        {"calculate": "datum.ci0", "as": "upper_ci1"}
+        {"calculate": "datum.ci0", "as": "upper_ci1"},
+        {"calculate": "datum.ci1", "as": "lower_ci1"}
       ],
       "layer": [
         {
@@ -31,7 +31,17 @@
               "type": "temporal",
               "field": "year_Year",
               "axis": {"format": "%Y"}
-            }
+            },
+            "tooltip": [
+              {"field": "upper_ci1", "type": "quantitative", "title": "ci0"},
+              {"field": "lower_ci1", "type": "quantitative", "title": "ci1"},
+              {
+                "title": "Year (year)",
+                "type": "temporal",
+                "field": "year_Year",
+                "axis": {"format": "%Y"}
+              }
+            ]
           }
         }
       ]

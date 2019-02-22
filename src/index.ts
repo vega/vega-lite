@@ -1,21 +1,18 @@
+import pkg from '../package.json';
 import * as aggregate from './aggregate';
 import * as axis from './axis';
 import * as bin from './bin';
 import * as channel from './channel';
 import * as compositeMark from './compositemark';
-export {TopLevelSpec} from './spec';
-export {compile} from './compile/compile';
-export {Config} from './config';
-export {extractTransforms} from './transformextract';
 import * as config from './config';
 import * as data from './data';
 import * as datetime from './datetime';
 import * as encoding from './encoding';
-import * as facet from './facet';
 import * as fieldDef from './fielddef';
 import * as header from './header';
 import * as legend from './legend';
 import * as mark from './mark';
+import {normalize} from './normalize';
 import * as scale from './scale';
 import * as sort from './sort';
 import * as spec from './spec';
@@ -25,10 +22,10 @@ import * as transform from './transform';
 import * as type from './type';
 import * as util from './util';
 import * as validate from './validate';
-
-import pkg from '../package.json';
-const version = pkg.version;
-
+export {compile} from './compile/compile';
+export {Config} from './config';
+export {TopLevelSpec} from './spec';
+export {extractTransforms} from './transformextract';
 export {
   aggregate,
   axis,
@@ -39,11 +36,11 @@ export {
   data,
   datetime,
   encoding,
-  facet,
   fieldDef,
   header,
   legend,
   mark,
+  normalize,
   scale,
   sort,
   spec,
@@ -55,3 +52,5 @@ export {
   validate,
   version
 };
+
+const version = pkg.version;

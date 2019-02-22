@@ -25,17 +25,17 @@ All view specifications in Vega-Lite can contain the following properties:
 
 {% include table.html props="name,description,title,data,transform" source="TopLevelFacetedUnitSpec" %}
 
-## Top-Level Specifications
+{:#top-level}
 
-{:top-level-spec}
+## Top-Level Specifications
 
 In addition to the [common properties](#common), any kind of top-level specifications (including a standalone single view specification as well as layered and multi-view specifications) can contain the following properties:
 
 {% include table.html props="$schema,background,padding,autosize,config" source="TopLevelFacetedUnitSpec" %}
 
-## Single View Specifications
-
 {:#single}
+
+## Single View Specifications
 
 {: .suppress-error}
 
@@ -78,7 +78,21 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
 
-{% include table.html props="width,height,selection,projection,mark,encoding" source="TopLevelFacetedUnitSpec" %}
+{% include table.html props="mark,encoding,width,height,view,selection,projection" source="TopLevelFacetedUnitSpec" %}
+
+{:#view-background}
+
+### View Background
+
+The `background` property of a _top-level_ view specification defines the background of the whole visualization canvas. Meanwhile, the `view` property of a single-view or [layer](layer.html) specification can define the background of the view with the following properties:
+
+{% include table.html props="style,cornerRadius,fill,fillOpacity,opacity,stroke,strokeCap,strokeDash,strokeDashOffset,strokeJoin,strokeMiterLimit,strokeOpacity,strokeWidth" source="ViewBackground" %}
+
+#### Example: Background
+
+For example, the following plot has orange as the whole visualization background color while setting the view background to yellow.
+
+<span class="vl-example" data-name="point_background"></span>
 
 ## Layered and Multi-view Specifications
 
@@ -99,23 +113,27 @@ To create layered and multi-view graphics, please refer to the following pages:
 // Top-level View Specification
 {
   ...,
-  "config": {          // Configuration Object
-    "view": { ... },   // - View Configuration
+  "config": { // Configuration Object
+
+    "view": { // - View Configuration
+
+      // View Size
+      "width": ...,
+      "height": ...,
+      // View Background Properties
+      "fill": ...,
+      "stroke": ...,
+      ...
+    },
     ...
   }
 }
 ```
 
-The style of a single view visualization can be customized by specifying the `view` property of the `config` object.
+The style of a single view visualization can be customized by specifying the `view` property of the `config` object. The view config support all [view background properties](#view-background) except `"style"`.
 
-### Default View Size
-
-The `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
+In addition, the `width` and `height` properties of the `view` configuration determine the width of a single view with a continuous x-scale and the height of a single view with a continuous y-scale respectively.
 
 {% include table.html props="width,height" source="ViewConfig" %}
 
 **For more information about view size, please see the [size](size.html) documentation.**
-
-### View Styles
-
-{% include table.html props="clip,fill,fillOpacity,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="ViewConfig" %}

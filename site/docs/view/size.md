@@ -55,7 +55,7 @@ For example, the following plot use `21` as a default height.
 
 ### Autosize
 
-The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level-specifications). Please note the [limitations below](#limitations).
+The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level). Please note the [limitations below](#limitations).
 
 The autosize property can be a string or an object with the following properties:
 

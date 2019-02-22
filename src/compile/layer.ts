@@ -30,7 +30,7 @@ export class LayerModel extends Model {
     config: Config,
     fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, spec.resolve);
+    super(spec, parent, parentGivenName, config, repeater, spec.resolve, spec.view);
 
     const layoutSize = {
       ...parentGivenSize,

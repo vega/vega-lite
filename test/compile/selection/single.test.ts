@@ -106,7 +106,7 @@ describe('Single Selection', () => {
     ]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg, threeSg, fourSg)));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg]));
   });
 
   it('builds modify signals', () => {
