@@ -6,13 +6,14 @@ import {
   MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
-import {SignalRefComponent} from '../../../src/compile/signal';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {Config, defaultConfig} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
 import {CONTINUOUS_TO_CONTINUOUS_SCALES, DISCRETE_DOMAIN_SCALES, ScaleType} from '../../../src/scale';
 import {NOMINAL, ORDINAL, QUANTITATIVE} from '../../../src/type';
+
+const identity = (x: string) => x;
 
 describe('compile/scale', () => {
   describe('parseRange()', () => {
@@ -22,6 +23,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               QUANTITATIVE,
               {},
@@ -32,7 +34,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -41,6 +43,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'y',
+              identity,
               scaleType,
               QUANTITATIVE,
               {},
@@ -51,7 +54,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toEqual(makeImplicit([SignalRefComponent.fromName('plot_height'), 0]));
+          ).toMatchObject(makeImplicit([{signal: 'plot_height'}, 0]));
         }
       });
 
@@ -60,6 +63,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'y',
+              identity,
               scaleType,
               QUANTITATIVE,
               {},
@@ -70,7 +74,7 @@ describe('compile/scale', () => {
               'plot_height',
               []
             )
-          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_height')]));
+          ).toMatchObject(makeImplicit([0, {signal: 'plot_height'}]));
         }
       });
 
@@ -80,6 +84,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               'linear',
               QUANTITATIVE,
               {range: [0, 100]},
@@ -100,6 +105,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {},
@@ -110,7 +116,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit({step: 20}));
+          ).toEqual(expect.objectContaining(makeImplicit({step: 20})));
         }
       });
 
@@ -119,6 +125,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {},
@@ -129,7 +136,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit({step: 55}));
+          ).toMatchObject(makeImplicit({step: 55}));
         }
       });
 
@@ -138,6 +145,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {rangeStep: 23},
@@ -159,6 +167,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'x',
+                identity,
                 scaleType,
                 NOMINAL,
                 {rangeStep: 23},
@@ -169,7 +178,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+            ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
           }
           expect(localLogger.warns[0]).toEqual(log.message.rangeStepDropped('x'));
         })
@@ -180,6 +189,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {rangeStep: null},
@@ -190,7 +200,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -199,6 +209,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {},
@@ -209,7 +220,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -218,6 +229,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'x',
+              identity,
               scaleType,
               NOMINAL,
               {},
@@ -228,7 +240,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+          ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
         }
       });
 
@@ -238,6 +250,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'x',
+                identity,
                 scaleType,
                 QUANTITATIVE,
                 {rangeStep: 23},
@@ -248,7 +261,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(makeImplicit([0, SignalRefComponent.fromName('plot_width')]));
+            ).toMatchObject(makeImplicit([0, {signal: 'plot_width'}]));
             expect(localLogger.warns[0]).toEqual(
               log.message.scalePropertyNotWorkWithScaleType(scaleType, 'rangeStep', 'x')
             );
@@ -262,6 +275,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             NOMINAL,
             {scheme: 'warm'},
@@ -279,6 +293,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             NOMINAL,
             {scheme: {name: 'warm', extent: [0.2, 1]}},
@@ -296,6 +311,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             NOMINAL,
             {range: ['red', 'green', 'blue']},
@@ -313,6 +329,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             NOMINAL,
             {},
@@ -323,13 +340,14 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit('category'));
+        ).toMatchObject(makeImplicit('category'));
       });
 
       it('should use default ordinal range in Vega for an ordinal color field.', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             ORDINAL,
             {},
@@ -340,13 +358,14 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit('ordinal'));
+        ).toMatchObject(makeImplicit('ordinal'));
       });
 
       it('should use default ramp range in Vega for a temporal/quantitative color field.', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'linear',
             QUANTITATIVE,
             {},
@@ -357,13 +376,14 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit('ramp'));
+        ).toMatchObject(makeImplicit('ramp'));
       });
 
       it('should use the specified scheme with count for a quantitative color field.', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'ordinal',
             QUANTITATIVE,
             {scheme: {name: 'viridis', count: 3}},
@@ -383,6 +403,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'color',
+              identity,
               discretizingScale,
               QUANTITATIVE,
               {},
@@ -393,7 +414,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit({scheme: 'blues', count: 4}));
+          ).toMatchObject(makeImplicit({scheme: 'blues', count: 4}));
         });
       });
 
@@ -401,6 +422,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'threshold',
             QUANTITATIVE,
             {},
@@ -411,13 +433,14 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit({scheme: 'blues', count: 3}));
+        ).toMatchObject(makeImplicit({scheme: 'blues', count: 3}));
       });
 
       it('should use default color range for log scale', () => {
         expect(
           parseRangeForChannel(
             'color',
+            identity,
             'log',
             QUANTITATIVE,
             {},
@@ -428,7 +451,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit(['#f7fbff', '#0e427f']));
+        ).toMatchObject(makeImplicit(['#f7fbff', '#0e427f']));
       });
     });
 
@@ -437,6 +460,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'opacity',
+            identity,
             'linear',
             QUANTITATIVE,
             {},
@@ -447,7 +471,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
+        ).toMatchObject(makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]));
       });
     });
 
@@ -458,14 +482,27 @@ describe('compile/scale', () => {
             scale: {minBandSize: 2, maxBandSize: 9}
           };
           expect(
-            parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, 'bar', false, 'plot_width', [])
-          ).toEqual(makeImplicit([2, 9]));
+            parseRangeForChannel(
+              'size',
+              identity,
+              'linear',
+              QUANTITATIVE,
+              {},
+              config,
+              undefined,
+              'bar',
+              false,
+              'plot_width',
+              []
+            )
+          ).toMatchObject(makeImplicit([2, 9]));
         });
 
         it('should return [continuousBandSize, xRangeStep-1] by default since min/maxSize config are not specified', () => {
           expect(
             parseRangeForChannel(
               'size',
+              identity,
               'linear',
               QUANTITATIVE,
               {},
@@ -476,7 +513,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
+          ).toMatchObject(makeImplicit([2, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
@@ -486,14 +523,27 @@ describe('compile/scale', () => {
             scale: {minBandSize: 4, maxBandSize: 9}
           };
           expect(
-            parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, 'tick', false, 'plot_width', [])
-          ).toEqual(makeImplicit([4, 9]));
+            parseRangeForChannel(
+              'size',
+              identity,
+              'linear',
+              QUANTITATIVE,
+              {},
+              config,
+              undefined,
+              'tick',
+              false,
+              'plot_width',
+              []
+            )
+          ).toMatchObject(makeImplicit([4, 9]));
         });
 
         it('should return [(default)minBandSize, rangeStep-1] by default since maxSize config is not specified', () => {
           expect(
             parseRangeForChannel(
               'size',
+              identity,
               'linear',
               QUANTITATIVE,
               {},
@@ -504,7 +554,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
+          ).toMatchObject(makeImplicit([defaultConfig.scale.minBandSize, defaultConfig.scale.rangeStep - 1]));
         });
       });
 
@@ -513,6 +563,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'size',
+              identity,
               'linear',
               QUANTITATIVE,
               {},
@@ -523,7 +574,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
+          ).toMatchObject(makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]));
         });
       });
 
@@ -532,6 +583,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'size',
+              identity,
               'linear',
               QUANTITATIVE,
               {},
@@ -542,7 +594,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
+          ).toMatchObject(makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]));
         });
       });
 
@@ -557,8 +609,20 @@ describe('compile/scale', () => {
             };
 
             expect(
-              parseRangeForChannel('size', 'linear', QUANTITATIVE, {}, config, undefined, m, false, 'plot_width', [])
-            ).toEqual(makeImplicit([5, 25]));
+              parseRangeForChannel(
+                'size',
+                identity,
+                'linear',
+                QUANTITATIVE,
+                {},
+                config,
+                undefined,
+                m,
+                false,
+                'plot_width',
+                []
+              )
+            ).toMatchObject(makeImplicit([5, 25]));
           }
         });
 
@@ -567,6 +631,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'size',
+                identity,
                 'linear',
                 QUANTITATIVE,
                 {},
@@ -577,7 +642,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toMatchObject(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -586,6 +651,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'size',
+                identity,
                 'linear',
                 QUANTITATIVE,
                 {},
@@ -596,7 +662,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toMatchObject(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -605,6 +671,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'size',
+                identity,
                 'linear',
                 QUANTITATIVE,
                 {},
@@ -615,7 +682,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11, 13] // xyRangeSteps
               )
-            ).toEqual(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toMatchObject(makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -624,6 +691,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'size',
+                identity,
                 'linear',
                 QUANTITATIVE,
                 {},
@@ -634,7 +702,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 [11] // xyRangeSteps only have one value
               )
-            ).toEqual(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
+            ).toMatchObject(makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11]));
           }
         });
 
@@ -644,6 +712,7 @@ describe('compile/scale', () => {
             expect(
               parseRangeForChannel(
                 'size',
+                identity,
                 discretizingScale,
                 QUANTITATIVE,
                 {},
@@ -654,9 +723,7 @@ describe('compile/scale', () => {
                 'plot_width',
                 []
               )
-            ).toEqual(
-              makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))', []))
-            );
+            ).toMatchObject(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))'}));
           });
         });
 
@@ -664,6 +731,7 @@ describe('compile/scale', () => {
           expect(
             parseRangeForChannel(
               'size',
+              identity,
               'threshold',
               QUANTITATIVE,
               {},
@@ -674,9 +742,7 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toEqual(
-            makeImplicit(new SignalRefComponent('sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))', []))
-          );
+          ).toMatchObject(makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'}));
         });
       });
     });
@@ -686,6 +752,7 @@ describe('compile/scale', () => {
         expect(
           parseRangeForChannel(
             'shape',
+            identity,
             'ordinal',
             QUANTITATIVE,
             {},
@@ -696,7 +763,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toEqual(makeImplicit('symbol'));
+        ).toMatchObject(makeImplicit('symbol'));
       });
     });
   });
@@ -734,9 +801,7 @@ describe('compile/scale', () => {
 
   describe('interpolateRange', () => {
     it('should return the correct interpolation of 1 - 100 with cardinality of 5', () => {
-      expect(interpolateRange(0, 100, 5)).toEqual(
-        new SignalRefComponent('sequence(0, 100 + (100 - 0) / (5 - 1), (100 - 0) / (5 - 1))', [])
-      );
+      expect(interpolateRange(0, 100, 5).signal).toBe('sequence(0, 100 + (100 - 0) / (5 - 1), (100 - 0) / (5 - 1))');
     });
   });
 });

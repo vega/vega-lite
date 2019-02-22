@@ -1,11 +1,10 @@
 import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
-import {SignalRefComponent} from '../../../src/compile/signal';
+import {SignalRefWrapper} from '../../../src/compile/signal';
 import {
   parseConcatModel,
   parseFacetModelWithScale,
   parseLayerModel,
   parseRepeatModel,
-  parseUnitModel,
   parseUnitModelWithScale
 } from '../../util';
 
@@ -108,14 +107,7 @@ describe('compile/scale/assemble', () => {
 
   describe('assembleScaleRange', () => {
     it('replaces a range step constant with a signal', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'x', type: 'nominal'}
-        }
-      });
-
-      expect(assembleScaleRange({step: 21}, 'x', model, 'x')).toEqual({step: {signal: 'x_step'}});
+      expect(assembleScaleRange({step: 21}, 'x', 'x')).toEqual({step: {signal: 'x_step'}});
     });
 
     it('updates width signal when renamed.', () => {
@@ -129,10 +121,9 @@ describe('compile/scale/assemble', () => {
       // mock renaming
       model.renameSignal('width', 'new_width');
 
-      expect(assembleScaleRange([0, SignalRefComponent.fromName('width')], 'x', model, 'x')).toEqual([
-        0,
-        {signal: 'new_width'}
-      ]);
+      expect(
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x')
+      ).toMatchObject([0, {signal: 'new_width'}]);
     });
 
     it('updates height signal when renamed.', () => {
@@ -146,10 +137,9 @@ describe('compile/scale/assemble', () => {
       // mock renaming
       model.renameSignal('height', 'new_height');
 
-      expect(assembleScaleRange([0, SignalRefComponent.fromName('height')], 'x', model, 'x')).toEqual([
-        0,
-        {signal: 'new_height'}
-      ]);
+      expect(
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x')
+      ).toMatchObject([0, {signal: 'new_height'}]);
     });
   });
 });

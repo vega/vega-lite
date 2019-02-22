@@ -1,11 +1,10 @@
-import {SignalRef} from 'vega';
-import {isArray} from 'vega-util';
 import {Channel, ScaleChannel} from '../../channel';
 import {globalWholeWordRegExp, keys} from '../../util';
+import {keys} from '../../util';
 import {isSignalRef, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
+import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
-import {SignalRefComponent} from '../signal';
 import {assembleDomain} from './domain';
 
 export function assembleScales(model: Model): VgScale[] {
@@ -36,7 +35,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       let {domainRaw} = scale;
       const {name, type, domainRaw: _d, range: _r, bins: _b, ...otherScaleProps} = scale;
 
-      const range = assembleScaleRange(scale.range, name, model, channel);
+      const range = assembleScaleRange(scale.range, name, channel);
 
       const bins = assembleScaleBins(model, scale.bins);
 
@@ -64,51 +63,17 @@ export function assembleScalesForModel(model: Model): VgScale[] {
   );
 }
 
-function assembleExprSignal(scaleRange: SignalRefComponent, model: Model) {
-  let signal = scaleRange.expr;
-  for (const signalName of scaleRange.signalNames) {
-    const newName = model.getSignalName(signalName);
-
-    // TODO: Refactor this so we don't need to rename signals inside expressions but instead assmeble the right expression as we do for the bins property below.
-
-    if (newName !== signalName) {
-      // replace the signal name
-
-      const regEx = globalWholeWordRegExp(signalName);
-
-      signal = signal.replace(regEx, newName);
+export function assembleScaleRange(scaleRange: VgRange, scaleName: string, channel: Channel): VgRange {
+  // add signals to x/y range
+  if (channel === 'x' || channel === 'y') {
+    if (isVgRangeStep(scaleRange)) {
+      // For x/y range step, use a signal created in layout assemble instead of a constant range step.
+      return {
+        step: {signal: scaleName + '_step'}
+      };
     }
   }
-  return {signal};
-}
-
-export function assembleScaleRange(
-  scaleRange: VgRange<SignalRefComponent>,
-  scaleName: string,
-  model: Model,
-  channel: Channel
-): VgRange<SignalRef> {
-  if (scaleRange instanceof SignalRefComponent) {
-    return assembleExprSignal(scaleRange, model);
-  } else if (isArray(scaleRange)) {
-    return scaleRange.map(val => {
-      if (val instanceof SignalRefComponent) {
-        return assembleExprSignal(val, model);
-      }
-      return val;
-    });
-  } else {
-    // add signals to x/y range
-    if (channel === 'x' || channel === 'y') {
-      if (isVgRangeStep(scaleRange)) {
-        // For x/y range step, use a signal created in layout assemble instead of a constant range step.
-        return {
-          step: {signal: scaleName + '_step'}
-        };
-      }
-    }
-    return scaleRange;
-  }
+  return scaleRange;
 }
 
 export function assembleScaleBins(model: Model, bins: SignalRef | number[]) {

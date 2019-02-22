@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {isBinning} from '../../bin';
 import {
@@ -37,8 +38,8 @@ import {
 } from '../../scale';
 import {Type} from '../../type';
 import * as util from '../../util';
-import {isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
-import {evalOrMakeSignalRefComponent, SignalRefComponent} from '../signal';
+import {isSignalRef, isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
+import {evalExpression, Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -80,6 +81,7 @@ export function parseUnitScaleRange(model: UnitModel) {
 
     const rangeWithExplicit = parseRangeForChannel(
       channel,
+      model.getSignalName.bind(model),
       scaleType,
       fieldDef.type,
       specifiedScale,
@@ -95,7 +97,7 @@ export function parseUnitScaleRange(model: UnitModel) {
   });
 }
 
-function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRefComponent {
+function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef {
   const scaleCmpt = model.getScaleComponent(channel);
   if (!scaleCmpt) {
     return undefined;
@@ -118,7 +120,7 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRefC
       const binCount = `(${binSignal}.stop - ${binSignal}.start) / ${binSignal}.step`;
       const sizeType = getSizeType(channel);
       const sizeSignal = model.getName(sizeType);
-      return new SignalRefComponent(`${sizeSignal} / (${binCount})`, [sizeSignal, binSignal]);
+      return new SignalRefWrapper(() => `${model.getSignalName(sizeSignal)} / (${model.getSignalName(binCount)})`);
     }
     // TODO: handle binned case
   }
@@ -126,7 +128,7 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRefC
 }
 
 function getXYRangeStep(model: UnitModel) {
-  const steps: (number | SignalRefComponent)[] = [];
+  const steps: (number | SignalRef)[] = [];
   for (const channel of POSITION_SCALE_CHANNELS) {
     const step = getRangeStep(model, channel);
     if (step !== undefined) {
@@ -141,6 +143,7 @@ function getXYRangeStep(model: UnitModel) {
  */
 export function parseRangeForChannel(
   channel: Channel,
+  getSignalName: Rename,
   scaleType: ScaleType,
   type: Type,
   specifiedScale: Scale,
@@ -149,8 +152,8 @@ export function parseRangeForChannel(
   mark: Mark,
   sizeSpecified: boolean,
   sizeSignal: string,
-  xyRangeSteps: (number | SignalRefComponent)[]
-): Explicit<VgRange<SignalRefComponent>> {
+  xyRangeSteps: (number | SignalRef)[]
+): Explicit<VgRange> {
   const noRangeStep = sizeSpecified || specifiedScale.rangeStep === null;
 
   // Check if any of the range properties is specified.
@@ -187,6 +190,7 @@ export function parseRangeForChannel(
   return makeImplicit(
     defaultRange(
       channel,
+      getSignalName,
       scaleType,
       type,
       config,
@@ -212,16 +216,17 @@ function parseScheme(scheme: Scheme): SchemeConfig {
 
 function defaultRange(
   channel: Channel,
+  getSignalName: Rename,
   scaleType: ScaleType,
   type: Type,
   config: Config,
   zero: boolean,
   mark: Mark,
   sizeSignal: string,
-  xyRangeSteps: (number | SignalRefComponent)[],
+  xyRangeSteps: (number | SignalRef)[],
   noRangeStep: boolean,
   domain: Domain
-): VgRange<SignalRefComponent> {
+): VgRange {
   switch (channel) {
     case X:
     case Y:
@@ -246,9 +251,9 @@ function defaultRange(
 
       if (channel === Y && hasContinuousDomain(scaleType)) {
         // For y continuous scale, we have to start from the height as the bottom part has the max value.
-        return [SignalRefComponent.fromName(sizeSignal), 0];
+        return [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
       } else {
-        return [0, SignalRefComponent.fromName(sizeSignal)];
+        return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
@@ -328,17 +333,18 @@ export function defaultContinuousToDiscreteCount(
  * @param rangeMax end of the range
  * @param cardinality number of values in the output range
  */
-export function interpolateRange(
-  rangeMin: number,
-  rangeMax: number | SignalRefComponent,
-  cardinality: number
-): SignalRefComponent {
-  const step = '(rangeMax - rangeMin) / (cardinality - 1)';
-  return evalOrMakeSignalRefComponent(`sequence(rangeMin, rangeMax + ${step}, ${step})`, {
-    rangeMin,
-    rangeMax,
-    cardinality
-  });
+export function interpolateRange(rangeMin: number, rangeMax: number | SignalRef, cardinality: number): SignalRef {
+  // always return a signal since it's better to compute the sequence in Vega later
+  const f = () => {
+    const rMax = isSignalRef(rangeMax) ? rangeMax.signal : rangeMax;
+    const step = `(${rMax} - ${rangeMin}) / (${cardinality} - 1)`;
+    return `sequence(${rangeMin}, ${rangeMax} + ${step}, ${step})`;
+  };
+  if (isSignalRef(rangeMax)) {
+    return new SignalRefWrapper(f);
+  } else {
+    return {signal: f()};
+  }
 }
 
 function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
@@ -367,11 +373,7 @@ function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
 
 export const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
 
-function sizeRangeMax(
-  mark: Mark,
-  xyRangeSteps: (number | SignalRefComponent)[],
-  config: Config
-): number | SignalRefComponent {
+function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: Config): number | SignalRef {
   const scaleConfig = config.scale;
   switch (mark) {
     case 'bar':
@@ -381,7 +383,11 @@ function sizeRangeMax(
       }
       const min = minXYRangeStep(xyRangeSteps, config.scale);
 
-      return evalOrMakeSignalRefComponent(`min - 1`, {min});
+      if (isSignalRef(min)) {
+        return new SignalRefWrapper(() => `${min.signal} - 1`);
+      } else {
+        return evalExpression(`${min} - 1`);
+      }
 
     case 'line':
     case 'trail':
@@ -397,9 +403,11 @@ function sizeRangeMax(
       }
 
       const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
-      return evalOrMakeSignalRefComponent(`pow(${MAX_SIZE_RANGE_STEP_RATIO} * pointStep, 2)`, {
-        pointStep
-      });
+      if (isSignalRef(pointStep)) {
+        return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
+      } else {
+        return evalExpression(`pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep}, 2)`);
+      }
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMax not implemented for the mark
@@ -409,31 +417,26 @@ function sizeRangeMax(
 /**
  * @returns {number} Range step of x or y or minimum between the two if both are ordinal scale.
  */
-function minXYRangeStep(
-  xyRangeSteps: (number | SignalRefComponent)[],
-  scaleConfig: ScaleConfig
-): number | SignalRefComponent {
+function minXYRangeStep(xyRangeSteps: (number | SignalRef)[], scaleConfig: ScaleConfig): number | SignalRef {
   if (xyRangeSteps.length > 0) {
-    const exprs: (string | number)[] = [];
-    const signalNames: string[] = [];
     let min = Infinity;
 
     for (const step of xyRangeSteps) {
-      if (step instanceof SignalRefComponent) {
-        exprs.push(step.expr);
-        for (const signalName of step.signalNames) {
-          signalNames.push(signalName);
-        }
+      if (isSignalRef(step)) {
         min = undefined;
       } else {
-        exprs.push(step);
         if (min !== undefined && step < min) {
           min = step;
         }
       }
     }
 
-    return min !== undefined ? min : new SignalRefComponent(`min(${exprs.join(', ')})`, signalNames);
+    return min !== undefined
+      ? min
+      : new SignalRefWrapper(() => {
+          const exprs = xyRangeSteps.map(e => (isSignalRef(e) ? e.signal : e));
+          return `min(${exprs.join(', ')})`;
+        });
   }
   if (scaleConfig.rangeStep) {
     return scaleConfig.rangeStep;

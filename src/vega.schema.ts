@@ -88,9 +88,15 @@ export interface SchemeConfig {
   count?: number;
 }
 
-export type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | SchemeConfig | VgRangeStep | S;
+export type VgRange =
+  | string
+  | VgDataRef
+  | (number | string | VgDataRef | SignalRef)[]
+  | SchemeConfig
+  | VgRangeStep
+  | SignalRef;
 
-export function isVgRangeStep(range: VgRange<any>): range is VgRangeStep {
+export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
@@ -171,8 +177,8 @@ export interface VgScale {
   type: ScaleType;
   domain: VgDomain;
   domainRaw?: SignalRef;
-  range: VgRange<SignalRef>;
   bins?: number[] | SignalRef;
+  range: VgRange;
   clamp?: boolean;
   base?: number;
   exponent?: number;
