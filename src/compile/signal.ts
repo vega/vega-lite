@@ -11,13 +11,6 @@ export class SignalRefComponent {
   public static fromName(signalName: string) {
     return new SignalRefComponent(signalName, [signalName]);
   }
-
-  /**
-   * Generate new signal based on this signal
-   */
-  public map(f: (expr: string) => string) {
-    return new SignalRefComponent(f(this.expr), this.signalNames);
-  }
 }
 
 const generate = codegen({globalvar: 'global'});
