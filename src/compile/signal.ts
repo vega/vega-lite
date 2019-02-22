@@ -7,7 +7,7 @@ export type Rename = (oldSignalName: string) => string;
  * A class that behaves like a SignalRef but lazily generates the signal.
  * The provided generator function should use `Model.getSignalName` to use the correct signal name.
  */
-export class SignalRefComponent implements SignalRef {
+export class SignalRefWrapper implements SignalRef {
   constructor(private exprGenerator: () => string) {}
 
   public get signal() {
@@ -19,7 +19,7 @@ export class SignalRefComponent implements SignalRef {
   }
 
   public static fromName(rename: Rename, signalName: string) {
-    return new SignalRefComponent(() => rename(signalName));
+    return new SignalRefWrapper(() => rename(signalName));
   }
 }
 

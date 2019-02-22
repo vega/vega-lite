@@ -1,5 +1,5 @@
 import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
-import {SignalRefComponent} from '../../../src/compile/signal';
+import {SignalRefWrapper} from '../../../src/compile/signal';
 import {
   parseConcatModel,
   parseFacetModelWithScale,
@@ -122,7 +122,7 @@ describe('compile/scale/assemble', () => {
       model.renameSignal('width', 'new_width');
 
       expect(
-        assembleScaleRange([0, SignalRefComponent.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x')
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x')
       ).toMatchObject([0, {signal: 'new_width'}]);
     });
 
@@ -138,7 +138,7 @@ describe('compile/scale/assemble', () => {
       model.renameSignal('height', 'new_height');
 
       expect(
-        assembleScaleRange([0, SignalRefComponent.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x')
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x')
       ).toMatchObject([0, {signal: 'new_height'}]);
     });
   });

@@ -39,7 +39,7 @@ import {
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
-import {evalExpression, Rename, SignalRefComponent} from '../signal';
+import {evalExpression, Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -120,7 +120,7 @@ function getRangeStep(model: UnitModel, channel: 'x' | 'y'): number | SignalRef 
       const binCount = `(${binSignal}.stop - ${binSignal}.start) / ${binSignal}.step`;
       const sizeType = getSizeType(channel);
       const sizeSignal = model.getName(sizeType);
-      return new SignalRefComponent(() => `${model.getSignalName(sizeSignal)} / (${model.getSignalName(binCount)})`);
+      return new SignalRefWrapper(() => `${model.getSignalName(sizeSignal)} / (${model.getSignalName(binCount)})`);
     }
     // TODO: handle binned case
   }
@@ -251,9 +251,9 @@ function defaultRange(
 
       if (channel === Y && hasContinuousDomain(scaleType)) {
         // For y continuous scale, we have to start from the height as the bottom part has the max value.
-        return [SignalRefComponent.fromName(getSignalName, sizeSignal), 0];
+        return [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
       } else {
-        return [0, SignalRefComponent.fromName(getSignalName, sizeSignal)];
+        return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
     case SIZE:
       // TODO: support custom rangeMin, rangeMax
@@ -342,7 +342,7 @@ export function interpolateRange(rangeMin: number, rangeMax: number | SignalRef,
     return `sequence(${rangeMin}, ${rangeMax} + ${step}, ${step})`;
   };
   if (isSignalRef(rangeMax)) {
-    return new SignalRefComponent(f);
+    return new SignalRefWrapper(f);
   } else {
     return {signal: f()};
   }
@@ -385,7 +385,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       const min = minXYRangeStep(xyRangeSteps, config.scale);
 
       if (isSignalRef(min)) {
-        return new SignalRefComponent(() => `${min.signal} - 1`);
+        return new SignalRefWrapper(() => `${min.signal} - 1`);
       } else {
         return evalExpression(`${min} - 1`);
       }
@@ -405,7 +405,7 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
 
       const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
       if (isSignalRef(pointStep)) {
-        return new SignalRefComponent(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
+        return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
       } else {
         return evalExpression(`pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep}, 2)`);
       }
@@ -434,7 +434,7 @@ function minXYRangeStep(xyRangeSteps: (number | SignalRef)[], scaleConfig: Scale
 
     return min !== undefined
       ? min
-      : new SignalRefComponent(() => {
+      : new SignalRefWrapper(() => {
           const exprs = xyRangeSteps.map(e => (isSignalRef(e) ? e.signal : e));
           return `min(${exprs.join(', ')})`;
         });
