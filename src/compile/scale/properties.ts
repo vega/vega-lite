@@ -1,4 +1,4 @@
-import {isBinning} from '../../bin';
+import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
 import {ScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
@@ -62,7 +62,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        // copyKeyFromObject ensure type safety
+        // copyKeyFromObject ensures type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
         const value = getDefaultValue(
@@ -103,7 +103,7 @@ export function getDefaultValue(
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'bins':
-      return bins(model, fieldDef);
+      return bins(model, fieldDef, channel);
     case 'interpolate':
       return interpolate(channel, scaleType);
     case 'nice':
@@ -174,10 +174,16 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
-export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
-  if (isBinning(fieldDef.bin)) {
-    // Only set the signal name. We generate the sequence in assemble.
-    return {signal: model.getName(vgField(fieldDef, {suffix: 'bins'}))};
+export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
+  const bin = fieldDef.bin;
+  if (isBinning(bin)) {
+    const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+    return {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`};
+  } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
+    const scaleName = model.scaleName(channel);
+    return {
+      signal: `sequence(domain('${scaleName}')[0], domain('${scaleName}')[1] + ${bin.step}, ${bin.step})`
+    };
   }
   return undefined;
 }

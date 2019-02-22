@@ -113,10 +113,8 @@ export function assembleScaleRange(
 
 export function assembleScaleBins(model: Model, bins: SignalRef | number[]) {
   if (bins && isSignalRef(bins)) {
-    // In parse, we only set the signal name but don't write the full expression.
-    const signalName = model.getSignalName(bins.signal);
-    return {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`};
+    return bins;
   }
 
-  return undefined;
+  return bins;
 }

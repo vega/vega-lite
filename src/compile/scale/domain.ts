@@ -272,10 +272,11 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
+      if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
+        return [fieldDef.bin.extent];
+      }
+
       if (isBinning(fieldDef.bin)) {
-        if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
-          return [fieldDef.bin.extent];
-        }
         const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
         // TODO: make sure to rename the signals in assemble
         if (scaleType === 'bin-ordinal') {

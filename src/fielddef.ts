@@ -779,12 +779,16 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams | boolean, channel: Channel) {
+export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
+  } else if (bin === 'binned') {
+    return {
+      binned: true
+    };
   } else if (!bin.maxbins && !bin.step) {
     return {...bin, maxbins: autoMaxBins(channel)};
-  } else {
+  }  else {
     return bin;
   }
 }

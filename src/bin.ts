@@ -78,8 +78,16 @@ export interface BinParams extends BaseBin {
    * @maxItems 2
    */
   extent?: number[]; // VgBinTransform uses a different extent so we need to pull this out.
+
+  /**
+   * When set to true, Vega-Lite trats the input data as binned.
+   */
+  binned?: boolean;
 }
 
+/**
+ * Create a key for the bin configuration. Not for prebinned bin.
+ */
 export function binToString(bin: BinParams | boolean) {
   if (isBoolean(bin)) {
     bin = normalizeBin(bin, undefined);
@@ -92,12 +100,18 @@ export function binToString(bin: BinParams | boolean) {
   );
 }
 
+/**
+ * Vega-Lite should bin the data.
+ */
 export function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams | true {
-  return bin === true || isBinParams(bin);
+  return bin === true || (isBinParams(bin) && !bin.binned);
 }
 
+/**
+ * The data is already binned and so Vega-Lite should not bin it again.
+ */
 export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
-  return bin === 'binned';
+  return bin === 'binned' || (isBinParams(bin) && bin.binned);
 }
 
 export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinParams {
