@@ -187,8 +187,7 @@ export function normalizeBoxPlot(
     outliersLayerMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
       transform: [
         {
-          window: boxParamsQuartiles(continuousAxisChannelDef.field),
-          frame: [null, null],
+          joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
           groupby
         },
         {
