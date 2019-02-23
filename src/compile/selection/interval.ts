@@ -21,7 +21,7 @@ import scales from './transforms/scales';
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
-const interval: SelectionCompiler = {
+const interval: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE + TUPLE_FIELDS;
@@ -180,7 +180,12 @@ export default interval;
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x' | 'y', idx: number): any {
+function channelSignals(
+  model: UnitModel,
+  selCmpt: SelectionComponent<'interval'>,
+  channel: 'x' | 'y',
+  idx: number
+): any {
   const vname = channelSignalName(selCmpt, channel, 'visual');
   const dname = channelSignalName(selCmpt, channel, 'data');
   const init = selCmpt.init && selCmpt.init[idx];
@@ -232,7 +237,7 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
       ];
 }
 
-function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {
+function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => void) {
   return selCmpt.events.reduce((on: any[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);

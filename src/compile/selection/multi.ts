@@ -1,10 +1,11 @@
 import {stringValue} from 'vega-util';
+import {SelectionInit} from '../../selection';
 import {accessPathWithDatum} from '../../util';
 import {UnitModel} from '../unit';
 import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
 import {TUPLE_FIELDS} from './transforms/project';
 
-export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
+export function multiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
@@ -42,7 +43,10 @@ export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
   ];
 
   if (selCmpt.init) {
-    const insert = selCmpt.init.map(i => `{${update}: ${assembleInit(i)}}`);
+    const insert = selCmpt.init.map((i: SelectionInit | SelectionInit[]) => {
+      const str = assembleInit(i);
+      return `{${update}: ${str}}`;
+    });
     signals.push({
       name: `${name}_init`,
       init: `modify(${stringValue(selCmpt.name + STORE)}, [${insert}])`
@@ -52,7 +56,7 @@ export function multiSignals(model: UnitModel, selCmpt: SelectionComponent) {
   return signals;
 }
 
-const multi: SelectionCompiler = {
+const multi: SelectionCompiler<'multi'> = {
   signals: multiSignals,
 
   modifyExpr: (model, selCmpt) => {

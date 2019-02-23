@@ -2,7 +2,7 @@ import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, isString, stringValue} from 'vega-util';
 import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
-import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
+import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {
@@ -34,10 +34,17 @@ export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
-export interface SelectionComponent {
+export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: string;
-  type: SelectionType;
-  init?: (SelectionInit | SelectionInitArray)[];
+  type: T;
+
+  // Use conditional typing (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html)
+  // so we have stricter type of init (as the type of init depends on selection type)
+  init?: (T extends 'interval'
+    ? SelectionInitArray //
+    : T extends 'single'
+    ? SelectionInit
+    : SelectionInit | SelectionInit[])[]; // multi
   events: EventStream;
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
@@ -68,15 +75,15 @@ export interface ProjectSelectionComponent {
   type: TupleStoreType;
 }
 
-export interface SelectionCompiler {
-  signals: (model: UnitModel, selCmpt: SelectionComponent) => NewSignal[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
-  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
+export interface SelectionCompiler<T extends SelectionType = SelectionType> {
+  signals: (model: UnitModel, selCmpt: SelectionComponent<T>) => NewSignal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
+  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent<T>) => string;
+  marks?: (model: UnitModel, selCmpt: SelectionComponent<T>, marks: any[]) => any[];
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  const selCmpts: Dict<SelectionComponent> = {};
+  const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
   if (selDefs) {
@@ -420,14 +427,11 @@ export function positionalProjections(selCmpt: SelectionComponent) {
 }
 
 export function assembleInit(
-  init: SelectionInit | SelectionInitArray,
+  init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit,
   wrap: (str: string) => string = identity
 ): string {
   if (isArray(init)) {
-    const str = (init as (number | boolean | DateTime | string)[])
-      // Need to do casting according to https://stackoverflow.com/questions/51571733/cannot-invoke-an-expression-whose-type-lacks-a-call-signature-map
-      .map(v => assembleInit(v, wrap))
-      .join(', ');
+    const str = init.map(v => assembleInit(v, wrap)).join(', ');
     return `[${str}]`;
   } else if (isDateTime(init)) {
     return wrap(dateTimeExpr(init));

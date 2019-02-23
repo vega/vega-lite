@@ -13,6 +13,10 @@ export interface SelectionInitMapping {
   [key: string]: SelectionInit;
 }
 
+export interface SelectionInitArrayMapping {
+  [key: string]: SelectionInitArray;
+}
+
 export interface BaseSelectionDef {
   /**
    * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
@@ -186,7 +190,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
    * Initialize the selection with a mapping between field names and arrays of
    * initial values.
    */
-  init?: {[key: string]: SelectionInitArray};
+  init?: SelectionInitArrayMapping;
 }
 
 export interface SingleSelection extends SingleSelectionConfig {
@@ -202,6 +206,10 @@ export interface IntervalSelection extends IntervalSelectionConfig {
 }
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
+
+export function isIntervalSelection(s: SelectionDef): s is IntervalSelection {
+  return s.type === 'interval';
+}
 
 export interface SelectionConfig {
   /**

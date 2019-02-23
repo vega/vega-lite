@@ -1,7 +1,7 @@
 import {multiSignals} from './multi';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 
-const single: SelectionCompiler = {
+const single: SelectionCompiler<'single'> = {
   signals: multiSignals,
 
   modifyExpr: (model, selCmpt) => {
