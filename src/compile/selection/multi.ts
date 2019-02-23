@@ -5,7 +5,7 @@ import {UnitModel} from '../unit';
 import {assembleInit, SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './selection';
 import {TUPLE_FIELDS} from './transforms/project';
 
-export function multiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
+export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE + TUPLE_FIELDS;
   const proj = selCmpt.project;
@@ -57,7 +57,7 @@ export function multiSignals(model: UnitModel, selCmpt: SelectionComponent<'sing
 }
 
 const multi: SelectionCompiler<'multi'> = {
-  signals: multiSignals,
+  signals: singleOrMultiSignals,
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;

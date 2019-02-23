@@ -1,8 +1,8 @@
-import {multiSignals} from './multi';
+import {singleOrMultiSignals} from './multi';
 import {SelectionCompiler, TUPLE, unitName} from './selection';
 
 const single: SelectionCompiler<'single'> = {
-  signals: multiSignals,
+  signals: singleOrMultiSignals,
 
   modifyExpr: (model, selCmpt) => {
     const tpl = selCmpt.name + TUPLE;
