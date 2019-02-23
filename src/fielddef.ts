@@ -788,7 +788,7 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Chann
     };
   } else if (!bin.maxbins && !bin.step) {
     return {...bin, maxbins: autoMaxBins(channel)};
-  }  else {
+  } else {
     return bin;
   }
 }

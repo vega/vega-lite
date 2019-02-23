@@ -210,10 +210,7 @@ function channelSignals(
   // to their domains (e.g., filtering) should clear the brushes.
   on.push({
     events: {signal: selCmpt.name + SCALE_TRIGGER},
-    update:
-      hasContinuousDomain(scaleType)
-        ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]`
-        : `[0, 0]`
+    update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`
   });
 
   return hasScales

@@ -126,9 +126,11 @@ describe('compile/scale', () => {
             }
           });
 
-          expect(testParseDomainForChannel(model, 'y')).toEqual([{
-            signal: "[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]"
-          }]);
+          expect(testParseDomainForChannel(model, 'y')).toEqual([
+            {
+              signal: '[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]'
+            }
+          ]);
 
           expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
         })
