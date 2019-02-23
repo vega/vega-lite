@@ -201,11 +201,10 @@
     {
       "transform": [
         {
-          "window": [
+          "joinaggregate": [
             {"op": "q1", "field": "people", "as": "lower_box_people"},
             {"op": "q3", "field": "people", "as": "upper_box_people"}
           ],
-          "frame": [null, null],
           "groupby": ["age"]
         },
         {

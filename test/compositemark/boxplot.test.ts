@@ -681,7 +681,7 @@ describe('normalizeBoxIQR', () => {
         {
           transform: [
             {
-              window: [
+              joinaggregate: [
                 {
                   op: 'q1',
                   field: 'people',
@@ -693,8 +693,7 @@ describe('normalizeBoxIQR', () => {
                   as: 'upper_box_people'
                 }
               ],
-              groupby: ['age'],
-              frame: [null, null]
+              groupby: ['age']
             },
             {
               filter:
@@ -866,7 +865,7 @@ describe('normalizeBoxIQR', () => {
         {
           transform: [
             {
-              window: [
+              joinaggregate: [
                 {
                   op: 'q1',
                   field: 'people',
@@ -878,8 +877,7 @@ describe('normalizeBoxIQR', () => {
                   as: 'upper_box_people'
                 }
               ],
-              groupby: ['age'],
-              frame: [null, null]
+              groupby: ['age']
             },
             {
               filter:
@@ -1066,7 +1064,7 @@ describe('normalizeBoxIQR', () => {
         {
           transform: [
             {
-              window: [
+              joinaggregate: [
                 {
                   op: 'q1',
                   field: 'people',
@@ -1078,8 +1076,7 @@ describe('normalizeBoxIQR', () => {
                   as: 'upper_box_people'
                 }
               ],
-              groupby: ['age'],
-              frame: [null, null]
+              groupby: ['age']
             },
             {
               filter:
