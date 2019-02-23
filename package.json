@@ -104,7 +104,7 @@
     "vega": "^4.4.0",
     "vega-datasets": "^1.21.1",
     "vega-embed": "^3.29.1",
-    "vega-tooltip": "^0.15.0",
+    "vega-tooltip": "^0.16.0",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "yaml-front-matter": "^4.0.0"
