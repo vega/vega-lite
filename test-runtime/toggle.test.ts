@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {Page} from 'puppeteer';
 import {stringValue} from 'vega-util';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
@@ -32,15 +31,15 @@ describe('Toggle multi selections at runtime', async () => {
     await page.evaluate(toggle('qq', 0, false));
     await page.evaluate(toggle('qq', 1, true));
     let store = await page.evaluate(toggle('qq', 2, true));
-    assert.lengthOf(store, 3);
+    expect(store).toHaveLength(3);
     await testRender('click_0');
 
     store = await page.evaluate(toggle('qq', 2, true));
-    assert.lengthOf(store, 2);
+    expect(store).toHaveLength(2);
     await testRender('click_1');
 
     store = await page.evaluate(toggle('qq', 3, false));
-    assert.lengthOf(store, 1);
+    expect(store).toHaveLength(1);
     await testRender('click_2');
   });
 
@@ -53,11 +52,11 @@ describe('Toggle multi selections at runtime', async () => {
     await testRender(`clear_0`);
 
     let store = await page.evaluate(toggle('qq_clear', 0, true));
-    assert.lengthOf(store, 4);
+    expect(store).toHaveLength(4);
     await testRender(`clear_1`);
 
     store = await page.evaluate(toggle('qq_clear', 1, false));
-    assert.lengthOf(store, 0);
+    expect(store).toHaveLength(0);
     await testRender(`clear_2`);
   });
 
@@ -67,15 +66,15 @@ describe('Toggle multi selections at runtime', async () => {
     await page.evaluate(toggle('bins', 0, false));
     await page.evaluate(toggle('bins', 1, true));
     let store = await page.evaluate(toggle('bins', 2, true));
-    assert.lengthOf(store, 3);
+    expect(store).toHaveLength(3);
     await testRender('bins_0');
 
     store = await page.evaluate(toggle('bins', 2, true));
-    assert.lengthOf(store, 2);
+    expect(store).toHaveLength(2);
     await testRender('bins_1');
 
     store = await page.evaluate(toggle('bins', 3, false));
-    assert.lengthOf(store, 1);
+    expect(store).toHaveLength(1);
     await testRender('bins_2');
   });
 
@@ -86,7 +85,7 @@ describe('Toggle multi selections at runtime', async () => {
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
         const store = await page.evaluate(toggle('composite', i, true, parent));
-        assert.equal((length = store.length), i + 1);
+        expect((length = store.length)).toEqual(i + 1);
         if (i % 3 === 2) {
           await testRender(`${specType}_${i}`);
         }
@@ -96,7 +95,7 @@ describe('Toggle multi selections at runtime', async () => {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
         const store = await page.evaluate(toggle('qq_clear', 0, even, parent));
-        assert.lengthOf(store, even ? length : (length = length - 2), `iter: ${i}`);
+        expect(store).toHaveLength(even ? length : (length = length - 2));
         if (!even) {
           await testRender(`${specType}_clear_${i}`);
         }

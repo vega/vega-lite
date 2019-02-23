@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {Page} from 'puppeteer';
 import {SELECTION_ID} from '../src/selection';
 import {fill} from '../src/util';
@@ -20,11 +19,11 @@ for (const type of ['single', 'multi']) {
       for (let i = 0; i < hits.qq.length; i++) {
         await embed(spec('unit', i, {type}));
         const store = await page.evaluate(pt('qq', i));
-        assert.lengthOf(store, 1);
-        assert.lengthOf(store[0].fields, 1);
-        assert.lengthOf(store[0].values, 1);
-        assert.equal(store[0].fields[0].field, SELECTION_ID);
-        assert.equal(store[0].fields[0].type, 'E');
+        expect(store).toHaveLength(1);
+        expect(store[0].fields).toHaveLength(1);
+        expect(store[0].values).toHaveLength(1);
+        expect(store[0].fields[0].field).toEqual(SELECTION_ID);
+        expect(store[0].fields[0].type).toEqual('E');
         await testRender(`click_${i}`);
       }
     });
@@ -37,12 +36,12 @@ for (const type of ['single', 'multi']) {
         for (let i = 0; i < hits.qq.length; i++) {
           emb(i);
           const store = await page.evaluate(pt('qq', i));
-          assert.lengthOf(store, 1);
-          assert.lengthOf(store[0].fields, fields.length);
-          assert.lengthOf(store[0].values, fields.length);
-          assert.deepEqual(store[0].fields.map((f: any) => f.field), fields);
-          assert.deepEqual(store[0].fields.map((f: any) => f.type), fill('E', fields.length));
-          assert.deepEqual(store[0].values, values[i]);
+          expect(store).toHaveLength(1);
+          expect(store[0].fields).toHaveLength(fields.length);
+          expect(store[0].values).toHaveLength(fields.length);
+          expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
+          expect(store[0].fields.map((f: any) => f.type)).toEqual(fill('E', fields.length));
+          expect(store[0].values).toEqual(values[i]);
           await testRender(`${encodings}_${fields}_${i}`);
         }
       };
@@ -62,10 +61,10 @@ for (const type of ['single', 'multi']) {
       for (let i = 0; i < hits.qq_clear.length; i++) {
         await embed(spec('unit', i, {type}));
         let store = await page.evaluate(pt('qq', i));
-        assert.lengthOf(store, 1);
+        expect(store).toHaveLength(1);
 
         store = await page.evaluate(pt('qq_clear', i));
-        assert.lengthOf(store, 0);
+        expect(store).toHaveLength(0);
         await testRender(`clear_${i}`);
       }
     });
@@ -79,12 +78,12 @@ for (const type of ['single', 'multi']) {
       for (let i = 0; i < hits.bins.length; i++) {
         await embed(spec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));
         const store = await page.evaluate(pt('bins', i));
-        assert.lengthOf(store, 1);
-        assert.lengthOf(store[0].fields, fields.length);
-        assert.lengthOf(store[0].values, fields.length);
-        assert.sameMembers(store[0].fields.map((f: any) => f.field), fields);
-        assert.sameMembers(store[0].fields.map((f: any) => f.type), types);
-        assert.sameDeepMembers(store[0].values, values[i]);
+        expect(store).toHaveLength(1);
+        expect(store[0].fields).toHaveLength(fields.length);
+        expect(store[0].values).toHaveLength(fields.length);
+        expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
+        expect(store[0].fields.map((f: any) => f.type)).toEqual(types);
+        expect(store[0].values).toEqual(values[i]);
         await testRender(`bins_${i}`);
       }
     });

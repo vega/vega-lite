@@ -161,11 +161,11 @@ for (const bind of [bound, unbound]) {
           const ynew = zoomed.values[1].sort(cmp);
 
           if (inOut === 'in') {
-            assert.isAtMost(xnew.length, xold.length);
-            assert.isAtMost(ynew.length, yold.length);
+            expect(xnew.length).toBeLessThanOrEqual(xold.length);
+            expect(ynew.length).toBeLessThanOrEqual(yold.length);
           } else {
-            assert.isAtLeast(xnew.length, xold.length);
-            assert.isAtLeast(ynew.length, yold.length);
+            expect(xnew.length).toBeGreaterThanOrEqual(xold.length);
+            expect(ynew.length).toBeGreaterThanOrEqual(yold.length);
           }
 
           await testRender(`ord_${inOut}-1`);
