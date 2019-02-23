@@ -156,7 +156,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"monthdate_date\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "monthdate_date", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -233,12 +233,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [
@@ -428,7 +423,6 @@
       "signals": [
         {
           "name": "click_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -439,7 +433,7 @@
         },
         {
           "name": "click_tuple_fields",
-          "update": "[{\"field\":\"weather\",\"channel\":\"color\",\"type\":\"E\"}]"
+          "value": [{"field": "weather", "channel": "color", "type": "E"}]
         },
         {
           "name": "click_toggle",
@@ -453,12 +447,7 @@
         },
         {
           "name": "click_modify",
-          "on": [
-            {
-              "events": {"signal": "click_tuple"},
-              "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
-            }
-          ]
+          "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
         }
       ],
       "marks": [

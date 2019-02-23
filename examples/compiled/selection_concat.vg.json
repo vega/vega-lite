@@ -166,13 +166,16 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Horsepower"}
               ],
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Horsepower]} : null"
+              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Miles_per_Gallon\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Horsepower\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
+            {"field": "Horsepower", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -249,12 +252,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [
@@ -470,13 +468,16 @@
                 {"signal": "grid_Displacement"},
                 {"signal": "grid_Acceleration"}
               ],
-              "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement, grid_Acceleration]} : null"
+              "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement,grid_Acceleration]} : null"
             }
           ]
         },
         {
           "name": "grid_tuple_fields",
-          "update": "[{\"field\":\"Displacement\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Acceleration\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Displacement", "channel": "x", "type": "R"},
+            {"field": "Acceleration", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -529,12 +530,7 @@
         },
         {
           "name": "grid_modify",
-          "on": [
-            {
-              "events": {"signal": "grid_tuple"},
-              "update": "modify(\"grid_store\", grid_tuple, true)"
-            }
-          ]
+          "update": "modify(\"grid_store\", grid_tuple, true)"
         }
       ],
       "marks": [

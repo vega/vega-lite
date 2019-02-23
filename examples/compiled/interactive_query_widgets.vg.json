@@ -37,7 +37,7 @@
     },
     {
       "name": "CylYr_Year",
-      "value": "",
+      "init": "1977",
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -48,7 +48,7 @@
     },
     {
       "name": "CylYr_Cylinders",
-      "value": "",
+      "init": "4",
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -63,17 +63,19 @@
       "update": "CylYr_Cylinders !== null && CylYr_Year !== null ? {fields: CylYr_tuple_fields, values: [CylYr_Cylinders, CylYr_Year]} : null"
     },
     {
+      "name": "CylYr_init",
+      "init": "modify(\"CylYr_store\", [{unit: \"layer_0\", fields: CylYr_tuple_fields, values: [4, 1977]}])"
+    },
+    {
       "name": "CylYr_tuple_fields",
-      "update": "[{\"field\":\"Cylinders\",\"type\":\"E\"},{\"field\":\"Year\",\"type\":\"E\"}]"
+      "value": [
+        {"field": "Cylinders", "type": "E"},
+        {"field": "Year", "type": "E"}
+      ]
     },
     {
       "name": "CylYr_modify",
-      "on": [
-        {
-          "events": {"signal": "CylYr_tuple"},
-          "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
-        }
-      ]
+      "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
     }
   ],
   "marks": [

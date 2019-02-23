@@ -28,7 +28,6 @@
     },
     {
       "name": "paintbrush_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -39,7 +38,7 @@
     },
     {
       "name": "paintbrush_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "paintbrush_toggle",
@@ -53,12 +52,7 @@
     },
     {
       "name": "paintbrush_modify",
-      "on": [
-        {
-          "events": {"signal": "paintbrush_tuple"},
-          "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
-        }
-      ]
+      "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
     }
   ],
   "marks": [

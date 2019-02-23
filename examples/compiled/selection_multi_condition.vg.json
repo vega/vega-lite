@@ -151,13 +151,16 @@
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "Horsepower", "channel": "x", "type": "R"},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "brush_translate_anchor",
@@ -230,16 +233,10 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     },
     {
       "name": "hoverbrush_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -250,7 +247,7 @@
     },
     {
       "name": "hoverbrush_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "hoverbrush_toggle",
@@ -264,12 +261,7 @@
     },
     {
       "name": "hoverbrush_modify",
-      "on": [
-        {
-          "events": {"signal": "hoverbrush_tuple"},
-          "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
-        }
-      ]
+      "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
     }
   ],
   "marks": [

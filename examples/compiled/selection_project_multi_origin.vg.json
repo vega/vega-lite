@@ -20,7 +20,6 @@
     {"name": "pts", "update": "vlSelectionResolve(\"pts_store\")"},
     {
       "name": "pts_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -29,10 +28,7 @@
         }
       ]
     },
-    {
-      "name": "pts_tuple_fields",
-      "update": "[{\"field\":\"Origin\",\"type\":\"E\"}]"
-    },
+    {"name": "pts_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
     {
       "name": "pts_toggle",
       "value": false,
@@ -45,12 +41,7 @@
     },
     {
       "name": "pts_modify",
-      "on": [
-        {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
-        }
-      ]
+      "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
     }
   ],
   "marks": [
