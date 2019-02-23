@@ -1,5 +1,6 @@
 import {SignalRef} from 'vega';
 import {codegen, parse} from 'vega-expression';
+import {contains} from '../util';
 
 export type Rename = (oldSignalName: string) => string;
 
@@ -19,6 +20,12 @@ export class SignalRefWrapper implements SignalRef {
   }
 
   public static fromName(rename: Rename, signalName: string) {
+    if (contains(['width', 'height'], signalName)) {
+      // some signal never have to be renamed so let's simplify things here
+      return {
+        signal: signalName
+      };
+    }
     return new SignalRefWrapper(() => rename(signalName));
   }
 }

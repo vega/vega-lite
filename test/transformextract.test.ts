@@ -121,8 +121,9 @@ describe('extractTransforms()', () => {
         const config = initConfig(spec.config);
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
-        const originalCompiled = compile(spec);
-        const transformCompiled = compile(extractSpec);
+        // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
+        const originalCompiled = JSON.parse(JSON.stringify(compile(spec)));
+        const transformCompiled = JSON.parse(JSON.stringify(compile(extractSpec)));
 
         if (failsList.has(file)) {
           expect(transformCompiled).not.toEqual(originalCompiled);
