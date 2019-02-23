@@ -6,6 +6,22 @@
     {
       "transform": [
         {
+          "joinaggregate": [
+            {"op": "q1", "field": "people", "as": "lower_box_people"},
+            {"op": "q3", "field": "people", "as": "upper_box_people"}
+          ],
+          "groupby": []
+        },
+        {
+          "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+        }
+      ],
+      "mark": {"type": "point", "style": "boxplot-outliers"},
+      "encoding": {"x": {"field": "people", "type": "quantitative"}}
+    },
+    {
+      "transform": [
+        {
           "aggregate": [
             {"op": "q1", "field": "people", "as": "lower_box_people"},
             {"op": "q3", "field": "people", "as": "upper_box_people"},
@@ -187,22 +203,6 @@
           }
         }
       ]
-    },
-    {
-      "transform": [
-        {
-          "joinaggregate": [
-            {"op": "q1", "field": "people", "as": "lower_box_people"},
-            {"op": "q3", "field": "people", "as": "upper_box_people"}
-          ],
-          "groupby": []
-        },
-        {
-          "filter": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
-        }
-      ],
-      "mark": {"type": "point", "style": "boxplot-outliers"},
-      "encoding": {"x": {"field": "people", "type": "quantitative"}}
     }
   ]
 }
