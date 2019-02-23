@@ -297,7 +297,6 @@
       "signals": [
         {
           "name": "pts_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -308,16 +307,11 @@
         },
         {
           "name": "pts_tuple_fields",
-          "update": "[{\"field\":\"Major_Genre\",\"channel\":\"x\",\"type\":\"E\"}]"
+          "value": [{"field": "Major_Genre", "channel": "x", "type": "E"}]
         },
         {
           "name": "pts_modify",
-          "on": [
-            {
-              "events": {"signal": "pts_tuple"},
-              "update": "modify(\"pts_store\", pts_tuple, true)"
-            }
-          ]
+          "update": "modify(\"pts_store\", pts_tuple, true)"
         }
       ],
       "marks": [

@@ -45,7 +45,6 @@
     {"name": "select", "update": "vlSelectionResolve(\"select_store\")"},
     {
       "name": "highlight_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -56,20 +55,14 @@
     },
     {
       "name": "highlight_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "highlight_modify",
-      "on": [
-        {
-          "events": {"signal": "highlight_tuple"},
-          "update": "modify(\"highlight_store\", highlight_tuple, true)"
-        }
-      ]
+      "update": "modify(\"highlight_store\", highlight_tuple, true)"
     },
     {
       "name": "select_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -80,7 +73,7 @@
     },
     {
       "name": "select_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "select_toggle",
@@ -94,12 +87,7 @@
     },
     {
       "name": "select_modify",
-      "on": [
-        {
-          "events": {"signal": "select_tuple"},
-          "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
-        }
-      ]
+      "update": "modify(\"select_store\", select_toggle ? null : select_tuple, select_toggle ? null : true, select_toggle ? select_tuple : null)"
     }
   ],
   "marks": [

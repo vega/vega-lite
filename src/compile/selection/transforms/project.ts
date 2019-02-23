@@ -1,10 +1,12 @@
+import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain, isBinScale} from '../../../scale';
-import {SelectionDef} from '../../../selection';
+import {isIntervalSelection, SelectionDef, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
 import {Dict, keys} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {ProjectSelectionComponent, SelectionComponent, TUPLE, TupleStoreType} from '../selection';
+import scales from './scales';
 import {TransformCompiler} from './transforms';
 
 export const TUPLE_FIELDS = '_fields';
@@ -18,12 +20,14 @@ const project: TransformCompiler = {
   parse: (model, selDef, selCmpt) => {
     const timeUnits: Dict<TimeUnitComponent> = {};
     const f: Dict<ProjectSelectionComponent> = {};
-    const p = selCmpt.project || (selCmpt.project = []);
+
+    // Selection component may already have a projection from the config. (Interval selection will have `encodings: ['x', 'y'].)
+    const proj = selCmpt.project || (selCmpt.project = []);
     selCmpt.fields = {};
 
     // TODO: find a possible channel mapping for these fields.
     if (selDef.fields) {
-      p.push(...selDef.fields.map<ProjectSelectionComponent>(field => ({field, type: 'E'})));
+      proj.push(...selDef.fields.map<ProjectSelectionComponent>(field => ({field, type: 'E'})));
     }
 
     for (const channel of selDef.encodings || []) {
@@ -60,12 +64,29 @@ const project: TransformCompiler = {
             type = 'R-RE';
           }
 
-          p.push((f[field] = {field, channel, type}));
+          proj.push((f[field] = {field, channel, type}));
         }
 
         selCmpt.fields[channel] = field;
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
+      }
+    }
+
+    if (selDef.init) {
+      if (scales.has(selCmpt)) {
+        log.warn(log.message.NO_INIT_SCALE_BINDINGS);
+      } else {
+        function parseInit<T extends SelectionInitMapping | SelectionInitArrayMapping>(i: T): T['a'][] {
+          return proj.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
+        }
+
+        if (isIntervalSelection(selDef)) {
+          selCmpt.init = parseInit(selDef.init);
+        } else {
+          const init = isArray(selDef.init) ? selDef.init : [selDef.init];
+          selCmpt.init = init.map(parseInit);
+        }
       }
     }
 
@@ -81,7 +102,7 @@ const project: TransformCompiler = {
       ? signals
       : signals.concat({
           name,
-          update: `${JSON.stringify(selCmpt.project)}`
+          value: selCmpt.project
         });
   }
 };
