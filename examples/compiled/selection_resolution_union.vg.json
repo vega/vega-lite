@@ -158,11 +158,7 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Horsepower"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child_Horsepower_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
-=======
-              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Horsepower]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
             }
           ]
         },
@@ -248,16 +244,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Miles_per_Gallon\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon\"})"
         }
       ],
       "marks": [
@@ -519,11 +506,7 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Horsepower"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child_Horsepower_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Horsepower]} : null"
-=======
-              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Horsepower]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Acceleration && brush_Horsepower ? {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Horsepower]} : null"
             }
           ]
         },
@@ -609,16 +592,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Acceleration\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Acceleration\"})"
         }
       ],
       "marks": [
@@ -905,16 +879,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Horsepower_Horsepower\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Horsepower\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Horsepower__repeat_column_Horsepower\"})"
         }
       ],
       "marks": [
@@ -1173,11 +1138,7 @@
                 {"signal": "brush_Miles_per_Gallon"},
                 {"signal": "brush_Acceleration"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child_Acceleration_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Acceleration]} : null"
-=======
-              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon, brush_Acceleration]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Miles_per_Gallon && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Acceleration]} : null"
             }
           ]
         },
@@ -1263,16 +1224,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Miles_per_Gallon\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon\"})"
         }
       ],
       "marks": [
@@ -1559,16 +1511,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Acceleration\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Acceleration\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Acceleration\"})"
         }
       ],
       "marks": [
@@ -1827,11 +1770,7 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Acceleration"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child_Acceleration_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Acceleration]} : null"
-=======
-              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Acceleration]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Horsepower && brush_Acceleration ? {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Acceleration]} : null"
             }
           ]
         },
@@ -1917,16 +1856,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Acceleration_Horsepower\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Acceleration__repeat_column_Horsepower\"})"
         }
       ],
       "marks": [
@@ -2213,16 +2143,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Miles_per_Gallon\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon\"})"
         }
       ],
       "marks": [
@@ -2481,11 +2402,7 @@
                 {"signal": "brush_Acceleration"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Miles_per_Gallon]} : null"
-=======
-              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration, brush_Miles_per_Gallon]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Acceleration && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\", fields: brush_tuple_fields, values: [brush_Acceleration,brush_Miles_per_Gallon]} : null"
             }
           ]
         },
@@ -2571,16 +2488,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Acceleration\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration\"})"
         }
       ],
       "marks": [
@@ -2842,11 +2750,7 @@
                 {"signal": "brush_Horsepower"},
                 {"signal": "brush_Miles_per_Gallon"}
               ],
-<<<<<<< HEAD
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child_Miles_per_Gallon_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
-=======
-              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+              "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
             }
           ]
         },
@@ -2932,16 +2836,7 @@
         },
         {
           "name": "brush_modify",
-<<<<<<< HEAD
-          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child_Miles_per_Gallon_Horsepower\"})"
-=======
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\"})"
-            }
-          ]
->>>>>>> 2f14410baf4d7cd0c4744799ae905de8132036f9
+          "update": "modify(\"brush_store\", brush_tuple, {unit: \"child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower\"})"
         }
       ],
       "marks": [
