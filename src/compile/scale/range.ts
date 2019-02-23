@@ -38,7 +38,7 @@ import {
 import {Type} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, isVgRangeStep, SchemeConfig, VgRange} from '../../vega.schema';
-import {evalExpression, Rename, SignalRefWrapper} from '../signal';
+import {Rename, SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
@@ -370,10 +370,10 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       }
       const min = minXYRangeStep(xyRangeSteps, config.scale);
 
-      if (isSignalRef(min)) {
-        return new SignalRefWrapper(() => `${min.signal} - 1`);
+      if (isNumber(min)) {
+        return min - 1;
       } else {
-        return evalExpression(`${min} - 1`);
+        return new SignalRefWrapper(() => `${min.signal} - 1`);
       }
 
     case 'line':
@@ -390,10 +390,10 @@ function sizeRangeMax(mark: Mark, xyRangeSteps: (number | SignalRef)[], config: 
       }
 
       const pointStep = minXYRangeStep(xyRangeSteps, scaleConfig);
-      if (isSignalRef(pointStep)) {
-        return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
+      if (isNumber(pointStep)) {
+        return Math.pow(MAX_SIZE_RANGE_STEP_RATIO * pointStep, 2);
       } else {
-        return evalExpression(`pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep}, 2)`);
+        return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
       }
   }
   /* istanbul ignore next: should never reach here */
