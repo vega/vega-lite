@@ -185,10 +185,8 @@ export function pt(key: string, idx: number, parent?: string) {
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
     await page.evaluate(
-      (_: any) => {
-        window['embed'](_);
-      },
-      // pseciifcation is serializable even if the types don't agree
+      (_: any) => window['embed'](_),
+      // specification is serializable even if the types don't agree
       specification as any
     );
   };
@@ -196,7 +194,7 @@ export function embedFn(page: Page) {
 
 export async function svg(page: Page, path: string, filename: string) {
   const svgString = await page.evaluate(
-    `new Promise((resolve, reject) => { vega.resetSVGClipId(); view.runAfter(view => view.toSVG().then(resolve)) })`
+    `new Promise((resolve, reject) => { vega.resetSVGClipId(); view.runAsync().then(view => view.toSVG().then(resolve)) })`
   );
 
   if (generate) {

@@ -251,6 +251,11 @@ function parseSingleChannelDomain(
     ];
   } else if (isBinning(fieldDef.bin)) {
     if (hasDiscreteDomain(scaleType)) {
+      if (scaleType === 'bin-ordinal') {
+        // we can omit the domain as it is inferred from the `bins` property
+        return [];
+      }
+
       // ordinal bin scale takes domain from bin_range, ordered by bin start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
       return [
@@ -272,11 +277,6 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
-      if (scaleType === 'bin-ordinal') {
-        // we can omit the domain as it is inferred from the `bins` property
-        return [];
-      }
-
       if (isBinning(fieldDef.bin)) {
         const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
         return [{signal: `[${signalName}.start, ${signalName}.stop]`}];

@@ -133,12 +133,12 @@ describe('interval selections at runtime in unit views', () => {
 
   it('should brush over temporal domains', async () => {
     const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
-    const toNumber = '[0].values[0].map((d) => +d)';
+    const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
     await embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [[1485969714000, 1493634384000], [1496346498000, 1504364922000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i) + toNumber);
+      const store = toNumber(await page.evaluate(brush('drag', i)));
       expect(store).toEqual(expect.arrayContaining(extents[i]));
       await testRender(`temporal_${i}`);
     }
@@ -150,7 +150,7 @@ describe('interval selections at runtime in unit views', () => {
 
     extents = [[1136190528000, 1136361600000], [1136449728000, 1136535264000]];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i) + toNumber);
+      const store = toNumber(await page.evaluate(brush('drag', i)));
       expect(store).toEqual(expect.arrayContaining(extents[i]));
       await testRender(`dayTimeUnit_${i}`);
     }

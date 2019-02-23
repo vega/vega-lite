@@ -4,7 +4,6 @@ import {fill} from '../src/util';
 import {embedFn, hits as hitsMaster, pt, spec, testRenderFn} from './util';
 
 declare const page: Page;
-
 for (const type of ['single', 'multi']) {
   describe(`${type} selections at runtime in unit views`, () => {
     beforeAll(async () => {
