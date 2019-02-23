@@ -6788,6 +6788,13 @@ vega-tooltip@^0.15.0:
   dependencies:
     vega-util "^1.7.1"
 
+vega-tooltip@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.16.0.tgz#fc9badb96aed437b8225d0a7216ec6d1e768ac6f"
+  integrity sha512-A3hZ3B06n8anAp5ReOKmPeGlZaE2kVT0rN0IGLV8jWR54mNUKH/H9TacsyvLA9gq9OO0NrbpQ4NyfxU3uS8EYg==
+  dependencies:
+    vega-util "^1.7.1"
+
 vega-transforms@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-2.3.1.tgz#a31a1ff8086c6909384ddfcc973bd58d53d801ae"
