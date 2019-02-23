@@ -406,14 +406,13 @@ export interface ScaleConfig {
   quantizeCount?: number;
 }
 
-export const defaultScaleConfig = {
+export const defaultScaleConfig: ScaleConfig = {
   textXRangeStep: 90,
   rangeStep: 20,
   pointPadding: 0.5,
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
-  facetSpacing: 16,
 
   minBandSize: 2,
 
