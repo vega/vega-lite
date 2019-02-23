@@ -2,7 +2,7 @@ import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, isString, stringValue} from 'vega-util';
 import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
-import {dateTimeExpr, isDateTime} from '../../datetime';
+import {DateTime, dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
 import {
@@ -423,9 +423,14 @@ export function assembleInit(
   init: SelectionInit | SelectionInitArray,
   wrap: (str: string) => string = identity
 ): string {
-  return isArray(init)
-    ? `[${(init as SelectionInit[]).map(v => assembleInit(v, wrap)).join(', ')}]`
-    : isDateTime(init)
-    ? wrap(dateTimeExpr(init))
-    : wrap(JSON.stringify(init));
+  if (isArray(init)) {
+    const str = (init as (number | boolean | DateTime | string)[])
+      // Need to do casting according to https://stackoverflow.com/questions/51571733/cannot-invoke-an-expression-whose-type-lacks-a-call-signature-map
+      .map(v => assembleInit(v, wrap))
+      .join(', ');
+    return `[${str}]`;
+  } else if (isDateTime(init)) {
+    return wrap(dateTimeExpr(init));
+  }
+  return wrap(JSON.stringify(init));
 }
