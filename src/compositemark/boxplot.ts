@@ -210,12 +210,12 @@ export function normalizeBoxPlot(
     return {
       ...outerSpec,
       layer: [
+        ...outliersLayerMixins,
         {
           // boxplot
           transform,
           layer: boxLayer
-        },
-        ...outliersLayerMixins
+        }
       ]
     };
   }
