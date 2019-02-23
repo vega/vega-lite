@@ -106,7 +106,7 @@ export function getDefaultValue(
     case 'bins':
       return bins(model, fieldDef, channel);
     case 'interpolate':
-      return interpolate(channel, scaleType);
+      return interpolate(channel);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -190,8 +190,8 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Cha
   return undefined;
 }
 
-export function interpolate(channel: Channel, scaleType: ScaleType) {
-  if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+export function interpolate(channel: Channel) {
+  if (contains([COLOR, FILL, STROKE], channel)) {
     return 'hcl';
   }
   return undefined;

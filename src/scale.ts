@@ -626,7 +626,9 @@ export interface Scale {
   exponent?: number;
 
   /**
-   * The constant of the `symlog` scale.
+   * A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.
+   *
+   * __Default value:__ `1`
    */
   constant?: number;
 
@@ -711,7 +713,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
-      return isContinuousToContinuous(scaleType) || (scaleType as any) === 'quantize';
+      return isContinuousToContinuous(scaleType) || scaleType === 'quantize' || scaleType === 'threshold';
     case 'exponent':
       return scaleType === 'pow';
     case 'base':
