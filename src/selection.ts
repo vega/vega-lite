@@ -76,7 +76,7 @@ export interface SingleSelectionConfig extends BaseSelectionDef {
   nearest?: boolean;
 
   /**
-   * Initialize the selection with a mapping between field names and initial values.
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
    */
   init?: SelectionInitMapping;
 }
@@ -103,7 +103,7 @@ export interface MultiSelectionConfig extends BaseSelectionDef {
   nearest?: boolean;
 
   /**
-   * Initialize the selection with a mapping between field names and an initial
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial
    * value (or array of values).
    */
   init?: SelectionInitMapping | SelectionInitMapping[];
@@ -187,7 +187,7 @@ export interface IntervalSelectionConfig extends BaseSelectionDef {
   mark?: BrushConfig;
 
   /**
-   * Initialize the selection with a mapping between field names and arrays of
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
    * initial values.
    */
   init?: SelectionInitArrayMapping;
