@@ -17,6 +17,23 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "joinaggregate",
+          "as": ["lower_box_people", "upper_box_people"],
+          "ops": ["q1", "q3"],
+          "fields": ["people", "people"],
+          "groupby": []
+        },
+        {
+          "type": "filter",
+          "expr": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "aggregate",
           "groupby": [],
           "ops": ["q1", "q3", "median", "min", "max"],
@@ -45,176 +62,14 @@
           "as": "lower_whisker_people"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "joinaggregate",
-          "as": ["lower_box_people", "upper_box_people"],
-          "ops": ["q1", "q3"],
-          "fields": ["people", "people"],
-          "groupby": []
-        },
-        {
-          "type": "filter",
-          "expr": "(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))"
-        }
-      ]
     }
   ],
   "marks": [
     {
-      "name": "layer_0_layer_0_marks",
-      "type": "rule",
-      "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "stroke": [
-            {
-              "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "x": {"scale": "x", "field": "lower_whisker_people"},
-          "y": {"signal": "height", "mult": 0.5},
-          "x2": {"scale": "x", "field": "lower_box_people"}
-        }
-      }
-    },
-    {
-      "name": "layer_0_layer_1_marks",
-      "type": "rule",
-      "style": ["rule", "boxplot-rule"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "stroke": [
-            {
-              "test": "datum[\"upper_box_people\"] === null || isNaN(datum[\"upper_box_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "x": {"scale": "x", "field": "upper_box_people"},
-          "y": {"signal": "height", "mult": 0.5},
-          "x2": {"scale": "x", "field": "upper_whisker_people"}
-        }
-      }
-    },
-    {
-      "name": "layer_0_layer_2_marks",
-      "type": "rect",
-      "style": ["tick", "boxplot-ticks"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "opacity": {"value": 1},
-          "fill": [
-            {
-              "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "xc": {"scale": "x", "field": "lower_whisker_people"},
-          "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 15},
-          "width": {"value": 1}
-        }
-      }
-    },
-    {
-      "name": "layer_0_layer_3_marks",
-      "type": "rect",
-      "style": ["tick", "boxplot-ticks"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "opacity": {"value": 1},
-          "fill": [
-            {
-              "test": "datum[\"upper_whisker_people\"] === null || isNaN(datum[\"upper_whisker_people\"])",
-              "value": null
-            },
-            {"value": "black"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "xc": {"scale": "x", "field": "upper_whisker_people"},
-          "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 15},
-          "width": {"value": 1}
-        }
-      }
-    },
-    {
-      "name": "layer_0_layer_4_marks",
-      "type": "rect",
-      "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "fill": [
-            {
-              "test": "datum[\"lower_box_people\"] === null || isNaN(datum[\"lower_box_people\"])",
-              "value": null
-            },
-            {"value": "#4c78a8"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "x": {"scale": "x", "field": "lower_box_people"},
-          "x2": {"scale": "x", "field": "upper_box_people"},
-          "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 14}
-        }
-      }
-    },
-    {
-      "name": "layer_0_layer_5_marks",
-      "type": "rect",
-      "style": ["tick", "boxplot-median"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "opacity": {"value": 0.7},
-          "fill": [
-            {
-              "test": "datum[\"mid_box_people\"] === null || isNaN(datum[\"mid_box_people\"])",
-              "value": null
-            },
-            {"value": "red"}
-          ],
-          "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
-          },
-          "xc": {"scale": "x", "field": "mid_box_people"},
-          "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 14},
-          "width": {"value": 1}
-        }
-      }
-    },
-    {
-      "name": "layer_1_marks",
+      "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point", "boxplot-outliers"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -239,6 +94,151 @@
           "y": {"signal": "height", "mult": 0.5}
         }
       }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "rule",
+      "style": ["rule", "boxplot-rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "lower_whisker_people"},
+          "y": {"signal": "height", "mult": 0.5},
+          "x2": {"scale": "x", "field": "lower_box_people"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "rule",
+      "style": ["rule", "boxplot-rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": [
+            {
+              "test": "datum[\"upper_box_people\"] === null || isNaN(datum[\"upper_box_people\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "upper_box_people"},
+          "y": {"signal": "height", "mult": 0.5},
+          "x2": {"scale": "x", "field": "upper_whisker_people"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_2_marks",
+      "type": "rect",
+      "style": ["tick", "boxplot-ticks"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": [
+            {
+              "test": "datum[\"lower_whisker_people\"] === null || isNaN(datum[\"lower_whisker_people\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "xc": {"scale": "x", "field": "lower_whisker_people"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"value": 15},
+          "width": {"value": 1}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_3_marks",
+      "type": "rect",
+      "style": ["tick", "boxplot-ticks"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": [
+            {
+              "test": "datum[\"upper_whisker_people\"] === null || isNaN(datum[\"upper_whisker_people\"])",
+              "value": null
+            },
+            {"value": "black"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "xc": {"scale": "x", "field": "upper_whisker_people"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"value": 15},
+          "width": {"value": 1}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_4_marks",
+      "type": "rect",
+      "style": ["bar", "boxplot-box"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": [
+            {
+              "test": "datum[\"lower_box_people\"] === null || isNaN(datum[\"lower_box_people\"])",
+              "value": null
+            },
+            {"value": "#4c78a8"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "x": {"scale": "x", "field": "lower_box_people"},
+          "x2": {"scale": "x", "field": "upper_box_people"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"value": 14}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_5_marks",
+      "type": "rect",
+      "style": ["tick", "boxplot-median"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "datum[\"mid_box_people\"] === null || isNaN(datum[\"mid_box_people\"])",
+              "value": null
+            },
+            {"value": "red"}
+          ],
+          "tooltip": {
+            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+          },
+          "xc": {"scale": "x", "field": "mid_box_people"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"value": 14},
+          "width": {"value": 1}
+        }
+      }
     }
   ],
   "scales": [
@@ -247,12 +247,12 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "lower_whisker_people"},
-          {"data": "data_0", "field": "lower_box_people"},
-          {"data": "data_0", "field": "upper_box_people"},
-          {"data": "data_0", "field": "upper_whisker_people"},
-          {"data": "data_0", "field": "mid_box_people"},
-          {"data": "data_1", "field": "people"}
+          {"data": "data_0", "field": "people"},
+          {"data": "data_1", "field": "lower_whisker_people"},
+          {"data": "data_1", "field": "lower_box_people"},
+          {"data": "data_1", "field": "upper_box_people"},
+          {"data": "data_1", "field": "upper_whisker_people"},
+          {"data": "data_1", "field": "mid_box_people"}
         ]
       },
       "range": [0, {"signal": "width"}],

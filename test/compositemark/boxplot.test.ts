@@ -549,10 +549,46 @@ describe('normalizeBoxIQR', () => {
       },
       defaultConfig
     );
+
+    const outlierUnit = {
+      transform: [
+        {
+          joinaggregate: [
+            {
+              op: 'q1',
+              field: 'people',
+              as: 'lower_box_people'
+            },
+            {
+              op: 'q3',
+              field: 'people',
+              as: 'upper_box_people'
+            }
+          ],
+          groupby: ['age']
+        },
+        {
+          filter:
+            '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+        }
+      ],
+      mark: {
+        type: 'point',
+        style: 'boxplot-outliers'
+      },
+      encoding: {
+        x: {field: 'age', type: 'quantitative'},
+        y: {
+          field: 'people',
+          type: 'quantitative'
+        }
+      }
+    };
     expect(output).toMatchObject({
       description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
       data: {url: 'data/population.json'},
       layer: [
+        outlierUnit,
         {
           transform: [
             {
@@ -677,47 +713,46 @@ describe('normalizeBoxIQR', () => {
               }
             }
           ]
-        },
-        {
-          transform: [
-            {
-              window: [
-                {
-                  op: 'q1',
-                  field: 'people',
-                  as: 'lower_box_people'
-                },
-                {
-                  op: 'q3',
-                  field: 'people',
-                  as: 'upper_box_people'
-                }
-              ],
-              groupby: ['age'],
-              frame: [null, null]
-            },
-            {
-              filter:
-                '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
-            }
-          ],
-          mark: {
-            type: 'point',
-            style: 'boxplot-outliers'
-          },
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
         }
       ]
     });
   });
 
   it('should produce correct layered specs for vertical boxplot with two quantitative axes and use default orientation for a 1.5 * IQR whiskers', () => {
+    const outlierUnit = {
+      transform: [
+        {
+          joinaggregate: [
+            {
+              op: 'q1',
+              field: 'people',
+              as: 'lower_box_people'
+            },
+            {
+              op: 'q3',
+              field: 'people',
+              as: 'upper_box_people'
+            }
+          ],
+          groupby: ['age']
+        },
+        {
+          filter:
+            '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+        }
+      ],
+      mark: {
+        type: 'point',
+        style: 'boxplot-outliers'
+      },
+      encoding: {
+        x: {field: 'age', type: 'quantitative'},
+        y: {
+          field: 'people',
+          type: 'quantitative'
+        }
+      }
+    };
     const output = normalize(
       {
         description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
@@ -742,6 +777,7 @@ describe('normalizeBoxIQR', () => {
       description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
       data: {url: 'data/population.json'},
       layer: [
+        outlierUnit,
         {
           transform: [
             {
@@ -862,47 +898,47 @@ describe('normalizeBoxIQR', () => {
               }
             }
           ]
-        },
-        {
-          transform: [
-            {
-              window: [
-                {
-                  op: 'q1',
-                  field: 'people',
-                  as: 'lower_box_people'
-                },
-                {
-                  op: 'q3',
-                  field: 'people',
-                  as: 'upper_box_people'
-                }
-              ],
-              groupby: ['age'],
-              frame: [null, null]
-            },
-            {
-              filter:
-                '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
-            }
-          ],
-          mark: {
-            type: 'point',
-            style: 'boxplot-outliers'
-          },
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
         }
       ]
     });
   });
 
   it('should produce correct layered specs for vertical IQR boxplot where color encodes the mean of the people field', () => {
+    const outlierUnit = {
+      transform: [
+        {
+          joinaggregate: [
+            {
+              op: 'q1',
+              field: 'people',
+              as: 'lower_box_people'
+            },
+            {
+              op: 'q3',
+              field: 'people',
+              as: 'upper_box_people'
+            }
+          ],
+          groupby: ['age']
+        },
+        {
+          filter:
+            '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
+        }
+      ],
+      mark: {
+        type: 'point',
+        style: 'boxplot-outliers'
+      },
+      encoding: {
+        x: {field: 'age', type: 'quantitative'},
+        y: {
+          field: 'people',
+          type: 'quantitative'
+        }
+      }
+    };
+
     expect(
       normalize(
         {
@@ -933,6 +969,7 @@ describe('normalizeBoxIQR', () => {
       description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
       data: {url: 'data/population.json'},
       layer: [
+        outlierUnit,
         {
           transform: [
             {
@@ -1062,41 +1099,6 @@ describe('normalizeBoxIQR', () => {
               }
             }
           ]
-        },
-        {
-          transform: [
-            {
-              window: [
-                {
-                  op: 'q1',
-                  field: 'people',
-                  as: 'lower_box_people'
-                },
-                {
-                  op: 'q3',
-                  field: 'people',
-                  as: 'upper_box_people'
-                }
-              ],
-              groupby: ['age'],
-              frame: [null, null]
-            },
-            {
-              filter:
-                '(datum.people < datum.lower_box_people - 1.5 * (datum.upper_box_people - datum.lower_box_people)) || (datum.people > datum.upper_box_people + 1.5 * (datum.upper_box_people - datum.lower_box_people))'
-            }
-          ],
-          mark: {
-            type: 'point',
-            style: 'boxplot-outliers'
-          },
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
         }
       ]
     });
