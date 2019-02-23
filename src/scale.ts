@@ -121,7 +121,6 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
 export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
 const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
 
-// FIXME: bin-ordinal is also continuous to discrete
 export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
 const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
 
@@ -423,7 +422,7 @@ export interface SchemeParams {
   name: string;
 
   /**
-   * For schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
+   * Determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
    */
   extent?: number[];
 
