@@ -80,7 +80,7 @@ export interface BinParams extends BaseBin {
   extent?: number[]; // VgBinTransform uses a different extent so we need to pull this out.
 
   /**
-   * When set to true, Vega-Lite trats the input data as binned.
+   * When set to true, Vega-Lite treats the input data as already binned.
    */
   binned?: boolean;
 }
