@@ -88,7 +88,7 @@ export interface BinParams extends BaseBin {
 /**
  * Create a key for the bin configuration. Not for prebinned bin.
  */
-export function binToString(bin: BinParams | boolean) {
+export function binToString(bin: BinParams | true) {
   if (isBoolean(bin)) {
     bin = normalizeBin(bin, undefined);
   }

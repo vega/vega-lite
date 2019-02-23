@@ -88,15 +88,15 @@ describe('scale', () => {
   describe('getSupportedScaleType', () => {
     it('should return correct scale types for quantitative positional channels', () => {
       const type = Type.QUANTITATIVE;
-      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.POW, ScaleType.SQRT];
+      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT];
 
       // x channel
       let scaleTypes = getSupportedScaleType(Channel.X, type);
-      expect(positionalScaleTypes).toEqual(scaleTypes);
+      expect(positionalScaleTypes).toEqual(expect.arrayContaining(scaleTypes));
 
       // y channel
       scaleTypes = getSupportedScaleType(Channel.Y, Type.QUANTITATIVE);
-      expect(scaleTypes).toEqual(positionalScaleTypes);
+      expect(scaleTypes).toEqual(expect.arrayContaining(positionalScaleTypes));
     });
 
     it('should return correct scale types for quantitative positional channels with bin', () => {
@@ -104,11 +104,15 @@ describe('scale', () => {
 
       // x channel
       let scaleTypes = getSupportedScaleType(Channel.X, type);
-      expect(scaleTypes).toEqual([ScaleType.LINEAR]);
+      expect(scaleTypes).toEqual(
+        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
+      );
 
       // y channel
       scaleTypes = getSupportedScaleType(Channel.Y, type);
-      expect(scaleTypes).toEqual([ScaleType.LINEAR]);
+      expect(scaleTypes).toEqual(
+        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
+      );
     });
 
     it('should return correct scale types for nominal positional channels', () => {

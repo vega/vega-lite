@@ -132,12 +132,12 @@ export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SC
 ]);
 const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'point', 'band'];
+export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'bin-ordinal', 'point', 'band'];
 const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
 
 export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
 
-export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'point' | 'band' {
+export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band' {
   return type in DISCRETE_DOMAIN_INDEX;
 }
 
@@ -776,7 +776,7 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
   if (contains([Type.ORDINAL, Type.NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
   } else if (fieldDefType === Type.TEMPORAL) {
-    return contains([ScaleType.TIME, ScaleType.UTC, ScaleType.LINEAR, undefined], specifiedType);
+    return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
   } else if (fieldDefType === Type.QUANTITATIVE) {
     return contains(
       [
