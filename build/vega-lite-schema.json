@@ -1336,7 +1336,7 @@
           "type": "number"
         },
         "binned": {
-          "description": "When set to true, Vega-Lite trats the input data as binned.",
+          "description": "When set to true, Vega-Lite treats the input data as already binned.",
           "type": "boolean"
         },
         "divide": {
@@ -8558,7 +8558,9 @@
       "type": "string"
     },
     "RangeConfig": {
-      "additionalProperties": false,
+      "additionalProperties": {
+        "$ref": "#/definitions/RangeConfigValue"
+      },
       "properties": {
         "category": {
           "anyOf": [
@@ -8638,14 +8640,6 @@
           "type": "array"
         }
       },
-      "required": [
-        "category",
-        "diverging",
-        "heatmap",
-        "ordinal",
-        "ramp",
-        "symbol"
-      ],
       "type": "object"
     },
     "RangeConfigValue": {
@@ -8804,7 +8798,7 @@
           "type": "boolean"
         },
         "constant": {
-          "description": "The constant of the `symlog` scale.",
+          "description": "A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.\n\n__Default value:__ `1`",
           "type": "number"
         },
         "domain": {
@@ -9221,7 +9215,7 @@
           "type": "number"
         },
         "extent": {
-          "description": "For schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "description": "Determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
           "items": {
             "type": "number"
           },
