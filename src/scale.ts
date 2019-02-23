@@ -417,7 +417,7 @@ export const defaultScaleConfig = {
 
 export interface SchemeParams {
   /**
-   * A color scheme name for ordinal scales (e.g., `"category10"` or `"viridis"`).
+   * A color scheme name for ordinal scales (e.g., `"category10"` or `"blues"`).
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
@@ -538,7 +538,7 @@ export interface Scale {
   rangeStep?: number | null;
 
   /**
-   * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"viridis"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
+   * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"blues"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
    *
    * Discrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.
    *
@@ -698,7 +698,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'interpolate':
       return !contains(['point', 'band', 'identity'], scaleType);
     case 'bins':
-      return !contains(['point', 'band', 'identity', 'ordinal', 'bin-ordinal'], scaleType);
+      return !contains(['point', 'band', 'identity', 'ordinal'], scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'padding':

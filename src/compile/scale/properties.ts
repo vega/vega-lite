@@ -24,6 +24,7 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
+import {SignalRefWrapper} from './../signal';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseUnitScaleRange} from './range';
 
@@ -177,12 +178,13 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
 export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
-    const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
-    return {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`};
+    return new SignalRefWrapper(() => {
+      return model.getName(vgField(fieldDef, {suffix: 'bins'}));
+    });
   } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
-    const scaleName = model.scaleName(channel);
+    // start and stop will be determined from the scale domain
     return {
-      signal: `sequence(domain('${scaleName}')[0], domain('${scaleName}')[1] + ${bin.step}, ${bin.step})`
+      step: bin.step
     };
   }
   return undefined;

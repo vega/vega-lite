@@ -18,7 +18,7 @@ import {
   X,
   Y
 } from '../../channel';
-import {Config, isVgScheme} from '../../config';
+import {Config} from '../../config';
 import {vgField} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -27,7 +27,6 @@ import {
   Domain,
   hasContinuousDomain,
   hasDiscreteDomain,
-  isContinuousToContinuous,
   isContinuousToDiscrete,
   isExtendedScheme,
   Scale,
@@ -279,18 +278,6 @@ function defaultRange(
       if (scaleType === 'ordinal') {
         // Only nominal data uses ordinal scale by default
         return type === 'nominal' ? 'category' : 'ordinal';
-      } else if (isContinuousToDiscrete(scaleType)) {
-        const count = defaultContinuousToDiscreteCount(scaleType, config, domain, channel);
-        if (config.range && isVgScheme(config.range.ordinal)) {
-          return {
-            ...config.range.ordinal,
-            count
-          };
-        } else {
-          return {scheme: 'blues', count};
-        }
-      } else if (isContinuousToContinuous(scaleType)) {
-        return {...config.range.ramp};
       } else {
         return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
       }

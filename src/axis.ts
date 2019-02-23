@@ -1,4 +1,4 @@
-import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontWeight, LabelOverlap, TextBaseline} from 'vega';
+import {Align, Axis as VgAxis, AxisOrient, BaseAxis, FontStyle, FontWeight, LabelOverlap, TextBaseline} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, flagKeys} from './util';
@@ -13,6 +13,7 @@ type BaseAxisNoSignals = AxisMixins &
     string,
     Color,
     FontWeight,
+    FontStyle,
     Align,
     TextBaseline,
     LayoutAlign,
@@ -239,13 +240,14 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   labelFlushOffset: 1,
   labelFont: 1,
   labelFontSize: 1,
+  labelFontStyle: 1,
   labelFontWeight: 1,
   labelLimit: 1,
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
-  labelSeparation: 1,
   labels: 1,
+  labelSeparation: 1,
   maxExtent: 1,
   minExtent: 1,
   offset: 1,
@@ -267,6 +269,7 @@ const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titleColor: 1,
   titleFont: 1,
   titleFontSize: 1,
+  titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
   titleOpacity: 1,

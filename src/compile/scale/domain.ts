@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
-import {isBinning, isBinParams} from '../../bin';
+import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
@@ -272,20 +272,14 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
-      if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
-        return [fieldDef.bin.extent];
+      if (scaleType === 'bin-ordinal') {
+        // we can omit the domain as it is inferred from the `bins` property
+        return [];
       }
 
       if (isBinning(fieldDef.bin)) {
         const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
-        // TODO: make sure to rename the signals in assemble
-        if (scaleType === 'bin-ordinal') {
-          return [
-            {signal: `sequence(${signalName}.start, ${signalName}.stop + ${signalName}.step, ${signalName}.step)`}
-          ];
-        } else {
-          return [{signal: `[${signalName}.start, ${signalName}.stop]`}];
-        }
+        return [{signal: `[${signalName}.start, ${signalName}.stop]`}];
       } else {
         return [
           {
@@ -452,7 +446,9 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     util.hash
   );
 
-  if (uniqueDomains.length === 1) {
+  if (uniqueDomains.length === 0) {
+    return undefined;
+  } else if (uniqueDomains.length === 1) {
     const domain = domains[0];
     if (isDataRefDomain(domain) && sorts.length > 0) {
       let sort = sorts[0];
@@ -555,6 +551,7 @@ export function getFieldFromDomain(domain: VgDomain): string {
 
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent = model.component.scales[channel];
+
   const domains = scaleComponent.domains.map(domain => {
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data

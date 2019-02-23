@@ -1,7 +1,5 @@
 import {Channel, ScaleChannel} from '../../channel';
-import {globalWholeWordRegExp, keys} from '../../util';
 import {keys} from '../../util';
-import {isSignalRef, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
 import {isRawSelectionDomain, selectionScaleDomain} from '../selection/selection';
@@ -33,11 +31,9 @@ export function assembleScalesForModel(model: Model): VgScale[] {
 
       // need to separate const and non const object destruction
       let {domainRaw} = scale;
-      const {name, type, domainRaw: _d, range: _r, bins: _b, ...otherScaleProps} = scale;
+      const {name, type, domainRaw: _d, range: _r, ...otherScaleProps} = scale;
 
       const range = assembleScaleRange(scale.range, name, channel);
-
-      const bins = assembleScaleBins(model, scale.bins);
 
       // As scale parsing occurs before selection parsing, a temporary signal
       // is used for domainRaw. Here, we detect if this temporary signal
@@ -47,13 +43,14 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
+      const domain = assembleDomain(model, channel);
+
       scales.push({
         name,
         type,
-        domain: assembleDomain(model, channel),
+        ...(domain ? {domain} : {}),
         ...(domainRaw ? {domainRaw} : {}),
         range: range,
-        ...(bins ? {bins} : {}),
         ...otherScaleProps
       });
 
@@ -74,12 +71,4 @@ export function assembleScaleRange(scaleRange: VgRange, scaleName: string, chann
     }
   }
   return scaleRange;
-}
-
-export function assembleScaleBins(model: Model, bins: SignalRef | number[]) {
-  if (bins && isSignalRef(bins)) {
-    return bins;
-  }
-
-  return bins;
 }

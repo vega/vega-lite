@@ -175,7 +175,7 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
-  domain: VgDomain;
+  domain?: VgDomain;
   domainRaw?: SignalRef;
   bins?: number[] | SignalRef;
   range: VgRange;
