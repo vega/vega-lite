@@ -6805,10 +6805,22 @@ vega-typings@*, vega-typings@0.3.53, vega-typings@^0.3.51:
   dependencies:
     vega-util "^1.7.0"
 
+vega-typings@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.5.0.tgz#550e308857cf206bfe4a9df5732f3e35112f60b1"
+  integrity sha512-YotiynSXziFDu3xK4BMZIX42yLkO32tM0CrWSMxHUEn1tJGFz2fckVD02i4DJc5p3FUupPNU+Oayj6E7prOd3w==
+  dependencies:
+    vega-util "^1.8.0"
+
 vega-util@^1.7.0, vega-util@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.7.1.tgz#0b95bbe6058895c332596c215247507caa68ab61"
   integrity sha512-jdzigLdaXH0rClqkr/qHY//xvmLyxQyZL4Wxb3mew29QpITrMk/USV6v/399h29xVt1+hJuw1vpLoJqAq6WerA==
+
+vega-util@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.8.0.tgz#a51768e4eb1e70e54ba32b0483d9bda2ddb9dc7d"
+  integrity sha512-SPKAwa4IJW2WGGQhxpzA4JK9tXIU1lTChxgczaeKzf1zf1PKQ+w5deLX3GnnlHXHBEw1nMTp0NZnGal6v9uf4Q==
 
 vega-view-transforms@^2.0.3:
   version "2.0.3"
