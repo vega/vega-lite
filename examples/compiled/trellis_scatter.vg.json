@@ -17,7 +17,7 @@
   "layout": {
     "padding": {"row": 20, "column": 20},
     "offset": {"columnTitle": 10},
-    "columns": {"signal": "length(data('column_domain'))"},
+    "columns": 2,
     "bounds": "full",
     "align": "all"
   },
