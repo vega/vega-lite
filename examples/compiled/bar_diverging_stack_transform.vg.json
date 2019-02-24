@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
   "autosize": "pad",
   "padding": 5,
@@ -345,7 +345,8 @@
         "Agree",
         "Strongly agree"
       ],
-      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"]
+      "range": ["#c30d24", "#f3a583", "#cccccc", "#94c6da", "#1770ab"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [

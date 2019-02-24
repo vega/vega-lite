@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -90,7 +90,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-      "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"]
+      "range": ["#e7ba52", "#c7c7c7", "#aec7e8", "#1f77b4", "#9467bd"],
+      "interpolate": "hcl"
     }
   ],
   "axes": [

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -69,6 +69,7 @@
         "fields": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"step": 1},
       "zero": false
     },
     {
@@ -88,8 +89,7 @@
       "title": "IMDB_Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "(domain('x')[1] - domain('x')[0]) / 1 + 1"},
-      "values": {"signal": "sequence(domain('x')[0], domain('x')[1] + 1, 1)"},
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 1
     },
     {

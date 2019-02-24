@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "the population per state, engineers per state, and hurricanes per state",
   "autosize": "pad",
   "padding": 5,
@@ -233,23 +233,26 @@
   "scales": [
     {
       "name": "child__repeat_row_population_color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "data_0", "field": "population"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     },
     {
       "name": "child__repeat_row_engineers_color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "data_1", "field": "engineers"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     },
     {
       "name": "child__repeat_row_hurricanes_color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "data_2", "field": "hurricanes"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],

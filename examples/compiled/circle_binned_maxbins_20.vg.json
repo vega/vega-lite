@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -93,26 +93,20 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": [
-          "bin_maxbins_20_IMDB_Rating",
-          "bin_maxbins_20_IMDB_Rating_end"
-        ]
+        "signal": "[bin_maxbins_20_IMDB_Rating_bins.start, bin_maxbins_20_IMDB_Rating_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "bin_maxbins_20_IMDB_Rating_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": [
-          "bin_maxbins_20_Rotten_Tomatoes_Rating",
-          "bin_maxbins_20_Rotten_Tomatoes_Rating_end"
-        ]
+        "signal": "[bin_maxbins_20_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_20_Rotten_Tomatoes_Rating_bins.stop]"
       },
       "range": [{"signal": "height"}, 0],
+      "bins": {"signal": "bin_maxbins_20_Rotten_Tomatoes_Rating_bins"},
       "zero": false
     },
     {
@@ -137,9 +131,6 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "values": {
-        "signal": "sequence(bin_maxbins_20_IMDB_Rating_bins.start, bin_maxbins_20_IMDB_Rating_bins.stop + bin_maxbins_20_IMDB_Rating_bins.step, bin_maxbins_20_IMDB_Rating_bins.step)"
-      },
       "zindex": 1
     },
     {
@@ -149,9 +140,6 @@
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "values": {
-        "signal": "sequence(bin_maxbins_20_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_20_Rotten_Tomatoes_Rating_bins.stop + bin_maxbins_20_Rotten_Tomatoes_Rating_bins.step, bin_maxbins_20_Rotten_Tomatoes_Rating_bins.step)"
-      },
       "zindex": 1
     }
   ],

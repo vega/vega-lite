@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -70,7 +70,7 @@
       "name": "color",
       "type": "time",
       "domain": {"data": "source_0", "field": "yearmonth_date"},
-      "range": ["#f7fbff", "#0e427f"],
+      "range": "ramp",
       "interpolate": "hcl"
     }
   ],

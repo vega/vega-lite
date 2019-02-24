@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -104,9 +104,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/10)"},
-          "values": {
-            "signal": "sequence(child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop + child_bin_maxbins_15_Horsepower_bins.step, child_bin_maxbins_15_Horsepower_bins.step)"
-          },
           "zindex": 1
         }
       ]
@@ -177,10 +174,10 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": ["bin_maxbins_15_Horsepower", "bin_maxbins_15_Horsepower_end"]
+        "signal": "[child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop]"
       },
       "range": [0, {"signal": "child_width"}],
+      "bins": {"signal": "child_bin_maxbins_15_Horsepower_bins"},
       "zero": false
     },
     {

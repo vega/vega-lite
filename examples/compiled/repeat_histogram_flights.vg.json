@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -157,9 +157,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_distance_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_bin_maxbins_20_distance_bins.stop + child__repeat_column_distance_bin_maxbins_20_distance_bins.step, child__repeat_column_distance_bin_maxbins_20_distance_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -238,9 +235,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_delay_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_bin_maxbins_20_delay_bins.stop + child__repeat_column_delay_bin_maxbins_20_delay_bins.step, child__repeat_column_delay_bin_maxbins_20_delay_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -316,9 +310,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_time_bin_maxbins_20_time_bins.start, child__repeat_column_time_bin_maxbins_20_time_bins.stop + child__repeat_column_time_bin_maxbins_20_time_bins.step, child__repeat_column_time_bin_maxbins_20_time_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -351,10 +342,12 @@
       "name": "child__repeat_column_distance_x",
       "type": "linear",
       "domain": {
-        "data": "data_0",
-        "fields": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"]
+        "signal": "[child__repeat_column_distance_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_bin_maxbins_20_distance_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {
+        "signal": "child__repeat_column_distance_bin_maxbins_20_distance_bins"
+      },
       "zero": false
     },
     {
@@ -369,10 +362,12 @@
       "name": "child__repeat_column_delay_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"]
+        "signal": "[child__repeat_column_delay_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_bin_maxbins_20_delay_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {
+        "signal": "child__repeat_column_delay_bin_maxbins_20_delay_bins"
+      },
       "zero": false
     },
     {
@@ -387,10 +382,10 @@
       "name": "child__repeat_column_time_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
-        "fields": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"]
+        "signal": "[child__repeat_column_time_bin_maxbins_20_time_bins.start, child__repeat_column_time_bin_maxbins_20_time_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "child__repeat_column_time_bin_maxbins_20_time_bins"},
       "zero": false
     },
     {
