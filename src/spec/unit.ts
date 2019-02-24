@@ -40,18 +40,17 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
- * Unit spec that can be normalized/expanded into a layer spec or another unit spec.
+ * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type CompositeUnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
+export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 
 /**
  * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> &
-  GenericCompositionLayoutWithColumns;
+export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & GenericCompositionLayoutWithColumns;
 
-export type TopLevelUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
+export type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
 
-export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec {
+export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec | NormalizedUnitSpec {
   return !!spec['mark'];
 }
