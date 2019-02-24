@@ -4,7 +4,7 @@
 - [View Specification]({{site.baseurl}}/docs/spec.html)
     - [Documentation Overview]({{site.baseurl}}/docs/spec.html#documentation-overview)
     - [Common Properties of Specifications]({{site.baseurl}}/docs/spec.html#common)
-    - [Top-Level Specifications]({{site.baseurl}}/docs/spec.html#top-level-specifications)
+    - [Top-Level Specifications]({{site.baseurl}}/docs/spec.html#top-level)
     - [Single View Specifications]({{site.baseurl}}/docs/spec.html#single)
     - [Layered and Multi-view Specifications]({{site.baseurl}}/docs/spec.html#layered-and-multi-view-specifications)
     - [View Configuration]({{site.baseurl}}/docs/spec.html#config)

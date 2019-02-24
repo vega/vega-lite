@@ -1,14 +1,13 @@
-import {Encoding} from '../encoding';
-import {RepeatRef} from '../fielddef';
+import {CompositeEncoding} from '../compositemark/index';
 import {Projection} from '../projection';
 import {Resolve} from '../resolve';
-import {BaseSpec, LayoutSizeMixins} from './base';
+import {BaseSpec, LayerUnitMixins} from './base';
 import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayoutSizeMixins {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayerUnitMixins {
   /**
    * Layer or single view specifications to be layered.
    *
@@ -29,7 +28,7 @@ export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */
-  encoding?: Encoding<string | RepeatRef>;
+  encoding?: CompositeEncoding;
 
   /**
    * An object defining properties of the geographic projection shared by underlying layers.

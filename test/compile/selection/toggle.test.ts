@@ -69,7 +69,7 @@ describe('Toggle Selection Transform', () => {
     ]);
 
     const signals = selection.assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining(oneSg.concat(twoSg)));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg]));
   });
 
   it('builds modify expr', () => {
@@ -86,21 +86,11 @@ describe('Toggle Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'one_modify',
-          on: [
-            {
-              events: {signal: 'one_tuple'},
-              update: `modify(\"one_store\", ${oneExpr})`
-            }
-          ]
+          update: `modify(\"one_store\", ${oneExpr})`
         },
         {
           name: 'two_modify',
-          on: [
-            {
-              events: {signal: 'two_tuple'},
-              update: `modify(\"two_store\", ${twoExpr})`
-            }
-          ]
+          update: `modify(\"two_store\", ${twoExpr})`
         }
       ])
     );

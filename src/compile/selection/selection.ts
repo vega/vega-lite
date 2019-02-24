@@ -1,12 +1,21 @@
 import {Binding, NewSignal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {isString, stringValue} from 'vega-util';
-import {Channel, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {identity, isArray, isString, stringValue} from 'vega-util';
+import {Channel, FACET_CHANNELS, ScaleChannel, SingleDefChannel, X, Y} from '../../channel';
+import {dateTimeExpr, isDateTime} from '../../datetime';
 import {warn} from '../../log';
 import {LogicalOperand} from '../../logical';
-import {BrushConfig, SELECTION_ID, SelectionDef, SelectionResolution, SelectionType} from '../../selection';
+import {
+  BrushConfig,
+  SELECTION_ID,
+  SelectionDef,
+  SelectionInit,
+  SelectionInitArray,
+  SelectionResolution,
+  SelectionType
+} from '../../selection';
 import {accessPathWithDatum, Dict, duplicate, keys, logicalExpr, varName} from '../../util';
-import {VgData, VgEventStream} from '../../vega.schema';
+import {EventStream, VgData} from '../../vega.schema';
 import {DataFlowNode} from '../data/dataflow';
 import {TimeUnitNode} from '../data/timeunit';
 import {FacetModel} from '../facet';
@@ -25,10 +34,18 @@ export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
-export interface SelectionComponent {
+export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: string;
-  type: SelectionType;
-  events: VgEventStream;
+  type: T;
+
+  // Use conditional typing (https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html)
+  // so we have stricter type of init (as the type of init depends on selection type)
+  init?: (T extends 'interval'
+    ? SelectionInitArray //
+    : T extends 'single'
+    ? SelectionInit
+    : SelectionInit | SelectionInit[])[]; // multi
+  events: EventStream;
   // predicate?: string;
   bind?: 'scales' | Binding | Dict<Binding>;
   resolve: SelectionResolution;
@@ -58,15 +75,15 @@ export interface ProjectSelectionComponent {
   type: TupleStoreType;
 }
 
-export interface SelectionCompiler {
-  signals: (model: UnitModel, selCmpt: SelectionComponent) => NewSignal[];
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent, signals: NewSignal[]) => NewSignal[];
-  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent) => string;
-  marks?: (model: UnitModel, selCmpt: SelectionComponent, marks: any[]) => any[];
+export interface SelectionCompiler<T extends SelectionType = SelectionType> {
+  signals: (model: UnitModel, selCmpt: SelectionComponent<T>) => NewSignal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
+  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent<T>) => string;
+  marks?: (model: UnitModel, selCmpt: SelectionComponent<T>, marks: any[]) => any[];
 }
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
-  const selCmpts: Dict<SelectionComponent> = {};
+  const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
   if (selDefs) {
@@ -136,12 +153,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: any[]) {
 
     signals.push({
       name: name + MODIFY,
-      on: [
-        {
-          events: {signal: name + TUPLE},
-          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
-        }
-      ]
+      update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
     });
   });
 
@@ -359,11 +371,14 @@ function getFacetModel(model: Model): FacetModel {
 
 export function unitName(model: Model) {
   let name = stringValue(model.name);
-  const facet = getFacetModel(model);
-  if (facet) {
-    name +=
-      (facet.facet.row ? ` + '_' + (${accessPathWithDatum(facet.vgField('row'), 'facet')})` : '') +
-      (facet.facet.column ? ` + '_' + (${accessPathWithDatum(facet.vgField('column'), 'facet')})` : '');
+  const facetModel = getFacetModel(model);
+  if (facetModel) {
+    const {facet} = facetModel;
+    for (const channel of FACET_CHANNELS) {
+      if (facet[channel]) {
+        name += ` + '__facet_${channel}_' + (${accessPathWithDatum(facetModel.vgField(channel), 'facet')})`;
+      }
+    }
   }
   return name;
 }
@@ -409,4 +424,17 @@ export function positionalProjections(selCmpt: SelectionComponent) {
     }
   });
   return {x, xi, y, yi};
+}
+
+export function assembleInit(
+  init: (SelectionInit | SelectionInit[] | SelectionInitArray)[] | SelectionInit,
+  wrap: (str: string) => string = identity
+): string {
+  if (isArray(init)) {
+    const str = init.map(v => assembleInit(v, wrap)).join(', ');
+    return `[${str}]`;
+  } else if (isDateTime(init)) {
+    return wrap(dateTimeExpr(init));
+  }
+  return wrap(JSON.stringify(init));
 }

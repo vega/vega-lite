@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -140,13 +140,16 @@
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "Horsepower", "channel": "x", "type": "R"},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "brush_translate_anchor",
@@ -225,12 +228,7 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     }
   ],
   "marks": [
@@ -370,13 +368,14 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Cylinders"},
-      "range": [0, 324],
+      "range": [0, 361],
       "zero": true
     }
   ],

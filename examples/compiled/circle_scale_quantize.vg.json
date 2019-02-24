@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 20,
@@ -67,14 +66,17 @@
       "name": "color",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "blues", "count": 4},
-      "zero": true
+      "range": "ramp",
+      "zero": true,
+      "interpolate": "hcl"
     },
     {
       "name": "size",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": [9, 114, 219, 324],
+      "range": {
+        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+      },
       "zero": false
     }
   ],

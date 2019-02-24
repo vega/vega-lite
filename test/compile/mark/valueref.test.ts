@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 import {getOffset, midPoint} from '../../../src/compile/mark/valueref';
-import {FieldDef} from '../../../src/fielddef';
+import {TypedFieldDef} from '../../../src/fielddef';
 import {MarkDef} from '../../../src/mark';
 
 describe('compile/mark/valueref', () => {
@@ -27,8 +27,8 @@ describe('compile/mark/valueref', () => {
       expect(ref).toEqual({field: {group: 'height'}});
     });
     it('should return correct value for binned data', () => {
-      const fieldDef: FieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
-      const fieldDef2: FieldDef<string> = {field: 'bin_end', type: 'quantitative'};
+      const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
+      const fieldDef2: TypedFieldDef<string> = {field: 'bin_end', type: 'quantitative'};
       const ref = midPoint('x', fieldDef, fieldDef2, 'x', undefined, undefined, undefined);
       expect(ref).toEqual({signal: 'scale("x", (datum["bin_start"] + datum["bin_end"]) / 2)'});
     });

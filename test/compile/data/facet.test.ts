@@ -189,7 +189,7 @@ describe('compile/data/facet', () => {
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
-          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'a'}}
+          column: {field: 'c', type: 'nominal', sort: {field: 'a'}}
         },
         spec: {
           mark: 'rect',
@@ -211,8 +211,8 @@ describe('compile/data/facet', () => {
             type: 'aggregate',
             groupby: ['c'],
             fields: ['a'],
-            ops: ['median'],
-            as: ['median_a']
+            ops: ['mean'],
+            as: ['a']
           }
         ]
       });

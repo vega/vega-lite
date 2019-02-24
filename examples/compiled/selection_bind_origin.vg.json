@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -19,7 +19,7 @@
     },
     {
       "name": "org_Origin",
-      "value": "",
+      "value": null,
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -33,19 +33,8 @@
       "name": "org_tuple",
       "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
     },
-    {
-      "name": "org_tuple_fields",
-      "update": "[{\"field\":\"Origin\",\"type\":\"E\"}]"
-    },
-    {
-      "name": "org_modify",
-      "on": [
-        {
-          "events": {"signal": "org_tuple"},
-          "update": "modify(\"org_store\", org_tuple, true)"
-        }
-      ]
-    }
+    {"name": "org_tuple_fields", "value": [{"field": "Origin", "type": "E"}]},
+    {"name": "org_modify", "update": "modify(\"org_store\", org_tuple, true)"}
   ],
   "marks": [
     {
@@ -105,7 +94,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "ordinal"
+      "range": "ordinal",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

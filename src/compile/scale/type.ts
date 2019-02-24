@@ -1,7 +1,6 @@
-import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
-import {FieldDef} from '../../fielddef';
+import {TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleConfig, ScaleType, scaleTypeSupportDataType} from '../../scale';
@@ -17,7 +16,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   mark: Mark,
   scaleConfig: ScaleConfig
 ): ScaleType {
@@ -36,7 +35,7 @@ export function scaleType(
     }
 
     // Check if explicitly specified scale type is supported by the data type
-    if (!scaleTypeSupportDataType(type, fieldDef.type, fieldDef.bin)) {
+    if (!scaleTypeSupportDataType(type, fieldDef.type)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
       return defaultScaleType;
     }
@@ -53,7 +52,7 @@ export function scaleType(
 // NOTE: Voyager uses this method.
 function defaultType(
   channel: Channel,
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   mark: Mark,
   specifiedScale: Scale,
   scaleConfig: ScaleConfig
@@ -97,26 +96,13 @@ function defaultType(
           return 'bin-ordinal';
         }
 
-        const {domain = undefined, range = undefined} = specifiedScale || {};
-        if (domain && isArray(domain) && domain.length > 2 && (range && isArray(range) && range.length > 2)) {
-          // If there are piecewise domain and range specified, use linear as default color scale as sequential does not support piecewise domain
-          return 'linear';
-        }
-
-        // Use `sequential` as the default color scale for continuous data
-        // since it supports both array range and scheme range.
-        return 'sequential';
+        return 'linear';
       } else if (rangeType(channel) === 'discrete') {
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
       }
 
-      // x and y use a linear scale because selections don't work with bin scales.
-      // Binned scales apply discretization but pan/zoom apply transformations to a [min, max] extent domain.
-      if (isBinning(fieldDef.bin) && channel !== 'x' && channel !== 'y') {
-        return 'bin-linear';
-      }
       return 'linear';
 
     case 'geojson':

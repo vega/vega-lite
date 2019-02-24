@@ -3,12 +3,13 @@ import {isArray} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY, SHAPE} from '../../channel';
 import {
   Conditional,
-  FieldDef,
   FieldDefWithCondition,
   hasConditionalValueDef,
   isTimeFieldDef,
   isValueDef,
   MarkPropFieldDef,
+  TypedFieldDef,
+  Value,
   ValueDef,
   ValueDefWithCondition
 } from '../../fielddef';
@@ -28,7 +29,7 @@ function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChanne
 }
 
 export function symbols(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   symbolsSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -131,7 +132,7 @@ export function symbols(
 }
 
 export function gradient(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   gradientSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -154,7 +155,7 @@ export function gradient(
 }
 
 export function labels(
-  fieldDef: FieldDef<string>,
+  fieldDef: TypedFieldDef<string>,
   labelsSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,
@@ -187,23 +188,27 @@ export function labels(
 }
 
 function getMaxValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, number>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, number>
 ) {
-  return getConditionValue(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
+  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
 function getFirstConditionValue(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>
+  channelDef:
+    | FieldDefWithCondition<MarkPropFieldDef<string>, Value>
+    | ValueDefWithCondition<MarkPropFieldDef<string>, Value>
 ) {
   return getConditionValue(channelDef, (v: number, conditionalDef) => {
     return getFirstDefined(v, conditionalDef.value);
   });
 }
 
-function getConditionValue<T>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>> | ValueDefWithCondition<MarkPropFieldDef<string>>,
-  reducer: (val: T, conditionalDef: Conditional<ValueDef>) => T
-): T {
+function getConditionValue<V extends Value>(
+  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
+  reducer: (val: V, conditionalDef: Conditional<ValueDef>) => V
+): V {
   if (hasConditionalValueDef(channelDef)) {
     return (isArray(channelDef.condition) ? channelDef.condition : [channelDef.condition]).reduce(
       reducer,

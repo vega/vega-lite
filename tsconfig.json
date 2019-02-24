@@ -22,12 +22,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "typeRoots" : ["./node_modules/@types", "./typings"]
+    "typeRoots": ["./node_modules/@types", "./typings"]
   },
   "files": ["src/index.ts"],
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "test-runtime/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts"]
 }

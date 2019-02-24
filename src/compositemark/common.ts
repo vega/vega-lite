@@ -1,11 +1,20 @@
 import {isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
-import {Channel} from '../channel';
-import {Encoding, reduce} from '../encoding';
-import {Field, FieldDef, FieldDefWithoutScale, isContinuous, isFieldDef, PositionFieldDef} from '../fielddef';
+import {Encoding, fieldDefs} from '../encoding';
+import {
+  Field,
+  FieldDefBase,
+  FieldDefWithoutScale,
+  isContinuous,
+  isFieldDef,
+  PositionFieldDef,
+  SecondaryFieldDef,
+  TextFieldDef
+} from '../fielddef';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
+import {StandardType} from '../type';
 import {Orient} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
@@ -23,6 +32,41 @@ export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
     clip?: boolean;
   };
 
+export interface CompositeMarkTooltipSummary {
+  /**
+   * The prefix of the field to be shown in tooltip
+   */
+  fieldPrefix: string;
+
+  /**
+   * The title prefix to show, corresponding to the field with field prefix `fieldPrefix`
+   */
+  titlePrefix: string;
+}
+
+export function getCompositeMarkTooltip(
+  tooltipSummary: CompositeMarkTooltipSummary[],
+  continuousAxisChannelDef: PositionFieldDef<string>,
+  encodingWithoutContinuousAxis: Encoding<string>,
+  withFieldName: boolean = true
+): Encoding<string> {
+  const fiveSummaryTooltip: TextFieldDef<string>[] = tooltipSummary.map(
+    ({fieldPrefix, titlePrefix}): TextFieldDef<string> => ({
+      field: fieldPrefix + continuousAxisChannelDef.field,
+      type: continuousAxisChannelDef.type,
+      title: titlePrefix + (withFieldName ? ' of ' + continuousAxisChannelDef.field : '')
+    })
+  );
+
+  return {
+    tooltip: [
+      ...fiveSummaryTooltip,
+      // need to cast because TextFieldDef support fewer types of bin
+      ...(fieldDefs(encodingWithoutContinuousAxis) as TextFieldDef<string>[])
+    ]
+  };
+}
+
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
   compositeMarkDef: GenericCompositeMarkDef<any> & P,
   continuousAxis: 'x' | 'y',
@@ -32,13 +76,19 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
 ) {
   const {scale, axis} = continuousAxisChannelDef;
 
-  return (
-    partName: keyof P,
-    mark: Mark | MarkDef,
-    positionPrefix: string,
-    endPositionPrefix: string = undefined,
-    extraEncoding: Encoding<string> = {}
-  ) => {
+  return ({
+    partName,
+    mark,
+    positionPrefix,
+    endPositionPrefix = undefined,
+    extraEncoding = {}
+  }: {
+    partName: keyof P;
+    mark: Mark | MarkDef;
+    positionPrefix: string;
+    endPositionPrefix?: string;
+    extraEncoding?: Encoding<string>;
+  }) => {
     const title =
       axis && axis.title !== undefined
         ? undefined
@@ -106,25 +156,18 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   compositeMark: M
 ): {
   continuousAxisChannelDef: PositionFieldDef<string>;
-  continuousAxisChannelDef2: FieldDef<string>;
-  continuousAxisChannelDefError: FieldDef<string>;
-  continuousAxisChannelDefError2: FieldDef<string>;
+  continuousAxisChannelDef2: SecondaryFieldDef<string>;
+  continuousAxisChannelDefError: FieldDefWithoutScale<string, StandardType>;
+  continuousAxisChannelDefError2: FieldDefWithoutScale<string, StandardType>;
   continuousAxis: 'x' | 'y';
 } {
   const {encoding} = spec;
+  const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
-  let continuousAxisChannelDef: PositionFieldDef<string>;
-  let continuousAxisChannelDef2: FieldDefWithoutScale<string>;
-  let continuousAxisChannelDefError: FieldDefWithoutScale<string>;
-  let continuousAxisChannelDefError2: FieldDefWithoutScale<string>;
-  let continuousAxis: 'x' | 'y';
-
-  continuousAxis = orient === 'vertical' ? 'y' : 'x';
-
-  continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-  continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as FieldDefWithoutScale<string>;
-  continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
-  continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
+  const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
+  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as FieldDefWithoutScale<string>;
+  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as FieldDefWithoutScale<string>;
 
   return {
     continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
@@ -135,16 +178,16 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   };
 }
 
-function filterAggregateFromChannelDef<M extends CompositeMark>(
-  continuousAxisChannelDef: FieldDef<string>,
+function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldDefBase<string>>(
+  continuousAxisChannelDef: F,
   compositeMark: M
-): FieldDef<string> {
+): F {
   if (isFieldDef(continuousAxisChannelDef) && continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
       log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
     }
-    return continuousAxisWithoutAggregate;
+    return continuousAxisWithoutAggregate as F;
   } else {
     return continuousAxisChannelDef;
   }
@@ -185,26 +228,4 @@ export function compositeMarkOrient<M extends CompositeMark>(
     // Neither x nor y is continuous.
     throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
   }
-}
-
-export function filterUnsupportedChannels<M extends CompositeMark, MD extends GenericCompositeMarkDef<M>>(
-  spec: GenericUnitSpec<Encoding<string>, M | MD>,
-  supportedChannels: Channel[],
-  compositeMark: M
-): GenericUnitSpec<Encoding<string>, M | MD> {
-  return {
-    ...spec,
-    encoding: reduce(
-      spec.encoding,
-      (newEncoding, fieldDef, channel) => {
-        if (supportedChannels.indexOf(channel) > -1) {
-          newEncoding[channel] = fieldDef;
-        } else {
-          log.warn(log.message.incompatibleChannel(channel, compositeMark));
-        }
-        return newEncoding;
-      },
-      {}
-    )
-  };
 }

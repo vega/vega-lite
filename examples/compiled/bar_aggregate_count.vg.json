@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -34,8 +34,8 @@
             "bin_maxbins_10_precipitation_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -50,13 +50,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"precipitation (binned)\": datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"precipitation (binned)\": datum[\"bin_maxbins_10_precipitation\"] === null || isNaN(datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {
             "scale": "x",
@@ -64,7 +64,7 @@
             "offset": 1
           },
           "x": {"scale": "x", "field": "bin_maxbins_10_precipitation_end"},
-          "y": {"scale": "y", "field": "count_*"},
+          "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -75,19 +75,16 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": [
-          "bin_maxbins_10_precipitation",
-          "bin_maxbins_10_precipitation_end"
-        ]
+        "signal": "[bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "bin_maxbins_10_precipitation_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "domain": {"data": "source_0", "field": "__count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -101,10 +98,7 @@
       "title": "precipitation (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
-      "values": {
-        "signal": "sequence(bin_maxbins_10_precipitation_bins.start, bin_maxbins_10_precipitation_bins.stop + bin_maxbins_10_precipitation_bins.step, bin_maxbins_10_precipitation_bins.step)"
-      },
+      "tickCount": {"signal": "ceil(width/10)"},
       "zindex": 1
     },
     {

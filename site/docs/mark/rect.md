@@ -5,9 +5,7 @@ title: Rect
 permalink: /docs/rect.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -30,9 +28,7 @@ The `rect` mark represents an arbitrary rectangle.
 
 ## Rect Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -79,9 +75,7 @@ We can also use `rect` to show a band covering one standard deviation over and b
 
 ## Rect Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

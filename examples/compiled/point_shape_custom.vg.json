@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot with custom star shapes.",
   "autosize": "pad",
   "padding": 5,
@@ -66,13 +66,14 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Weight_in_lbs"},
-      "range": [0, 324],
+      "range": [0, 361],
       "zero": true
     }
   ],

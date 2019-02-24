@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
   "autosize": "pad",
   "padding": 5,
@@ -50,8 +50,8 @@
             "bin_maxbins_10_Horsepower_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     },
@@ -98,8 +98,8 @@
             "bin_maxbins_10_Horsepower_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -114,13 +114,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"All Cars\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"All Cars\": format(datum[\"__count\"], \"\")}"
           },
           "x": {
             "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
@@ -128,7 +128,7 @@
           "y": {
             "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
           },
-          "size": {"scale": "size", "field": "count_*"},
+          "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
       }
@@ -142,13 +142,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) || datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"value": "firebrick"}
           ],
           "tooltip": {
-            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Cars from Japan\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Acceleration (binned)\": datum[\"bin_maxbins_10_Acceleration\"] === null || isNaN(datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\"), \"Horsepower (binned)\": datum[\"bin_maxbins_10_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\"), \"Cars from Japan\": format(datum[\"__count\"], \"\")}"
           },
           "x": {
             "signal": "scale(\"x\", (datum[\"bin_maxbins_10_Acceleration\"] + datum[\"bin_maxbins_10_Acceleration_end\"]) / 2)"
@@ -156,7 +156,7 @@
           "y": {
             "signal": "scale(\"y\", (datum[\"bin_maxbins_10_Horsepower\"] + datum[\"bin_maxbins_10_Horsepower_end\"]) / 2)"
           },
-          "size": {"scale": "size", "field": "count_*"},
+          "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
       }
@@ -168,13 +168,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration_end"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration_end"}
+          {
+            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
@@ -182,13 +185,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Horsepower"},
-          {"data": "data_0", "field": "bin_maxbins_10_Horsepower_end"},
-          {"data": "data_1", "field": "bin_maxbins_10_Horsepower"},
-          {"data": "data_1", "field": "bin_maxbins_10_Horsepower_end"}
+          {
+            "signal": "[layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
+          }
         ]
       },
       "range": [{"signal": "height"}, 0],
+      "bins": {"signal": "layer_0_bin_maxbins_10_Horsepower_bins"},
       "zero": false
     },
     {
@@ -196,11 +202,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "count_*"},
-          {"data": "data_1", "field": "count_*"}
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
-      "range": [0, 324],
+      "range": [
+        0,
+        {
+          "signal": "pow(0.95 * min(width / ((layer_0_bin_maxbins_10_Acceleration_bins.stop - layer_0_bin_maxbins_10_Acceleration_bins.start) / layer_0_bin_maxbins_10_Acceleration_bins.step), height / ((layer_0_bin_maxbins_10_Horsepower_bins.stop - layer_0_bin_maxbins_10_Horsepower_bins.start) / layer_0_bin_maxbins_10_Horsepower_bins.step)), 2)"
+        }
+      ],
       "zero": true
     }
   ],
@@ -212,10 +223,7 @@
       "title": "Acceleration (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/20)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
-      },
+      "tickCount": {"signal": "ceil(width/10)"},
       "zindex": 1
     },
     {
@@ -224,10 +232,7 @@
       "grid": false,
       "title": "Horsepower (binned)",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/20)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop + layer_0_bin_maxbins_10_Horsepower_bins.step, layer_0_bin_maxbins_10_Horsepower_bins.step)"
-      },
+      "tickCount": {"signal": "ceil(height/10)"},
       "zindex": 1
     }
   ],

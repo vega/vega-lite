@@ -1,7 +1,6 @@
 import {toSet} from 'vega-util';
-import {isMarkDef} from './mark';
-import {BAR} from './mark';
-import {FacetedCompositeUnitSpec} from './spec';
+import {BAR, isMarkDef} from './mark';
+import {FacetedCompositeUnitSpec} from './spec/unit';
 
 // TODO: move to vl.spec.validator?
 export interface RequiredChannelMap {

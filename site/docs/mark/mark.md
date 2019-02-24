@@ -11,9 +11,7 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -31,9 +29,9 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 - TOC
 {:toc}
 
-## Mark Types
-
 {:#types}
+
+## Mark Types
 
 Vega-Lite supports the following primitive `mark` types: [`"area"`](area.html), [`"bar"`](bar.html), [`"circle"`](circle.html), [`"line"`](line.html), [`"point"`](point.html), [`"rect"`](rectangle.html), [`"rule"`](rule.html), [`"square"`](square.html), [`"text"`](text.html), [`"tick"`](tick.html), and [`"geoshape"`](geoshape.html). In general, one mark instance is generated per input data element. However, line and area marks represent multiple data elements as a contiguous line or shape.
 
@@ -43,13 +41,11 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 <span class="vl-example" data-name="bar"></span>
 
-## Mark Definition Object
-
 {:#mark-def}
 
-{: .suppress-error}
+## Mark Definition Object
 
-```json
+```js
 // Single View Specification
 {
   ...
@@ -105,9 +101,7 @@ Marks can act as hyperlinks when the `href` property or [channel](encoding.html#
 
 ## Mark Style Config
 
-{: .suppress-error}
-
-```json
+```js
 {
   // Top Level Specification
   "config": {
@@ -124,8 +118,6 @@ In addition to the default mark properties above, default values can be further 
 {% include table.html props="style" source="Config" %}
 
 For example, to set a default shape and stroke width for `point` marks with a style named `"triangle"`:
-
-{: .suppress-error}
 
 ```json
 {
@@ -157,9 +149,7 @@ See also: [a similar example that uses mark definition to configure offset, alig
 
 ## Mark Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

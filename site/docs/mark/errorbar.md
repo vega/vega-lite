@@ -5,9 +5,7 @@ title: Error Bar
 permalink: /docs/errorbar.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -117,7 +115,7 @@ Under the hood, the `errorbar` mark is a [composite mark](mark.html#composite-ma
 
 We can customize different parts of the error bar [mark definition](#properties) or [config](#config).
 
-For example, we can add the error bar's end ticks and customize it by setting `ticks` to `true` or adding a mark property to `ticks`, such as setting `color` to `"blue"`:
+For example, we can add the error bar's end ticks and customize it by setting `ticks` to `true` or adding a mark property to `ticks`, such as setting `color` to `"teal"`:
 
 <div class="vl-example" data-name="layer_point_errorbar_2d_horizontal_custom_ticks"></div>
 
@@ -133,9 +131,7 @@ Here is an example of a `errorbar` with the `color` encoding channel set to `{"v
 
 ## Mark Config
 
-{: .suppress-error}
-
-```json
+```js
 {
   "errorbar": {
     "extent": ...,

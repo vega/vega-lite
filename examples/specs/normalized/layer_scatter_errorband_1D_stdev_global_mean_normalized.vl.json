@@ -45,7 +45,24 @@
               "type": "quantitative",
               "title": "Miles per Gallon"
             },
-            "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"}
+            "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
+            "tooltip": [
+              {
+                "field": "center_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Mean of Miles_per_Gallon"
+              },
+              {
+                "field": "upper_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Mean + stdev of Miles_per_Gallon"
+              },
+              {
+                "field": "lower_Miles_per_Gallon",
+                "type": "quantitative",
+                "title": "Mean - stdev of Miles_per_Gallon"
+              }
+            ]
           }
         }
       ]

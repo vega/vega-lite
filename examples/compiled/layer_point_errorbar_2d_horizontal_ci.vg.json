@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -13,9 +13,9 @@
         {
           "type": "aggregate",
           "groupby": ["variety"],
-          "ops": ["mean", "ci0", "ci1"],
-          "fields": ["yield", "yield", "yield"],
-          "as": ["mean_yield", "lower_yield", "upper_yield"]
+          "ops": ["mean", "mean", "ci0", "ci1"],
+          "fields": ["yield", "yield", "yield", "yield"],
+          "as": ["mean_yield", "center_yield", "lower_yield", "upper_yield"]
         }
       ]
     }
@@ -40,7 +40,7 @@
             {"value": "black"}
           ],
           "tooltip": {
-            "signal": "{\"yield\": format(datum[\"lower_yield\"], \"\"), \"upper_yield\": format(datum[\"upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"Ci1 of yield\": format(datum[\"upper_yield\"], \"\"), \"Ci0 of yield\": format(datum[\"lower_yield\"], \"\"), \"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5},

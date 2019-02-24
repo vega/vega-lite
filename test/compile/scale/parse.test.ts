@@ -310,7 +310,7 @@ describe('src/compile', () => {
 
       const scale = model.getScaleComponent('color');
 
-      it('should create sequential color scale', () => {
+      it('should create linear color scale', () => {
         expect(scale.implicit.name).toEqual('color');
         expect(scale.implicit.type).toEqual('ordinal');
 
@@ -336,7 +336,7 @@ describe('src/compile', () => {
 
       it('should create linear color scale', () => {
         expect(scale.implicit.name).toEqual('color');
-        expect(scale.implicit.type).toEqual('sequential');
+        expect(scale.implicit.type).toEqual('linear');
         expect(scale.implicit.range).toEqual('ramp');
 
         expect(scale.domains).toEqual([
@@ -361,6 +361,7 @@ describe('src/compile', () => {
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('color');
         expect(scale.implicit.type).toEqual('bin-ordinal');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -377,6 +378,7 @@ describe('src/compile', () => {
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('color');
         expect(scale.implicit.type).toEqual('ordinal');
+        expect(scale.implicit.bins).toBeUndefined();
       });
     });
 
@@ -392,7 +394,8 @@ describe('src/compile', () => {
 
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('opacity');
-        expect(scale.implicit.type).toEqual('bin-linear');
+        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 
@@ -408,7 +411,8 @@ describe('src/compile', () => {
 
       it('should add correct scales', () => {
         expect(scale.implicit.name).toEqual('size');
-        expect(scale.implicit.type).toEqual('bin-linear');
+        expect(scale.implicit.type).toEqual('linear');
+        expect(scale.implicit.bins).toMatchObject({signal: 'bin_maxbins_6_origin_bins'});
       });
     });
 

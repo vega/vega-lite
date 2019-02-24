@@ -18,9 +18,7 @@ To stack fields in Vega-Lite, users can either use the `stack` property of an [e
 
 ## Stack in Encoding Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -113,9 +111,7 @@ Since `line` marks are not stacked by default, to layer lines on top of stacked 
 
 ## Stack Transform
 
-{: .suppress-error}
-
-```json
+```js
 // A View Specification
 {
   ...

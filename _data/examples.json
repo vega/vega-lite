@@ -110,7 +110,8 @@
       {
         "name": "circle_natural_disasters",
         "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes)",
-        "title": "Bubble Plot (Natural Disasters)"
+        "title": "Bubble Plot (Natural Disasters)",
+        "png": true
       },
       {
         "name": "text_scatterplot_colored",
@@ -240,24 +241,25 @@
         "title": "Calculate Percentage of Total"
       },
       {
-        "name": "window_mean_difference",
+        "name": "joinaggregate_mean_difference",
         "title": "Calculate Difference from Average"
       },
       {
-        "name": "window_mean_difference_by_year",
+        "name": "joinaggregate_mean_difference_by_year",
         "title": "Calculate Difference from Annual Average"
       },
       {
-        "name": "window_residual_graph",
+        "name": "joinaggregate_residual_graph",
         "title": "Calculate Residuals",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "style": "background-size: auto 105%; background-position: center center !important;",
+        "png": true
       },
       {
         "name": "window_rank",
         "title": "Line Charts Showing Ranks Over Time"
       },
       {
-        "name": "window_sum_waterfall_chart",
+        "name": "waterfall_chart",
         "title": "Waterfall Chart of Monthly Profit and Loss"
       },
       {
@@ -274,7 +276,8 @@
       {
         "name": "area_cumulative_freq",
         "title": "Cumulative Frequency Distribution",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "style": "background-size: auto 105%; background-position: center center !important;",
+        "png": true
       },
       {
         "name": "layer_cumulative_histogram",
@@ -393,7 +396,8 @@
       },
       {
         "name": "trellis_scatter",
-        "title": "Trellis Scatter Plot"
+        "title": "Trellis Scatter Plot",
+        "png": true
       },
       {
         "name": "trellis_bar_histogram",
@@ -489,7 +493,8 @@
       {
         "name": "geo_layer_line_london",
         "title": "London Tube Lines",
-        "description": "This example was created by Jo Wood"
+        "description": "This example was created by Jo Wood",
+        "png": true
       }
     ]
   },
@@ -514,7 +519,8 @@
       },
       {
         "name": "interactive_paintbrush",
-        "title": "Paintbrush Highlight"
+        "title": "Paintbrush Highlight",
+        "png": true
       },
       {
         "name": "selection_translate_scatterplot_drag",
@@ -532,17 +538,20 @@
       {
         "name": "interactive_multi_line_label",
         "title": "Multi Series Line Chart with Labels",
-        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)"
+        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)",
+        "png": true
       },
       {
         "name": "interactive_multi_line_tooltip",
         "title": "Multi Series Line Chart with Tooltip",
-        "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements."
+        "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements.",
+        "png": true
       },
       {
         "name": "isotype_grid",
         "title": "Isotype Grid",
-        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)"
+        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by [@jwoLondon](https://github.com/jwoLondon)",
+        "png": true
       }
     ],
     "Interactive Multi-View Displays": [
@@ -566,7 +575,8 @@
       {
         "name": "interactive_seattle_weather",
         "title": "Seattle Weather Exploration",
-        "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp."
+        "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp.",
+        "png": true
       }
     ]
   }

@@ -41,6 +41,16 @@ describe('Inputs Selection Transform', () => {
     six: {
       type: 'interval',
       bind: 'scales'
+    },
+    seven: {
+      type: 'single',
+      fields: ['Year'],
+      bind: {
+        Year: {input: 'range', min: 1970, max: 1980, step: 1}
+      },
+      init: {
+        Year: {year: 1970, month: 1, day: 1}
+      }
     }
   });
 
@@ -50,6 +60,7 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['three'])).toBeTruthy();
     expect(inputs.has(selCmpts['four'])).toBeFalsy();
     expect(inputs.has(selCmpts['six'])).toBeFalsy();
+    expect(inputs.has(selCmpts['seven'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -61,7 +72,7 @@ describe('Inputs Selection Transform', () => {
 
     expect(selection.assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
-      value: '',
+      value: null,
       on: [
         {
           events: [{source: 'scope', type: 'click'}],
@@ -84,7 +95,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'two_Horsepower',
-          value: '',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -95,7 +106,7 @@ describe('Inputs Selection Transform', () => {
         },
         {
           name: 'two_Cylinders',
-          value: '',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -120,7 +131,7 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'three_Origin',
-          value: '',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -135,7 +146,7 @@ describe('Inputs Selection Transform', () => {
         },
         {
           name: 'three_Cylinders',
-          value: '',
+          value: null,
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
@@ -150,6 +161,34 @@ describe('Inputs Selection Transform', () => {
               options: ['Japan', 'USA', 'Europe']
             }
           }
+        }
+      ])
+    );
+  });
+
+  it('respects initialization', () => {
+    model.component.selection = {seven: selCmpts['seven']};
+    expect(selection.assembleUnitSelectionSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'seven_tuple',
+          update: 'seven_Year !== null ? {fields: seven_tuple_fields, values: [seven_Year]} : null'
+        }
+      ])
+    );
+
+    expect(selection.assembleTopLevelSignals(model, [])).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'seven_Year',
+          init: 'datetime(1970, 1, 1+1, 0, 0, 0, 0)',
+          on: [
+            {
+              events: [{source: 'scope', type: 'click'}],
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["Year"] : null'
+            }
+          ],
+          bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])
     );

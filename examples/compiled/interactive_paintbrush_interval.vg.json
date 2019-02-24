@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Select multiple points by dragging an interval.",
   "autosize": "pad",
   "padding": 5,
@@ -144,13 +144,16 @@
             {"signal": "paintbrush_Horsepower"},
             {"signal": "paintbrush_Miles_per_Gallon"}
           ],
-          "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower, paintbrush_Miles_per_Gallon]} : null"
+          "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower,paintbrush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "paintbrush_tuple_fields",
-      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "Horsepower", "channel": "x", "type": "R"},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "paintbrush_translate_anchor",
@@ -227,12 +230,7 @@
     },
     {
       "name": "paintbrush_modify",
-      "on": [
-        {
-          "events": {"signal": "paintbrush_tuple"},
-          "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"paintbrush_store\", paintbrush_tuple, true)"
     }
   ],
   "marks": [

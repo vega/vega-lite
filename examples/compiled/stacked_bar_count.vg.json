@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -19,15 +19,15 @@
           "type": "aggregate",
           "groupby": ["month_date", "weather"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         },
         {
           "type": "stack",
           "groupby": ["month_date"],
-          "field": "count_*",
+          "field": "__count",
           "sort": {"field": ["weather"], "order": ["descending"]},
-          "as": ["count_*_start", "count_*_end"],
+          "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
       ]
@@ -50,18 +50,18 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {"scale": "color", "field": "weather"}
           ],
           "tooltip": {
-            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+            "signal": "{\"date (month)\": timeFormat(datum[\"month_date\"], '%b'), \"Count of Records\": format(datum[\"__count\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
           },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"scale": "x", "band": true},
-          "y": {"scale": "y", "field": "count_*_end"},
-          "y2": {"scale": "y", "field": "count_*_start"}
+          "y": {"scale": "y", "field": "__count_end"},
+          "y2": {"scale": "y", "field": "__count_start"}
         }
       }
     }
@@ -80,7 +80,7 @@
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "fields": ["count_*_start", "count_*_end"]
+        "fields": ["__count_start", "__count_end"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
@@ -90,7 +90,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "weather", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

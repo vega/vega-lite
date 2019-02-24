@@ -1,7 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
   "data": {"url": "data/seattle-weather.csv", "format": {"type": "csv"}},
-  "config": {"axisY": {"minExtent": 30}},
   "layer": [
     {
       "mark": {"type": "line", "color": "orange"},
@@ -44,5 +43,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"axisY": {"minExtent": 30}}
 }

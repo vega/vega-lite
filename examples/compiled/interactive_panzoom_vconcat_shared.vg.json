@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -25,7 +25,7 @@
     {"name": "region_Miles_per_Gallon"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 1,
     "bounds": "full",
     "align": "each"
@@ -78,13 +78,16 @@
                 {"signal": "region_Horsepower"},
                 {"signal": "region_Miles_per_Gallon"}
               ],
-              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower, region_Miles_per_Gallon]} : null"
+              "update": "region_Horsepower && region_Miles_per_Gallon ? {unit: \"concat_0\", fields: region_tuple_fields, values: [region_Horsepower,region_Miles_per_Gallon]} : null"
             }
           ]
         },
         {
           "name": "region_tuple_fields",
-          "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R"},
+            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+          ]
         },
         {
           "name": "region_translate_anchor",
@@ -137,12 +140,7 @@
         },
         {
           "name": "region_modify",
-          "on": [
-            {
-              "events": {"signal": "region_tuple"},
-              "update": "modify(\"region_store\", region_tuple, true)"
-            }
-          ]
+          "update": "modify(\"region_store\", region_tuple, true)"
         }
       ],
       "marks": [

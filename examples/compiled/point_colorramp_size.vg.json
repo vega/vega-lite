@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -60,16 +60,17 @@
     },
     {
       "name": "color",
-      "type": "sequential",
+      "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": "ramp",
+      "interpolate": "hcl",
       "zero": false
     },
     {
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
-      "range": [0, 324],
+      "range": [0, 361],
       "zero": true
     }
   ],
@@ -125,14 +126,7 @@
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "Miles_per_Gallon",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      },
+      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}},
       "size": "size"
     }
   ],

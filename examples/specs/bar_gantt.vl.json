@@ -12,6 +12,6 @@
   "encoding": {
     "y": {"field": "task", "type": "ordinal"},
     "x": {"field": "start", "type": "quantitative"},
-    "x2": {"field": "end", "type": "quantitative"}
+    "x2": {"field": "end"}
   }
 }

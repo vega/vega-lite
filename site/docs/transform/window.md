@@ -5,7 +5,7 @@ title: Window
 permalink: /docs/window.html
 ---
 
-The window transform performs calculations over sorted groups of data objects. These calculations including ranking, lead/lag analysis, and aggregates such as running sums and averages. Calculated values are written back to the input data stream.
+The window transform performs calculations over sorted groups of data objects. These calculations including ranking, lead/lag analysis, and aggregates such as running sums and averages. Calculated values are written back to the input data stream. If you only want to set the same aggregated value in a new field, you can use the simpler [join aggregate](joinaggregate.html) transform.
 
 ## Documentation Overview
 
@@ -17,9 +17,7 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // A View Specification
 {
   ...
@@ -29,7 +27,7 @@ The window transform performs calculations over sorted groups of data objects. T
       "window": [{
           "op": ...,
           "field": ...,
-          "param": ...
+          "param": ...,
           "as": ...
       }],
       "sort": [
@@ -95,26 +93,6 @@ Here we use the window transform with `frame: [null, 0]` to accumulate count in 
 
 **See also:** [layered histogram and cumulative histogram](../examples/layer_cumulative_histogram.html)
 
-### Percent of Total
-
-Here we use the window transform to derive the global sum so that we can calculate percentage.
-
-<div class="vl-example" data-name="window_percent_of_total"></div>
-
-### Difference from Mean
-
-One example is to show the "exemplar" movies from a movie collection. Here "exemplar" is defined by having a score of 2.5 points higher than the global average.
-
-<div class="vl-example" data-name="window_mean_difference"></div>
-
-Another example is to show the "exemplar" movies based on the release year average. Here "exemplar" is defined by having a score 2.5 points higher than the annual average for its release year (instead of the global average).
-
-<div class="vl-example" data-name="window_mean_difference_by_year"></div>
-
-Rather than filtering the above two examples we can also calculate a residual by deriving the mean using the window transform first.
-
-<div class="vl-example" data-name="window_residual_graph"></div>
-
 ### Rank Chart
 
 We can also use `rank` operator to calculate ranks over time.
@@ -132,3 +110,15 @@ Here we use window transform to derive the total number of students along with t
 Here we use window transform to visualize how the average MPG for vehicles have changed over the years.
 
 <div class="vl-example" data-name="window_cumulative_running_average"></div>
+
+## Additional Examples
+
+These are examples of window transforms that can be simplifies with the join aggregate transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
+
+### Percent of Total
+
+You can use the window transform to compute an aggregate and attach it to all records. In this case, you can use the [join aggregate](joinaggregate.html) instead of the window transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
+
+Here we use the window transform to derive the global sum so that we can calculate percentage.
+
+<div class="vl-example" data-name="window_percent_of_total"></div>

@@ -32,12 +32,13 @@ exclude:
   - examples/compiled/data
 
 markdown: kramdown
-highlighter: rouge
+highlighter: none
 
 kramdown:
   input: GFM
-  syntax_highlighter: rouge
   auto_id_stripping: true
+  syntax_highlighter_opts:
+    disable: true
 
 plugins:
   - jekyll-sitemap

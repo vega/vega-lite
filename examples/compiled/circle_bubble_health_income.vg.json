@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bubble plot showing the correlation between health and income for 187 countries in the world (modified from an example in Lisa Charlotte Rost's blog post 'One Chart, Twelve Charting Libraries' --http://lisacharlotterost.github.io/2016/05/17/one-chart-code/).",
   "autosize": "pad",
   "padding": 5,
@@ -54,13 +54,16 @@
       "on": [
         {
           "events": [{"signal": "view_income"}, {"signal": "view_health"}],
-          "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income, view_health]} : null"
+          "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
         }
       ]
     },
     {
       "name": "view_tuple_fields",
-      "update": "[{\"field\":\"income\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"health\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "income", "channel": "x", "type": "R"},
+        {"field": "health", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "view_translate_anchor",
@@ -113,12 +116,7 @@
     },
     {
       "name": "view_modify",
-      "on": [
-        {
-          "events": {"signal": "view_tuple"},
-          "update": "modify(\"view_store\", view_tuple, true)"
-        }
-      ]
+      "update": "modify(\"view_store\", view_tuple, true)"
     }
   ],
   "marks": [
@@ -171,7 +169,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "population"},
-      "range": [0, 324],
+      "range": [0, 361],
       "zero": true
     }
   ],

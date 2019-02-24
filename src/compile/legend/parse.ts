@@ -11,11 +11,12 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {FieldDef, isFieldDef, title as fieldDefTitle} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, title as fieldDefTitle, TypedFieldDef} from '../../fielddef';
 import {Legend, LEGEND_PROPERTIES, VG_LEGEND_PROPERTIES} from '../../legend';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys} from '../../util';
-import {guideEncodeEntry, mergeTitleComponent, numberFormat} from '../common';
+import {mergeTitleComponent, numberFormat} from '../common';
+import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
@@ -52,28 +53,18 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
-  // For binned field with continuous scale, use a special scale so we can override the mark props and labels
-  switch (channel) {
-    case COLOR:
-      const scale = model.scaleName(COLOR);
-      return model.markDef.filled ? {fill: scale} : {stroke: scale};
-    case FILL:
-    case STROKE:
-    case STROKEWIDTH:
-    case SIZE:
-    case SHAPE:
-    case OPACITY:
-    case FILLOPACITY:
-    case STROKEOPACITY:
-      return {[channel]: model.scaleName(channel)};
+  const scale = model.scaleName(COLOR);
+  if (channel === 'color') {
+    return model.markDef.filled ? {fill: scale} : {stroke: scale};
   }
+  return {[channel]: model.scaleName(channel)};
 }
 
 function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof VgLegend,
   legend: Legend,
-  fieldDef: FieldDef<string>
+  fieldDef: TypedFieldDef<string>
 ) {
   switch (property) {
     case 'values':
@@ -133,7 +124,8 @@ function getProperty<K extends keyof VgLegend>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): VgLegend[K] {
-  const fieldDef = model.fieldDef(channel);
+  const {encoding} = model;
+  const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
   const {timeUnit} = fieldDef;
 

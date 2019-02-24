@@ -1,10 +1,5 @@
-dist: trusty
-addons:
-  chrome: stable
-
 language: node_js
 node_js:
-  - "6"
   - "8"
   - "10"
 env: LATEST=false
@@ -21,7 +16,7 @@ before_install: |
   sudo mv parallel sem /usr/local/bin
 
 script: |
-  set -ev
+  set -ex
   yarn data
   if [ $LATEST = true ]; then
     yarn build
@@ -34,8 +29,8 @@ script: |
     yarn lint
   else
     yarn build:only
-    yarn jest
     yarn test:runtime
+    yarn jest test/ examples/
   fi
 
 after_success:

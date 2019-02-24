@@ -1,5 +1,5 @@
 import {isArray, isString} from 'vega-util';
-import {FieldDef, isFieldDef, vgField} from '../../fielddef';
+import {getTypedFieldDef, isFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
 import {duplicate, getFirstDefined, hash} from '../../util';
@@ -29,7 +29,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: FieldDef<string>;
+  dimensionFieldDef?: TypedFieldDef<string>;
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -120,14 +120,16 @@ export class StackNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
+    const {encoding} = model;
 
     if (!stackProperties) {
       return null;
     }
 
-    let dimensionFieldDef: FieldDef<string>;
+    let dimensionFieldDef: TypedFieldDef<string>;
     if (stackProperties.groupbyChannel) {
-      dimensionFieldDef = model.fieldDef(stackProperties.groupbyChannel);
+      const cDef = encoding[stackProperties.groupbyChannel];
+      dimensionFieldDef = getTypedFieldDef(cDef);
     }
 
     const stackby = getStackByFields(model);
@@ -169,18 +171,18 @@ export class StackNode extends DataFlowNode {
   }
 
   public addDimensions(fields: string[]) {
-    this._stack.facetby = this._stack.facetby.concat(fields);
+    this._stack.facetby.push(...fields);
   }
 
   public dependentFields() {
-    const out = new Set();
+    const out = new Set<string>();
 
     out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(f => out.add(f));
-    this._stack.facetby.forEach(f => out.add(f));
-    const field = this._stack.sort.field;
-    isArray(field) ? field.forEach(f => out.add(f)) : out.add(field);
+    this.getGroupbyFields().forEach(out.add);
+    this._stack.facetby.forEach(out.add);
+    const field = this._stack.sort.field as string;
+    isArray(field) ? field.forEach(out.add) : out.add(field);
 
     return out;
   }
@@ -237,7 +239,7 @@ export class StackNode extends DataFlowNode {
       transform.push({
         type: 'impute',
         field,
-        groupby: stackby,
+        groupby: [...stackby, ...facetby],
         key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
         method: 'value',
         value: 0
@@ -247,7 +249,7 @@ export class StackNode extends DataFlowNode {
     // Stack
     transform.push({
       type: 'stack',
-      groupby: this.getGroupbyFields().concat(facetby),
+      groupby: [...this.getGroupbyFields(), ...facetby],
       field,
       sort,
       as,

@@ -1,4 +1,4 @@
-import clone_ from 'clone';
+import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
 import {isArray, isNumber, isString, splitAccessPath, stringValue} from 'vega-util';
@@ -425,4 +425,12 @@ export function uniqueId(prefix?: string) {
  */
 export function resetIdCounter() {
   idCounter = 42;
+}
+
+export function internalField(name: string) {
+  return isInternalField(name) ? name : `__${name}`;
+}
+
+export function isInternalField(name: string) {
+  return name.indexOf('__') === 0;
 }

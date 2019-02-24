@@ -7,6 +7,8 @@ import {
   FoldTransform as VgFoldTransform,
   FontStyle as VgFontStyle,
   FontWeight as VgFontWeight,
+  LayoutAlign,
+  ProjectionType,
   SampleTransform as VgSampleTransform,
   SignalRef,
   SortField as VgSortField,
@@ -20,7 +22,7 @@ import {StackOffset} from './stack';
 import {WindowOnlyOp} from './transform';
 import {Flag, flagKeys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare};
+export {VgSortField, VgUnionSortField, VgCompare, LayoutAlign, ProjectionType};
 
 export type Color = string;
 
@@ -49,7 +51,7 @@ export function isSignalRef(o: any): o is SignalRef {
   return !!o['signal'];
 }
 
-export type VgEventStream = any;
+export type EventStream = any;
 
 // TODO: add type of value (Make it VgValueRef<T> {value?:T ...})
 export interface VgValueRef {
@@ -80,40 +82,32 @@ export interface VgFieldRefUnionDomain {
   sort?: VgUnionSortField;
 }
 
-export interface VgScheme {
+export interface SchemeConfig {
   scheme: string;
   extent?: number[];
   count?: number;
 }
-export type VgRange = string | VgDataRef | (number | string | VgDataRef | SignalRef)[] | VgScheme | VgRangeStep;
 
-export interface VgRangeStep {
-  step: number | SignalRef;
-}
+export type VgRange =
+  | string
+  | VgDataRef
+  | (number | string | VgDataRef | SignalRef)[]
+  | SchemeConfig
+  | VgRangeStep
+  | SignalRef;
+
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
+export interface VgRangeStep {
+  step: number | SignalRef;
+}
 // Domains that are not a union of domains
 export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
 export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
 
 export type VgMarkGroup = any;
-
-export type VgProjectionType =
-  | 'albers'
-  | 'albersUsa'
-  | 'azimuthalEqualArea'
-  | 'azimuthalEquidistant'
-  | 'conicConformal'
-  | 'conicEqualArea'
-  | 'conicEquidistant'
-  | 'equirectangular'
-  | 'gnomonic'
-  | 'mercator'
-  | 'orthographic'
-  | 'stereographic'
-  | 'transverseMercator';
 
 export interface VgProjection {
   /*
@@ -123,7 +117,7 @@ export interface VgProjection {
   /*
    * The type of the projection.
    */
-  type?: VgProjectionType;
+  type?: ProjectionType;
   /*
    * The clip angle of the projection.
    */
@@ -177,16 +171,18 @@ export interface VgProjection {
   tilt?: number;
 }
 
+// TODO: Eventually migrate to Vega-typings and make Vega typings take generic SR that can allow us to replace SignalRef with SignalComponent
 export interface VgScale {
   name: string;
   type: ScaleType;
-  domain: VgDomain;
+  domain?: VgDomain;
   domainRaw?: SignalRef;
+  bins?: number[] | SignalRef;
   range: VgRange;
-
   clamp?: boolean;
   base?: number;
   exponent?: number;
+  constant?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
   nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
@@ -203,8 +199,6 @@ export interface ScaleInterpolateParams {
   type: 'rgb' | 'cubehelix' | 'cubehelix-long';
   gamma?: number;
 }
-
-export type VgLayoutAlign = 'none' | 'each' | 'all';
 
 export interface RowCol<T> {
   row?: T;
@@ -228,7 +222,7 @@ export interface VgLayout {
       };
   bounds?: 'full' | 'flush';
   columns?: number | {signal: string};
-  align?: VgLayoutAlign | RowCol<VgLayoutAlign>;
+  align?: LayoutAlign | RowCol<LayoutAlign>;
 }
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
@@ -248,13 +242,6 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUni
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
-  }
-  return false;
-}
-
-export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
-  if (!isArray(domain)) {
-    return 'signal' in domain;
   }
   return false;
 }
@@ -401,6 +388,7 @@ export type VgTransform =
   | VgGeoPointTransform
   | VgGeoJSONTransform
   | VgWindowTransform
+  | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform;
 
@@ -497,7 +485,7 @@ export type StrokeCap = 'butt' | 'round' | 'square';
 export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
-export interface VgMarkConfig {
+export interface BaseMarkConfig {
   /**
    * Default Fill Color.  This has higher precedence than `config.color`
    *
@@ -758,7 +746,7 @@ export interface VgMarkConfig {
   cornerRadius?: number;
 }
 
-const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+const VG_MARK_CONFIG_INDEX: Flag<keyof BaseMarkConfig> = {
   opacity: 1,
   fill: 1,
   fillOpacity: 1,
@@ -824,4 +812,12 @@ export interface VgWindowTransform {
   ignorePeers?: boolean;
   groupby?: string[];
   sort?: VgComparator;
+}
+
+export interface VgJoinAggregateTransform {
+  type: 'joinaggregate';
+  as?: string[];
+  ops?: AggregateOp[];
+  fields?: string[];
+  groupby?: string[];
 }

@@ -1,6 +1,6 @@
 /* tslint:disable:quotemark */
 
-import {SignalRef} from '../../../node_modules/vega';
+import {SignalRef} from 'vega';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';

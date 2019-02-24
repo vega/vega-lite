@@ -12,9 +12,9 @@
   },
   "transform": [{
     "window": [{
-        "op": "sum",
-        "field": "Time",
-        "as": "TotalTime"
+      "op": "sum",
+      "field": "Time",
+      "as": "TotalTime"
     }],
     "frame": [null, null]
   },

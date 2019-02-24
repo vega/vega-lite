@@ -5,9 +5,7 @@ title: Interactive Plots with Selections
 permalink: /docs/selection.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -39,8 +37,9 @@ Selections are defined within single views, and their simplest definition consis
 | :------- | :----: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type     | String | _**Required.**_ Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types: <br/>`single` -- to select a single discrete data value on `click`. <br/>`multi` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. <br/>`interval` -- to select a continuous range of data values on `drag`. |
 
-For example, try the different types against the example selection (named `pts`) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)">
+For example, try the different types against the example selection (named `pts`) below:
 
+<select onchange="changeSpec('selection_type', 'selection_type_' + this.value)">
   <option>single</option>
   <option>multi</option>
   <option>interval</option>
@@ -120,9 +119,7 @@ With multiview displays, selections can also be used to determine the domains of
 
 An alternate way to construct this technique would be to filter out the input data to the top (detail) view like so:
 
-{: .suppress-error}
-
-```json
+```js
 {
   "vconcat": [{
     "transform": [{"filter": {"selection": "brush"}}],
@@ -185,9 +182,7 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
 ## Selection Configuration
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...,

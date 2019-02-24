@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "description": "A simple bar chart with embedded data.",
   "data": {
     "values": [
       {"a": "A","b": "X", "x": 1, "y": 4},
@@ -15,13 +14,11 @@
     ]
   },
   "transform": [{
-    "window": [{"op": "median", "field": "x", "as": "median_x_by_a"}],
-    "groupby": ["a"],
-    "frame": [null, null]
+    "joinaggregate": [{"op": "median", "field": "x", "as": "median_x_by_a"}],
+    "groupby": ["a"]
   }, {
-    "window": [{"op": "median", "field": "y", "as": "median_y_by_b"}],
-    "groupby": ["b"],
-    "frame": [null, null]
+    "joinaggregate": [{"op": "median", "field": "y", "as": "median_y_by_b"}],
+    "groupby": ["b"]
   }],
   "facet": {
     "column": {"field": "a", "type": "nominal", "sort": ["B", "C", "A"]},

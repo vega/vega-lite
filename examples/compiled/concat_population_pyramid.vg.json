@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A population pyramid for the US in 2000.",
   "autosize": "pad",
   "padding": 5,
@@ -83,7 +83,7 @@
     }
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "bounds": "full",
     "align": "each"
   },
@@ -255,7 +255,8 @@
         ],
         "sort": true
       },
-      "range": ["#e377c2", "#1f77b4"]
+      "range": ["#e377c2", "#1f77b4"],
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",

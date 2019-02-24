@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
   "autosize": "pad",
   "padding": 5,
@@ -93,7 +93,7 @@
             {"value": "#4c78a8"}
           ],
           "tooltip": {
-            "signal": "{\"Miles per Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"upper_Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\")}"
+            "signal": "{\"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Mean + stdev of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Mean - stdev of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\")}"
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},

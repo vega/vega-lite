@@ -18,14 +18,13 @@ const DIR = __dirname + '/..';
 const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
-examples.forEach((example) => {
+examples.forEach(example => {
   if (example && example.includes('.vl.json')) {
     const path = DIR + SPECS + '/' + example;
     const spec = JSON.parse(fs.readFileSync(path));
 
     const preNormalized = stableStringify(spec);
-    const config = vl.config.initConfig(spec.config);
-    const fullSpec = vl.spec.normalize(spec, config);
+    const fullSpec = vl.normalize(spec);
     const postNormalized = stableStringify(fullSpec);
 
     // console.log(preNormalized, postNormalized);
@@ -34,9 +33,9 @@ examples.forEach((example) => {
       // -8 is cutting .vl.json
       const newFilename = example.slice(0, -8) + '_normalized.vl.json';
       const newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
-      fs.writeFile(newFilenameAndPath, postNormalizedOutput, (err) => {
+      fs.writeFile(newFilenameAndPath, postNormalizedOutput, err => {
         if (err) return console.log(err);
-        console.log("Built:", newFilename);
+        console.log('Built:', newFilename);
       });
     }
   }

@@ -23,7 +23,7 @@
       "type": "quantitative",
       "axis": {"title": "population"}
     },
-    "y2": {"field": "v2", "type": "quantitative"},
+    "y2": {"field": "v2"},
     "x": {
       "field": "age",
       "type": "ordinal",

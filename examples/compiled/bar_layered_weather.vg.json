@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A layered bar chart with floating bars representing weekly weather data",
   "autosize": "pad",
   "padding": 5,
@@ -89,7 +89,7 @@
             {"value": "#ccc"}
           ],
           "tooltip": {
-            "signal": "{\"Temperature (F)\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\"), \"Day\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"Temperature (F)\": format(datum[\"record.low\"], \"\"), \"record.high\": format(datum[\"record.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -113,7 +113,7 @@
             {"value": "#999"}
           ],
           "tooltip": {
-            "signal": "{\"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"normal.low\": format(datum[\"normal.low\"], \"\"), \"normal.high\": format(datum[\"normal.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -137,7 +137,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"actual.low\": format(datum[\"actual.low\"], \"\"), \"actual.high\": format(datum[\"actual.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -161,7 +161,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"forecast.low.low\": format(datum[\"forecast.low.low\"], \"\"), \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -185,7 +185,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"id\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"forecast.low.high\": format(datum[\"forecast.low.high\"], \"\"), \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
@@ -209,7 +209,7 @@
             {"value": "#000"}
           ],
           "tooltip": {
-            "signal": "{\"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\"), \"id\": ''+datum[\"id\"]}"
+            "signal": "{\"Day\": ''+datum[\"id\"], \"forecast.high.low\": format(datum[\"forecast.high.low\"], \"\"), \"forecast.high.high\": format(datum[\"forecast.high.high\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},

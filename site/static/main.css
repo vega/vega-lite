@@ -13,7 +13,6 @@ body {
   flex-direction: column;
   max-width: 100%;
   text-rendering: optimizeLegibility;
-  text-decoration-skip: ink;
   min-width: 360px;
 }
 header {

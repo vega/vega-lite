@@ -7,13 +7,14 @@ import {
   SCALE_CHANNELS,
   ScaleChannel,
   SingleDefChannel,
+  supportLegend,
   X,
   Y
 } from '../channel';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import * as vlEncoding from '../encoding';
-import {ChannelDef, FieldDef, getFieldDef, hasConditionalFieldDef, isFieldDef} from '../fielddef';
+import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../fielddef';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -22,7 +23,7 @@ import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {stack, StackProperties} from '../stack';
 import {Dict, duplicate} from '../util';
-import {VgData, VgEncodeEntry, VgLayout} from '../vega.schema';
+import {VgData, VgLayout} from '../vega.schema';
 import {AxisIndex} from './axis/component';
 import {parseUnitAxis} from './axis/parse';
 import {parseData} from './data/parse';
@@ -72,7 +73,8 @@ export class UnitModel extends ModelWithField {
     config: Config,
     public fit: boolean
   ) {
-    super(spec, parent, parentGivenName, config, repeater, undefined);
+    super(spec, parent, parentGivenName, config, repeater, undefined, spec.view);
+
     this.initSize({
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
@@ -126,7 +128,7 @@ export class UnitModel extends ModelWithField {
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce(
       (scales, channel) => {
-        let fieldDef: FieldDef<string>;
+        let fieldDef: TypedFieldDef<string>;
         let specifiedScale: Scale;
 
         const channelDef = encoding[channel];
@@ -137,10 +139,6 @@ export class UnitModel extends ModelWithField {
         } else if (hasConditionalFieldDef(channelDef)) {
           fieldDef = channelDef.condition;
           specifiedScale = channelDef.condition['scale'];
-        } else if (channel === 'x') {
-          fieldDef = getFieldDef(encoding.x2);
-        } else if (channel === 'y') {
-          fieldDef = getFieldDef(encoding.y2);
         }
 
         if (fieldDef) {
@@ -185,7 +183,7 @@ export class UnitModel extends ModelWithField {
           ? channelDef.condition['legend']
           : null;
 
-        if (legend !== null && legend !== false) {
+        if (legend !== null && legend !== false && supportLegend(channel)) {
           _legend[channel] = {...legend};
         }
       }
@@ -247,13 +245,6 @@ export class UnitModel extends ModelWithField {
     return marks.map(this.correctDataNames);
   }
 
-  public assembleLayoutSize(): VgEncodeEntry {
-    return {
-      width: this.getSizeSignalRef('width'),
-      height: this.getSizeSignalRef('height')
-    };
-  }
-
   protected getMapping() {
     return this.encoding;
   }
@@ -287,8 +278,8 @@ export class UnitModel extends ModelWithField {
     return vlEncoding.channelHasField(this.encoding, channel);
   }
 
-  public fieldDef(channel: SingleDefChannel): FieldDef<string> {
-    const channelDef = this.encoding[channel] as ChannelDef<string>;
-    return getFieldDef(channelDef);
+  public fieldDef(channel: SingleDefChannel) {
+    const channelDef = this.encoding[channel];
+    return getTypedFieldDef<string>(channelDef);
   }
 }

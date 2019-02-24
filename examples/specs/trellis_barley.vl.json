@@ -6,16 +6,20 @@
   "mark": "point",
   "encoding": {
     "row": {
-      "field": "site", "type": "ordinal",
+      "field": "site",
+      "type": "ordinal",
       "sort": {"op": "median", "field": "yield"}
     },
     "x": {
-      "aggregate": "median", "field": "yield", "type": "quantitative",
+      "aggregate": "median",
+      "field": "yield",
+      "type": "quantitative",
       "scale": {"zero": false}
     },
     "y": {
-      "field": "variety", "type": "ordinal",
-      "sort": {"field": "yield","op": "median", "order": "descending"},
+      "field": "variety",
+      "type": "ordinal",
+      "sort": {"encoding": "x", "order": "descending"},
       "scale": {"rangeStep": 12}
     },
     "color": {"field": "year", "type": "nominal"}

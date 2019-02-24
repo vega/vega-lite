@@ -1,8 +1,8 @@
 /* tslint:disable quotemark */
 
 import {nonPosition} from '../../../src/compile/mark/mixins';
+import {expression} from '../../../src/compile/predicate';
 import * as selection from '../../../src/compile/selection/selection';
-import {expression} from '../../../src/predicate';
 import {parseUnitModel} from '../../util';
 
 const predicate = selection.selectionPredicate;

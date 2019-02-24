@@ -2,7 +2,8 @@ import {Spec as VgSpec} from 'vega';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as vlFieldDef from '../fielddef';
 import * as log from '../log';
-import {isLayerSpec, isUnitSpec, LayoutSizeMixins, normalize, TopLevel, TopLevelSpec} from '../spec';
+import {normalize} from '../normalize/index';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
 import {
   AutoSizeParams,
   Datasets,
@@ -149,6 +150,7 @@ function assembleTopLevelModel(
   const projections = model.assembleProjections();
   const title = model.assembleTitle();
   const style = model.assembleGroupStyle();
+  const encodeEntry = model.assembleGroupEncodeEntry(true);
 
   let layoutSignals = model.assembleLayoutSignals();
 
@@ -162,12 +164,13 @@ function assembleTopLevelModel(
   });
 
   const output: VgSpec = {
-    $schema: 'https://vega.github.io/schema/vega/v4.json',
+    $schema: 'https://vega.github.io/schema/vega/v5.json',
     ...(model.description ? {description: model.description} : {}),
     ...topLevelProperties,
     ...(title ? {title} : {}),
     ...(style ? {style} : {}),
-    data: data,
+    ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
+    data,
     ...(projections.length > 0 ? {projections: projections} : {}),
     ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([])]),
     ...(vgConfig ? {config: vgConfig} : {}),

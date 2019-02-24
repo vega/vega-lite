@@ -1,9 +1,10 @@
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
+import {getMainRangeChannel, SingleDefChannel} from '../../channel';
 import {Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
-import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef} from '../../fielddef';
+import {isNumberFieldDef, isScaleFieldDef, isTimeFieldDef, isTypedFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
@@ -124,27 +125,42 @@ export class ParseNode extends DataFlowNode {
   public static makeImplicitFromEncoding(parent: DataFlowNode, model: Model, ancestorParse: AncestorParse) {
     const implicit = {};
 
+    function add(fieldDef: TypedFieldDef<string>) {
+      if (isTimeFieldDef(fieldDef)) {
+        implicit[fieldDef.field] = 'date';
+      } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
+        implicit[fieldDef.field] = 'number';
+      } else if (accessPathDepth(fieldDef.field) > 1) {
+        // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
+        // (Parsing numbers / dates already flattens numeric and temporal fields.)
+        if (!(fieldDef.field in implicit)) {
+          implicit[fieldDef.field] = 'flatten';
+        }
+      } else if (isScaleFieldDef(fieldDef) && isSortField(fieldDef.sort) && accessPathDepth(fieldDef.sort.field) > 1) {
+        // Flatten fields that we sort by but that are not otherwise flattened.
+        if (!(fieldDef.sort.field in implicit)) {
+          implicit[fieldDef.sort.field] = 'flatten';
+        }
+      }
+    }
+
     if (isUnitModel(model) || isFacetModel(model)) {
       // Parse encoded fields
-      model.forEachFieldDef(fieldDef => {
-        if (isTimeFieldDef(fieldDef)) {
-          implicit[fieldDef.field] = 'date';
-        } else if (isNumberFieldDef(fieldDef) && isMinMaxOp(fieldDef.aggregate)) {
-          implicit[fieldDef.field] = 'number';
-        } else if (accessPathDepth(fieldDef.field) > 1) {
-          // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
-          // (Parsing numbers / dates already flattens numeric and temporal fields.)
-          if (!(fieldDef.field in implicit)) {
-            implicit[fieldDef.field] = 'flatten';
-          }
-        } else if (
-          isScaleFieldDef(fieldDef) &&
-          isSortField(fieldDef.sort) &&
-          accessPathDepth(fieldDef.sort.field) > 1
-        ) {
-          // Flatten fields that we sort by but that are not otherwise flattened.
-          if (!(fieldDef.sort.field in implicit)) {
-            implicit[fieldDef.sort.field] = 'flatten';
+      model.forEachFieldDef((fieldDef, channel) => {
+        if (isTypedFieldDef(fieldDef)) {
+          add(fieldDef);
+        } else {
+          const mainChannel = getMainRangeChannel(channel);
+          if (mainChannel !== channel) {
+            const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
+            add({
+              ...fieldDef,
+              type: mainFieldDef.type
+            });
+          } else {
+            throw new Error(
+              `Non-secondary channel ${channel} must have type in its field definition ${JSON.stringify(fieldDef)}`
+            );
           }
         }
       });

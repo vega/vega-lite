@@ -5,9 +5,7 @@ title: Box Plot
 permalink: /docs/boxplot.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -39,13 +37,13 @@ A boxplot's mark definition contain the following properties:
 
 Besides the properties listed above, `"box"`, `"median"`, `"rule"`, `"outliers"`, and `"ticks"` can be used to specify the underlying [mark properties](mark.html#mark-def) for different [parts of the box plots](#parts) as well.
 
-## Types of Box Plot
-
 {:#boxplot-types}
+
+## Types of Box Plot
 
 Vega-Lite supports two types of box plots, defined by the `extent` property in the mark definition object.
 
-1. **Tukey Box Plot** is the default box plot in Vega-Lite. For a tukey box plot, the whisker spans from _Q1 - k \* IQR_ to _Q3 + k \* IQR_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant _k_ by setting the `extent`. If [there are outlier points beyond the whisker](#2d), they will be displayed using point marks.
+1. **Tukey Box Plot** is the default box plot in Vega-Lite. For a Tukey box plot, the whisker spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_). In this type of box plot, you can specify the constant _k_ by setting the `extent`. If [there are outlier points beyond the whisker](#2d), they will be displayed using point marks.
 
 By default, the extent is `1.5`.
 
@@ -71,9 +69,7 @@ A boxplot's orientation is automatically determined by the continuous field axis
 
 <div class="vl-example" data-name="boxplot_1D_vertical"></div>
 
-{:#2d}
-
-**2D box plot** shows the distribution of a continuous field, broken down by categories.
+{:#2d} **2D box plot** shows the distribution of a continuous field, broken down by categories.
 
 For 2D box plots with one continuous field and one discrete field, the box plot will be horizontal if the continuous field is on the x axis.
 
@@ -111,9 +107,7 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 ## Mark Config
 
-{: .suppress-error}
-
-```json
+```js
 {
   "boxplot": {
     "size": ...,

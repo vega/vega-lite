@@ -1,7 +1,8 @@
 /* tslint:disable:quotemark */
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
-import {isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/normalize/index';
+import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {every, some} from '../../src/util';
 import {defaultConfig} from '.././../src/config';
 
@@ -10,20 +11,9 @@ describe('normalizeErrorBand', () => {
     expect(
       normalize(
         {
-          data: {
-            url: 'data/population.json'
-          },
+          data: {url: 'data/population.json'},
           mark: 'errorband',
-          encoding: {
-            x: {
-              field: 'age',
-              type: 'ordinal'
-            },
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
+          encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
         },
         defaultConfig
       )
@@ -76,7 +66,13 @@ describe('normalizeErrorBand', () => {
             x: {
               field: 'age',
               type: 'ordinal'
-            }
+            },
+            tooltip: [
+              {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+              {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+              {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]

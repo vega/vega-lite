@@ -1,37 +1,39 @@
 /* tslint:disable:quotemark */
 import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
+import {defaultConfig} from '../../src/config';
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
-import {CompositeUnitSpec, ExtendedLayerSpec, GenericSpec, isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/normalize/index';
+import {isLayerSpec, isUnitSpec} from '../../src/spec';
+import {TopLevelUnitSpec} from '../../src/spec/unit';
 import {isAggregate, isCalculate, Transform} from '../../src/transform';
 import {some} from '../../src/util';
-import {defaultConfig} from '.././../src/config';
 
 describe('normalizeErrorBar with raw data input', () => {
   it('should produce correct layered specs for mean point and vertical error bar', () => {
-    expect(
-      normalize(
-        {
-          data: {
-            url: 'data/population.json'
-          },
-          mark: 'errorbar',
-          encoding: {
-            x: {
-              field: 'age',
-              type: 'ordinal'
-            },
-            y: {
-              field: 'people',
-              type: 'quantitative'
-            }
-          }
+    const output = normalize(
+      {
+        data: {
+          url: 'data/population.json'
         },
-        defaultConfig
-      )
-    ).toEqual({
+        mark: 'errorbar',
+        encoding: {
+          x: {
+            field: 'age',
+            type: 'ordinal'
+          },
+          y: {
+            field: 'people',
+            type: 'quantitative'
+          }
+        }
+      },
+      defaultConfig
+    );
+
+    expect(output).toEqual({
       data: {url: 'data/population.json'},
       transform: [
         {
@@ -60,7 +62,13 @@ describe('normalizeErrorBar with raw data input', () => {
               title: 'people'
             },
             y2: {field: 'upper_people', type: 'quantitative'},
-            x: {field: 'age', type: 'ordinal'}
+            x: {field: 'age', type: 'ordinal'},
+            tooltip: [
+              {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+              {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+              {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]
@@ -465,6 +473,106 @@ describe('normalizeErrorBar with raw data input', () => {
     expect(transforms).not.toHaveLength(0);
     expect(transforms[0]).toEqual({calculate: 'age * 2', as: 'age2'});
   });
+
+  it('should produce a correct tooltip title for errorbar with stdev extent', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', extent: 'stdev'},
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+        {field: 'upper_people', title: 'Mean + stdev of people', type: 'quantitative'},
+        {field: 'lower_people', title: 'Mean - stdev of people', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
+  });
+
+  it('should produce a correct tooltip title for errorbar with stderr extent', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', extent: 'stderr'},
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+        {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
+        {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
+  });
+
+  it('should produce a correct tooltip title for errorbar with ci extent', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', extent: 'ci'},
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'upper_people', title: 'Ci1 of people', type: 'quantitative'},
+        {field: 'lower_people', title: 'Ci0 of people', type: 'quantitative'},
+        {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
+  });
+
+  it('should produce a correct tooltip title for errorbar with iqr extent', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', extent: 'iqr'},
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'upper_people', title: 'Q3 of people', type: 'quantitative'},
+        {field: 'lower_people', title: 'Q1 of people', type: 'quantitative'},
+        {field: 'center_people', title: 'Median of people', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
+  });
 });
 
 describe('normalizeErrorBar for all possible extents and centers with raw data input', () => {
@@ -508,7 +616,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
   for (const center of centers) {
     for (const extent of extents) {
-      const spec: GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> = {
+      const spec: TopLevelUnitSpec = {
         data: {url: 'data/population.json'},
         mark: {type, ...(center ? {center} : {}), ...(extent ? {extent} : {})},
         encoding: {
@@ -533,7 +641,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
         it(
           testMsg,
           log.wrap(localLogger => {
-            normalize(spec, defaultConfig);
+            normalize(spec);
 
             expect(warningOutput[k]).toEqual(
               some(localLogger.warns, message => {
@@ -544,7 +652,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
         );
       }
 
-      const outputSpec = normalize(spec, defaultConfig);
+      const outputSpec = normalize(spec);
       const aggregateTransform = outputSpec.transform[0];
       const testMsg =
         'should produce a correct layer spec if center is ' +
@@ -555,12 +663,18 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
       it(testMsg, () => {
         if (isAggregate(aggregateTransform)) {
-          if (extent === 'ci' || extent === 'iqr' || (center === 'median' && !extent)) {
+          if (extent === 'iqr' || (center === 'median' && !extent)) {
             expect(
               some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median';
+                return aggregateFieldDef.op === 'median';
               })
-            ).toBe(false);
+            ).toBe(true);
+          } else if (extent === 'ci') {
+            expect(
+              some(aggregateTransform.aggregate, aggregateFieldDef => {
+                return aggregateFieldDef.op === 'mean';
+              })
+            ).toBe(true);
           } else {
             if (center) {
               expect(
@@ -639,7 +753,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       normalize(
         {
           data,
-          mark: 'errorbar',
+          mark,
           encoding: {
             x: {field: 'age', type: 'ordinal'},
             y: {field: 'people', type: 'quantitative'},
@@ -650,7 +764,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       )
     ).toEqual({
       data,
-      transform: [{calculate: 'datum.people', as: 'lower_people'}, {calculate: 'datum.people2', as: 'upper_people'}],
+      transform: [{calculate: 'datum.people2', as: 'upper_people'}, {calculate: 'datum.people', as: 'lower_people'}],
       layer: [
         {
           mark: {type: 'rule', style: 'errorbar-rule'},
@@ -661,7 +775,12 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
               title: 'people'
             },
             y2: {field: 'upper_people', type: 'quantitative'},
-            x: {field: 'age', type: 'ordinal'}
+            x: {field: 'age', type: 'ordinal'},
+            tooltip: [
+              {field: 'upper_people', title: 'people2', type: 'quantitative'},
+              {field: 'lower_people', title: 'people', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]
@@ -672,7 +791,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
     const outputSpec = normalize(
       {
         data,
-        mark: 'errorbar',
+        mark,
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', type: 'quantitative'},
@@ -748,7 +867,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       normalize(
         {
           data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
+          mark,
           encoding: {
             x: {field: 'age', type: 'quantitative'},
             x2: {field: 'age2', type: 'quantitative'},
@@ -783,61 +902,32 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
     })
   );
 
-  it(
-    'should produce a warning if there is an unsupported channel in encoding',
-    log.wrap(localLogger => {
-      const size = 'size';
+  it('should produce a correct tooltip title for ranged errorbar', () => {
+    const outputSpec = normalize(
+      {
+        data,
+        mark,
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          y2: {field: 'people2', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
 
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            x: {field: 'age', type: 'ordinal'},
-            y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative', aggregate: 'min'},
-            size: {value: 10}
-          }
-        },
-        defaultConfig
-      );
-
-      expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(size, mark));
-    })
-  );
-
-  it('should produce an error if upper and lower bound are aggregated for horizontal errorbar and one of x, x2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            x2: {field: 'age2', type: 'ordinal'},
-            y: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
-  it('should produce an error if upper and lower bound are aggregated for vertical errorbar and one of y, y2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark: {type: 'errorbar', extent: 'stdev', center: 'mean'},
-          encoding: {
-            y: {field: 'age', type: 'quantitative'},
-            y2: {field: 'age2', type: 'ordinal'},
-            x: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'upper_people', title: 'people2', type: 'quantitative'},
+        {field: 'lower_people', title: 'people', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
   });
 });
 
@@ -883,7 +973,13 @@ describe('normalizeErrorBar with aggregated error input', () => {
               title: 'people'
             },
             y2: {field: 'upper_people', type: 'quantitative'},
-            x: {field: 'age', type: 'ordinal'}
+            x: {field: 'age', type: 'ordinal'},
+            tooltip: [
+              {field: 'people', title: 'people', type: 'quantitative'},
+              {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
+              {field: 'lower_people', title: 'people - people_error', type: 'quantitative'},
+              {field: 'age', type: 'ordinal'}
+            ]
           }
         }
       ]
@@ -963,6 +1059,19 @@ describe('normalizeErrorBar with aggregated error input', () => {
         ).toBe(true);
       } else {
         expect(false).toBe(true);
+      }
+    }
+
+    if (isLayerSpec(outputSpec)) {
+      const unit = outputSpec.layer[0];
+      if (isUnitSpec(unit)) {
+        const tooltip = unit.encoding.tooltip;
+        expect(tooltip).toEqual([
+          {field: 'people', title: 'people', type: 'quantitative'},
+          {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
+          {field: 'lower_people', title: 'people + people_error2', type: 'quantitative'},
+          {field: 'age', type: 'ordinal'}
+        ]);
       }
     }
   });
@@ -1046,42 +1155,6 @@ describe('normalizeErrorBar with aggregated error input', () => {
     }).toThrow();
   });
 
-  it('should produce an error if error are aggregated for horizontal errorbar and one of x, xError, or xError2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            x: {field: 'age', type: 'quantitative'},
-            xError: {field: 'people_error', type: 'ordinal'},
-            xError2: {field: 'people_error2', type: 'quantitative'},
-            y: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
-  it('should produce an error if error are aggregated for vertical errorbar and one of y, yError, or yError2 is not quantitative', () => {
-    expect(() => {
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            y: {field: 'age', type: 'quantitative'},
-            yError: {field: 'people_error', type: 'ordinal'},
-            yError2: {field: 'people_error2', type: 'quantitative'},
-            x: {field: 'people', type: 'quantitative'}
-          }
-        },
-        defaultConfig
-      );
-    }).toThrow();
-  });
-
   it(
     'should produce a warning if the second continuous axis has aggregate property',
     log.wrap(localLogger => {
@@ -1120,5 +1193,64 @@ describe('normalizeErrorBar with aggregated error input', () => {
         defaultConfig
       );
     }).toThrow();
+  });
+
+  it('should produce a correct tooltip title for errorbar with pre-aggregated error value', () => {
+    const outputSpec = normalize(
+      {
+        data,
+        mark,
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          yError: {field: 'people_error', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'people', title: 'people', type: 'quantitative'},
+        {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
+        {field: 'lower_people', title: 'people - people_error', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
+  });
+
+  it('should produce a correct tooltip title for errorbar with pre-aggregated error value', () => {
+    const outputSpec = normalize(
+      {
+        data,
+        mark,
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          yError: {field: 'people_error', type: 'quantitative'},
+          yError2: {field: 'people_error2', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const encoding = isUnitSpec(unitSpec) && unitSpec.encoding;
+      expect(encoding).toBeTruthy();
+      const tooltip = encoding.tooltip;
+      expect(tooltip).toEqual([
+        {field: 'people', title: 'people', type: 'quantitative'},
+        {field: 'upper_people', title: 'people + people_error', type: 'quantitative'},
+        {field: 'lower_people', title: 'people + people_error2', type: 'quantitative'},
+        {field: 'age', type: 'ordinal'}
+      ]);
+    }
   });
 });

@@ -4,9 +4,7 @@ title: Field
 permalink: /docs/field.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,

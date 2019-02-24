@@ -19,7 +19,19 @@ We suggest that you follow along the tutorial by building a visualization in the
 
 Let's say you have a tabular data set with a categorical variable in the first column `a` and a numerical variable in the second column `b`.
 
-{:.small-table} | a | b | |---|---| | C | 2 | | C | 7 | | C | 4 | | D | 1 | | D | 2 | | D | 6 | | E | 8 | | E | 4 | | E | 7 |
+{:.small-table}
+
+| a   | b   |
+| --- | --- |
+| C   | 2   |
+| C   | 7   |
+| C   | 4   |
+| D   | 1   |
+| D   | 2   |
+| D   | 6   |
+| E   | 8   |
+| E   | 4   |
+| E   | 7   |
 
 We can represent this data as a [JSON array](http://www.json.org/) in which each row is an object in the array.
 
@@ -73,9 +85,7 @@ Now, it looks like we get a point. In fact, Vega-Lite renders one point for each
 
 To visually separate the points, data variables can be mapped to visual properties of a mark. For example, we can [_encode_]({{site.baseurl}}/docs/encoding.html) the variable `a` of the data with `x` channel, which represents the x-position of the points. We can do that by adding an `encoding` object with its key `x` mapped to a channel definition that describes variable `a`.
 
-{: .suppress-error}
-
-```json
+```js
 ...
 "encoding": {
   "x": {"field": "a", "type": "nominal"}
@@ -89,9 +99,7 @@ The [`encoding`]({{site.baseurl}}/docs/encoding.html) object is a key-value mapp
 
 In the visualization above, Vega-Lite automatically adds an axis with labels for the different categories as well as an axis title. However, 3 points in each category are still overlapping. So far, we have only defined a visual encoding for the field `a`. We can also map the field `b` to the `y` channel.
 
-{: .suppress-error}
-
-```json
+```js
 ...
 "y": {"field": "b", "type": "quantitative"}
 ...
@@ -126,7 +134,7 @@ Since the quantitative value is on y, you automatically get a vertical bar chart
 
 <!-- TODO need to find a way to talk about conciseness here somehow. -->
 
-Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `MEAN(b)` to `Average of b`, we can set the title property of the axis in the `x` channel.
+Vega-Lite automatically provides default properties for the visualization. You can further customize these values by adding more properties. For example, to change the title of the x-axis from `Average of b` to `Mean of b`, we can set the title property of the axis in the `x` channel.
 
 <div class="vl-example" data-name="bar_swap_custom"></div>
 
@@ -137,8 +145,6 @@ Vega-Lite automatically provides default properties for the visualization. You c
 You have learned about basic components of a Vega-Lite specification. Now, let's see how to publish your visualization.
 
 You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-Lite visualization in a webpage. For example, you can create a web page with the following content:
-
-{: .suppress-error}
 
 ```html
 <!DOCTYPE html>

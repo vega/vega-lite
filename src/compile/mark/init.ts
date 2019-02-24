@@ -1,7 +1,7 @@
 import {isBinned, isBinning} from '../../bin';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
-import {FieldDef, isContinuous, isFieldDef} from '../../fielddef';
+import {isContinuous, isFieldDef, TypedFieldDef} from '../../fielddef';
 import * as log from '../../log';
 import {AREA, BAR, CIRCLE, isMarkDef, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
@@ -138,8 +138,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orient)
       } else if (!xIsContinuous && yIsContinuous) {
         return mark !== 'tick' ? 'vertical' : 'horizontal';
       } else if (xIsContinuous && yIsContinuous) {
-        const xDef = encoding.x as FieldDef<string>; // we can cast here since they are surely fieldDef
-        const yDef = encoding.y as FieldDef<string>;
+        const xDef = encoding.x as TypedFieldDef<string>; // we can cast here since they are surely fieldDef
+        const yDef = encoding.y as TypedFieldDef<string>;
 
         const xIsTemporal = xDef.type === TEMPORAL;
         const yIsTemporal = yDef.type === TEMPORAL;
