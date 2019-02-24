@@ -53,34 +53,34 @@
         mouseEvt('click', el, evt);
       }
 
-      function brush(id0, id1, parent, targetBrush) {
+      async function brush(id0, id1, parent, targetBrush) {
         const el0 = mark(id0, parent);
         const el1 = mark(id1, parent);
         const [mdX, mdY] = coords(el0);
         const [muX, muY] = coords(el1);
         mouseEvt('mousedown', brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
         mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
-        return view.data('sel_store');
+        return (await view.runAsync()).data('sel_store');
       }
 
-      function pt(id, parent, shiftKey) {
+      async function pt(id, parent, shiftKey) {
         const el = mark(id, parent);
         const [clientX, clientY] = coords(el);
         click(el, {clientX, clientY, shiftKey});
-        return view.data('sel_store');
+        return (await view.runAsync()).data('sel_store');
       }
 
-      function clear(id, parent, shiftKey) {
+      async function clear(id, parent, shiftKey) {
         const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
         const el = mark(id, parent);
         let [clientX, clientY] = coords(el);
         clientX += 10;
         clientY -= 10;
         click(bg, {clientX, clientY, shiftKey});
-        return view.data('sel_store');
+        return (await view.runAsync()).data('sel_store');
       }
 
-      function zoom(id, delta, parent, targetBrush) {
+      async function zoom(id, delta, parent, targetBrush) {
         const el = mark(id, parent);
         const [clientX, clientY] = coords(el);
         mouseEvt('wheel', brushOrEl(el, parent, targetBrush), {
@@ -97,7 +97,7 @@
           deltaY: Math.sign(delta),
           deltaZ: Math.sign(delta)
         });
-        return view.data('sel_store');
+        return (await view.runAsync()).data('sel_store');
       }
     </script>
   </body>

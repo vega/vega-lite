@@ -1,7 +1,7 @@
 import {stringValue} from 'vega-util';
 import {X, Y} from '../../channel';
 import {warn} from '../../log';
-import {hasContinuousDomain, isBinScale} from '../../scale';
+import {hasContinuousDomain} from '../../scale';
 import {keys} from '../../util';
 import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -206,14 +206,11 @@ function channelSignals(
   });
 
   // React to pan/zooms of continuous scales. Non-continuous scales
-  // (bin-linear, band, point) cannot be pan/zoomed and any other changes
+  // (band, point) cannot be pan/zoomed and any other changes
   // to their domains (e.g., filtering) should clear the brushes.
   on.push({
     events: {signal: selCmpt.name + SCALE_TRIGGER},
-    update:
-      hasContinuousDomain(scaleType) && !isBinScale(scaleType)
-        ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]`
-        : `[0, 0]`
+    update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`
   });
 
   return hasScales

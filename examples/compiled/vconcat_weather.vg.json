@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
   "autosize": "pad",
   "padding": 5,
@@ -223,9 +223,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_width/10)"},
-          "values": {
-            "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -235,9 +232,6 @@
           "title": "temp_max (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/10)"},
-          "values": {
-            "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
-          },
           "zindex": 1
         }
       ]
@@ -276,20 +270,20 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"]
+        "signal": "[concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop]"
       },
       "range": [0, {"signal": "concat_1_width"}],
+      "bins": {"signal": "concat_1_bin_maxbins_10_temp_min_bins"},
       "zero": false
     },
     {
       "name": "concat_1_y",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"]
+        "signal": "[concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop]"
       },
       "range": [{"signal": "concat_1_height"}, 0],
+      "bins": {"signal": "concat_1_bin_maxbins_10_temp_max_bins"},
       "zero": false
     }
   ],

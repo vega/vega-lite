@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
-import {hasContinuousDomain, isBinScale} from '../../../scale';
+import {hasContinuousDomain} from '../../../scale';
 import {isIntervalSelection, SelectionDef, SelectionInitArrayMapping, SelectionInitMapping} from '../../../selection';
 import {Dict, keys} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
@@ -57,7 +57,7 @@ const project: TransformCompiler = {
           let type: TupleStoreType = 'E';
           if (selCmpt.type === 'interval') {
             const scaleType = model.getScaleComponent(channel as ScaleChannel).get('type');
-            if (hasContinuousDomain(scaleType) && !isBinScale(scaleType)) {
+            if (hasContinuousDomain(scaleType)) {
               type = 'R';
             }
           } else if (fieldDef.bin) {

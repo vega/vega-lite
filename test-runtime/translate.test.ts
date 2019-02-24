@@ -14,6 +14,7 @@ import {
 } from './util';
 
 declare const page: Page;
+// declare const jestPuppeteer: any;
 
 for (const bind of [bound, unbound]) {
   describe(`Translate ${bind} interval selections at runtime`, async () => {
@@ -76,14 +77,15 @@ for (const bind of [bound, unbound]) {
     });
 
     it('should work with temporal domains', async () => {
+      // await jestPuppeteer.debug();
       const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
-      const toNumber = '[0].values[0].map((d) => +d)';
+      const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
       for (let i = 0; i < hits.translate.length; i++) {
         await embed(spec('unit', i, {type, ...binding, encodings: ['x']}, {values, x: {type: 'temporal'}}));
-        const drag = await page.evaluate(brush('drag', i) + toNumber);
+        const drag = toNumber(await page.evaluate(brush('drag', i)));
         await testRender(`temporal_${i}-0`);
-        const translate = await page.evaluate(brush('translate', i, null, bind === unbound) + toNumber);
+        const translate = toNumber(await page.evaluate(brush('translate', i, null, bind === unbound)));
         assert[assertExtent[bind].x[i]](translate[0], drag[0]);
         assert[assertExtent[bind].x[i]](translate[1], drag[1]);
         await testRender(`temporal_${i}-1`);

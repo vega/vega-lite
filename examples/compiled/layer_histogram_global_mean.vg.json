@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -113,12 +113,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating"},
-          {"data": "data_0", "field": "bin_maxbins_10_IMDB_Rating_end"},
+          {
+            "signal": "[layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop]"
+          },
           {"data": "data_1", "field": "mean_IMDB_Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "layer_0_bin_maxbins_10_IMDB_Rating_bins"},
       "nice": true,
       "zero": false
     },
@@ -140,9 +142,6 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop + layer_0_bin_maxbins_10_IMDB_Rating_bins.step, layer_0_bin_maxbins_10_IMDB_Rating_bins.step)"
-      },
       "zindex": 1
     },
     {

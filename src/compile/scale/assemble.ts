@@ -43,10 +43,12 @@ export function assembleScalesForModel(model: Model): VgScale[] {
         domainRaw = selectionScaleDomain(model, domainRaw);
       }
 
+      const domain = assembleDomain(model, channel);
+
       scales.push({
         name,
         type,
-        domain: assembleDomain(model, channel),
+        ...(domain ? {domain} : {}),
         ...(domainRaw ? {domainRaw} : {}),
         range: range,
         ...otherScaleProps

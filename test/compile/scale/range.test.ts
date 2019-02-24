@@ -366,7 +366,7 @@ describe('compile/scale', () => {
           parseRangeForChannel(
             'color',
             identity,
-            'sequential',
+            'linear',
             QUANTITATIVE,
             {},
             defaultConfig,
@@ -397,7 +397,7 @@ describe('compile/scale', () => {
         ).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
       });
 
-      it('should use default ordinal range for quantile/quantize scales', () => {
+      it('should use default ramp range for quantile/quantize scales', () => {
         const scales: ScaleType[] = ['quantile', 'quantize'];
         scales.forEach(discretizingScale => {
           expect(
@@ -414,11 +414,11 @@ describe('compile/scale', () => {
               'plot_width',
               []
             )
-          ).toMatchObject(makeImplicit({scheme: 'blues', count: 4}));
+          ).toMatchObject(makeImplicit('ramp'));
         });
       });
 
-      it('should use default ordinal range for threshold scale', () => {
+      it('should use default ramp range for threshold scale', () => {
         expect(
           parseRangeForChannel(
             'color',
@@ -433,7 +433,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit({scheme: 'blues', count: 3}));
+        ).toMatchObject(makeImplicit('ramp'));
       });
 
       it('should use default color range for log scale', () => {
@@ -451,7 +451,7 @@ describe('compile/scale', () => {
             'plot_width',
             []
           )
-        ).toMatchObject(makeImplicit(['#f7fbff', '#0e427f']));
+        ).toMatchObject(makeImplicit('ramp'));
       });
     });
 

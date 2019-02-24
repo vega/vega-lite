@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",
   "autosize": "pad",
   "padding": 5,
@@ -253,8 +253,9 @@
       "name": "concat_0_color",
       "type": "quantize",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "blues", "count": 4},
-      "zero": true
+      "range": "ramp",
+      "zero": true,
+      "interpolate": "hcl"
     },
     {
       "name": "concat_0_size",
@@ -276,7 +277,8 @@
       "name": "concat_1_color",
       "type": "quantile",
       "domain": {"data": "source_0", "field": "b"},
-      "range": {"scheme": "magma"}
+      "range": {"scheme": "magma"},
+      "interpolate": "hcl"
     },
     {
       "name": "concat_1_size",
@@ -295,7 +297,8 @@
       "name": "concat_2_color",
       "type": "threshold",
       "domain": [30, 70],
-      "range": {"scheme": "viridis"}
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl"
     },
     {
       "name": "concat_2_size",

@@ -175,13 +175,14 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
-  domain: VgDomain;
+  domain?: VgDomain;
   domainRaw?: SignalRef;
+  bins?: number[] | SignalRef;
   range: VgRange;
-
   clamp?: boolean;
   base?: number;
   exponent?: number;
+  constant?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
   nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
@@ -241,13 +242,6 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUni
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
-  }
-  return false;
-}
-
-export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
-  if (!isArray(domain)) {
-    return 'signal' in domain;
   }
   return false;
 }

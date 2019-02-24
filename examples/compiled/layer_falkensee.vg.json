@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "The population of the German city of Falkensee over time",
   "autosize": "pad",
   "padding": 5,
@@ -193,7 +193,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_1", "field": "event", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "y",

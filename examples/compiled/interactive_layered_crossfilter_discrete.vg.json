@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -328,9 +328,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.stop + child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.step, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -473,9 +470,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.stop + child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.step, child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -612,9 +606,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(width/10)"},
-          "values": {
-            "signal": "sequence(child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.stop + child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.step, child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -648,13 +639,18 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_20_distance"},
-          {"data": "data_0", "field": "bin_maxbins_20_distance_end"},
-          {"data": "data_1", "field": "bin_maxbins_20_distance"},
-          {"data": "data_1", "field": "bin_maxbins_20_distance_end"}
+          {
+            "signal": "[child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.stop]"
+          },
+          {
+            "signal": "[child__repeat_column_distance_layer_1_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_1_bin_maxbins_20_distance_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {
+        "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins"
+      },
       "zero": false
     },
     {
@@ -675,13 +671,18 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "bin_maxbins_20_delay"},
-          {"data": "data_2", "field": "bin_maxbins_20_delay_end"},
-          {"data": "data_3", "field": "bin_maxbins_20_delay"},
-          {"data": "data_3", "field": "bin_maxbins_20_delay_end"}
+          {
+            "signal": "[child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins.stop]"
+          },
+          {
+            "signal": "[child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {
+        "signal": "child__repeat_column_delay_layer_0_bin_maxbins_20_delay_bins"
+      },
       "zero": false
     },
     {
@@ -702,13 +703,18 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "bin_maxbins_20_time"},
-          {"data": "data_4", "field": "bin_maxbins_20_time_end"},
-          {"data": "data_5", "field": "bin_maxbins_20_time"},
-          {"data": "data_5", "field": "bin_maxbins_20_time_end"}
+          {
+            "signal": "[child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_0_bin_maxbins_20_time_bins.stop]"
+          },
+          {
+            "signal": "[child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {
+        "signal": "child__repeat_column_time_layer_0_bin_maxbins_20_time_bins"
+      },
       "zero": false
     },
     {

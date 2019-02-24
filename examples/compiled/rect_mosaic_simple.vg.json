@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -92,7 +92,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "opacity",

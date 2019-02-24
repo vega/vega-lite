@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
   "autosize": "pad",
   "padding": 5,
@@ -168,13 +168,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_0", "field": "bin_maxbins_10_Acceleration_end"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration"},
-          {"data": "data_1", "field": "bin_maxbins_10_Acceleration_end"}
+          {
+            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
+          }
         ]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
@@ -182,13 +185,16 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "bin_maxbins_10_Horsepower"},
-          {"data": "data_0", "field": "bin_maxbins_10_Horsepower_end"},
-          {"data": "data_1", "field": "bin_maxbins_10_Horsepower"},
-          {"data": "data_1", "field": "bin_maxbins_10_Horsepower_end"}
+          {
+            "signal": "[layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
+          }
         ]
       },
       "range": [{"signal": "height"}, 0],
+      "bins": {"signal": "layer_0_bin_maxbins_10_Horsepower_bins"},
       "zero": false
     },
     {
@@ -218,9 +224,6 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop + layer_0_bin_maxbins_10_Acceleration_bins.step, layer_0_bin_maxbins_10_Acceleration_bins.step)"
-      },
       "zindex": 1
     },
     {
@@ -230,9 +233,6 @@
       "title": "Horsepower (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "values": {
-        "signal": "sequence(layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop + layer_0_bin_maxbins_10_Horsepower_bins.step, layer_0_bin_maxbins_10_Horsepower_bins.step)"
-      },
       "zindex": 1
     }
   ],
