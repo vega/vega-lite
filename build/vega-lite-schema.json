@@ -5175,7 +5175,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "anyOf": [
@@ -5343,7 +5343,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -10673,7 +10673,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -10903,7 +10903,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "anyOf": [
