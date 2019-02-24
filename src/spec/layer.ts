@@ -2,7 +2,7 @@ import {CompositeEncoding} from '../compositemark/index';
 import {Projection} from '../projection';
 import {Resolve} from '../resolve';
 import {BaseSpec, LayerUnitMixins} from './base';
-import {CompositeUnitSpec, GenericUnitSpec, NormalizedUnitSpec} from './unit';
+import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
@@ -22,9 +22,9 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 }
 
 /**
- * Layer Spec with `encoding` and `projection` shorthands that will be applied to underlying unit (single-view) specifications.
+ * A full layered plot specification, which may contains `encoding` and `projection` properties that will be applied to underlying unit (single-view) specifications.
  */
-export interface ExtendedLayerSpec extends GenericLayerSpec<CompositeUnitSpec> {
+export interface LayerSpec extends GenericLayerSpec<UnitSpec> {
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */

@@ -1,5 +1,5 @@
 import {Config, initConfig} from '../config';
-import {ExtendedLayerSpec, ExtendedUnitSpec, FacetedExtendedUnitSpec, GenericSpec, NormalizedSpec} from '../spec';
+import {ExtendedLayerSpec, FacetedUnitSpec, GenericSpec, NormalizedSpec, UnitSpec} from '../spec';
 import {TopLevelSpec} from '../spec/index';
 import {TopLevel} from '../spec/toplevel';
 import {NormalizerParams} from './base';
@@ -19,7 +19,7 @@ const normalizer = new CoreNormalizer();
  * Decompose extended unit specs into composition of pure unit specs.
  */
 function normalizeGenericSpec(
-  spec: GenericSpec<ExtendedUnitSpec, ExtendedLayerSpec> | FacetedExtendedUnitSpec,
+  spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | FacetedUnitSpec,
   config: Config = {}
 ): NormalizedSpec {
   return normalizer.map(spec, {config});
