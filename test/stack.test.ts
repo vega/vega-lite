@@ -169,6 +169,26 @@ describe('stack', () => {
     }
   });
 
+  it('should not include tooltip in stackBy', () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: 'bar',
+      encoding: {
+        x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
+        y: {field: 'variety', type: 'nominal'},
+        detail: {field: 'site', type: 'nominal'},
+        tooltip: {field: 'total_yield', type: 'nominal'}
+      }
+    };
+
+    const _stack = stack(spec.mark, spec.encoding, undefined);
+    expect(_stack).toBeTruthy();
+
+    for (const stackBy of _stack.stackBy) {
+      expect(stackBy.channel).not.toEqual('tooltip');
+    }
+  });
+
   it('should always be disabled if both x and y are aggregate', () => {
     for (const stacked of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       PRIMITIVE_MARKS.forEach(mark => {
