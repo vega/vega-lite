@@ -174,5 +174,6 @@ export function values(
   if (vals) {
     return valueArray(fieldDef, vals);
   }
+
   return undefined;
 }
