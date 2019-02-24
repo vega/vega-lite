@@ -6,6 +6,9 @@
     "column": ["sepalLength","sepalWidth","petalLength","petalWidth"]
   },
   "spec": {
+
+    "width": 150,
+    "height": 150,
     "mark": "point",
     "encoding": {
       "x": {

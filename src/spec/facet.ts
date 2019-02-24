@@ -34,12 +34,12 @@ export interface FacetFieldDef<F extends Field> extends TypedFieldDef<F> {
 
 export interface FacetMapping<F extends Field> {
   /**
-   * Vertical facets for trellis plots.
+   * A field definition for the vertical facet of trellis plots.
    */
   row?: FacetFieldDef<F>;
 
   /**
-   * Horizontal facets for trellis plots.
+   * A field definition for the horizontal facet of trellis plots.
    */
   column?: FacetFieldDef<F>;
 }
@@ -53,7 +53,8 @@ export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMappi
  */
 export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F> {
   /**
-   * Faceted field for trellis plots.
+   * A field definition for the (flexible) facet of trellis plots.
+   *
    * If either `row` or `column` is specified, this channel will be ignored.
    */
   facet?: FacetFieldDef<F>;
@@ -71,7 +72,9 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
-   * A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions.
+   * Definition for how to facet the data.  One of:
+   * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
+   * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
    */
   facet: FacetFieldDef<Field> | FacetMapping<Field>;
 

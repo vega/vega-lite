@@ -3840,11 +3840,11 @@
       "properties": {
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
+          "description": "A field definition for the horizontal facet of trellis plots."
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
+          "description": "A field definition for the vertical facet of trellis plots."
         }
       },
       "type": "object"
@@ -3865,7 +3865,7 @@
         },
         "column": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
+          "description": "A field definition for the horizontal facet of trellis plots."
         },
         "detail": {
           "anyOf": [
@@ -3883,7 +3883,7 @@
         },
         "facet": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Faceted field for trellis plots.\nIf either `row` or `column` is specified, this channel will be ignored."
+          "description": "A field definition for the (flexible) facet of trellis plots.\n\nIf either `row` or `column` is specified, this channel will be ignored."
         },
         "fill": {
           "anyOf": [
@@ -3968,7 +3968,7 @@
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
+          "description": "A field definition for the vertical facet of trellis plots."
         },
         "shape": {
           "anyOf": [
@@ -4182,7 +4182,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "data": {
@@ -5213,7 +5213,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "concat": {
@@ -5309,7 +5309,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "data": {
@@ -5329,7 +5329,7 @@
               "$ref": "#/definitions/FacetMapping"
             }
           ],
-          "description": "A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions."
+          "description": "Definition for how to facet the data.  One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -5488,7 +5488,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "data": {
@@ -5506,16 +5506,16 @@
         "repeat": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Repeat"
-            },
-            {
               "items": {
                 "type": "string"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/Repeat"
             }
           ],
-          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
+          "description": "Definition for fields to be repeated.  One of:\n1) An array of fields to be repeated.  If `\"repeat\"` is an array, the field can be referred using `{\"repeat\": \"repeat\"}`\n2) An object that mapped `\"row\"` and/or `\"column\"` to the listed of fields to be repeated along the particular orientations. The objects `{\"repeat\": \"row\"}` and `{\"repeat\": \"column\"}` can be used to refer to the repeated field respectively."
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
@@ -5533,7 +5533,8 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "$ref": "#/definitions/Spec",
+          "description": "A specification of the view that gets repeated."
         },
         "title": {
           "anyOf": [
@@ -8843,14 +8844,14 @@
       "additionalProperties": false,
       "properties": {
         "column": {
-          "description": "Horizontal repeated views.",
+          "description": "An array of fields to be repeated horizontally.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "row": {
-          "description": "Vertical repeated views.",
+          "description": "An array of fields to be repeated vertically.",
           "items": {
             "type": "string"
           },
@@ -10660,7 +10661,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "concat": {
@@ -10893,7 +10894,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "config": {
@@ -10923,16 +10924,16 @@
         "repeat": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Repeat"
-            },
-            {
               "items": {
                 "type": "string"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/Repeat"
             }
           ],
-          "description": "An object that describes what fields should be repeated into views that are laid out as a `row` or `column`."
+          "description": "Definition for fields to be repeated.  One of:\n1) An array of fields to be repeated.  If `\"repeat\"` is an array, the field can be referred using `{\"repeat\": \"repeat\"}`\n2) An object that mapped `\"row\"` and/or `\"column\"` to the listed of fields to be repeated along the particular orientations. The objects `{\"repeat\": \"row\"}` and `{\"repeat\": \"column\"}` can be used to refer to the repeated field respectively."
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
@@ -10950,7 +10951,8 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
-          "$ref": "#/definitions/Spec"
+          "$ref": "#/definitions/Spec",
+          "description": "A specification of the view that gets repeated."
         },
         "title": {
           "anyOf": [
@@ -11250,7 +11252,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "config": {
@@ -11278,7 +11280,7 @@
               "$ref": "#/definitions/FacetMapping"
             }
           ],
-          "description": "A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions."
+          "description": "Definition for how to facet the data.  One of:\n1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)\n2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -11424,7 +11426,7 @@
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "columns": {
-          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to\n`hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for:\n- the general (wrappable) `concat` operator (not `hconcat`/`vconcat`)\n- the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
           "type": "number"
         },
         "config": {
