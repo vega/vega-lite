@@ -1,13 +1,13 @@
 import {AggregateOp} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {SHARED_DOMAIN_OP_INDEX} from '../../aggregate';
-import {binToString, isBinning, isBinParams} from '../../bin';
+import {isBinning} from '../../bin';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import {binRequiresRange, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../fielddef';
 import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isBinScale, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
+import {Domain, hasDiscreteDomain, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
 import {TimeUnit} from '../../timeunit';
 import {Type} from '../../type';
@@ -250,13 +250,12 @@ function parseSingleChannelDomain(
       }
     ];
   } else if (isBinning(fieldDef.bin)) {
-    // bin
-    if (isBinScale(scaleType)) {
-      const signal = model.getName(`${binToString(fieldDef.bin)}_${fieldDef.field}_bins`);
-      return [{signal: `sequence(${signal}.start, ${signal}.stop + ${signal}.step, ${signal}.step)`}];
-    }
-
     if (hasDiscreteDomain(scaleType)) {
+      if (scaleType === 'bin-ordinal') {
+        // we can omit the domain as it is inferred from the `bins` property
+        return [];
+      }
+
       // ordinal bin scale takes domain from bin_range, ordered by bin start
       // This is useful for both axis-based scale (x/y) and legend-based scale (other channels).
       return [
@@ -278,24 +277,10 @@ function parseSingleChannelDomain(
       ];
     } else {
       // continuous scales
-      if (channel === 'x' || channel === 'y') {
-        if (isBinParams(fieldDef.bin) && fieldDef.bin.extent) {
-          return [fieldDef.bin.extent];
-        }
-        // X/Y position have to include start and end for non-ordinal scale
-        const data = model.requestDataName(MAIN);
-        return [
-          {
-            data,
-            field: model.vgField(channel, {})
-          },
-          {
-            data,
-            field: model.vgField(channel, {binSuffix: 'end'})
-          }
-        ];
+      if (isBinning(fieldDef.bin)) {
+        const signalName = model.getName(vgField(fieldDef, {suffix: 'bins'}));
+        return [{signal: `[${signalName}.start, ${signalName}.stop]`}];
       } else {
-        // TODO: use bin_mid
         return [
           {
             data: model.requestDataName(MAIN),
@@ -461,7 +446,9 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     util.hash
   );
 
-  if (uniqueDomains.length === 1) {
+  if (uniqueDomains.length === 0) {
+    return undefined;
+  } else if (uniqueDomains.length === 1) {
     const domain = domains[0];
     if (isDataRefDomain(domain) && sorts.length > 0) {
       let sort = sorts[0];
@@ -564,6 +551,7 @@ export function getFieldFromDomain(domain: VgDomain): string {
 
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent = model.component.scales[channel];
+
   const domains = scaleComponent.domains.map(domain => {
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data

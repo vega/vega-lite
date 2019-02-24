@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -23,24 +22,18 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["median_x_by_a"],
           "ops": ["median"],
           "fields": ["x"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["a"],
-          "frame": [null, null]
+          "groupby": ["a"]
         },
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["median_y_by_b"],
           "ops": ["median"],
           "fields": ["y"],
-          "sort": {"field": [], "order": []},
-          "groupby": ["b"],
-          "frame": [null, null]
+          "groupby": ["b"]
         },
         {
           "type": "formula",

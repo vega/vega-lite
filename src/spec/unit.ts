@@ -1,13 +1,11 @@
-import {Encoding, EncodingWithFacet} from '../encoding';
+import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index';
+import {Encoding} from '../encoding';
 import {Field} from '../fielddef';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, LayerUnitMixins} from './base';
-
-export {normalizeTopLevelSpec as normalize} from '../normalize';
-export {BaseSpec, DataMixins, LayoutSizeMixins} from './base';
-export {TopLevel} from './toplevel';
+import {BaseSpec, DataMixins, LayerUnitMixins} from './base';
+import {TopLevel} from './toplevel';
 
 /**
  * Base interface for a unit (single-view) specification.
@@ -42,14 +40,16 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec, L
 export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef>;
 
 /**
- * Unit spec that can have a composite mark.
+ * Unit spec that can be normalized/expanded into a layer spec or another unit spec.
  */
-export type CompositeUnitSpec = GenericUnitSpec<Encoding<Field>, AnyMark>;
+export type CompositeUnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark>;
 
 /**
- * Unit spec that can have a composite mark and row or column channels.
+ * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export type FacetedCompositeUnitSpec = GenericUnitSpec<EncodingWithFacet<Field>, AnyMark>;
+export type FacetedCompositeUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark>;
+
+export type TopLevelUnitSpec = TopLevel<FacetedCompositeUnitSpec> & DataMixins;
 
 export function isUnitSpec(spec: BaseSpec): spec is FacetedCompositeUnitSpec | NormalizedUnitSpec {
   return !!spec['mark'];

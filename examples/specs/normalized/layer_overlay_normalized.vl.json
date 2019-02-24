@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
-  "config": {"line": {"point": true}},
   "layer": [
     {
       "data": {"url": "data/cars.json"},
@@ -62,5 +61,6 @@
         }
       ]
     }
-  ]
+  ],
+  "config": {"line": {"point": true}}
 }

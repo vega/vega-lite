@@ -1,7 +1,16 @@
-import {Align, BaseTitle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame} from 'vega';
+import {Align, BaseTitle, FontStyle, FontWeight, TextBaseline, TextEncodeEntry, TitleAnchor, TitleFrame} from 'vega';
 import {BaseMarkConfig, Color} from './vega.schema';
-
-type BaseTitleNoSignals = BaseTitle<number, string, Color, FontWeight, Align, TextBaseline, TitleFrame, TitleAnchor>;
+type BaseTitleNoSignals = BaseTitle<
+  number,
+  string,
+  Color,
+  FontWeight,
+  FontStyle,
+  Align,
+  TextBaseline,
+  TitleFrame,
+  TitleAnchor
+>;
 
 export type TitleConfig = BaseTitleNoSignals;
 
@@ -73,6 +82,7 @@ export function extractTitleConfig(
 
   const nonMark: BaseTitleNoSignals = {
     ...(anchor ? {anchor} : {}),
+    ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),
     ...(orient ? {orient} : {})
   };

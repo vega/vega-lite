@@ -1,5 +1,6 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year. The red point shows the average rating for a film in that year, and the bar is the rating that the film recieved.",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -8,34 +9,24 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Release_Date": "date:'%d-%b-%y'"}},
       "transform": [
         {"type": "filter", "expr": "datum.IMDB_Rating != null"},
         {
-          "type": "window",
-          "params": [null],
-          "as": ["AverageRating"],
+          "type": "formula",
+          "as": "year",
+          "expr": "datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)"
+        },
+        {
+          "type": "joinaggregate",
+          "as": ["AverageYearRating"],
           "ops": ["mean"],
           "fields": ["IMDB_Rating"],
-          "sort": {"field": [], "order": []},
-          "frame": [null, null]
+          "groupby": ["year"]
         },
         {
           "type": "filter",
-          "expr": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["average"],
-          "fields": ["AverageRating"],
-          "as": ["average_AverageRating"]
+          "expr": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"
         }
       ]
     }
@@ -51,6 +42,7 @@
     {
       "name": "layer_0_marks",
       "type": "rect",
+      "clip": true,
       "style": ["bar"],
       "from": {"data": "source_0"},
       "encode": {
@@ -74,24 +66,26 @@
     },
     {
       "name": "layer_1_marks",
-      "type": "rule",
-      "style": ["rule"],
-      "from": {"data": "data_0"},
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": [
+          "opacity": {"value": 0.7},
+          "fill": [
             {
-              "test": "datum[\"average_AverageRating\"] === null || isNaN(datum[\"average_AverageRating\"])",
+              "test": "datum[\"AverageYearRating\"] === null || isNaN(datum[\"AverageYearRating\"])",
               "value": null
             },
             {"value": "red"}
           ],
           "tooltip": {
-            "signal": "{\"Average of AverageRating\": format(datum[\"average_AverageRating\"], \"\")}"
+            "signal": "{\"AverageYearRating\": format(datum[\"AverageYearRating\"], \"\"), \"Title\": ''+datum[\"Title\"]}"
           },
-          "x": {"scale": "x", "field": "average_AverageRating"},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0}
+          "xc": {"scale": "x", "field": "AverageYearRating"},
+          "yc": {"scale": "y", "field": "Title", "band": 0.5},
+          "height": {"value": 15},
+          "width": {"value": 1}
         }
       }
     }
@@ -101,10 +95,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "source_0", "field": "IMDB_Rating"},
-          {"data": "data_0", "field": "average_AverageRating"}
-        ]
+        "data": "source_0",
+        "fields": ["IMDB_Rating", "AverageYearRating"]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -16,14 +16,14 @@
   "marks": [
     {
       "type": "group",
-      "name": "child_Origin_group",
+      "name": "child__repeat_column_Origin_group",
       "style": "cell",
       "encode": {
         "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
-          "name": "child_Origin_marks",
+          "name": "child__repeat_column_Origin_marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "source_0"},
@@ -42,20 +42,29 @@
                   "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
                   "value": null
                 },
-                {"scale": "child_Origin_color", "field": "Origin"}
+                {
+                  "scale": "child__repeat_column_Origin_color",
+                  "field": "Origin"
+                }
               ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Origin\": ''+datum[\"Origin\"]}"
               },
-              "x": {"scale": "child_Origin_x", "field": "Horsepower"},
-              "y": {"scale": "child_Origin_y", "field": "Miles_per_Gallon"}
+              "x": {
+                "scale": "child__repeat_column_Origin_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "child__repeat_column_Origin_y",
+                "field": "Miles_per_Gallon"
+              }
             }
           }
         }
       ],
       "axes": [
         {
-          "scale": "child_Origin_x",
+          "scale": "child__repeat_column_Origin_x",
           "orient": "bottom",
           "grid": false,
           "title": "Horsepower",
@@ -65,9 +74,9 @@
           "zindex": 1
         },
         {
-          "scale": "child_Origin_x",
+          "scale": "child__repeat_column_Origin_x",
           "orient": "bottom",
-          "gridScale": "child_Origin_y",
+          "gridScale": "child__repeat_column_Origin_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
@@ -78,7 +87,7 @@
           "zindex": 0
         },
         {
-          "scale": "child_Origin_y",
+          "scale": "child__repeat_column_Origin_y",
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
@@ -87,9 +96,9 @@
           "zindex": 1
         },
         {
-          "scale": "child_Origin_y",
+          "scale": "child__repeat_column_Origin_y",
           "orient": "left",
-          "gridScale": "child_Origin_x",
+          "gridScale": "child__repeat_column_Origin_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
@@ -102,7 +111,7 @@
       ],
       "legends": [
         {
-          "stroke": "child_Origin_color",
+          "stroke": "child__repeat_column_Origin_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "Origin",
           "encode": {
@@ -118,14 +127,14 @@
     },
     {
       "type": "group",
-      "name": "child_Cylinders_group",
+      "name": "child__repeat_column_Cylinders_group",
       "style": "cell",
       "encode": {
         "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
-          "name": "child_Cylinders_marks",
+          "name": "child__repeat_column_Cylinders_marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "source_0"},
@@ -144,20 +153,29 @@
                   "test": "datum[\"Horsepower\"] === null || isNaN(datum[\"Horsepower\"]) || datum[\"Miles_per_Gallon\"] === null || isNaN(datum[\"Miles_per_Gallon\"])",
                   "value": null
                 },
-                {"scale": "child_Cylinders_color", "field": "Cylinders"}
+                {
+                  "scale": "child__repeat_column_Cylinders_color",
+                  "field": "Cylinders"
+                }
               ],
               "tooltip": {
                 "signal": "{\"Horsepower\": format(datum[\"Horsepower\"], \"\"), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"\"), \"Cylinders\": ''+datum[\"Cylinders\"]}"
               },
-              "x": {"scale": "child_Cylinders_x", "field": "Horsepower"},
-              "y": {"scale": "child_Cylinders_y", "field": "Miles_per_Gallon"}
+              "x": {
+                "scale": "child__repeat_column_Cylinders_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "child__repeat_column_Cylinders_y",
+                "field": "Miles_per_Gallon"
+              }
             }
           }
         }
       ],
       "axes": [
         {
-          "scale": "child_Cylinders_x",
+          "scale": "child__repeat_column_Cylinders_x",
           "orient": "bottom",
           "grid": false,
           "title": "Horsepower",
@@ -167,9 +185,9 @@
           "zindex": 1
         },
         {
-          "scale": "child_Cylinders_x",
+          "scale": "child__repeat_column_Cylinders_x",
           "orient": "bottom",
-          "gridScale": "child_Cylinders_y",
+          "gridScale": "child__repeat_column_Cylinders_y",
           "grid": true,
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
@@ -180,7 +198,7 @@
           "zindex": 0
         },
         {
-          "scale": "child_Cylinders_y",
+          "scale": "child__repeat_column_Cylinders_y",
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
@@ -189,9 +207,9 @@
           "zindex": 1
         },
         {
-          "scale": "child_Cylinders_y",
+          "scale": "child__repeat_column_Cylinders_y",
           "orient": "left",
-          "gridScale": "child_Cylinders_x",
+          "gridScale": "child__repeat_column_Cylinders_x",
           "grid": true,
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
@@ -204,7 +222,7 @@
       ],
       "legends": [
         {
-          "stroke": "child_Cylinders_color",
+          "stroke": "child__repeat_column_Cylinders_color",
           "gradientLength": {"signal": "clamp(height, 64, 200)"},
           "title": "Cylinders",
           "encode": {
@@ -221,7 +239,7 @@
   ],
   "scales": [
     {
-      "name": "child_Origin_x",
+      "name": "child__repeat_column_Origin_x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
@@ -229,7 +247,7 @@
       "zero": true
     },
     {
-      "name": "child_Origin_y",
+      "name": "child__repeat_column_Origin_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
@@ -237,13 +255,14 @@
       "zero": true
     },
     {
-      "name": "child_Origin_color",
+      "name": "child__repeat_column_Origin_color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
-      "name": "child_Cylinders_x",
+      "name": "child__repeat_column_Cylinders_x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
@@ -251,7 +270,7 @@
       "zero": true
     },
     {
-      "name": "child_Cylinders_y",
+      "name": "child__repeat_column_Cylinders_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
@@ -259,10 +278,11 @@
       "zero": true
     },
     {
-      "name": "child_Cylinders_color",
+      "name": "child__repeat_column_Cylinders_color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

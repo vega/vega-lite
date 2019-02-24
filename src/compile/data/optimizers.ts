@@ -7,6 +7,7 @@ import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
+import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
@@ -183,7 +184,12 @@ function cloneSubtree(facet: FacetNode) {
         copy.setSource(newName);
 
         facet.model.component.data.outputNodes[newName] = copy;
-      } else if (copy instanceof AggregateNode || copy instanceof StackNode || copy instanceof WindowTransformNode) {
+      } else if (
+        copy instanceof AggregateNode ||
+        copy instanceof StackNode ||
+        copy instanceof WindowTransformNode ||
+        copy instanceof JoinAggregateTransformNode
+      ) {
         copy.addDimensions(facet.fields);
       }
       flatten(node.children.map(clone)).forEach((n: DataFlowNode) => (n.parent = copy));
@@ -206,7 +212,12 @@ export function moveFacetDown(node: DataFlowNode) {
       // move down until we hit a fork or output node
       const child = node.children[0];
 
-      if (child instanceof AggregateNode || child instanceof StackNode || child instanceof WindowTransformNode) {
+      if (
+        child instanceof AggregateNode ||
+        child instanceof StackNode ||
+        child instanceof WindowTransformNode ||
+        child instanceof JoinAggregateTransformNode
+      ) {
         child.addDimensions(node.fields);
       }
 

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 480,
@@ -193,7 +193,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "date", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -270,12 +270,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [

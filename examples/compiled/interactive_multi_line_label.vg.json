@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 800,
@@ -31,7 +31,6 @@
     {"name": "label", "update": "vlSelectionResolve(\"label_store\")"},
     {
       "name": "label_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -42,16 +41,11 @@
     },
     {
       "name": "label_tuple_fields",
-      "update": "[{\"field\":\"date\",\"channel\":\"x\",\"type\":\"E\"}]"
+      "value": [{"field": "date", "channel": "x", "type": "E"}]
     },
     {
       "name": "label_modify",
-      "on": [
-        {
-          "events": {"signal": "label_tuple"},
-          "update": "modify(\"label_store\", label_tuple, true)"
-        }
-      ]
+      "update": "modify(\"label_store\", label_tuple, true)"
     }
   ],
   "marks": [
@@ -254,13 +248,15 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     },
     {
       "name": "fill",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "symbol", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

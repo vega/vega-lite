@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -48,7 +48,6 @@
     {"name": "hover", "update": "vlSelectionResolve(\"hover_store\")"},
     {
       "name": "hover_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -59,16 +58,11 @@
     },
     {
       "name": "hover_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "hover_modify",
-      "on": [
-        {
-          "events": {"signal": "hover_tuple"},
-          "update": "modify(\"hover_store\", hover_tuple, true)"
-        }
-      ]
+      "update": "modify(\"hover_store\", hover_tuple, true)"
     }
   ],
   "marks": [

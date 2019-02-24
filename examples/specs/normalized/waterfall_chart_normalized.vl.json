@@ -49,7 +49,6 @@
       "as": "sum_inc"
     }
   ],
-  "config": {"text": {"fontWeight": "bold", "color": "#404040"}},
   "layer": [
     {
       "mark": {"type": "bar", "size": 45},
@@ -146,5 +145,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"text": {"fontWeight": "bold", "color": "#404040"}}
 }

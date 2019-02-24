@@ -3,7 +3,6 @@ import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 
-export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
 
 /**

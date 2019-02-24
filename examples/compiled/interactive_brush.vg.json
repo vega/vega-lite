@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "autosize": "pad",
   "padding": 5,
@@ -21,7 +21,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"},
     {
       "name": "brush_x",
-      "value": [],
+      "init": "[scale(\"x\", 55), scale(\"x\", 160)]",
       "on": [
         {
           "events": {
@@ -67,6 +67,7 @@
     },
     {
       "name": "brush_Horsepower",
+      "init": "[55, 160]",
       "on": [
         {
           "events": {"signal": "brush_x"},
@@ -76,7 +77,7 @@
     },
     {
       "name": "brush_y",
-      "value": [],
+      "init": "[scale(\"y\", 13), scale(\"y\", 37)]",
       "on": [
         {
           "events": {
@@ -122,6 +123,7 @@
     },
     {
       "name": "brush_Miles_per_Gallon",
+      "init": "[13, 37]",
       "on": [
         {
           "events": {"signal": "brush_y"},
@@ -135,19 +137,23 @@
     },
     {
       "name": "brush_tuple",
+      "init": "{unit: \"\", fields: brush_tuple_fields, values: [[55, 160], [13, 37]]}",
       "on": [
         {
           "events": [
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
+      "value": [
+        {"field": "Horsepower", "channel": "x", "type": "R"},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+      ]
     },
     {
       "name": "brush_translate_anchor",
@@ -220,12 +226,7 @@
     },
     {
       "name": "brush_modify",
-      "on": [
-        {
-          "events": {"signal": "brush_tuple"},
-          "update": "modify(\"brush_store\", brush_tuple, true)"
-        }
-      ]
+      "update": "modify(\"brush_store\", brush_tuple, true)"
     }
   ],
   "marks": [
@@ -369,7 +370,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "ordinal"
+      "range": "ordinal",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

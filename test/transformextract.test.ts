@@ -1,8 +1,10 @@
 /* tslint:disable:quotemark */
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
-import {normalize, NormalizedSpec, TopLevelSpec} from '../src/spec';
+import {normalize} from '../src/normalize/index';
+import {NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
+import {internalField} from '../src/util';
 import {initConfig} from './../src/config';
 
 describe('extractTransforms()', () => {
@@ -15,14 +17,14 @@ describe('extractTransforms()', () => {
     'bar_aggregate_sort_by_encoding.vl.json',
     'bar_aggregate_sort_mean.vl.json',
     'bar_binned_data.vl.json',
-    'bar_month.vl.json',
     'bar_month_temporal.vl.json',
+    'bar_month.vl.json',
     'bar_sort_by_count.vl.json',
-    'circle_binned.vl.json',
-    'circle_binned_maxbins_2.vl.json',
-    'circle_binned_maxbins_5.vl.json',
     'circle_binned_maxbins_10.vl.json',
+    'circle_binned_maxbins_2.vl.json',
     'circle_binned_maxbins_20.vl.json',
+    'circle_binned_maxbins_5.vl.json',
+    'circle_binned.vl.json',
     'circle_github_punchcard.vl.json',
     'concat_bar_layer_circle.vl.json',
     'concat_marginal_histograms.vl.json',
@@ -30,24 +32,25 @@ describe('extractTransforms()', () => {
     'errorbar_horizontal_aggregate.vl.json',
     'facet_independent_scale_layer_broken.vl.json',
     'hconcat_weather.vl.json',
-    'histogram.vl.json',
     'histogram_bin_change.vl.json',
     'histogram_bin_transform.vl.json',
     'histogram_no_spacing.vl.json',
-    'histogram_ordinal.vl.json',
     'histogram_ordinal_sort.vl.json',
+    'histogram_ordinal.vl.json',
     'histogram_sort_mean.vl.json',
+    'histogram.vl.json',
     'interactive_concat_layer.vl.json',
-    'interactive_layered_crossfilter.vl.json',
     'interactive_layered_crossfilter_discrete.vl.json',
+    'interactive_layered_crossfilter.vl.json',
     'interactive_seattle_weather.vl.json',
-    'layer_bar_dual_axis.vl.json',
+    'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
+    'layer_bar_dual_axis.vl.json',
     'layer_bar_month.vl.json',
     'layer_circle_independent_color.vl.json',
     'layer_falkensee.vl.json',
-    'layer_histogram.vl.json',
     'layer_histogram_global_mean.vl.json',
+    'layer_histogram.vl.json',
     'layer_line_color_rule.vl.json',
     'layer_line_errorband_2d_horizontal_borders_strokedash.vl.json',
     'layer_line_errorband_ci.vl.json',
@@ -55,12 +58,12 @@ describe('extractTransforms()', () => {
     'layer_overlay.vl.json',
     'layer_point_errorbar_1d_horizontal.vl.json',
     'layer_point_errorbar_1d_vertical.vl.json',
-    'layer_point_errorbar_2d_horizontal.vl.json',
     'layer_point_errorbar_2d_horizontal_ci.vl.json',
     'layer_point_errorbar_2d_horizontal_color_encoding.vl.json',
     'layer_point_errorbar_2d_horizontal_custom_ticks.vl.json',
     'layer_point_errorbar_2d_horizontal_iqr.vl.json',
     'layer_point_errorbar_2d_horizontal_stdev.vl.json',
+    'layer_point_errorbar_2d_horizontal.vl.json',
     'layer_point_errorbar_2d_vertical.vl.json',
     'layer_point_errorbar_ci.vl.json',
     'layer_point_errorbar_stdev.vl.json',
@@ -75,16 +78,16 @@ describe('extractTransforms()', () => {
     'line_quarter_legend.vl.json',
     'line_timeunit_transform.vl.json',
     'point_2d_aggregate.vl.json',
+    'point_aggregate_detail.vl.json',
     'point_binned_color.vl.json',
     'point_binned_opacity.vl.json',
     'point_binned_size.vl.json',
     'point_dot_timeunit_color.vl.json',
-    'point_aggregate_detail.vl.json',
     'rect_binned_heatmap.vl.json',
     'rect_heatmap_weather.vl.json',
     'rect_lasagna_future.vl.json',
-    'repeat_histogram.vl.json',
     'repeat_histogram_flights.vl.json',
+    'repeat_histogram.vl.json',
     'repeat_layer.vl.json',
     'repeat_line_weather.vl.json',
     'rule_extent.vl.json',
@@ -97,13 +100,13 @@ describe('extractTransforms()', () => {
     'test_aggregate_nested.vl.json',
     'time_parse_local.vl.json',
     'time_parse_utc_format.vl.json',
-    'trellis_bar_histogram.vl.json',
     'trellis_bar_histogram_label_rotated.vl.json',
-    'trellis_barley.vl.json',
+    'trellis_bar_histogram.vl.json',
     'trellis_barley_layer_median.vl.json',
+    'trellis_barley.vl.json',
     'trellis_column_year.vl.json',
-    'trellis_cross_sort.vl.json',
     'trellis_cross_sort_array.vl.json',
+    'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
     'vconcat_weather.vl.json',
     'window_mean_difference.vl.json'
@@ -118,8 +121,9 @@ describe('extractTransforms()', () => {
         const config = initConfig(spec.config);
         const extractSpec = extractTransforms(normalize(spec, config), config) as TopLevelSpec;
 
-        const originalCompiled = compile(spec);
-        const transformCompiled = compile(extractSpec);
+        // convert to JSON to resolve `SignalRefWrapper`s that are lazily evaluated
+        const originalCompiled = JSON.parse(JSON.stringify(compile(spec)));
+        const transformCompiled = JSON.parse(JSON.stringify(compile(extractSpec)));
 
         if (failsList.has(file)) {
           expect(transformCompiled).not.toEqual(originalCompiled);
@@ -161,7 +165,7 @@ describe('extractTransforms()', () => {
         spec: {
           transform: [
             {
-              aggregate: [{op: 'count', as: 'count_*'}],
+              aggregate: [{op: 'count', as: internalField('count')}],
               groupby: ['Worldwide_Gross']
             }
           ],
@@ -170,7 +174,7 @@ describe('extractTransforms()', () => {
           height: 234,
           encoding: {
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'count_*', type: 'quantitative', title: 'Count of Records'}
+            y: {field: internalField('count'), type: 'quantitative', title: 'Count of Records'}
           }
         }
       });

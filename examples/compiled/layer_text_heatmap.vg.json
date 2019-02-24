@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "style": "cell",
@@ -13,8 +13,8 @@
           "type": "aggregate",
           "groupby": ["Origin", "Cylinders"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["num_cars"]
         }
       ]
     }
@@ -35,13 +35,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"num_cars\"] === null || isNaN(datum[\"num_cars\"])",
               "value": null
             },
-            {"scale": "color", "field": "count_*"}
+            {"scale": "color", "field": "num_cars"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"num_cars\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -58,15 +58,15 @@
       "encode": {
         "update": {
           "fill": [
-            {"test": "datum['count_*'] > 100", "value": "black"},
+            {"test": "datum['num_cars'] > 100", "value": "black"},
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"num_cars\": format(datum[\"num_cars\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
-          "text": {"signal": "format(datum[\"count_*\"], \"\")"},
+          "text": {"signal": "format(datum[\"num_cars\"], \"\")"},
           "align": {"value": "center"}
         }
       }
@@ -91,9 +91,10 @@
     },
     {
       "name": "color",
-      "type": "sequential",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "num_cars"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],
@@ -122,8 +123,8 @@
     {
       "direction": "horizontal",
       "gradientLength": 120,
-      "fill": "color",
-      "title": "Count of Records"
+      "title": "Count of Records",
+      "fill": "color"
     }
   ],
   "config": {

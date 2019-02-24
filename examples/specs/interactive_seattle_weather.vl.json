@@ -9,6 +9,7 @@
       "encoding": {
         "color": {
           "condition": {
+            "title": "Weather",
             "field": "weather",
             "scale": {
               "domain": ["sun", "fog", "drizzle", "rain", "snow"],
@@ -20,6 +21,7 @@
           "value": "lightgray"
         },
         "size": {
+          "title": "Precipitation",
           "field": "precipitation",
           "scale": {"domain": [-1, 50]},
           "type": "quantitative"
@@ -48,7 +50,6 @@
         "color": {
           "condition": {
             "field": "weather",
-            "title": "Weather",
             "scale": {
               "domain": ["sun", "fog", "drizzle", "rain", "snow"],
               "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
@@ -59,7 +60,7 @@
           "value": "lightgray"
         },
         "x": {"aggregate": "count", "type": "quantitative"},
-        "y": {"field": "weather", "type": "nominal"}
+        "y": {"title": "Weather", "field": "weather", "type": "nominal"}
       },
       "width": 600,
       "mark": "bar",

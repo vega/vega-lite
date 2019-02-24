@@ -58,13 +58,13 @@ To customize header, a `header` object in row- or column-[field definitions](fac
 
 ### Labels
 
-{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOffset" source= "Header" %}
+{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelPadding" source= "Header" %}
 
 {:#title}
 
 ### Title
 
-{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleOffset" source="Header" %}
+{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titlePadding" source="Header" %}
 
 ### Example
 

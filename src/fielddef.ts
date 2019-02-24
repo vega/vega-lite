@@ -28,7 +28,7 @@ import {
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
-import {contains, flatAccessWithDatum, getFirstDefined, replacePathInField, titlecase} from './util';
+import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 
 export type Value = number | string | boolean | null;
 
@@ -202,7 +202,7 @@ export interface GenericBinMixins<B> {
    *
    * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
    *
-   * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
+   * - To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `"binned"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.
    *
    * __Default value:__ `false`
    */
@@ -500,7 +500,7 @@ export function vgField(
   let suffix = opt.suffix;
 
   if (isCount(fieldDef)) {
-    field = 'count_*';
+    field = internalField('count');
   } else {
     let fn: string;
 
@@ -779,9 +779,13 @@ export function normalizeFieldDef(fieldDef: FieldDef<string>, channel: Channel) 
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams | boolean, channel: Channel) {
+export function normalizeBin(bin: BinParams | boolean | 'binned', channel: Channel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
+  } else if (bin === 'binned') {
+    return {
+      binned: true
+    };
   } else if (!bin.maxbins && !bin.step) {
     return {...bin, maxbins: autoMaxBins(channel)};
   } else {

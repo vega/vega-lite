@@ -65,7 +65,7 @@ export abstract class BaseConcatModel extends Model {
 
   public assembleLayoutSignals(): NewSignal[] {
     return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleLayoutSignals());
+      return [...signals, ...child.assembleLayoutSignals()];
     }, assembleLayoutSignals(this));
   }
 

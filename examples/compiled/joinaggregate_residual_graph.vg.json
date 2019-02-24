@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
   "autosize": "pad",
   "padding": 5,
@@ -18,13 +18,10 @@
           "expr": "time(datetime(year(datum[\"Release_Date\"]), 0, 1, 0, 0, 0, 0)) <= time(datetime(2019, 0, 1, 0, 0, 0, 0))"
         },
         {
-          "type": "window",
-          "params": [null],
+          "type": "joinaggregate",
           "as": ["AverageRating"],
           "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
-          "sort": {"field": [], "order": []},
-          "frame": [null, null]
+          "fields": ["IMDB_Rating"]
         },
         {
           "type": "formula",

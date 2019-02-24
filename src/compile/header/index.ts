@@ -70,7 +70,7 @@ export function getHeaderType(orient: AxisOrient) {
   return 'footer';
 }
 
-export function getTitleGroup(model: Model, channel: HeaderChannel) {
+export function assembleTitleGroup(model: Model, channel: HeaderChannel) {
   const title = model.component.layoutHeaders[channel].title;
   const config = model.config ? model.config : undefined;
   const facetFieldDef = model.component.layoutHeaders[channel].facetFieldDef
@@ -91,13 +91,13 @@ export function getTitleGroup(model: Model, channel: HeaderChannel) {
   };
 }
 
-export function getHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
+export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMarkGroup[] {
   const layoutHeader = model.component.layoutHeaders[channel];
   const groups = [];
   for (const headerType of HEADER_TYPES) {
     if (layoutHeader[headerType]) {
       for (const headerCmpt of layoutHeader[headerType]) {
-        groups.push(getHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt));
+        groups.push(assembleHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt));
       }
     }
   }
@@ -149,7 +149,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: 'row' | 'column'
   }
 }
 
-export function getHeaderGroup(
+export function assembleHeaderGroup(
   model: Model,
   channel: HeaderChannel,
   headerType: HeaderType,

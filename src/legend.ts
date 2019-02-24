@@ -1,6 +1,7 @@
 import {
   Align,
   BaseLegend,
+  FontStyle,
   FontWeight,
   LabelOverlap,
   Legend as VgLegend,
@@ -23,6 +24,7 @@ export type LegendConfig = LegendMixins &
     string,
     Color,
     FontWeight,
+    FontStyle,
     Align,
     TextBaseline,
     LayoutAlign,
@@ -81,6 +83,7 @@ export interface Legend
       string,
       Color,
       FontWeight,
+      FontStyle,
       Align,
       TextBaseline,
       LayoutAlign,
@@ -100,6 +103,13 @@ export interface Legend
    * The desired number of tick values for quantitative legends.
    */
   tickCount?: number;
+
+  /**
+   * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
+   *
+   * __Default value__: `undefined`
+   */
+  tickMinStep?: number;
 
   /**
    * Explicitly set the visible legend values.
@@ -134,7 +144,7 @@ export interface Legend
   direction?: Orientation;
 
   /**
-   * The orientation of the legend, which determines how the legend is positioned within the scene. One of "left", "right", "top-left", "top-right", "bottom-left", "bottom-right", "none".
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
    *
    * __Default value:__ `"right"`
    */
@@ -205,18 +215,19 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   labelColor: 1,
   labelFont: 1,
   labelFontSize: 1,
+  labelFontStyle: 1,
   labelFontWeight: 1,
   labelLimit: 1,
   labelOffset: 1,
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
+  labelSeparation: 1,
   offset: 1,
   orient: 1,
   padding: 1,
   rowPadding: 1,
   strokeColor: 1,
-  strokeWidth: 1,
   symbolFillColor: 1,
   symbolOffset: 1,
   symbolOpacity: 1,
@@ -225,12 +236,14 @@ const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
   symbolStrokeWidth: 1,
   symbolType: 1,
   tickCount: 1,
+  tickMinStep: 1,
   title: 1,
   titleAlign: 1,
   titleBaseline: 1,
   titleColor: 1,
   titleFont: 1,
   titleFontSize: 1,
+  titleFontStyle: 1,
   titleFontWeight: 1,
   titleLimit: 1,
   titleOpacity: 1,
@@ -248,6 +261,7 @@ const VG_LEGEND_PROPERTY_INDEX: Flag<Exclude<keyof VgLegend, 'strokeDash'>> = {
   stroke: 1,
   fill: 1,
   size: 1,
+  strokeWidth: 1,
   // encode
   encode: 1
 };

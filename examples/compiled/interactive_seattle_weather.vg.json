@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 600,
@@ -29,8 +29,8 @@
           "type": "aggregate",
           "groupby": ["weather"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     },
@@ -156,7 +156,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"monthdate_date\",\"channel\":\"x\",\"type\":\"R\"}]"
+          "value": [{"field": "monthdate_date", "channel": "x", "type": "R"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -233,12 +233,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [
@@ -311,7 +306,7 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"weather\": ''+datum[\"weather\"], \"precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
+                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Precipitation\": format(datum[\"precipitation\"], \"\"), \"Date\": timeFormat(datum[\"monthdate_date\"], '%b'), \"Maximum Daily Temperature (C)\": format(datum[\"temp_max\"], \"\")}"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
@@ -428,7 +423,6 @@
       "signals": [
         {
           "name": "click_tuple",
-          "value": {},
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
@@ -439,7 +433,7 @@
         },
         {
           "name": "click_tuple_fields",
-          "update": "[{\"field\":\"weather\",\"channel\":\"color\",\"type\":\"E\"}]"
+          "value": [{"field": "weather", "channel": "color", "type": "E"}]
         },
         {
           "name": "click_toggle",
@@ -453,12 +447,7 @@
         },
         {
           "name": "click_modify",
-          "on": [
-            {
-              "events": {"signal": "click_tuple"},
-              "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
-            }
-          ]
+          "update": "modify(\"click_store\", click_toggle ? null : click_tuple, click_toggle ? null : true, click_toggle ? click_tuple : null)"
         }
       ],
       "marks": [
@@ -471,7 +460,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {
@@ -482,9 +471,9 @@
                 {"value": "lightgray"}
               ],
               "tooltip": {
-                "signal": "{\"Weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"count_*\"], \"\"), \"weather\": ''+datum[\"weather\"]}"
+                "signal": "{\"weather\": ''+datum[\"weather\"], \"Count of Records\": format(datum[\"__count\"], \"\"), \"Weather\": ''+datum[\"weather\"]}"
               },
-              "x": {"scale": "concat_1_x", "field": "count_*"},
+              "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
               "height": {"scale": "concat_1_y", "band": true}
@@ -520,7 +509,7 @@
           "scale": "concat_1_y",
           "orient": "left",
           "grid": false,
-          "title": "weather",
+          "title": "Weather",
           "zindex": 1
         }
       ]
@@ -531,7 +520,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": ["sun", "fog", "drizzle", "rain", "snow"],
-      "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
+      "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"],
+      "interpolate": "hcl"
     },
     {
       "name": "size",
@@ -557,7 +547,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count_*"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -587,9 +577,9 @@
       "fill": "color"
     },
     {
+      "title": "Precipitation",
       "size": "size",
       "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
-      "title": "precipitation",
       "encode": {
         "symbols": {
           "update": {

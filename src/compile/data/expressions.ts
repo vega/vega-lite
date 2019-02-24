@@ -1,7 +1,7 @@
 import {parse} from 'vega-expression';
 
 function getName(node: any) {
-  let name: string[] = [];
+  const name: string[] = [];
 
   if (node.type === 'Identifier') {
     return [node.name];
@@ -12,8 +12,8 @@ function getName(node: any) {
   }
 
   if (node.type === 'MemberExpression') {
-    name = name.concat(getName(node.object));
-    name = name.concat(getName(node.property));
+    name.push(...getName(node.object));
+    name.push(...getName(node.property));
   }
 
   return name;

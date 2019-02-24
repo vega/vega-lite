@@ -1,5 +1,4 @@
 import {AggregateOp} from 'vega';
-import {Channel} from '../channel';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -10,20 +9,22 @@ import {
   isFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
-  title
+  title,
+  ValueDef
 } from '../fielddef';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
+import {NormalizerParams} from '../normalize/index';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, titlecase} from '../util';
 import {Orient} from '../vega.schema';
+import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
   CompositeMarkTooltipSummary,
-  filterUnsupportedChannels,
   GenericCompositeMarkDef,
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
@@ -45,6 +46,36 @@ const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
   ticks: 1,
   rule: 1
 };
+
+export interface ErrorExtraEncoding<F extends Field> {
+  /**
+   * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  xError?: SecondaryFieldDef<F> | ValueDef<number>;
+
+  /**
+   * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  // `xError2` cannot have type as it should have the same type as `xError`
+  xError2?: SecondaryFieldDef<F> | ValueDef<number>;
+
+  /**
+   * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  yError?: SecondaryFieldDef<F> | ValueDef<number>;
+
+  /**
+   * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
+   */
+  // `yError2` cannot have type as it should have the same type as `yError`
+  yError2?: SecondaryFieldDef<F> | ValueDef<number>;
+}
+
+export type ErrorEncoding<F extends Field> = Pick<
+  Encoding<F>,
+  'x' | 'y' | 'x2' | 'y2' | 'color' | 'detail' | 'opacity'
+> &
+  ErrorExtraEncoding<F>;
 
 export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
 
@@ -90,9 +121,11 @@ export interface ErrorBarConfigMixins {
   errorbar?: ErrorBarConfig;
 }
 
+export const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normalizeErrorBar);
+
 export function normalizeErrorBar(
-  spec: GenericUnitSpec<Encoding<string>, ErrorBar | ErrorBarDef>,
-  config: Config
+  spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>,
+  {config}: NormalizerParams
 ): NormalizedLayerSpec {
   const {
     transform,
@@ -143,7 +176,7 @@ export function normalizeErrorBar(
 }
 
 function errorBarOrientAndInputType(
-  spec: GenericUnitSpec<Encoding<Field>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
+  spec: GenericUnitSpec<ErrorEncoding<Field>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
   compositeMark: ErrorBar | ErrorBand
 ): {
   orient: Orient;
@@ -237,7 +270,7 @@ function errorBarOrientAndInputType(
   }
 }
 
-function errorBarIsInputTypeRaw(encoding: Encoding<Field>): boolean {
+function errorBarIsInputTypeRaw(encoding: ErrorEncoding<Field>): boolean {
   return (
     (isFieldDef(encoding.x) || isFieldDef(encoding.y)) &&
     !isFieldDef(encoding.x2) &&
@@ -249,11 +282,11 @@ function errorBarIsInputTypeRaw(encoding: Encoding<Field>): boolean {
   );
 }
 
-function errorBarIsInputTypeAggregatedUpperLower(encoding: Encoding<Field>): boolean {
+function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<Field>): boolean {
   return isFieldDef(encoding.x2) || isFieldDef(encoding.y2);
 }
 
-function errorBarIsInputTypeAggregatedError(encoding: Encoding<Field>): boolean {
+function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<Field>): boolean {
   return (
     isFieldDef(encoding.xError) ||
     isFieldDef(encoding.xError2) ||
@@ -262,25 +295,11 @@ function errorBarIsInputTypeAggregatedError(encoding: Encoding<Field>): boolean 
   );
 }
 
-export const errorBarSupportedChannels: Channel[] = [
-  'x',
-  'y',
-  'x2',
-  'y2',
-  'xError',
-  'yError',
-  'xError2',
-  'yError2',
-  'color',
-  'detail',
-  'opacity'
-];
-
 export function errorBarParams<
   M extends ErrorBar | ErrorBand,
   MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)
 >(
-  spec: GenericUnitSpec<Encoding<string>, M | MD>,
+  spec: GenericUnitSpec<ErrorEncoding<string>, M | MD>,
   compositeMark: M,
   config: Config
 ): {
@@ -288,7 +307,7 @@ export function errorBarParams<
   groupby: string[];
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
-  encodingWithoutContinuousAxis: Encoding<string>;
+  encodingWithoutContinuousAxis: ErrorEncoding<string>;
   ticksOrient: Orient;
   markDef: MD;
   outerSpec: {
@@ -300,10 +319,8 @@ export function errorBarParams<
     width?: number;
     height?: number;
   };
-  tooltipEncoding: Encoding<string>;
+  tooltipEncoding: ErrorEncoding<string>;
 } {
-  spec = filterUnsupportedChannels<M, MD>(spec, errorBarSupportedChannels, compositeMark);
-
   // TODO: use selection
   const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: MD = isMarkDef(mark) ? mark : ({type: mark} as MD);
@@ -357,7 +374,7 @@ export function errorBarParams<
   const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorBarSpecificAggregate];
   const groupby: string[] = inputType !== 'raw' ? [] : oldGroupBy;
 
-  const tooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
+  const tooltipEncoding: ErrorEncoding<string> = getCompositeMarkTooltip(
     tooltipSummary,
     continuousAxisChannelDef,
     encodingWithoutContinuousAxis,

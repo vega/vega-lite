@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -28,7 +28,7 @@
           "type": "aggregate",
           "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"],
           "ops": ["count"],
-          "fields": ["*"],
+          "fields": [null],
           "as": ["count"]
         },
         {"type": "filter", "expr": "datum.bin_IMDB_Rating !== null"},
