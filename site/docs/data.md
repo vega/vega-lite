@@ -67,8 +67,6 @@ Here is a list of all properties describing a named `data` source:
 
 For example, to create a data source named `myData`, use the following data
 
-{: .suppress-error}
-
 ```json
 {
   "name": "myData"
@@ -124,8 +122,6 @@ Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The inp
 ## Datasets
 
 Vega-Lite supports a top-level `datasets` property. This can be useful when the same data should be inlined in different places in the spec. Instead of setting values inline, specify datasets at the top level and then refer to the [named](#named) datasource in the rest of the spec. `datasets` is a mapping from name to an [inline](#inline) dataset.
-
-{: .suppress-error}
 
 ```json
     "datasets": {

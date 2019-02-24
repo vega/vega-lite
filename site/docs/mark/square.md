@@ -5,9 +5,7 @@ title: Square
 permalink: /docs/square.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -37,9 +35,7 @@ Here are an example scatter plot with `square` marks:
 
 ## Square Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

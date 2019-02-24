@@ -11,9 +11,7 @@ The `mark` property of a [single view specification](spec.html#single) can eithe
 
 <!-- why mark-based approach over chart typology + but we support variety of chart types -->
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -47,9 +45,7 @@ For example, a bar chart has `mark` as a simple string `"bar"`.
 
 ## Mark Definition Object
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -105,9 +101,7 @@ Marks can act as hyperlinks when the `href` property or [channel](encoding.html#
 
 ## Mark Style Config
 
-{: .suppress-error}
-
-```json
+```js
 {
   // Top Level Specification
   "config": {
@@ -124,8 +118,6 @@ In addition to the default mark properties above, default values can be further 
 {% include table.html props="style" source="Config" %}
 
 For example, to set a default shape and stroke width for `point` marks with a style named `"triangle"`:
-
-{: .suppress-error}
 
 ```json
 {
@@ -157,9 +149,7 @@ See also: [a similar example that uses mark definition to configure offset, alig
 
 ## Mark Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

@@ -5,9 +5,7 @@ title: Error Band
 permalink: /docs/errorband.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -113,9 +111,7 @@ Here is an example of a `errorband` with the `color` encoding channel set to `{"
 
 ## Mark Config
 
-{: .suppress-error}
-
-```json
+```js
 {
   "errorband": {
     "extent": ...,

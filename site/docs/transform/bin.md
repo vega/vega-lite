@@ -20,9 +20,7 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
 
 ## Binning in Encoding Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // A Single View Specification
 {
   "data": ... ,
@@ -79,9 +77,7 @@ If you have data that is already binned outside of Vega-Lite, setting the `bin` 
 
 ## Bin Transform
 
-{: .suppress-error}
-
-```json
+```js
 // Any View Specification
 {
   ...

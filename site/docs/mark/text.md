@@ -5,9 +5,7 @@ title: Text
 permalink: /docs/text.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -31,9 +29,7 @@ permalink: /docs/text.html
 
 ## Text Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -78,9 +74,7 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 ## Text Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

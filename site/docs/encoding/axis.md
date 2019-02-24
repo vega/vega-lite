@@ -21,9 +21,7 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 
 ## Axis Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -103,9 +101,7 @@ For example, the following plot has a customized x-axis title.
 
 ## Axis Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

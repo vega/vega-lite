@@ -1,4 +1,17 @@
 import {text} from 'd3-fetch';
+// @ts-ignore
+import hljs from 'highlight.js/lib/highlight';
+// @ts-ignore
+import css from 'highlight.js/lib/languages/css';
+// @ts-ignore
+import diff from 'highlight.js/lib/languages/diff';
+// @ts-ignore
+import javascript from 'highlight.js/lib/languages/javascript';
+// @ts-ignore
+import json from 'highlight.js/lib/languages/json';
+// @ts-ignore
+import xml from 'highlight.js/lib/languages/xml';
+
 import {event, select, selectAll, Selection} from 'd3-selection';
 import * as hljs from 'highlight.js';
 import * as vega from 'vega';
@@ -9,6 +22,15 @@ import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;
+
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('json', json);
+hljs.registerLanguage('html', xml);
+hljs.registerLanguage('css', css);
+hljs.registerLanguage('diff', diff);
+
+// highlight jekyll code blocks
+hljs.initHighlightingOnLoad();
 
 declare const BASEURL: string;
 

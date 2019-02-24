@@ -51,7 +51,7 @@ Alternatively, you can [calculate](calculate.html) a new field that concatenates
 
 To disable tooltips for a particular single view specification, you can set the `"tooltip"` property of a mark definition block to `null`.
 
-```json
+```js
 {
   "mark": {"type": ..., "tooltip": null, ...},
   "encoding": ...,
@@ -61,7 +61,7 @@ To disable tooltips for a particular single view specification, you can set the 
 
 Alternatively, you can also set the `"tooltip"` encoding to `null`:
 
-```json
+```js
 {
   "mark": ...,
   "encoding": {
@@ -73,7 +73,7 @@ Alternatively, you can also set the `"tooltip"` encoding to `null`:
 
 To disable all tooltips, disable it in the [config](config.html) with
 
-```json
+```js
 "config": {
   "mark": {"tooltip": null}
 }
