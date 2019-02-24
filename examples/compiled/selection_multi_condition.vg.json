@@ -151,16 +151,13 @@
             {"signal": "brush_Horsepower"},
             {"signal": "brush_Miles_per_Gallon"}
           ],
-          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
+          "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"\", fields: brush_tuple_fields, values: [brush_Horsepower, brush_Miles_per_Gallon]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "value": [
-        {"field": "Horsepower", "channel": "x", "type": "R"},
-        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
-      ]
+      "update": "[{\"field\":\"Horsepower\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Miles_per_Gallon\",\"channel\":\"y\",\"type\":\"R\"}]"
     },
     {
       "name": "brush_translate_anchor",
@@ -233,10 +230,16 @@
     },
     {
       "name": "brush_modify",
-      "update": "modify(\"brush_store\", brush_tuple, true)"
+      "on": [
+        {
+          "events": {"signal": "brush_tuple"},
+          "update": "modify(\"brush_store\", brush_tuple, true)"
+        }
+      ]
     },
     {
       "name": "hoverbrush_tuple",
+      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
@@ -247,7 +250,7 @@
     },
     {
       "name": "hoverbrush_tuple_fields",
-      "value": [{"field": "_vgsid_", "type": "E"}]
+      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
     },
     {
       "name": "hoverbrush_toggle",
@@ -261,7 +264,12 @@
     },
     {
       "name": "hoverbrush_modify",
-      "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
+      "on": [
+        {
+          "events": {"signal": "hoverbrush_tuple"},
+          "update": "modify(\"hoverbrush_store\", hoverbrush_toggle ? null : hoverbrush_tuple, hoverbrush_toggle ? null : true, hoverbrush_toggle ? hoverbrush_tuple : null)"
+        }
+      ]
     }
   ],
   "marks": [
@@ -325,7 +333,7 @@
             },
             {
               "test": "!(length(data(\"hoverbrush_store\"))) || (vlSelectionTest(\"hoverbrush_store\", datum))",
-              "value": "steelblue"
+              "value": "teal"
             },
             {
               "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
