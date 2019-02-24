@@ -5637,7 +5637,7 @@
           "type": "number"
         },
         "labelPadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
         },
         "title": {
@@ -5683,7 +5683,7 @@
           "type": "number"
         },
         "titlePadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
           "type": "number"
         }
       },
@@ -5716,7 +5716,7 @@
           "type": "number"
         },
         "labelPadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
         },
         "titleAnchor": {
@@ -5755,7 +5755,7 @@
           "type": "number"
         },
         "titlePadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
           "type": "number"
         }
       },

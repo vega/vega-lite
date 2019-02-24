@@ -85,7 +85,7 @@ export interface HeaderConfig {
   titleLimit?: number;
 
   /**
-   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   * The padding, in pixel, between facet header's title and the label.
    *
    * __Default value:__ `10`
    */
@@ -127,7 +127,7 @@ export interface HeaderConfig {
   labelLimit?: number;
 
   /**
-   * The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.
+   * The padding, in pixel, between facet header's label and the plot.
    *
    * __Default value:__ `10`
    */
