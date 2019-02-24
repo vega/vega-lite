@@ -58,7 +58,7 @@
       "encode": {
         "update": {
           "fill": [
-            {"test": "datum['num_cars'] > 100", "value": "black"},
+            {"test": "datum['num_cars'] < 40", "value": "black"},
             {"value": "white"}
           ],
           "tooltip": {
