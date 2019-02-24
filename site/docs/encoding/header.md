@@ -21,9 +21,7 @@ In addition to the `header` property of a row- or column-field definition, users
 
 ## Header Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -76,9 +74,7 @@ This example uses header properties to change the font size of this faceted plot
 
 ## Header Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

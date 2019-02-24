@@ -5,9 +5,7 @@ title: Line
 permalink: /docs/line.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 {
   "data": ... ,
   "mark": "line",
@@ -32,9 +30,7 @@ The `line` mark represents the data points stored in a field with a line connect
 
 ## Line Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -145,9 +141,7 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 ## Line Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

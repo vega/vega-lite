@@ -7,9 +7,7 @@ permalink: /docs/encoding.html
 
 An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def) or [constant values](#value-def).
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   "data": ... ,
@@ -83,9 +81,7 @@ Each channel definition object is either a [field definition](<(#field-def)>), w
 
 ### Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,
@@ -129,9 +125,7 @@ To see a list of additional properties for each type of encoding channels, pleas
 
 ### Value Definition
 
-{: .suppress-error}
-
-```json
+```js
 // Specification of a Single View
 {
   ...,

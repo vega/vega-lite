@@ -7,9 +7,7 @@ permalink: /docs/filter.html
 
 The filter transform removes objects from a data stream based on a provided filter expression or filter object.
 
-{: .suppress-error}
-
-```json
+```js
 {
   ...
   "transform": [
@@ -42,8 +40,6 @@ For a field predicate, a `field` must be provided along with one of the predicat
 
 For example, to check if the `car_color` field's value is equal to `"red"`, we can use the following filter:
 
-{: .suppress-error}
-
 ```json
 {"filter": {"field": "car_color", "equal": "red"}}
 ```
@@ -55,8 +51,6 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 {% include table.html props="lt" source="FieldLTPredicate" %}
 
 For example, to check if the `height` field's value is less than `180`, we can use the following filter:
-
-{: .suppress-error}
 
 ```json
 {"filter": {"field": "height", "lt": 180}}
@@ -70,8 +64,6 @@ For example, to check if the `height` field's value is less than `180`, we can u
 
 For example, to check if the `Year` field's value is less than or equals to `"2000"`, we can use the following filter:
 
-{: .suppress-error}
-
 ```json
 {"filter": {"timeUnit": "year", "field": "Year", "lte": "2000"}}
 ```
@@ -84,8 +76,6 @@ For example, to check if the `Year` field's value is less than or equals to `"20
 
 To check if the `state` field's value is greater than `"Arizona"` by string comparison, we can use the following filter: (Note: Standard Javascript string comparison is done, ie., "A" < "B", but "B" < "a")
 
-{: .suppress-error}
-
 ```json
 {"filter": {"field": "state", "gt": "Arizona"}}
 ```
@@ -97,8 +87,6 @@ To check if the `state` field's value is greater than `"Arizona"` by string comp
 {% include table.html props="gte" source="FieldGTEPredicate" %}
 
 For example, to check if the `height` field's value is greater than or equals to `0`, we can use the following filter:
-
-{: .suppress-error}
 
 ```json
 {"filter": {"field": "height", "gte": 0}}

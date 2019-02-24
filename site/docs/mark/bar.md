@@ -5,9 +5,7 @@ title: Bar
 permalink: /docs/bar.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -31,9 +29,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 
 ## Bar Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -124,9 +120,7 @@ Specifying `x2` or `y2` for the quantitative axis of bar marks creates ranged ba
 
 ## Bar Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

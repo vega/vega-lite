@@ -5,9 +5,7 @@ title: Area
 permalink: /docs/area.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -31,9 +29,7 @@ permalink: /docs/area.html
 
 ## Area Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -94,9 +90,7 @@ Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged a
 
 ## Area Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

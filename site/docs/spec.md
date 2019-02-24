@@ -37,9 +37,7 @@ In addition to the [common properties](#common), any kind of top-level specifica
 
 ## Single View Specifications
 
-{: .suppress-error}
-
-```json
+```js
 {
   // Properties for top-level specification (e.g., standalone single view specifications)
   "$schema": "https://vega.github.io/schema/vega-lite/v3.json",
@@ -107,9 +105,7 @@ To create layered and multi-view graphics, please refer to the following pages:
 
 ## View Configuration
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...,
