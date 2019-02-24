@@ -76,8 +76,7 @@ describe('scale', () => {
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
 
       for (const channel of ['x', 'y', 'size', 'opacity'] as ScaleChannel[]) {
-        expect(!channelSupportScaleType(channel, 'ordinal')).toBeTruthy();
-        expect(!channelSupportScaleType(channel, 'linear')).toBeTruthy();
+        expect(channelSupportScaleType(channel, 'ordinal')).toBeFalsy();
         for (const scaleType of scaleTypes) {
           expect(channelSupportScaleType(channel, scaleType)).toBeTruthy();
         }
