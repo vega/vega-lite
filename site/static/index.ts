@@ -1,4 +1,3 @@
-import {text} from 'd3-fetch';
 // @ts-ignore
 import hljs from 'highlight.js/lib/highlight';
 // @ts-ignore
@@ -13,11 +12,11 @@ import json from 'highlight.js/lib/languages/json';
 import xml from 'highlight.js/lib/languages/xml';
 
 import {event, select, selectAll, Selection} from 'd3-selection';
-import * as hljs from 'highlight.js';
+import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
-import {post} from 'vega-embed/build/src/post';
 import {Handler} from 'vega-tooltip';
 import {compile, TopLevelSpec} from '../../src';
+import {post} from './post';
 import {runStreamingExample} from './streaming';
 
 window['runStreamingExample'] = runStreamingExample;
@@ -97,7 +96,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .on('click', function() {
         post(window, editorURL, {
           mode: 'vega-lite',
-          spec: JSON.stringify(spec, null, 2),
+          spec: compactStringify(spec),
           config: vgSpec.config,
           renderer: 'svg'
         });
@@ -115,9 +114,14 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = BASEURL + '/examples/specs/' + (dir ? dir + '/' : '') + name + '.vl.json';
 
-    text(fullUrl)
-      .then(spec => {
-        renderExample(sel, spec);
+    fetch(fullUrl)
+      .then(response => {
+        response
+          .text()
+          .then(spec => {
+            renderExample(sel, spec);
+          })
+          .catch(console.error);
       })
       .catch(console.error);
   } else {
