@@ -19,7 +19,7 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {getHeaderGroups, getTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -360,12 +360,12 @@ export abstract class Model {
 
     for (const channel of HEADER_CHANNELS) {
       if (layoutHeaders[channel].title) {
-        headerMarks.push(getTitleGroup(this, channel));
+        headerMarks.push(assembleTitleGroup(this, channel));
       }
     }
 
     for (const channel of HEADER_CHANNELS) {
-      headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
+      headerMarks = headerMarks.concat(assembleHeaderGroups(this, channel));
     }
     return headerMarks;
   }
