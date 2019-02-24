@@ -422,7 +422,7 @@ export interface SchemeParams {
   name: string;
 
   /**
-   * Determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
+   * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
    */
   extent?: number[];
 
