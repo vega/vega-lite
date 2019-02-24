@@ -40,7 +40,7 @@
     }
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "bounds": "full",
     "align": "each"
   },

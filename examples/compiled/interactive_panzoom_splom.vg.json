@@ -25,7 +25,7 @@
     {"name": "grid_Acceleration"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 3,
     "bounds": "full",
     "align": "all"
