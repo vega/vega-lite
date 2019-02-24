@@ -3,6 +3,7 @@
 import {ROW, SHAPE} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import * as log from '../../src/log';
+import {DEFAULT_SPACING} from '../../src/spec/base';
 import {FacetMapping} from '../../src/spec/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
@@ -237,7 +238,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: 10, column: 10},
+        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
         columns: {
           signal: "length(data('column_domain'))"
         },
@@ -265,7 +266,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: 10, column: 10},
+        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
         columns: {
           signal: "length(data('column_domain'))"
         },
@@ -293,7 +294,7 @@ describe('FacetModel', () => {
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
-        padding: {row: 10, column: 10},
+        padding: {row: DEFAULT_SPACING, column: DEFAULT_SPACING},
         columns: 1,
         bounds: 'full',
         align: 'none'

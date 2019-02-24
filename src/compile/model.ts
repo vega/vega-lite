@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
-import {extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
+import {DEFAULT_SPACING, extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
@@ -338,8 +338,8 @@ export abstract class Model {
       padding: isNumber(spacing)
         ? spacing
         : {
-            row: spacing.row || 10,
-            column: spacing.column || 10
+            row: spacing.row || DEFAULT_SPACING,
+            column: spacing.column || DEFAULT_SPACING
           },
       ...this.assembleDefaultLayout(),
       ...(align ? {align} : {}),
