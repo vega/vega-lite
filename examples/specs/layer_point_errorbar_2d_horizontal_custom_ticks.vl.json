@@ -5,7 +5,7 @@
     {
       "mark": {
         "type": "errorbar",
-        "ticks": {"color": "blue"}
+        "ticks": {"color": "steelblue"}
       },
       "encoding": {
         "x": {
