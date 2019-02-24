@@ -7,13 +7,12 @@
 
 const fs = require('fs');
 const examples = require('../_data/examples.json');
-const { execSync } = require('child_process');
 const svg2png = require('svg2png-many');
 
 function createPage(example) {
-  return (`---
+  return `---
 layout: page
-${example.description ? `description: ${example.description}`: ''}
+${example.description ? `description: ${example.description}` : ''}
 title: ${example.title}
 menu: examples
 permalink: /examples/${example.name}.html
@@ -24,7 +23,7 @@ edit_path: _data/examples.json
 ${example.description || ''}
 
 {% include example.html spec='${example.name}'%}
-`);
+`;
 }
 
 const fileMap = {};
@@ -34,6 +33,8 @@ for (const category of Object.keys(examples)) {
     for (const example of examples[category][subcategory]) {
       const name = example.name;
 
+      console.log('Processing', name);
+
       fs.writeFileSync(`site/examples/${name}.vl.json`, fs.readFileSync(`examples/specs/${name}.vl.json`));
       fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
       fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
@@ -41,4 +42,4 @@ for (const category of Object.keys(examples)) {
   }
 }
 
-svg2png.svg2PngFiles(fileMap)
+svg2png.svg2PngFiles(fileMap);

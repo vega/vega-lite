@@ -108,8 +108,7 @@ describe('extractTransforms()', () => {
     'trellis_cross_sort_array.vl.json',
     'trellis_cross_sort.vl.json',
     'trellis_line_quarter.vl.json',
-    'vconcat_weather.vl.json',
-    'window_mean_difference.vl.json'
+    'vconcat_weather.vl.json'
   ]);
   for (const file of fs.readdirSync(specsDir)) {
     const filepath = specsDir + file;
