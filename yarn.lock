@@ -6220,14 +6220,6 @@ vega-crossfilter@^4.0.1:
     vega-dataflow "^5.1.0"
     vega-util "^1.8.0"
 
-vega-dataflow@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/vega-dataflow/-/vega-dataflow-5.1.0.tgz#fc7c3e60c7697f7ee12e71a3ae789a7a50e4f688"
-  integrity sha512-aUPkw2YhW0IPPedKT3lMQ4YquxKUBAfCnXuKoMpd0/EYwrSgNdTYZeqU465mibABD0XIgqNDL1TSKeErk+p26g==
-  dependencies:
-    vega-loader "^4.0.0"
-    vega-util "^1.8.0"
-
 vega-dataflow@^4.0.0, vega-dataflow@^4.0.4, vega-dataflow@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/vega-dataflow/-/vega-dataflow-4.1.0.tgz#c63abee8502eedf42a972ad5d3a2ce7475aab7d8"
@@ -6464,11 +6456,11 @@ vega-parser@^3.9.0:
     vega-util "^1.7.0"
 
 vega-parser@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-5.1.0.tgz#65333d571d2473441292ffcaed932cf2af42f15c"
-  integrity sha512-0m//0whIFn+QI04wy+Yp3SQuNNA3uXoBK5qqj0e8BZ4y7+ZMMVYrLA29AcooYnP1szsrkBVvaHv6sRKP+sv2GA==
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-5.1.1.tgz#da5aa16a9bf79b25c5f94de5c4392b13f149ff0d"
+  integrity sha512-JrmltEMYbHusGLCs9eF2IGfIWXC+WlxH98dLMcxd6kmTaTEdrVoQ4AKBSuEcl6d+nR1wQ30cHK2DqQdxZg9rGA==
   dependencies:
-    vega-dataflow "5.1.0"
+    vega-dataflow "^5.1.1"
     vega-event-selector "^2.0.0"
     vega-expression "^2.5.0"
     vega-functions "^5.0.1"
