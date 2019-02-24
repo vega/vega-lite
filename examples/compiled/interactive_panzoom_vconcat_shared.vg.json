@@ -25,7 +25,7 @@
     {"name": "region_Miles_per_Gallon"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 1,
     "bounds": "full",
     "align": "each"

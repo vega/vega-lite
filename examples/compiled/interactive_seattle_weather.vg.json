@@ -69,7 +69,7 @@
     {"name": "click", "update": "vlSelectionResolve(\"click_store\")"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 1,
     "bounds": "full",
     "align": "each"
