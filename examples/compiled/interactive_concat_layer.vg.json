@@ -448,8 +448,5 @@
       "zero": true
     }
   ],
-  "config": {
-    "axisY": {"minExtent": 30},
-    "range": {"heatmap": {"scheme": "greenblue"}}
-  }
+  "config": {"axisY": {"minExtent": 30}}
 }
