@@ -29,6 +29,7 @@
         "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "style": "cell",

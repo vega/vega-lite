@@ -72,6 +72,7 @@
         "text": {"signal": "''+parent[\"key\"]"},
         "offset": 10,
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}

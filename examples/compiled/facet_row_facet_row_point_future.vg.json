@@ -45,6 +45,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "baseline": "middle"
       }
     },
@@ -80,6 +81,7 @@
             "offset": 10,
             "orient": "left",
             "style": "guide-label",
+            "frame": "group",
             "baseline": "middle"
           },
           "encode": {"update": {"height": {"signal": "child_child_height"}}},

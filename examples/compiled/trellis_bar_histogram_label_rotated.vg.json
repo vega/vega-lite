@@ -74,6 +74,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "angle": -90,
         "baseline": "middle"
       },
