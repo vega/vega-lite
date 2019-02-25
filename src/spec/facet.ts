@@ -1,8 +1,7 @@
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../fielddef';
 import {Header} from '../header';
-import {Resolve} from '../resolve';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
-import {BaseSpec, GenericCompositionLayout} from './base';
+import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {FacetMapping} from './facet';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
@@ -69,7 +68,8 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
  */
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
   extends BaseSpec,
-    GenericCompositionLayout {
+    GenericCompositionLayoutWithColumns,
+    ResolveMixins {
   /**
    * A field definition for faceting the plot or an object that describes mappings between `row` and `column` channels and their field definitions.
    */
@@ -80,11 +80,6 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
    */
   spec: L | U;
   // TODO: replace this with GenericSpec<U> once we support all cases;
-
-  /**
-   * Scale, axis, and legend resolutions for facets.
-   */
-  resolve?: Resolve;
 }
 
 /**

@@ -1,4 +1,5 @@
 import {Data} from '../data';
+import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, flagKeys} from '../util';
@@ -85,6 +86,13 @@ export interface LayerUnitMixins extends LayoutSizeMixins {
    * __Default value:__ none (transparent)
    */
   view?: ViewBackground;
+}
+
+export interface ResolveMixins {
+  /**
+   * Scale, axis, and legend resolutions for view composition specifications.
+   */
+  resolve?: Resolve;
 }
 
 export interface BaseViewBackground
