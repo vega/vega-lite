@@ -5308,6 +5308,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
         "data": {
           "$ref": "#/definitions/Data",
           "description": "An object describing the data source"
@@ -11245,6 +11249,10 @@
           ],
           "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
+        "columns": {
+          "description": "The number of columns to include in the view composition layout. If unspecified, an infinite number of columns (a single row) will be assumed.",
+          "type": "number"
+        },
         "config": {
           "$ref": "#/definitions/Config",
           "description": "Vega-Lite configuration object.  This property can only be defined at the top-level of a specification."
@@ -11961,7 +11969,10 @@
         },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11977,7 +11988,10 @@
         },
         "stroke": {
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -12033,7 +12047,10 @@
         },
         "fill": {
           "description": "The fill color.\n\n__Default value:__ `undefined`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -12053,7 +12070,10 @@
         },
         "stroke": {
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
