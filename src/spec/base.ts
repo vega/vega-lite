@@ -117,14 +117,14 @@ export interface BaseViewBackground
    *
    * __Default value:__ `undefined`
    */
-  fill?: string;
+  fill?: string | null;
 
   /**
    * The stroke color.
    *
    * __Default value:__ `"#ddd"`
    */
-  stroke?: string;
+  stroke?: string | null;
 }
 
 export interface ViewBackground extends BaseViewBackground {

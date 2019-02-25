@@ -38,7 +38,7 @@
     }
   ],
   "layout": {
-    "padding": {"row": 20, "column": 20},
+    "padding": 10,
     "offset": {"rowTitle": 10},
     "columns": 1,
     "bounds": "full",

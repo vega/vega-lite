@@ -82,11 +82,7 @@
       "update": "bandspace(domain('concat_2_y').length, 0.1, 0.05) * concat_2_y_step"
     }
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 10, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -158,7 +154,8 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_1_width"},
-          "height": {"signal": "concat_1_height"}
+          "height": {"signal": "concat_1_height"},
+          "stroke": {"value": null}
         }
       },
       "marks": [
