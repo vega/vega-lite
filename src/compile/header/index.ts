@@ -163,6 +163,7 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
     offset: 10,
     ...(channel === 'row' ? {orient: 'left'} : {}),
     style: 'guide-label',
+    frame: 'group',
     ...(labelAngle !== undefined ? {angle: labelAngle} : {}),
     ...labelBaseline(labelAngle),
     ...getHeaderProperties(config, facetFieldDef, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
