@@ -21,6 +21,7 @@ import {expression} from '../predicate';
 import {selectionPredicate} from '../selection/selection';
 import {UnitModel} from '../unit';
 import * as ref from './valueref';
+import {fieldInvalidPredicate} from './valueref';
 
 function isVisible(c: string) {
   return c !== 'transparent' && c !== null && c !== undefined;
@@ -115,8 +116,8 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill, stroke} = color(model);
   return {
     ...markDefProperties(model.markDef, ignore),
-    ...wrapInvalid(model, 'fill', fill),
-    ...wrapInvalid(model, 'stroke', stroke),
+    ...wrapAllFieldsInvalid(model, 'fill', fill),
+    ...wrapAllFieldsInvalid(model, 'stroke', stroke),
     ...nonPosition('opacity', model),
     ...nonPosition('fillOpacity', model),
     ...nonPosition('strokeOpacity', model),
@@ -126,13 +127,13 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   };
 }
 
-function wrapInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
+function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgValueRef | VgValueRef[]): VgEncodeEntry {
   const {config, mark} = model;
 
   if (config.invalidValues && valueRef && !isPathMark(mark)) {
     // For non-path marks, we have to exclude invalid values (null and NaN) for scales with continuous domains.
     // For path marks, we will use "defined" property and skip these values instead.
-    const test = validPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
+    const test = allFieldsInvalidPredicate(model, {invalid: true, channels: SCALE_CHANNELS});
     if (test) {
       return {
         [channel]: [
@@ -163,7 +164,10 @@ export function valueIfDefined(prop: string, value: string | number | boolean): 
   return undefined;
 }
 
-function validPredicate(model: UnitModel, {invalid = false, channels}: {invalid?: boolean; channels: ScaleChannel[]}) {
+function allFieldsInvalidPredicate(
+  model: UnitModel,
+  {invalid = false, channels}: {invalid?: boolean; channels: ScaleChannel[]}
+) {
   const filterIndex = channels.reduce((aggregator: Dict<true>, channel) => {
     const scaleComponent = model.getScaleComponent(channel);
     if (scaleComponent) {
@@ -181,18 +185,13 @@ function validPredicate(model: UnitModel, {invalid = false, channels}: {invalid?
   const fields = keys(filterIndex);
   if (fields.length > 0) {
     const op = invalid ? '||' : '&&';
-    return fields
-      .map(field => {
-        const eq = invalid ? '===' : '!==';
-        return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
-      })
-      .join(` ${op} `);
+    return fields.map(field => fieldInvalidPredicate(field, invalid)).join(` ${op} `);
   }
   return undefined;
 }
 export function defined(model: UnitModel): VgEncodeEntry {
   if (model.config.invalidValues === 'filter') {
-    const signal = validPredicate(model, {channels: ['x', 'y']});
+    const signal = allFieldsInvalidPredicate(model, {channels: ['x', 'y']});
 
     if (signal) {
       return {defined: {signal}};
@@ -423,6 +422,7 @@ export function pointPosition(
           scaleName,
           scale,
           stack,
+          mark,
           offset,
           defaultRef: ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
         });
@@ -457,6 +457,7 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
           scaleName,
           scale,
           stack,
+          mark,
           offset,
           defaultRef: ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
         });

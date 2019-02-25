@@ -3,6 +3,7 @@
  */
 import {SignalRef} from 'vega';
 import {isArray, isFunction, isString, stringValue} from 'vega-util';
+import {isCountingAggregateOp} from '../../aggregate';
 import {isBinned, isBinning} from '../../bin';
 import {Channel, getMainRangeChannel, X, X2, Y, Y2} from '../../channel';
 import {Config} from '../../config';
@@ -25,8 +26,8 @@ import {
   vgField
 } from '../../fielddef';
 import * as log from '../../log';
-import {Mark, MarkDef} from '../../mark';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {isPathMark, Mark, MarkDef} from '../../mark';
+import {hasDiscreteDomain, isContinuousToContinuous, ScaleType} from '../../scale';
 import {StackProperties} from '../../stack';
 import {QUANTITATIVE} from '../../type';
 import {contains, some} from '../../util';
@@ -34,28 +35,72 @@ import {VgValueRef} from '../../vega.schema';
 import {formatSignalRef} from '../common';
 import {ScaleComponent} from '../scale/component';
 
+function midPointWithPositionInvalidTest(
+  params: MidPointParams & {
+    channel: 'x' | 'y' | 'x2' | 'y2';
+    mark: Mark;
+  }
+) {
+  const {channel, channelDef, scaleName, mark, scale} = params;
+  const ref = midPoint(params);
+
+  // Wrap to check if the positional value is invalid, if so, plot the point on the min value
+  if (
+    // Only do this for non-path mark (as path marks will already use "defined" to skip points)
+    !isPathMark(mark) &&
+    // Only this for field def without counting aggregate (as count wouldn't be null)
+    isFieldDef(channelDef) &&
+    !isCountingAggregateOp(channelDef.aggregate) &&
+    // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
+    scale &&
+    isContinuousToContinuous(scale.get('type')) &&
+    scale.get('zero') === false
+  ) {
+    // FIXME: this might not work correctly for the following cases yet:
+    // 2) ranged mark
+    // 3) geo
+
+    const test = fieldInvalidPredicate(channelDef, true);
+    const zeroValueRef = getDefaultRef(
+      'zeroOrMin',
+      getMainRangeChannel(channel) as 'x' | 'y',
+      scaleName,
+      scale,
+      mark
+    )();
+    return [{test, ...zeroValueRef}, ref];
+  }
+  return ref;
+}
+
+export function fieldInvalidPredicate(field: string | FieldDef<string>, invalid = true) {
+  field = isString(field) ? field : vgField(field, {expr: 'datum'});
+
+  const op = invalid ? '||' : '&&';
+  const eq = invalid ? '===' : '!==';
+  return `${field} ${eq} null ${op} ${invalid ? '' : '!'}isNaN(${field})`;
+}
+
 // TODO: we need to find a way to refactor these so that scaleName is a part of scale
 // but that's complicated.  For now, this is a huge step moving forward.
 
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(params: {
-  channel: 'x' | 'y';
-  channelDef: ChannelDef;
-  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
-  scaleName: string;
-  scale: ScaleComponent;
-  stack?: StackProperties;
-  offset: number;
-  defaultRef: VgValueRef | (() => VgValueRef);
-}): VgValueRef {
+export function position(
+  params: MidPointParams & {
+    channel: 'x' | 'y';
+    mark: Mark;
+  }
+): VgValueRef | VgValueRef[] {
   const {channel, channelDef, scaleName, stack, offset} = params;
+
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'}, {offset});
   }
-  return midPoint(params);
+
+  return midPointWithPositionInvalidTest(params);
 }
 
 /**
@@ -68,18 +113,13 @@ export function position2({
   scaleName,
   scale,
   stack,
+  mark,
   offset,
   defaultRef
-}: {
+}: MidPointParams & {
   channel: 'x2' | 'y2';
-  channelDef: ChannelDef;
-  channel2Def: ChannelDef;
-  scaleName: string;
-  scale: ScaleComponent;
-  stack: StackProperties;
-  offset: number;
-  defaultRef: VgValueRef | (() => VgValueRef);
-}): VgValueRef {
+  mark: Mark;
+}): VgValueRef | VgValueRef[] {
   if (
     isFieldDef(channelDef) &&
     stack &&
@@ -88,13 +128,22 @@ export function position2({
   ) {
     return fieldRef(channelDef, scaleName, {suffix: 'start'}, {offset});
   }
-  return midPoint({channel, channelDef: channel2Def, scaleName, scale, stack, offset, defaultRef});
+  return midPointWithPositionInvalidTest({
+    channel,
+    channelDef: channel2Def,
+    scaleName,
+    scale,
+    stack,
+    mark,
+    offset,
+    defaultRef
+  });
 }
 
 export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
-  const offsetChannel = channel + 'Offset';
-  // TODO: in the future read from encoding channel too
+  const offsetChannel = (channel + 'Offset') as 'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset'; // Need to cast as the type can't be inferred automatically
 
+  // TODO: in the future read from encoding channel too
   const markDefOffsetValue = markDef[offsetChannel];
   if (markDefOffsetValue) {
     return markDefOffsetValue;
@@ -166,6 +215,17 @@ function binMidSignal({
   };
 }
 
+export interface MidPointParams {
+  channel: Channel;
+  channelDef: ChannelDef;
+  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack?: StackProperties;
+  offset?: number;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}
+
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
@@ -178,16 +238,7 @@ export function midPoint({
   stack,
   offset,
   defaultRef
-}: {
-  channel: Channel;
-  channelDef: ChannelDef;
-  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
-  scaleName: string;
-  scale: ScaleComponent;
-  stack?: StackProperties;
-  offset?: number;
-  defaultRef: VgValueRef | (() => VgValueRef);
-}): VgValueRef {
+}: MidPointParams): VgValueRef {
   // TODO: datum support
   if (channelDef) {
     /* istanbul ignore else */

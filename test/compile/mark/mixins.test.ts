@@ -357,7 +357,7 @@ describe('compile/mark/mixins', () => {
 
       [X, Y].forEach(channel => {
         const mixins = pointPosition(channel, model, 'zeroOrMin');
-        expect(mixins[channel].field).toEqual(model.getName(channel));
+        expect(mixins[channel]['field']).toEqual(model.getName(channel));
       });
     });
   });
