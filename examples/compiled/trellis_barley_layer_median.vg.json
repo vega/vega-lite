@@ -197,7 +197,13 @@
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"], \"year\": ''+datum[\"year\"]}"
               },
-              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
+              "x": [
+                {
+                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+                  "value": 0
+                },
+                {"scale": "trellis_barley_x", "field": "median_yield"}
+              ],
               "y": {"scale": "trellis_barley_y", "field": "variety"}
             }
           }
@@ -219,7 +225,13 @@
               "tooltip": {
                 "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\")}"
               },
-              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
+              "x": [
+                {
+                  "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+                  "value": 0
+                },
+                {"scale": "trellis_barley_x", "field": "median_yield"}
+              ],
               "y": {"field": {"group": "height"}},
               "y2": {"value": 0}
             }

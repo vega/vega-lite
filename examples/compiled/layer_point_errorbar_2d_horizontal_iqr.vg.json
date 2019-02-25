@@ -42,9 +42,21 @@
           "tooltip": {
             "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
-          "x": {"scale": "x", "field": "lower_yield"},
+          "x": [
+            {
+              "test": "datum[\"lower_yield\"] === null || isNaN(datum[\"lower_yield\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_yield"}
+          ],
           "y": {"scale": "y", "field": "variety", "band": 0.5},
-          "x2": {"scale": "x", "field": "upper_yield"}
+          "x2": [
+            {
+              "test": "datum[\"upper_yield\"] === null || isNaN(datum[\"upper_yield\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_yield"}
+          ]
         }
       }
     },
@@ -65,7 +77,13 @@
           "tooltip": {
             "signal": "{\"Median of yield\": format(datum[\"median_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
           },
-          "x": {"scale": "x", "field": "median_yield"},
+          "x": [
+            {
+              "test": "datum[\"median_yield\"] === null || isNaN(datum[\"median_yield\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "median_yield"}
+          ],
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }

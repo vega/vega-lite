@@ -68,6 +68,7 @@ export interface VgValueRef {
   mult?: number;
   offset?: number | VgValueRef;
   band?: boolean | number | VgValueRef;
+  test?: string;
 }
 
 // TODO: add vg prefix

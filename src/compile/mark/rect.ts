@@ -28,7 +28,15 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y'): VgEncodeEntr
   const scaleName = model.scaleName(channel);
 
   if (isFieldDef(fieldDef) && (isBinning(fieldDef.bin) || isBinned(fieldDef.bin))) {
-    return mixins.binPosition({fieldDef, fieldDef2, channel, scaleName, spacing: 0, reverse: scale.get('reverse')});
+    return mixins.binPosition({
+      fieldDef,
+      fieldDef2,
+      channel,
+      mark: 'rect',
+      scaleName,
+      spacing: 0,
+      reverse: scale.get('reverse')
+    });
   } else if (isFieldDef(fieldDef) && scale && hasDiscreteDomain(scaleType)) {
     /* istanbul ignore else */
     if (scaleType === ScaleType.BAND) {

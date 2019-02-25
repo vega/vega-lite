@@ -140,12 +140,24 @@
               "tooltip": {
                 "signal": "{\"Horsepower (binned)\": datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" - \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
-              "x2": {
-                "scale": "x",
-                "field": "bin_maxbins_15_Horsepower",
-                "offset": 1
-              },
-              "x": {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"},
+              "x2": [
+                {
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "value": 0
+                },
+                {
+                  "scale": "x",
+                  "field": "bin_maxbins_15_Horsepower",
+                  "offset": 1
+                }
+              ],
+              "x": [
+                {
+                  "test": "datum[\"bin_maxbins_15_Horsepower\"] === null || isNaN(datum[\"bin_maxbins_15_Horsepower\"])",
+                  "value": 0
+                },
+                {"scale": "x", "field": "bin_maxbins_15_Horsepower_end"}
+              ],
               "y": {"scale": "y", "field": "__count"},
               "y2": {"scale": "y", "value": 0}
             }

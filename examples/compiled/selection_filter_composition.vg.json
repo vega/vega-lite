@@ -533,7 +533,7 @@
       "domain": [0, 25],
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": true
     },
     {
       "name": "concat_1_y",
@@ -541,7 +541,7 @@
       "domain": [0, 500],
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
-      "zero": false
+      "zero": true
     }
   ],
   "config": {"axisY": {"minExtent": 30}}

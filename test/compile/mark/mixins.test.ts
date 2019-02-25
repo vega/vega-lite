@@ -357,7 +357,7 @@ describe('compile/mark/mixins', () => {
 
       [X, Y].forEach(channel => {
         const mixins = pointPosition(channel, model, 'zeroOrMin');
-        expect(mixins[channel].field).toEqual(model.getName(channel));
+        expect(mixins[channel]['field']).toEqual(model.getName(channel));
       });
     });
   });
@@ -389,7 +389,13 @@ describe('compile/mark/mixins', () => {
       'generates warning for invalid binned spec without x2',
       log.wrap(logger => {
         const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
-        const props = binPosition({fieldDef, channel: 'x', scaleName: undefined, reverse: false});
+        const props = binPosition({
+          fieldDef,
+          channel: 'x',
+          scaleName: undefined,
+          reverse: false,
+          mark: 'bar'
+        });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
       })
@@ -399,7 +405,13 @@ describe('compile/mark/mixins', () => {
       'generates warning for invalid binned spec without y2',
       log.wrap(logger => {
         const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
-        const props = binPosition({fieldDef, channel: 'y', scaleName: undefined, reverse: false});
+        const props = binPosition({
+          fieldDef,
+          channel: 'y',
+          scaleName: undefined,
+          reverse: false,
+          mark: 'bar'
+        });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
       })
