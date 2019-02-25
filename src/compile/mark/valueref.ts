@@ -40,43 +40,55 @@ import {ScaleComponent} from '../scale/component';
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(
-  channel: 'x' | 'y',
-  channelDef: ChannelDef,
-  channel2Def: ChannelDef,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function position(params: {
+  channel: 'x' | 'y';
+  channelDef: ChannelDef;
+  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack?: StackProperties;
+  offset: number;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
+  const {channel, channelDef, scaleName, stack, offset} = params;
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
-    return fieldRef(channelDef, scaleName, {suffix: 'end'});
+    return fieldRef(channelDef, scaleName, {suffix: 'end'}, {offset});
   }
-  return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
+  return midPoint(params);
 }
 
 /**
  * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function position2(
-  channel: 'x2' | 'y2',
-  aFieldDef: ChannelDef,
-  a2fieldDef: ChannelDef,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function position2({
+  channel,
+  channelDef,
+  channel2Def,
+  scaleName,
+  scale,
+  stack,
+  offset,
+  defaultRef
+}: {
+  channel: 'x2' | 'y2';
+  channelDef: ChannelDef;
+  channel2Def: ChannelDef;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack: StackProperties;
+  offset: number;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
   if (
-    isFieldDef(aFieldDef) &&
+    isFieldDef(channelDef) &&
     stack &&
     // If fieldChannel is X and channel is X2 (or Y and Y2)
     channel.charAt(0) === stack.fieldChannel.charAt(0)
   ) {
-    return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
+    return fieldRef(channelDef, scaleName, {suffix: 'start'}, {offset});
   }
-  return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
+  return midPoint({channel, channelDef: channel2Def, scaleName, scale, stack, offset, defaultRef});
 }
 
 export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
@@ -103,7 +115,7 @@ export function fieldRef(
   fieldDef: FieldDefBase<string>,
   scaleName: string,
   opt: FieldRefOption,
-  mixins?: {offset?: number | VgValueRef; band?: number | boolean}
+  mixins: {offset?: number | VgValueRef; band?: number | boolean}
 ): VgValueRef {
   const ref: VgValueRef = {
     ...(scaleName ? {scale: scaleName} : {}),
@@ -111,9 +123,11 @@ export function fieldRef(
   };
 
   if (mixins) {
+    const {offset, band} = mixins;
     return {
       ...ref,
-      ...mixins
+      ...(offset ? {offset} : {}),
+      ...(band ? {band} : {})
     };
   }
   return ref;
@@ -129,7 +143,17 @@ export function bandRef(scaleName: string, band: number | boolean = true): VgVal
 /**
  * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
  */
-function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldDef2?: SecondaryFieldDef<string>) {
+function binMidSignal({
+  scaleName,
+  fieldDef,
+  fieldDef2,
+  offset
+}: {
+  scaleName: string;
+  fieldDef: TypedFieldDef<string>;
+  fieldDef2?: SecondaryFieldDef<string>;
+  offset: number;
+}) {
   const start = vgField(fieldDef, {expr: 'datum'});
   const end =
     fieldDef2 !== undefined
@@ -137,24 +161,34 @@ function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldD
       : vgField(fieldDef, {binSuffix: 'end', expr: 'datum'});
 
   return {
-    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`
+    signal: `scale("${scaleName}", (${start} + ${end}) / 2)`,
+    ...(offset ? {offset} : {})
   };
 }
 
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(
-  channel: Channel,
-  channelDef: ChannelDef,
-  channel2Def: ChannelDef<SecondaryFieldDef<string>>,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function midPoint({
+  channel,
+  channelDef,
+  channel2Def,
+  scaleName,
+  scale,
+  stack,
+  offset,
+  defaultRef
+}: {
+  channel: Channel;
+  channelDef: ChannelDef;
+  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack?: StackProperties;
+  offset?: number;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
   // TODO: datum support
-
   if (channelDef) {
     /* istanbul ignore else */
 
@@ -166,15 +200,17 @@ export function midPoint(
           if (contains([X, Y], channel) && channelDef.type === QUANTITATIVE) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
-              return fieldRef(channelDef, scaleName, {binSuffix: 'mid'});
+              return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
             }
             // For non-stack, we can just calculate bin mid on the fly using signal.
-            return binMidSignal(scaleName, channelDef);
+            return binMidSignal({scaleName, fieldDef: channelDef, offset});
           }
-          return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {});
+          return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {}, {
+            offset
+          });
         } else if (isBinned(channelDef.bin)) {
           if (isFieldDef(channel2Def)) {
-            return binMidSignal(scaleName, channelDef, channel2Def);
+            return binMidSignal({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, offset});
           } else {
             const channel2 = channel === X ? X2 : Y2;
             log.warn(log.message.channelRequiredForBinned(channel2));
@@ -187,22 +223,23 @@ export function midPoint(
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5});
+            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band: 0.5, offset});
           }
-          return fieldRef(channelDef, scaleName, {binSuffix: 'range'});
+          return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
         }
       }
-      return fieldRef(channelDef, scaleName, {}); // no need for bin suffix
+      return fieldRef(channelDef, scaleName, {}, {offset}); // no need for bin suffix
     } else if (isValueDef(channelDef)) {
       const value = channelDef.value;
+      const offsetMixins = offset ? {offset} : {};
 
       if (contains(['x', 'x2'], channel) && value === 'width') {
-        return {field: {group: 'width'}};
+        return {field: {group: 'width'}, ...offsetMixins};
       } else if (contains(['y', 'y2'], channel) && value === 'height') {
-        return {field: {group: 'height'}};
+        return {field: {group: 'height'}, ...offsetMixins};
       }
 
-      return {value};
+      return {value, ...offsetMixins};
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.

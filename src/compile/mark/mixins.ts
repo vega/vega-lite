@@ -218,15 +218,14 @@ export function nonPosition(
   const channelDef = encoding[channel];
 
   return wrapCondition(model, channelDef, vgChannel, cDef => {
-    return ref.midPoint(
+    return ref.midPoint({
       channel,
-      cDef,
-      undefined,
-      model.scaleName(channel),
-      model.getScaleComponent(channel),
-      null, // No need to provide stack for non-position as it does not affect mid point
+      channelDef: cDef,
+      scaleName: model.scaleName(channel),
+      scale: model.getScaleComponent(channel),
+      stack: null, // No need to provide stack for non-position as it does not affect mid point
       defaultRef
-    );
+    });
   });
 }
 
@@ -335,7 +334,8 @@ export function bandPosition(fieldDef: TypedFieldDef<string>, channel: 'x' | 'y'
     }
   }
   return {
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}),
+    // FIXME: make offset works correctly here when we support group bar (https://github.com/vega/vega-lite/issues/396)
+    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {}),
     [sizeChannel]: ref.bandRef(scaleName)
   };
 }
@@ -409,18 +409,16 @@ export function pointPosition(
     !channelDef && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
         {field: model.getName(channel)}
-      : {
-          ...ref.position(
-            channel,
-            channelDef,
-            channel2Def,
-            scaleName,
-            scale,
-            stack,
-            ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
-          ),
-          ...(offset ? {offset} : {})
-        };
+      : ref.position({
+          channel,
+          channelDef,
+          channel2Def,
+          scaleName,
+          scale,
+          stack,
+          offset,
+          defaultRef: ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+        });
 
   return {
     [vgChannel || channel]: valueRef
@@ -445,18 +443,16 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
     !channelDef && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
         {field: model.getName(channel)}
-      : {
-          ...ref.position2(
-            channel,
-            channelDef,
-            encoding[channel],
-            scaleName,
-            scale,
-            stack,
-            ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
-          ),
-          ...(offset ? {offset} : {})
-        };
+      : ref.position2({
+          channel,
+          channelDef,
+          channel2Def: encoding[channel],
+          scaleName,
+          scale,
+          stack,
+          offset,
+          defaultRef: ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+        });
 
   return {[channel]: valueRef};
 }
