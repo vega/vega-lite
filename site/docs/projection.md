@@ -51,9 +51,7 @@ Vega-lite includes all cartographic projections provided by the [d3-geo](https:/
 
 ## Projection Configuration
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...,

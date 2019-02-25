@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Two vertically concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
   "autosize": "pad",
   "padding": 5,
@@ -68,8 +68,8 @@
             "bin_maxbins_10_temp_max_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -85,7 +85,7 @@
     {"name": "concat_1_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "columns": 1,
     "bounds": "full",
     "align": "each"
@@ -188,20 +188,20 @@
             "update": {
               "fill": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "transparent"}
               ],
               "stroke": [
                 {
-                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+                  "test": "datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) || datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
                   "value": null
                 },
                 {"value": "#4c78a8"}
               ],
               "tooltip": {
-                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+                "signal": "{\"temp_min (binned)\": datum[\"bin_maxbins_10_temp_min\"] === null || isNaN(datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\"), \"temp_max (binned)\": datum[\"bin_maxbins_10_temp_max\"] === null || isNaN(datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" - \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
               },
               "x": {
                 "signal": "scale(\"concat_1_x\", (datum[\"bin_maxbins_10_temp_min\"] + datum[\"bin_maxbins_10_temp_min_end\"]) / 2)"
@@ -209,7 +209,7 @@
               "y": {
                 "signal": "scale(\"concat_1_y\", (datum[\"bin_maxbins_10_temp_max\"] + datum[\"bin_maxbins_10_temp_max_end\"]) / 2)"
               },
-              "size": {"scale": "size", "field": "count_*"}
+              "size": {"scale": "size", "field": "__count"}
             }
           }
         }
@@ -223,9 +223,6 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_width/10)"},
-          "values": {
-            "signal": "sequence(concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop + concat_1_bin_maxbins_10_temp_min_bins.step, concat_1_bin_maxbins_10_temp_min_bins.step)"
-          },
           "zindex": 1
         },
         {
@@ -235,9 +232,6 @@
           "title": "temp_max (binned)",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/10)"},
-          "values": {
-            "signal": "sequence(concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop + concat_1_bin_maxbins_10_temp_max_bins.step, concat_1_bin_maxbins_10_temp_max_bins.step)"
-          },
           "zindex": 1
         }
       ]
@@ -247,7 +241,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "count_*"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [
         0,
         {
@@ -276,20 +270,20 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"]
+        "signal": "[concat_1_bin_maxbins_10_temp_min_bins.start, concat_1_bin_maxbins_10_temp_min_bins.stop]"
       },
       "range": [0, {"signal": "concat_1_width"}],
+      "bins": {"signal": "concat_1_bin_maxbins_10_temp_min_bins"},
       "zero": false
     },
     {
       "name": "concat_1_y",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"]
+        "signal": "[concat_1_bin_maxbins_10_temp_max_bins.start, concat_1_bin_maxbins_10_temp_max_bins.stop]"
       },
       "range": [{"signal": "concat_1_height"}, 0],
+      "bins": {"signal": "concat_1_bin_maxbins_10_temp_max_bins"},
       "zero": false
     }
   ],

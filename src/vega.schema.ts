@@ -88,9 +88,15 @@ export interface SchemeConfig {
   count?: number;
 }
 
-export type VgRange<S> = string | VgDataRef | (number | string | VgDataRef | S)[] | SchemeConfig | VgRangeStep | S;
+export type VgRange =
+  | string
+  | VgDataRef
+  | (number | string | VgDataRef | SignalRef)[]
+  | SchemeConfig
+  | VgRangeStep
+  | SignalRef;
 
-export function isVgRangeStep(range: VgRange<any>): range is VgRangeStep {
+export function isVgRangeStep(range: VgRange): range is VgRangeStep {
   return !!range['step'];
 }
 
@@ -169,13 +175,14 @@ export interface VgProjection {
 export interface VgScale {
   name: string;
   type: ScaleType;
-  domain: VgDomain;
+  domain?: VgDomain;
   domainRaw?: SignalRef;
-  range: VgRange<SignalRef>;
-
+  bins?: number[] | SignalRef;
+  range: VgRange;
   clamp?: boolean;
   base?: number;
   exponent?: number;
+  constant?: number;
   interpolate?: ScaleInterpolate | ScaleInterpolateParams;
   nice?: boolean | number | NiceTime | {interval: string; step: number};
   padding?: number;
@@ -235,13 +242,6 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUni
 export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
-  }
-  return false;
-}
-
-export function isSignalRefDomain(domain: VgDomain): domain is SignalRef {
-  if (!isArray(domain)) {
-    return 'signal' in domain;
   }
   return false;
 }
@@ -388,6 +388,7 @@ export type VgTransform =
   | VgGeoPointTransform
   | VgGeoJSONTransform
   | VgWindowTransform
+  | VgJoinAggregateTransform
   | VgFoldTransform
   | VgSampleTransform;
 
@@ -811,4 +812,12 @@ export interface VgWindowTransform {
   ignorePeers?: boolean;
   groupby?: string[];
   sort?: VgComparator;
+}
+
+export interface VgJoinAggregateTransform {
+  type: 'joinaggregate';
+  as?: string[];
+  ops?: AggregateOp[];
+  fields?: string[];
+  groupby?: string[];
 }

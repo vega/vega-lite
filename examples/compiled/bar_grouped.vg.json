@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -38,7 +38,7 @@
     {"name": "child_height", "value": 200}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -164,7 +164,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "gender", "sort": true},
-      "range": ["#EA98D2", "#659CCA"]
+      "range": ["#EA98D2", "#659CCA"],
+      "interpolate": "hcl"
     }
   ],
   "legends": [

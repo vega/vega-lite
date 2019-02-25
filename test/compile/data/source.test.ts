@@ -19,7 +19,7 @@ describe('compile/data/source', () => {
       });
 
       it('should have no source.format.type', () => {
-        expect(source.data.format).toEqual(undefined);
+        expect(source.data).not.toHaveProperty('format');
       });
     });
 

@@ -12,6 +12,7 @@ import * as fieldDef from './fielddef';
 import * as header from './header';
 import * as legend from './legend';
 import * as mark from './mark';
+import {normalize} from './normalize';
 import * as scale from './scale';
 import * as sort from './sort';
 import * as spec from './spec';
@@ -39,6 +40,7 @@ export {
   header,
   legend,
   mark,
+  normalize,
   scale,
   sort,
   spec,

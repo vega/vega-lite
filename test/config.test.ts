@@ -55,7 +55,7 @@ describe('config', () => {
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {
-      expect(output.title).toEqual(undefined);
+      expect(output).not.toHaveProperty('title');
       expect(output.style['group-title'].fontWeight).toEqual('bold');
       expect(output.style['group-title'].fill).toEqual('red');
     });

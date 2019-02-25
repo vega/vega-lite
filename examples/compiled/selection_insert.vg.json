@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 200,
@@ -28,7 +28,6 @@
     },
     {
       "name": "paintbrush_tuple",
-      "value": {},
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
@@ -39,16 +38,11 @@
     },
     {
       "name": "paintbrush_tuple_fields",
-      "update": "[{\"field\":\"_vgsid_\",\"type\":\"E\"}]"
+      "value": [{"field": "_vgsid_", "type": "E"}]
     },
     {
       "name": "paintbrush_modify",
-      "on": [
-        {
-          "events": {"signal": "paintbrush_tuple"},
-          "update": "modify(\"paintbrush_store\", paintbrush_tuple, null)"
-        }
-      ]
+      "update": "modify(\"paintbrush_store\", paintbrush_tuple, null)"
     }
   ],
   "marks": [
@@ -104,7 +98,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": "ordinal"
+      "range": "ordinal",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

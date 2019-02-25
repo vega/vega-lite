@@ -128,35 +128,11 @@ describe('compile/scale', () => {
 
           expect(testParseDomainForChannel(model, 'y')).toEqual([
             {
-              data: 'main',
-              field: 'bin_maxbins_15_origin'
-            },
-            {
-              data: 'main',
-              field: 'bin_maxbins_15_origin_end'
+              signal: '[bin_maxbins_15_origin_bins.start, bin_maxbins_15_origin_bins.stop]'
             }
           ]);
 
           expect(localLogger.warns[0]).toEqual(log.message.unaggregateDomainHasNoEffectForRawField(fieldDef));
-        })
-      );
-
-      it(
-        'should follow the custom bin.extent for binned Q',
-        log.wrap(localLogger => {
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {
-                field: 'origin',
-                type: 'quantitative',
-                bin: {maxbins: 15, extent: [0, 100]}
-              }
-            }
-          });
-          const _domain = testParseDomainForChannel(model, 'y');
-
-          expect(_domain).toEqual([[0, 100]]);
         })
       );
 

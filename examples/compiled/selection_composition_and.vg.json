@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "style": "cell",
@@ -15,8 +15,8 @@
           "type": "aggregate",
           "groupby": ["Origin", "Cylinders"],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -153,13 +153,16 @@
       "on": [
         {
           "events": [{"signal": "alex_Cylinders"}, {"signal": "alex_Origin"}],
-          "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders, alex_Origin]} : null"
+          "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
         }
       ]
     },
     {
       "name": "alex_tuple_fields",
-      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
+      "value": [
+        {"field": "Cylinders", "channel": "x", "type": "E"},
+        {"field": "Origin", "channel": "y", "type": "E"}
+      ]
     },
     {
       "name": "alex_translate_anchor",
@@ -237,12 +240,7 @@
     },
     {
       "name": "alex_modify",
-      "on": [
-        {
-          "events": {"signal": "alex_tuple"},
-          "update": "modify(\"alex_store\", alex_tuple, true)"
-        }
-      ]
+      "update": "modify(\"alex_store\", alex_tuple, true)"
     },
     {
       "name": "morgan_x",
@@ -362,13 +360,16 @@
             {"signal": "morgan_Cylinders"},
             {"signal": "morgan_Origin"}
           ],
-          "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders, morgan_Origin]} : null"
+          "update": "morgan_Cylinders && morgan_Origin ? {unit: \"\", fields: morgan_tuple_fields, values: [morgan_Cylinders,morgan_Origin]} : null"
         }
       ]
     },
     {
       "name": "morgan_tuple_fields",
-      "update": "[{\"field\":\"Cylinders\",\"channel\":\"x\",\"type\":\"E\"},{\"field\":\"Origin\",\"channel\":\"y\",\"type\":\"E\"}]"
+      "value": [
+        {"field": "Cylinders", "channel": "x", "type": "E"},
+        {"field": "Origin", "channel": "y", "type": "E"}
+      ]
     },
     {
       "name": "morgan_translate_anchor",
@@ -446,12 +447,7 @@
     },
     {
       "name": "morgan_modify",
-      "on": [
-        {
-          "events": {"signal": "morgan_tuple"},
-          "update": "modify(\"morgan_store\", morgan_tuple, true)"
-        }
-      ]
+      "update": "modify(\"morgan_store\", morgan_tuple, true)"
     }
   ],
   "marks": [
@@ -540,18 +536,18 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
             {
               "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlSelectionTest(\"alex_store\", datum)) && (vlSelectionTest(\"morgan_store\", datum)))",
               "scale": "color",
-              "field": "count_*"
+              "field": "__count"
             },
             {"value": "grey"}
           ],
           "tooltip": {
-            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": ''+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
@@ -670,9 +666,10 @@
     },
     {
       "name": "color",
-      "type": "sequential",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "__count"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],

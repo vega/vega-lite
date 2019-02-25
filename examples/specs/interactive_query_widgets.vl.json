@@ -7,6 +7,7 @@
     "selection": {
       "CylYr": {
         "type": "single", "fields": ["Cylinders", "Year"],
+        "init": {"Cylinders": 4, "Year": 1977},
         "bind": {
           "Cylinders": {"input": "range", "min": 3, "max": 8, "step": 1},
           "Year": {"input": "range", "min": 1969, "max": 1981, "step": 1}

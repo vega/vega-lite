@@ -51,7 +51,7 @@ describe('Faceted Selections', () => {
 
   it('should name the unit with the facet keys', () => {
     expect(selection.unitName(unit)).toEqual(
-      `"child_layer_1" + '_' + (facet["bin_maxbins_6_X"]) + '_' + (facet["Series"])`
+      `"child_layer_1" + '__facet_row_' + (facet["bin_maxbins_6_X"]) + '__facet_column_' + (facet["Series"])`
     );
   });
 });

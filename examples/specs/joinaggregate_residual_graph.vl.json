@@ -11,12 +11,11 @@
     {"filter": "datum.IMDB_Rating != null"},
     {"filter": {"timeUnit": "year", "field": "Release_Date", "range": [null, 2019]}},
     {
-      "window": [{
-          "op": "mean",
-          "field": "IMDB_Rating",
-          "as": "AverageRating"
-      }],
-      "frame": [null, null]
+      "joinaggregate": [{
+        "op": "mean",
+        "field": "IMDB_Rating",
+        "as": "AverageRating"
+      }]
     },
     {
       "calculate": "datum.IMDB_Rating - datum.AverageRating",

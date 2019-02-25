@@ -1,4 +1,4 @@
-import {AggregateOp, NewSignal} from 'vega';
+import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, COLUMN, ROW, ScaleChannel} from '../channel';
 import {Config} from '../config';
@@ -219,14 +219,22 @@ export class FacetModel extends ModelWithField {
   protected assembleDefaultLayout(): VgLayout {
     const columns = this.channelHasField('column') ? this.columnDistinctSignal() : 1;
 
-    // TODO: determine default align based on shared / independent scales
+    let align: LayoutAlign = 'all';
+
+    // Do not align the cells if the scale corresponding to the directin is indepent.
+    // We always align when we facet into both row and column.
+    if (!this.channelHasField('row') && this.component.resolve.scale.x === 'independent') {
+      align = 'none';
+    } else if (!this.channelHasField('column') && this.component.resolve.scale.y === 'independent') {
+      align = 'none';
+    }
 
     return {
       ...this.getHeaderLayoutMixins(),
 
-      columns,
+      ...(columns ? {columns} : {}),
       bounds: 'full',
-      align: 'all'
+      align
     };
   }
 

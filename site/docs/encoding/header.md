@@ -21,9 +21,7 @@ In addition to the `header` property of a row- or column-field definition, users
 
 ## Header Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -58,13 +56,13 @@ To customize header, a `header` object in row- or column-[field definitions](fac
 
 ### Labels
 
-{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelOffset" source= "Header" %}
+{% include table.html props="labelAngle,labelColor,labelFont,labelFontSize,labelLimit,labelPadding" source= "Header" %}
 
 {:#title}
 
 ### Title
 
-{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titleOffset" source="Header" %}
+{% include table.html props="titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontWeight,titleFontSize,titleLimit,titlePadding" source="Header" %}
 
 ### Example
 
@@ -76,9 +74,7 @@ This example uses header properties to change the font size of this faceted plot
 
 ## Header Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

@@ -26,7 +26,6 @@ import {
   NumericValueDefWithCondition,
   OrderFieldDef,
   PositionFieldDef,
-  RepeatRef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
   ShapeValueDefWithCondition,
@@ -80,28 +79,6 @@ export interface Encoding<F extends Field> {
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
   y2?: SecondaryFieldDef<F> | ValueDef<number | 'height'>;
-
-  /**
-   * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  xError?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  // `xError2` cannot have type as it should have the same type as `xError`
-  xError2?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  yError?: SecondaryFieldDef<F> | ValueDef<number>;
-
-  /**
-   * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
-   */
-  // `yError2` cannot have type as it should have the same type as `yError`
-  yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 
   /**
    * Longitude position of geographically projected marks.
@@ -266,7 +243,7 @@ export function isAggregate(encoding: EncodingWithFacet<Field>) {
     return false;
   });
 }
-export function extractTransformsFromEncoding(oldEncoding: Encoding<string | RepeatRef>, config: Config) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<Field>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
@@ -307,9 +284,8 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<string | Rep
           }
           // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
           if (isPositionChannel) {
-            const secondaryChannel: TypedFieldDef<string> = {
-              field: newField + '_end',
-              type: Type.QUANTITATIVE
+            const secondaryChannel: SecondaryFieldDef<string> = {
+              field: newField + '_end'
             };
             encoding[channel + '2'] = secondaryChannel;
           }
@@ -409,17 +385,17 @@ export function normalizeEncoding(encoding: Encoding<string>, mark: Mark): Encod
     ) {
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
-        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce((
-          defs: FieldDef<string>[],
-          fieldDef: FieldDef<string>
-        ) => {
-          if (!isFieldDef(fieldDef)) {
-            log.warn(log.message.emptyFieldDef(fieldDef, channel));
-          } else {
-            defs.push(normalizeFieldDef(fieldDef, channel));
-          }
-          return defs;
-        }, []);
+        normalizedEncoding[channel] = (isArray(channelDef) ? channelDef : [channelDef]).reduce(
+          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+            if (!isFieldDef(fieldDef)) {
+              log.warn(log.message.emptyFieldDef(fieldDef, channel));
+            } else {
+              defs.push(normalizeFieldDef(fieldDef, channel));
+            }
+            return defs;
+          },
+          []
+        );
       }
     } else {
       if (channel === 'tooltip' && channelDef === null) {
@@ -456,18 +432,23 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   return arr;
 }
 
-export function forEach(mapping: any, f: (cd: ChannelDef, c: Channel) => void, thisArg?: any) {
+export function forEach<U extends {[k in Channel]?: any}>(
+  mapping: U,
+  f: (cd: ChannelDef, c: Channel) => void,
+  thisArg?: any
+) {
   if (!mapping) {
     return;
   }
 
   for (const channel of keys(mapping)) {
-    if (isArray(mapping[channel])) {
-      mapping[channel].forEach((channelDef: ChannelDef) => {
+    const el = mapping[channel];
+    if (isArray(el)) {
+      el.forEach((channelDef: ChannelDef) => {
         f.call(thisArg, channelDef, channel);
       });
     } else {
-      f.call(thisArg, mapping[channel], channel);
+      f.call(thisArg, el, channel);
     }
   }
 }

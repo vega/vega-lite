@@ -5,9 +5,7 @@ title: Geoshape
 permalink: /docs/geoshape.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -27,9 +25,7 @@ Here are an example choropleth making use of `geoshape` marks:
 
 ## Geoshape Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

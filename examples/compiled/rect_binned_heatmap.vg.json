@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "width": 300,
@@ -56,8 +56,8 @@
             "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
           ],
           "ops": ["count"],
-          "fields": ["*"],
-          "as": ["count_*"]
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -72,13 +72,13 @@
         "update": {
           "fill": [
             {
-              "test": "datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) || datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) || datum[\"count_*\"] === null || isNaN(datum[\"count_*\"])",
+              "test": "datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) || datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) || datum[\"__count\"] === null || isNaN(datum[\"__count\"])",
               "value": null
             },
-            {"scale": "color", "field": "count_*"}
+            {"scale": "color", "field": "__count"}
           ],
           "tooltip": {
-            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"count_*\"], \"\")}"
+            "signal": "{\"IMDB_Rating (binned)\": datum[\"bin_maxbins_60_IMDB_Rating\"] === null || isNaN(datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\"), \"Rotten_Tomatoes_Rating (binned)\": datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"] === null || isNaN(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" - \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
           "x2": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating"},
           "x": {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating_end"},
@@ -99,33 +99,28 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": [
-          "bin_maxbins_60_IMDB_Rating",
-          "bin_maxbins_60_IMDB_Rating_end"
-        ]
+        "signal": "[bin_maxbins_60_IMDB_Rating_bins.start, bin_maxbins_60_IMDB_Rating_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"signal": "bin_maxbins_60_IMDB_Rating_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
-        "fields": [
-          "bin_maxbins_40_Rotten_Tomatoes_Rating",
-          "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
-        ]
+        "signal": "[bin_maxbins_40_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.stop]"
       },
       "range": [{"signal": "height"}, 0],
+      "bins": {"signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_bins"},
       "zero": false
     },
     {
       "name": "color",
-      "type": "sequential",
-      "domain": {"data": "source_0", "field": "count_*"},
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "__count"},
       "range": "heatmap",
+      "interpolate": "hcl",
       "zero": false
     }
   ],
@@ -138,9 +133,6 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
-      "values": {
-        "signal": "sequence(bin_maxbins_60_IMDB_Rating_bins.start, bin_maxbins_60_IMDB_Rating_bins.stop + bin_maxbins_60_IMDB_Rating_bins.step, bin_maxbins_60_IMDB_Rating_bins.step)"
-      },
       "zindex": 1
     },
     {
@@ -150,9 +142,6 @@
       "title": "Rotten_Tomatoes_Rating (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
-      "values": {
-        "signal": "sequence(bin_maxbins_40_Rotten_Tomatoes_Rating_bins.start, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.stop + bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step, bin_maxbins_40_Rotten_Tomatoes_Rating_bins.step)"
-      },
       "zindex": 1
     }
   ],

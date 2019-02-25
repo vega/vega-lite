@@ -5,9 +5,7 @@ title: Circle
 permalink: /docs/circle.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -23,9 +21,7 @@ permalink: /docs/circle.html
 
 ## Circle Mark Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   ...
@@ -54,9 +50,7 @@ Here is an example scatter plot with `circle` marks:
 
 ## Circle Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

@@ -106,7 +106,8 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<Field>, stackConfig:
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
-    if (channelHasField(encoding, channel)) {
+    // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
+    if (channel !== 'tooltip' && channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       (isArray(channelDef) ? channelDef : [channelDef]).forEach(cDef => {
         const fieldDef = getTypedFieldDef(cDef);

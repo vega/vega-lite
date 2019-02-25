@@ -9,9 +9,7 @@ Scales are functions that transform a domain of data values (numbers, dates, str
 
 Vega-Lite automatically creates scales for fields that are mapped to [position](encoding.html#position) and [mark property](encoding.html#mark-prop) channels. To customize the scale of a field, users can provide a `scale` object as a part of the [field definition](encoding.html#field) to customize scale properties (e.g., [type](#type), [domain](#domain), and [range](#range)).
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -55,12 +53,12 @@ The `type` property can be specified to customize the scale type.
 
 By default, Vega-Lite use the following scale types for the following [data types](type.html) and [encoding channels](encoding.html#channel):
 
-|                   |              Nominal / Ordinal              |              Quantitative              |  Bin-Quantitative<sup>1</sup>  |                Temporal                |
-| ----------------: | :-----------------------------------------: | :------------------------------------: | :----------------------------: | :------------------------------------: |
-|          **X, Y** | [Band](#band) / [Point](#point)<sup>2</sup> |           [Linear](#linear)            | [Linear](#linear) <sup>3</sup> |             [Time](#time)              |
-| **Size, Opacity** |               [Point](#point)               |           [Linear](#linear)            |   [Bin-Linear](#bin-linear)    |             [Time](#time)              |
-|         **Color** |             [Ordinal](#ordinal)             | [Sequential](#sequential) <sup>4</sup> |    [Bin-Ordinal](#ordinal)     | [Sequential](#sequential) <sup>4</sup> |
-|         **Shape** |             [Ordinal](#ordinal)             |                  N/A                   |              N/A               |                  N/A                   |
+|                   |              Nominal / Ordinal              |   Quantitative    | Bin-Quantitative<sup>1</sup> |     Temporal      |
+| ----------------: | :-----------------------------------------: | :---------------: | :--------------------------: | :---------------: |
+|          **X, Y** | [Band](#band) / [Point](#point)<sup>2</sup> | [Linear](#linear) |      [Linear](#linear)       |   [Time](#time)   |
+| **Size, Opacity** |               [Point](#point)               | [Linear](#linear) |      [Linear](#linear)       |   [Time](#time)   |
+|         **Color** |             [Ordinal](#ordinal)             | [Linear](#linear) | [Bin-Ordinal](#bin-ordinal)  | [Linear](#linear) |
+|         **Shape** |             [Ordinal](#ordinal)             |        N/A        |             N/A              |        N/A        |
 
 <span class="note-line">
 <sup>1</sup> Quantitative fields with the [`bin`](bin.html) transform.
@@ -68,12 +66,6 @@ By default, Vega-Lite use the following scale types for the following [data type
 <span class="note-line">
 <sup>2</sup> For positional (x and y) ordinal and ordinal fields, `"point"` is the default scale type for all marks except
 bar and rect marks, which use `"band"` scales.
-</span>
-<span class="note-line">
-<sup>3</sup> For static plots, both `"linear"` and `"bin-linear"` work with binned fields on x and y.  However, [panning](translate.html) and [zooming](zoom.html) do not work with discretized scales such as `"bin-linear"`, thus we use `"linear"` as the default scale type for binned fields on x and y.
-</span>
-<span class="note-line">
-<sup>4</sup> For continuous color scales with [piecewise](#piecewise) domain and range, `"linear"` scale will be used by default as `"sequential"` scale does not support piecewise domain and range.
 </span>
 
 {:#domain}
@@ -118,7 +110,7 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 | `size`    | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text                                                                                                                   |
 | `shape`   | Derived from the [pre-defined named range](#range-config) `"symbol"`.                                                                                                                                                                                                                                                                                                             |
 
-To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [sequential](#sequential) color scales.
+To customize range values, users can directly specify `range`, or the special range properties: [`rangeStep`](#range-step) and [`padding`](#padding) for [band](#band) and [point](#point) scales and [`scheme`](#scheme) for [ordinal](#ordinal) and [continuous](#continuous) color scales.
 
 {% include table.html props="range" source="Scale" %}
 
@@ -170,9 +162,9 @@ The `scheme` property can also be a **scheme parameter object**, which contain t
 
 ## Continuous Scales
 
-Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors). Supported continuous scale types for _quantitative_ fields are [`"linear"`](#linear), [`"log"`](#log), [`"pow"`](#pow), [`"sqrt"`](#sqrt), and [`"sequential"`](#sequential). Meanwhile, supported continuous scale types for _temporal_ fields are [`"time"`](#time), [`"utc"`](#utc), and [`"sequential"`](#sequential).
+Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors). Supported continuous scale types for _quantitative_ fields are [`"linear"`](#linear), [`"log"`](#log), [`"pow"`](#pow), [`"sqrt"`](#sqrt), and [`"symlog"`](#symlog). Meanwhile, supported continuous scale types for _temporal_ fields are [`"time"`](#time), [`"utc"`](#utc), and [`"symlog"`](#symlog).
 
-By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel) except for `color`, which uses `"sequential"` scales for both quantitative and temporal fields.
+By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel).
 
 In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
 
@@ -220,25 +212,25 @@ As _log(0) = -∞_, a log scale domain must be strictly-positive or strictly-neg
 
 <!-- TODO: need to test if we support threshold scale correctly before writing about it-->
 
+{:#symlog}
+
+### Symlog Scales
+
+Symmetric log scales (symlog) are quantitative scales scales that provide scaling similar to log scales, but supports non-positive numbers. Symlog scales are particularly useful for plotting data that varies over multiple orders of magnitude but includes negative- or zero-valued data. For more, see ["A bi-symmetric log transformation for wide-range data"](https://www.researchgate.net/profile/John_Webber4/publication/233967063_A_bi-symmetric_log_transformation_for_wide-range_data/links/0fcfd50d791c85082e000000.pdf) by Webber for more.
+
+{% include table.html props="constant" source="Scale" %}
+
 {:#time}
 
 ### Time and UTC Scales
 
 Time and UTC scales (`"time"` and `"utc"`) are [continuous scales](#quantitative) with a temporal domain: values in the input domain are assumed to be [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) objects or timestamps. Time scales use the current local timezone setting. UTC scales instead use [Coordinated Universal Time](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).
 
-{:#sequential}
-
-### Sequential Scales
-
-Sequential scales (`"sequential"`) are similar to linear scales, but use a fixed interpolator to determine the output range. By default, Vega-lite uses sequential scales to encode continuous (quantitative and temporal) fields with `color`s.
-
-To customize the range of a sequential scale, either a [`range`](#range) array listing colors or a color [`scheme`](#scheme) can be specified.
-
 {:#piecewise}
 
 ### Piecewise Scales
 
-We can use any types of continuous scales ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc), [`"sequential"`](scale.html#sequential)) to create a diverging color graph by specifying a custom `domain` with multiple elements.
+We can use any types of continuous scales ([`"linear"`](scale.html#linear), [`"pow"`](scale.html#pow), [`"sqrt"`](scale.html#sqrt), [`"log"`](scale.html#log), [`"symlog"`](scale.html#symlog), [`"time"`](scale.html#time), [`"utc"`](scale.html#utc) to create a diverging color graph by specifying a custom `domain` with multiple elements.
 
 If `range` is specified, the number of elements in `range` should match with the number of elements in `domain`. [Diverging color `scheme`s](https://vega.github.io/vega/docs/schemes/#diverging) are also useful as a range for a piecewise scale.
 
@@ -375,9 +367,7 @@ For example, the follow bar chart directly encodes color names in the data.
 
 ## Configuration
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

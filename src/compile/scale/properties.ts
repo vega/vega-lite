@@ -1,6 +1,7 @@
+import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
 import {Config} from '../../config';
-import {ScaleFieldDef, TypedFieldDef} from '../../fielddef';
+import {ScaleFieldDef, TypedFieldDef, vgField} from '../../fielddef';
 import * as log from '../../log';
 import {BarConfig, Mark, MarkDef} from '../../mark';
 import {
@@ -23,6 +24,7 @@ import {VgScale} from '../../vega.schema';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
+import {SignalRefWrapper} from './../signal';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseUnitScaleRange} from './range';
 
@@ -61,11 +63,12 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        // copyKeyFromObject ensure type safety
+        // copyKeyFromObject ensures type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
         const value = getDefaultValue(
           property,
+          model,
           channel,
           fieldDef,
           mergedScaleCmpt.get('type'),
@@ -86,6 +89,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
 // Note: This method is used in Voyager.
 export function getDefaultValue(
   property: keyof Scale,
+  model: Model,
   channel: Channel,
   fieldDef: ScaleFieldDef<string, Type>,
   scaleType: ScaleType,
@@ -99,8 +103,10 @@ export function getDefaultValue(
 
   // If we have default rule-base, determine default value first
   switch (property) {
+    case 'bins':
+      return bins(model, fieldDef, channel);
     case 'interpolate':
-      return interpolate(channel, scaleType);
+      return interpolate(channel);
     case 'nice':
       return nice(scaleType, channel, fieldDef);
     case 'padding':
@@ -169,8 +175,23 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   });
 }
 
-export function interpolate(channel: Channel, scaleType: ScaleType) {
-  if (contains([COLOR, FILL, STROKE], channel) && isContinuousToContinuous(scaleType)) {
+export function bins(model: Model, fieldDef: TypedFieldDef<string>, channel: Channel) {
+  const bin = fieldDef.bin;
+  if (isBinning(bin)) {
+    return new SignalRefWrapper(() => {
+      return model.getName(vgField(fieldDef, {suffix: 'bins'}));
+    });
+  } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
+    // start and stop will be determined from the scale domain
+    return {
+      step: bin.step
+    };
+  }
+  return undefined;
+}
+
+export function interpolate(channel: Channel) {
+  if (contains([COLOR, FILL, STROKE], channel)) {
     return 'hcl';
   }
   return undefined;

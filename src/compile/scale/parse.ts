@@ -72,6 +72,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
         explicit: specifiedScale.type === sType
       });
     }
+
     return scaleComponents;
   }, {});
 }

@@ -157,7 +157,7 @@ describe('Mark: Rect', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         x2: {
@@ -190,7 +190,7 @@ describe('Mark: Rect', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickStep: 2
+            tickMinStep: 2
           }
         },
         y2: {

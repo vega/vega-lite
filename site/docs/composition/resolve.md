@@ -7,9 +7,7 @@ permalink: /docs/resolve.html
 
 Vega-Lite determines whether scale domains should be unioned. If the scale domain is unioned, axes and legends can be merged. Otherwise they have to be independent.
 
-{: .suppress-error}
-
-```json
+```js
 {
   "resolve": {
     // Scale resolution

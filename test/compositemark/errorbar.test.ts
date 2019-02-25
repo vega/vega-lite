@@ -5,7 +5,9 @@ import {defaultConfig} from '../../src/config';
 import {isFieldDef} from '../../src/fielddef';
 import * as log from '../../src/log';
 import {isMarkDef} from '../../src/mark';
-import {CompositeUnitSpec, ExtendedLayerSpec, GenericSpec, isLayerSpec, isUnitSpec, normalize} from '../../src/spec';
+import {normalize} from '../../src/normalize/index';
+import {isLayerSpec, isUnitSpec} from '../../src/spec';
+import {TopLevelUnitSpec} from '../../src/spec/unit';
 import {isAggregate, isCalculate, Transform} from '../../src/transform';
 import {some} from '../../src/util';
 
@@ -614,7 +616,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
   for (const center of centers) {
     for (const extent of extents) {
-      const spec: GenericSpec<CompositeUnitSpec, ExtendedLayerSpec> = {
+      const spec: TopLevelUnitSpec = {
         data: {url: 'data/population.json'},
         mark: {type, ...(center ? {center} : {}), ...(extent ? {extent} : {})},
         encoding: {
@@ -639,7 +641,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
         it(
           testMsg,
           log.wrap(localLogger => {
-            normalize(spec, defaultConfig);
+            normalize(spec);
 
             expect(warningOutput[k]).toEqual(
               some(localLogger.warns, message => {
@@ -650,7 +652,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
         );
       }
 
-      const outputSpec = normalize(spec, defaultConfig);
+      const outputSpec = normalize(spec);
       const aggregateTransform = outputSpec.transform[0];
       const testMsg =
         'should produce a correct layer spec if center is ' +
@@ -897,29 +899,6 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
       );
 
       expect(localLogger.warns[0]).toEqual(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, mark));
-    })
-  );
-
-  it(
-    'should produce a warning if there is an unsupported channel in encoding',
-    log.wrap(localLogger => {
-      const size = 'size';
-
-      normalize(
-        {
-          data,
-          mark,
-          encoding: {
-            x: {field: 'age', type: 'ordinal'},
-            y: {field: 'people', type: 'quantitative'},
-            y2: {field: 'people2', type: 'quantitative', aggregate: 'min'},
-            size: {value: 10}
-          }
-        },
-        defaultConfig
-      );
-
-      expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(size, mark));
     })
   );
 

@@ -1,5 +1,5 @@
 import {accessPathWithDatum, varName} from '../../../util';
-import {TUPLE} from '../selection';
+import {assembleInit, TUPLE} from '../selection';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {TransformCompiler} from './transforms';
@@ -13,15 +13,16 @@ const inputBindings: TransformCompiler = {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
+    const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
-    for (const p of proj) {
+    proj.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
       const hasSignal = signals.filter(s => s.name === sgname);
       if (!hasSignal.length) {
         signals.unshift({
           name: sgname,
-          value: '',
+          ...(init ? {init: assembleInit(init[i])} : {value: null}),
           on: [
             {
               events: selCmpt.events,
@@ -31,7 +32,7 @@ const inputBindings: TransformCompiler = {
           bind: bind[p.field] || bind[p.channel] || bind
         });
       }
-    }
+    });
 
     return signals;
   },

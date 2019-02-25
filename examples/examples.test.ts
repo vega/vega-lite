@@ -1,14 +1,12 @@
 import Ajv from 'ajv';
-
+import fs from 'fs';
+import path from 'path';
+import {inspect} from 'util';
 import {Spec as VgSpec} from 'vega';
 import {compile} from '../src/compile/compile';
 import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 import {duplicate} from '../src/util';
-
-const inspect = require('util').inspect;
-const fs = require('fs');
-const path = require('path');
 
 const vlSchema = require('../build/vega-lite-schema.json');
 const vgSchema = require('vega/build/vega-schema.json');
@@ -54,13 +52,16 @@ const futureSuffixLength = '_future.vl.json'.length;
 const brokenSuffixLength = '_broken.vl.json'.length;
 
 describe('Examples', () => {
-  const examples = fs.readdirSync('examples/specs');
+  const examples = fs.readdirSync('examples/specs').map(file => 'examples/specs/' + file);
+  const normalizedExamples = fs
+    .readdirSync('examples/specs/normalized')
+    .map(file => 'examples/specs/normalized/' + file);
 
-  for (const example of examples) {
+  for (const example of examples.concat(normalizedExamples)) {
     if (path.extname(example) !== '.json') {
       return;
     }
-    const jsonSpec = JSON.parse(fs.readFileSync('examples/specs/' + example));
+    const jsonSpec = JSON.parse(fs.readFileSync(example).toString());
     const originalSpec = duplicate(jsonSpec);
 
     describe(
@@ -74,11 +75,7 @@ describe('Examples', () => {
 
         it('should be valid vega-lite with proper $schema', () => {
           if (
-            // Do not validate overlay example until we have redesigned it
-            example.indexOf('overlay') >= 0 ||
-            // Also ignore boxplot examples until we support selections
-            example.indexOf('boxplot') >= 0 ||
-            // Also ignore all examples with "_future" suffix
+            // Ignore all examples with "_future" suffix
             example.lastIndexOf('_future.vl.json', example.length - futureSuffixLength) >= 0
           ) {
             return;

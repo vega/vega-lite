@@ -5,9 +5,7 @@ title: Tick
 permalink: /docs/tick.html
 ---
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -57,9 +55,7 @@ The following strip-plot use `tick` mark to represent its data.
 
 ## Tick Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

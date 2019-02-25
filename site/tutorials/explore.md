@@ -11,9 +11,7 @@ For this tutorial, we will create visualizations to explore weather data for Sea
 
 To load the CSV file with Vega-Lite, we need to provide a URL and set the format type in the data section of the specification.
 
-{: .suppress-error}
-
-```json
+```js
 "data": {"url": "data/seattle-weather.csv"}
 ```
 
@@ -41,7 +39,7 @@ In this chart, it looks as though the maximum temperature is increasing from yea
 
 And yes, this chart shows that it is in fact increasing. You can observe a similar change for the minimum daily temperatures. Considering minimum and maximum temperatures, you might wonder how the variability of the temperatures changes throughout the year. For this, we have to add a computation to derive a new field.
 
-```json
+```js
 "transform": [
   {
     "calculate": "datum.temp_max - datum.temp_min",

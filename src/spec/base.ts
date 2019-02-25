@@ -3,7 +3,6 @@ import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {BaseMarkConfig, LayoutAlign, RowCol} from '../vega.schema';
 
-export {normalizeTopLevelSpec as normalize} from '../normalize';
 export {TopLevel} from './toplevel';
 
 /**
@@ -176,10 +175,12 @@ export interface GenericCompositionLayout extends BoundsMixins {
    * An object of the form `{"row": number, "column": number}` can be used to set
    * different spacing values for rows and columns.
    *
-   * __Default value__: `10`
+   * __Default value__: `20`
    */
   spacing?: number | RowCol<number>;
 }
+
+export const DEFAULT_SPACING = 20;
 
 export function extractCompositionLayout(layout: GenericCompositionLayout): GenericCompositionLayout {
   const {align = undefined, center = undefined, bounds = undefined, spacing = undefined} = layout || {};

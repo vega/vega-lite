@@ -851,7 +851,7 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickStep: 2
+              tickMinStep: 2
             }
           },
           x2: {
@@ -884,7 +884,7 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickStep: 2
+              tickMinStep: 2
             }
           },
           x2: {
@@ -919,7 +919,7 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickStep: 2
+              tickMinStep: 2
             }
           },
           y2: {
@@ -952,7 +952,7 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickStep: 2
+              tickMinStep: 2
             }
           },
           y2: {

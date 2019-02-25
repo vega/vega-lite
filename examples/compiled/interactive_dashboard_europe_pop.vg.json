@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "data": [
@@ -327,7 +327,7 @@
     {"name": "brush", "update": "vlSelectionResolve(\"brush_store\")"}
   ],
   "layout": {
-    "padding": {"row": 10, "column": 10},
+    "padding": {"row": 20, "column": 20},
     "bounds": "full",
     "align": "each"
   },
@@ -410,7 +410,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Country\",\"channel\":\"y\",\"type\":\"E\"}]"
+          "value": [{"field": "Country", "channel": "y", "type": "E"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -487,12 +487,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [
@@ -723,7 +718,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Country\",\"channel\":\"y\",\"type\":\"E\"}]"
+          "value": [{"field": "Country", "channel": "y", "type": "E"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -800,12 +795,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [
@@ -1091,13 +1081,24 @@
                 {"signal": "brush_Population_ages_65_and_above_of_total"},
                 {"signal": "brush_Population_ages_15_64_of_total"}
               ],
-              "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", fields: brush_tuple_fields, values: [brush_Population_ages_65_and_above_of_total, brush_Population_ages_15_64_of_total]} : null"
+              "update": "brush_Population_ages_65_and_above_of_total && brush_Population_ages_15_64_of_total ? {unit: \"concat_2\", fields: brush_tuple_fields, values: [brush_Population_ages_65_and_above_of_total,brush_Population_ages_15_64_of_total]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "update": "[{\"field\":\"Population_ages_65_and_above_of_total\",\"channel\":\"x\",\"type\":\"R\"},{\"field\":\"Population_ages_15_64_of_total\",\"channel\":\"y\",\"type\":\"R\"}]"
+          "value": [
+            {
+              "field": "Population_ages_65_and_above_of_total",
+              "channel": "x",
+              "type": "R"
+            },
+            {
+              "field": "Population_ages_15_64_of_total",
+              "channel": "y",
+              "type": "R"
+            }
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -1174,12 +1175,7 @@
         },
         {
           "name": "brush_modify",
-          "on": [
-            {
-              "events": {"signal": "brush_tuple"},
-              "update": "modify(\"brush_store\", brush_tuple, true)"
-            }
-          ]
+          "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ],
       "marks": [

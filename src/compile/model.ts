@@ -9,7 +9,7 @@ import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
 import {BaseSpec, isFacetSpec, isLayerSpec, isUnitSpec, TopLevelFacetSpec} from '../spec';
-import {extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
+import {DEFAULT_SPACING, extractCompositionLayout, GenericCompositionLayout, ViewBackground} from '../spec/base';
 import {extractTitleConfig, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, keys, varName} from '../util';
@@ -19,7 +19,7 @@ import {AxisComponentIndex} from './axis/component';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
-import {getHeaderGroups, getTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
+import {assembleHeaderGroups, assembleTitleGroup, HEADER_CHANNELS, LayoutHeaderComponent} from './header/index';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
 import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
@@ -338,8 +338,8 @@ export abstract class Model {
       padding: isNumber(spacing)
         ? spacing
         : {
-            row: spacing.row || 10,
-            column: spacing.column || 10
+            row: spacing.row || DEFAULT_SPACING,
+            column: spacing.column || DEFAULT_SPACING
           },
       ...this.assembleDefaultLayout(),
       ...(align ? {align} : {}),
@@ -360,12 +360,12 @@ export abstract class Model {
 
     for (const channel of HEADER_CHANNELS) {
       if (layoutHeaders[channel].title) {
-        headerMarks.push(getTitleGroup(this, channel));
+        headerMarks.push(assembleTitleGroup(this, channel));
       }
     }
 
     for (const channel of HEADER_CHANNELS) {
-      headerMarks = headerMarks.concat(getHeaderGroups(this, channel));
+      headerMarks = headerMarks.concat(assembleHeaderGroups(this, channel));
     }
     return headerMarks;
   }

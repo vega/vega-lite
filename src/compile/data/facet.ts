@@ -184,9 +184,9 @@ export class FacetNode extends DataFlowNode {
       // Need to create a cross dataset to correctly calculate cardinality
       crossedDataName = `cross_${this.column.name}_${this.row.name}`;
 
-      const fields = [].concat(
-        childIndependentFieldsWithStep.x ? [childIndependentFieldsWithStep.x] : [],
-        childIndependentFieldsWithStep.y ? [childIndependentFieldsWithStep.y] : []
+      const fields: string[] = [].concat(
+        childIndependentFieldsWithStep.x || [],
+        childIndependentFieldsWithStep.y || []
       );
       const ops = fields.map((): AggregateOp => 'distinct');
 

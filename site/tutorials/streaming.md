@@ -13,9 +13,7 @@ We will be using the `View` API from the Vega, where we update data via the [`ch
 
 To use `view.change`, you have to first specify the name of the data source you are updating: `view.change('data', ... )`. The name needs to be specified in the original spec, as described [here]({{site.baseurl}}/docs/data.html#named). As the second parameter to the `view.change` method, you should specify what data to add, and what data to remove. To add data, simply supply the array of data entries matching previous schemas, for the example here, it is:
 
-{: .suppress-error}
-
-```json
+```js
 {
   "x": number,
   "y": number,

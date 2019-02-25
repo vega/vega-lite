@@ -1,11 +1,12 @@
 import {stringValue} from 'vega-util';
 import {X, Y} from '../../channel';
 import {warn} from '../../log';
-import {hasContinuousDomain, isBinScale} from '../../scale';
+import {hasContinuousDomain} from '../../scale';
 import {keys} from '../../util';
 import {EventStream} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {
+  assembleInit,
   channelSignalName,
   positionalProjections,
   SelectionCompiler,
@@ -20,7 +21,7 @@ import scales from './transforms/scales';
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
-const interval: SelectionCompiler = {
+const interval: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE + TUPLE_FIELDS;
@@ -39,14 +40,14 @@ const interval: SelectionCompiler = {
       });
     }
 
-    for (const p of selCmpt.project) {
+    selCmpt.project.forEach((p, i) => {
       const channel = p.channel;
       if (channel !== X && channel !== Y) {
         warn('Interval selections only support x and y encoding channels.');
-        continue;
+        return;
       }
 
-      const cs = channelSignals(model, selCmpt, channel);
+      const cs = channelSignals(model, selCmpt, channel, i);
       const dname = channelSignalName(selCmpt, channel, 'data');
       const vname = channelSignalName(selCmpt, channel, 'visual');
       const scaleStr = stringValue(model.scaleName(channel));
@@ -63,7 +64,7 @@ const interval: SelectionCompiler = {
           `(${toNum}invert(${scaleStr}, ${vname})[0] === ${toNum}${dname}[0] && ` +
           `${toNum}invert(${scaleStr}, ${vname})[1] === ${toNum}${dname}[1]))`
       });
-    }
+    });
 
     // Proxy scale reactions to ensure that an infinite loop doesn't occur
     // when an interval selection filter touches the scale.
@@ -77,15 +78,15 @@ const interval: SelectionCompiler = {
     // Only add an interval to the store if it has valid data extents. Data extents
     // are set to null if pixel extents are equal to account for intervals over
     // ordinal/nominal domains which, when inverted, will still produce a valid datum.
+    const init = selCmpt.init;
+    const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
     return signals.concat({
       name: name + TUPLE,
+      ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
       on: [
         {
           events: dataSignals.map(t => ({signal: t})),
-          update:
-            dataSignals.join(' && ') +
-            ` ? {unit: ${unitName(model)}, fields: ${fieldsSg}, ` +
-            `values: [${dataSignals.join(', ')}]} : null`
+          update: dataSignals.join(' && ') + ` ? {${update}: [${dataSignals}]} : null`
         }
       ]
     });
@@ -158,18 +159,20 @@ const interval: SelectionCompiler = {
           },
           update: update
         }
-      } as any
-    ].concat(marks, {
-      name: name + BRUSH,
-      type: 'rect',
-      clip: true,
-      encode: {
-        enter: {
-          fill: {value: 'transparent'}
-        },
-        update: {...update, ...vgStroke}
+      } as any,
+      ...marks,
+      {
+        name: name + BRUSH,
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {
+            fill: {value: 'transparent'}
+          },
+          update: {...update, ...vgStroke}
+        }
       }
-    });
+    ];
   }
 };
 export default interval;
@@ -177,33 +180,37 @@ export default interval;
 /**
  * Returns the visual and data signals for an interval selection.
  */
-function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 'x' | 'y'): any {
+function channelSignals(
+  model: UnitModel,
+  selCmpt: SelectionComponent<'interval'>,
+  channel: 'x' | 'y',
+  idx: number
+): any {
   const vname = channelSignalName(selCmpt, channel, 'visual');
   const dname = channelSignalName(selCmpt, channel, 'data');
+  const init = selCmpt.init && selCmpt.init[idx];
   const hasScales = scales.has(selCmpt);
-  const scaleName = model.scaleName(channel);
-  const scaleStr = stringValue(scaleName);
+  const scaleName = stringValue(model.scaleName(channel));
   const scale = model.getScaleComponent(channel);
   const scaleType = scale ? scale.get('type') : undefined;
+  const scaled = (str: string) => `scale(${scaleName}, ${str})`;
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;
 
   const on = events(selCmpt, (def: any[], evt: EventStream) => {
-    return def.concat(
+    return [
+      ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
       {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
-    );
+    ];
   });
 
   // React to pan/zooms of continuous scales. Non-continuous scales
-  // (bin-linear, band, point) cannot be pan/zoomed and any other changes
+  // (band, point) cannot be pan/zoomed and any other changes
   // to their domains (e.g., filtering) should clear the brushes.
   on.push({
     events: {signal: selCmpt.name + SCALE_TRIGGER},
-    update:
-      hasContinuousDomain(scaleType) && !isBinScale(scaleType)
-        ? `[scale(${scaleStr}, ${dname}[0]), scale(${scaleStr}, ${dname}[1])]`
-        : `[0, 0]`
+    update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`
   });
 
   return hasScales
@@ -211,17 +218,23 @@ function channelSignals(model: UnitModel, selCmpt: SelectionComponent, channel: 
     : [
         {
           name: vname,
-          value: [],
+          ...(init ? {init: assembleInit(init, scaled)} : {value: []}),
           on: on
         },
         {
           name: dname,
-          on: [{events: {signal: vname}, update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleStr}, ${vname})`}]
+          ...(init ? {init: assembleInit(init)} : {}),
+          on: [
+            {
+              events: {signal: vname},
+              update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`
+            }
+          ]
         }
       ];
 }
 
-function events(selCmpt: SelectionComponent, cb: (...args: any[]) => void) {
+function events(selCmpt: SelectionComponent<'interval'>, cb: (...args: any[]) => void) {
   return selCmpt.events.reduce((on: any[], evt: EventStream) => {
     if (!evt.between) {
       warn(`${evt} is not an ordered event stream for interval selections`);

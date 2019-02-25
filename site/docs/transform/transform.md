@@ -11,9 +11,7 @@ When both types of transforms are specified, the view-level `transform`s are exe
 
 ## View-level Transform Property
 
-{: .suppress-error}
-
-```json
+```js
 {
   "data": ... ,
   "transform": [

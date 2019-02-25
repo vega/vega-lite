@@ -23,9 +23,7 @@ describe('scale', () => {
       }
     });
 
-    // TODO: write more test blindly (Don't look at our code, just look at D3 code.)
-
-    expect(scale.scaleTypeSupportProperty('bin-linear', 'zero')).toBe(false);
+    // TODO: write more test blindly (Don't look at our code, just look at Vega scale typings and D3 code.)
   });
 
   describe('scaleTypes', () => {
@@ -78,8 +76,7 @@ describe('scale', () => {
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
 
       for (const channel of ['x', 'y', 'size', 'opacity'] as ScaleChannel[]) {
-        expect(!channelSupportScaleType(channel, 'ordinal')).toBeTruthy();
-        expect(!channelSupportScaleType(channel, 'sequential')).toBeTruthy();
+        expect(channelSupportScaleType(channel, 'ordinal')).toBeFalsy();
         for (const scaleType of scaleTypes) {
           expect(channelSupportScaleType(channel, scaleType)).toBeTruthy();
         }
@@ -90,28 +87,31 @@ describe('scale', () => {
   describe('getSupportedScaleType', () => {
     it('should return correct scale types for quantitative positional channels', () => {
       const type = Type.QUANTITATIVE;
-      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.POW, ScaleType.SQRT];
+      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT];
 
       // x channel
       let scaleTypes = getSupportedScaleType(Channel.X, type);
-      expect(positionalScaleTypes).toEqual(scaleTypes);
+      expect(positionalScaleTypes).toEqual(expect.arrayContaining(scaleTypes));
 
       // y channel
       scaleTypes = getSupportedScaleType(Channel.Y, Type.QUANTITATIVE);
-      expect(scaleTypes).toEqual(positionalScaleTypes);
+      expect(scaleTypes).toEqual(expect.arrayContaining(positionalScaleTypes));
     });
 
     it('should return correct scale types for quantitative positional channels with bin', () => {
       const type = Type.QUANTITATIVE;
-      const positionalScaleTypesBinned = [ScaleType.LINEAR, ScaleType.BIN_LINEAR];
 
       // x channel
-      let scaleTypes = getSupportedScaleType(Channel.X, type, true);
-      expect(scaleTypes).toEqual(positionalScaleTypesBinned);
+      let scaleTypes = getSupportedScaleType(Channel.X, type);
+      expect(scaleTypes).toEqual(
+        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
+      );
 
       // y channel
-      scaleTypes = getSupportedScaleType(Channel.Y, type, true);
-      expect(scaleTypes).toEqual(positionalScaleTypesBinned);
+      scaleTypes = getSupportedScaleType(Channel.Y, type);
+      expect(scaleTypes).toEqual(
+        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
+      );
     });
 
     it('should return correct scale types for nominal positional channels', () => {

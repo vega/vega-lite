@@ -32,9 +32,7 @@ By default, all time units represent date time using local time. To use UTC time
 
 ## Time Unit in Encoding Field Definition
 
-{: .suppress-error}
-
-```json
+```js
 {
   "data": ... ,
   "mark": ... ,
@@ -70,9 +68,7 @@ If you want to use a discrete scale instead, you can cast the field to have an `
 
 ## Time Unit Transform
 
-{: .suppress-error}
-
-```json
+```js
 {
   ...
   "transform": [

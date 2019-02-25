@@ -21,9 +21,7 @@ If you concatenate similar views where the only difference is the field that is 
 
 Put multiple views into a row by putting the specs for each view into an array and assign it to the `hconcat` property.
 
-{: .suppress-error}
-
-```json
+```js
 {
   "hconcat": [
     ...  // Specifications
@@ -43,9 +41,7 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 Put multiple views into a column by putting the specs for each view into an array and assign it to the `vconcat` property.
 
-{: .suppress-error}
-
-```json
+```js
 {
   "vconcat": [
     ...  // Specifications

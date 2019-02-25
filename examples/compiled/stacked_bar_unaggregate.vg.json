@@ -1,6 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v4.json",
-  "description": "A simple bar chart with embedded data.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "autosize": "pad",
   "padding": 5,
   "height": 200,
@@ -84,7 +83,8 @@
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "c", "sort": true},
-      "range": "category"
+      "range": "category",
+      "interpolate": "hcl"
     }
   ],
   "axes": [

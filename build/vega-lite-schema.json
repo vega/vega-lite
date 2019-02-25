@@ -68,7 +68,7 @@
         },
         "op": {
           "$ref": "#/definitions/AggregateOp",
-          "description": "The aggregation operations to apply to the fields, such as sum, average or count.\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)\nfor more information."
+          "description": "The aggregation operation to apply to the fields (e.g., sum, average or count).\nSee the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)\nfor more information."
         }
       },
       "required": [
@@ -300,9 +300,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -435,6 +438,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style of the title."
+        },
         "labelFontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "Font weight of axis tick labels."
@@ -453,6 +460,10 @@
         },
         "labelPadding": {
           "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+          "type": "number"
+        },
+        "labelSeparation": {
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
         "labels": {
@@ -491,6 +502,10 @@
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPostion\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
+        "tickMinStep": {
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
+          "type": "number"
+        },
         "tickOffset": {
           "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
           "type": "number"
@@ -506,10 +521,6 @@
         "tickSize": {
           "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
           "minimum": 0,
-          "type": "number"
-        },
-        "tickStep": {
-          "description": "A desired step size for ticks. This property will generate the corresponding `tickCount` and `values`. It can be useful for [data that are binned before importing into Vega-Lite](https://vega.github.io/vega-lite/docs/bin.html#binned).\n\n__Default value__: `undefined`",
           "type": "number"
         },
         "tickWidth": {
@@ -552,6 +563,10 @@
           "description": "Font size of the title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style of the title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -709,6 +724,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style of the title."
+        },
         "labelFontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "Font weight of axis tick labels."
@@ -727,6 +746,10 @@
         },
         "labelPadding": {
           "description": "The padding, in pixels, between axis and text labels.\n\n__Default value:__ `2`",
+          "type": "number"
+        },
+        "labelSeparation": {
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
         "labels": {
@@ -803,6 +826,10 @@
           "description": "Font size of the title.",
           "minimum": 0,
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style of the title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -1039,9 +1066,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -1257,6 +1287,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for title text."
+        },
         "fontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
@@ -1300,6 +1334,10 @@
         "base": {
           "description": "The number base to use for automatic bin determination (default is base 10).\n\n__Default value:__ `10`",
           "type": "number"
+        },
+        "binned": {
+          "description": "When set to true, Vega-Lite treats the input data as already binned.",
+          "type": "boolean"
         },
         "divide": {
           "description": "Scale factors indicating allowable subdivisions. The default value is [5, 2], which indicates that for base 10 numbers (the default base), the method may consider dividing bin sizes by 5 and/or 2. For example, for an initial step size of 10, the method can check if bin sizes of 2 (= 10/5), 5 (= 10/2), or 1 (= 10/(5*2)) might also satisfy the given constraints.\n\n__Default value:__ `[5, 2]`",
@@ -1530,7 +1568,7 @@
               "type": "number"
             }
           ],
-          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range.  This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).\n\n__Default value:__ `1.5`."
         },
         "median": {
           "anyOf": [
@@ -1612,7 +1650,7 @@
               "type": "number"
             }
           ],
-          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range (Q3-Q1).  This number will be multiplied by the IQR. The product will be added to the third quartile to get the upper whisker and subtracted from the first quartile to get the lower whisker.\n\n__Default value:__ `1.5`."
+          "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range.  This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).\n\n__Default value:__ `1.5`."
         },
         "median": {
           "anyOf": [
@@ -1740,6 +1778,292 @@
     "ColorValueDefWithCondition": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldDef,(string|null)>"
     },
+    "Encoding": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
+        },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
+        "latitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "opacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+        },
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OrderFieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OrderFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
+            }
+          ],
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+        },
+        "text": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "Text of the `text` mark."
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text to show upon mouse hover."
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "xError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "xError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "yError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "yError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        }
+      },
+      "type": "object"
+    },
     "CompositeMark": {
       "anyOf": [
         {
@@ -1767,8 +2091,8 @@
       ]
     },
     "CompositeUnitSpec": {
-      "$ref": "#/definitions/CompositeUnitSpecAlias",
-      "description": "Unit spec that can have a composite mark."
+      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "description": "Unit spec that can be normalized/expanded into a layer spec or another unit spec."
     },
     "ConditionOnlyDef<MarkPropFieldDef<\"nominal\">>": {
       "additionalProperties": false,
@@ -1993,17 +2317,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2085,17 +2402,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2174,17 +2484,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2263,17 +2566,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -2427,17 +2723,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2520,17 +2809,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2610,17 +2892,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -2700,17 +2975,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -3263,305 +3531,12 @@
     "Element": {
       "type": "string"
     },
-    "Encoding": {
-      "additionalProperties": false,
-      "properties": {
-        "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-        },
-        "detail": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-        },
-        "fill": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-        },
-        "fillOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-        },
-        "href": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/StringValueDefWithCondition"
-            }
-          ],
-          "description": "A URL to load upon mouse click."
-        },
-        "key": {
-          "$ref": "#/definitions/FieldDef",
-          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-        },
-        "latitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Latitude position of geographically projected marks."
-        },
-        "latitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "longitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Longitude position of geographically projected marks."
-        },
-        "longitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "opacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-        },
-        "order": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/OrderFieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/OrderFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-        },
-        "shape": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ShapeFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ShapeValueDefWithCondition"
-            }
-          ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-        },
-        "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-        },
-        "stroke": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-        },
-        "strokeOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-        },
-        "strokeWidth": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-        },
-        "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            }
-          ],
-          "description": "Text of the `text` mark."
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/TextFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The tooltip text to show upon mouse hover."
-        },
-        "x": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "x2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "xError": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "xError2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "y": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        },
-        "y2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        },
-        "yError": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "yError2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        }
-      },
-      "type": "object"
-    },
     "EncodingSortField": {
       "additionalProperties": false,
       "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
       "properties": {
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "The data [field](https://vega.github.io/vega-lite/docs/field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
         },
         "op": {
@@ -3578,300 +3553,6 @@
             }
           ],
           "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
-        }
-      },
-      "type": "object"
-    },
-    "EncodingWithFacet": {
-      "additionalProperties": false,
-      "properties": {
-        "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
-        },
-        "column": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Horizontal facets for trellis plots."
-        },
-        "detail": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/FieldDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
-        },
-        "fill": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
-        },
-        "fillOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
-        },
-        "href": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/StringValueDefWithCondition"
-            }
-          ],
-          "description": "A URL to load upon mouse click."
-        },
-        "key": {
-          "$ref": "#/definitions/FieldDef",
-          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
-        },
-        "latitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Latitude position of geographically projected marks."
-        },
-        "latitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "longitude": {
-          "$ref": "#/definitions/LatLongFieldDef",
-          "description": "Longitude position of geographically projected marks."
-        },
-        "longitude2": {
-          "$ref": "#/definitions/SecondaryFieldDef",
-          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
-        },
-        "opacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
-        },
-        "order": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/OrderFieldDef"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/OrderFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
-        },
-        "row": {
-          "$ref": "#/definitions/FacetFieldDef",
-          "description": "Vertical facets for trellis plots."
-        },
-        "shape": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ShapeFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ShapeValueDefWithCondition"
-            }
-          ],
-          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
-        },
-        "size": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
-        },
-        "stroke": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ColorFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/ColorValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
-        },
-        "strokeOpacity": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
-        },
-        "strokeWidth": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/NumericFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/NumericValueDefWithCondition"
-            }
-          ],
-          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
-        },
-        "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            }
-          ],
-          "description": "Text of the `text` mark."
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/TextValueDefWithCondition"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/TextFieldDef"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The tooltip text to show upon mouse hover."
-        },
-        "x": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "x2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/XValueDef"
-            }
-          ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
-        },
-        "xError": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "xError2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "y": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/PositionFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        },
-        "y2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/YValueDef"
-            }
-          ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
-        },
-        "yError": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
-        },
-        "yError2": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SecondaryFieldDef"
-            },
-            {
-              "$ref": "#/definitions/NumberValueDef"
-            }
-          ],
-          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
         }
       },
       "type": "object"
@@ -4188,17 +3869,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "header": {
@@ -4257,9 +3931,313 @@
       },
       "type": "object"
     },
+    "FacetedEncoding": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels.  If either `fill` or `stroke` channel is specified, `color` channel will be ignored.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "column": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Horizontal facets for trellis plots."
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/FieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Additional levels of detail for grouping data in aggregate views and\nin line, trail, and area marks without mapping data to a specific visual channel."
+        },
+        "fill": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `fill` channel, `color ` channel will be ignored. To customize both fill and stroke, please use `fill` and `stroke` channels (not `fill` and `color`)."
+        },
+        "fillOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+        },
+        "href": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A URL to load upon mouse click."
+        },
+        "key": {
+          "$ref": "#/definitions/FieldDef",
+          "description": "A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data."
+        },
+        "latitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Latitude position of geographically projected marks."
+        },
+        "latitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "longitude": {
+          "$ref": "#/definitions/LatLongFieldDef",
+          "description": "Longitude position of geographically projected marks."
+        },
+        "longitude2": {
+          "$ref": "#/definitions/SecondaryFieldDef",
+          "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
+        },
+        "opacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+        },
+        "order": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OrderFieldDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OrderFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html).  Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
+        },
+        "row": {
+          "$ref": "#/definitions/FacetFieldDef",
+          "description": "Vertical facets for trellis plots."
+        },
+        "shape": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ShapeFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
+            }
+          ],
+          "description": "For `point` marks the supported values are\n`\"circle\"` (default), `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`,\nor `\"triangle-down\"`, or else a custom SVG path string.\nFor `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property."
+        },
+        "size": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
+        },
+        "stroke": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ColorFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/ColorValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ When using `stroke` channel, `color ` channel will be ignored. To customize both stroke and fill, please use `stroke` and `fill` channels (not `stroke` and `color`)."
+        },
+        "strokeOpacity": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+        },
+        "strokeWidth": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/NumericFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/NumericValueDefWithCondition"
+            }
+          ],
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+        },
+        "text": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            }
+          ],
+          "description": "Text of the `text` mark."
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/TextFieldDef"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The tooltip text to show upon mouse hover."
+        },
+        "x": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "x2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/XValueDef"
+            }
+          ],
+          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"`."
+        },
+        "xError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "xError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "y": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PositionFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "y2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/YValueDef"
+            }
+          ],
+          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"`."
+        },
+        "yError": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        },
+        "yError2": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SecondaryFieldDef"
+            },
+            {
+              "$ref": "#/definitions/NumberValueDef"
+            }
+          ],
+          "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
+        }
+      },
+      "type": "object"
+    },
     "FacetedUnitSpec": {
-      "$ref": "#/definitions/FacetedCompositeUnitSpecAlias",
-      "description": "Unit spec that can have a composite mark and row or column channels."
+      "$ref": "#/definitions/GenericUnitSpec<FacetedEncoding,AnyMark>",
+      "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec)."
+    },
+    "Field": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/RepeatRef"
+        }
+      ]
     },
     "FieldDefWithCondition<MarkPropFieldDef<\"nominal\">,string>": {
       "additionalProperties": false,
@@ -4287,7 +4265,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -4304,14 +4282,7 @@
           "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -4390,7 +4361,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -4407,14 +4378,7 @@
           "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -4490,7 +4454,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -4507,14 +4471,7 @@
           "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -4590,7 +4547,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -4607,14 +4564,7 @@
           "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "legend": {
@@ -4690,7 +4640,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "condition": {
           "anyOf": [
@@ -4707,14 +4657,7 @@
           "description": "One or more value definition(s) with a selection predicate.\n\n__Note:__ A field definition's `condition` property can only contain [value definitions](https://vega.github.io/vega-lite/docs/encoding.html#value-def)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -4768,17 +4711,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -5138,10 +5074,6 @@
       "type": "object"
     },
     "FontStyle": {
-      "enum": [
-        "normal",
-        "italic"
-      ],
       "type": "string"
     },
     "FontWeight": {
@@ -5177,7 +5109,7 @@
               "$ref": "#/definitions/BinParams"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         }
       },
       "type": "object"
@@ -5203,7 +5135,7 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         }
       },
       "type": "object"
@@ -5271,7 +5203,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "anyOf": [
@@ -5439,7 +5371,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -5492,7 +5424,7 @@
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "CompositeUnitSpecAlias": {
+    "GenericUnitSpec<Encoding,AnyMark>": {
       "additionalProperties": false,
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
@@ -5563,7 +5495,7 @@
       ],
       "type": "object"
     },
-    "FacetedCompositeUnitSpecAlias": {
+    "GenericUnitSpec<FacetedEncoding,AnyMark>": {
       "additionalProperties": false,
       "description": "Base interface for a unit (single-view) specification.",
       "properties": {
@@ -5576,7 +5508,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/EncodingWithFacet",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -5733,7 +5665,7 @@
           "type": "number"
         },
         "labelPadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
         },
         "title": {
@@ -5779,7 +5711,7 @@
           "type": "number"
         },
         "titlePadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
           "type": "number"
         }
       },
@@ -5812,7 +5744,7 @@
           "type": "number"
         },
         "labelPadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
           "type": "number"
         },
         "titleAnchor": {
@@ -5851,7 +5783,7 @@
           "type": "number"
         },
         "titlePadding": {
-          "description": "The orthogonal distance in pixels by which to displace the title from its position along the edge of the chart.\n\n__Default value:__ `10`",
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
           "type": "number"
         }
       },
@@ -6084,6 +6016,10 @@
           },
           "type": "array"
         },
+        "init": {
+          "$ref": "#/definitions/SelectionInitArrayMapping",
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values."
+        },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
@@ -6154,6 +6090,10 @@
           },
           "type": "array"
         },
+        "init": {
+          "$ref": "#/definitions/SelectionInitArrayMapping",
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of\ninitial values."
+        },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
           "description": "An interval selection also adds a rectangle mark to depict the\nextents of the interval. The `mark` property can be used to customize the\nappearance of the mark."
@@ -6181,6 +6121,51 @@
           ]
         }
       },
+      "type": "object"
+    },
+    "JoinAggregateFieldDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output name for the join aggregate operation.",
+          "type": "string"
+        },
+        "field": {
+          "description": "The data field for which to compute the aggregate function. This can be omitted for functions that do not operate over a field such as `count`.",
+          "type": "string"
+        },
+        "op": {
+          "$ref": "#/definitions/AggregateOp",
+          "description": "The aggregation operation to apply (e.g., sum, average or count). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/aggregate.html#ops)."
+        }
+      },
+      "required": [
+        "op",
+        "as"
+      ],
+      "type": "object"
+    },
+    "JoinAggregateTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "groupby": {
+          "description": "The data fields for partitioning the data objects into separate groups. If unspecified, all data points will be in a single group.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "joinaggregate": {
+          "description": "The definition of the fields in the join aggregate, and what calculations to use.",
+          "items": {
+            "$ref": "#/definitions/JoinAggregateFieldDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "joinaggregate"
+      ],
       "type": "object"
     },
     "JsonDataFormat": {
@@ -6255,17 +6240,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -6377,6 +6355,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of legend label."
+        },
         "labelFontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight of legend label."
@@ -6401,13 +6383,17 @@
           "description": "Padding in pixels between the legend and legend labels.",
           "type": "number"
         },
+        "labelSeparation": {
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
+          "type": "number"
+        },
         "offset": {
           "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
@@ -6420,10 +6406,6 @@
         "strokeColor": {
           "$ref": "#/definitions/Color",
           "description": "Border stroke color for the full legend."
-        },
-        "strokeWidth": {
-          "description": "Border stroke width for the full legend.",
-          "type": "number"
         },
         "symbolFillColor": {
           "$ref": "#/definitions/Color",
@@ -6459,6 +6441,10 @@
           "description": "The desired number of tick values for quantitative legends.",
           "type": "number"
         },
+        "tickMinStep": {
+          "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
+          "type": "number"
+        },
         "title": {
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`).  If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`).  Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.",
           "type": [
@@ -6485,6 +6471,10 @@
         "titleFontSize": {
           "description": "The font size of the legend title.",
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the legend title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -6638,6 +6628,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "labelFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of legend label."
+        },
         "labelFontWeight": {
           "$ref": "#/definitions/FontWeight",
           "description": "The font weight of legend label."
@@ -6660,6 +6654,10 @@
         },
         "labelPadding": {
           "description": "Padding in pixels between the legend and legend labels.",
+          "type": "number"
+        },
+        "labelSeparation": {
+          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
         "offset": {
@@ -6758,6 +6756,10 @@
         "titleFontSize": {
           "description": "The font size of the legend title.",
           "type": "number"
+        },
+        "titleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "The font style of the legend title."
         },
         "titleFontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -7014,9 +7016,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -7420,9 +7425,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -7654,13 +7662,16 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type.\nOne of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`."
+          "description": "The mark type. This could a primitive mark type\n(one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`,\n`\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`)\nor a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
@@ -7713,6 +7724,20 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "init": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SelectionInitMapping"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/SelectionInitMapping"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values)."
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
@@ -7769,6 +7794,20 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "init": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SelectionInitMapping"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/SelectionInitMapping"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial\nvalue (or array of values)."
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
@@ -7862,17 +7901,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "sort": {
@@ -8103,9 +8135,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         },
         "x2Offset": {
           "description": "Offset for x2-position.",
@@ -8339,17 +8374,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "impute": {
@@ -8521,6 +8549,7 @@
         "conicEquidistant",
         "equirectangular",
         "gnomonic",
+        "identity",
         "mercator",
         "orthographic",
         "stereographic",
@@ -8757,9 +8786,20 @@
           "description": "The logarithm base of the `log` scale (default `10`).",
           "type": "number"
         },
+        "bins": {
+          "description": "An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
         "clamp": {
           "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `clamp` (`true` by default).",
           "type": "boolean"
+        },
+        "constant": {
+          "description": "A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.\n\n__Default value:__ `1`",
+          "type": "number"
         },
         "domain": {
           "anyOf": [
@@ -8812,7 +8852,7 @@
               "$ref": "#/definitions/ScaleInterpolateParams"
             }
           ],
-          "description": "The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).\n\n* __Default value:__ `hcl`\n\n__Note:__ Sequential scales do not support `interpolate` as they have a fixed interpolator.  Since Vega-Lite uses sequential scales for quantitative fields by default, you have to set the scale `type` to other quantitative scale type such as `\"linear\"` to customize `interpolate`."
+          "description": "The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).\n\n* __Default value:__ `hcl`"
         },
         "nice": {
           "anyOf": [
@@ -8879,7 +8919,7 @@
               "type": "string"
             }
           ],
-          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For [sequential](https://vega.github.io/vega-lite/docs/scale.html#sequential), [ordinal](https://vega.github.io/vega-lite/docs/scale.html#ordinal), and discretizing color scales, you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales."
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`) or via [range steps and paddings properties](#range-step) for [band](#band) and [point](#point) scales."
         },
         "rangeStep": {
           "description": "The distance between the starts of adjacent bands or points in [band](https://vega.github.io/vega-lite/docs/scale.html#band) and [point](https://vega.github.io/vega-lite/docs/scale.html#point) scales.\n\nIf `rangeStep` is `null` or if the view contains the scale's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` for `x` scales and `height` for `y` scales), `rangeStep` will be automatically determined to fit the size of the view.\n\n__Default value:__  derived the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `textXRangeStep` (`90` by default) for x-scales of `text` marks and `rangeStep` (`21` by default) for x-scales of other marks and y-scales.\n\n__Warning__: If `rangeStep` is `null` and the cardinality of the scale's domain is higher than `width` or `height`, the rangeStep might become less than one pixel and the mark might not appear correctly.",
@@ -8902,11 +8942,11 @@
               "$ref": "#/definitions/SchemeParams"
             }
           ],
-          "description": "A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `\"category10\"` or `\"viridis\"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with [sequential](https://vega.github.io/vega-lite/docs/scales.html#sequential) scales.\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
+          "description": "A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `\"category10\"` or `\"blues\"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
-          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`\"pow\"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`\"sqrt\"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`\"log\"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`\"time\"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`\"utc\"`](https://vega.github.io/vega-lite/docs/scale.html#utc), [`\"sequential\"`](https://vega.github.io/vega-lite/docs/scale.html#sequential)).\n\n2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`\"band\"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`\"point\"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges ([`\"bin-linear\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-linear), [`\"bin-ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`\"quantile\"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`\"quantize\"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`\"threshold\"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).\n\n__Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type)."
+          "description": "The type of scale.  Vega-Lite supports the following categories of scale types:\n\n1) [**Continuous Scales**](https://vega.github.io/vega-lite/docs/scale.html#continuous) -- mapping continuous domains to continuous output ranges ([`\"linear\"`](https://vega.github.io/vega-lite/docs/scale.html#linear), [`\"pow\"`](https://vega.github.io/vega-lite/docs/scale.html#pow), [`\"sqrt\"`](https://vega.github.io/vega-lite/docs/scale.html#sqrt), [`\"symlog\"`](https://vega.github.io/vega-lite/docs/scale.html#symlog), [`\"log\"`](https://vega.github.io/vega-lite/docs/scale.html#log), [`\"time\"`](https://vega.github.io/vega-lite/docs/scale.html#time), [`\"utc\"`](https://vega.github.io/vega-lite/docs/scale.html#utc).\n\n2) [**Discrete Scales**](https://vega.github.io/vega-lite/docs/scale.html#discrete) -- mapping discrete domains to discrete ([`\"ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#ordinal)) or continuous ([`\"band\"`](https://vega.github.io/vega-lite/docs/scale.html#band) and [`\"point\"`](https://vega.github.io/vega-lite/docs/scale.html#point)) output ranges.\n\n3) [**Discretizing Scales**](https://vega.github.io/vega-lite/docs/scale.html#discretizing) -- mapping continuous domains to discrete output ranges [`\"bin-ordinal\"`](https://vega.github.io/vega-lite/docs/scale.html#bin-ordinal), [`\"quantile\"`](https://vega.github.io/vega-lite/docs/scale.html#quantile), [`\"quantize\"`](https://vega.github.io/vega-lite/docs/scale.html#quantize) and [`\"threshold\"`](https://vega.github.io/vega-lite/docs/scale.html#threshold).\n\n__Default value:__ please see the [scale type table](https://vega.github.io/vega-lite/docs/scale.html#type)."
         },
         "zero": {
           "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
@@ -9130,18 +9170,17 @@
     "ScaleType": {
       "enum": [
         "linear",
-        "bin-linear",
         "log",
         "pow",
         "sqrt",
+        "symlog",
         "time",
         "utc",
-        "sequential",
         "quantile",
         "quantize",
         "threshold",
-        "ordinal",
         "bin-ordinal",
+        "ordinal",
         "point",
         "band"
       ],
@@ -9176,14 +9215,14 @@
           "type": "number"
         },
         "extent": {
-          "description": "For sequential and diverging schemes only, determines the extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "name": {
-          "description": "A color scheme name for sequential/ordinal scales (e.g., `\"category10\"` or `\"viridis\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
+          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
           "type": "string"
         }
       },
@@ -9218,17 +9257,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "timeUnit": {
@@ -9314,6 +9346,62 @@
         }
       ]
     },
+    "SelectionInit": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ]
+    },
+    "SelectionInitArray": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "boolean"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "items": {
+            "$ref": "#/definitions/DateTime"
+          },
+          "type": "array"
+        }
+      ]
+    },
+    "SelectionInitArrayMapping": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInitArray"
+      },
+      "type": "object"
+    },
+    "SelectionInitMapping": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SelectionInit"
+      },
+      "type": "object"
+    },
     "SelectionPredicate": {
       "additionalProperties": false,
       "properties": {
@@ -9366,10 +9454,6 @@
         "y",
         "x2",
         "y2",
-        "xError",
-        "yError",
-        "xError2",
-        "yError2",
         "longitude",
         "latitude",
         "longitude2",
@@ -9428,6 +9512,10 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "init": {
+          "$ref": "#/definitions/SelectionInitMapping",
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values."
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
@@ -9491,6 +9579,10 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "init": {
+          "$ref": "#/definitions/SelectionInitMapping",
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values."
         },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete\nselection. The data value _nearest_ the mouse cursor is added to the selection.\n\nSee the [nearest transform](https://vega.github.io/vega-lite/docs/nearest.html) documentation for more information.",
@@ -9914,9 +10006,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -9946,17 +10041,10 @@
               "type": "null"
             }
           ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- To indicate that the data for the `x` (or `y`) channel are already binned, you can set the `bin` property of the `x` (or `y`) channel to `\"binned\"` and map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`"
         },
         "field": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
-            }
-          ],
+          "$ref": "#/definitions/Field",
           "description": "__Required.__ A string defining the name of the field from which to pull a data value\nor an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__Note:__ Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`).\nIf field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`).\nSee more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html).\n\n__Note:__ `field` is not required if `aggregate` is `count`."
         },
         "format": {
@@ -10171,9 +10259,12 @@
             },
             {
               "$ref": "#/definitions/TooltipContent"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used."
+          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used.\n- If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used.\n- If set to `null`, then no tooltip will be used."
         }
       },
       "type": "object"
@@ -10269,6 +10360,10 @@
           "description": "Font size in pixels for title text.\n\n__Default value:__ `10`.",
           "minimum": 0,
           "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for title text."
         },
         "fontWeight": {
           "$ref": "#/definitions/FontWeight",
@@ -10645,7 +10740,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "$ref": "#/definitions/Spec"
@@ -10875,7 +10970,7 @@
               "$ref": "#/definitions/RowCol<number>"
             }
           ],
-          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `10`"
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: `20`"
         },
         "spec": {
           "anyOf": [
@@ -10918,7 +11013,30 @@
       ],
       "type": "object"
     },
-    "TopLevelFacetedUnitSpec": {
+    "TopLevelSpec": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/TopLevelUnitSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelFacetSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelLayerSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelRepeatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelVConcatSpec"
+        },
+        {
+          "$ref": "#/definitions/TopLevelHConcatSpec"
+        }
+      ],
+      "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
+    },
+    "TopLevelUnitSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -10958,7 +11076,7 @@
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/EncodingWithFacet",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -11025,29 +11143,6 @@
       ],
       "type": "object"
     },
-    "TopLevelSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/TopLevelFacetedUnitSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelFacetSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelLayerSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelRepeatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelVConcatSpec"
-        },
-        {
-          "$ref": "#/definitions/TopLevelHConcatSpec"
-        }
-      ],
-      "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
-    },
     "TopoDataFormat": {
       "additionalProperties": false,
       "properties": {
@@ -11105,6 +11200,9 @@
         },
         {
           "$ref": "#/definitions/WindowTransform"
+        },
+        {
+          "$ref": "#/definitions/JoinAggregateTransform"
         },
         {
           "$ref": "#/definitions/StackTransform"
@@ -11639,7 +11737,7 @@
               "$ref": "#/definitions/WindowOnlyOp"
             }
           ],
-          "description": "The window or aggregation operations to apply within a window, including `rank`, `lead`, `sum`, `average` or `count`. See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
+          "description": "The window or aggregation operation to apply within a window (e.g.,`rank`, `lead`, `sum`, `average` or `count`). See the list of all supported operations [here](https://vega.github.io/vega-lite/docs/window.html#ops)."
         },
         "param": {
           "description": "Parameter values for the window functions. Parameter values can be omitted for operations that do not accept a parameter.\n\nSee the list of all supported operations and their parameters [here](https://vega.github.io/vega-lite/docs/transforms/window.html).",
@@ -11672,7 +11770,7 @@
       "additionalProperties": false,
       "properties": {
         "frame": {
-          "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
+          "description": "A frame specification as a two-element array indicating how the sliding window should proceed. The array entries should either be a number indicating the offset from the current data object, or null to indicate unbounded rows preceding or following the current data object. The default value is `[null, 0]`, indicating that the sliding window includes the current object and all preceding objects. The value `[-5, 5]` indicates that the window should include five objects preceding and five objects following the current object. Finally, `[null, null]` indicates that the window frame should always include all data objects. If you this frame and want to assign the same value to add objects, you can use the simpler [join aggregate transform](https://vega.github.io/vega-lite/docs/joinaggregate.html). The only operators affected are the aggregation operations and the `first_value`, `last_value`, and `nth_value` window operations. The other window operations are not affected by this.\n\n__Default value:__:  `[null, 0]` (includes the current object and all preceding objects)",
           "items": {
             "type": [
               "null",
@@ -11682,14 +11780,14 @@
           "type": "array"
         },
         "groupby": {
-          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single group.",
+          "description": "The data fields for partitioning the data objects into separate windows. If unspecified, all data points will be in a single window.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "ignorePeers": {
-          "description": "Indicates if the sliding window frame should ignore peer values. (Peer values are those considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
+          "description": "Indicates if the sliding window frame should ignore peer values (data that are considered identical by the sort criteria). The default is false, causing the window frame to expand to include all peer values. If set to true, the window frame will be defined by offset values only. This setting only affects those operations that depend on the window frame, namely aggregation operations and the first_value, last_value, and nth_value window operations.\n\n__Default value:__ `false`",
           "type": "boolean"
         },
         "sort": {

@@ -21,9 +21,7 @@ Besides `axis` property of a field definition, the configuration object ([`confi
 
 ## Axis Properties
 
-{: .suppress-error}
-
-```json
+```js
 // Single View Specification
 {
   "data": ... ,
@@ -75,7 +73,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Ticks
 
-{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickStep,tickWidth,values" source="Axis" %}
+{% include table.html props="tickColor,tickCount,tickExtra,tickOffset,tickOpacity,tickRound,ticks,tickSize,tickWidth,values" source="Axis" %}
 
 {:#title}
 
@@ -103,9 +101,7 @@ For example, the following plot has a customized x-axis title.
 
 ## Axis Config
 
-{: .suppress-error}
-
-```json
+```js
 // Top-level View Specification
 {
   ...

@@ -1,5 +1,4 @@
-vega: 4.4.0
-vega-lite: 3.0.0-rc12
+vega: 5.0.0-rc2
+vega-lite: 3.0.0-rc13
 vega-embed: 3.29.1
-vega-tooltip: 0.15.0
-
+vega-tooltip: 0.16.0

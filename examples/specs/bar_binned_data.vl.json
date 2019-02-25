@@ -16,11 +16,11 @@
   "encoding": {
     "x": {
       "field": "bin_start",
-      "bin": "binned",
-      "type": "quantitative",
-      "axis": {
-        "tickStep": 2
-      }
+      "bin": {
+        "binned": true,
+        "step": 2
+      },
+      "type": "quantitative"
     },
     "x2": {"field": "bin_end"},
     "y": {
