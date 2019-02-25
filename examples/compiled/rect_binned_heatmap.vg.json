@@ -154,7 +154,6 @@
   ],
   "config": {
     "axisY": {"minExtent": 30},
-    "style": {"cell": {"stroke": "transparent"}},
-    "range": {"heatmap": {"scheme": "greenblue"}}
+    "style": {"cell": {"stroke": "transparent"}}
   }
 }
