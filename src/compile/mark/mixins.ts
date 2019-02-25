@@ -424,7 +424,14 @@ export function pointPosition(
           stack,
           mark,
           offset,
-          defaultRef: ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+          defaultRef: ref.getDefaultRef({
+            defaultRef,
+            channel,
+            scaleName,
+            scale,
+            mark,
+            checkBarAreaWithoutZero: !channel2Def // only check for non-ranged marks
+          })
         });
 
   return {
@@ -459,7 +466,14 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
           stack,
           mark,
           offset,
-          defaultRef: ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+          defaultRef: ref.getDefaultRef({
+            defaultRef,
+            channel: baseChannel,
+            scaleName,
+            scale,
+            mark,
+            checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
+          })
         });
 
   return {[channel]: valueRef};

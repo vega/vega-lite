@@ -61,13 +61,14 @@ function midPointWithPositionInvalidTest(
     // 3) geo
 
     const test = fieldInvalidPredicate(channelDef, true);
-    const zeroValueRef = getDefaultRef(
-      'zeroOrMin',
-      getMainRangeChannel(channel) as 'x' | 'y',
+    const zeroValueRef = getDefaultRef({
+      defaultRef: 'zeroOrMin',
+      channel: getMainRangeChannel(channel) as 'x' | 'y',
       scaleName,
       scale,
-      mark
-    )();
+      mark,
+      checkBarAreaWithoutZero: false
+    })();
     return [{test, ...zeroValueRef}, ref];
   }
   return ref;
@@ -366,13 +367,21 @@ function domainDefinitelyIncludeZero(scale: ScaleComponent) {
   return false;
 }
 
-export function getDefaultRef(
-  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax',
-  channel: 'x' | 'y',
-  scaleName: string,
-  scale: ScaleComponent,
-  mark: Mark
-) {
+export function getDefaultRef({
+  defaultRef,
+  channel,
+  scaleName,
+  scale,
+  mark,
+  checkBarAreaWithoutZero: checkBarAreaWithZero
+}: {
+  defaultRef: VgValueRef | 'zeroOrMin' | 'zeroOrMax';
+  channel: 'x' | 'y';
+  scaleName: string;
+  scale: ScaleComponent;
+  mark: Mark;
+  checkBarAreaWithoutZero: boolean;
+}) {
   return () => {
     if (isString(defaultRef)) {
       if (scaleName) {
@@ -382,7 +391,7 @@ export function getDefaultRef(
           // Zero in time scale is arbitrary, and does not affect ratio.
           // (Time is an interval level of measurement, not ratio).
           // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-          if (mark === 'bar' || mark === 'area') {
+          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
             log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {scaleType}));
           }
         } else {
@@ -392,7 +401,7 @@ export function getDefaultRef(
               value: 0
             };
           }
-          if (mark === 'bar' || mark === 'area') {
+          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
             log.warn(
               log.message.nonZeroScaleUsedWithLengthMark(mark, channel, {zeroFalse: scale.explicit.zero === false})
             );
