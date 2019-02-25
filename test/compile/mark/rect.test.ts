@@ -173,8 +173,8 @@ describe('Mark: Rect', () => {
     const props = rect.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual({scale: 'x', field: 'bin_start', offset: 0});
-      expect(props.x).toEqual({scale: 'x', field: 'bin_end', offset: 0});
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_start'});
+      expect(props.x).toEqual({scale: 'x', field: 'bin_end'});
       expect(props.y).toEqual({scale: 'y', field: 'count'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
       expect(props.width).toBeUndefined();
@@ -206,8 +206,8 @@ describe('Mark: Rect', () => {
     const props = rect.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual({scale: 'y', field: 'bin_start', offset: 0});
-      expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 0});
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_start'});
+      expect(props.y).toEqual({scale: 'y', field: 'bin_end'});
       expect(props.x).toEqual({scale: 'x', field: 'count'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
