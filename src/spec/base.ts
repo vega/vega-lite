@@ -1,4 +1,5 @@
 import {Data} from '../data';
+import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, flagKeys} from '../util';
@@ -87,6 +88,13 @@ export interface LayerUnitMixins extends LayoutSizeMixins {
   view?: ViewBackground;
 }
 
+export interface ResolveMixins {
+  /**
+   * Scale, axis, and legend resolutions for view composition specifications.
+   */
+  resolve?: Resolve;
+}
+
 export interface BaseViewBackground
   extends Partial<
     Pick<
@@ -147,7 +155,7 @@ export interface BoundsMixins {
  * This is named "GenericComposition" layout as ConcatLayout is a GenericCompositionLayout too
  * (but _not_ vice versa).
  */
-export interface GenericCompositionLayout extends BoundsMixins {
+export interface GenericCompositionLayout extends BoundsMixins, ResolveMixins {
   /**
    * The alignment to apply to grid rows and columns.
    * The supported string values are `"all"`, `"each"`, and `"none"`.

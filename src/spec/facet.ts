@@ -1,6 +1,5 @@
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../fielddef';
 import {Header} from '../header';
-import {Resolve} from '../resolve';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {BaseSpec, GenericCompositionLayout} from './base';
 import {FacetMapping} from './facet';
@@ -80,11 +79,6 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
    */
   spec: L | U;
   // TODO: replace this with GenericSpec<U> once we support all cases;
-
-  /**
-   * Scale, axis, and legend resolutions for facets.
-   */
-  resolve?: Resolve;
 }
 
 /**

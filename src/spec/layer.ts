@@ -1,24 +1,21 @@
 import {CompositeEncoding} from '../compositemark/index';
 import {Projection} from '../projection';
-import {Resolve} from '../resolve';
-import {BaseSpec, LayerUnitMixins} from './base';
+import {BaseSpec, LayerUnitMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, LayerUnitMixins {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>>
+  extends BaseSpec,
+    LayerUnitMixins,
+    ResolveMixins {
   /**
    * Layer or single view specifications to be layered.
    *
    * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
    */
   layer: (GenericLayerSpec<U> | U)[];
-
-  /**
-   * Scale, axis, and legend resolutions for layers.
-   */
-  resolve?: Resolve;
 }
 
 /**

@@ -1,4 +1,3 @@
-import {Resolve} from '../resolve';
 import {BaseSpec, GenericCompositionLayoutWithColumns} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
@@ -29,11 +28,6 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
   repeat: Repeat | string[];
 
   spec: GenericSpec<U, L>;
-
-  /**
-   * Scale and legend resolutions for repeated charts.
-   */
-  resolve?: Resolve;
 }
 
 /**

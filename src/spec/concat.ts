@@ -1,5 +1,4 @@
-import {Resolve} from '../resolve';
-import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns} from './base';
+import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {GenericSpec} from './index';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
@@ -7,7 +6,7 @@ import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.
  */
-export interface OneDirectionalConcatLayout extends BoundsMixins {
+export interface OneDirectionalConcatLayout extends BoundsMixins, ResolveMixins {
   /**
    * Boolean flag indicating if subviews should be centered relative to their respective rows or columns.
    *
@@ -33,11 +32,6 @@ export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>, L extend
    * A list of views to be concatenated.
    */
   concat: (GenericSpec<U, L>)[];
-
-  /**
-   * Scale, axis, and legend resolutions for vertically concatenated charts.
-   */
-  resolve?: Resolve;
 }
 
 /**
@@ -50,11 +44,6 @@ export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L exten
    * A list of views to be concatenated and put into a column.
    */
   vconcat: (GenericSpec<U, L>)[];
-
-  /**
-   * Scale, axis, and legend resolutions for vertically concatenated charts.
-   */
-  resolve?: Resolve;
 }
 
 /**
@@ -67,11 +56,6 @@ export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L exten
    * A list of views to be concatenated and put into a row.
    */
   hconcat: (GenericSpec<U, L>)[];
-
-  /**
-   * Scale, axis, and legend resolutions for horizontally concatenated charts.
-   */
-  resolve?: Resolve;
 }
 
 /** A concat spec without any shortcut/expansion syntax */
