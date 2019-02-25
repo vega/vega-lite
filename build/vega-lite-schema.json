@@ -4213,6 +4213,10 @@
           "$ref": "#/definitions/Projection",
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
         },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
         "selection": {
           "additionalProperties": {
             "$ref": "#/definitions/SelectionDef"
@@ -5233,7 +5237,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -5329,7 +5333,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for facets."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -5415,7 +5419,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -5511,7 +5515,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale and legend resolutions for repeated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -5679,7 +5683,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -6394,7 +6398,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for layers."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "title": {
           "anyOf": [
@@ -10688,7 +10692,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -10797,7 +10801,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for horizontally concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -10928,7 +10932,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale and legend resolutions for repeated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -11034,7 +11038,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for vertically concatenated charts."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -11150,7 +11154,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for layers."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "title": {
           "anyOf": [
@@ -11278,7 +11282,7 @@
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for facets."
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "spacing": {
           "anyOf": [
@@ -11454,6 +11458,10 @@
         "projection": {
           "$ref": "#/definitions/Projection",
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks\nand to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "resolve": {
+          "$ref": "#/definitions/Resolve",
+          "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "selection": {
           "additionalProperties": {
