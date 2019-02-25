@@ -32,11 +32,11 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 {% include table.html props="repeat,spec,columns" source="RepeatSpec" %}
 
+{: #repeat-mapping}
+
 ## Row/Column Repeat Mapping
 
 The `repeat` property can be an object with two optional properties (`"row"` and `"column"`), which define the list of fields that should be repeated into a row or column.
-
-{: #repeat}
 
 {% include table.html props="row,column" source="Repeat" %}
 

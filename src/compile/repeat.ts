@@ -2,7 +2,7 @@ import {isArray} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {NormalizedRepeatSpec} from '../spec';
-import {Repeat} from '../spec/repeat';
+import {RepeatMapping} from '../spec/repeat';
 import {VgLayout} from '../vega.schema';
 import {BaseConcatModel} from './baseconcat';
 import {buildModel} from './buildmodel';
@@ -12,7 +12,7 @@ import {RepeaterValue} from './repeater';
 
 export class RepeatModel extends BaseConcatModel {
   public readonly type: 'repeat' = 'repeat';
-  public readonly repeat: Repeat | string[];
+  public readonly repeat: RepeatMapping | string[];
 
   public readonly children: Model[];
 
@@ -35,7 +35,7 @@ export class RepeatModel extends BaseConcatModel {
 
   private _initChildren(
     spec: NormalizedRepeatSpec,
-    repeat: Repeat | string[],
+    repeat: RepeatMapping | string[],
     repeater: RepeaterValue,
     config: Config
   ): Model[] {
