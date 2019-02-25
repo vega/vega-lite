@@ -89,12 +89,7 @@
     {"name": "child_width", "value": 200},
     {"name": "child_height", "value": 20}
   ],
-  "layout": {
-    "padding": {"row": 20, "column": 20},
-    "columns": 1,
-    "bounds": "full",
-    "align": "all"
-  },
+  "layout": {"padding": 10, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
       "name": "row_header",
