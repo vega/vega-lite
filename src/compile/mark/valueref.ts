@@ -40,43 +40,52 @@ import {ScaleComponent} from '../scale/component';
 /**
  * @return Vega ValueRef for normal x- or y-position without projection
  */
-export function position(
-  channel: 'x' | 'y',
-  channelDef: ChannelDef,
-  channel2Def: ChannelDef,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function position(params: {
+  channel: 'x' | 'y';
+  channelDef: ChannelDef;
+  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack?: StackProperties;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
+  const {channel, channelDef, scaleName, stack} = params;
   if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
     // x or y use stack_end so that stacked line's point mark use stack_end too.
     return fieldRef(channelDef, scaleName, {suffix: 'end'});
   }
-  return midPoint(channel, channelDef, channel2Def, scaleName, scale, stack, defaultRef);
+  return midPoint(params);
 }
 
 /**
  * @return Vega ValueRef for normal x2- or y2-position without projection
  */
-export function position2(
-  channel: 'x2' | 'y2',
-  aFieldDef: ChannelDef,
-  a2fieldDef: ChannelDef,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function position2({
+  channel,
+  channelDef,
+  channel2Def,
+  scaleName,
+  scale,
+  stack,
+  defaultRef
+}: {
+  channel: 'x2' | 'y2';
+  channelDef: ChannelDef;
+  channel2Def: ChannelDef;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack: StackProperties;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
   if (
-    isFieldDef(aFieldDef) &&
+    isFieldDef(channelDef) &&
     stack &&
     // If fieldChannel is X and channel is X2 (or Y and Y2)
     channel.charAt(0) === stack.fieldChannel.charAt(0)
   ) {
-    return fieldRef(aFieldDef, scaleName, {suffix: 'start'});
+    return fieldRef(channelDef, scaleName, {suffix: 'start'});
   }
-  return midPoint(channel, a2fieldDef, undefined, scaleName, scale, stack, defaultRef);
+  return midPoint({channel, channelDef: channel2Def, scaleName, scale, stack, defaultRef});
 }
 
 export function getOffset(channel: 'x' | 'y' | 'x2' | 'y2', markDef: MarkDef) {
@@ -144,15 +153,23 @@ function binMidSignal(scaleName: string, fieldDef: TypedFieldDef<string>, fieldD
 /**
  * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
  */
-export function midPoint(
-  channel: Channel,
-  channelDef: ChannelDef,
-  channel2Def: ChannelDef<SecondaryFieldDef<string>>,
-  scaleName: string,
-  scale: ScaleComponent,
-  stack: StackProperties,
-  defaultRef: VgValueRef | (() => VgValueRef)
-): VgValueRef {
+export function midPoint({
+  channel,
+  channelDef,
+  channel2Def,
+  scaleName,
+  scale,
+  stack,
+  defaultRef
+}: {
+  channel: Channel;
+  channelDef: ChannelDef;
+  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  scaleName: string;
+  scale: ScaleComponent;
+  stack?: StackProperties;
+  defaultRef: VgValueRef | (() => VgValueRef);
+}): VgValueRef {
   // TODO: datum support
 
   if (channelDef) {

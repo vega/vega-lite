@@ -218,15 +218,14 @@ export function nonPosition(
   const channelDef = encoding[channel];
 
   return wrapCondition(model, channelDef, vgChannel, cDef => {
-    return ref.midPoint(
+    return ref.midPoint({
       channel,
-      cDef,
-      undefined,
-      model.scaleName(channel),
-      model.getScaleComponent(channel),
-      null, // No need to provide stack for non-position as it does not affect mid point
+      channelDef: cDef,
+      scaleName: model.scaleName(channel),
+      scale: model.getScaleComponent(channel),
+      stack: null, // No need to provide stack for non-position as it does not affect mid point
       defaultRef
-    );
+    });
   });
 }
 
@@ -410,15 +409,15 @@ export function pointPosition(
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
         {field: model.getName(channel)}
       : {
-          ...ref.position(
+          ...ref.position({
             channel,
             channelDef,
             channel2Def,
             scaleName,
             scale,
             stack,
-            ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
-          ),
+            defaultRef: ref.getDefaultRef(defaultRef, channel, scaleName, scale, mark)
+          }),
           ...(offset ? {offset} : {})
         };
 
@@ -446,15 +445,15 @@ export function pointPosition2(model: UnitModel, defaultRef: 'zeroOrMin' | 'zero
       ? // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
         {field: model.getName(channel)}
       : {
-          ...ref.position2(
+          ...ref.position2({
             channel,
             channelDef,
-            encoding[channel],
+            channel2Def: encoding[channel],
             scaleName,
             scale,
             stack,
-            ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
-          ),
+            defaultRef: ref.getDefaultRef(defaultRef, baseChannel, scaleName, scale, mark)
+          }),
           ...(offset ? {offset} : {})
         };
 
