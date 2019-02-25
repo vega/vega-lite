@@ -102,6 +102,7 @@
         "offset": 10,
         "orient": "left",
         "style": "guide-label",
+        "frame": "group",
         "angle": 0,
         "baseline": "middle",
         "encode": {"update": {"align": {"value": "right"}}}
