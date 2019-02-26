@@ -7,15 +7,14 @@ export type Rename = (oldSignalName: string) => string;
  * The provided generator function should use `Model.getSignalName` to use the correct signal name.
  */
 export class SignalRefWrapper implements SignalRef {
-  constructor(private exprGenerator: () => string) {}
-
-  public get signal() {
-    return this.exprGenerator();
+  constructor(exprGenerator: () => string) {
+    Object.defineProperty(this, 'signal', {
+      enumerable: true,
+      get: exprGenerator
+    });
   }
 
-  public toJSON() {
-    return {signal: this.signal};
-  }
+  public signal: string; // for ts
 
   public static fromName(rename: Rename, signalName: string) {
     return new SignalRefWrapper(() => rename(signalName));
